@@ -7,7 +7,7 @@ UPD_Master:
     tags:
         - fuentes
     script:
-        - cd $RUTA_INTI_BACK_MAS
+        - cd $RUTA_INTI_FRONT_MAS
         - sudo git pull origin master
     only:
         - master
