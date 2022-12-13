@@ -1,5 +1,6 @@
 stages:
     - master
+    #- desarrollo
     - execsonar
 
 UPD_Master:
