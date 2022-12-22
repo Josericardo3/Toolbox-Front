@@ -1,0 +1,28 @@
+<div id="loginContainer" class="loginContainer">
+    <img src='../../../../assets/imagenes/fondo.png' class="img">
+    <div class="login">
+        <h1>Inicio de sesión</h1>
+        <div class="formBody">
+            <label for="correo">Correo*</label>
+            <input type="text" name="correo" placeholder="correo@email.com">
+            <label for="registroNacionalDeTurismo">Registro Nacional de Turismo*</label>
+            <input type="text" name="registroNacionalDeTurismo" placeholder="Número de RNT">
+                <div class="password">
+                    <label for="pass">Contraseña*</label>
+                    <div class="eye">
+                        <input type="password" name="pass" placeholder="Ingrese contraseña" id="passLogin" class="passLogin">
+                        <span class='iconEye' (click)="seePassword()"><i class="fas fa-eye-slash"></i></span>
+                    </div>
+                    <p class="nota">Nota:</p>
+                    <p class="nota">- Mínimo 8 caracteres y máximo 12 caracteres </p>
+                    <p class="nota">- 1 Mayuscula</p>
+                    <p class="nota">- 1 Minúscula</p>
+                    <p class="nota">- 1 Números</p>
+                    <p class="nota">- 1 Caracter especial</p>
+                </div>
+            <button class="btn">Ingresar</button>
+            <p class="p">¿Olvidó su contraseña? <a routerLink="" routerLinkActive="activebutton">Ingrese aquí</a></p>
+            <p class="p">¿No tienes una cuenta? <a routerLink="/register" routerLinkActive="activebutton">Registrarse como prestador</a></p>
+        </div>
+    </div>
+</div>
