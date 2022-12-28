@@ -8,6 +8,7 @@ import { AppFooterComponent } from './modules/footer/app-footer/app-footer.compo
 import { AppHeaderComponent } from './modules/header/app-header/app-header.component';
 import { AppRegisterComponent } from './modules/register/app-register/app-register.component';
 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -18,7 +19,7 @@ import { AppRegisterComponent } from './modules/register/app-register/app-regist
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
