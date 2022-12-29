@@ -10,6 +10,9 @@ import { AppFooterComponent } from './modules/footer/app-footer/app-footer.compo
 import { AppHeaderComponent } from './modules/header/app-header/app-header.component';
 import { AppRegisterComponent } from './modules/register/app-register/app-register.component';
 import { AppDashboardComponent } from './modules/dashboard/app-dashboard/app-dashboard.component';
+import { StoreModule } from '@ngrx/store';
+import { counterReducer } from './state/reducer/example.reducer';
+import { AppMyExampleComponent } from './modules/example/example';
 
 @NgModule({
   declarations: [
@@ -18,13 +21,16 @@ import { AppDashboardComponent } from './modules/dashboard/app-dashboard/app-das
     AppFooterComponent,
     AppHeaderComponent,
     AppRegisterComponent,
-    AppDashboardComponent
+    AppDashboardComponent,
+    AppMyExampleComponent
+    
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule, 
+    StoreModule.forRoot({ count: counterReducer }),
   ],
   providers: [],
   bootstrap: [AppComponent]
