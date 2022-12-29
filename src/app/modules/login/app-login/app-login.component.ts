@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {FormGroup, FormControl, Validators, FormBuilder} from '@angular/forms'
-import { CustomValidators } from 'src/app/validators/custom-validators';
+// import custom validator  class
+import { CustomValidators } from '../../../models/customeValidator';
+
 
 @Component({
   selector: 'app-app-login',
@@ -9,22 +11,34 @@ import { CustomValidators } from 'src/app/validators/custom-validators';
 })
 export class AppLoginComponent implements OnInit {
 
-  // tslint:disable-next-line: max-line-length
+  public loginForm!: FormGroup;  
   private emailPattern: any = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-                              
-  loginForm = new FormGroup({
-    correo: new FormControl('', [Validators.required, Validators.pattern(this.emailPattern)]),
-    registroNacionalDeTurismo: new FormControl('', Validators.required),
-    pass: new FormControl('', [Validators.required, Validators.pattern('^(?=(?:.*\d){1})(?=(?:.*[A-Z]){1})(?=(?:.*[a-z]){1})\S{8,}$')])
-  });
-
   constructor(
+    private fb: FormBuilder
   ) { }
 
   ngOnInit(): void {
-  }
 
+    this.loginForm = this.fb.group({
+      correo: ['', Validators.compose([
+        Validators.pattern(this.emailPattern),
+        Validators.required])
+      ],
+      registroNacionalDeTurismo: ['', Validators.required],
+      pass: ['', Validators.compose([
+      Validators.required,
+      CustomValidators.patternValidator(/\d/, { hasNumber: true }),
+      CustomValidators.patternValidator(/[A-Z]/, { hasCapitalCase: true }),
+      CustomValidators.patternValidator(/[a-z]/, { hasSmallCase: true }),
+      CustomValidators.patternValidator(/(?=.*?[#?!@$%^&*-])/, { hasSpecialCharacters: true }),
+      Validators.minLength(8),
+      Validators.maxLength(12),
+     ])
+    ],
+    });
+  }
+ 
   seePassword(){
     const passLogin = document.querySelector('#passLogin') as HTMLInputElement
     const icon = document.querySelector('i') as HTMLElement

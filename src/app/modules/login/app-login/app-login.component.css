@@ -27,14 +27,11 @@ h1{
     font-size: 32px;
     color: #068460;
 }
-.nota, .nota1{
+.textDanger{
     font-family: 'Work Sans', sans-serif;
-    font-size: 14px;
+    font-size: 13px;
     color: #474749;
     font-weight: bold;
-}
-.nota1{
-    margin-top: 5px;
 }
 .p{
     font-family: 'Work Sans', sans-serif;
@@ -97,7 +94,7 @@ h1{
     position: relative;
     justify-content: center;
   }
-  .iconEye{
+.iconEye{
     color: #068460;
     position: absolute;
     right: 5px;
@@ -105,11 +102,14 @@ h1{
     cursor: pointer;
     margin-top: 52px;
   }
-  input.ng-invalid.ng-touched {
+input.ng-invalid.ng-touched {
     border: solid 2px tomato !important;
     border-radius: 10px;
   }
-  input.ng-valid{
+input.ng-valid{
     border: solid 2px #068460 !important;
     border-radius: 10px;
   }
+:disabled{
+    background-color: #737373;
+}
