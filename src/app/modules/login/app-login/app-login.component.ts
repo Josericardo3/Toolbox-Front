@@ -4,7 +4,7 @@ import { ApiService } from 'src/app/servicios/api/api.service';
 import { LoginI } from '../../../models/loginInterface';
 // import custom validator  class
 import { CustomValidators } from '../../../models/customeValidator';
-
+import { GlobalStateService } from 'src/app/servicios/global-state.service';
 
 @Component({
   selector: 'app-app-login',
@@ -19,6 +19,7 @@ export class AppLoginComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private api: ApiService,
+    private globalState: GlobalStateService
   ) { }
 
   ngOnInit(): void {
@@ -31,15 +32,21 @@ export class AppLoginComponent implements OnInit {
       registroNacionalDeTurismo: ['', Validators.required],
       pass: ['', Validators.compose([
       Validators.required,
-      CustomValidators.patternValidator(/\d/, { hasNumber: true }),
-      CustomValidators.patternValidator(/[A-Z]/, { hasCapitalCase: true }),
-      CustomValidators.patternValidator(/[a-z]/, { hasSmallCase: true }),
-      CustomValidators.patternValidator(/(?=.*?[#?!@$%^&*-])/, { hasSpecialCharacters: true }),
-      Validators.minLength(8),
-      Validators.maxLength(12),
+      // CustomValidators.patternValidator(/\d/, { hasNumber: true }),
+      // CustomValidators.patternValidator(/[A-Z]/, { hasCapitalCase: true }),
+      // CustomValidators.patternValidator(/[a-z]/, { hasSmallCase: true }),
+      // CustomValidators.patternValidator(/(?=.*?[#?!@$%^&*-])/, { hasSpecialCharacters: true }),
+      // Validators.minLength(8),
+      // Validators.maxLength(12),
      ])
     ],
     });
+
+    // Obtener el token del estado global
+    const token = this.globalState.token;
+
+    // Establecer el token en el estado global
+    this.globalState.token = 'mi-nuevo-token';
   }
  
   seePassword(){
@@ -61,10 +68,17 @@ export class AppLoginComponent implements OnInit {
     console.log(form)
   }
 
+  // loginApi(form: LoginI){
+  //   this.api.login()
+  //   .subscribe(data => {
+  //     console.log(data, 'DATA DE LA API')
+  //   })
+  // }
+
   loginApi(form: LoginI){
-    this.api.login(form)
-    .subscribe(data => {
-      console.log(data)
-    })
-  }
+      this.api.login(form)
+      .subscribe(data => {
+        console.log(data, 'DATA DE LA API')
+      })
+    }
 }
