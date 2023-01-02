@@ -4,6 +4,9 @@ import { ApiService } from 'src/app/servicios/api/api.service';
 import { LoginI } from '../../../models/loginInterface';
 // import custom validator  class
 import { CustomValidators } from '../../../models/customeValidator';
+import { Store } from '@ngrx/store';
+import { saveDataLogin } from 'src/app/state/action/example.action';
+
 
 
 @Component({
@@ -12,33 +15,42 @@ import { CustomValidators } from '../../../models/customeValidator';
   styleUrls: ['./app-login.component.css']
 })
 export class AppLoginComponent implements OnInit {
-
+  usuario = { registroNacionalDeTurismo: '', pass: '',correo:'' };
   public loginForm!: FormGroup;  
   private emailPattern: any = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
   constructor(
-    private fb: FormBuilder,
+    //private fb: FormBuilder,modificado M
     private api: ApiService,
-  ) { }
+    private formBuilder: FormBuilder,
+    private ApiService: ApiService,
+    private store: Store<{ dataLogin: any }>
+    
+  ) { 
+   console.log(store.select('dataLogin'),'strore mensaje')
+}
 
   ngOnInit(): void {
 
-    this.loginForm = this.fb.group({
+    this.loginForm = this.formBuilder.group({
       correo: ['', Validators.compose([
         Validators.pattern(this.emailPattern),
         Validators.required])
       ],
       registroNacionalDeTurismo: ['', Validators.required],
-      pass: ['', Validators.compose([
-      Validators.required,
-      CustomValidators.patternValidator(/\d/, { hasNumber: true }),
-      CustomValidators.patternValidator(/[A-Z]/, { hasCapitalCase: true }),
-      CustomValidators.patternValidator(/[a-z]/, { hasSmallCase: true }),
-      CustomValidators.patternValidator(/(?=.*?[#?!@$%^&*-])/, { hasSpecialCharacters: true }),
-      Validators.minLength(8),
-      Validators.maxLength(12),
-     ])
-    ],
+      pass: ['']
+
+
+    //   pass: ['', Validators.compose([
+    //   Validators.required,
+    //   CustomValidators.patternValidator(/\d/, { hasNumber: true }),
+    //   CustomValidators.patternValidator(/[A-Z]/, { hasCapitalCase: true }),
+    //   CustomValidators.patternValidator(/[a-z]/, { hasSmallCase: true }),
+    //   CustomValidators.patternValidator(/(?=.*?[#?!@$%^&*-])/, { hasSpecialCharacters: true }),
+    //   Validators.minLength(8),
+    //   Validators.maxLength(12),
+    //  ])
+    // ],
     });
   }
  
@@ -57,9 +69,28 @@ export class AppLoginComponent implements OnInit {
     }
   }
 
-  onLogin(form: any){
-    console.log(form)
-  }
+  //Karen onLogin(form: any){
+  //    console.log(form)
+  // }
+
+  //Mel
+ onLogin(){
+  this.usuario.registroNacionalDeTurismo = this.loginForm.get('registroNacionalDeTurismo')?.value;
+  this.usuario.pass = this.loginForm.get('pass')?.value;
+  this.ApiService.login(this.usuario)
+  .subscribe((data: any) => {
+ console.log('mensaje', data)
+ //this.store.dispatch(saveDataLogin({request:'este es el valor nuevo'}));
+  })
+
+  this.store.dispatch(saveDataLogin({request:'este es el valor nuevo'}));
+
+}
+   
+
+
+
+
 
   loginApi(form: LoginI){
     this.api.login(form)

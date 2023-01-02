@@ -12,7 +12,7 @@ import { AppHeaderComponent } from './modules/header/app-header/app-header.compo
 import { AppRegisterComponent } from './modules/register/app-register/app-register.component';
 import { AppDashboardComponent } from './modules/dashboard/app-dashboard/app-dashboard.component';
 import { StoreModule } from '@ngrx/store';
-import { counterReducer } from './state/reducer/example.reducer';
+import { stateReducer } from './state/reducer/example.reducer';
 import { AppMyExampleComponent } from './modules/example/example';
 
 @NgModule({
@@ -31,7 +31,7 @@ import { AppMyExampleComponent } from './modules/example/example';
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule, 
-    StoreModule.forRoot({ count: counterReducer }),
+    StoreModule.forRoot({ count: stateReducer }),
     HttpClientModule
   ],
   providers: [],
