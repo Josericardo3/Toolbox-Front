@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
-import { increment, decrement, reset } from '../../state/action/example.action';
+//import { increment, decrement, reset } from '../../state/action/example.action';
 import { Store } from '@ngrx/store';
  
 @Component({
@@ -15,15 +15,15 @@ export class AppMyExampleComponent {
       console.log(this.count$,"count")
     }
    
-    increment() {
-      this.store.dispatch(increment());
-    }
+    // increment() {
+    //   this.store.dispatch(increment());
+    // }
    
-    decrement() {
-      this.store.dispatch(decrement());
-    }
+    // decrement() {
+    //   this.store.dispatch(decrement());
+    // }
    
-    reset() {
-      this.store.dispatch(reset());
-    }
+    // reset() {
+    //   this.store.dispatch(reset());
+    // }
   }

@@ -4,9 +4,10 @@ import { ApiService } from 'src/app/servicios/api/api.service';
 import { LoginI } from '../../../models/loginInterface';
 // import custom validator  class
 import { CustomValidators } from '../../../models/customeValidator';
-import { GlobalStateService } from 'src/app/servicios/global-state.service';
 import { Router } from '@angular/router';
 import { ResponseI } from 'src/app/models/responseInterface';
+import { Store } from '@ngrx/store';
+import { saveDataLogin } from 'src/app/state/action/example.action';
 
 
 @Component({
@@ -15,20 +16,23 @@ import { ResponseI } from 'src/app/models/responseInterface';
   styleUrls: ['./app-login.component.css']
 })
 export class AppLoginComponent implements OnInit {
-
+  usuario = { registroNacionalDeTurismo: '', pass: '',correo:'' };
   public loginForm!: FormGroup;  
   private emailPattern: any = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
   constructor(
-    private fb: FormBuilder,
-    private api: ApiService,
-    // private globalState: GlobalStateService,
-    private router: Router
+    private router: Router,
+    private formBuilder: FormBuilder,
+    private ApiService: ApiService,
+    private store: Store<{ dataLogin: any }>
+  //   { 
+  //     console.log(store.select('dataLogin'),'strore mensaje')
+  //  }
   ) { }
 
   ngOnInit(): void {
 
-    this.loginForm = this.fb.group({
+    this.loginForm = this.formBuilder.group({
       correo: ['', Validators.compose([
         Validators.pattern(this.emailPattern),
         Validators.required])
@@ -45,12 +49,6 @@ export class AppLoginComponent implements OnInit {
      ])
     ],
     });
-
-    // Obtener el token del estado global
-    // const token = this.globalState.token;
-
-    // // Establecer el token en el estado global
-    // this.globalState.token = 'mi-nuevo-token';
   }
  
   seePassword(){
@@ -68,28 +66,28 @@ export class AppLoginComponent implements OnInit {
     }
   }
 
-  // onLogin(form: any){
-  //   console.log("holaaa", form)
-
-  // }
-
-  // loginApi(form: LoginI){
-  //   this.api.login()
-  //   .subscribe(data => {
-  //     console.log(data, 'DATA DE LA API')
-  //   })
-  // }
-
-  onLogin(form: any | LoginI){
-    console.log("entre", form)
-      this.api.login(form)
-      .subscribe(data => {
-        console.log(data, 'DATA DE LA API')
-        // let dataResponse: ResponseI = data
-        // if (dataResponse.status == 'ok') {
-        //   localStorage.setItem("token", dataResponse.result.token);
-        //   this.router.navigate(['dashboard']);
-        // }
+    onLogin(){
+      this.usuario.registroNacionalDeTurismo = this.loginForm.get('registroNacionalDeTurismo')?.value;
+      this.usuario.pass = this.loginForm.get('pass')?.value;
+      this.ApiService.login(this.usuario)
+      .subscribe((data: any) => {
+      console.log('mensaje', data)
+      this.router.navigate(['dashboard']);
       })
+      this.store.dispatch(saveDataLogin({request:'este es el valor nuevo'}));
     }
+
+  // --------NO BORRAR------
+  // onLoginA(form: any | LoginI){
+  //   console.log("entre", form)
+  //     this.api.login(form)
+  //     .subscribe(data => {
+  //       console.log(data, 'DATA DE LA API')
+  //       // let dataResponse: ResponseI = data
+  //       // if (dataResponse.status == 'ok') {
+  //       //   localStorage.setItem("token", dataResponse.result.token);
+  //       //   this.router.navigate(['dashboard']);
+  //       // }
+  //     })
+  //   }
 }

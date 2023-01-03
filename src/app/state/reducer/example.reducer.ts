@@ -1,20 +1,35 @@
+
 import { createReducer, on } from '@ngrx/store';
-import { increment, decrement, reset } from '../action/example.action';
+// M import { increment, decrement, reset } from '../action/example.action';
+import {  saveDataLogin } from '../action/example.action';
 
-export const initialState = 0;
+export const initialState = {
+  dataLogin:''
+};
 
-const _counterReducer = createReducer(
+const _stateReducer = createReducer(
   initialState,
-  on(increment, (state) => {
-    console.log(state,"state1")
-    return state + 1
-  } ),
+  on(saveDataLogin, (state,request) => {
+      console.log(state,"state1")
+     return {
+      ...state,
+      dataLogin: request.request
+     }
+
+  })
+
+
+  //desencriptar on(increment, (state) => {
+  //   console.log(state,"state1")
+  //   return state + 1
+  // } ),
   
-  on(decrement, (state) => state - 1),
-  on(reset, (state) => 0)
+  // on(decrement, (state) => state - 1),
+  // on(reset, (state) => 0)
 );
 
-export function counterReducer(state: any, action: any) {
-  console.log(initialState,"state")
-  return _counterReducer(state, action);
+export function stateReducer(state: any, action: any) {
+ 
+  console.log(state,action,"state")
+  return _stateReducer(state, action);
 }
