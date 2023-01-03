@@ -1,4 +1,4 @@
-import { state } from '@angular/animations';
+
 import { createReducer, on } from '@ngrx/store';
 // M import { increment, decrement, reset } from '../action/example.action';
 import {  saveDataLogin } from '../action/example.action';

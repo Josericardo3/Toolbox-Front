@@ -23,7 +23,9 @@ export class ApiService {
   login(form: LoginI): Observable<ResponseI>{
     const {registroNacionalDeTurismo,pass} = form;
     let direccion = `${this.apiURL}/api/Usuario/LoginUsuario?usuario=${registroNacionalDeTurismo}&Password=${pass}`;
-    return this.http.post<ResponseI>(direccion, form)
+   
+    return this.http.post<any>(direccion,{registroNacionalDeTurismo,pass})
   }
 
 }
+
