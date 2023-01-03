@@ -38,19 +38,19 @@ export class AppLoginComponent implements OnInit {
         Validators.required])
       ],
       registroNacionalDeTurismo: ['', Validators.required],
-      pass: ['']
+      // pass: ['']
 
 
-    //   pass: ['', Validators.compose([
-    //   Validators.required,
-    //   CustomValidators.patternValidator(/\d/, { hasNumber: true }),
-    //   CustomValidators.patternValidator(/[A-Z]/, { hasCapitalCase: true }),
-    //   CustomValidators.patternValidator(/[a-z]/, { hasSmallCase: true }),
-    //   CustomValidators.patternValidator(/(?=.*?[#?!@$%^&*-])/, { hasSpecialCharacters: true }),
-    //   Validators.minLength(8),
-    //   Validators.maxLength(12),
-    //  ])
-    // ],
+      pass: ['', Validators.compose([
+      Validators.required,
+      CustomValidators.patternValidator(/\d/, { hasNumber: true }),
+      CustomValidators.patternValidator(/[A-Z]/, { hasCapitalCase: true }),
+      CustomValidators.patternValidator(/[a-z]/, { hasSmallCase: true }),
+      CustomValidators.patternValidator(/(?=.*?[#?!@$%^&*-])/, { hasSpecialCharacters: true }),
+      Validators.minLength(8),
+      Validators.maxLength(12),
+     ])
+    ],
     });
   }
  
