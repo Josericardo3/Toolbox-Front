@@ -2,7 +2,7 @@
     <img src='../../../../assets/imagenes/fondo.png' class="img">
     <div class="login">
         <h1>Inicio de sesión</h1>
-        <form class="formBody" [formGroup] = "loginForm" (ngSubmit)="onLogin(loginForm)">
+        <form class="formBody" [formGroup] = "loginForm" (ngSubmit)="onLogin(loginForm.value)">
             <label for="correo">Correo*</label>
             <input type="text" formControlName="correo" placeholder="correo@email.com">
             <label class="textDanger" *ngIf="loginForm.controls['correo'].hasError('pattern')">
@@ -38,7 +38,7 @@
                         Debe contener 1 caracter especial.
                     </label>
                 </div>
-            <button type="submit" class="btn" [disabled]="loginForm.invalid" routerLink="/dashboard" routerLinkActive="activebutton">Ingresar</button>
+            <button type="submit" class="btn" [disabled]="loginForm.invalid">Ingresar</button>
             <p class="p">¿Olvidó su contraseña? <a routerLink="" routerLinkActive="activebutton">Ingrese aquí</a></p>
             <p class="p">¿No tienes una cuenta? <a routerLink="/register" routerLinkActive="activebutton">Registrarse como prestador</a></p>
         </form>
