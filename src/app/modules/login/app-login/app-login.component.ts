@@ -66,17 +66,6 @@ export class AppLoginComponent implements OnInit {
     }
   }
 
-    onLogin(){
-      this.usuario.registroNacionalDeTurismo = this.loginForm.get('registroNacionalDeTurismo')?.value;
-      this.usuario.pass = this.loginForm.get('pass')?.value;
-      this.ApiService.login(this.usuario)
-      .subscribe((data: any) => {
-      console.log('mensaje', data)
-      this.router.navigate(['dashboard']);
-      })
-      this.store.dispatch(saveDataLogin({request:'este es el valor nuevo'}));
-    }
-
   // --------NO BORRAR------
   // onLoginA(form: any | LoginI){
   //   console.log("entre", form)
@@ -90,4 +79,23 @@ export class AppLoginComponent implements OnInit {
   //       // }
   //     })
   //   }
+
+ onLogin(){
+  this.usuario.registroNacionalDeTurismo = this.loginForm.get('registroNacionalDeTurismo')?.value;
+  this.usuario.pass = this.loginForm.get('pass')?.value;
+  this.ApiService.login(this.usuario)
+  .subscribe((data: any) => {
+  console.log('mensaje', data)
+  this.store.dispatch(saveDataLogin({request:data}));
+  this.router.navigate(['dashboard']);
+  //Mel guardado en local storage localStorage.setItem('usuario',data)
+  })
+}
+   
+  // loginApi(form: LoginI){
+  //   this.api.login(form)
+  //   .subscribe(data => {
+  //     console.log(data)
+  //   })
+  // }
 }
