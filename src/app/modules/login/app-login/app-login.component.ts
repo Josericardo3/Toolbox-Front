@@ -69,29 +69,18 @@ export class AppLoginComponent implements OnInit {
     }
   }
 
-  //Karen onLogin(form: any){
-  //    console.log(form)
-  // }
 
-  //Mel
  onLogin(){
   this.usuario.registroNacionalDeTurismo = this.loginForm.get('registroNacionalDeTurismo')?.value;
   this.usuario.pass = this.loginForm.get('pass')?.value;
   this.ApiService.login(this.usuario)
   .subscribe((data: any) => {
- console.log('mensaje', data)
- //this.store.dispatch(saveDataLogin({request:'este es el valor nuevo'}));
+  console.log('mensaje', data)
+  this.store.dispatch(saveDataLogin({request:data}));
+  //Mel guardado en local storage localStorage.setItem('usuario',data)
   })
-
-  this.store.dispatch(saveDataLogin({request:'este es el valor nuevo'}));
-
 }
    
-
-
-
-
-
   loginApi(form: LoginI){
     this.api.login(form)
     .subscribe(data => {

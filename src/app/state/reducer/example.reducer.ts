@@ -17,8 +17,6 @@ const _stateReducer = createReducer(
      }
 
   })
-
-
   //desencriptar on(increment, (state) => {
   //   console.log(state,"state1")
   //   return state + 1
@@ -28,6 +26,7 @@ const _stateReducer = createReducer(
   // on(reset, (state) => 0)
 );
 
+//guarda estado global
 export function stateReducer(state: any, action: any) {
  
   console.log(state,action,"state")

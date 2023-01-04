@@ -1,104 +1,123 @@
-   <div id= "registerContainer" class="registerContainer">
-        <div class="registre" >
-        <h1>Registrar Nuevo Prestador</h1>
-      <div class="formRegister">
-            <label>Número de identificación tributaria</label>
-            <input type="text" placeholder="Número de identificación tributaria"
-              size="28"
-            />
-          <label>Registro Nacional de Turismo</label>
-            <input type="text" placeholder="Registro Nacional de Turismo"
-              size="28"
-            />
-          <label>Categoría RNT</label>
-            <input type="text" placeholder="Categoría RNT"
-            />
-          <label>Subcategoría RNT</label>
-            <input type="text" placeholder="Subcategoría RNT"
-            />
-          <label >Nombre del PST</label>
-            <input type="text" placeholder="Nombre del PST"
-            />
-          <label>Razón Social del PST</label>
-            <input type="text"  placeholder="Razón Social del PST"
-            />
-        <label>Correo del PST</label>
-          <input type="email" placeholder="Correo del PST"
-            formControlName="correo"
+<div id="registerContainer" class="registerContainer">
+  <div class="registre">
+    <h1>Registrar Nuevo Prestador</h1>
+    <form
+      class="formRegister"
+      [formGroup]="registerForm">
+      >
+    > 
+      <label>Número de identificación tributaria</label>
+      <input
+        type="text"
+        placeholder="Número de identificación tributaria"
+        size="28"
+      />
+      <label>Registro Nacional de Turismo</label>
+      <input type="text" placeholder="Registro Nacional de Turismo" size="28" />
+      <label>Categoría RNT</label>
+      <input type="text" placeholder="Categoría RNT" />
+      <label>Subcategoría RNT</label>
+      <input type="text" placeholder="Subcategoría RNT" />
+      <label>Nombre del PST</label>
+      <input type="text" placeholder="Nombre del PST" />
+      <label>Razón Social del PST</label>
+      <input type="text" placeholder="Razón Social del PST" />
+      <label>Correo del PST</label>
+      <input
+        type="email"
+        placeholder="Correo del PST"
+        formControlName="correo"
+      />
+      <label>Telefóno del PST</label>
+      <input type="text" placeholder="Telefóno del PST" />
+      <label>Nombre del representate Legal</label>
+      <input type="text" placeholder="Nombre del representate Legal" />
+      <label>Correo del representate Legal</label>
+      <input
+        type="email"
+        placeholder="Correo del representate Legal"
+        formControlName="correo"
+      />
+      <label>Telefóno del Representante Legal</label>
+      <input type="text" placeholder="Telefóno del Representante Legal" />
+      <label>Tipo de Identificación del Representante Legal</label>
+      <select name="select">
+        <option value="value1">Representante Legal</option>
+        <option value="value2" selected>Representante Legal</option>
+        <option value="value3">Representante Legal</option>
+      </select>
+      <label>Tipo de Identificación del Representante Legal</label>
+      <input
+        type="text"
+        placeholder="Tipo de Identificación del Representante Legal"
+      />
+      <label>Departamento</label>
+      <select name="select">
+        <option value="value1">Departamento</option>
+        <option value="value2" selected>Departamento</option>
+        <option value="value3">Departamento</option>
+      </select>
+      <label>Municipio</label>
+      <input type="text" placeholder="Municipio" />
+      <label>Nombre del Responsable de Sostenibilidad</label>
+      <input
+        type="text"
+        placeholder="Nombre del Responsable de Sostenibilidad"
+      />
+      <label>Correo del Responsable de Sostenibilidad</label>
+      <input
+        type="email"
+        placeholder="Correo del Responsable de Sostenibilidad"
+        formControlName="correo"
+      />
+      <label>Teléfono del Responsable de Sostenibilidad</label>
+      <input
+        type="text"
+        placeholder="Teléfono del Responsable de Sostenibilidad"
+      />
+      <div class="password">
+        <label for="pass">Contraseña</label>
+        <div class="eye">
+          <span class="iconEye" (click)="seePasswordRegister()"><i class="fas fa-eye-slash"></i></span>
+          <input
+            type="password"
+            placeholder="Contraseña"
+            id="passRegister"
+            formControlName="password1"
+            class="passRegister"
           />
-        <label>Telefóno del PST</label>
-          <input type="text" placeholder="Telefóno del PST"
-          />
-        <label>Nombre del representate Legal</label>
-          <input type="text" placeholder="Nombre del representate Legal"
-          />
-        <label 
-          >Correo del representate Legal</label>
-          <input type="email" placeholder="Correo del representate Legal"
-            formControlName="correo"
-          />
-        <label 
-          >Telefóno del Representante Legal</label>
-          <input type="text" placeholder="Telefóno del Representante Legal"
-          />
-        <label>Tipo de Identificación del Representante Legal</label>
-          <select name="select">
-            <option value="value1">Representante Legal</option>
-            <option value="value2" selected>Representante Legal</option>
-            <option value="value3">Representante Legal</option>
-          </select>
-          <label>Tipo de Identificación del Representante Legal</label>
-            <input
-             
-              type="text"
-              placeholder="Tipo de Identificación del Representante Legal"
-            />
-          <label>Departamento</label>
-            <select name="select">
-              <option value="value1">Departamento</option>
-              <option value="value2" selected>Departamento</option>
-              <option value="value3">Departamento</option>
-            </select>
-          <label>Municipio</label>
-            <input type="text" placeholder="Municipio" />
-          <label>Nombre del Responsable de Sostenibilidad</label>
-            <input type="text" placeholder="Nombre del Responsable de Sostenibilidad"
-            />
-          <label>Correo del Responsable de Sostenibilidad</label>
-            <input type="email" placeholder="Correo del Responsable de Sostenibilidad"
-              formControlName="correo"
-            />
-          <label>Teléfono del Responsable de Sostenibilidad</label>
-            <input type="text" placeholder="Teléfono del Responsable de Sostenibilidad"
-            />
-            <div class="password">
-                <label for="pass">Contraseña</label>
-                <div class="eye">
-                    <input type="password" placeholder="Contraseña"
-                    formControlName="password1"
-                  >
-                  <span class='iconEye'><i class="fas fa-eye-slash"></i></span>
-              </div>
-                </div>
-                <div class="password">
+        </div>
+        <label class="textDanger" *ngIf="registerForm.controls['pass'].hasError('required') || registerForm.controls['pass'].hasError('minlength') || registerForm.controls['pass'].hasError('maxlength')">
+          Debe contener mínimo 8 caracteres y máximo 12 caracteres.
+      </label>
+      <br>
+      <label class="textDanger" *ngIf="registerForm.controls['pass'].hasError('required') || registerForm.controls['pass'].hasError('hasNumber')">
+          Debe contener al menos 1 número.
+      </label>
+      <br>
+      <label class="textDanger" *ngIf="registerForm.controls['pass'].hasError('required') || registerForm.controls['pass'].hasError('hasCapitalCase')">
+          Debe contener 1 letra mayúscula.
+      </label>
+      <br>
+      <label class="textDanger" *ngIf="registerForm.controls['pass'].hasError('required') || registerForm.controls['pass'].hasError('hasSmallCase')">
+          Debe contener 1 letra minúscula.
+      </label>
+      <br>
+      <label class="textDanger" *ngIf=" registerForm.controls['pass'].hasError('required') || registerForm.controls['pass'].hasError('hasSpecialCharacters')">
+          Debe contener 1 caracter especial.
+      </label>  
+      </div>
+      <div class="password">
         <label>Repetir contraseña</label>
         <div class="eye">
-          <input type="password" placeholder="Repetir contraseña"
+          <input
+            type="password"
+            placeholder="Repetir contraseña"
             formControlName="password2"
-          >
-          <span class='iconEye'><i class="fas fa-eye-slash"></i></span>
+          />
+          <span class="iconEye"><i class="fas fa-eye-slash"></i></span>
         </div>
-        <div>
-            <p class="nota">Nota:</p>
-            <p class="nota">- Mínimo 8 caracteres y máximo 12 caracteres </p>
-            <p class="nota">- 1 Mayuscula</p>
-            <p class="nota">- 1 Minúscula</p>
-            <p class="nota">- 1 Números</p>
-            <p class="nota">- 1 Caracter especial</p>
-        </div>
+      </div>
+    </form>
+  </div>
 </div>
-</div>
-</div>
-</div>
-
-
