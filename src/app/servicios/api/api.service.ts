@@ -26,6 +26,9 @@ export class ApiService {
    
     return this.http.post<any>(direccion,{registroNacionalDeTurismo,pass})
   }
-
+  createUser(request:any): Observable<ResponseI>{
+    let direccion = `${this.apiURL}/api/Usuario`;
+    return this.http.put<any>(direccion,request)
+  }
 }
 

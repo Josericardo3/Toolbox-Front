@@ -24,14 +24,17 @@
     margin: 17px;
  }
 
- .formRegister input{ 
-    
+ .formRegister input, select{ 
     background: #FFFFFF;
     border: 1px solid #000000;
     border-radius: 10px;
     height: 40px;
     width: 754px;
     margin: 2px;
+}
+
+select{
+    width: 365px !important;
 }
 
 .formRegister label {
@@ -69,15 +72,6 @@ input{
     margin: 9px; 
 }
 
-select{
-    background: #FFFFFF;
-    border: 1px solid #000000;
-    border-radius: 6px;
-    height: 26px;
-    width: 156px;
-    padding: 1px;
-    margin: 3px;
-}
  .p{
     font-family: 'Work Sans', sans-serif;
     font-size: 16px;
@@ -111,4 +105,165 @@ select{
     font-size: 14px;
     color: #474749;
     font-weight: bold;
+}
+
+.textDanger{
+    font-family: 'Work Sans', sans-serif;
+    font-size: 13px;
+    color: #474749;
+    font-weight: bold;
+}
+
+.formRegister label, .control-error{
+    margin: 5px 0 8px 0;
+    font-family: 'Work Sans', sans-serif;
+    font-size: 16px;
+    color: #474749;
+}
+.control-error{
+    color: tomato !important;
+}
+input.ng-invalid.ng-touched {
+    border: solid 2px tomato !important;
+    border-radius: 10px;
+  }
+
+  input.ng-valid{
+    border: solid 2px #068460 !important;
+    border-radius: 10px;
+  }
+
+  .formRegister input{
+    margin: 3px 0 8px 0;
+    background: #FFFFFF;
+    border: 1px solid #000000;
+    border-radius: 10px;
+    height: 40px;
+    width: 754px;
+    padding: 5px;
+}
+
+.selectDepar{
+    display: flex;
+    flex-direction:row;
+    width: 754px;
+}
+
+.select-value{
+    flex-direction:column;   
+}
+
+.contraseña{
+    display: flex;
+    flex-direction:row;
+    width: 754px; 
+    justify-content: space-between;
+}
+
+.password-input{
+    flex-direction:column;     
+}
+
+.passC{
+    width: 365px !important; 
+}
+
+.btn{
+    margin: 60px 0 15px 0;
+    height: 35px;
+    width: 165px;
+    padding: 5px;
+    background-color: #068460;
+    border-radius: 100px;
+    color: #FFFFFF;
+    font-family: 'Work Sans', sans-serif;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+}
+
+.btn.disabled{
+    background-color: #474749;
+    color: #000000;
+}
+
+.checkbox-container{
+    display: flex;
+    flex-direction: row;
+    width: 754px;
+    justify-content:flex-start;
+    column-gap: 12px;
+}
+
+.checkbox-container > i {
+    text-decoration: underline;
+}
+.checkbox-container > .checkbox{
+    width: 20px;
+    height: 20px;
+} 
+.button-container{
+    display: flex;
+    flex-direction:row;
+    width: 754px; 
+    justify-content:center;
+}
+#modalTerminos{
+    display: none;
+}
+#modalTerminos.active{
+  display: block;
+  background: rgba(0, 0, 0, 0.9);
+  color: #fff;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  transition: all .5s;
+}
+
+#modalTerminos.active>.content-fluid{
+    background-color: white;
+    border:1px solid orange;
+    width: 806px;
+    height: 503px;
+    display: flex;
+    margin: 5% auto;
+    justify-content: center;
+}
+
+#modalTerminos.active>.content-fluid>.modal-content{
+    color: #474749;
+    padding-top: 58px;
+    width:600px;
+    text-align: center;
+}
+#modalTerminos.active>.content-fluid>.modal-content>.forma-label-sin-izquierda {
+    font: bold 12px helvetica;
+    text-align: left;
+    color: #4D4C4D;
+    vertical-align: bottom;
+    display: flex;
+    padding: 1px 0px 1px 0px !important;
+    column-gap: 9px;
+    margin-top:22px;
+}
+
+#modalTerminos.active>.content-fluid>.modal-content>.forma-label {
+    font: bold 12px helvetica;
+    text-align: left;
+    color: #666;
+    vertical-align: bottom;
+    display: inline-block;
+    padding: 1px 0px 1px 20px !important;
+}
+#modalTerminos.active>.content-fluid>.modal-content>.forma-label-sin-izquierda>.checkbox {
+   width: 20px!important;
+   height:  20px!important;
+}
+
+.button-container-2{
+    display: flex;
+    justify-content:center;
 }
