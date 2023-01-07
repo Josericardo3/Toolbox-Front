@@ -1,0 +1,29 @@
+<!-- EJEMPLO1
+<div>
+    <div>
+        <button (click)="addSkills()">Add</button>
+        <form [formGroup]="formParent">
+            <div>
+                <input type="text" placeholder="name" formControlName="name">
+            </div>
+            <div formArrayName="skills">
+                <div *ngFor="let skill of getCtrl('skills', formParent)?.controls; index as formChild">
+                    <div [formGroupName]="formChild">
+                            <input type="text" placeholder="language" formControlName="language">
+                            <input type="text" placeholder="projectUrl" formControlName="projectUrl">
+                            <input type="text" placeholder="expYear" formControlName="expYear">
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+-->
+
+<!-- EJEMPLO2 -->
+<!-- <form [formGroup]="form">
+    <ng-container *ngFor="let prop of Object.keys(form.controls)">
+      <label>{{ prop }}:</label>
+      <input type="text" [formControlName]="prop">
+    </ng-container>
+</form> -->

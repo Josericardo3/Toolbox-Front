@@ -14,6 +14,7 @@ import { AppDashboardComponent } from './modules/dashboard/app-dashboard/app-das
 import { StoreModule } from '@ngrx/store';
 import { stateReducer } from './state/reducer/example.reducer';
 import { AppMyExampleComponent } from './modules/example/example';
+import { AppCaracterizacionComponent } from './modules/caracterizacion/app-caracterizacion/app-caracterizacion.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { AppMyExampleComponent } from './modules/example/example';
     AppHeaderComponent,
     AppRegisterComponent,
     AppDashboardComponent,
-    AppMyExampleComponent
+    AppMyExampleComponent,
+    AppCaracterizacionComponent
     
   ],
   imports: [
