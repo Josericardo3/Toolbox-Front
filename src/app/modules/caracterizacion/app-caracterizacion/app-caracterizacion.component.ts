@@ -1,6 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormArray, FormControl, Validators, FormBuilder } from '@angular/forms';
+import { ApiService } from 'src/app/servicios/api/api.service';
+import { environment } from 'src/environments/environment.prod';
 
 @Component({
   selector: 'app-app-caracterizacion',
@@ -12,21 +14,36 @@ export class AppCaracterizacionComponent implements OnInit {
   public formParent: FormGroup = new FormGroup({});
 
   form: FormGroup;
+  propiedades: string[];
   datos: any;
+  apiURL = environment.apiURL;
+
   constructor(
     private fb: FormBuilder,
+    private ApiService: ApiService,
     private http: HttpClient
     ) { 
       //--------------EJEMPLO2--------------------
-      this.http.get('https://mi-api.com/datos.json').subscribe(data => {
-        this.datos = data;
-      });
+      // this.http.get('https://mi-api.com/datos.json').subscribe(data => 
+      // {
+      //   this.datos = data;
+      // });
     
       this.form = this.fb.group(this.datos);
+      this.propiedades = Object.keys(this.form.controls);
   }
 
   ngOnInit(): void {
     // this.initFormParent();
+  }
+
+   //-----------------EJEMPLO2----------------------
+   onForm(){
+    this.http.get(this.apiURL)
+    .subscribe(data => {
+      this.datos = data;
+      console.log(data);
+    })
   }
 
   //--------------EJEMPLO1--------------------
@@ -63,11 +80,5 @@ export class AppCaracterizacionComponent implements OnInit {
   // //     console.log(json); 
   // //     JSON.parse(json, (key, value) => {
   // //       console.log(`value: -> ${value}`)
-
-
-
-
-  
-
 
 }

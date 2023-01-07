@@ -21,9 +21,9 @@
 -->
 
 <!-- EJEMPLO2 -->
-<!-- <form [formGroup]="form">
-    <ng-container *ngFor="let prop of Object.keys(form.controls)">
+<form [formGroup]="form" (ngSubmit)="onForm()">
+    <ng-container *ngFor="let prop of propiedades">
       <label>{{ prop }}:</label>
       <input type="text" [formControlName]="prop">
     </ng-container>
-</form> -->
+</form>
