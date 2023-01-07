@@ -38,6 +38,7 @@ export class AppRegisterComponent implements OnInit {
       telefonoDelRepresentanteLegal:['', Validators.required],
       tipoDeIdentificacionDelRepresentanteLegal:['', Validators.required],
       identificacionDelRepresentanteLegal:['', Validators.required],
+      departamento:['', Validators.required],
       municipio:['', Validators.required],
       correoDelResponsableDeSostenibilidad:['', Validators.compose([
         Validators.pattern(this.emailPattern),
@@ -63,6 +64,7 @@ export class AppRegisterComponent implements OnInit {
    })
   }
 
+  
   seePasswordRegister(){
     const passRegister = document.querySelector('#passRegister') as HTMLInputElement
     const icon = document.querySelector('i') as HTMLElement
@@ -108,24 +110,24 @@ export class AppRegisterComponent implements OnInit {
    console.log(this.registerForm.controls,'valores');
       const request = {
         "idUsuarioPst": 0,
-        "nit": "string",
-        "rnt": "string",
-        "idCategoriaRnt": 0,
-        "idSubCategoriaRnt": 0,
-        "nombrePst": "string",
-        "razonSocialPst": "string",
-        "correoPst": "string",
-        "telefonoPst": "string",
-        "nombreRepresentanteLegal": "string",
-        "correoRepresentanteLegal": "string",
-        "telefonoRepresentanteLegal": "string",
-        "idTipoIdentificacion": 0,
-        "identificacionRepresentanteLegal": "string",
-        "idDepartamento": 0,
-        "idMunicipio": 0,
-        "nombreResponsableSostenibilidad": "string",
-        "correoResponsableSostenibilidad": "string",
-        "telefonoResponsableSostenibilidad": "string",
+        "nit": this.registerForm.get('numeroDeIdentificacionTributaria')?.value,
+        "rnt": this.registerForm.get('registroNacionalDeTurismo')?.value,
+        "idCategoriaRnt": this.registerForm.get('categoriaRnt')?.value,
+        "idSubCategoriaRnt": this.registerForm.get('subcategoriaRnt')?.value,
+        "nombrePst": this.registerForm.get('nombreDelPst')?.value,
+        "razonSocialPst": this.registerForm.get('razonSocialDelPst')?.value,
+        "correoPst":this.registerForm.get('correo')?.value,
+        "telefonoPst": this.registerForm.get('telefonoDelPst')?.value,
+        "nombreRepresentanteLegal": this.registerForm.get('nombreDelRepresenteLegal')?.value,
+        "correoRepresentanteLegal": this.registerForm.get('correoRepresentanteLegal')?.value,
+        "telefonoRepresentanteLegal":this.registerForm.get('telefonoDelRepresentanteLegal')?.value,
+        "idTipoIdentificacion": this.registerForm.get('tipoDeIdentificacionDelRepresentanteLegal')?.value,
+        "identificacionRepresentanteLegal":this.registerForm.get('identificacionDelRepresentanteLegal')?.value,
+        "idDepartamento": this.registerForm.get('departamento')?.value,
+        "idMunicipio": this.registerForm.get('municipio')?.value,
+        "nombreResponsableSostenibilidad": this.registerForm.get('nombreDelResponsableDeSostenibilidad')?.value,
+        "correoResponsableSostenibilidad": this.registerForm.get('correoDelResponsableDeSostenibilidad')?.value,
+        "telefonoResponsableSostenibilidad": this.registerForm.get('telefonoDelResponsableDeSostenibilidad')?.value,
         "idTipoAvatar": 0
       }
     return this.ApiService.createUser(request)

@@ -14,7 +14,7 @@ import { AppDashboardComponent } from './modules/dashboard/app-dashboard/app-das
 import { StoreModule } from '@ngrx/store';
 import { stateReducer } from './state/reducer/example.reducer';
 import { AppMyExampleComponent } from './modules/example/example';
-
+import { DirectivesModule } from './directives/directives.module';
 @NgModule({
   declarations: [
     AppComponent,
@@ -31,8 +31,10 @@ import { AppMyExampleComponent } from './modules/example/example';
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule, 
-    StoreModule.forRoot({ count: stateReducer }),
-    HttpClientModule
+    //StoreModule.forRoot({ count: stateReducer }),
+    HttpClientModule,
+    DirectivesModule,
+    
   ],
   providers: [],
   bootstrap: [AppComponent]
