@@ -11,7 +11,7 @@ import { AppFooterComponent } from './modules/footer/app-footer/app-footer.compo
 import { AppHeaderComponent } from './modules/header/app-header/app-header.component';
 import { AppRegisterComponent } from './modules/register/app-register/app-register.component';
 import { AppDashboardComponent } from './modules/dashboard/app-dashboard/app-dashboard.component';
-import { StoreModule } from '@ngrx/store';
+import { StoreModule } from '@ngrx/store'; 
 import { stateReducer } from './state/reducer/example.reducer';
 import { AppMyExampleComponent } from './modules/example/example';
 import { DirectivesModule } from './directives/directives.module';
@@ -31,7 +31,7 @@ import { DirectivesModule } from './directives/directives.module';
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule, 
-    //StoreModule.forRoot({ count: stateReducer }),
+    StoreModule.forRoot({ count: stateReducer }),
     HttpClientModule,
     DirectivesModule,
     
