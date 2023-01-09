@@ -1,0 +1,46 @@
+<div id="loginContainer" class="loginContainer">
+    <img src='../../../../assets/imagenes/fondo.png' class="img">
+    <div class="login">
+        <h1>Inicio de sesión</h1>
+        <form class="formBody" [formGroup] = "loginForm" (ngSubmit)="onLogin()">
+            <label for="correo">Correo*</label>
+            <input type="text" formControlName="correo" placeholder="correo@email.com">
+            <label class="textDanger" *ngIf="loginForm.controls['correo'].hasError('pattern')">
+                Debe contener un correo válido
+            </label>
+            
+            <label for="registroNacionalDeTurismo">Registro Nacional de Turismo*</label>
+            <input type="text" formControlName="registroNacionalDeTurismo" placeholder="Número de RNT">
+                <div class="password">
+                    <label for="pass">Contraseña*</label>
+                    <div class="eye">
+                        <span class='iconEye' (click)="seePassword()"><i class="fas fa-eye-slash"></i></span>
+                    </div>
+                    <input type="password" formControlName="pass" placeholder="Ingrese contraseña" id="passLogin" class="passLogin">
+                    
+                    <label class="textDanger" *ngIf="loginForm.controls['pass'].hasError('required') || loginForm.controls['pass'].hasError('minlength') || loginForm.controls['pass'].hasError('maxlength')">
+                        Debe contener mínimo 8 caracteres y máximo 12 caracteres.
+                    </label>
+                    <br>
+                    <label class="textDanger" *ngIf="loginForm.controls['pass'].hasError('required') || loginForm.controls['pass'].hasError('hasNumber')">
+                        Debe contener al menos 1 número.
+                    </label>
+                    <br>
+                    <label class="textDanger" *ngIf="loginForm.controls['pass'].hasError('required') || loginForm.controls['pass'].hasError('hasCapitalCase')">
+                        Debe contener 1 letra mayúscula.
+                    </label>
+                    <br>
+                    <label class="textDanger" *ngIf="loginForm.controls['pass'].hasError('required') || loginForm.controls['pass'].hasError('hasSmallCase')">
+                        Debe contener 1 letra minúscula.
+                    </label>
+                    <br>
+                    <label class="textDanger" *ngIf=" loginForm.controls['pass'].hasError('required') || loginForm.controls['pass'].hasError('hasSpecialCharacters')">
+                        Debe contener 1 caracter especial.
+                    </label>
+                </div>
+             <button type="submit" class="btn" [disabled]="loginForm.invalid" >Ingresar</button>    <!--M routerLink="/dashboard" routerLinkActive="activebutton" -->
+            <p class="p">¿Olvidó su contraseña? <a routerLink="" routerLinkActive="activebutton">Ingrese aquí</a></p>
+            <p class="p">¿No tienes una cuenta? <a routerLink="/register" routerLinkActive="activebutton">Registrarse como prestador</a></p>
+        </form>
+    </div>
+</div>
