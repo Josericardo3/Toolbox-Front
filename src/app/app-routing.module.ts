@@ -11,10 +11,10 @@ import { AppRegisterComponent } from './modules/register/app-register/app-regist
 
 
 const routes: Routes = [
-  {path: '', component: AppLoginComponent},
+  { path: 'login', component: AppLoginComponent },
 
-  {path: 'register', component: AppRegisterComponent},
-  {path: 'dashboard', component: AppDashboardComponent},
+  { path: 'register', component: AppRegisterComponent },
+  { path: 'dashboard', component: AppDashboardComponent },
 
   //{path: '', component: AppMyExampleComponent},
 ];
