@@ -6,21 +6,34 @@ import { LoginI } from '../../models/loginInterface';
 import { ResponseI } from '../../models/responseInterface';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ApiService {
-  apiURL = environment.apiURL;
 
-  constructor(
-    private http: HttpClient
-  ) { }
+  // apiURL = environment.apiURL;
 
-  login(form: LoginI): Observable<ResponseI>{
-    const {registroNacionalDeTurismo,pass} = form;
-    let direccion = `${this.apiURL}/api/Usuario/LoginUsuario?usuario=${registroNacionalDeTurismo}&Password=${pass}`;
+  // constructor(
+  //   private http: HttpClient
+  // ) { }
+
+  // login(form: LoginI): Observable<ResponseI>{
+  //   const {registroNacionalDeTurismo,pass} = form;
+  //   let direccion = `${this.apiURL}/api/Usuario/LoginUsuario?usuario=${registroNacionalDeTurismo}&Password=${pass}`;
    
-    return this.http.post<any>(direccion, {})
+  //   return this.http.post<any>(direccion, {})
+
+  apiURL = environment.apiURL
+
+  constructor(private http: HttpClient) {}
+
+  login(form: LoginI): Observable<ResponseI> {
+    const { registroNacionalDeTurismo, pass } = form
+    let direccion = `${this.apiURL}/api/Usuario/LoginUsuario?usuario=${registroNacionalDeTurismo}&Password=${pass}`
+
+    return this.http.post<any>(direccion, { registroNacionalDeTurismo, pass })
   }
-
+  createUser(request: any): Observable<ResponseI> {
+    let direccion = `${this.apiURL}/api/Usuario`
+    return this.http.post<any>(direccion, request)
+  }
 }
-

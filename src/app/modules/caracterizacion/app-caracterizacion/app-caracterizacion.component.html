@@ -21,9 +21,26 @@
 -->
 
 <!-- EJEMPLO2 -->
-<form [formGroup]="form" (ngSubmit)="onForm()">
+<!-- <form [formGroup]="form" (ngSubmit)="onForm()"> -->
+<!-- <form [formGroup]="form">
+    <!-- <ng-container *ngFor="let prop of propiedades"> --
     <ng-container *ngFor="let prop of propiedades">
       <label>{{ prop }}:</label>
-      <input type="text" [formControlName]="prop">
+      <!-- <input type="text" [formControlName]="prop"> ------------
+      <ul>
+        <li *ngFor="let campo of datos.campos">{{campo | json}}</li>
+      </ul>
     </ng-container>
+</form> -->
+
+<form [formGroup]="form">
+  <ng-container>
+    <!-- <div *ngFor="let prop of Object.keys(datos)">
+      <div>{{ prop }}: {{ datos[prop] }}</div>
+    </div>
+    <br> -->
+    <label *ngFor="let prop of propiedades">{{prop}}[1]: </label>
+    <br>
+    <label *ngFor="let campo of datos.campos">{{campo | json}}</label>
+  </ng-container> 
 </form>

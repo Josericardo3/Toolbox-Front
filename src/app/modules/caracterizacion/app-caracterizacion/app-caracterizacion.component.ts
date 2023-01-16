@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormArray, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { ApiService } from 'src/app/servicios/api/api.service';
 import { environment } from 'src/environments/environment.prod';
+import 'core-js/es/object'
 
 @Component({
   selector: 'app-app-caracterizacion',
@@ -13,8 +14,8 @@ export class AppCaracterizacionComponent implements OnInit {
 
   public formParent: FormGroup = new FormGroup({});
 
-  form: FormGroup;
-  propiedades: string[];
+  public form: FormGroup = new FormGroup({});
+  propiedades: string[] = [];
   datos: any;
   apiURL = environment.apiURL;
 
@@ -29,22 +30,30 @@ export class AppCaracterizacionComponent implements OnInit {
       //   this.datos = data;
       // });
     
-      this.form = this.fb.group(this.datos);
-      this.propiedades = Object.keys(this.form.controls);
+      // this.form = this.fb.group(this.datos || {});
+      // this.propiedades = Object.keys(this.form.controls)
+    
   }
 
   ngOnInit(): void {
     // this.initFormParent();
-  }
-
-   //-----------------EJEMPLO2----------------------
-   onForm(){
-    this.http.get(this.apiURL)
+    this.http.get('/assets/datos.json')
     .subscribe(data => {
       this.datos = data;
       console.log(data);
-    })
+      this.form = this.fb.group(data);
+      this.propiedades = Object.keys(this.form.controls);
+    });
   }
+
+   //-----------------EJEMPLO2----------------------
+  //  onForm(){
+  //   this.http.get(this.apiURL)
+  //   .subscribe(data => {
+  //     this.datos = data;
+  //     console.log(data);
+  //   })
+  // }
 
   //--------------EJEMPLO1--------------------
 

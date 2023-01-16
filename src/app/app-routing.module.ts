@@ -14,7 +14,6 @@ const routes: Routes = [
   {path: 'register', component: AppRegisterComponent},
   {path: 'dashboard', component: AppDashboardComponent},
   {path: '', component: AppCaracterizacionComponent}
-
   //{path: '', component: AppMyExampleComponent},
 ];
 

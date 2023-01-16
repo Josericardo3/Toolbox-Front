@@ -11,10 +11,11 @@ import { AppFooterComponent } from './modules/footer/app-footer/app-footer.compo
 import { AppHeaderComponent } from './modules/header/app-header/app-header.component';
 import { AppRegisterComponent } from './modules/register/app-register/app-register.component';
 import { AppDashboardComponent } from './modules/dashboard/app-dashboard/app-dashboard.component';
-import { StoreModule } from '@ngrx/store';
+import { StoreModule } from '@ngrx/store'; 
 import { stateReducer } from './state/reducer/example.reducer';
 import { AppMyExampleComponent } from './modules/example/example';
 import { AppCaracterizacionComponent } from './modules/caracterizacion/app-caracterizacion/app-caracterizacion.component';
+import { DirectivesModule } from './directives/directives.module';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,9 @@ import { AppCaracterizacionComponent } from './modules/caracterizacion/app-carac
     FormsModule,
     ReactiveFormsModule, 
     StoreModule.forRoot({ count: stateReducer }),
-    HttpClientModule
+    HttpClientModule,
+    DirectivesModule,
+    
   ],
   providers: [],
   bootstrap: [AppComponent]
