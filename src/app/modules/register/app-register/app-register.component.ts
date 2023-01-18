@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core'
+import { Router } from '@angular/router';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms'
 import { CustomValidators } from '../../../models/customeValidator'
 import { ApiService } from '../../../servicios/api/api.service'
@@ -13,6 +14,7 @@ export class AppRegisterComponent implements OnInit {
   public registerForm!: FormGroup
   private emailPattern: any = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
   constructor(
+    private router: Router,
     private formBuilder: FormBuilder,
     private ApiService: ApiService,
     private store: Store<{ dataLogin: any }>,
@@ -165,6 +167,10 @@ export class AppRegisterComponent implements OnInit {
     }
     //console.log(request, 'newrequest')
     return this.ApiService.createUser(request).subscribe((data: any) => {
+      console.log(data,'new data')
+      if(data.statusCode===201){
+        this.router.navigate(["/dashboard"]);
+      }
       // el servicio responde con 200 que todo se guardó
       //console.log(data, 'respuesta')
     })
