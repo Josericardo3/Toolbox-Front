@@ -1,14 +1,16 @@
+
 <!-- EJEMPLO1 -->
 <div class="controllerCaracterizacion">
     <div class="caracterizacion">
-        <button (click)="addSkills()">Add</button>
+        <!-- <button (click)="addSkills()">Add</button> -->
         <form [formGroup]="formParent">
             <div formArrayName="campos">
                 <div *ngFor="let skill of getCtrl('campos', formParent)?.controls; index as formChild">
                     <div [formGroupName]="formChild">                     
                       <h1>Formulario de caracterización de agencias de viaje</h1>
                             <label for="nombre1">{{datos.campos[0].nombre}}</label>
-                            <input type="text" id="nombre1" [ngClass]="{'invalid': formArray.controls.fields.at(i).invalid, 'valid': formArray.controls.fields.at(i).valid}">
+                            <!-- <input type="text" id="nombre1" [ngClass]="{'is-invalid': formParent.invalid, 'is-valid': formParent.valid}"> -->
+                            <input type="text" id="nombre1">
                             <label for="nombre2">{{datos.campos[1].nombre}}</label>
                             <select>
                               <option *ngFor="let option of datos.campos[1].desplegable" 
@@ -71,3 +73,4 @@
         </form>
     </div>
 </div>
+<!-- <p>rol colaborador</p> -->

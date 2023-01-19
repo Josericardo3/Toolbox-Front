@@ -39,6 +39,18 @@ export class AppCaracterizacionComponent implements OnInit {
   ngOnInit(): void {
     this.initFormParent();
 
+    this.http.get('http://10.4.3.140:8050/api/Usuario/caracterizacion/1')
+    .subscribe((data: any) => {
+      this.datos = data;
+      this.getTable(this.datos);
+      console.log(data);
+      console.log(this.datos);
+     this.getSelect();
+      const refSkills = this.formParent.get('campos') as FormArray;
+      refSkills.push(this.intiFormSkill());
+
+    });
+
   //   this.dataSelect = this.datos.campos
   // .filter((campo: { relations: string; }) => campo.relations && JSON.parse(campo.relations))
   // .flatMap((campo: { relations: string; }) => this.getTable(JSON.parse(campo.relations)))
@@ -71,7 +83,7 @@ export class AppCaracterizacionComponent implements OnInit {
     this.formParent = new FormGroup(
       {
         id_user: new FormControl('', [Validators.required, Validators.minLength(5)]),
-        campos: new FormArray([], Validators.required)
+        campos: new FormArray([],[ Validators.required])
 
       })
   }
@@ -86,19 +98,9 @@ export class AppCaracterizacionComponent implements OnInit {
   }
 
   //addSkill usa intiFormSkill. Agrega el formulario al hacer clic en el boton
-  addSkills(){
-    this.http.get('http://10.4.3.140:8050/api/Usuario/caracterizacion/1')
-    .subscribe((data: any) => {
-      this.datos = data;
-      this.getTable(this.datos);
-      console.log(data);
-      console.log(this.datos);
-     this.getSelect();
-      const refSkills = this.formParent.get('campos') as FormArray;
-      refSkills.push(this.intiFormSkill());
-
-    });
-  }
+  // addSkills(){
+    
+  // }
 
   getSelect(){
     this.dataSelect = this.datos.campos

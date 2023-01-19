@@ -40,7 +40,7 @@
                         Debe contener 1 caracter especial.
                     </label>
                 </div>
-             <button type="submit" class="btn" [disabled]="loginForm.invalid" >Ingresar</button>    <!--M routerLink="/dashboard" routerLinkActive="activebutton" -->
+             <button type="submit" class="btn" [disabled]="loginForm.invalid" routerLinkActive="active" [routerLink]="['/dashboard']">Ingresar</button>    <!--M routerLink="/dashboard" routerLinkActive="activebutton" -->
             <p class="p">¿Olvidó su contraseña? <a routerLink="" routerLinkActive="activebutton">Ingrese aquí</a></p>
             <p class="p">¿No tienes una cuenta? <a routerLink="/register" routerLinkActive="activebutton">Registrarse como prestador</a></p>
         </form>

@@ -45,18 +45,14 @@ h1{
     text-align: center;
 }
 
-/* input.ng-invalid.ng-touched {
+.is-invalid {
     border: solid 2px tomato !important;
     border-radius: 10px;
-  }
-input.ng-valid{
+}
+  
+.is-valid {
     border: solid 2px #068460 !important;
     border-radius: 10px;
-  } */
-  .invalid {
-    border: 1px solid red;
 }
-
-.valid {
-    border: 1px solid green;
-}
+ 
+  

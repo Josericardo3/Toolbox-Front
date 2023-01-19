@@ -1,0 +1,35 @@
+.container{
+    display: flex;
+    background:#068460;
+    color: white;
+    font-size: 48px;
+    height: 83px;
+  }
+  
+  .letra{
+    margin: 15px 20px 1px 224px !important;
+  }
+
+  .icon-es{
+    margin: 7px 18px 0px 867px !important;
+  }
+
+  .grid-img{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    align-items: center;
+    justify-items: center;
+    margin: 36px 0px;
+  }
+.item-1{
+  cursor: pointer;
+}
+  .button-cerrar{
+    display: flex;
+    justify-content: end;
+    margin: 15px 50px 6px 26px !important
+  }
+
+  p:hover{
+    color: #068460;
+  }
