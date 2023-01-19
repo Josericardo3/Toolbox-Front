@@ -21,6 +21,7 @@
     "@ngrx/store": "^12.2.0",
     "jquery": "^3.6.3",
     "jquery-ui": "^1.13.2",
+    "ngx-dynamic-host": "^1.1.2",
     "rxjs": "~6.6.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.11.4"

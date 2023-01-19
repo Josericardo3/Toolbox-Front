@@ -2,10 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import {FormGroup, FormControl, Validators, FormBuilder} from '@angular/forms'
 import { ApiService } from 'src/app/servicios/api/api.service';
 import { LoginI } from '../../../models/loginInterface';
+import { Router } from '@angular/router';
 // import custom validator  class
 import { CustomValidators } from '../../../models/customeValidator';
 import { Store } from '@ngrx/store';
 import { saveDataLogin } from 'src/app/state/action/example.action';
+//PG import { TokenStorageService } from '../../../servicios/token/token-storage.service';
 
 
 
@@ -23,6 +25,7 @@ export class AppLoginComponent implements OnInit {
     //private fb: FormBuilder,modificado M
     private api: ApiService,
     private formBuilder: FormBuilder,
+    private router: Router,
     private ApiService: ApiService,
     private store: Store<{ dataLogin: any }>
     
@@ -75,9 +78,12 @@ export class AppLoginComponent implements OnInit {
   this.usuario.pass = this.loginForm.get('pass')?.value;
   this.ApiService.login(this.usuario)
   .subscribe((data: any) => {
-  console.log('mensaje', data)
+  //console.log('mensaje', data)
   this.store.dispatch(saveDataLogin({request:data}));
-  //Mel guardado en local storage localStorage.setItem('usuario',data)
+  this.router.navigate(["/dashboard"]);
+  localStorage.setItem('rol',data.permisoUsuario[0].item)
+  localStorage.setItem('access',data.TokenAcceso)
+  localStorage.setItem('refresh',data.TokenRefresco)
   })
 }
    
