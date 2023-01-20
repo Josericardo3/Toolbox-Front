@@ -83,7 +83,7 @@ export class AppCaracterizacionComponent implements OnInit {
     this.formParent = new FormGroup(
       {
         id_user: new FormControl('', [Validators.required, Validators.minLength(5)]),
-        campos: new FormArray([],[ Validators.required])
+        campos: new FormArray([], [ Validators.required])
 
       })
   }
