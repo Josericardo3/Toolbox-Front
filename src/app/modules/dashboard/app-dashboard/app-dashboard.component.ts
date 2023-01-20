@@ -50,8 +50,11 @@ export class AppDashboardComponent implements OnInit {
     if (menuResult[0]) {
       this.router.navigate(['/' + evt.target.alt])
       console.log('aqui esta la prueba', evt.target.alt)
-    } else {
-      alert('No tienes acceso a este modulo, comunicarse con el administrador')
     }
+  }
+
+  Logo(){
+   const url = 'https://www.gov.co/home'
+   window.location.href=url;
   }
 }
