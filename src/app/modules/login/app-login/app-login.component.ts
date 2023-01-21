@@ -5,10 +5,10 @@ import { LoginI } from '../../../models/loginInterface';
 import { Router } from '@angular/router';
 // import custom validator  class
 import { CustomValidators } from '../../../models/customeValidator';
+import { ResponseI } from 'src/app/models/responseInterface';
 import { Store } from '@ngrx/store';
 import { saveDataLogin } from 'src/app/state/action/example.action';
 //PG import { TokenStorageService } from '../../../servicios/token/token-storage.service';
-
 
 
 @Component({
@@ -22,16 +22,14 @@ export class AppLoginComponent implements OnInit {
   private emailPattern: any = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
   constructor(
-    //private fb: FormBuilder,modificado M
-    private api: ApiService,
-    private formBuilder: FormBuilder,
     private router: Router,
+    private formBuilder: FormBuilder,
     private ApiService: ApiService,
     private store: Store<{ dataLogin: any }>
-    
-  ) { 
-   console.log(store.select('dataLogin'),'strore mensaje')
-}
+  //   { 
+  //     console.log(store.select('dataLogin'),'strore mensaje')
+  //  }
+  ) { }
 
   ngOnInit(): void {
 
@@ -41,9 +39,6 @@ export class AppLoginComponent implements OnInit {
         Validators.required])
       ],
       registroNacionalDeTurismo: ['', Validators.required],
-      // pass: ['']
-
-
       pass: ['', Validators.compose([
       Validators.required,
       CustomValidators.patternValidator(/\d/, { hasNumber: true }),
@@ -72,7 +67,22 @@ export class AppLoginComponent implements OnInit {
     }
   }
 
+  // --------NO BORRAR------
+  // onLoginA(form: any | LoginI){
+  //   console.log("entre", form)
+  //     this.api.login(form)
+  //     .subscribe(data => {
+  //       console.log(data, 'DATA DE LA API')
+  //       // let dataResponse: ResponseI = data
+  //       // if (dataResponse.status == 'ok') {
+  //       //   localStorage.setItem("token", dataResponse.result.token);
+  //       //   this.router.navigate(['dashboard']);
+  //       // }
+  //     })
+  //   }
 
+
+    //Mel guardado en local storage localStorage.setItem('usuario',data)
  onLogin(){
   this.usuario.registroNacionalDeTurismo = this.loginForm.get('registroNacionalDeTurismo')?.value;
   this.usuario.pass = this.loginForm.get('pass')?.value;
@@ -80,17 +90,24 @@ export class AppLoginComponent implements OnInit {
   .subscribe((data: any) => {
   //console.log('mensaje', data)
   this.store.dispatch(saveDataLogin({request:data}));
-  this.router.navigate(["/dashboard"]);
   localStorage.setItem('rol',data.permisoUsuario[0].item)
   localStorage.setItem('access',data.TokenAcceso)
   localStorage.setItem('refresh',data.TokenRefresco)
+  this.router.navigate(['/dashboard']);
   })
 }
    
-  loginApi(form: LoginI){
-    this.api.login(form)
-    .subscribe(data => {
-      console.log(data)
-    })
-  }
+  // loginApi(form: LoginI){
+  //   this.api.login(form)
+  //   .subscribe(data => {
+  //     console.log(data)
+  //   })
+  // }
+   
+  // loginApi(form: LoginI){
+  //   this.api.login(form)
+  //   .subscribe(data => {
+  //     console.log(data)
+  //   })
+  // }
 }

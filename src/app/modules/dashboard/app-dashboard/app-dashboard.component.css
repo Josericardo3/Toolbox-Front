@@ -64,7 +64,9 @@
     justify-items: center;
     margin: 36px 0px; */
   }
-
+.item-1{
+  cursor: pointer;
+}
   .button-cerrar{
     font-family:'Work Sans', sans-serif;
     font-size: 14px;

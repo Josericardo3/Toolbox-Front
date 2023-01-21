@@ -19,6 +19,7 @@ import { AppCaracterizacionComponent } from './modules/caracterizacion/app-carac
 import { AppDiagnosticoComponent } from './modules/diagnostico/app-diagnostico/app-diagnostico.component';
 //import { AppModalRegisterComponent } from './modules/modal/app-modal-register/app-modal-register.component';
 import { DynamicHostDirective } from './directives/dynamic-host.directive';
+
 @NgModule({
   declarations: [
     AppComponent,

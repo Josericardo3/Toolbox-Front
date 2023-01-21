@@ -1,1 +1,76 @@
-<p>rol colaborador</p>
+
+<!-- EJEMPLO1 -->
+<div class="controllerCaracterizacion">
+    <div class="caracterizacion">
+        <!-- <button (click)="addSkills()">Add</button> -->
+        <form [formGroup]="formParent">
+            <div formArrayName="campos">
+                <div *ngFor="let skill of getCtrl('campos', formParent)?.controls; index as formChild">
+                    <div [formGroupName]="formChild">                     
+                      <h1>Formulario de caracterización de agencias de viaje</h1>
+                            <label for="nombre1">{{datos.campos[0].nombre}}</label>
+                            <!-- <input type="text" id="nombre1" [ngClass]="{'is-invalid': formParent.invalid, 'is-valid': formParent.valid}"> -->
+                            <input type="text" id="nombre1">
+                            <label for="nombre2">{{datos.campos[1].nombre}}</label>
+                            <select>
+                              <option *ngFor="let option of datos.campos[1].desplegable" 
+                              [value]="option.id">{{ option.nombre }}</option>
+                            </select>
+                            <label for="nombre3">{{ datos.campos[2].nombre }}</label>
+                            <input type="text" id="nombre3" [value]="datos.campos[2].values" disabled>
+                            <label>{{ datos.campos[3].nombre }}</label>
+                             <!-- <div *ngFor="let campo of datos.campos">
+                             <div *ngIf="campo.relations!=='{}' && campo.relations!==''">
+                                <div *ngFor="let row of getTable(campo.relations)">-->
+                                  <!-- {{ row.codigodepartamento }} - {{ row.departamento }} -->
+                               <!-- </div>
+                            </div>
+                            </div>  -->
+                            <!-- <div *ngFor="let campo of datos.campos">
+                              <div *ngIf="campo.relations!=='{}' && campo.relations!==''">
+                                <select>
+                                  <option *ngFor="let row of getTable(campo.relations)" [value]="row.iddepartamento">{{ row.departamento }}</option>
+                                </select>
+                              </div>
+                            </div> -->
+                            <select *ngIf="dataSelect.length > 0">
+                              <option *ngFor="let row of dataSelect" [value]="row.iddepartamento">{{ row.departamento }}</option>
+                            </select>
+                             <div>
+                               <label>{{ datos.campos[4].nombre }}</label>
+                            <select *ngIf="dataSelect.length > 0">
+                              <option *ngFor="let row of dataSelect" [value]="row.idmunicipio">{{ row.municipio }}</option>
+                            </select>
+                            </div> 
+                            <label for="nombre5">{{datos.campos[5].nombre}}</label>
+                            <input type="text" id="nombre5">
+                            <br>
+                            <label for="nombre6">{{datos.campos[6].nombre}}</label>
+                            <input type="text" id="nombre6">
+                            <br>
+                            <label for="nombre7">{{datos.campos[7].nombre}}</label>
+                            <input type="text" id="nombre7">
+                            <br>
+                            <label for="nombre8">{{datos.campos[8].nombre}}</label>
+                            <input type="text" id="nombre8">
+                            <br>
+                            <label for="nombre9">{{datos.campos[9].nombre}}</label>
+                            <input type="text" id="nombre9">
+                            <br>
+                            <label for="nombre10">{{datos.campos[10].nombre}}</label>
+                            <input type="text" id="nombre10">
+                            <br>
+                            <label for="nombre11">{{datos.campos[11].nombre}}</label>
+                            <input type="text" id="nombre11">
+                            <br>
+                            <label for="nombre12">{{datos.campos[12].nombre}}</label>
+                            <input type="text" id="nombre12">
+                    </div>
+                    <div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- <p>rol colaborador</p> -->
