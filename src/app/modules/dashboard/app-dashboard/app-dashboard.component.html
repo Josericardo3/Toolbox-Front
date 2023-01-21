@@ -1,1 +1,63 @@
-<p>app-dashboard works!</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="shortcut icon" href="http://tu_servidor/iconos/favicon.ico">
+</head>
+<body>
+<div class="container">
+  <span class="letra">
+    GOV.CO
+  </span>
+  <div class="icon-es">
+    <span><img src="../../../../assets/img-dashboard/icons8-sodio-48 1.png" alt=""></span>
+  </div>
+</div>
+<div class="button-cerrar">
+  <p routerLink="">  Cerrar Sesión</p>
+</div>
+<div class="grid-img">
+  <div class="item-1" (click)="menuFilter($event)" routerLinkActive="active" [routerLink]="['/caracterizacion']">
+    <img src="../../../../assets/img-dashboard/caracterizacion.png"
+     alt="caracterizacion" value="caracterizacion">
+  </div>
+  <div class="item-2" (click)="menuFilter($event)">
+    <img src="../../../../assets/img-dashboard/diagnostico.png"
+     alt="diagnostico">
+  </div>
+    <div class="item-3" (click)="menuFilter($event)">
+      <img src="../../../../assets/img-dashboard/planificacion.png"
+       alt="planificacion">
+    </div>
+    <div class="item-4" (click)="menuFilter($event)">
+      <img src="../../../../assets/img-dashboard/documentacion.png"
+       alt="documentacion">
+    </div>
+    <div class="item-5" (click)="menuFilter($event)">
+      <img src="../../../../assets/img-dashboard/cronograma.png"
+       alt="cronograma">
+    </div>
+    <div class="item-6" (click)="menuFilter($event)">
+      <img src="../../../../assets/img-dashboard/formacion.png"
+       alt="formacion">
+    </div>
+    <div class="item-7" (click)="menuFilter($event)">
+      <img src="../../../../assets/img-dashboard/medicion.png"
+       alt="medicion">
+    </div>
+    <div class="item-8" (click)="menuFilter($event)">
+      <img src="../../../../assets/img-dashboard/noticias.png"
+       alt="noticias">
+    </div>
+    <div class="item-9" (click)="menuFilter($event)">
+      <img src="../../../../assets/img-dashboard/alta gerencia.png"
+       alt="gerencia">
+    </div> 
+</div>
+
+</body>
+</html>
+

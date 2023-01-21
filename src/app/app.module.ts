@@ -15,6 +15,11 @@ import { StoreModule } from '@ngrx/store';
 import { stateReducer } from './state/reducer/example.reducer';
 import { AppMyExampleComponent } from './modules/example/example';
 import { DirectivesModule } from './directives/directives.module';
+import { AppCaracterizacionComponent } from './modules/caracterizacion/app-caracterizacion/app-caracterizacion.component';
+import { AppDiagnosticoComponent } from './modules/diagnostico/app-diagnostico/app-diagnostico.component';
+//import { AppModalRegisterComponent } from './modules/modal/app-modal-register/app-modal-register.component';
+import { DynamicHostDirective } from './directives/dynamic-host.directive';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -23,7 +28,10 @@ import { DirectivesModule } from './directives/directives.module';
     AppHeaderComponent,
     AppRegisterComponent,
     AppDashboardComponent,
-    AppMyExampleComponent
+    AppMyExampleComponent,
+    AppCaracterizacionComponent,
+    AppDiagnosticoComponent,
+    //AppModalRegisterComponent
     
   ],
   imports: [
@@ -31,12 +39,17 @@ import { DirectivesModule } from './directives/directives.module';
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule, 
-    StoreModule.forRoot({ count: stateReducer }),
+    StoreModule.forRoot({ data: stateReducer }),
     HttpClientModule,
     DirectivesModule,
     
+    
   ],
-  providers: [],
-  bootstrap: [AppComponent]
+  providers: [
+    //DynamicHostDirective
+  ],
+  bootstrap: [AppComponent],
+ 
+
 })
 export class AppModule { }

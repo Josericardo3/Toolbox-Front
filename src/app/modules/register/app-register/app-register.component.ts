@@ -1,8 +1,13 @@
-import { Component, OnInit } from '@angular/core'
+import { Component, OnInit, ViewChild, ComponentFactoryResolver } from '@angular/core';
+import { Router } from '@angular/router';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms'
 import { CustomValidators } from '../../../models/customeValidator'
 import { ApiService } from '../../../servicios/api/api.service'
 import { Store } from '@ngrx/store'
+//import { AppModalRegisterComponent } from '../../modal/app-modal-register/app-modal-register.component';
+import * as $ from 'jquery';
+import 'jquery-ui/ui/widgets/dialog.js';
+import { DynamicHostDirective } from 'src/app/directives/dynamic-host.directive';
 
 @Component({
   selector: 'app-app-register',
@@ -10,10 +15,14 @@ import { Store } from '@ngrx/store'
   styleUrls: ['./app-register.component.css'],
 })
 export class AppRegisterComponent implements OnInit {
+  //@ViewChild(DynamicHostDirective) 
   public registerForm!: FormGroup
   private emailPattern: any = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
   constructor(
+    private router: Router,
     private formBuilder: FormBuilder,
+    //public dinamycHost: DynamicHostDirective,
+    private ComponentFactoryResolver: ComponentFactoryResolver,
     private ApiService: ApiService,
     private store: Store<{ dataLogin: any }>,
   ) {}
@@ -116,15 +125,20 @@ export class AppRegisterComponent implements OnInit {
     }
   }
 
-  openModal() {
+    openModal() {
+      // const componentListaArea = this.ComponentFactoryResolver.resolveComponentFactory(AppModalRegisterComponent);
+      // this.dinamycHost.viewContainerRef.clear();
+      // this.dinamycHost.viewContainerRef.createComponent(componentListaArea).instance
     const modal = document.querySelector('#modalTerminos') as HTMLInputElement
     modal.classList.add('active')
   }
-  closeModal() {
-    const modal = document.querySelector('#modalTerminos') as HTMLInputElement
-    modal.classList.remove('active')
-  }
 
+  closeModal(evt: any) {
+      evt.defaultPrevented;
+      console.log(evt,"evt")
+      const modal = document.querySelector('#modalTerminos') as HTMLInputElement
+      modal.classList.remove('active')
+     }
   saveUser() {
     console.log(this.registerForm.get('municipio'), 'valores')
     const request = {
@@ -165,6 +179,10 @@ export class AppRegisterComponent implements OnInit {
     }
     //console.log(request, 'newrequest')
     return this.ApiService.createUser(request).subscribe((data: any) => {
+      console.log(data,'new data')
+      if(data.statusCode===201){
+        this.router.navigate(["/dashboard"]);
+      }
       // el servicio responde con 200 que todo se guardó
       //console.log(data, 'respuesta')
     })
