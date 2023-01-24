@@ -1,0 +1,78 @@
+{
+    "idUser": 1,
+
+    "campos": [
+        {   
+            "id" : 1,
+            "nombre": "Dirección de correspondencia",
+            "tipo": "string",
+            "mensaje": null,
+            "codigo": null,
+            "desplegable_id": null,
+            "tabla_relacionada": null,
+            "existe": false
+        },
+        {
+            "id" : 2,
+            "nombre": "Ubicación (Rural o urbana)",
+            "tipo": "option",
+            "mensaje": null,
+            "codigo": null,
+            "desplegable_id": 1,
+            "tabla_relacionada": null,
+            "existe": false,
+            "desplegable": [
+                {
+                    "id": 1,
+                    "nombre": "Rural"
+                },
+                {
+                    "id": 1,
+                    "nombre": "Urbana"
+                }
+            ]
+        },
+        {
+            "id" : 3,
+            "nombre": "Ciudades o municipios donde tiene sucursales (Si aplica)",
+            "tipo": "referencia_id",
+            "mensaje": null,
+            "codigo": null,
+            "desplegable_id": null,
+            "tabla_relacionada": "tbl_municipios",
+            "relations": [ 
+                {
+                    "idmunicipio": 1,
+                    "codigomunicipio": 110911,
+                    "municipio": "Bogota D.C.",
+                    "iddepartamento": 1
+                },
+                {
+                    "idmunicipio": 1,
+                    "codigomunicipio": 110912,
+                    "municipio": "Santander",
+                    "iddepartamento": 2
+                }
+            ]
+        },
+        {
+            "id" : 4,
+            "nombre": "¿Cuántos empleados directos o con contrato laboral tiene?",
+            "tipo": "int"
+        },
+        {
+            "id" : 5, 
+            "nombre": "Categoría RNT",
+            "tipo": "local_reference_id",
+            "mensaje": null,
+            "codigo": null,
+            "desplegable_id": null,
+            "tabla_relacionada": "tbl_categoria_rnt",
+            "values": {
+                "idcategoriarnt": 1,
+                "Nombre": "Categoria 1" ,
+                "idsubcategoria": 1
+            }
+        }
+    ]
+}
