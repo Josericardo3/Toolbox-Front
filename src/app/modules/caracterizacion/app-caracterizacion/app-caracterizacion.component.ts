@@ -39,7 +39,7 @@ export class AppCaracterizacionComponent implements OnInit {
   ngOnInit(): void {
     this.initFormParent();
 
-    this.http.get('http://10.4.3.140:8050/api/Usuario/caracterizacion/1')
+    this.http.get('http://www.Toolbox.somee.com/api/Usuario/caracterizacion/1')
     .subscribe((data: any) => {
       this.datos = data;
       this.getTable(this.datos);
