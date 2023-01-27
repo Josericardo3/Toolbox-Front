@@ -3,7 +3,6 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AppLoginComponent } from './modules/login/app-login/app-login.component';
@@ -17,8 +16,8 @@ import { AppMyExampleComponent } from './modules/example/example';
 import { DirectivesModule } from './directives/directives.module';
 import { AppCaracterizacionComponent } from './modules/caracterizacion/app-caracterizacion/app-caracterizacion.component';
 import { AppDiagnosticoComponent } from './modules/diagnostico/app-diagnostico/app-diagnostico.component';
-//import { AppModalRegisterComponent } from './modules/modal/app-modal-register/app-modal-register.component';
-import { DynamicHostDirective } from './directives/dynamic-host.directive';
+// Modal import { AppModalRegisterComponent } from './modules/modal/app-modal-register/app-modal-register.component';
+// Modal import { DynamicHostDirective } from './directives/dynamic-host.directive';
 
 @NgModule({
   declarations: [

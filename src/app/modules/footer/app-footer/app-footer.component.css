@@ -1,0 +1,88 @@
+/* agregados */
+.govco-portales-contenedor {
+    display: grid;
+    grid-template-columns: 0.8fr 1fr 1fr 0.8fr;
+    grid-gap: 8px;
+    gap: 8px;
+    background-color: #068460;
+    color: white;
+    padding: 40px 50px;
+}
+
+
+
+.govco-logo {
+height: 35px;
+display: inline-block;
+content: url(https://cdn.www.gov.co/v4/assets/images/logo.svg);
+vertical-align: super;
+}
+
+.govco-co {
+ height: 50px;
+ margin-top: 24px;
+ display: inline-block;
+ content: url(https://cdn.www.gov.co/v4/assets/images/logo-colombia.svg);
+}
+
+a{
+color: white;
+}
+
+.text {
+    font-size: 16px;
+    font-weight: 500 !important;
+    font-family: "Montserrat",sans-serif!important;
+    margin-bottom: 1rem;
+}
+
+/* .t-bold{
+font-weight: bold;
+} */
+.govco-separator-rows{
+    border-left: 1px solid #fff;
+    padding-left: 30px;
+    padding-right: 30px;
+}
+
+.govco-logo-container-portal{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.codigo-postal{
+   margin-top: 16px;
+}
+
+.list{
+    padding-left: 1rem!important;
+    font-size: 16px;
+    line-height: 23px;
+}
+
+.parrafo{
+    font-size: 14.4px;
+    line-height: 23px; 
+    font-family: "Work Sans", sans-serif;
+    
+}
+
+.flex-center{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.flex-center{
+    margin-bottom: 1rem;
+}
+
+.b{
+   font-weight: bolder; 
+   font-size: 16px;
+}
+
+.text{
+    font-size: 20.8px;
+}

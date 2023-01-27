@@ -12,4 +12,9 @@ export class AppHeaderComponent implements OnInit {
   ngOnInit(): void {
   }
 
+
+  Logo(){
+    const url = 'https://www.gov.co/home'
+    window.location.href=url;
+   }
 }

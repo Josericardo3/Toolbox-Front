@@ -170,6 +170,8 @@ input.ng-invalid.ng-touched {
 }
 
 .btn{
+    display: flex;
+    justify-content: space-around;
     margin: 60px 0 15px 0;
     height: 35px;
     width: 165px;
@@ -184,7 +186,7 @@ input.ng-invalid.ng-touched {
 }
 
 .btn:disabled{
-    background-color: #474749;
+    background-color: #999999;
     color: #000000;
 }
 
@@ -231,19 +233,20 @@ input.ng-invalid.ng-touched {
 
 #modalTerminos.active>.content-fluid{
     background-color: white;
-    border:1px solid orange;
-    width: 806px;
-    height: 503px;
+    border: 1px solid orange;
+    width: 723px;
+    height: 483px;
     display: flex;
     margin: 5% auto;
     justify-content: center;
+    border-radius: 15px;
 }
 
 #modalTerminos.active>.content-fluid>.modal-content{
     color: #474749;
     padding-top: 58px;
     width:600px;
-    text-align: center;
+   
 }
 #modalTerminos.active>.content-fluid>.modal-content>.forma-label-sin-izquierda {
     font: bold 12px helvetica;
@@ -272,4 +275,24 @@ input.ng-invalid.ng-touched {
 .button-container-2{
     display: flex;
     justify-content:center;
+}
+
+.terminos{
+    font-family:'Work Sans', sans-serif;
+    font-size: 16px;
+    text-align: justify;
+}
+
+.content-fluid{
+    display: flex; 
+    justify-content: center;
+}
+
+.datos{
+    margin: 25px 5px 19px 146px !important;
+}
+
+.checkbox-datos{
+    font-family:'Work Sans', sans-serif;
+    font-size: 16px;
 }

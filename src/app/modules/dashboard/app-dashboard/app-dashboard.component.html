@@ -9,9 +9,10 @@
 </head>
 <body>
 <div class="container">
- <div class="logo-escudo">
- <img src="../../../../assets/img-dashboard/logo.svg" alt="" (click)="Logo()">
- </div> 
+  <app-app-header></app-app-header>
+ <!-- <div class="logo-escudo">
+ <img src="../../../../assets/img-dashboard/logo.svg" alt="" (click)="Logo()"> 
+ </div> -->
   <div>
     <button class="idioma-icon-barra-superior-govco float-right" aria-label="Button to change the language of the page to English">EN</button>
   </div>
@@ -20,50 +21,51 @@
   <p routerLink="">Cerrar Sesión</p>
 </div>
 <div class="grid-img">
-  <div class="item-img" (click)="menuFilter($event)">
-    <img src="../../../../assets/img-dashboard/caracterizacion-1.svg"
-     alt="caracterizacion" value="caracterizacion" style="width: 120px;" >
-     <p class="sub-titulo">CARACTERIZACIÓN</p>
+  <div class="item-img" (click)="menuFilter($event)" (mouseover)="mouseOver($event)" (mouseout)="mouseOut($event)">
+    <img src="../../../../assets/img-dashboard/caracterizacion.svg"
+     alt="caracterizacion" id="caracterizacion" style="width: 83px;">
+     <p id="p-caracterizacion" class="sub-titulo">CARACTERIZACIÓN</p>
   </div>
-  <div class="item-img" (click)="menuFilter($event)">
-    <img src="../../../../assets/img-dashboard/diagnostico-1.svg"
-     alt="diagnostico" style="width: 120px;">
+  <div class="item-img"  (click)="menuFilter($event)" (mouseover)="mouseOver($event)" (mouseout)="mouseOut($event)">    
+    <img src="../../../../assets/img-dashboard/diagnostico.svg"
+     alt="diagnostico" style="width: 83px;">
      <p class="sub-titulo">DIAGNÓSTICO</p>
   </div>
-    <div class="item-img" (click)="menuFilter($event)">
-      <img src="../../../../assets/img-dashboard/planificacion-1.svg"
-       alt="planificacion" style="width: 120px;">
-       <P class="sub-titulo">PLANIFICACIÓN</P>
+    <div class="item-img" (click)="menuFilter($event)" (mouseover)="mouseOver($event)" (mouseout)="mouseOut($event)">
+      <img src="../../../../assets/img-dashboard/planificacion.svg"
+       alt="planificacion" style="width: 83px;">
+
+       <p class="sub-titulo">PLANIFICACIÓN</p>
     </div>
-    <div class="item-img" (click)="menuFilter($event)">
-      <img src="../../../../assets/img-dashboard/documentacion-1.svg"
-       alt="documentacion" style="width: 120px;">
-       <P class="sub-titulo">DOCUMENTACIÓN</P>
+    <div class="item-img" (click)="menuFilter($event)" (mouseover)="mouseOver($event)" (mouseout)="mouseOut($event)">
+      <img src="../../../../assets/img-dashboard/documentacion.svg"
+       alt="documentacion" style="width: 83px;">
+       <p class="sub-titulo">DOCUMENTACIÓN</p>
     </div>
-    <div class="item-img"  (click)="menuFilter($event)">
-      <img src="../../../../assets/img-dashboard/cronograma-1.svg"
-       alt="cronograma" style="width: 120px;">
-       <P class="sub-titulo">CRONOGRAMA</P>
+    <div class="item-img"  (click)="menuFilter($event)" (mouseover)="mouseOver($event)" (mouseout)="mouseOut($event)">
+      <img src="../../../../assets/img-dashboard/cronograma.svg"
+       alt="cronograma" style="width: 83px;">
+       <p class="sub-titulo">CRONOGRAMA</p>
     </div>
-    <div class="item-img" (click)="menuFilter($event)">
-      <img src="../../../../assets/img-dashboard/formacion-1.svg"
-       alt="formacion" style="width: 120px;">
-       <P class="sub-titulo">FORMACIÓN</P>
+    <div class="item-img" (click)="menuFilter($event)" (mouseover)="mouseOver($event)" (mouseout)="mouseOut($event)">
+      <img src="../../../../assets/img-dashboard/formacion.svg"
+       alt="formacion" style="width: 83px;">
+       <p class="sub-titulo">FORMACIÓN</p>
     </div>
-    <div class="item-img" (click)="menuFilter($event)">
-      <img src="../../../../assets/img-dashboard/medicion-1.svg"
-       alt="medicion" style="width: 120px;">
-       <P class="sub-titulo">MEDICIÓN</P>
+    <div class="item-img" (click)="menuFilter($event)" (mouseover)="mouseOver($event)" (mouseout)="mouseOut($event)">
+      <img src="../../../../assets/img-dashboard/medicion.svg"
+       alt="medicion" style="width: 83px;">
+       <p class="sub-titulo">MEDICIÓN</p>
     </div>
-    <div class="item-img" (click)="menuFilter($event)">
-      <img src="../../../../assets/img-dashboard/noticias-1.svg"
-       alt="noticias" style="width: 120px;">
+    <div class="item-img" (click)="menuFilter($event)" (mouseover)="mouseOver($event)" (mouseout)="mouseOut($event)">
+      <img src="../../../../assets/img-dashboard/noticias.svg"
+       alt="noticias" style="width: 83px;">
        <P class="sub-titulo">NOTICIAS</P>
     </div>
-    <div class="item-img" (click)="menuFilter($event)">
-      <img src="../../../../assets/img-dashboard/gerencia-1.svg"
-       alt="gerencia" style="width: 120px;">
-       <P class="sub-titulo">GERENCIA</P>
+    <div class="item-img" (click)="menuFilter($event)" (mouseover)="mouseOver($event)" (mouseout)="mouseOut($event)">
+      <img src="../../../../assets/img-dashboard/gerencia.svg"
+       alt="gerencia" style="width: 83px;">
+       <p class="sub-titulo">GERENCIA</p>
     </div> 
 </div>
 

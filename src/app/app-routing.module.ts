@@ -6,6 +6,7 @@ import { AppLoginComponent } from './modules/login/app-login/app-login.component
 import { AppRegisterComponent } from './modules/register/app-register/app-register.component';
 import { AppCaracterizacionComponent } from './modules/caracterizacion/app-caracterizacion/app-caracterizacion.component';
 import { AppDiagnosticoComponent } from './modules/diagnostico/app-diagnostico/app-diagnostico.component';
+import { AppHeaderComponent } from './modules/header/app-header/app-header.component';
 
 const routes: Routes = [
   {path: '', component: AppLoginComponent},
@@ -13,6 +14,7 @@ const routes: Routes = [
   {path: 'dashboard', component: AppDashboardComponent},
   {path: 'caracterizacion', component: AppCaracterizacionComponent},
   {path: 'diagnostico', component: AppDiagnosticoComponent},
+  {path: 'header', component: AppHeaderComponent},
   //{path: '', component: AppMyExampleComponent},
 ];
 

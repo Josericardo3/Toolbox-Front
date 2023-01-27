@@ -1,4 +1,5 @@
 
+<app-app-header></app-app-header>
 <div id="registerContainer" class="registerContainer">
   <div class="registre">
     <h1>Registrar Nuevo Prestador</h1>
@@ -273,17 +274,22 @@
       <div id="modalTerminos" style="width: 100vw">
         <div class="content-fluid" title="TERMINOS Y CONDICIONES">
           <section class="modal-content">
-            <h2>Política de tratamiento de datos</h2>
-            <p>
-              ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+            <h2 class="datos">Política de tratamiento de datos</h2>
+            <p class="terminos">
+              Acepto y autorizo el uso de mis datos personales por 
+              Innovación Empresarial Isoluciones SAS, los cuales 
+              serán tratados de acuerdo con la política de tratamiento 
+              de datos de Innovación Empresarial Isoluciones SAS, la cual puede 
+              consultar en: 
             </p>
+            <a href="http://drive.google.com/file/d/1VOCQrTfuhWNpcZuLRQlRs-ZbH8BDDGJ_/view?usp=sharing">Política de protección de datos personales</a>
             <div class="forma-label-sin-izquierda col-xs-12 col-md-12">
               <input
                 class="checkbox"
                 type="checkbox"
                 formControlName="checkbox"
               />
-              <label class="forma-label col-xs-12 col-md-9"
+              <label class="checkbox-datos"
                 >He leído la política de tratamiento de datos</label
               >
             </div>
@@ -296,3 +302,4 @@
     </form>
   </div>
 </div>
+<app-app-footer></app-app-footer>

@@ -5,7 +5,7 @@ import { Observable } from 'rxjs'
 import { Store } from '@ngrx/store'
 import * as fromRoot from 'src/app/state/reducer/example.reducer'
 import { AppState } from 'src/app/state/selectors/app.state'
-import { initialState } from '../../../state/reducer/example.reducer'
+
 
 //@Injectable()
 
@@ -40,19 +40,44 @@ export class AppDashboardComponent implements OnInit {
     //prueba global selectFeatureCount
   }
 
-  menuFilter(evt: any) {
-    console.log(evt.target.alt, 'e')
+  validateRol(evt: any){
     const menuResult = this.rolList.map(
       (menuItem) =>
         menuItem.rol === this.userRol && menuItem.view.includes(evt.target.alt),
     )
-    console.log(menuResult, 'menuResul')
-    if (menuResult[0]) {
-      this.router.navigate(['/' + evt.target.alt])
-      console.log('aqui esta la prueba', evt.target.alt)
+    //console.log(menuResult[0],"MENU")
+    return menuResult[0];
+  }
+
+  menuFilter(evt: any) { //redireccionar
+      if (this.validateRol(evt)) {// condicional cuando sí tiene acceso
+        evt.target.src='../../../../assets/img-dashboard/'+evt.target.alt+'-3.svg'; 
+        this.router.navigate(['/' + evt.target.alt])
+        console.log('aqui esta la prueba', evt.target.style)
+    }  
+  }
+
+  mouseOver(evt: any){
+    if (this.validateRol(evt)) {
+      evt.target.src='../../../../assets/img-dashboard/'+evt.target.alt+'-3.svg'; 
+      const p = document.getElementById('p-'+ evt.target.alt);
+      if (p){
+        p.style.color="#068460";
+      }
+      console.log("onbluer")
     }
   }
 
+  mouseOut(evt: any){
+    if (this.validateRol(evt)) {
+      evt.target.src='../../../../assets/img-dashboard/'+evt.target.alt+'.svg'; 
+      const p = document.getElementById('p-'+ evt.target.alt);
+      if (p){
+        p.style.color="#999999";
+      }
+      console.log("onbluer")
+    }
+  }
   Logo(){
    const url = 'https://www.gov.co/home'
    window.location.href=url;

@@ -1,9 +1,1 @@
-<svg width="125" height="74" viewBox="0 0 125 74" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-<rect width="125" height="74" fill="url(#pattern0)"/>
-<defs>
-<pattern id="pattern0" patternContentUnits="objectBoundingBox" width="1" height="1">
-<use xlink:href="#image0_61_57" transform="translate(0 -0.344595) scale(0.015625 0.0263936)"/>
-</pattern>
-<image id="image0_61_57" width="64" height="64" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAABmJLR0QA/wD/AP+gvaeTAAACvElEQVR4nO2YQU8TQRTH/zPt7rluD5oAfgGvqEiNscmmS7EH41VAE5qa+Cn6KYxgYiJKSHqRA0K7kPTWIunRT2C5cCDsyYR2y/Mgh7W4u9OyMIm8X9JkO/v65jcvO53XAgzDMAzDMAzDMAzDMMzNQqgG7u7uPiOiFQBERBXHcXau0GtkxvWTqhMQ0XsAEwAmhRArY3peGeP6KRcAwGTgemqEz10XY/mNUoD/Ei6AbgHdcAF0C+gmtg+o1WpmJpNZAvAhOE5E5Ww2uzY9Pd0fZcJms5n2fX+RiN4CuHc+/APAO8MwvuTzeX+UfJf1iyxAs9m80+/3NwE8DAnZl1I+t237SEW2Xq9bUso6gPshIQe9Xm+uVCqdqORLwi90C9RqNTMmOQDMDAaDr51Ox4iTrVarUkq5jfDFA8AD0zS3q9Vq7NZMyi90ovPHKio5AEAI8ej4+HgpLi6Xyy2o5AMwMzs7+zIuKCm/C1sg0FNPDN36lkql3pyenop0Or0KoBg3eQzXne/wX78RLhTAdd0u/m4rAQC+70/Nz88fAkCj0ZgSQvy8jK2mfN1CoXA3OMDH4PBAo9EoCiFWcfEp2PF9v5JKpQSAVSHE3CXnvu58XSllxbbtenAw9Bh0XXcRwJrKzES04DjOelSM67plDJ3VEfmWHcf5GJMvEb/QLdBqtdYB7Cskb7fb7Y24OMuyPqnkA9DKZrOfY4MS8otshLa2tm6ZprmDiEbDMIxiPp/34kQAYG9v7/bZ2dkmgJmQkJaU8oVqY5WEX+SXYKlUOvE8L0dErwEcAPh1/vouhHjled5j1cUDgG3bR5ZlPSGi8vA9Ilq2LOup6uKT8lP+TzBpXNel4PtCoaDF5cYfg1wA3QK64QLoFtCNzgIcBq67uiS0FYCIKvhThK6UsqLLg2EYhmEYhmEYhmEYhrlp/AYlwE3yrm39kQAAAABJRU5ErkJggg=="/>
-</defs>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>chart-timeline-variant</title><path d="M3,14L3.5,14.07L8.07,9.5C7.89,8.85 8.06,8.11 8.59,7.59C9.37,6.8 10.63,6.8 11.41,7.59C11.94,8.11 12.11,8.85 11.93,9.5L14.5,12.07L15,12C15.18,12 15.35,12 15.5,12.07L19.07,8.5C19,8.35 19,8.18 19,8A2,2 0 0,1 21,6A2,2 0 0,1 23,8A2,2 0 0,1 21,10C20.82,10 20.65,10 20.5,9.93L16.93,13.5C17,13.65 17,13.82 17,14A2,2 0 0,1 15,16A2,2 0 0,1 13,14L13.07,13.5L10.5,10.93C10.18,11 9.82,11 9.5,10.93L4.93,15.5L5,16A2,2 0 0,1 3,18A2,2 0 0,1 1,16A2,2 0 0,1 3,14Z" fill="#999999"/></svg>

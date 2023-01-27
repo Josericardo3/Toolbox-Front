@@ -1,0 +1,13 @@
+.container{
+    display: flex;
+    background:#068460;
+    color: white;
+    font-size: 48px;
+    height: 48px;
+  }
+
+  .logo-escudo{
+    width: 136px;
+    height: 24px;
+    margin: -3px 17px 0px 86px !important;
+  } 
