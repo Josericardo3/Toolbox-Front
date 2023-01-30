@@ -28,6 +28,7 @@ export class AppRegisterComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.setDepartments();
     console.log(this.store.select('dataLogin'), 'strore mensaje')
     this.registerForm = this.formBuilder.group(
       {
@@ -92,7 +93,42 @@ export class AppRegisterComponent implements OnInit {
       },
     )
   }
+  setDepartments() {
+    fetch('https://www.datos.gov.co/resource/gdxc-w37w.json')
+      .then((response) => response.json())
+      .then((data) => {
+        const departments = new Set(data.map((item: any) => item.dpto));
 
+        var select = document.getElementById("selectDepartment") as HTMLSelectElement;
+        if(select != null){
+          select.add(new Option("Seleccione un departamento", "0"));
+         departments.forEach((item: any) => {
+          var option = document.createElement("option");
+          option.text = item;
+          select.add(option);
+        }
+      )
+    };
+      
+  })};
+  setMunicipalities() {	
+    console.log("ejecutando")
+    debugger
+    fetch('https://www.datos.gov.co/resource/gdxc-w37w.json')
+      .then((response) => response.json())
+      .then((data) => {
+        const municipalities = new Set(data.map((item: any) => item.mpio).filter((item: any) => item.dpto != null));
+        var select = document.getElementById("selectMunicipality") as HTMLSelectElement;
+        if(select != null){
+          select.add(new Option("Seleccione un municipio", "0"));
+          municipalities.forEach((item: any) => {
+          var option = document.createElement("option");
+          option.text = item;
+          select.add(option);
+        }
+      )
+    };
+  })};
   seePasswordRegister() {
     const passRegister = document.querySelector(
       '#passRegister',

@@ -54,7 +54,6 @@
         type="text"
         placeholder="Razón Social del PST"
         formControlName="razonSocialDelPst"
-        appNumeros
       />
       <label>Correo del PST</label>
       <input
@@ -120,18 +119,37 @@
       <div class="selectDepar">
         <div class="select-value">
           <label>Departamento</label>
-          <select name="select" formControlName="departamento">
-            <option value="value1">Departamento</option>
-            <option value="value2" selected>Departamento</option>
-            <option value="value3">Departamento</option>
+          <select id ="selectDepartment" name="select" formControlName="departamento" onchange="setDepartments()">
           </select>
         </div>
         <div class="select-value">
           <label>Municipio</label>
           <select name="select" formControlName="municipio">
-            <option value="value1">Municipio</option>
-            <option value="value2" selected>Municipio</option>
-            <option value="value3">Municipio</option>
+            <option value="value2" selected>Seleccione un municipio</option>
+            <option value="value1">BARRANQUILLA</option>
+            <option value="value2" >BARANOA</option>
+            <option value="value3">CAMPO DE LA CRUZ</option>
+            <option value="value2" >CANDELARIA</option>
+            <option value="value2" >GALAPA</option>
+            <option value="value2" >JUAN DE ACOSTA</option>
+            <option value="value2" >LURUACO</option>
+            <option value="value2" >MALAMBO</option>
+            <option value="value2" >MANATÍ</option>
+            <option value="value2" >PALMAR DE VARELA</option>
+            <option value="value2" >PIOJÓ</option>
+            <option value="value2" >PONEDERA</option>
+            <option value="value2" >PUERTO COLOMBIA</option>
+            <option value="value2" >REPELÓN</option>
+            <option value="value2" >SABANAGRANDE</option>
+            <option value="value2" >SABANALARGA</option>
+            <option value="value2" >SANTA LUCÍA</option>
+            <option value="value2" >SANTO TOMÁS</option>
+            <option value="value2" >SOLEDAD</option>
+            <option value="value2" >SUAN</option>
+            <option value="value2" >TUBARÁ</option>
+            <option value="value2" >USIACURÍ</option>
+
+
           </select>
         </div>
       </div>
