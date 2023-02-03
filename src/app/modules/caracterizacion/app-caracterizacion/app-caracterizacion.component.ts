@@ -21,7 +21,6 @@ export class AppCaracterizacionComponent implements OnInit {
 
   formParent!: FormGroup;
   datos: any = [];
-
   formService = {
     id: ''
   }
@@ -30,8 +29,12 @@ export class AppCaracterizacionComponent implements OnInit {
   dataNorma!: any[];
 
   otherChecked: boolean = false;
+  showDependency: boolean | any= false;
   // // otherChecked: string | any;
   // selectedIndex: number = -1;
+  // public checkboxStates: boolean[] = [];
+  mostrarInput = false;
+  idCaracterizacionDinamicaCondicion!: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -41,8 +44,8 @@ export class AppCaracterizacionComponent implements OnInit {
     private formServiceService : FormServiceService,
     private router: Router,
     ) { 
-      this.formParent = new FormGroup({});
-      // this.formParent = this.formBuilder.group({});
+      // this.formParent = new FormGroup({});
+      this.formParent = this.formBuilder.group({});
 }
     
   
@@ -50,20 +53,25 @@ export class AppCaracterizacionComponent implements OnInit {
     // this.http.get('http://10.4.3.140:8050/api/Usuario/caracterizacion/1')
     // this.apiForm.getData(this.formService)
     this.http.get('https://www.toolbox.somee.com/api/Usuario/caracterizacion/1')
+    // this.http.get('assets/datos.json')
     .subscribe((data: any) => {
       this.datos = data;
       console.log(data);
       this.datos.campos.forEach((campo:any) => {
         if(campo.values !== null){
-          this.formParent.addControl(campo.campo_local, new FormControl({value: campo.values, disabled: true}, Validators.required))
+          this.formParent.addControl(campo.campo_local, new FormControl({value: campo.values, disabled: true}))
         }else{
-          this.formParent.addControl(campo.campo_local, new FormControl('', Validators.required))
+          this.formParent.addControl(campo.campo_local, new FormControl('', [Validators.required]))
         }
       });
       this.createFormControls();
       // this.formValidator();
   });
 
+  // let id = this.findCondicionId();
+  //   if (id) {
+  //     this.showDependency = this.datos.campos.dependiente === id;
+  //   }
   
     //EJEMPLO01
     // this.initFormParent();
@@ -79,6 +87,11 @@ export class AppCaracterizacionComponent implements OnInit {
     //   refSkills.push(this.intiFormSkill());
     // });
 }
+
+// private findCondicionId(): number {
+//   let condicion = this.datos.campos.find((x:any) => x.mensaje === 'condicion');
+//   return condicion ? condicion.idcaracterizaciondinamica : null;
+// }
 
 // formValidator = (form: FormGroup | any) => {
 //   const controls = form.controls;
@@ -119,15 +132,16 @@ export class AppCaracterizacionComponent implements OnInit {
 //   }
 // }
 // showDependency: boolean | string | null= false;
-showDependency: boolean | any= false;
 
-onChange(idcaracterizaciondinamica: string, event: any) {
-  if (event.target.value === 'true') {
-    this.showDependency = idcaracterizaciondinamica;
-  } else {
-    this.showDependency = false;
-  }
-}
+
+
+// onChange(idcaracterizaciondinamica: string, event: any) {
+//   if (event.target.value === 'true') {
+//     this.showDependency = idcaracterizaciondinamica;
+//   } else {
+//     this.showDependency = false;
+//   }
+// }
 
 createFormControls() {
   for (let campo of this.datos.campos) {
@@ -156,6 +170,32 @@ createFormControls() {
     this.formParent.addControl(campo.campo_local, control);
   }
 }
+getTable(relations: any): any {
+  if (typeof relations === 'string') {
+    this.dataSelect = JSON.parse(relations).table;
+    return this.dataSelect;
+  } else {
+    return relations;
+  }
+}
+
+getOption(desplegable: any): any{
+  if (typeof desplegable === 'string') {
+    this.dataOption = JSON.parse(desplegable);
+    return this.dataOption;
+  } else {
+    return desplegable;
+  }
+}
+getNorma(relations: any): any {
+  if (typeof relations === 'string') {
+    this.dataNorma = JSON.parse(relations).table;
+    return this.dataNorma;
+  } else {
+    return relations;
+  }
+}
+
 getControlType(campo: any) {
   switch (campo.tipodedato) {
     case 'int':
@@ -177,6 +217,37 @@ getControlType(campo: any) {
     default:
       return new FormControl('');
   }
+}
+
+  
+
+
+saveButtonDisabled = true;
+saveForm(){
+       this.router.navigate(['/dashboard']);
+   // this.datos.campos.forEach((campo:any) => {
+   //   if(this.formParent.get(campo)?.valid){
+   //     //el boton debe activarse
+   //     this.formParent.statusChanges.subscribe(status => {
+   //       // this.saveButtonDisabled = status === 'INVALID';
+   //       console.log("El campo name esta completo", status);
+   //     });
+   //   }else{
+   //    //bloqueado
+   //    this.formParent.statusChanges.subscribe(status => {
+   //     // this.saveButtonDisabled = status === 'VALID';
+   //     console.log("El campo name esta vacio", status);
+   //   });
+   //   }
+   // });
+   console.log('/dashboard');
+     this.apiForm.submitForm(this.formService)
+     .subscribe((response) => {
+       console.log(response);
+     }, (error) => {
+       console.log(error);
+     });
+     // this.formServiceService.addFormData(this.formService)
 }
 
   //--------------EJEMPLO1--------------------
@@ -223,32 +294,7 @@ getControlType(campo: any) {
   // // .flatMap((campo: any) => this.getTable(JSON.parse(campo.relations)));
 
   // }
-  getTable(relations: any): any {
-    if (typeof relations === 'string') {
-      this.dataSelect = JSON.parse(relations).table;
-      return this.dataSelect;
-    } else {
-      return relations;
-    }
-  }
 
-  getOption(desplegable: any): any{
-    if (typeof desplegable === 'string') {
-      this.dataOption = JSON.parse(desplegable);
-      return this.dataOption;
-    } else {
-      return desplegable;
-    }
-  }
-
-  getNorma(relations: any): any{
-    if (typeof relations === 'string') {
-      this.dataNorma = JSON.parse(relations).table;
-      return this.dataNorma;
-    } else {
-      return relations;
-    }
-  }
 
   // showInputField = '';
 
@@ -260,33 +306,7 @@ getControlType(campo: any) {
   //   }
   // }
 
- saveButtonDisabled = true;
- saveForm(){
-        this.router.navigate(['/dashboard']);
-    // this.datos.campos.forEach((campo:any) => {
-    //   if(this.formParent.get(campo)?.valid){
-    //     //el boton debe activarse
-    //     this.formParent.statusChanges.subscribe(status => {
-    //       // this.saveButtonDisabled = status === 'INVALID';
-    //       console.log("El campo name esta completo", status);
-    //     });
-    //   }else{
-    //    //bloqueado
-    //    this.formParent.statusChanges.subscribe(status => {
-    //     // this.saveButtonDisabled = status === 'VALID';
-    //     console.log("El campo name esta vacio", status);
-    //   });
-    //   }
-    // });
-    console.log('/dashboard');
-      this.apiForm.submitForm(this.formService)
-      .subscribe((response) => {
-        console.log(response);
-      }, (error) => {
-        console.log(error);
-      });
-      // this.formServiceService.addFormData(this.formService)
- }
+
 
   // getCtrl(key: string, form: FormGroup): any{
   //   return form.get(key);

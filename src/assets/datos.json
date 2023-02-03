@@ -1,226 +1,226 @@
 {
-    "idUser": 1,
+  "idUser": 1,
 
-    "campos": [
-        {
-            "iddiagnostico": 1,
-            "nombre": "Número principal",
-            "tipodedato": "string",
-            "idcategoriarnt": 1,
-            "mensaje": null,
-            "codigo": null,
-            "dependiente": null,
-            "desplegable_id": null,
-            "tablarelacionada": null,
-            "existe": false,
-            "desplegable": [
-              
-            ],
-            "relations": "{}",
-            "campo_local": null,
-            "requerido": true,
-            "values": "4",
-            "activo": true
+  "campos": [
+      {
+          "iddiagnostico": 1,
+          "nombre": "Número principal",
+          "tipodedato": "string",
+          "idcategoriarnt": 1,
+          "mensaje": null,
+          "codigo": null,
+          "dependiente": null,
+          "desplegable_id": null,
+          "tablarelacionada": null,
+          "existe": false,
+          "desplegable": [
+            
+          ],
+          "relations": "{}",
+          "campo_local": null,
+          "requerido": true,
+          "values": "4",
+          "activo": true
+      },
+      {
+          "iddiagnostico": 2,
+          "nombre": "Número específico",
+          "tipodedato": "string",
+          "idcategoriarnt": 1,
+          "mensaje": null,
+          "codigo": null,
+          "dependiente": null,
+          "desplegable_id": null,
+          "tablarelacionada": null,
+          "existe": false,
+          "desplegable": [
+            
+          ],
+          "relations": "{}",
+          "campo_local": null,
+          "requerido": true,
+          "values": "4.1",
+          "activo": true
+      },
+      {
+          "iddiagnostico": 3,
+          "nombre": "Título del requisito",
+          "tipodedato": "string",
+          "idcategoriarnt": 1,
+          "mensaje": null,
+          "codigo": null,
+          "dependiente": null,
+          "desplegable_id": null,
+          "tablarelacionada": null,
+          "existe": false,
+          "desplegable": [
+            
+          ],
+          "relations": "{}",
+          "campo_local": null,
+          "requerido": true,
+          "values": "Cumplimiento de la legislación",
+          "activo": true
+      },
+      {
+          "iddiagnostico": 4,
+          "nombre": "*Requisito",
+          "tipodedato": "textarea",
+          "idcategoriarnt": 1,
+          "mensaje": null,
+          "codigo": null,
+          "dependiente": null,
+          "desplegable_id": null,
+          "tablarelacionada": null,
+          "existe": false,
+          "desplegable": [
+            
+          ],
+          "relations": "{}",
+          "campo_local": null,
+          "requerido": true,
+          "values": "La organización debe cumplir la legislación vigente que le sea aplicable atendiendo a las particularidades locales",
+          "activo": true
+      },
+      {
+          "iddiagnostico": 5,
+          "nombre": "*Posible evidencia",
+          "tipodedato": "textarea",
+          "idcategoriarnt": 1,
+          "mensaje": null,
+          "codigo": null,
+          "dependiente": null,
+          "desplegable_id": null,
+          "tablarelacionada": null,
+          "existe": false,
+          "desplegable": [
+            
+          ],
+          "relations": "{}",
+          "campo_local": null,
+          "requerido": true,
+          "values": "* Procedimiento de requisitos legales * Matriz de requisitos legales que contenga la normatividad legal que le compete según su actividad económica del orden nacional regional y local.",
+          "activo": true
+      },
+      {
+          "iddiagnostico": 6,
+          "nombre": "Cumple",
+          "tipodedato": "radio",
+          "idcategoriarnt": 1,
+          "mensaje": null,
+          "codigo": "",
+          "dependiente": null,
+          "desplegable_id": null,
+          "tablarelacionada": null,
+          "existe": false,
+          "desplegable": [
+            {
+              "id": 1,
+              "idcaracterizacion": 6,
+              "nombre": "C",
+              "activo": true
+            }
+          ],
+          "relations": "{}",
+          "campo_local": null,
+          "requerido": true,
+          "values": null,
+          "activo": true
         },
         {
-            "iddiagnostico": 2,
-            "nombre": "Número específico",
-            "tipodedato": "string",
-            "idcategoriarnt": 1,
-            "mensaje": null,
-            "codigo": null,
-            "dependiente": null,
-            "desplegable_id": null,
-            "tablarelacionada": null,
-            "existe": false,
-            "desplegable": [
-              
-            ],
-            "relations": "{}",
-            "campo_local": null,
-            "requerido": true,
-            "values": "4.1",
-            "activo": true
+          "iddiagnostico": 7,
+          "nombre": "Cumple parcialemnte",
+          "tipodedato": "radio",
+          "idcategoriarnt": 1,
+          "mensaje": null,
+          "codigo": "",
+          "dependiente": null,
+          "desplegable_id": null,
+          "tablarelacionada": null,
+          "existe": false,
+          "desplegable": [
+            {
+              "id": 2,
+              "idcaracterizacion": 7,
+              "nombre": "CP",
+              "activo": true
+            }
+          ],
+          "relations": "{}",
+          "campo_local": null,
+          "requerido": true,
+          "values": null,
+          "activo": true
         },
         {
-            "iddiagnostico": 3,
-            "nombre": "Título del requisito",
-            "tipodedato": "string",
-            "idcategoriarnt": 1,
-            "mensaje": null,
-            "codigo": null,
-            "dependiente": null,
-            "desplegable_id": null,
-            "tablarelacionada": null,
-            "existe": false,
-            "desplegable": [
-              
-            ],
-            "relations": "{}",
-            "campo_local": null,
-            "requerido": true,
-            "values": "Cumplimiento de la legislación",
-            "activo": true
+          "iddiagnostico": 8,
+          "nombre": "No cumple",
+          "tipodedato": "radio",
+          "idcategoriarnt": 1,
+          "mensaje": null,
+          "codigo": "",
+          "dependiente": null,
+          "desplegable_id": null,
+          "tablarelacionada": null,
+          "existe": false,
+          "desplegable": [
+            {
+              "id": 3,
+              "idcaracterizacion": 8,
+              "nombre": "NC",
+              "activo": true
+            }
+          ],
+          "relations": "{}",
+          "campo_local": null,
+          "requerido": true,
+          "values": null,
+          "activo": true
         },
         {
-            "iddiagnostico": 4,
-            "nombre": "*Requisito",
-            "tipodedato": "textarea",
-            "idcategoriarnt": 1,
-            "mensaje": null,
-            "codigo": null,
-            "dependiente": null,
-            "desplegable_id": null,
-            "tablarelacionada": null,
-            "existe": false,
-            "desplegable": [
-              
-            ],
-            "relations": "{}",
-            "campo_local": null,
-            "requerido": true,
-            "values": "La organización debe cumplir la legislación vigente que le sea aplicable atendiendo a las particularidades locales",
-            "activo": true
+          "iddiagnostico": 9,
+          "nombre": "Ninguna de las anteriores",
+          "tipodedato": "radio",
+          "idcategoriarnt": 1,
+          "mensaje": null,
+          "codigo": "",
+          "dependiente": null,
+          "desplegable_id": null,
+          "tablarelacionada": null,
+          "existe": false,
+          "desplegable": [
+            {
+              "id": 4,
+              "idcaracterizacion": 9,
+              "nombre": "NA",
+              "activo": true
+            }
+          ],
+          "relations": "{}",
+          "campo_local": null,
+          "requerido": true,
+          "values": null,
+          "activo": true
         },
         {
-            "iddiagnostico": 5,
-            "nombre": "*Posible evidencia",
-            "tipodedato": "textarea",
-            "idcategoriarnt": 1,
-            "mensaje": null,
-            "codigo": null,
-            "dependiente": null,
-            "desplegable_id": null,
-            "tablarelacionada": null,
-            "existe": false,
-            "desplegable": [
-              
-            ],
-            "relations": "{}",
-            "campo_local": null,
-            "requerido": true,
-            "values": "* Procedimiento de requisitos legales * Matriz de requisitos legales que contenga la normatividad legal que le compete según su actividad económica del orden nacional regional y local.",
-            "activo": true
-        },
-        {
-            "iddiagnostico": 6,
-            "nombre": "Cumple",
-            "tipodedato": "radio",
-            "idcategoriarnt": 1,
-            "mensaje": null,
-            "codigo": "",
-            "dependiente": null,
-            "desplegable_id": null,
-            "tablarelacionada": null,
-            "existe": false,
-            "desplegable": [
-              {
-                "id": 1,
-                "idcaracterizacion": 6,
-                "nombre": "C",
-                "activo": true
-              }
-            ],
-            "relations": "{}",
-            "campo_local": null,
-            "requerido": true,
-            "values": null,
-            "activo": true
-          },
-          {
-            "iddiagnostico": 7,
-            "nombre": "Cumple parcialemnte",
-            "tipodedato": "radio",
-            "idcategoriarnt": 1,
-            "mensaje": null,
-            "codigo": "",
-            "dependiente": null,
-            "desplegable_id": null,
-            "tablarelacionada": null,
-            "existe": false,
-            "desplegable": [
-              {
-                "id": 2,
-                "idcaracterizacion": 7,
-                "nombre": "CP",
-                "activo": true
-              }
-            ],
-            "relations": "{}",
-            "campo_local": null,
-            "requerido": true,
-            "values": null,
-            "activo": true
-          },
-          {
-            "iddiagnostico": 8,
-            "nombre": "No cumple",
-            "tipodedato": "radio",
-            "idcategoriarnt": 1,
-            "mensaje": null,
-            "codigo": "",
-            "dependiente": null,
-            "desplegable_id": null,
-            "tablarelacionada": null,
-            "existe": false,
-            "desplegable": [
-              {
-                "id": 3,
-                "idcaracterizacion": 8,
-                "nombre": "NC",
-                "activo": true
-              }
-            ],
-            "relations": "{}",
-            "campo_local": null,
-            "requerido": true,
-            "values": null,
-            "activo": true
-          },
-          {
-            "iddiagnostico": 9,
-            "nombre": "Ninguna de las anteriores",
-            "tipodedato": "radio",
-            "idcategoriarnt": 1,
-            "mensaje": null,
-            "codigo": "",
-            "dependiente": null,
-            "desplegable_id": null,
-            "tablarelacionada": null,
-            "existe": false,
-            "desplegable": [
-              {
-                "id": 4,
-                "idcaracterizacion": 9,
-                "nombre": "NA",
-                "activo": true
-              }
-            ],
-            "relations": "{}",
-            "campo_local": null,
-            "requerido": true,
-            "values": null,
-            "activo": true
-          },
-          {
-            "iddiagnostico": 10,
-            "nombre": "Observaciones",
-            "tipodedato": "textarea",
-            "idcategoriarnt": 1,
-            "mensaje": null,
-            "codigo": null,
-            "dependiente": null,
-            "desplegable_id": null,
-            "tablarelacionada": null,
-            "existe": false,
-            "desplegable": [
-              
-            ],
-            "relations": "{}",
-            "campo_local": null,
-            "requerido": true,
-            "values": null,
-            "activo": true
-        }
-    ]
+          "iddiagnostico": 10,
+          "nombre": "Observaciones",
+          "tipodedato": "textarea",
+          "idcategoriarnt": 1,
+          "mensaje": null,
+          "codigo": null,
+          "dependiente": null,
+          "desplegable_id": null,
+          "tablarelacionada": null,
+          "existe": false,
+          "desplegable": [
+            
+          ],
+          "relations": "{}",
+          "campo_local": null,
+          "requerido": true,
+          "values": null,
+          "activo": true
+      }
+  ]
 }

@@ -23,7 +23,7 @@ export class AppDashboardComponent implements OnInit {
     {
       // colaborador
       rol: '1',
-      view: ['caracterizacion'],
+      view: ['caracterizacion', 'diagnostico'],
     },
     {
       rol: 'ADMIN',

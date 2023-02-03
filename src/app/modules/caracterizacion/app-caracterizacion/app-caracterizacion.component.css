@@ -30,7 +30,8 @@ input, select{
 }
 input[type=number]
   {
-    font-size: 18px;
+    font-family: 'Work Sans', sans-serif;
+    font-size: 16px;
     border: 2px solid #068460;
     
   }
@@ -94,12 +95,12 @@ div.radio{
     margin: 10px 10px 10px 0 !important;
     cursor: pointer;
   }
-  div.check input[type=checkbox]:checked:before
+  div.check input[type=checkbox]:checked::before
   {
     content: "✔";
     font-size: 18px;
     color: #068460;
-    position: absolute; /* establece posición absoluta */ 
+    position: absolute;  /*establece posición absoluta */ 
     top: 54%;/* centra la palomita en el eje vertical */
     left: 2.5%;/* centra la palomita en el eje horizontal */
     transform: translate(-51%, -52%); /* centra la palomita en el cuadro */
@@ -149,6 +150,7 @@ input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button { 
   -webkit-appearance: none; 
   margin: 0; 
+  
 }
 
 input[type=number] { -moz-appearance:textfield; }
