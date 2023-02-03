@@ -1,0 +1,122 @@
+.controllerDiagnostico{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 15px;
+    width: 100%;
+}
+.diagnostico{
+  width: 60vw;
+}
+h1{
+    font-family: 'Montserrat', sans-serif;
+    font-weight: bolder;
+    font-size: 32px;
+    color: #068460;
+    margin: 15px 0 20px 0;
+}
+h3{
+    font-family: 'Montserrat';
+    font-weight: bolder;
+    font-size: 18px;
+    line-height: 24px;
+    text-align: center;
+    color: #000000;
+    margin: 5px 0 0 19.5vw;
+    align-self: flex-start;
+}
+p{
+    font-family: 'Work Sans';
+    font-weight: bolder;
+    font-size: 16px;
+    line-height: 21px;
+    color: #000000;
+    margin: 5px 0 15px 19.5vw;
+    align-self: flex-start;
+}
+label{
+    margin: 10px 0;
+    font-family: 'Work Sans', sans-serif;
+    font-size: 16px;
+    color: #474749;
+    margin: 5px 0 15px 0;
+}
+input, textarea{ 
+    background: #FFFFFF;
+    border: 2px solid #068460;
+    border-radius: 10px;
+    height: 40px;
+    margin: 5px 0 15px 0;
+    padding: 5px;
+    width: 60vw;
+}
+.btn{
+    margin: 20px 0 15px 0;
+    height: 40px;
+    width: 200px;
+    padding: 5px;
+    background-color: #068460;
+    border-radius: 100px;
+    color: #FFFFFF;
+    font-family: 'Work Sans', sans-serif;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+}
+.containerRadio {
+    display: inline-block;
+    flex-direction: column;
+    align-items: center;
+    size: 100px;
+}
+.radio{
+    position: relative; /* establece posición relativa */
+    display: flex;
+    flex-direction: row;
+    align-items:center;
+    font-family: 'Work Sans', sans-serif;
+    font-size: 16px;
+    width: 60vw;
+    height: 20px !important;
+    margin: 10px 5px 10px 0 !important;
+    padding: 3px;
+}
+input[type=radio]{
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    width: 4%;
+    height: 150%;
+    background-color: white;
+    border: 2px solid #068460;
+    margin: 10px 10px 10px 0;
+    cursor: pointer;
+    border-radius: 50%;
+}
+/* input[type=radio].custom-radio:checked + .custom-radio:before*/
+div.radio input[type=radio]:checked:before 
+{
+    content: "●";
+    font-size: 18px;
+    color: #068460;
+    position: absolute; /* establece posición absoluta */ 
+    top: 50%;/* centra la palomita en el eje vertical */
+    left: 2.5%;/* centra la palomita en el eje horizontal */
+    transform: translate(-51%, -52%); /* centra la palomita en el cuadro */
+}
+.inputContainer {
+    background: #FFFFFF;
+    border: 2px solid #068460;
+    border-radius: 10px;
+    height: 30px;
+    padding: 5px;
+    margin: 5px 0 5px 15px !important;
+    width: 40vw !important;
+}
+.linea{
+    border-top: 1px solid rgb(192, 192, 192);
+    height: 2px;
+    width: 60vw;
+    padding: 0;
+    margin: 10px auto 0 auto;
+}

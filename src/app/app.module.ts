@@ -16,8 +16,7 @@ import { AppMyExampleComponent } from './modules/example/example';
 import { DirectivesModule } from './directives/directives.module';
 import { AppCaracterizacionComponent } from './modules/caracterizacion/app-caracterizacion/app-caracterizacion.component';
 import { AppDiagnosticoComponent } from './modules/diagnostico/app-diagnostico/app-diagnostico.component';
-// Modal import { AppModalRegisterComponent } from './modules/modal/app-modal-register/app-modal-register.component';
-// Modal import { DynamicHostDirective } from './directives/dynamic-host.directive';
+import { AppModalInicialComponent } from './modules/modal/app-modal-inicial/app-modal-inicial.component';
 
 @NgModule({
   declarations: [
@@ -30,8 +29,10 @@ import { AppDiagnosticoComponent } from './modules/diagnostico/app-diagnostico/a
     AppMyExampleComponent,
     AppCaracterizacionComponent,
     AppDiagnosticoComponent,
-    //AppModalRegisterComponent
+    AppModalInicialComponent,
     
+    
+
   ],
   imports: [
     BrowserModule,
@@ -41,14 +42,11 @@ import { AppDiagnosticoComponent } from './modules/diagnostico/app-diagnostico/a
     StoreModule.forRoot({ data: stateReducer }),
     HttpClientModule,
     DirectivesModule,
-    
-    
   ],
   providers: [
-    //DynamicHostDirective
+  
   ],
   bootstrap: [AppComponent],
  
-
 })
 export class AppModule { }

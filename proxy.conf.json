@@ -1,6 +1,6 @@
 {
     "/api/*":{
-    "target":"https://www.toolbox.somee.com",
+    "target":"http://10.4.3.140:8050",
     "secure":false,
     "logLevel":"debug"
     }

@@ -1,4 +1,32 @@
-<p>rol colaborador</p>
-
-
+<!-- <p>rol colaborador</p> -->
 <a href="../../../../assets//Politica-de-datos/POLITICA DE TRATAMIENTO DE DATOS  ISOLUCIONES.pdf"></a>
+<app-app-header></app-app-header>
+<form [formGroup]="formParent" class="controllerDiagnostico" (ngSubmit)="saveForm()">
+  <h1>Formulario de diagnóstico NTC - 6496</h1>
+  <h3>4. CONTEXTO DE LA ORGANIZACIÓN</h3>
+  <p>4.1. Cumplimiento de la legislación</p>
+    <div *ngFor="let campo of datos.campos" class="diagnostico">
+      
+        <label>{{ campo.nombre }}</label>
+        <div [ngSwitch]="campo.tipodedato">
+
+          <input *ngSwitchCase="'string'" type="text" [formControlName]="campo.campo_local">
+
+          <textarea *ngSwitchCase="'textarea'" type="text" [formControlName]="campo.campo_local"></textarea>
+          <div *ngIf="campo.nombre == 'Observaciones'" class="linea"></div>
+          
+          <div *ngSwitchCase="'radio'" class="containerRadio">
+              <div *ngFor="let opcion of campo.desplegable" class="radio">
+                <input type="radio" [formControlName]="campo.campo_local" [value]="opcion.id" 
+                name="{{campo.iddiagnostico}}"> 
+                {{opcion.nombre}}
+              </div>
+          </div>
+        </div> 
+        
+      
+    </div>
+   
+  <button type="submit" class="btn">Descargar documento</button>
+</form>
+<app-app-footer></app-app-footer>

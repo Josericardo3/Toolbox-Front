@@ -16,6 +16,8 @@ import { AppState } from 'src/app/state/selectors/app.state'
 })
 export class AppDashboardComponent implements OnInit {
   //PG counter$: Observable<any>;
+  arrNormas = JSON.parse(localStorage.getItem('norma')||'');
+  normaSelected = localStorage.getItem("normaSelected");
   userRol = localStorage.getItem('rol')
   rolList = [
     {
@@ -34,6 +36,8 @@ export class AppDashboardComponent implements OnInit {
   ) {
     //PG this.counter$= store.select('initialState')
     // console.log(this.counter$,'counter')
+    console.log(localStorage.getItem('norma'));
+    console.log(this.arrNormas,'arrayde normas lol');
   }
 
   ngOnInit(): void {

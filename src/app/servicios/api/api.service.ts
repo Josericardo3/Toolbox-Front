@@ -28,20 +28,20 @@ export class ApiService {
 
   apiURL = environment.apiURL
   constructor(private http: HttpClient) {}
+
   login(form: LoginI): Observable<ResponseI> {
     const { registroNacionalDeTurismo, pass } = form
     const refresh = localStorage.getItem('refresh');
     const headers = { 'Content-Type': 'application/json', 'tokenAccess': refresh || 'falta token' };
     let direccion = `${this.apiURL}/api/Usuario/LoginUsuario?usuario=${registroNacionalDeTurismo}&Password=${pass}`
-
     return this.http.post<any>(
       direccion, 
       { registroNacionalDeTurismo, pass },
       {headers}
       )
   }
+  
   createUser(request: any): Observable<any> {
-
     let direccion = `${this.apiURL}/api/Usuario`
     return this.http.post<any>(direccion, request)
   }
@@ -50,6 +50,16 @@ export class ApiService {
     return this.http.post(this.apiURL + 'refreshtoken', {
       refreshToken: token
     }, httpOptions);
+  }
+
+  getUser(idUsuario: any): Observable<any> {
+    let direccion = `${this.apiURL}/api/Usuario/${idUsuario}`
+    return this.http.get<any>(direccion, idUsuario)
+  }
+
+  getNorma(idCategoria:any){
+    let norma = `${this.apiURL}/api/Usuario/SelectorDeNorma?id=${idCategoria}`
+    return this.http.get<any>(norma, idCategoria)
   }
 }
   

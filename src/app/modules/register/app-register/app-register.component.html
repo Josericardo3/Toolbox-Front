@@ -22,12 +22,13 @@
         placeholder="Registro Nacional de Turismo"
         size="28"
         formControlName="registroNacionalDeTurismo"
+        appNumeros
       />
       <div class="selectDepar">
         <div class="select-value">
           <label>Categoría RNT</label>
-          <select name="select" formControlName="categoriaRnt">
-            <option value="1">Guia de turismo</option>
+          <select name="select" id="selectCategoria"  formControlName="categoriaRnt" (change)="onLoadCategory($event)" >
+            <option *ngFor="let element of data" [ngValue]="element">{{element.name}}</option>
           </select>
         </div>
         <div class="select-value">
@@ -37,9 +38,10 @@
           <select
             name="select"
             style="margin: 0px -8px 3px 21px !important"
+            id="1"
             formControlName="subcategoriaRnt"
           >
-            <option value="1">Guia de turismo</option>
+          <option *ngFor="let element of arrAgency"[ngValue]="element">{{element.name}}</option>
           </select>
         </div>
       </div>
@@ -54,6 +56,7 @@
         type="text"
         placeholder="Razón Social del PST"
         formControlName="razonSocialDelPst"
+        
       />
       <label>Correo del PST</label>
       <input
@@ -106,9 +109,11 @@
         name="select"
         formControlName="tipoDeIdentificacionDelRepresentanteLegal"
       >
-        <option value="value1">Representante Legal</option>
-        <option value="value2" selected>Representante Legal</option>
-        <option value="value3">Representante Legal</option>
+        <option value="value1" >Cédula de Ciudadanía</option>
+        <option value="value2" >Cédula de Extranjería</option>
+        <option value="value3" >Pasaporte</option>
+        <option value="value4" >NUIP</option>
+        <option value="value4" >Documento Nacional de Identidad</option>
       </select>
       <label>Identificación del Representante Legal</label>
       <input
@@ -119,37 +124,13 @@
       <div class="selectDepar">
         <div class="select-value">
           <label>Departamento</label>
-          <select id ="selectDepartment" name="select" formControlName="departamento" onchange="setDepartments()">
+          <select id="selectDepartment" name="select" formControlName="departamento" (change)="setDepartments($event)">
           </select>
         </div>
         <div class="select-value">
           <label>Municipio</label>
-          <select name="select" formControlName="municipio">
-            <option value="value2" selected>Seleccione un municipio</option>
-            <option value="value1">BARRANQUILLA</option>
-            <option value="value2" >BARANOA</option>
-            <option value="value3">CAMPO DE LA CRUZ</option>
-            <option value="value2" >CANDELARIA</option>
-            <option value="value2" >GALAPA</option>
-            <option value="value2" >JUAN DE ACOSTA</option>
-            <option value="value2" >LURUACO</option>
-            <option value="value2" >MALAMBO</option>
-            <option value="value2" >MANATÍ</option>
-            <option value="value2" >PALMAR DE VARELA</option>
-            <option value="value2" >PIOJÓ</option>
-            <option value="value2" >PONEDERA</option>
-            <option value="value2" >PUERTO COLOMBIA</option>
-            <option value="value2" >REPELÓN</option>
-            <option value="value2" >SABANAGRANDE</option>
-            <option value="value2" >SABANALARGA</option>
-            <option value="value2" >SANTA LUCÍA</option>
-            <option value="value2" >SANTO TOMÁS</option>
-            <option value="value2" >SOLEDAD</option>
-            <option value="value2" >SUAN</option>
-            <option value="value2" >TUBARÁ</option>
-            <option value="value2" >USIACURÍ</option>
-
-
+          <select id="selectMunicipality" name="select" formControlName="municipio">
+            <option value="value1" selected>Seleccione un municipio</option>
           </select>
         </div>
       </div>

@@ -129,7 +129,7 @@ input.ng-invalid.ng-touched {
     border-radius: 10px;
   }
 
-  input.ng-valid{
+  input.ng-valid,select.ng-valid{
     border: solid 2px #068460 !important;
     border-radius: 10px;
   }

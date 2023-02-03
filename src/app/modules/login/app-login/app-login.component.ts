@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import {FormGroup, FormControl, Validators, FormBuilder} from '@angular/forms'
 import { ApiService } from 'src/app/servicios/api/api.service';
 import { LoginI } from '../../../models/loginInterface';
@@ -17,6 +17,7 @@ import { saveDataLogin } from 'src/app/state/action/example.action';
   styleUrls: ['./app-login.component.css']
 })
 export class AppLoginComponent implements OnInit {
+  arrResult:any;
   usuario = { registroNacionalDeTurismo: '', pass: '',correo:'' };
   public loginForm!: FormGroup;  
   private emailPattern: any = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -32,7 +33,8 @@ export class AppLoginComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-
+    //limpia el storage
+    localStorage.removeItem('normaSelected')
     this.loginForm = this.formBuilder.group({
       correo: ['', Validators.compose([
         Validators.pattern(this.emailPattern),
@@ -82,32 +84,50 @@ export class AppLoginComponent implements OnInit {
   //   }
 
 
-    //Mel guardado en local storage localStorage.setItem('usuario',data)
+  //Mel guardado en local storage localStorage.setItem('usuario',data)
  onLogin(){
   this.usuario.registroNacionalDeTurismo = this.loginForm.get('registroNacionalDeTurismo')?.value;
   this.usuario.pass = this.loginForm.get('pass')?.value;
+  console.log('/dashboard');
   this.ApiService.login(this.usuario)
   .subscribe((data: any) => {
-  //console.log('mensaje', data)
+
   this.store.dispatch(saveDataLogin({request:data}));
-  localStorage.setItem('rol',data.permisoUsuario[0].item)
+  localStorage.setItem('rol',data.permisoUsuario[0]?.item || 1)
+
   localStorage.setItem('access',data.TokenAcceso)
   localStorage.setItem('refresh',data.TokenRefresco)
-  this.router.navigate(['/dashboard']);
+  console.log(data,'dataaaaaaa');
+    this.ApiService.getNorma(data.IdUsuarioPst)
+    .subscribe((data:any)=>{
+      console.log(data,"datanueva")
+        console.log(data,'data');
+        if(data[0].idCategoriarnt === 5 ||data[0].idCategoriarnt === 2){
+          this.arrResult = data;//remplazar arriba
+          localStorage.setItem('norma',JSON.stringify(this.arrResult))
+          const modalInicial = document.querySelector("#modal-inicial") as HTMLElement;
+          modalInicial.style.display = "block";
+        }else{
+          this.arrResult = data;
+          localStorage.setItem('norma',JSON.stringify(this.arrResult))
+          localStorage.setItem("normaSelected",data[0].norma);
+          this.router.navigate(['/dashboard']);
+        }
+    
+      //data.idCategoriaRnt=5;//prueba
+      
+    })
+ 
+  //   if (data.TokenAcceso) {
+  //     // Login successful, redirect to homepage
+  //     this.router.navigate(['/dashboard']);
+  //   } else {
+  //     // Login failed, show error message
+  //     console.log('Invalid email or password');
+  //     const messageElement = document.querySelector("#message") as HTMLElement;
+  //     messageElement.innerText = "El correo o el password es inválido";
+  //   }
   })
 }
-   
-  // loginApi(form: LoginI){
-  //   this.api.login(form)
-  //   .subscribe(data => {
-  //     console.log(data)
-  //   })
-  // }
-   
-  // loginApi(form: LoginI){
-  //   this.api.login(form)
-  //   .subscribe(data => {
-  //     console.log(data)
-  //   })
-  // }
+  
 }

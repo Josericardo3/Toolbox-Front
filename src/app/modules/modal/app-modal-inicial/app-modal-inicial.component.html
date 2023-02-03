@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>modal</title>
+  </head>
+  <body>
+    <div class="modal-background" id="modal-inicial" *ngIf="isOpen">
+      <div class="modal-content">
+        <div class="modal-title">
+          <p class="text">Seleccionar Norma</p>
+          <button class="modal-btn" (click)="closeModal()">X</button>
+        </div>
+        <table>
+          <thead>
+            <tr class="class-norma text text-justify">
+              <ng-container>
+                <th class="text"
+                  *ngFor="let element of data"
+                  id="{{ element.norma }}"
+                  style="width: 400px; margin: 6px 6px 6px 6px"
+                  (click)="linkToDashboard($event)"
+                >
+                  {{ element.norma }}
+                </th>
+              </ng-container>
+            </tr>
+          </thead>
+        </table>
+      </div>
+    </div>
+    <!-- <div class="container1" id="modal-inicial">
+      <div class="container-norma container2">
+        <table>
+          seleccionar norma
+        </table>
+       
+      </div>
+    </div> -->
+  </body>
+</html>

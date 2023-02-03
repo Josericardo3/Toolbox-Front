@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-app-diagnostico',
@@ -7,9 +10,47 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AppDiagnosticoComponent implements OnInit {
 
-  constructor() { }
+  formParent!: FormGroup;
+  datos: any = [];
+
+  constructor(
+    private formBuilder: FormBuilder,
+    private http: HttpClient,
+    private router: Router,
+  ) { 
+    this.formParent = new FormGroup({});
+  }
 
   ngOnInit(): void {
+    this.http.get('assets/datos.json')
+    .subscribe((data: any) => {
+      this.datos = data;
+      console.log(data);
+      this.datos.campos.forEach((campo:any) => {
+        if(campo.values !== null){
+          this.formParent.addControl(campo.campo_local, new FormControl({value: campo.values, disabled: true}, Validators.required))
+        }else{
+          this.formParent.addControl(campo.campo_local, new FormControl('', Validators.required))
+        }
+      });
+  });
+  }
+
+  getControlType(campo: any) {
+    switch (campo.tipodedato) {
+      case 'string':
+        return new FormControl(campo.values);
+      case 'radio':
+        return new FormControl(campo.values);
+      case 'textarea':
+        return new FormControl(campo.values);
+      default:
+        return new FormControl('');
+    }
+  }
+
+  saveForm(){
+    console.log('guardar formulario');
   }
 
 }

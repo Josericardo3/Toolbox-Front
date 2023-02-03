@@ -1,10 +1,12 @@
+<ng-container *ngIf="arrResult?.length>0"
+><app-app-modal-inicial></app-app-modal-inicial></ng-container>
+
 <div id="loginContainer" class="loginContainer">
     <img src='../../../../assets/imagenes/fondo.png' class="img">
     <div class="login">
         <h1>Inicio de sesión</h1>
-
         <!-- <form class="formBody" [formGroup] = "loginForm" (ngSubmit)="onLogin(loginForm.value)"> -->
-        <form class="formBody" [formGroup] = "loginForm" (ngSubmit)="onLogin()">
+        <form class="formBody" [formGroup] = "loginForm">
             <label for="correo">Correo*</label>
             <input type="text" formControlName="correo" placeholder="correo@email.com">
             <label class="textDanger" *ngIf="loginForm.controls['correo'].hasError('pattern')">
@@ -40,7 +42,8 @@
                         Debe contener 1 caracter especial.
                     </label>
                 </div>
-             <button type="submit" class="btn" [disabled]="loginForm.invalid">Ingresar</button>    <!--M routerLink="/dashboard" routerLinkActive="activebutton" -->
+                <p id="message" style="color: red;"></p>
+             <button type="submit" class="btn" [disabled]="loginForm.invalid" (click)="onLogin()">Ingresar</button>    <!--M routerLink="/dashboard" routerLinkActive="activebutton" -->
             <p class="p">¿Olvidó su contraseña? <a routerLink="" routerLinkActive="activebutton">Ingrese aquí</a></p>
             <p class="p">¿No tienes una cuenta? <a routerLink="/register" routerLinkActive="activebutton">Registrarse como prestador</a></p>
         </form>
