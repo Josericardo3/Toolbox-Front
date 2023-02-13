@@ -86,3 +86,16 @@ font-weight: bold;
 .text{
     font-size: 20.8px;
 }
+
+@media only screen and (max-width: 480px) {
+    .govco-portales-contenedor {
+        display: grid;
+        grid-template-columns: none;
+        grid-gap: 8px;
+        gap: 8px;
+        padding: 40px 16px; 
+    }
+
+    .govco-separator-rows{
+        border-left: 0px;
+  }}

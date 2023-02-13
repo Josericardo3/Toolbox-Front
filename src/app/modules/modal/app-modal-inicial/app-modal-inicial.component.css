@@ -2,25 +2,6 @@ p{
     margin: 10px 10px 10px 10px;
 }
 
-/* .container{
-  display: flex;
-  border-radius: 10px;
-  border-color: black;
-  width: 448px;
-  height: 302px;
-  background: white;
-  align-items: center;
-  justify-content: space-around;
-  border-width: 1px;
-  border-style: solid;
-  border-color: black;
-  position: fixed;
-  top: 40%;
-  margin: -32px 27px 10px 455px;
-  overflow: auto;
-  display: block;
-} */
-
 .modal-background {
   background-color: rgba(0, 0, 0, 0.5);
   position: fixed;
@@ -54,9 +35,17 @@ p{
   border: 1px solid white;
   border-radius: 5px;
   color: white;
-  padding: 0px 14px
+  padding: 0px 14px;
+  cursor: pointer;
 }
-
+.modal-btn:hover{
+  border: 1px solid #0C9D74;
+  color: #0C9D74;
+  background: white;
+}
+.pointer{
+  cursor: pointer; 
+}
 .text{
   color: white;
   font-size: 16px;
@@ -79,7 +68,10 @@ p{
     font-family: 'Work Sans', sans-serif;
     margin: 7px 13px 10px 0px;
 }
-
+.dinamic:hover{
+   background-color:white;
+   color: #068460;
+}
 .class-norma{
     display: flex;
     justify-content: center;
@@ -107,7 +99,6 @@ thead th:nth-child(1){
   
   table{
     background: #0c9d74;
-    width: 400px;
     height: 38px;
     padding: 5px;
     border-radius: 10px;
@@ -121,4 +112,13 @@ thead th:nth-child(1){
     border-style: solid;
     width: 376px;
     display: flex;
+  }
+
+  @media only screen and (max-width: 480px) {
+    .dinamic{
+      width: 200px !important;
+    }
+    .table{
+      width: 200px !important;
+    }
   }

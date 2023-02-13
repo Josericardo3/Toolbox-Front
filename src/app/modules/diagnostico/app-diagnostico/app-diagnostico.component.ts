@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
+import { FormGroup, FormArray, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
+import pdfMake from 'pdfmake/build/pdfmake';
+import pdfFonts from 'pdfmake/build/vfs_fonts';
+pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 @Component({
   selector: 'app-app-diagnostico',
@@ -14,7 +17,7 @@ export class AppDiagnosticoComponent implements OnInit {
   datos: any = [];
 
   constructor(
-    private formBuilder: FormBuilder,
+    private fb: FormBuilder,
     private http: HttpClient,
     private router: Router,
   ) { 
@@ -22,10 +25,14 @@ export class AppDiagnosticoComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.http.get('assets/datos.json')
+
+    this.formParent = this.fb.group({
+      campos: this.fb.array([])
+    });
+
+    this.http.get('https://www.toolbox.somee.com/api/Usuario/Diagnostico/5')
     .subscribe((data: any) => {
       this.datos = data;
-      console.log(data);
       this.datos.campos.forEach((campo:any) => {
         if(campo.values !== null){
           this.formParent.addControl(campo.campo_local, new FormControl({value: campo.values, disabled: true}, Validators.required))
@@ -36,6 +43,21 @@ export class AppDiagnosticoComponent implements OnInit {
   });
   }
 
+  addCampo(numeralprincipal: string, numeralespecifico: string, titulo: string, requisito: string) {
+    const campo = this.fb.group({
+      numeralprincipal: [numeralprincipal, Validators.required],
+      numeralespecifico: [numeralespecifico, Validators.required],
+      titulo: [titulo, Validators.required],
+      requisito: [requisito, Validators.required]
+    });
+  
+    this.campos.push(campo);
+  }
+
+  get campos() {
+    return this.formParent.get('campos') as FormArray;
+  }
+  
   getControlType(campo: any) {
     switch (campo.tipodedato) {
       case 'string':
@@ -48,6 +70,29 @@ export class AppDiagnosticoComponent implements OnInit {
         return new FormControl('');
     }
   }
+
+  generatePDF() {
+    const formData = this.formParent.value;
+    const tableData = [  ['Nombre', 'Apellido', 'Edad'],
+                         ['Juan', 'Pérez', 30],
+                         ['María', 'Rodríguez', 25],
+                      ];
+    const docDefinition = {
+      content: [
+        {
+          table: {
+            headerRows: 1,
+            widths: [100, '*', 100],
+            body: tableData
+          }
+        }
+      ]
+    };
+
+    pdfMake.createPdf(docDefinition).download();
+
+  }
+  
 
   saveForm(){
     console.log('guardar formulario');

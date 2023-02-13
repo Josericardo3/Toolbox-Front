@@ -2,10 +2,11 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { ApiService } from 'src/app/servicios/api/api.service';
-import 'core-js/es/object';
+// import 'core-js/es/object';
 import { ApiServiceService } from 'src/app/servicios/apiServiceForm/api-form-service.service';
 import { FormServiceService } from 'src/app/servicios/formService/form-service.service';
 import { Router } from '@angular/router';
+import { Categoria } from '../../../utils/constants';
 
 @Component({
   selector: 'app-app-caracterizacion',
@@ -21,9 +22,7 @@ export class AppCaracterizacionComponent implements OnInit {
 
   formParent!: FormGroup;
   datos: any = [];
-  formService = {
-    id: ''
-  }
+
   dataSelect!: any[];
   dataOption!: any[];
   dataNorma!: any[];
@@ -35,6 +34,9 @@ export class AppCaracterizacionComponent implements OnInit {
   // public checkboxStates: boolean[] = [];
   mostrarInput = false;
   idCaracterizacionDinamicaCondicion!: any;
+  
+  private emailPattern: any = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  private webPattern: any = /^(http:\/\/www\.|http:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -47,32 +49,28 @@ export class AppCaracterizacionComponent implements OnInit {
       // this.formParent = new FormGroup({});
       this.formParent = this.formBuilder.group({});
 }
-    
+
   
   ngOnInit(): void {
     // this.http.get('http://10.4.3.140:8050/api/Usuario/caracterizacion/1')
-    // this.apiForm.getData(this.formService)
-    this.http.get('https://www.toolbox.somee.com/api/Usuario/caracterizacion/1')
+    this.ApiService.getData(1) //para obtener datos de la api
+    // this.http.get('https://www.toolbox.somee.com/api/Usuario/caracterizacion/1')
     // this.http.get('assets/datos.json')
     .subscribe((data: any) => {
       this.datos = data;
-      console.log(data);
       this.datos.campos.forEach((campo:any) => {
         if(campo.values !== null){
           this.formParent.addControl(campo.campo_local, new FormControl({value: campo.values, disabled: true}))
         }else{
-          this.formParent.addControl(campo.campo_local, new FormControl('', [Validators.required]))
+          this.formParent.addControl(campo.campo_local, new FormControl('', [Validators.required]))          
         }
       });
       this.createFormControls();
+
       // this.formValidator();
+
   });
 
-  // let id = this.findCondicionId();
-  //   if (id) {
-  //     this.showDependency = this.datos.campos.dependiente === id;
-  //   }
-  
     //EJEMPLO01
     // this.initFormParent();
     
@@ -88,60 +86,7 @@ export class AppCaracterizacionComponent implements OnInit {
     // });
 }
 
-// private findCondicionId(): number {
-//   let condicion = this.datos.campos.find((x:any) => x.mensaje === 'condicion');
-//   return condicion ? condicion.idcaracterizaciondinamica : null;
-// }
 
-// formValidator = (form: FormGroup | any) => {
-//   const controls = form.controls;
-//   const keys = Object.keys(controls);
-//   for (const key of keys) {
-//     if (!controls[key].value) {
-//       return { fieldsNotCompleted: true };
-//     }
-//   }
-//   return null;
-// };
-
-// formValidator(){
-//   this.formParent.valueChanges
-//   .subscribe(() => {
-//     let isValid = true;
-//     for (let key in this.formParent.controls) {
-//       if (this.formParent.controls[key].invalid) {
-//         isValid = false;
-//       }
-//     }
-//     this.formParent.updateValueAndValidity();
-//     if (isValid) {
-//       // habilitar botón
-//       console.log('habilitar botón');
-//     } else {
-//       // deshabilitar botón
-//       console.log('deshabilitar botón');
-//     }
-//   });
-// }
-
-// handleRadioClick(value:any) {
-//   if (value === 16) {
-//     this.isDependentVisible = true;
-//   } else {
-//     this.isDependentVisible = false;
-//   }
-// }
-// showDependency: boolean | string | null= false;
-
-
-
-// onChange(idcaracterizaciondinamica: string, event: any) {
-//   if (event.target.value === 'true') {
-//     this.showDependency = idcaracterizaciondinamica;
-//   } else {
-//     this.showDependency = false;
-//   }
-// }
 
 createFormControls() {
   for (let campo of this.datos.campos) {
@@ -156,7 +101,6 @@ createFormControls() {
     if(campo.tipodedato === "option"){
       this.dataOption = campo.desplegable
       .filter((campo: { desplegable: string; }) => campo.desplegable !== '{}' && campo.desplegable !== '')
-      // .flatMap((campo: { desplegable: any; }) => this.getOption(campo.desplegable))
       .flatMap((campo: { desplegable: any; }) => this.getOption(campo.desplegable))
       .reduce((prev: any, next: any) => prev.concat(next), []);
       console.log(campo.desplegable)
@@ -218,36 +162,105 @@ getControlType(campo: any) {
       return new FormControl('');
   }
 }
+valoresForm: any = {};
+capturarValor(id: string | number, valor: any) {
+  this.valoresForm[id] = valor;
+  console.log(this.valoresForm[id], 'capturar valor')
+}
 
+hasDepency(id: number) {
+  const campos = this.datos.campos;
+  const dictionay = new Map(campos.map(d => [d.idcaracterizaciondinamica, d]));
+  return dictionay.has(+id);
+}
+// saveForm(){
+   //melissa prueba
+//    const values = this.datos.campos.forEach((dato: any) => {
+//    console.log(this.formParent.get('categoriarnt')?.value,"campo prueba")
+//     if(dato.values !== null){
+//       console.log(dato,"dato nuevo",this.formParent)
+//       console.log(dato.campo_local)
+//       this.formParent.get(dato.campo_local)?.value
+//     } 
+//     });
   
+//     const request={
+//       categoria:values,
+//     }
+
+// console.log(request,"este es el request")
+
+// }
+  numOfFields!: number;
+// saveForm(request:FormGroup){
+  saveForm(){
+    this.ApiService.saveData(this.valoresForm)
+    .subscribe((data: any) => {
+      console.log(data, 'new data')
+     
+    })
 
 
-saveButtonDisabled = true;
-saveForm(){
-       this.router.navigate(['/dashboard']);
-   // this.datos.campos.forEach((campo:any) => {
-   //   if(this.formParent.get(campo)?.valid){
-   //     //el boton debe activarse
-   //     this.formParent.statusChanges.subscribe(status => {
-   //       // this.saveButtonDisabled = status === 'INVALID';
-   //       console.log("El campo name esta completo", status);
-   //     });
-   //   }else{
-   //    //bloqueado
-   //    this.formParent.statusChanges.subscribe(status => {
-   //     // this.saveButtonDisabled = status === 'VALID';
-   //     console.log("El campo name esta vacio", status);
-   //   });
-   //   }
-   // });
-   console.log('/dashboard');
-     this.apiForm.submitForm(this.formService)
-     .subscribe((response) => {
-       console.log(response);
-     }, (error) => {
-       console.log(error);
-     });
-     // this.formServiceService.addFormData(this.formService)
+    // const datos = {
+    //   valorInput: this.valorInput,
+    //   valorSelect: this.valorSelect
+    // };
+    // this.ApiService.saveData(this.valoresForm)
+    // .subscribe((data: any) => {
+    //   console.log(data, 'new data')
+    //   if (data.statusCode === 201) {
+    //     this.router.navigate(['/dashboard'])
+    //   }
+    // })
+
+
+
+
+
+
+
+    // const request = {
+    //   number: this.formParent.get('campo.campo_local')?.value,
+    //   local_reference_id: this.formParent.get('campo.campo_local')?.value,
+    //   string: this.formParent.get('campo.campo_local')?.value,
+    // }
+    // return this.ApiService.saveData(request)
+    // .subscribe((data: any) => {
+    //   console.log(data, 'new data')
+    //   if (data.statusCode === 201) {
+    //     this.router.navigate(['/dashboard'])
+    //   }
+    // })
+
+//     if (this.formParent && this.formParent.controls) {
+//       for (let i = 0; i < this.numOfFields; i++) {
+//   this.formParent.get(`campo-${i}`).valueChanges.subscribe(value => {
+//     console.log(value);
+//   });
+// }
+//     }
+    
+  // const request = {formparent: this.formParent}
+  // return this.ApiService.saveData(request)
+  // .subscribe((data: any) => {
+  //   console.log(data, 'new data')
+  //   if (data.statusCode === 201) {
+  //     this.router.navigate(['/dashboard'])
+  //   }
+  // })
+
+
+
+  // const formData = request.value
+  
+  //   this.ApiService.saveData(formData)
+  //   .subscribe((response:any) => {
+  //     console.log(response)
+  //     if (response.statusCode === 201) {
+  //           this.router.navigate(['/dashboard'])
+  //         }
+  //   })
+
 }
 
   //--------------EJEMPLO1--------------------
@@ -273,40 +286,6 @@ saveForm(){
 
   // //addSkill usa intiFormSkill. Agrega el formulario al hacer clic en el boton
   // // addSkills(){ }
-
-  // getSelect(){
-  //   this.dataSelect = this.datos.campos
-  //   .filter((campo: { relations: string; }) => campo.relations !== '{}' && campo.relations !== '')
-  //   .flatMap((campo: { relations: any; }) => this.getTable(campo.relations))
-  //   .reduce((prev: any, next: any) => prev.concat(next), []);
-
-  //   // this.dataSelect = _.compact(this.datos.campos
-  //     // .filter((campo: { relations: string; }) => campo.relations && JSON.parse(campo.relations))
-  //     // .flatMap((campo: { relations: string; }) => this.getTable(JSON.parse(campo.relations)));
-
-  // //   this.dataSelect = this.datos.campos
-  // // .filter((campo: { relations: string; }) => campo.relations && JSON.parse(campo.relations))
-  // // .flatMap((campo: { relations: string; }) => this.getTable(JSON.parse(campo.relations)))
-  // // .filter((elem: any) => elem);
-
-  // //   this.dataSelect = this.datos.campos
-  // // .filter((campo: any) => campo.relations && JSON.parse(campo.relations))
-  // // .flatMap((campo: any) => this.getTable(JSON.parse(campo.relations)));
-
-  // }
-
-
-  // showInputField = '';
-
-  // showInput(value: string) {
-  //   if (value === 'OTRO') {
-  //     this.showInputField = value;
-  //   } else {
-  //     this.showInputField = '';
-  //   }
-  // }
-
-
 
   // getCtrl(key: string, form: FormGroup): any{
   //   return form.get(key);

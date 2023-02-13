@@ -13,16 +13,12 @@ data= JSON.parse(localStorage.getItem('norma') || '');
   constructor(
     private router: Router,
   ) {
-
-    console.log(localStorage.getItem('norma'),"nuevanorma")
    }
 
   ngOnInit(): void {
-   
   }
 
   linkToDashboard(evt:any){
-    console.log(evt.target);
     localStorage.setItem("normaSelected", evt.target.id);
     setTimeout(() => {
       this.router.navigate(['/dashboard']); 

@@ -13,14 +13,14 @@
           <p class="text">Seleccionar Norma</p>
           <button class="modal-btn" (click)="closeModal()">X</button>
         </div>
-        <table>
+        <table class="table">
           <thead>
-            <tr class="class-norma text text-justify">
+            <tr class="class-norma text text-justify pointer ">
               <ng-container>
-                <th class="text"
+                <th class="text dinamic"
                   *ngFor="let element of data"
                   id="{{ element.norma }}"
-                  style="width: 400px; margin: 6px 6px 6px 6px"
+                  style="width: 350px; margin: 6px 6px 6px 6px"
                   (click)="linkToDashboard($event)"
                 >
                   {{ element.norma }}
@@ -31,13 +31,5 @@
         </table>
       </div>
     </div>
-    <!-- <div class="container1" id="modal-inicial">
-      <div class="container-norma container2">
-        <table>
-          seleccionar norma
-        </table>
-       
-      </div>
-    </div> -->
   </body>
 </html>

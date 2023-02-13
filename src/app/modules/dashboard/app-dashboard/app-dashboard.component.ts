@@ -18,12 +18,13 @@ export class AppDashboardComponent implements OnInit {
   //PG counter$: Observable<any>;
   arrNormas = JSON.parse(localStorage.getItem('norma')||'');
   normaSelected = localStorage.getItem("normaSelected");
-  userRol = localStorage.getItem('rol')
+  userRol = localStorage.getItem('rol');
+  newUser= localStorage.getItem("newUser");
   rolList = [
     {
       // colaborador
       rol: '1',
-      view: ['caracterizacion', 'diagnostico'],
+      view: ['caracterizacion','diagnostico'],
     },
     {
       rol: 'ADMIN',
@@ -34,10 +35,9 @@ export class AppDashboardComponent implements OnInit {
     //PG private store: Store<{ initialState:any }>,
     private router: Router,
   ) {
+ 
     //PG this.counter$= store.select('initialState')
     // console.log(this.counter$,'counter')
-    console.log(localStorage.getItem('norma'));
-    console.log(this.arrNormas,'arrayde normas lol');
   }
 
   ngOnInit(): void {
@@ -57,7 +57,6 @@ export class AppDashboardComponent implements OnInit {
       if (this.validateRol(evt)) {// condicional cuando sí tiene acceso
         evt.target.src='../../../../assets/img-dashboard/'+evt.target.alt+'-3.svg'; 
         this.router.navigate(['/' + evt.target.alt])
-        console.log('aqui esta la prueba', evt.target.style)
     }  
   }
 
@@ -68,7 +67,6 @@ export class AppDashboardComponent implements OnInit {
       if (p){
         p.style.color="#068460";
       }
-      console.log("onbluer")
     }
   }
 
@@ -79,7 +77,6 @@ export class AppDashboardComponent implements OnInit {
       if (p){
         p.style.color="#999999";
       }
-      console.log("onbluer")
     }
   }
   Logo(){

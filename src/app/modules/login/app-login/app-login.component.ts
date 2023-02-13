@@ -8,6 +8,7 @@ import { CustomValidators } from '../../../models/customeValidator';
 import { ResponseI } from 'src/app/models/responseInterface';
 import { Store } from '@ngrx/store';
 import { saveDataLogin } from 'src/app/state/action/example.action';
+import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 //PG import { TokenStorageService } from '../../../servicios/token/token-storage.service';
 
 
@@ -20,6 +21,7 @@ export class AppLoginComponent implements OnInit {
   arrResult:any;
   usuario = { registroNacionalDeTurismo: '', pass: '',correo:'' };
   public loginForm!: FormGroup;  
+  errorMessage!: string;
   private emailPattern: any = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
   constructor(
@@ -86,22 +88,29 @@ export class AppLoginComponent implements OnInit {
 
   //Mel guardado en local storage localStorage.setItem('usuario',data)
  onLogin(){
+  console.log('onLogin')
+  this.usuario.correo = this.loginForm.get('correo')?.value;
   this.usuario.registroNacionalDeTurismo = this.loginForm.get('registroNacionalDeTurismo')?.value;
   this.usuario.pass = this.loginForm.get('pass')?.value;
-  console.log('/dashboard');
+  console.log(this.usuario.registroNacionalDeTurismo, this.usuario.pass)
+  //jalar el valor del correo
   this.ApiService.login(this.usuario)
   .subscribe((data: any) => {
+    console.log(data)   
+      this.store.dispatch(saveDataLogin({request:data}));
+      localStorage.setItem('rol',data.permisoUsuario[0]?.item || 1)
+      localStorage.setItem('access',data.TokenAcceso)
+      localStorage.setItem('refresh',data.TokenRefresco)
+     
+      // Login successful, redirect to homepage
+      this.router.navigate(['/dashboard']);
+      console.log('ingresó al dash')
+    
 
-  this.store.dispatch(saveDataLogin({request:data}));
-  localStorage.setItem('rol',data.permisoUsuario[0]?.item || 1)
+    console.log(data,'dataaaaaaa');
 
-  localStorage.setItem('access',data.TokenAcceso)
-  localStorage.setItem('refresh',data.TokenRefresco)
-  console.log(data,'dataaaaaaa');
     this.ApiService.getNorma(data.IdUsuarioPst)
     .subscribe((data:any)=>{
-      console.log(data,"datanueva")
-        console.log(data,'data');
         if(data[0].idCategoriarnt === 5 ||data[0].idCategoriarnt === 2){
           this.arrResult = data;//remplazar arriba
           localStorage.setItem('norma',JSON.stringify(this.arrResult))
@@ -114,20 +123,16 @@ export class AppLoginComponent implements OnInit {
           this.router.navigate(['/dashboard']);
         }
     
-      //data.idCategoriaRnt=5;//prueba
+    //   //data.idCategoriaRnt=5;//prueba
       
     })
- 
-  //   if (data.TokenAcceso) {
-  //     // Login successful, redirect to homepage
-  //     this.router.navigate(['/dashboard']);
-  //   } else {
-  //     // Login failed, show error message
-  //     console.log('Invalid email or password');
-  //     const messageElement = document.querySelector("#message") as HTMLElement;
-  //     messageElement.innerText = "El correo o el password es inválido";
-  //   }
-  })
+  }, 
+  (e: HttpErrorResponse) => {
+    e.status
+    console.log('no hay correo o pass')
+    this.errorMessage = "Correo o contraseña inválidos";
+  }
+  )
 }
   
 }

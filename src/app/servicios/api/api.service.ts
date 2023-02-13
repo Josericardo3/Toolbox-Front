@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http'
+import { HttpClient, HttpHeaders, HttpResponse, HttpErrorResponse } from '@angular/common/http'
 import { Injectable } from '@angular/core'
 import { Observable } from 'rxjs'
 import { environment } from 'src/environments/environment.prod'
@@ -30,14 +30,15 @@ export class ApiService {
   constructor(private http: HttpClient) {}
 
   login(form: LoginI): Observable<ResponseI> {
-    const { registroNacionalDeTurismo, pass } = form
+    const { registroNacionalDeTurismo, pass, correo } = form
     const refresh = localStorage.getItem('refresh');
     const headers = { 'Content-Type': 'application/json', 'tokenAccess': refresh || 'falta token' };
-    let direccion = `${this.apiURL}/api/Usuario/LoginUsuario?usuario=${registroNacionalDeTurismo}&Password=${pass}`
+    let direccion = `${this.apiURL}/api/Usuario/LoginUsuario?usuario=${registroNacionalDeTurismo}&Password=${pass}&correo=${correo}`
     return this.http.post<any>(
       direccion, 
-      { registroNacionalDeTurismo, pass },
-      {headers}
+      {observe: "response"}
+      // { registroNacionalDeTurismo, pass },
+      // {headers}
       )
   }
   
@@ -61,6 +62,20 @@ export class ApiService {
     let norma = `${this.apiURL}/api/Usuario/SelectorDeNorma?id=${idCategoria}`
     return this.http.get<any>(norma, idCategoria)
   }
+
+  //para obtener la data de caracterizacion
+  getData(id: any): Observable<any> {
+   
+    let caracterizacion = `${this.apiURL}/api/Usuario/caracterizacion/${id}`
+    return this.http.get<any>(caracterizacion, id)
+  }
+
+  //para guardar caracterizacion en la BD
+  saveData(request: any): Observable<any> {
+    let caracterizacion = `${this.apiURL}/api/Usuario/caracterizacion/respuesta`
+    return this.http.post<any>(caracterizacion, request)
+  }
+  
 }
   
 

@@ -1,11 +1,28 @@
 
+.registre{
+    width: 60vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
  .registerContainer{
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    margin: 77px;
+    /* margin: 77px; */
+    margin: 15px;
+    
  }
+ .registro{
+    width: 100%;
+  }
+.margin-div{
+    margin-left: 10px;
+}
+  .padding-label{
+    padding-left: 4px;
+  }
  .register{
     display: flex;
     flex-direction: column;
@@ -22,6 +39,7 @@
     flex-direction: column;
     justify-content: center;
     margin: 17px;
+    align-items: center;
  }
 
  .formRegister input, select{ 
@@ -31,11 +49,14 @@
     height: 40px;
     width: 754px;
     margin: 2px;
+    font-family: 'Work Sans', sans-serif;
+    font-size: 14px;
 }
 
 select{
-    width: 365px !important;
+    width: 100% !important;
 }
+
 
 .formRegister label {
     margin-bottom: 5px;
@@ -55,11 +76,13 @@ h1{
  }
  
  .label {
-    margin-bottom: 5px;
+    margin: 10px 0;
     font-family: 'Work Sans', sans-serif;
     font-size: 16px;
     color: #474749;
+    margin: 5px 0 15px 0;
 }
+
 
 
 input{
@@ -115,7 +138,7 @@ input{
 }
 
 .formRegister label, .control-error{
-    margin: 5px 0 8px 0;
+    /* margin: 5px 0 8px 0; */
     font-family: 'Work Sans', sans-serif;
     font-size: 16px;
     color: #474749;
@@ -135,29 +158,35 @@ input.ng-invalid.ng-touched {
   }
 
   .formRegister input{
-    margin: 3px 0 8px 0;
+    /* margin: 3px 0 8px 0; */
     background: #FFFFFF;
     border: 1px solid #000000;
     border-radius: 10px;
-    height: 40px;
-    width: 754px;
+    margin: 5px 0 15px 0;
+    /* height: 40px; */
+    width: 100%;
     padding: 5px;
 }
 
 .selectDepar{
     display: flex;
     flex-direction:row;
-    width: 754px;
+    align-items: center;
+    width: 100%;
+    justify-content: space-between;
+    padding-bottom: 16px;
 }
 
+
 .select-value{
+    width: 50%;
     flex-direction:column;   
 }
 
 .contraseña{
     display: flex;
-    flex-direction:row;
-    width: 754px; 
+    flex-direction:column;
+    width: 100%; 
     justify-content: space-between;
 }
 
@@ -166,7 +195,7 @@ input.ng-invalid.ng-touched {
 }
 
 .passC{
-    width: 365px !important; 
+    width: 100% !important; 
 }
 
 .btn{
@@ -193,7 +222,7 @@ input.ng-invalid.ng-touched {
 .checkbox-container{
     display: flex;
     flex-direction: row;
-    width: 754px;
+    width: 100%;
     justify-content:flex-start;
     column-gap: 12px;
     
@@ -213,7 +242,7 @@ input.ng-invalid.ng-touched {
 .button-container{
     display: flex;
     flex-direction:row;
-    width: 754px; 
+    width: 100%; 
     justify-content:center;
 }
 #modalTerminos{
@@ -289,10 +318,65 @@ input.ng-invalid.ng-touched {
 }
 
 .datos{
-    margin: 25px 5px 19px 146px !important;
+    margin: 25px 5px 19px 146px ;
 }
 
 .checkbox-datos{
     font-family:'Work Sans', sans-serif;
     font-size: 16px;
+}
+ @media(max-width: 480px) {
+     /* form{
+      width: 900px !important;
+    }  */
+     .selectDepar{
+        display: flex;
+        flex-direction:column;
+        align-items: stretch;
+    } 
+    #modalTerminos.active>.content-fluid{
+        width: 330px;
+        display: flex;
+        margin: 22% auto;
+        padding: 0px 16px;
+   }
+
+   .datos{
+    display: flex;
+    justify-content: space-around;
+    margin: 5px;
+}
+.terminos{
+    font-size: 14px;
+    margin: 10px;
+}
+a {
+    margin: 9px;
+    
+}
+.registre{
+    width: 90vw;
+
+ }
+
+ .select-margin{
+    padding-top: 16px;
+}
+
+.select-botton{
+    padding-bottom: 16px;
+}
+
+.padding-label{
+    padding-left: 0px;
+  }
+
+  .select-value{
+    width: 100%;
+ 
+}
+
+.margin-div{
+    margin-left: 0px;
+}
 }

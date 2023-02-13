@@ -17,7 +17,7 @@ import { Categoria } from '../../../utils/constants'
   styleUrls: ['./app-register.component.css'],
 })
 export class AppRegisterComponent implements OnInit {
-  //@ViewChild(DynamicHostDirective)
+  showModalSuccess:any
   data: any
   arrAgency: any
   public registerForm!: FormGroup
@@ -25,7 +25,6 @@ export class AppRegisterComponent implements OnInit {
   constructor(
     private router: Router,
     private formBuilder: FormBuilder,
-    //public dinamycHost: DynamicHostDirective,
     private ComponentFactoryResolver: ComponentFactoryResolver,
     private ApiService: ApiService,
     private categoria: Categoria,
@@ -33,9 +32,7 @@ export class AppRegisterComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    //console.log(this.store.select('dataLogin'), 'strore mensaje')
-    // this.categoria.name.tipo
-    console.log(this.categoria.name.tipo, 'tipo')
+    localStorage.removeItem("newUser")
     this.data = this.categoria.name.tipo
     this.setDepartments('')
     this.registerForm = this.formBuilder.group(
@@ -103,14 +100,17 @@ export class AppRegisterComponent implements OnInit {
   }
 
   onLoadCategory(evt: any) {
-    console.log(evt.target.options.selectedIndex, 'categoria valor')
-    console.log(this.data, 'data', this.categoria)
+    //console.log(evt.target.options.selectedIndex, 'categoria valor')
+    //console.log(this.data, 'data', this.categoria)
     const filterCategory = this.categoria.name.agencias.filter(
       (agency: { id: number; name: string }) =>
-        agency.id === evt.target.options.selectedIndex + 1,
+        agency.id === evt.target.options.selectedIndex
     )
-    this.arrAgency = filterCategory
-    console.log(this.registerForm, 'registronuevo')
+ 
+    this.arrAgency = filterCategory.sort();
+   
+    return this.arrAgency;
+    //console.log(this.registerForm, 'registronuevo')
     //console.log(filterCategory,"filtro")
   }
 
@@ -214,7 +214,7 @@ export class AppRegisterComponent implements OnInit {
 
   closeModal(evt: any) {
     evt.defaultPrevented
-    console.log(evt, 'evt')
+    // console.log(evt, 'evt')
     const modal = document.querySelector('#modalTerminos') as HTMLInputElement
     modal.classList.remove('active')
   }
@@ -260,12 +260,27 @@ export class AppRegisterComponent implements OnInit {
     }
     //console.log(request, 'newrequest')
     return this.ApiService.createUser(request).subscribe((data: any) => {
-      console.log(data, 'new data')
       if (data.statusCode === 201) {
-        this.router.navigate(['/dashboard'])
+        localStorage.setItem("newUser",'yes')
+        const modalInicial = document.querySelector("#modal-success") as HTMLElement;
+        modalInicial.style.display = "block";
+      setTimeout(() => {
+        this.router.navigate(['/dashboard']); 
+      }, 1000);
+    
+        //this.router.navigate(['/dashboard'])
       }
       // el servicio responde con 200 que todo se guardó
       //console.log(data, 'respuesta')
     })
+  }
+
+  change(evt:any){
+    const btnAceptar = document.querySelector('#btnAceptar') as HTMLInputElement
+    if(btnAceptar.getAttribute('disabled')===null){
+      return btnAceptar.setAttribute("disabled",'');
+    }else{
+      return btnAceptar.removeAttribute("disabled");
+    }
   }
 }

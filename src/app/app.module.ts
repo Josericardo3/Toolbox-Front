@@ -17,6 +17,7 @@ import { DirectivesModule } from './directives/directives.module';
 import { AppCaracterizacionComponent } from './modules/caracterizacion/app-caracterizacion/app-caracterizacion.component';
 import { AppDiagnosticoComponent } from './modules/diagnostico/app-diagnostico/app-diagnostico.component';
 import { AppModalInicialComponent } from './modules/modal/app-modal-inicial/app-modal-inicial.component';
+import { AppModalSuccessComponent } from './modules/modal-success/app-modal-success/app-modal-success.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import { AppModalInicialComponent } from './modules/modal/app-modal-inicial/app-
     AppCaracterizacionComponent,
     AppDiagnosticoComponent,
     AppModalInicialComponent,
+    AppModalSuccessComponent,
     
     
 

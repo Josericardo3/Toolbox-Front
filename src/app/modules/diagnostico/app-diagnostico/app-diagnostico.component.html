@@ -1,12 +1,38 @@
 <!-- <p>rol colaborador</p> -->
 <a href="../../../../assets//Politica-de-datos/POLITICA DE TRATAMIENTO DE DATOS  ISOLUCIONES.pdf"></a>
 <app-app-header></app-app-header>
+<!-- <form [formGroup]="formParent">
+  <h1>{{datos.tituloPrincipal}}</h1>
+  <div formArrayName="campos">
+    <div *ngFor="let campo of campos.controls; index as i">
+      <!-- <h3>{{campo.titulprincipal}}</h3> ----
+      <div [formGroupName]="i">
+        <p>Numeral Principal: {{campo.value.numeralprincipal}}</p>
+        <p>Numeral Específico: {{campo.value.numeralespecifico}}</p>
+        <p>Título: {{campo.value.titulo}}</p>
+        <p>Requisito: {{campo.value.requisito}}</p>
+      </div>
+    </div>
+  </div>
+</form> -->
 <form [formGroup]="formParent" class="controllerDiagnostico" (ngSubmit)="saveForm()">
-  <h1>Formulario de diagnóstico NTC - 6496</h1>
-  <h3>4. CONTEXTO DE LA ORGANIZACIÓN</h3>
-  <p>4.1. Cumplimiento de la legislación</p>
+  <h1>{{datos.tituloPrincipal}}</h1>
+  
     <div *ngFor="let campo of datos.campos" class="diagnostico">
-      
+      <h3>{{campo.tituloprincipal}}</h3>
+      <div *ngFor="let subcampo of campo.listacampos">
+        <h2>{{subcampo.titulo}}</h2>
+        <label>Numero principal</label>
+        <input type="text" [value]="subcampo.numeralprincipal">
+        <label>Numero específico</label>
+        <input type="text" [value]="subcampo.numeralespecifico">
+        <label>Titulo del requisito</label>
+        <input type="text" [value]="subcampo.titulo">
+        <label>*Requisito</label>
+        <textarea required type="text" [value]="subcampo.requisito" style="height: 200px"></textarea>
+        <label>*Posible evidencia</label>
+        <textarea required type="text" [value]="subcampo.nombre_evidencia" style="height: 200px"></textarea>
+      </div>
         <label>{{ campo.nombre }}</label>
         <div [ngSwitch]="campo.tipodedato">
 
@@ -24,9 +50,9 @@
           </div>
         </div> 
         
-      
+        
     </div>
    
-  <button type="submit" class="btn">Descargar documento</button>
+  <button type="submit" class="btn" (click)="generatePDF()">Descargar documento</button>
 </form>
 <app-app-footer></app-app-footer>

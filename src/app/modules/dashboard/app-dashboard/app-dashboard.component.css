@@ -7,6 +7,7 @@
     font-size: 48px;
     height: 48px;
     padding-right: 13px;
+    cursor: pointer;
   }
   
   .item-1:active{
@@ -14,7 +15,6 @@
   }
 
   .grid-img{
-
     justify-items: center;
     margin: 61px 110px 60px 110px;
     display: grid;
@@ -24,7 +24,9 @@
     gap: 12px;
     justify-content: center;
     align-content: center;
+    cursor: pointer;
   }
+
 .item-1{
   cursor: pointer;
 }
@@ -33,7 +35,8 @@
     font-size: 14px;
     display: flex;
     justify-content: end;
-    margin: 15px 50px 6px 26px !important
+    margin: 15px 50px 6px 26px !important;
+    cursor: pointer;
   }
 
   .button-cerrar:hover{
@@ -69,3 +72,19 @@ select{
   border-radius: 5px;
 }
 
+@media (max-width:480px) {
+  select{
+    width: 20px;
+  }
+
+  .grid-img{
+    margin: 61px 10px 60px 10px;
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .sub-titulo{
+     font-size: 14px;
+  }
+  
+
+}

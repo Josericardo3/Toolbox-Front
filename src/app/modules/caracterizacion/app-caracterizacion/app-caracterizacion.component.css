@@ -14,7 +14,7 @@ label{
     font-family: 'Work Sans', sans-serif;
     font-size: 16px;
     color: #474749;
-    margin: 5px 0 15px 0;
+    margin: 10px 0 15px 0;
 }
 .labelDependency{
   vertical-align:middle;
@@ -27,6 +27,16 @@ input, select{
     margin: 5px 0 15px 0;
     padding: 5px;
     width: 60vw;
+}
+option:hover{
+  background-color: #068460;
+    border: 2px solid #068460;;
+    border-radius: 20px;
+    height: 40px;
+    width: 60vw;
+    margin: 2px;
+    font-family: 'Work Sans', sans-serif;
+    font-size: 14px;
 }
 input[type=number]
   {
@@ -55,10 +65,10 @@ p{
 }
 .containerCheck,
 .containerRadio {
-  display: inline-block;
+  display: flex;
   flex-direction: column;
   align-items: center;
-  size: 100px;
+  /* size: 100px; */
 }
 .inputContainer {
     background: #FFFFFF;
@@ -94,6 +104,10 @@ div.radio{
     border: 2px solid #068460;
     margin: 10px 10px 10px 0 !important;
     cursor: pointer;
+  }
+  input[type=checkbox].label
+  {
+    margin: 40px 10px 10px 0 !important;
   }
   div.check input[type=checkbox]:checked::before
   {

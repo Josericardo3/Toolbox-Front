@@ -12,7 +12,7 @@ export class AppMyExampleComponent {
  
     constructor(private store: Store<{ count: number }>) {
       this.count$ = store.select('count');
-      console.log(this.count$,"count")
+
     }
    
     // increment() {

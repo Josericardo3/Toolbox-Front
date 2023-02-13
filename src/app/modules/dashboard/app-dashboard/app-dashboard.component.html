@@ -13,11 +13,11 @@
  <!-- <div class="logo-escudo">
  <img src="../../../../assets/img-dashboard/logo.svg" alt="" (click)="Logo()"> 
  </div> -->
- <div class="container-norma">
+ <div class="container-norma" *ngIf="!newUser">
     <div class="norma-opcion">
-      <select name="select" >    
+      <select name="select" *ngIf="arrNormas.length > 0"   >    
         <option 
-          value="1"    
+          value="1" 
           *ngFor="let element of arrNormas"
           id="selectNorma"
           [selected]="element.norma===normaSelected"

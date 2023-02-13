@@ -113,3 +113,26 @@ input.ng-valid{
 :disabled{
     background-color: #737373;
 }
+
+.error-message {
+    color: red;
+    font-weight: bold;
+    text-align: center;
+    font-family: 'Work Sans', sans-serif;
+    font-size: 15px;
+    align-self: flex-start;
+  }
+
+  @media (max-width: 767px) {
+    .loginContainer {
+      flex-direction: column;
+    }
+    h1{
+        font-size: 25px;
+        width: max-content;
+    }
+    .iconEye{
+        right: 1vw;
+        margin: 11vh 1vw 3.3vh;
+      }
+  }

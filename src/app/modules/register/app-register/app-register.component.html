@@ -1,5 +1,5 @@
 
-<app-app-header></app-app-header>
+<app-app-header></app-app-header> 
 <div id="registerContainer" class="registerContainer">
   <div class="registre">
     <h1>Registrar Nuevo Prestador</h1>
@@ -8,6 +8,7 @@
       [formGroup]="registerForm"
       (ngSubmit)="saveUser()"
     >
+    <div class="registro">
       <label>Número de identificación tributaria</label>
       <input
         type="text"
@@ -24,23 +25,25 @@
         formControlName="registroNacionalDeTurismo"
         appNumeros
       />
-      <div class="selectDepar">
-        <div class="select-value">
+      <div class="selectDepar select-botton">
+        <div class="select-value ">
           <label>Categoría RNT</label>
           <select name="select" id="selectCategoria"  formControlName="categoriaRnt" (change)="onLoadCategory($event)" >
+            <option value="" selected>Seleccionar categoría</option>
             <option *ngFor="let element of data" [ngValue]="element">{{element.name}}</option>
           </select>
         </div>
-        <div class="select-value">
-          <label style="margin: 0px -8px 3px 21px !important"
+        <div class="select-value select-margin margin-div">
+          <label class="padding-label"
             >Subcategoría RNT
           </label>
           <select
             name="select"
-            style="margin: 0px -8px 3px 21px !important"
+           
             id="1"
             formControlName="subcategoriaRnt"
-          >
+          >  
+          <option value="" selected>Seleccionar subcategoría</option>
           <option *ngFor="let element of arrAgency"[ngValue]="element">{{element.name}}</option>
           </select>
         </div>
@@ -73,6 +76,7 @@
       <label>Telefóno del PST</label>
       <input
         type="text"
+        maxlength="10" 
         placeholder="Telefóno del PST"
         formControlName="telefonoDelPst"
         appNumeros
@@ -100,37 +104,41 @@
       <label>Telefóno del Representante Legal</label>
       <input
         type="text"
+        maxlength="10" 
         placeholder="Telefóno del Representante Legal"
         formControlName="telefonoDelRepresentanteLegal"
         appNumeros
       />
-      <label>Tipo de Identificación del Representante Legal</label>
-      <select
-        name="select"
-        formControlName="tipoDeIdentificacionDelRepresentanteLegal"
-      >
-        <option value="value1" >Cédula de Ciudadanía</option>
-        <option value="value2" >Cédula de Extranjería</option>
-        <option value="value3" >Pasaporte</option>
-        <option value="value4" >NUIP</option>
-        <option value="value4" >Documento Nacional de Identidad</option>
-      </select>
+      <div class="select-botton">
+        <label>Tipo de Identificación del Representante Legal</label>
+        <select
+          name="select"
+          formControlName="tipoDeIdentificacionDelRepresentanteLegal"
+        >
+          <option value="value1" >Cédula de Ciudadanía</option>
+          <option value="value2" >Cédula de Extranjería</option>
+          <option value="value3" >Pasaporte</option>
+          <option value="value4" >NUIP</option>
+          <option value="value4" >Documento Nacional de Identidad</option>
+        </select>
+      </div>
+      
       <label>Identificación del Representante Legal</label>
       <input
         type="text"
         placeholder="Identificación del Representante Legal"
         formControlName="identificacionDelRepresentanteLegal"
       />
-      <div class="selectDepar">
+      <div class="selectDepar select-botton">
         <div class="select-value">
           <label>Departamento</label>
           <select id="selectDepartment" name="select" formControlName="departamento" (change)="setDepartments($event)">
           </select>
         </div>
-        <div class="select-value">
+        <div class="select-value select-margin margin-div padding-label">
           <label>Municipio</label>
           <select id="selectMunicipality" name="select" formControlName="municipio">
-            <option value="value1" selected>Seleccione un municipio</option>
+            <option value="value1"></option>
           </select>
         </div>
       </div>
@@ -159,6 +167,7 @@
       <label>Teléfono del Responsable de Sostenibilidad</label>
       <input
         type="text"
+        maxlength="10" 
         placeholder="Teléfono del Responsable de Sostenibilidad"
         formControlName="telefonoDelResponsableDeSostenibilidad"
         appNumeros
@@ -261,15 +270,16 @@
         </div>
       </div>
       <div class="checkbox-container">
-        <i class="checkbox-tema" (click)="openModal()"
-          >Acepto y autorizo el uso de mis datos por parte de MinCIT y Fontur</i
-        >
+        <i class="checkbox-tema" (click)="openModal()">Acepto y autorizo el uso de mis datos por parte de MinCIT y Fontur
+          </i>
       </div>
       <div class="button-container">
-        <button type="submit" class="btn" [disabled]="registerForm.invalid">
+        <button type="submit" class="btn" [disabled]="registerForm.invalid" >
           Guardar
         </button>
       </div>
+    </div>
+      
       <div id="modalTerminos" style="width: 100vw">
         <div class="content-fluid" title="TERMINOS Y CONDICIONES">
           <section class="modal-content">
@@ -287,18 +297,20 @@
                 class="checkbox"
                 type="checkbox"
                 formControlName="checkbox"
+                (click)="change($event)"
               />
               <label class="checkbox-datos"
                 >He leído la política de tratamiento de datos</label
               >
             </div>
             <div class="button-container-2">
-              <p class="btn" (click)="closeModal($event)">Aceptar</p>
+              <button class="btn" (click)="closeModal($event)" id="btnAceptar" disabled>Aceptar</button>
             </div>
           </section>
         </div>
       </div>
     </form>
+    <app-app-modal-success></app-app-modal-success>
   </div>
-</div>
+</div> 
 <app-app-footer></app-app-footer>
