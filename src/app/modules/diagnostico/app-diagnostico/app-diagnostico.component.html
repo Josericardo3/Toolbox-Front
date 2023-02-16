@@ -20,7 +20,7 @@
   
     <div *ngFor="let campo of datos.campos" class="diagnostico">
       <h3>{{campo.tituloprincipal}}</h3>
-      <div *ngFor="let subcampo of campo.listacampos">
+      <div *ngFor="let subcampo of campo.listacampos" class="formDiagnostico">
         <h2>{{subcampo.titulo}}</h2>
         <label>Numero principal</label>
         <input type="text" [value]="subcampo.numeralprincipal">
@@ -32,8 +32,20 @@
         <textarea required type="text" [value]="subcampo.requisito" style="height: 200px"></textarea>
         <label>*Posible evidencia</label>
         <textarea required type="text" [value]="subcampo.nombre_evidencia" style="height: 200px"></textarea>
+        <div class="cont">
+          <div *ngFor="let opcion of subcampo.desplegable" class="containerRadio">
+            <label>{{opcion.descripcion}}</label>
+            <div class="radio">
+              <input type="radio" [value]="opcion.valor" name="radioOpciones" (change)="valorSeleccionado" 
+              (click)="valorSeleccionado = opcion.valor"> {{opcion.valor}}
+            </div>
+          </div>
+        </div>
+        <label>Observacion</label>
+        <textarea type="text" style="height: 200px"></textarea>
+        <div class="linea"></div>
       </div>
-        <label>{{ campo.nombre }}</label>
+        <!-- <label>{{ campo.nombre }}</label>
         <div [ngSwitch]="campo.tipodedato">
 
           <input *ngSwitchCase="'string'" type="text" [formControlName]="campo.campo_local">
@@ -48,11 +60,9 @@
                 {{opcion.nombre}}
               </div>
           </div>
-        </div> 
-        
-        
+        </div>  -->
     </div>
-   
-  <button type="submit" class="btn" (click)="generatePDF()">Descargar documento</button>
+  <button type="submit" class="btn">Guardar</button>
 </form>
+<ngx-spinner></ngx-spinner>
 <app-app-footer></app-app-footer>

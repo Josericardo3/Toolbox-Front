@@ -10,24 +10,40 @@
     justify-content: center;
   }
   .modal-content {
+    display: flex;
     background-color: white;
-    padding: 20px;
+    padding: 53px;
     border-radius: 5px;
-    width: 250px;
+    width: 273px;
     position: fixed;
-    top: 346px;
-    right: 520px;
+    height: 214px;
+    top: 282px;
+    right: 503px;
+    flex-direction: column;
+    align-items: center;
+    border: 2px solid #068460;
   }
   
   .modal-title{
     display: flex;
     justify-content: space-between;
-    background: #0C9D74;
     border-radius: 5px;
     margin: 7px;
     padding: 5px;
+    font-family:'Work Sans', sans-serif;
   }
 
+  button{
+    border: none;
+    background: #068460;
+    width: 33px;
+    height: 26px;
+    margin: 15px;
+    border-radius: 5px;
+    color: white;
+  }
+   
+  
   .text{
     color: white;
     font-size: 16px;

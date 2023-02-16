@@ -1,0 +1,67 @@
+<app-app-header></app-app-header>
+<div class="titulo">
+  Gestión de Usuarios
+  <!-- <div class="usuario">
+    <label>Melissa Gutmont</label>
+</div> -->
+</div>
+<div class="subtitulo">
+  <label>RNT</label>
+  <input type="text" (change)="filterRnt($event)" />
+  <label>Empresa</label>
+  <input type="text" (change)="filterEmpresa($event)" />
+  <label>Asesor</label>
+  <input type="text" (change)="filterAsesor($event)" />
+  <label class="padding-label">Estado</label>
+  <select name="select" (change)="filterEstado($event)">
+    <option *ngFor="let element of dataUser" class="option">
+      {{ element.estadoatencion }}
+    </option>
+  </select>
+  <!-- <label>Buscar</label>
+    <input type="text"/> -->
+</div>
+<div>
+  <table class="content-table">
+    <thead>
+      <tr>
+        <th>RNT</th>
+        <th>Empresa</th>
+        <th>Asesor</th>
+        <th>Estado</th>
+        <th width="26%">Acción</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of dataUser">
+        <td>{{ user.rnt }}</td>
+        <td style="left: 88px;
+        position: relative; font-family:'Work Sans', sans-serif">{{ user.nombrepst }}</td>
+        <td style="left: 88px;
+        position: relative; font-family:'Work Sans', sans-serif" >{{ user.asesorasignado }}</td>
+        <td style="left: 67px;
+        position: relative; font-family:'Work Sans', sans-serif">{{ user.estadoatencion }}</td>
+        <td class="btn-container">
+          <button class="btn-atencion" (click)="linkToDashboard($event)">
+            Iniciar atención
+          </button>
+          <button class="btn-atencion">Asignar asesor</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <!-- <pagination [boundaryLinks]="showBoundaryLinks" 
+            [directionLinks]="showDirectionLinks" 
+            [totalItems]="contentArray.length"
+            [itemsPerPage]="5"
+            (pageChanged)="pageChanged($event)">
+          </pagination> -->
+
+  <!-- <pagination style="float:right;" boundaryLinks="true"
+           totalItems="filtroEspacio.TotalRegistros"
+           itemsPerPage="filtroEspacio.Filas" maxSize="3"
+           [(ngModel)]="filtroEspacio.Pagina"
+           previousText="&lsaquo;"
+nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;">
+</pagination> -->
+</div>

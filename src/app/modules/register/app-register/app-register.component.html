@@ -68,11 +68,12 @@
         formControlName="correo"
       />
       <label
-        class="control-error"
+        class="control-error textDanger"
         *ngIf="registerForm.controls['correo'].hasError('pattern')"
       >
         Debe contener un correo válido
       </label>
+      <br>
       <label>Telefóno del PST</label>
       <input
         type="text"
@@ -94,13 +95,14 @@
         formControlName="correoRepresentanteLegal"
       />
       <label
-        class="control-error"
+        class="control-error textDanger"
         *ngIf="
           registerForm.controls['correoRepresentanteLegal'].hasError('pattern')
         "
       >
         Debe contener un correo válido
       </label>
+      <br>
       <label>Telefóno del Representante Legal</label>
       <input
         type="text"
@@ -155,7 +157,7 @@
         formControlName="correoDelResponsableDeSostenibilidad"
       />
       <label
-        class="control-error"
+        class="control-error textDanger"
         *ngIf="
           registerForm.controls[
             'correoDelResponsableDeSostenibilidad'
@@ -164,6 +166,7 @@
       >
         Debe contener un correo válido
       </label>
+      <br>
       <label>Teléfono del Responsable de Sostenibilidad</label>
       <input
         type="text"

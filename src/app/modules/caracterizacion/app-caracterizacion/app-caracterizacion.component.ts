@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, NgModule, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { ApiService } from 'src/app/servicios/api/api.service';
 // import 'core-js/es/object';
@@ -7,7 +7,8 @@ import { ApiServiceService } from 'src/app/servicios/apiServiceForm/api-form-ser
 import { FormServiceService } from 'src/app/servicios/formService/form-service.service';
 import { Router } from '@angular/router';
 import { Categoria } from '../../../utils/constants';
-
+import { SpinnerService } from 'src/app/servicios/spinnerService/spinner.service';
+import { NgxSpinnerModule } from 'ngx-spinner'; 
 @Component({
   selector: 'app-app-caracterizacion',
   templateUrl: './app-caracterizacion.component.html',
@@ -45,6 +46,7 @@ export class AppCaracterizacionComponent implements OnInit {
     private apiForm: ApiServiceService,
     private formServiceService : FormServiceService,
     private router: Router,
+    private spinnerService: SpinnerService,
     ) { 
       // this.formParent = new FormGroup({});
       this.formParent = this.formBuilder.group({});
@@ -60,9 +62,9 @@ export class AppCaracterizacionComponent implements OnInit {
       this.datos = data;
       this.datos.campos.forEach((campo:any) => {
         if(campo.values !== null){
-          this.formParent.addControl(campo.campo_local, new FormControl({value: campo.values, disabled: true}))
+          this.formParent.addControl(campo.ffcontext, new FormControl({value: campo.values, disabled: true}))
         }else{
-          this.formParent.addControl(campo.campo_local, new FormControl('', [Validators.required]))          
+          this.formParent.addControl(campo.ffcontext, new FormControl('', [Validators.required]))          
         }
       });
       this.createFormControls();
@@ -86,7 +88,13 @@ export class AppCaracterizacionComponent implements OnInit {
     // });
 }
 
-
+allFieldsFilled(): boolean {
+  console.log(this.formParent.value); // imprime los valores de los campos del formulario
+  const campos = Object.values(this.formParent.value);
+  const lleno = campos.every(campo => typeof campo === 'string' && campo.trim() !== '');
+  console.log(lleno); // imprime el valor booleano que se devuelve
+  return lleno;
+}
 
 createFormControls() {
   for (let campo of this.datos.campos) {
@@ -162,9 +170,22 @@ getControlType(campo: any) {
       return new FormControl('');
   }
 }
-valoresForm: any = {};
-capturarValor(id: string | number, valor: any) {
-  this.valoresForm[id] = valor;
+valoresForm: any = [];
+capturarValor(id: string | number, valor: any, idcaracterizaciondinamica: any) {
+  const result = this.valoresForm.find((o: any) => o.id === id);
+  if (result) {
+    result.valor = valor;
+  }else{
+    this.valoresForm.push({
+      "id": id,
+      "valor": valor,
+      "idUsuarioPst": localStorage.getItem('Id'),
+      "idCategoriaRnt": 1,
+      "idCaracterizacion": 1
+    });
+  }
+
+
   console.log(this.valoresForm[id], 'capturar valor')
 }
 
@@ -194,10 +215,11 @@ hasDepency(id: number) {
   numOfFields!: number;
 // saveForm(request:FormGroup){
   saveForm(){
+    debugger
     this.ApiService.saveData(this.valoresForm)
     .subscribe((data: any) => {
       console.log(data, 'new data')
-     
+      this.router.navigate(['/dashboard'])
     })
 
 

@@ -264,9 +264,9 @@ export class AppRegisterComponent implements OnInit {
         localStorage.setItem("newUser",'yes')
         const modalInicial = document.querySelector("#modal-success") as HTMLElement;
         modalInicial.style.display = "block";
-      setTimeout(() => {
-        this.router.navigate(['/dashboard']); 
-      }, 1000);
+      // setTimeout(() => {
+      //   this.router.navigate(['/dashboard']); 
+      // }, 3000);
     
         //this.router.navigate(['/dashboard'])
       }

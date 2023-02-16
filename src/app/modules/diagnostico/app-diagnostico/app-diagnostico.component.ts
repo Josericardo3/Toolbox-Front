@@ -16,6 +16,8 @@ export class AppDiagnosticoComponent implements OnInit {
   formParent!: FormGroup;
   datos: any = [];
 
+  valorSeleccionado: string = null;
+
   constructor(
     private fb: FormBuilder,
     private http: HttpClient,
@@ -96,6 +98,7 @@ export class AppDiagnosticoComponent implements OnInit {
 
   saveForm(){
     console.log('guardar formulario');
+    this.router.navigate(['/dashboard']);
   }
 
 }

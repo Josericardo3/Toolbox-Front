@@ -299,6 +299,7 @@ input.ng-invalid.ng-touched {
 #modalTerminos.active>.content-fluid>.modal-content>.forma-label-sin-izquierda>.checkbox {
    width: 20px!important;
    height:  20px!important;
+   margin: 0px;
 }
 
 .button-container-2{
@@ -326,9 +327,6 @@ input.ng-invalid.ng-touched {
     font-size: 16px;
 }
  @media(max-width: 480px) {
-     /* form{
-      width: 900px !important;
-    }  */
      .selectDepar{
         display: flex;
         flex-direction:column;

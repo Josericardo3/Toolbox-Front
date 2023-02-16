@@ -10,9 +10,6 @@
 <body>
 <div class="container">
   <app-app-header></app-app-header>
- <!-- <div class="logo-escudo">
- <img src="../../../../assets/img-dashboard/logo.svg" alt="" (click)="Logo()"> 
- </div> -->
  <div class="container-norma" *ngIf="!newUser">
     <div class="norma-opcion">
       <select name="select" *ngIf="arrNormas.length > 0"   >    
@@ -24,11 +21,6 @@
           style="width: 400px; margin: 6px 6px 6px 6px">
           {{element.norma}}
         ​</option>
-     <!-- 
-      formControlName="categoriaRnt" 
-        <option value="1"> NTC 6523 Turismo de aventura. Buenas prácticas para la sostenibilidad. Requisitos y recomendaciones​</option>
-        <option value="2"> NTC ISO 21101 Turismo de aventura. Sistema de gestión de seguridad. Requerimientos.</option>
-        <option value="3"> NTC 6502 Sistema de gestión de la sostenibilidad para agencia de viajes. Requisitos.</option> -->
       </select>
   </div>
 </div>

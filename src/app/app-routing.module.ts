@@ -7,6 +7,7 @@ import { AppRegisterComponent } from './modules/register/app-register/app-regist
 import { AppCaracterizacionComponent } from './modules/caracterizacion/app-caracterizacion/app-caracterizacion.component';
 import { AppDiagnosticoComponent } from './modules/diagnostico/app-diagnostico/app-diagnostico.component';
 import { AppHeaderComponent } from './modules/header/app-header/app-header.component';
+import { AppGestionDeUsuariosComponent } from './modules/gestionDeUsuarios/app-gestion-de-usuarios/app-gestion-de-usuarios.component';
 
 const routes: Routes = [
   {path: '', component: AppLoginComponent},
@@ -15,6 +16,7 @@ const routes: Routes = [
   {path: 'caracterizacion', component: AppCaracterizacionComponent},
   {path: 'diagnostico', component: AppDiagnosticoComponent},
   {path: 'header', component: AppHeaderComponent},
+  {path: 'gestionUsuario', component: AppGestionDeUsuariosComponent},
   //{path: '', component: AppMyExampleComponent},
 ];
 

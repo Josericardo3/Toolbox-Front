@@ -1,0 +1,87 @@
+.titulo{
+    background: #068460;
+    width: 100%;
+    height: 43px;
+    display: flex;
+    padding: 9px;
+    margin: 30px 0px 0px 0px;
+    font-size: 18px;
+    font-family: sans-serif;
+    color: white;
+    justify-content: space-between;
+}
+ .usuario{
+    padding: 2px 83px 2px;;
+ }
+.subtitulo{
+    display: flex;
+    align-items: center;
+    margin: 19px 10px 19px 10px;
+    flex-direction: row;
+    justify-content: space-between;
+    font-family: 'Work Sans', sans-serif;
+}
+
+input {
+    border-radius: 5px;
+    height: 22px;
+    border: 1px solid#068460;
+    margin: 9px 0px 9px -128px;
+}
+td{
+    left: 61px;
+    position: sticky;
+}
+.btn-atencion{
+    border-radius: 5px;
+    height: 22px;
+    width: 110px;
+    border: 1px solid#068460;
+    margin: 7px 18px 9px 2px;
+    font-family:'Work Sans', sans-serif;
+}
+.btn-container{
+    display: flex;
+    justify-content:center;
+    
+}
+select{
+    border-radius: 5px;
+    height: 22px;
+    border: 1px solid#068460;
+    margin: 8px 10px 7px -132px;
+}
+
+table {
+     /* border-collapse: collapse; */
+     width: 100%;
+     margin: 25px 0; 
+     font-size: 1em; 
+     font-family: sans-serif; 
+     min-width: 450px;
+     box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+     }
+
+table thead tr {
+     background-color: #068460;
+     color: #ffffff;
+     text-align: middle; 
+     font-family:'Work Sans', sans-serif;
+    }
+
+table th, .table td {
+     padding: 12px 15px;
+     }
+
+table tbody tr { 
+    border-bottom: 1px solid white;
+
+} 
+/* table tbody tr:nth-of-type(even) {
+     background-color: #f3f3f3;
+ } 
+  */
+ table tbody tr:last-of-type {
+     border-bottom: 2px solid #009879; }
+
+    

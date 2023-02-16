@@ -14,8 +14,12 @@ export class AppModalSuccessComponent implements OnInit {
 
   ngOnInit(): void {
     //localStorage.setItem("normaSelected", evt.target.id);
-    
    
+  }
+
+
+  linkToDashboard(evt: any){
+    this.router.navigate(['/dashboard']); 
   }
 
 }
