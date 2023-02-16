@@ -88,10 +88,10 @@ export class AppLoginComponent implements OnInit {
 
   //Mel guardado en local storage localStorage.setItem('usuario',data)
  onLogin(){
+  debugger
   console.log('onLogin')
   this.usuario.correo = this.loginForm.get('correo')?.value;
   this.usuario.registroNacionalDeTurismo = this.loginForm.get('registroNacionalDeTurismo')?.value;
-  this.usuario.correo = this.loginForm.get('correo')?.value;
   this.usuario.pass = this.loginForm.get('pass')?.value;
   console.log(this.usuario.registroNacionalDeTurismo, this.usuario.pass)
   //jalar el valor del correo
@@ -102,33 +102,19 @@ export class AppLoginComponent implements OnInit {
       localStorage.setItem('rol',data.permisoUsuario[0]?.item || 1)
       localStorage.setItem('access',data.TokenAcceso)
       localStorage.setItem('refresh',data.TokenRefresco)
-<<<<<<< HEAD
       localStorage.setItem('Id',data.IdUsuarioPst)
-=======
-      localStorage.setItem("idGrupo",data.Grupo[0].item)
-      localStorage.setItem("idEmpresa",data.Grupo[0].nombrepst)
-      console.log(data.Grupo,"grupo")
-      // localStorage.setItem("valuePST",data.Grupo.item)
->>>>>>> dev/ctb-110
      
       // Login successful, redirect to homepage
-      debugger;
-      if(data.Grupo[0].item === 1){
-        this.router.navigate(['/dashboard']);
-      }else{
-        this.router.navigate(['/gestionUsuario']);
-      }
-     
+      this.router.navigate(['/dashboard']);
       console.log('ingresó al dash')
 
     this.ApiService.getNorma(data.IdUsuarioPst)
     .subscribe((data:any)=>{
-      console.log(data,"datanueva")
         if(data[0].idCategoriarnt === 5 ||data[0].idCategoriarnt === 2){
           this.arrResult = data;//remplazar arriba
           localStorage.setItem('norma',JSON.stringify(this.arrResult))
           const modalInicial = document.querySelector("#modal-inicial") as HTMLElement;
-          modalInicial.style.display = "block"; 
+          modalInicial.style.display = "block";
         }else{
           this.arrResult = data;
           localStorage.setItem('norma',JSON.stringify(this.arrResult))

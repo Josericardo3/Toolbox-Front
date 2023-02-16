@@ -2,9 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FormGroup, FormArray, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
-import pdfMake from 'pdfmake/build/pdfmake';
-import pdfFonts from 'pdfmake/build/vfs_fonts';
-pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 @Component({
   selector: 'app-app-diagnostico',
@@ -73,32 +70,8 @@ export class AppDiagnosticoComponent implements OnInit {
     }
   }
 
-  generatePDF() {
-    const formData = this.formParent.value;
-    const tableData = [  ['Nombre', 'Apellido', 'Edad'],
-                         ['Juan', 'Pérez', 30],
-                         ['María', 'Rodríguez', 25],
-                      ];
-    const docDefinition = {
-      content: [
-        {
-          table: {
-            headerRows: 1,
-            widths: [100, '*', 100],
-            body: tableData
-          }
-        }
-      ]
-    };
-
-    pdfMake.createPdf(docDefinition).download();
-
-  }
-  
-
   saveForm(){
     console.log('guardar formulario');
-    this.router.navigate(['/dashboard']);
   }
 
 }

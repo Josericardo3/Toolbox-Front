@@ -30,11 +30,7 @@ export class ApiService {
   constructor(private http: HttpClient) {}
 
   login(form: LoginI): Observable<ResponseI> {
-<<<<<<< HEAD
     const { registroNacionalDeTurismo, pass, correo } = form
-=======
-    const { registroNacionalDeTurismo, pass,correo } = form
->>>>>>> dev/ctb-110
     const refresh = localStorage.getItem('refresh');
     const headers = { 'Content-Type': 'application/json', 'tokenAccess': refresh || 'falta token' };
     let direccion = `${this.apiURL}/api/Usuario/LoginUsuario?usuario=${registroNacionalDeTurismo}&Password=${pass}&correo=${correo}`
@@ -78,7 +74,6 @@ export class ApiService {
   /*saveData(request: any): Observable<any> {
     debugger
     let caracterizacion = `${this.apiURL}/api/Usuario/caracterizacion/respuesta`
-<<<<<<< HEAD
     let categoriarnt = localStorage.getItem('norma')
     let response;
     for (let i = 0; i < request.length; i++) {
@@ -96,15 +91,6 @@ export class ApiService {
     const caracterizacion = `${this.apiURL}/api/Usuario/caracterizacion/respuesta`;
     const categoriarnt = localStorage.getItem('norma');
     const observables = [];
-=======
-    return this.http.post<any>(caracterizacion, request)
-  }
-
-  assignAdvisor(id: any): Observable<any> {
-    let assign = `${this.apiURL}/api/Usuario/usuarioPstxAsesor/${id}`
-    return this.http.get<any>(assign,id)
-  }
->>>>>>> dev/ctb-110
   
     for (let i = 0; i < request.length; i++) {
       const respuesta = {
