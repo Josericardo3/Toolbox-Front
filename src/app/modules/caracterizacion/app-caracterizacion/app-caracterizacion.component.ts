@@ -56,7 +56,8 @@ export class AppCaracterizacionComponent implements OnInit {
   ngOnInit(): void {
     // this.http.get('http://10.4.3.140:8050/api/Usuario/caracterizacion/1')
     // this.ApiService.getData() //para obtener datos de la api
-    this.http.get('https://www.toolbox.somee.com/api/Usuario/caracterizacion/1')
+    var endpoint = 'https://www.toolbox.somee.com/api/Usuario/caracterizacion/' + localStorage.getItem('Id')
+    this.http.get(endpoint)
     // this.http.get('assets/datos.json')
     .subscribe((data: any) => {
       this.datos = data;
