@@ -55,8 +55,8 @@ export class AppCaracterizacionComponent implements OnInit {
   
   ngOnInit(): void {
     // this.http.get('http://10.4.3.140:8050/api/Usuario/caracterizacion/1')
-    this.ApiService.getData(1) //para obtener datos de la api
-    // this.http.get('https://www.toolbox.somee.com/api/Usuario/caracterizacion/1')
+    // this.ApiService.getData() //para obtener datos de la api
+    this.http.get('https://www.toolbox.somee.com/api/Usuario/caracterizacion/1')
     // this.http.get('assets/datos.json')
     .subscribe((data: any) => {
       this.datos = data;
@@ -221,68 +221,6 @@ hasDepency(id: number) {
       console.log(data, 'new data')
       this.router.navigate(['/dashboard'])
     })
-
-
-    // const datos = {
-    //   valorInput: this.valorInput,
-    //   valorSelect: this.valorSelect
-    // };
-    // this.ApiService.saveData(this.valoresForm)
-    // .subscribe((data: any) => {
-    //   console.log(data, 'new data')
-    //   if (data.statusCode === 201) {
-    //     this.router.navigate(['/dashboard'])
-    //   }
-    // })
-
-
-
-
-
-
-
-    // const request = {
-    //   number: this.formParent.get('campo.campo_local')?.value,
-    //   local_reference_id: this.formParent.get('campo.campo_local')?.value,
-    //   string: this.formParent.get('campo.campo_local')?.value,
-    // }
-    // return this.ApiService.saveData(request)
-    // .subscribe((data: any) => {
-    //   console.log(data, 'new data')
-    //   if (data.statusCode === 201) {
-    //     this.router.navigate(['/dashboard'])
-    //   }
-    // })
-
-//     if (this.formParent && this.formParent.controls) {
-//       for (let i = 0; i < this.numOfFields; i++) {
-//   this.formParent.get(`campo-${i}`).valueChanges.subscribe(value => {
-//     console.log(value);
-//   });
-// }
-//     }
-    
-  // const request = {formparent: this.formParent}
-  // return this.ApiService.saveData(request)
-  // .subscribe((data: any) => {
-  //   console.log(data, 'new data')
-  //   if (data.statusCode === 201) {
-  //     this.router.navigate(['/dashboard'])
-  //   }
-  // })
-
-
-
-  // const formData = request.value
-  
-  //   this.ApiService.saveData(formData)
-  //   .subscribe((response:any) => {
-  //     console.log(response)
-  //     if (response.statusCode === 201) {
-  //           this.router.navigate(['/dashboard'])
-  //         }
-  //   })
-
 }
 
   //--------------EJEMPLO1--------------------

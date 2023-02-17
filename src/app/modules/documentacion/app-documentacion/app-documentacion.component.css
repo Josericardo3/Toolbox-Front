@@ -1,0 +1,126 @@
+.controllerDoc{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+h1{
+    font-family: 'Montserrat', sans-serif;
+    font-weight: bolder;
+    font-size: 34px;
+    color: #068460;
+    margin: 9vh 0;;
+}
+h3{
+    font-family: 'Work Sans', sans-serif;
+    font-size: 19px;
+    font-weight: lighter;
+}
+.div{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    flex-direction: column;
+    width: 90vw;
+    height: auto;
+}
+i{
+    cursor: pointer;
+}
+.iconos {
+    position: absolute;
+    right: 0;
+    margin: -4.5vh 5vw;
+}
+.subIconos{
+    position: absolute;
+    right: 0;
+    margin: -4.5vh 8vw;
+}
+.titulo{
+    display: flex;
+    align-items: center;
+    border: 1px solid lightgray;
+    height: 10vh;
+    width: 85vw;
+    padding: 10px;
+    cursor: pointer;
+}
+.subtitulo,
+.subtituloPlanificacion,
+.subtituloApoyo,
+.subtituloEvaluacion{
+    display: flex;
+    align-items: center;
+    border: 1px solid lightgray;
+    height: 10vh;
+    width: 81vw;
+    padding: 10px;
+    margin-top: 15px;
+    cursor: pointer;
+}
+.subtituloPlanificacion{
+    margin-top: 0;
+}
+.detalle{
+    display: flex;
+    align-items: flex-start;
+    border: 1px solid lightgray;
+    height: auto;
+    width: 85vw;
+    padding: 15px 0 10px 20px;
+    flex-direction: column;
+}
+.guia{
+    font-weight: bold;
+}
+.subDetalleContext,
+.subDetallePlanificacion,
+.subDetalleApoyo,
+.subDetalleEvaluacion{
+    display: flex;
+    flex-direction: column;
+    width: 81vw;
+    align-items: flex-start;
+    border: 1px solid lightgray;
+    height: auto;
+    padding: 15px 0 10px 20px;
+}
+p, a{
+    margin: 10px 0;
+    font-family: 'Work Sans', sans-serif;
+    font-size: 17px;
+    color: #474749;
+    margin: 5px 0 5px 0;
+}
+a{
+    color: rgb(14, 14, 232) !important;
+}
+.btn{
+    margin: 10vh 0 5vh 0;
+    height: 40px;
+    width: 200px;
+    padding: 5px;
+    background-color: #068460;
+    border-radius: 100px;
+    color: #FFFFFF;
+    font-family: 'Work Sans', sans-serif;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+}
+.verde {
+    background-color: #068460;
+    color: #FFFFFF;
+    font-family: 'Work Sans', sans-serif;
+    font-size: 20px;
+    font-weight: bold;
+  }
+.verde p {
+    background-color: #068460;
+    color: #FFFFFF;
+    font-family: 'Work Sans', sans-serif;
+    font-size: 19px;
+    font-weight: lighter;
+}

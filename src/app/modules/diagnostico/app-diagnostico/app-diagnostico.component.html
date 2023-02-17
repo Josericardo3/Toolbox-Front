@@ -1,3 +1,4 @@
+<div class = "cointainer">
 <!-- <p>rol colaborador</p> -->
 <a href="../../../../assets//Politica-de-datos/POLITICA DE TRATAMIENTO DE DATOS  ISOLUCIONES.pdf"></a>
 <app-app-header></app-app-header>
@@ -29,20 +30,20 @@
         <label>Titulo del requisito</label>
         <input type="text" [value]="subcampo.titulo">
         <label>*Requisito</label>
-        <textarea required type="text" [value]="subcampo.requisito" style="height: 200px"></textarea>
+        <textarea type="text" [value]="subcampo.requisito" style="height: 200px"></textarea>
         <label>*Posible evidencia</label>
-        <textarea required type="text" [value]="subcampo.nombre_evidencia" style="height: 200px"></textarea>
+        <textarea type="text" [value]="subcampo.nombre_evidencia" style="height: 200px"></textarea>
         <div class="cont">
           <div *ngFor="let opcion of subcampo.desplegable" class="containerRadio">
             <label>{{opcion.descripcion}}</label>
             <div class="radio">
-              <input type="radio" [value]="opcion.valor" name="radioOpciones" (change)="valorSeleccionado" 
+              <input required type="radio" [value]="opcion.valor" name="radioOpciones" (change)="valorSeleccionado" 
               (click)="valorSeleccionado = opcion.valor"> {{opcion.valor}}
             </div>
           </div>
         </div>
         <label>Observacion</label>
-        <textarea type="text" style="height: 200px"></textarea>
+        <textarea type="text" [value]="subcampo.observacion" style="height: 200px"></textarea>
         <div class="linea"></div>
       </div>
         <!-- <label>{{ campo.nombre }}</label>
@@ -64,5 +65,6 @@
     </div>
   <button type="submit" class="btn">Guardar</button>
 </form>
-<ngx-spinner></ngx-spinner>
 <app-app-footer></app-app-footer>
+<ngx-spinner></ngx-spinner>
+</div>

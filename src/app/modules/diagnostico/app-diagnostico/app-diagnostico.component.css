@@ -96,7 +96,7 @@ input, textarea{
 input[type=radio]{
     -webkit-appearance: none;
     -moz-appearance: none;
-    width: 4%;
+    width: 10%;
     height: 150%;
     background-color: white;
     border: 2px solid #068460;
@@ -113,7 +113,7 @@ div.radio input[type=radio]:checked:before
     position: absolute; /* establece posición absoluta */ 
     top: 50%;/* centra la palomita en el eje vertical */
     /* left: 2.5%;centra la palomita en el eje horizontal */
-    transform: translate(-51%, -52%); /* centra la palomita en el cuadro */
+    transform: translate(0%, -55%); /* centra la palomita en el cuadro */
 }
 .inputContainer {
     background: #FFFFFF;
@@ -137,5 +137,8 @@ div.radio input[type=radio]:checked:before
     }    
     .containerRadio {
         width: 26vw;
+    }
+    input[type=radio]{
+        width: 20%;
     }
 }

@@ -30,6 +30,7 @@ export class ApiService {
   constructor(private http: HttpClient) {}
 
   login(form: LoginI): Observable<ResponseI> {
+
     const { registroNacionalDeTurismo, pass, correo } = form
     const refresh = localStorage.getItem('refresh');
     const headers = { 'Content-Type': 'application/json', 'tokenAccess': refresh || 'falta token' };
@@ -64,10 +65,10 @@ export class ApiService {
   }
 
   //para obtener la data de caracterizacion
-  getData(id: any): Observable<any> {
-   
+  getData(): Observable<any> {
+    const id = localStorage.getItem('id');
     let caracterizacion = `${this.apiURL}/api/Usuario/caracterizacion/${id}`
-    return this.http.get<any>(caracterizacion, id)
+    return this.http.get<any>(caracterizacion)
   }
 
   //para guardar caracterizacion en la BD
@@ -105,6 +106,12 @@ export class ApiService {
   
     return of(observables).pipe(mergeMap(responses => forkJoin(responses)));
   }
+
+  assignAdvisor(id: any): Observable<any> {
+    let assign = `${this.apiURL}/api/Usuario/usuarioPstxAsesor/${id}`
+    return this.http.get<any>(assign,id)
+  }
+
 }
   
 

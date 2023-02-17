@@ -40,7 +40,7 @@ h1{
     font-size: 13px;
     color: #474749;
     font-weight: bold;
-    margin: -1vh 0 !important
+    margin: -0.5vh 0 !important
 }
 .p{
     font-family: 'Work Sans', sans-serif;
@@ -64,19 +64,20 @@ h1{
     border: 1px solid #000000;
     border-radius: 10px;
     height: 40px;
-    width: 40vw;
+    width: 33vw;
     padding: 5px;
 }
 .password{
     display: flex;
     flex-direction: column;
+    /* position: relative; */
 }
 .password input{
     background: #FFFFFF;
     border: 1px solid #000000;
     border-radius: 10px;
     height: 35px;
-    width: 40vw;
+    width: 33vw;
     padding: 5px;
 }
 ::placeholder{
@@ -101,15 +102,16 @@ h1{
 .eye{
     display: flex;
     align-items:center;
-    position: relative;
+    position: absolute;
     justify-content: center;
+    flex-direction: column;
+    /* transform: translateY(-34%); */
+    right: 0;
   }
 .iconEye{
     color: #068460;
-    right: 1vw;
-    margin: 10vh 7vw 3.3vh;
+    margin: 7.5vh 10vw 0 0;
     cursor: pointer;
-    position: absolute;
   }
 input.ng-invalid.ng-touched {
     border: solid 2px tomato !important;
@@ -139,8 +141,10 @@ input.ng-valid{
         font-size: 25px;
         width: max-content;
     }
+    .eye{
+        transform: translateY(-17%)
+      }
     .iconEye{
-        right: 1vw;
-        margin: 11vh 1vw 3.3vh;
+        margin: 10vh 0 3.3vh 29vw;
       }
   }

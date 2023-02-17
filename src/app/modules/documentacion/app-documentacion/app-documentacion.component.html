@@ -1,1 +1,199 @@
-<p>app-documentacion works!</p>
+<app-app-header></app-app-header>
+<div class="controllerDoc">
+    <h1>Documentación</h1>  
+        <div class="div">
+            <div class="titulo" (click)="toggleSection('norma')" [ngClass]="{'verde': normaVisible}" >
+                <h3>Guía de la Norma</h3>
+                <div class="iconos">
+                    <i class="fa-solid" [class.fa-angle-up]="normaVisible" [class.fa-angle-down]="!normaVisible"></i>
+                </div>
+            </div>
+            <div class="detalle" *ngIf="normaVisible">
+                <p>A continuación se encuentra la Guía de la Norma para referencia.</p>
+                <a class="guia" href="../../../../assets/docs/GUIANTC6503.pdf">Guía norma NTC 6503</a>
+            </div>
+        </div>
+        <div class="div">
+            <div class="titulo" (click)="toggleSection('contexts')" [ngClass]="{'verde': contextsVisible}">
+                <h3>4. CONTEXTO DE LA ORGANIZACIÓN</h3>
+                <div class="iconos">
+                    <i class="fa-solid" [class.fa-angle-up]="contextsVisible" [class.fa-angle-down]="!contextsVisible"></i>
+                </div>
+            </div>
+            <div class="detalle" *ngIf="contextsVisible">
+                <p>4.1 Cumplimiento de la legislación | <a>Ver documento</a> | <a>Evidencia</a></p>
+                <p>4.2 Comprensión de la organización y de su contexto | <a>Ver documento</a> | <a>Evidencia</a></p>
+                <p>4.3 Comprensión de las necesidades y expectativas de las partes interesadas | <a>Ver documento</a> | <a>Evidencia</a></p>
+                <p>4.4 Determinación del alcance del sistema de gestión de la sostenibilidad | <a>Ver documento</a> | <a>Evidencia</a></p>
+                <div class="subDetalle">
+                    <div class="subtitulo" (click)="toggleSubContexts()" [ngClass]="{'verde': subContextsVisible}">
+                        <p>4.5 Sistema de gestión de la sostenibilidad</p>
+                        <div class="subIconos">
+                            <i class="fa-solid" [class.fa-angle-up]="subContextsVisible" [class.fa-angle-down]="!subContextsVisible"></i>
+                        </div>
+                    </div>
+                    <div class="subDetalleContext" *ngIf="subContextsVisible">
+                        <p>4.5.1 Sistema de gestión de la sostenibilidad | <a>Ver documento</a> | <a>Evidencia</a></p>
+                        <p>4.5.2 Sistema de gestión de la sostenibilidad | <a>Ver documento</a> | <a>Evidencia</a></p>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        <div class="div">
+            <div class="titulo" (click)="toggleSection('liderazgo')" [ngClass]="{'verde': liderazgoVisible}">
+                <h3>5. LIDERAZGO</h3>
+                <div class="iconos">
+                    <i class="fa-solid" [class.fa-angle-up]="liderazgoVisible" [class.fa-angle-down]="!liderazgoVisible"></i>
+                </div>
+            </div>
+            <div class="detalle" *ngIf="liderazgoVisible">
+                <p>5.1. Liderazgo y compromiso | <a>Ver documento</a> | <a>Evidencia</a></p>
+                <p>5.2. Política | <a>Ver documento</a> | <a>Evidencia</a></p>
+                <p>5.3 Roles, responsabilidades y autoridades | <a>Ver documento</a> | <a>Evidencia</a></p>
+            </div>
+        </div>
+        <div class="div">
+            <div class="titulo" (click)="toggleSection('planificacion')" [ngClass]="{'verde': planificacionVisible}">
+                <h3>6. PLANIFICACIÓN</h3>
+                <div class="iconos">
+                    <i class="fa-solid" [class.fa-angle-up]="planificacionVisible" [class.fa-angle-down]="!planificacionVisible"></i>
+                </div>
+            </div>
+            <div class="detalle" *ngIf="planificacionVisible">
+                <div class="subDetalleA">
+                    <div class="subtituloPlanificacion" (click)="toggleSubPlanificacionA()" [ngClass]="{'verde': subPlanificacionA}">
+                        <p>6.1 Acciones para abordar riesgos y oportunidades</p>
+                        <div class="subIconos">
+                            <i class="fa-solid" [class.fa-angle-up]="subPlanificacionA" [class.fa-angle-down]="!subPlanificacionA"></i>
+                        </div>
+                    </div>
+                    <div class="subDetallePlanificacion" *ngIf="subPlanificacionA">
+                        <p>6.1.1 Generalidades | <a>Ver documento</a> | <a>Evidencia</a></p>
+                        <p>6.1.2 Identificación y evaluación de las cuestiones | <a>Ver documento</a> | <a>Evidencia</a></p>
+                    </div>
+                </div>
+                <div class="subDetalleB">
+                    <div class="subtituloPlanificacion" (click)="toggleSubPlanificacionB()" [ngClass]="{'verde': subPlanificacionB}">
+                        <p>6.2 Objetivos de sostenibilidad y planificación para lograrlos</p>
+                        <div class="subIconos">
+                            <i class="fa-solid" [class.fa-angle-up]="subPlanificacionB" [class.fa-angle-down]="!subPlanificacionB"></i>
+                        </div>
+                    </div>
+                    <div class="subDetallePlanificacion" *ngIf="subPlanificacionB">
+                        <p>6.2.1 Objetivos de sostenibilidad y planificación para lograrlos | <a>Ver documento</a> | <a>Evidencia</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="div">
+            <div class="titulo" (click)="toggleSection('apoyo')" [ngClass]="{'verde': apoyoVisible}">
+                <h3>7. APOYO</h3>
+                <div class="iconos">
+                    <i class="fa-solid" [class.fa-angle-up]="apoyoVisible" [class.fa-angle-down]="!apoyoVisible"></i>
+                </div>
+            </div>
+            <div class="detalle" *ngIf="apoyoVisible">
+                <p>7.1 Recursos | <a>Ver documento</a> | <a>Evidencia</a></p>
+                <p>7.2 Competencia | <a>Ver documento</a> | <a>Evidencia</a></p>
+                <p>7.3 Toma de conciencia | <a>Ver documento</a> | <a>Evidencia</a></p>
+                <p>7.4 Comunicación | <a>Ver documento</a> | <a>Evidencia</a></p>
+                <div class="subDetalle">
+                    <div class="subtituloApoyo" (click)="toggleSubApoyo()" [ngClass]="{'verde': subApoyoVisible}">
+                        <p>7.5 Información documentada</p>
+                        <div class="subIconos">
+                            <i class="fa-solid" [class.fa-angle-up]="subApoyoVisible" [class.fa-angle-down]="!subApoyoVisible"></i>
+                        </div>
+                    </div>
+                    <div class="subDetalleApoyo" *ngIf="subApoyoVisible">
+                        <p>7.5.1 Generalidades | <a>Ver documento</a> | <a>Evidencia</a></p>
+                        <p>7.5.2 Creación y actualización | <a>Ver documento</a> | <a>Evidencia</a></p>
+                        <p>7.5.3 Control de la información documentada | <a>Ver documento</a> | <a>Evidencia</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="div">
+            <div class="titulo" (click)="toggleSection('operacion')" [ngClass]="{'verde': operacionVisible}">
+                <h3>8. OPERACIÓN</h3>
+                <div class="iconos">
+                    <i class="fa-solid" [class.fa-angle-up]="operacionVisible" [class.fa-angle-down]="!operacionVisible"></i>
+                </div>
+            </div>
+            <div class="detalle" *ngIf="operacionVisible">
+                <p>8.1 Planificación y control operacional | <a>Ver documento</a> | <a>Evidencia</a></p>
+                <p>8.2 Tratamiento de actividades, productos o servicios modificados | <a>Ver documento</a> | <a>Evidencia</a></p>
+                <p>8.3 Gestión de la cadena de suministro | <a>Ver documento</a> | <a>Evidencia</a></p>
+            </div>
+        </div>
+        <div class="div">
+            <div class="titulo" (click)="toggleSection('evaluacion')" [ngClass]="{'verde': evaluacionVisible}">
+                <h3>9. EVALUACIÓN DEL DESEMPEÑO</h3>
+                <div class="iconos">
+                    <i class="fa-solid" [class.fa-angle-up]="evaluacionVisible" [class.fa-angle-down]="!evaluacionVisible"></i>
+                </div>
+            </div>
+            <div class="detalle" *ngIf="evaluacionVisible">
+                <p>9.1 Seguimiento, medición, análisis y evaluación | <a>Ver documento</a> | <a>Evidencia</a></p>
+                <div class="subDetalle">
+                    <div class="subtituloEvaluacion" (click)="toggleSubEvaluacion()" [ngClass]="{'verde': subEvaluacionVisible}">
+                        <p>9.2 Auditoría interna</p>
+                        <div class="subIconos">
+                            <i class="fa-solid" [class.fa-angle-up]="subEvaluacionVisible" [class.fa-angle-down]="!subEvaluacionVisible"></i>
+                        </div>
+                    </div>
+                    <div class="subDetalleEvaluacion" *ngIf="subEvaluacionVisible">
+                        <p>9.2.2 Auditoría interna | <a>Ver documento</a> | <a>Evidencia</a></p>
+                    </div>
+                </div>
+                <p>9.3 Revisión por la dirección | <a>Ver documento</a> | <a>Evidencia</a></p>
+            </div>
+        </div>
+        <div class="div">
+            <div class="titulo" (click)="toggleSection('mejora')" [ngClass]="{'verde': mejoraVisible}">
+                <h3>10. MEJORA</h3>
+                <div class="iconos">
+                    <i class="fa-solid" [class.fa-angle-up]="mejoraVisible" [class.fa-angle-down]="!mejoraVisible"></i>
+                </div>
+            </div>
+            <div class="detalle" *ngIf="mejoraVisible">
+                <p>10.1 No conformidad y acción correctiva | <a>Ver documento</a> | <a>Evidencia</a></p>
+                <p>10.2 Mejora continua | <a>Ver documento</a> | <a>Evidencia</a></p>
+            </div>
+        </div>
+        <div class="div">
+            <div class="titulo" (click)="toggleSection('anexoA')" [ngClass]="{'verde': anexoAVisible}">
+                <h3>ANEXO A</h3>
+                <div class="iconos">
+                    <i class="fa-solid" [class.fa-angle-up]="anexoAVisible" [class.fa-angle-down]="!anexoAVisible"></i>
+                </div>
+            </div>
+            <div class="detalle" *ngIf="anexoAVisible">
+                <p>Contenido Anexo A | <a>Ver documento</a> | <a>Evidencia</a></p>
+            </div>
+        </div>
+        <div class="div">
+            <div class="titulo" (click)="toggleSection('anexoB')" [ngClass]="{'verde': anexoBVisible}">
+                <h3>ANEXO B</h3>
+                <div class="iconos">
+                    <i class="fa-solid" [class.fa-angle-up]="anexoBVisible" [class.fa-angle-down]="!anexoBVisible"></i>
+                </div>
+            </div>
+            <div class="detalle" *ngIf="anexoBVisible">
+                <p>Contenido Anexo B | <a>Ver documento</a> | <a>Evidencia</a></p>
+            </div>
+        </div>
+        <div class="div">
+            <div class="titulo" (click)="toggleSection('anexoC')" [ngClass]="{'verde': anexoCVisible}">
+                <h3>ANEXO C</h3>
+                <div class="iconos">
+                    <i class="fa-solid" [class.fa-angle-up]="anexoCVisible" [class.fa-angle-down]="!anexoCVisible"></i>
+                </div>
+            </div>
+            <div class="detalle" *ngIf="anexoCVisible">
+                <p>Contenido Anexo C | <a>Ver documento</a> | <a>Evidencia</a></p>
+            </div>
+        </div>
+    <button type="submit" class="btn">Atrás</button>
+</div>
+<app-app-footer></app-app-footer>

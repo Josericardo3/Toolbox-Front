@@ -18,6 +18,7 @@ import { AppCaracterizacionComponent } from './modules/caracterizacion/app-carac
 import { AppDiagnosticoComponent } from './modules/diagnostico/app-diagnostico/app-diagnostico.component';
 import { AppModalInicialComponent } from './modules/modal/app-modal-inicial/app-modal-inicial.component';
 import { AppModalSuccessComponent } from './modules/modal-success/app-modal-success/app-modal-success.component';
+import {AppGestionDeUsuariosComponent } from './modules/gestionDeUsuarios/app-gestion-de-usuarios/app-gestion-de-usuarios.component'; 
 import { AppDiagnosticoDocComponent } from './modules/diagnosticoDoc/app-diagnostico-doc/app-diagnostico-doc.component';
 import { AppDocumentacionComponent } from './modules/documentacion/app-documentacion/app-documentacion.component';
 import { NgxSpinnerModule } from 'ngx-spinner';
@@ -35,8 +36,10 @@ import { InterceptorService } from './servicios/interceptorService/interceptor.s
     AppDiagnosticoComponent,
     AppModalInicialComponent,
     AppModalSuccessComponent,
+    AppGestionDeUsuariosComponent,
     AppDiagnosticoDocComponent,
     AppDocumentacionComponent,
+
   ],
   imports: [
     BrowserModule,
@@ -49,9 +52,11 @@ import { InterceptorService } from './servicios/interceptorService/interceptor.s
     BrowserAnimationsModule,
     NgxSpinnerModule
   ],
+
   providers: [
     { provide: HTTP_INTERCEPTORS,  useClass: InterceptorService, multi: true },
   ],
+
   bootstrap: [AppComponent],
  
 })

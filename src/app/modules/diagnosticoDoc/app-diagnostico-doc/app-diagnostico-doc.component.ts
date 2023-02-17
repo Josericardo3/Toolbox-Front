@@ -9,7 +9,7 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
   styleUrls: ['./app-diagnostico-doc.component.css']
 })
 export class AppDiagnosticoDocComponent implements OnInit {
-  constructor() { }
+  constructor( ) { }
 
   ngOnInit(): void {
   }

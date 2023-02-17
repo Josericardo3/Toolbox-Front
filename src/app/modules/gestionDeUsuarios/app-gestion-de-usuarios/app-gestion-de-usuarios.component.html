@@ -35,12 +35,33 @@
     <tbody>
       <tr *ngFor="let user of dataUser">
         <td>{{ user.rnt }}</td>
-        <td style="left: 88px;
-        position: relative; font-family:'Work Sans', sans-serif">{{ user.nombrepst }}</td>
-        <td style="left: 88px;
-        position: relative; font-family:'Work Sans', sans-serif" >{{ user.asesorasignado }}</td>
-        <td style="left: 67px;
-        position: relative; font-family:'Work Sans', sans-serif">{{ user.estadoatencion }}</td>
+        <td
+          style="
+            left: 88px;
+            position: relative;
+            font-family: 'Work Sans', sans-serif;
+          "
+        >
+          {{ user.razonsocial }}
+        </td>
+        <td
+          style="
+            left: 15px;
+            position: relative;
+            font-family: 'Work Sans', sans-serif;
+          "
+        >
+          {{ user.asesorasignado }}
+        </td>
+        <td
+          style="
+            left: 10px;
+            position: relative;
+            font-family: 'Work Sans', sans-serif;
+          "
+        >
+          {{ user.estadoatencion }}
+        </td>
         <td class="btn-container">
           <button class="btn-atencion" (click)="linkToDashboard($event)">
             Iniciar atención
