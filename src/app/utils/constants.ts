@@ -9,15 +9,15 @@ export class Categoria {
     tipo:[
       {
         id:1 ,
-        name:'AGENCIA DE VIAJES'
+        name:'GUÍA DE TURISMO'
       },
       {
         id:2 ,
-        name:'EMPRESA DE TIEMPO COMPARTIDO Y MULTIPROPIEDAD'
+        name:'ESTABLECIMIENTOS DE TRANSPORTE TERRESTRE AUTOMOTOR'
       },
       {
         id:3 ,
-        name:'EMPRESA DE TRANSPORTE TERRESTRE AUTOMOTOR'
+        name:'RESTAURANTES Y BARES TURÍSTICOS'
       },
       {
         id:4 ,
@@ -25,56 +25,48 @@ export class Categoria {
       },
       {
         id:5 ,
-        name:'ESTABLECIMIENTOS DE GASTRONOMIA Y BARES TURISTICOS'
+        name:'AGENCIAS DE VIAJES'
       },
       {
         id:6 ,
-        name:'GUIA DE TURISMO'
+        name:'EMPRESA DE TIEMPO COMPARTIDO Y MULTIPROPIEDAD'
       },
       {
         id:7 ,
         name:'OPERADORES PROFESIONALES DE CONGRESO FERIAS Y CONVENCIONES'
       },
-      {
-        id:8 ,
-        name:'OTROS TIPOS DE ALOJAMIENTO NO PERMANENTES'
-      },
-      {
-        id:9 ,
-        name:'VIVIENDA TURISTICA'
-      },
     ],
     agencias:[
     {
-      id:1,
+      id:5,
       name:'AGENCIA DE VIAJES OPERADORAS'
     },
     {
-      id:1,
+      id:5,
       name:'AGENCIA DE VIAJES Y DE TURISMO'
     },
     {
-      id:1,
+      id:5,
       name:'AGENCIA DE VIAJES MAYORISTAS'
     },
     {
-      id:2,
+      id:6,
       name:'COMERCIALIZADORA'
     },
     {
-      id:2,
+      id:6,
       name:'PROMOTORA'
     },
     {
-      id:2,
+      id:6,
       name:'PROMOTORA Y COMERCIALIZADORA'
     },
     {
-      id:3,
+      id:2,
       name: 'OPERADOR DE CHIVAS'
     },
     {
-      id:3,
+      id:2,
       name: 'TRANSPORTE TERRESTRE AUTOMOTOR ESPECIAL'
     },
     {
@@ -118,67 +110,67 @@ export class Categoria {
       name: 'GLAMPING'
     },
     {
-      id:5,
+      id:3,
       name: 'RESTAURANTES'
     },
     {
-      id:5,
+      id:3,
       name: 'RESTAURANTES DE AUTOSERVICIOS'
     },
     {
-      id:5,
+      id:3,
       name: 'RESTAURANTES DE COMIDAS RAPIDAS'
     },
     {
-      id:5,
+      id:3,
       name: 'COMIDAS CALLEJERAS QUE SE ENCUENTRAN REGLAMENTADAS Y DEBIDAMENTE AUTORIZADAS POR LOS GOBIERNOS LOCALES'
     },
     {
-      id:5,
+      id:3,
       name: 'CAMIONES DE COMIDA DEBIDAMENTE AUTORIZADOS POR LA AUTORIDAD LOCAL'
     },
     {
-      id:5,
+      id:3,
       name: 'FRUTERIAS'
     },
     {
-      id:5,
+      id:3,
       name: 'HELADERIAS'
     },
     {
-      id:5,
+      id:3,
       name: 'SALSAMENTARIAS'
     },
     {
-      id:5,
+      id:3,
       name: 'PANADERIAS,REPOSTERIAS,PASTELERIAS O CHOCOLATERIAS'
     },
     {
-      id:5,
+      id:3,
       name: 'CAFES O CAFETERIAS'
     },
     {
-      id:5,
+      id:3,
       name: 'PIQUETEADEROS'
     },
     {
-      id:5,
+      id:3,
       name: 'CEVICHERIAS Y PESCADERIAS'
     },
     {
-      id:5,
+      id:3,
       name: 'BARES CON MUSICA EN VIVO'
     },
     {
-      id:5,
+      id:3,
       name: 'BARES SOCIALES'
     },
     {
-      id:5,
+      id:3,
       name: 'GASTROBARES'
     },
     {
-      id:6,
+      id:1,
       name: 'GUIA DE TURISMO'
     },
     {
