@@ -26,41 +26,10 @@ export class AppDocumentacionComponent implements OnInit {
   anexoBVisible = false;
   anexoCVisible = false;
 
-  // visible = {
-  //   norma: false,
-  //   contexts: false,
-  //   subContexts: false,
-  //   liderazgo: false,
-  // };
-
   constructor() {}
-  ngOnInit(): void {
-    // this.toggleContent('norma');
-    // this.toggleContent('contexts');
-    // this.toggleContent('subContexts');
-    // this.toggleContent('liderazgo');
-  }
-
-  // toggleContent(name: string) {
-  //   Object.keys(this.visible).forEach(key => {
-  //     if (key !== name) {
-  //       this.visible[key] = false;
-  //     }
-  //   });
-  //   this.visible[name] = !this.visible[name];
-  // }
+  ngOnInit(): void {}
 
   toggleSection(section) {
-    // this.normaVisible = section === 'norma';
-    // this.contextsVisible = section === 'contexts';
-    // this.subContextsVisible = section === 'subContexts';
-    // this.liderazgoVisible = section === 'liderazgo';
-    // this.planificacionVisible = section === 'planificacion';
-    // this.subPlanificacionA = section === 'subPlanificacionA';
-    // this.subPlanificacionB = section === 'subPlanificacionB';
-    // this.apoyoVisible = section === 'apoyo';
-    // this.subApoyoVisible = section === 'subApoyo';
-
     if (section === 'norma') {
       this.normaVisible = !this.normaVisible;
     } else if (section === 'contexts') {
@@ -139,33 +108,6 @@ export class AppDocumentacionComponent implements OnInit {
   toggleSubContexts() {
     this.subContextsVisible = !this.subContextsVisible;
   }
-
-// toggleNorma() {
-  //   this.normaVisible = !this.normaVisible;
-  //   this.contextsVisible = false;
-  //   this.liderazgoVisible = false;
-  //   this.planificacionVisible = false;
-  // }
-
-  // toggleContexts() {
-  //   this.contextsVisible = !this.contextsVisible;
-  //   this.normaVisible = false;
-  //   this.liderazgoVisible = false;
-  //   this.planificacionVisible = false;
-  // }
-  // toggleLiderazgo() {
-  //   this.liderazgoVisible = !this.liderazgoVisible;
-  //   this.normaVisible = false;
-  //   this.contextsVisible = false;
-  //   this.planificacionVisible = false;
-  // }
-
-  // togglePlanificacion(){
-  //   this.planificacionVisible = !this.planificacionVisible;
-  //   this.normaVisible = false;
-  //   this.contextsVisible = false;
-  //   this.liderazgoVisible = false
-  // }
 
   toggleSubPlanificacionA(){
     this.subPlanificacionA = !this.subPlanificacionA;

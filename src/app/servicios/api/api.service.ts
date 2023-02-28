@@ -47,7 +47,11 @@ export class ApiService {
     let direccion = `${this.apiURL}/api/Usuario`
     return this.http.post<any>(direccion, request)
   }
-
+  sendEmailRecovery(request: any): Observable<any> {
+    debugger
+    let direccion = `${this.apiURL}/api/Usuario/EnviarEmail?correo=${request}`
+    return this.http.post<any>(direccion, request)
+  }
   refreshToken(token:string){
     return this.http.post(this.apiURL + 'refreshtoken', {
       refreshToken: token
@@ -66,7 +70,8 @@ export class ApiService {
 
   //para obtener la data de caracterizacion
   getData(): Observable<any> {
-    const id = localStorage.getItem('id');
+    debugger
+    const id = localStorage.getItem('Id');
     let caracterizacion = `${this.apiURL}/api/Usuario/caracterizacion/${id}`
     return this.http.get<any>(caracterizacion)
   }
@@ -94,6 +99,7 @@ export class ApiService {
     const observables = [];
   
     for (let i = 0; i < request.length; i++) {
+      debugger
       const respuesta = {
         valor: request[i].valor.toString(),
         idUsuarioPst: request[i].idUsuarioPst,
@@ -112,6 +118,31 @@ export class ApiService {
     return this.http.get<any>(assign,id)
   }
 
+  getDiagnostico(): Observable<any> {
+    const id = localStorage.getItem('id');
+    let diagnostico = `${this.apiURL}/api/Usuario/Diagnostico/${id}`
+    return this.http.get<any>(diagnostico)
+  }
+
+  saveDataDiagnostico(request: any): Observable<any[]> {
+    const diagnostico = `${this.apiURL}/api/Usuario/Diagnosticorespuesta`;
+    const categoriarnt = localStorage.getItem('id');
+    const observables = [];
+  
+    for (let i = 0; i < request.length; i++) {
+      
+      const respuesta = {
+        valor: request[i].valor.toString(),
+        idnormatecnica: request[i].idnormatecnica,
+        idusuario: request[i].idusuario,
+        numeralprincipal: request[i].numeralprincipal.toString(),
+        numeralespecifico: request[i].numeralespecifico.toString()
+      };
+      const observable = this.http.post<any>(diagnostico, respuesta);
+      observables.push(observable);
+    }
+    return of(observables).pipe(mergeMap(responses => forkJoin(responses)));
+  }
 }
   
 

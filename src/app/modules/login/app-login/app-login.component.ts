@@ -70,6 +70,14 @@ export class AppLoginComponent implements OnInit {
       icon.classList.remove('fa-eye');
     }
   }
+  recoveryPass(){
+    this.usuario.correo = this.loginForm.get('correo')?.value;
+    this.ApiService.sendEmailRecovery(this.usuario.correo).subscribe(
+      (data: any) => {
+        console.log(data, 'data recovery');
+      }
+    )
+  }
 
   // --------NO BORRAR------
   // onLoginA(form: any | LoginI){

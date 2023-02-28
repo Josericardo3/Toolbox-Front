@@ -30,9 +30,6 @@ export class AppCaracterizacionComponent implements OnInit {
 
   otherChecked: boolean = false;
   showDependency: boolean | any= false;
-  // // otherChecked: string | any;
-  // selectedIndex: number = -1;
-  // public checkboxStates: boolean[] = [];
   mostrarInput = false;
   idCaracterizacionDinamicaCondicion!: any;
   
@@ -55,9 +52,9 @@ export class AppCaracterizacionComponent implements OnInit {
   
   ngOnInit(): void {
     // this.http.get('http://10.4.3.140:8050/api/Usuario/caracterizacion/1')
-    // this.ApiService.getData() //para obtener datos de la api
-    var endpoint = 'https://www.toolbox.somee.com/api/Usuario/caracterizacion/' + localStorage.getItem('Id')
-    this.http.get(endpoint)
+    this.ApiService.getData() //para obtener datos de la api
+    // let id = localStorage.getItem("Id");
+    // this.http.get('https://www.toolbox.somee.com/api/Usuario/caracterizacion/'+id)
     // this.http.get('assets/datos.json')
     .subscribe((data: any) => {
       this.datos = data;
@@ -216,7 +213,6 @@ hasDepency(id: number) {
   numOfFields!: number;
 // saveForm(request:FormGroup){
   saveForm(){
-    debugger
     this.ApiService.saveData(this.valoresForm)
     .subscribe((data: any) => {
       console.log(data, 'new data')

@@ -1,12 +1,12 @@
 <app-app-header></app-app-header>
-<form class="controllerDiagnosticoDoc">
+<form class="controllerDiagnosticoDoc" (ngSubmit)="saveForm()">
     <h1>Formatos de descarga del formulario de diagnóstico</h1>
     <div>
-        <p>Descargar formato 1 | <a (click)="generatePDF()" >Documento PDF</a></p>
-        <p>Descargar formato 2 | <a (click)="generatePDF()" >Documento PDF</a></p>
-        <p>Descargar formato 3 | <a (click)="generatePDF()" >Documento PDF</a></p>
+        <p>Descargar diagnóstico      | <a (click)="generateDiagnostico()"> Documento PDF</a></p>
+        <p>Descargar lista de chequeo | <a>Documento PDF</a></p>
+        <p>Descargar plan de mejora   | <a>Documento PDF</a></p>
     </div>
-    <button type="submit" class="btn">Atrás</button>
+    <button type="submit" class="btn" >Atrás</button>
 </form>
 <app-app-footer></app-app-footer>
             

@@ -39,12 +39,16 @@ h2{
     color: #000000;
     margin: 5px 0 0 0;
 }
-label{
+label,
+p{
     margin: 10px 0;
     font-family: 'Work Sans', sans-serif;
     font-size: 16px;
-    color: #474749;
+    color: #000000;
     margin: 5px 0 5px 0;
+}
+p{
+    color: red !important;
 }
 input, textarea{ 
     background: #FFFFFF;
@@ -56,7 +60,14 @@ input, textarea{
     width: 60vw;
     font-family: 'Work Sans', sans-serif;
     font-size: 14px;
+    color: #000000;
 }
+/* input:disabled,
+textarea:disabled{
+    border: 2px solid #068460;
+    background-color: #f2f2f2fa;
+    color: #000000;
+} */
 .btn{
     margin: 20px 0 15px 0;
     height: 40px;
@@ -70,6 +81,12 @@ input, textarea{
     border: none;
     cursor: pointer;
 }
+
+.btn:disabled {
+    background-color: grey;
+    color: white;
+  }
+
 .cont{
     display: flex;
     flex-direction: row;

@@ -23,6 +23,7 @@ import { AppDiagnosticoDocComponent } from './modules/diagnosticoDoc/app-diagnos
 import { AppDocumentacionComponent } from './modules/documentacion/app-documentacion/app-documentacion.component';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { InterceptorService } from './servicios/interceptorService/interceptor.service';
+import { RecoveryComponent } from './recovery/app-recovery/recovery.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -39,6 +40,7 @@ import { InterceptorService } from './servicios/interceptorService/interceptor.s
     AppGestionDeUsuariosComponent,
     AppDiagnosticoDocComponent,
     AppDocumentacionComponent,
+    RecoveryComponent,
 
   ],
   imports: [

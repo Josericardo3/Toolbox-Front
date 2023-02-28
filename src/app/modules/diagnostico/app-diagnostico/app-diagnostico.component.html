@@ -17,53 +17,39 @@
   </div>
 </form> -->
 <form [formGroup]="formParent" class="controllerDiagnostico" (ngSubmit)="saveForm()">
-  <h1>{{datos.tituloPrincipal}}</h1>
-  
-    <div *ngFor="let campo of datos.campos" class="diagnostico">
-      <h3>{{campo.tituloprincipal}}</h3>
-      <div *ngFor="let subcampo of campo.listacampos" class="formDiagnostico">
-        <h2>{{subcampo.titulo}}</h2>
-        <label>Numero principal</label>
-        <input type="text" [value]="subcampo.numeralprincipal">
-        <label>Numero específico</label>
-        <input type="text" [value]="subcampo.numeralespecifico">
-        <label>Titulo del requisito</label>
-        <input type="text" [value]="subcampo.titulo">
-        <label>*Requisito</label>
-        <textarea type="text" [value]="subcampo.requisito" style="height: 200px"></textarea>
-        <label>*Posible evidencia</label>
-        <textarea type="text" [value]="subcampo.nombre_evidencia" style="height: 200px"></textarea>
-        <div class="cont">
-          <div *ngFor="let opcion of subcampo.desplegable" class="containerRadio">
-            <label>{{opcion.descripcion}}</label>
-            <div class="radio">
-              <input required type="radio" [value]="opcion.valor" name="radioOpciones" (change)="valorSeleccionado" 
-              (click)="valorSeleccionado = opcion.valor"> {{opcion.valor}}
+  <h1>{{datos.tituloPrincipal}}</h1> 
+  <p>Todos los campos con el asterisco (*) son obligatorios</p>
+    <div *ngFor="let campo of datos.campos; let j = index" class="diagnostico">
+        <h3>{{campo.tituloprincipal}}</h3>
+        <div *ngFor="let subcampo of campo.listacampos; let i = index" class="formDiagnostico">
+          <h2>{{subcampo.titulo}}</h2>  
+          <label>Numero principal</label>
+          <input type="text" [value]="subcampo.numeralprincipal" disabled="true" [id]="'requisito-' + i">
+          <label>Numero específico</label>
+          <input type="text" [value]="subcampo.numeralespecifico" disabled="true" [id]="'requisito-' + i">
+          <label>Titulo del requisito</label>
+          <input type="text" [value]="subcampo.titulo" disabled="true" [id]="'requisito-' + i">
+          <label>*Requisito</label>
+          <textarea type="text" [value]="subcampo.requisito" style="height: 200px" disabled="true" [id]="'requisito-' + i"></textarea>
+          <label>*Posible evidencia</label>
+          <textarea type="text" [value]="subcampo.nombre_evidencia" style="height: 200px" disabled="true" [id]="'requisito-' + i"></textarea>
+          <div class="cont">
+            <div *ngFor="let opcion of subcampo.desplegable" class="containerRadio">
+              <label>{{opcion.descripcion}}<span style="color: red;">*</span></label>
+              <div class="radio">
+                <input type="radio" [value]="opcion.item" [name]="i" (change)="capturarValor(i, $event, opcion.item, subcampo.numeralespecifico)" 
+                (click)="valorSeleccionado = opcion.item" [id]="subcampo.numeralespecifico" (change)="opcionSeleccionada = true"> {{opcion.valor}}
+              </div>
             </div>
           </div>
+          <label>Observacion</label>
+          <textarea type="text" style="height: 200px" [id]="'observacion-' + subcampo.numeralespecifico" 
+          (input)="capturarValorObs(i, $event, 'observacion-' + subcampo.numeralespecifico)" class="obs"></textarea>
+          <div class="linea"></div>
         </div>
-        <label>Observacion</label>
-        <textarea type="text" [value]="subcampo.observacion" style="height: 200px"></textarea>
-        <div class="linea"></div>
-      </div>
-        <!-- <label>{{ campo.nombre }}</label>
-        <div [ngSwitch]="campo.tipodedato">
-
-          <input *ngSwitchCase="'string'" type="text" [formControlName]="campo.campo_local">
-
-          <textarea *ngSwitchCase="'textarea'" type="text" [formControlName]="campo.campo_local"></textarea>
-          <div *ngIf="campo.nombre == 'Observaciones'" class="linea"></div>
-          
-          <div *ngSwitchCase="'radio'" class="containerRadio">
-              <div *ngFor="let opcion of campo.desplegable" class="radio">
-                <input type="radio" [formControlName]="campo.campo_local" [value]="opcion.id" 
-                name="{{campo.iddiagnostico}}"> 
-                {{opcion.nombre}}
-              </div>
-          </div>
-        </div>  -->
     </div>
-  <button type="submit" class="btn">Guardar</button>
+    <!-- <button type="button" class="btn" [disabled]="!opcionSeleccionada" (click)="siguienteFormulario()">Siguiente</button> -->
+  <button type="submit" class="btn" [disabled]="!opcionSeleccionada">Guardar</button>
 </form>
 <app-app-footer></app-app-footer>
 <ngx-spinner></ngx-spinner>
