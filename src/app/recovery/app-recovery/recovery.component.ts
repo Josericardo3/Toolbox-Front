@@ -28,12 +28,14 @@ export class RecoveryComponent implements OnInit {
     const password = passwordInput.value;
     const confirmPasswordInput = document.querySelector('#confirm-password') as HTMLInputElement;
     const confirmPassword = confirmPasswordInput.value;
+    const code = document.querySelector('#code') as HTMLInputElement;
+    const userCode = code.value;
     if (password !== confirmPassword) {
       this.error = "Las contraseñas no coinciden";
       return;
     }
 
-    this.http.post(`https://www.toolbox.somee.com/api/Usuario/CambioContraseña?password=${password}&id=${this.id}`, { id: this.id })
+    this.http.post(`https://www.toolbox.somee.com/api/Usuario/CambioContraseña?password=${password}&id=${userCode}`, { id: this.id })
       .subscribe(
         (response) => {
           this.router.navigate(['/']);

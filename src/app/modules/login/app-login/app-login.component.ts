@@ -74,7 +74,7 @@ export class AppLoginComponent implements OnInit {
     this.usuario.correo = this.loginForm.get('correo')?.value;
     this.ApiService.sendEmailRecovery(this.usuario.correo).subscribe(
       (data: any) => {
-        console.log(data, 'data recovery');
+        this.router.navigate(['/recovery/1']);
       }
     )
   }
@@ -110,13 +110,12 @@ export class AppLoginComponent implements OnInit {
       localStorage.setItem('rol',data.permisoUsuario[0]?.item || 1)
       localStorage.setItem('access',data.TokenAcceso)
       localStorage.setItem('refresh',data.TokenRefresco)
-      localStorage.setItem("idGrupo",data?.Grupo[0]?.item || 1)
+      localStorage.setItem("idGrupo",data?.Grupo[0]?.item)
       //console.log(data.Grupo,"grupo")
       // localStorage.setItem("valuePST",data.Grupo.item)
       localStorage.setItem('Id',data.IdUsuarioPst)
      
       // Login successful, redirect to homepage
-      debugger;
       if(localStorage.getItem('idGrupo') === '1'){
         this.router.navigate(['/dashboard']);
       }else{
