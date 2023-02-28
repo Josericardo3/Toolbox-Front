@@ -183,7 +183,7 @@ export class AppDiagnosticoDocComponent implements OnInit {
                 {},
               ]),
               [
-                {Text: 'grafica', colSpan: 5, alignment: 'center'},
+                {text: 'grafica', colSpan: 5, alignment: 'center'},
                 {},
                 {},
                 {},
