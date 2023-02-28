@@ -110,14 +110,14 @@ export class AppLoginComponent implements OnInit {
       localStorage.setItem('rol',data.permisoUsuario[0]?.item || 1)
       localStorage.setItem('access',data.TokenAcceso)
       localStorage.setItem('refresh',data.TokenRefresco)
-      localStorage.setItem("idGrupo",data.Grupo[0].item)
+      localStorage.setItem("idGrupo",data?.Grupo[0]?.item || 1)
       //console.log(data.Grupo,"grupo")
       // localStorage.setItem("valuePST",data.Grupo.item)
       localStorage.setItem('Id',data.IdUsuarioPst)
      
       // Login successful, redirect to homepage
       debugger;
-      if(data.Grupo[0].item === 1){
+      if(localStorage.getItem('idGrupo') === '1'){
         this.router.navigate(['/dashboard']);
       }else{
         this.router.navigate(['/gestionUsuario']);
