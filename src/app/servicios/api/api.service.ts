@@ -118,14 +118,14 @@ export class ApiService {
   }
 
   getDiagnostico(): Observable<any> {
-    const id = localStorage.getItem('Id');
+    const id = 1;//localStorage.getItem('Id');
     let diagnostico = `${this.apiURL}/api/Diagnostico/Diagnostico/${id}`
     return this.http.get<any>(diagnostico)
   }
 
   saveDataDiagnostico(request: any): Observable<any[]> {
     const diagnostico = `${this.apiURL}/api/Diagnostico/Diagnosticorespuesta`;
-    const categoriarnt = localStorage.getItem('id');
+    const categoriarnt = localStorage.getItem('Id');
     const observables = [];
   
     for (let i = 0; i < request.length; i++) {
