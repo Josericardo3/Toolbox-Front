@@ -118,7 +118,7 @@ export class ApiService {
   }
 
   getDiagnostico(): Observable<any> {
-    const id = localStorage.getItem('id');
+    const id = localStorage.getItem('Id');
     let diagnostico = `${this.apiURL}/api/Usuario/Diagnostico/${id}`
     return this.http.get<any>(diagnostico)
   }
