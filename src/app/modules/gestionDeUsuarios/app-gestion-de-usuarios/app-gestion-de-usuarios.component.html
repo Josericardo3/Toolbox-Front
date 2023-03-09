@@ -1,88 +1,99 @@
 <app-app-header></app-app-header>
-<div class="titulo">
-  Gestión de Usuarios
-  <!-- <div class="usuario">
-    <label>Melissa Gutmont</label>
-</div> -->
-</div>
-<div class="subtitulo">
-  <label>RNT</label>
-  <input type="text" (change)="filterRnt($event)" />
-  <label>Empresa</label>
-  <input type="text" (change)="filterEmpresa($event)" />
-  <label>Asesor</label>
-  <input type="text" (change)="filterAsesor($event)" />
-  <label class="padding-label">Estado</label>
-  <select name="select" (change)="filterEstado($event)">
-    <option *ngFor="let element of dataUser" class="option">
-      {{ element.estadoatencion }}
-    </option>
-  </select>
-  <!-- <label>Buscar</label>
-    <input type="text"/> -->
-</div>
-<div>
-  <table class="content-table">
-    <thead>
-      <tr>
-        <th>RNT</th>
-        <th>Empresa</th>
-        <th>Asesor</th>
-        <th>Estado</th>
-        <th width="26%">Acción</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let user of dataUser">
-        <td>{{ user.rnt }}</td>
-        <td
-          style="
-            left: 88px;
-            position: relative;
-            font-family: 'Work Sans', sans-serif;
-          "
-        >
-          {{ user.nombrepst }}
-        </td>
-        <td
-          style="
-            left: 88px;
-            position: relative;
-            font-family: 'Work Sans', sans-serif;
-          "
-        >
-          {{ user.asesorasignado }}
-        </td>
-        <td
-          style="
-            left: 67px;
-            position: relative;
-            font-family: 'Work Sans', sans-serif;
-          "
-        >
-          {{ user.estadoatencion }}
-        </td>
-        <td class="btn-container">
-          <button class="btn-atencion" (click)="linkToDashboard($event)">
-            Iniciar atención
-          </button>
-          <button class="btn-atencion">Asignar asesor</button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-  <!-- <pagination [boundaryLinks]="showBoundaryLinks" 
-            [directionLinks]="showDirectionLinks" 
-            [totalItems]="contentArray.length"
-            [itemsPerPage]="5"
-            (pageChanged)="pageChanged($event)">
-          </pagination> -->
+<!DOCTYPE html>
+<html lang="en">
 
-  <!-- <pagination style="float:right;" boundaryLinks="true"
-           totalItems="filtroEspacio.TotalRegistros"
-           itemsPerPage="filtroEspacio.Filas" maxSize="3"
-           [(ngModel)]="filtroEspacio.Pagina"
-           previousText="&lsaquo;"
-nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;">
-</pagination> -->
-</div>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+ 
+  <div class="container-gestion">
+    <div class="titulo">
+      Gestión de Usuarios
+      <div>
+        <button class="btn-registrar" (click)="openModalNuevoAsesor()">Registrar un nuevo asesor</button>
+      </div>
+    </div>
+    <div class="subtitulo">
+      <label>RNT</label>
+      <input type="text" [value]="rnt" (change)="capturarValorE($event)"/>
+      <button (click)="filterRnt()" class="buscar">Buscar</button>
+      <label>Empresa</label>
+      <input type="text" [value]="razonsocial" (change)="capturarValorE($event)" />
+      <button (click)="filterEmpresa()" class="buscar">Buscar</button>
+      <label>Asesor</label>
+      <input type="text" (change)="capturarValorE($event)" />
+      <button (click)="filterAsesor()" class="buscar">Buscar</button>
+      <label class="padding-label">Estado</label>
+      <select  (click)="filterEstado($event) "(change)="capturarValorE($event)" >
+        <option  *ngFor="let element of arrEstado"  >
+          {{ element }}
+        </option>
+      </select>
+    </div>  
+    <div>
+      <table class="table-gestion">
+        <thead>
+          <tr>
+            <th scope="col">RNT</th>
+            <th scope="col">Empresa</th>
+            <th scope="col">Asesor</th>
+            <th scope="col">Estado</th>
+            <th scope="col" style="text-align: center;">Acción</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let user of returnedArray">
+            <th scope="row"> {{ user.rnt }}</th>
+            <td> {{ user.razonsocial }}</td>
+            <td>{{ user.asesorasignado }}</td>
+            <td>{{ user.estadoatencion }}</td>
+            <td class="btn-container">
+              
+              <button type="button" class="btn btn-default btn-atencion" (click)="linkToDashboard(user)">
+                Iniciar atención
+              </button>
+              <button type="button" class="btn btn-default btn-asignar" (click)="nuevoAsesor(user)">Asignar asesor</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <!-- paginacion -->
+ 
+    <div class="page-style">
+      <tr>
+        <td colspan="7">
+            <div style="float:left;">
+                <label class="paginas" style="padding: 6px 12px; margin-bottom: 20px; margin-top: 20px;  border-left-width: 1px; border-top-width: 1px; font-family:'Work Sans', sans-serif;">
+                    Página: {{ pages}} / {{filtroTable.TotalPaginas}} Registros: {{filtroTable.TotalRegistros}}
+                </label>
+            </div>
+            <pagination style="float:right;" class="page-item" [boundaryLinks]="true" [totalItems]="dataInitial.length" 
+             [maxSize]="3"
+            (pageChanged)="pageChanged($event)"  
+             previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;">
+            </pagination>
+        </td>
+      </tr>
+    </div>
+    </div>
+    
+    <!-- modal -->   
+    <div id="modalPst"  *ngIf="isOpen">
+      <div class="modal-background" >
+        <div class="modal-content">
+          <div class="modal-title">
+            <select name="select" id="select-pst" [(ngModel)]="opcionSeleccionado" (change)="capturarValueSelect($event)" >
+                <option value="" selected>Selecciona un Asesor</option>
+                <option *ngFor="let element of arrListAsesor"  [ngValue]="element" selected>{{element.nombre}}</option>
+              </select>
+              
+            </div>
+              <div class="btn-grup">
+                <button type="button" class="modal-btn"  (click)="updateNewAsesor()" >OK</button>
+                <button type="button" class="modal-btn-cancel" (click)="cerrar()">Cancelar</button>
+              </div>
+        </div>
+        </div>
+    </div>
+</html>
+

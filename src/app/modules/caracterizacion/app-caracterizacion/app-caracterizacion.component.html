@@ -33,6 +33,13 @@
                 <option *ngFor="let opcion of campo.desplegable" [value]="opcion.id">{{opcion.nombre}}</option>
             </select>
           </div>
+
+          <div *ngSwitchCase="'option'">
+            <select [formControlName]="campo.ffcontext" id="id-del-select" 
+            [id]="i" (ngModelChange)="capturarValor(i, $event, campo.idcaracterizaciondinamica)">
+                <option *ngFor="let opcion of campo.municipios" [value]="opcion.municipio">{{opcion.municipio}}</option>
+            </select>
+          </div>
    
             <div *ngIf="campo.mensaje != 'dependencia'">
               <div *ngSwitchCase="'checkbox'" class="containerCheck">
@@ -49,13 +56,13 @@
             </div>
           </div>
            
-          <div *ngSwitchCase="'checkbox'" class="containerCheck">
+          <!-- <div *ngSwitchCase="'checkbox'" class="containerCheck">
             <div *ngFor="let opcion of campo.municipios" class="check">
               <input type="checkbox" [formControlName]="campo.ffcontext" [value]="opcion.municipio" 
                 class="checkbox" [id]="i" (ngModelChange)="capturarValor(i, $event, campo.idcaracterizaciondinamica)">           
                 {{opcion.municipio}}
             </div>
-          </div>
+          </div> -->
         
           <div *ngSwitchCase="'radio'" class="containerRadio">
             <div *ngFor="let opcion of campo.desplegable" class="radio">

@@ -4,12 +4,13 @@ import {
   ComponentFactoryResolver,
 } from '@angular/core'
 import { Router } from '@angular/router'
-import { FormGroup, Validators, FormBuilder } from '@angular/forms'
+import { FormGroup, Validators, FormBuilder,FormControl } from '@angular/forms'
 import { CustomValidators } from '../../../models/customeValidator'
 import { ApiService } from '../../../servicios/api/api.service'
 import { Store } from '@ngrx/store'
 import 'jquery-ui/ui/widgets/dialog.js'
 import { Categoria } from '../../../utils/constants'
+
 
 @Component({
   selector: 'app-app-register',
@@ -17,6 +18,17 @@ import { Categoria } from '../../../utils/constants'
   styleUrls: ['./app-register.component.css'],
 })
 export class AppRegisterComponent implements OnInit {
+  password: string = '';
+  repeatPassword: string = '';
+  showPassword: boolean = false;
+  showRepeatPassword: boolean = false;
+
+
+
+  telefono = new FormControl('', [
+    Validators.required,
+    Validators.pattern(/^\d{10}$/)
+  ])
   showModalSuccess:any
   data: any
   arrAgency: any
@@ -26,7 +38,7 @@ export class AppRegisterComponent implements OnInit {
     private router: Router,
     private formBuilder: FormBuilder,
     private ComponentFactoryResolver: ComponentFactoryResolver,
-    private ApiService: ApiService,
+    public ApiService: ApiService,
     private categoria: Categoria,
     private store: Store<{ dataLogin: any }>,
   ) {}
@@ -50,7 +62,8 @@ export class AppRegisterComponent implements OnInit {
             Validators.required,
           ]),
         ],
-        telefonoDelPst: ['', Validators.required],
+        // telefonoDelPst: ['', Validators.required], 
+       
         nombreDelRepresenteLegal: ['', Validators.required],
         correoRepresentanteLegal: [
           '',
@@ -89,7 +102,7 @@ export class AppRegisterComponent implements OnInit {
             Validators.maxLength(12),
           ]),
         ],
-        confirmPassword: [null, Validators.compose([Validators.required])],
+        confirmPassword: ['', Validators.compose([Validators.required])],
         checkbox: ['', Validators.required],
       },
       {
@@ -103,8 +116,8 @@ export class AppRegisterComponent implements OnInit {
     //console.log(evt.target.options.selectedIndex, 'categoria valor')
     //console.log(this.data, 'data', this.categoria)
     const filterCategory = this.categoria.name.agencias.filter(
-      (agency: { id: number; name: string }) =>
-        agency.id === evt.target.options.selectedIndex
+      (agency: { id_categoria: number; name: string }) =>
+        agency.id_categoria === evt.target.options.selectedIndex
     )
  
     this.arrAgency = filterCategory.sort();
@@ -115,7 +128,8 @@ export class AppRegisterComponent implements OnInit {
   }
 
   setDepartments(evt: any) {
-    let departments: any[] = []
+    let departments: any[] = [];
+    let departmentsCode: any[] = [];
     //console.log(evt?.target?.value,"departa");
     let select = document.getElementById(
       'selectDepartment',
@@ -128,15 +142,28 @@ export class AppRegisterComponent implements OnInit {
           // esta linea llena el array
           if (select != null && departments.length === 0) {
             departments = Array.from(
-              new Set(data.map((item: any) => item.dpto)),
+              new Set(data.map((item: any) => {
+                console.log(item,"nuevoItem")
+                return item.dpto
+              })),
+            )
+            departmentsCode = Array.from(
+              new Set(data.map((item: any) => {
+                console.log(item,"nuevoItem")
+                return item.cod_depto
+              })),
             )
             select.add(new Option('Seleccione un departamento', '0'))
-            departments.forEach((item: any) => {
+            departments.forEach((item: any,index) => {
               let option = document.createElement('option')
-              //console.log(departments,"actualdeparta")
+              option.id = departmentsCode[index]
+              console.log(item,"item")
               option.text = item
+              console.log(option,"option")
               select.add(option)
+
             })
+           
           }
         })
     }
@@ -213,57 +240,66 @@ export class AppRegisterComponent implements OnInit {
   }
 
   closeModal(evt: any) {
+    console.log(this.registerForm,"aca esta el errror")
     evt.defaultPrevented
     // console.log(evt, 'evt')
     const modal = document.querySelector('#modalTerminos') as HTMLInputElement
-    modal.classList.remove('active')
+    modal.classList.remove('active');
+    this.registerForm.controls['checkbox'].setValue(true);
+    //this.VendedorForm.controls['identidad'].setValue(response.body.data.identidad);
+    
   }
 
   saveUser() {
-    //console.log(this.registerForm.get('subcategoriaRnt')?.value, 'valores')
+    console.log(this.registerForm.get("departamento"), 'valores')
     const request = {
       //usuariopst: this.registerForm.get('categoriaRnt')?.value.id,
-      nit: this.registerForm.get('numeroDeIdentificacionTributaria')?.value,
-      rnt: this.registerForm.get('registroNacionalDeTurismo')?.value,
-      idCategoriaRnt: this.registerForm.get('categoriaRnt')?.value.id,
-      idSubCategoriaRnt: this.registerForm.get('subcategoriaRnt')?.value.id,
-      nombrePst: this.registerForm.get('nombreDelPst')?.value,
-      razonSocialPst: this.registerForm.get('razonSocialDelPst')?.value,
-      correoPst: this.registerForm.get('correo')?.value,
-      telefonoPst: this.registerForm.get('telefonoDelPst')?.value,
+      nit: this.registerForm.get("numeroDeIdentificacionTributaria")?.value,
+      rnt: this.registerForm.get("registroNacionalDeTurismo")?.value,
+      idCategoriaRnt: this.registerForm.get("categoriaRnt")?.value.id,
+      idSubCategoriaRnt: this.registerForm.get("subcategoriaRnt")?.value.id,
+      nombrePst: this.registerForm.get("nombreDelPst")?.value,
+      razonSocialPst: this.registerForm.get("razonSocialDelPst")?.value,
+      correoPst: this.registerForm.get("correo")?.value,
+      telefonoPst: this.registerForm.get("telefono")?.value,
       nombreRepresentanteLegal: this.registerForm.get(
-        'nombreDelRepresenteLegal',
+        "nombreDelRepresenteLegal",
       )?.value,
       correoRepresentanteLegal: this.registerForm.get(
-        'correoRepresentanteLegal',
+        "correoRepresentanteLegal",
       )?.value,
       telefonoRepresentanteLegal: this.registerForm.get(
-        'telefonoDelRepresentanteLegal',
+        "telefonoDelRepresentanteLegal",
       )?.value,
-      idTipoIdentificacion: 1,
+      idTipoIdentificacion: 1,//modificado
       identificacionRepresentanteLegal: this.registerForm.get(
-        'identificacionDelRepresentanteLegal',
+        "identificacionDelRepresentanteLegal",
       )?.value,
-      idDepartamento: 1,
-      idMunicipio: 1,
+      idDepartamento:this.registerForm.get("departamento")?.value,
+      idMunicipio:this.registerForm.get("municipio")?.value,
       nombreResponsableSostenibilidad: this.registerForm.get(
-        'nombreDelResponsableDeSostenibilidad',
+        "nombreDelResponsableDeSostenibilidad",
       )?.value,
       correoResponsableSostenibilidad: this.registerForm.get(
-        'correoDelResponsableDeSostenibilidad',
+        "correoDelResponsableDeSostenibilidad",
       )?.value,
       telefonoResponsableSostenibilidad: this.registerForm.get(
-        'telefonoDelResponsableDeSostenibilidad',
+        "telefonoDelResponsableDeSostenibilidad",
       )?.value,
-      password: this.registerForm.get('password1')?.value,
+      password: this.registerForm.get("password1")?.value,
       idTipoAvatar: 1,
     }
-    //console.log(request, 'newrequest')
-    return this.ApiService.createUser(request).subscribe((data: any) => {
-      if (data.statusCode === 201) {
+
         localStorage.setItem("newUser",'yes')
         const modalInicial = document.querySelector("#modal-success") as HTMLElement;
         modalInicial.style.display = "block";
+    //console.log(request, 'newrequest')
+    return this.ApiService.createUser(request).subscribe((data: any) => {
+      if (data.statusCode === 201) {
+       
+
+
+
       // setTimeout(() => {
       //   this.router.navigate(['/dashboard']); 
       // }, 3000);

@@ -18,12 +18,18 @@ import { AppCaracterizacionComponent } from './modules/caracterizacion/app-carac
 import { AppDiagnosticoComponent } from './modules/diagnostico/app-diagnostico/app-diagnostico.component';
 import { AppModalInicialComponent } from './modules/modal/app-modal-inicial/app-modal-inicial.component';
 import { AppModalSuccessComponent } from './modules/modal-success/app-modal-success/app-modal-success.component';
-import {AppGestionDeUsuariosComponent } from './modules/gestionDeUsuarios/app-gestion-de-usuarios/app-gestion-de-usuarios.component'; 
+import {AppGestionDeUsuariosComponent } from './modules/gestionDeUsuarios/app-gestion-de-usuarios/app-gestion-de-usuarios.component';
+import { AppModalPstComponent } from './modules/modalPst/app-modal-pst/app-modal-pst.component'; 
+import { ModalModule, BsModalService } from 'ngx-bootstrap/modal';
+import { CommonModule } from '@angular/common';
+import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { AppDiagnosticoDocComponent } from './modules/diagnosticoDoc/app-diagnostico-doc/app-diagnostico-doc.component';
 import { AppDocumentacionComponent } from './modules/documentacion/app-documentacion/app-documentacion.component';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { InterceptorService } from './servicios/interceptorService/interceptor.service';
+import { AppEvidenciaComponent } from './modules/evidencia/app-evidencia/app-evidencia.component';
 import { RecoveryComponent } from './recovery/app-recovery/recovery.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -38,8 +44,10 @@ import { RecoveryComponent } from './recovery/app-recovery/recovery.component';
     AppModalInicialComponent,
     AppModalSuccessComponent,
     AppGestionDeUsuariosComponent,
+    AppModalPstComponent,
     AppDiagnosticoDocComponent,
     AppDocumentacionComponent,
+    AppEvidenciaComponent,
     RecoveryComponent,
 
   ],
@@ -49,13 +57,17 @@ import { RecoveryComponent } from './recovery/app-recovery/recovery.component';
     FormsModule,
     ReactiveFormsModule, 
     StoreModule.forRoot({ data: stateReducer }),
+    ModalModule.forRoot(),
     HttpClientModule,
     DirectivesModule,
+    ModalModule,
+    CommonModule,
     BrowserAnimationsModule,
-    NgxSpinnerModule
+    NgxSpinnerModule,
+    PaginationModule.forRoot()
   ],
-
-  providers: [
+  providers: 
+    [
     { provide: HTTP_INTERCEPTORS,  useClass: InterceptorService, multi: true },
   ],
 

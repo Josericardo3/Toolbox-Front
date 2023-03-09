@@ -74,27 +74,11 @@ export class AppLoginComponent implements OnInit {
     this.usuario.correo = this.loginForm.get('correo')?.value;
     this.ApiService.sendEmailRecovery(this.usuario.correo).subscribe(
       (data: any) => {
-        this.router.navigate(['/recovery/1']);
+        console.log(data, 'data recovery');
       }
     )
   }
 
-  // --------NO BORRAR------
-  // onLoginA(form: any | LoginI){
-  //   console.log("entre", form)
-  //     this.api.login(form)
-  //     .subscribe(data => {
-  //       console.log(data, 'DATA DE LA API')
-  //       // let dataResponse: ResponseI = data
-  //       // if (dataResponse.status == 'ok') {
-  //       //   localStorage.setItem("token", dataResponse.result.token);
-  //       //   this.router.navigate(['dashboard']);
-  //       // }
-  //     })
-  //   }
-
-
-  //Mel guardado en local storage localStorage.setItem('usuario',data)
  onLogin(){
   console.log('onLogin')
   this.usuario.correo = this.loginForm.get('correo')?.value;
@@ -110,38 +94,38 @@ export class AppLoginComponent implements OnInit {
       localStorage.setItem('rol',data.permisoUsuario[0]?.item || 1)
       localStorage.setItem('access',data.TokenAcceso)
       localStorage.setItem('refresh',data.TokenRefresco)
-      localStorage.setItem("idGrupo",data?.Grupo[0]?.item)
+      localStorage.setItem("idGrupo",data.Grupo[0].item)
       //console.log(data.Grupo,"grupo")
       // localStorage.setItem("valuePST",data.Grupo.item)
       localStorage.setItem('Id',data.IdUsuarioPst)
-     
-      // Login successful, redirect to homepage
-      if(localStorage.getItem('idGrupo') === '1'){
-        this.router.navigate(['/dashboard']);
-      }else{
-        this.router.navigate(['/gestionUsuario']);
-      }
-     
-      console.log('ingresó al dash')
 
-    this.ApiService.getNorma(data.IdUsuarioPst)
-    .subscribe((data:any)=>{
-      console.log(data,"datanueva")
-        if(data[0].idCategoriarnt === 5 ||data[0].idCategoriarnt === 2){
-          this.arrResult = data;//remplazar arriba
-          localStorage.setItem('norma',JSON.stringify(this.arrResult))
-          const modalInicial = document.querySelector("#modal-inicial") as HTMLElement;
-          modalInicial.style.display = "block"; 
-        }else{
-          this.arrResult = data;
-          localStorage.setItem('norma',JSON.stringify(this.arrResult))
-          localStorage.setItem("normaSelected",data[0].norma);
-          this.router.navigate(['/dashboard']);
-        }
-    
-    //   //data.idCategoriaRnt=5;//prueba
-      
-    })
+      console.log(data.Grupo[0].item,"valor buscado")
+      if(data.Grupo[0].item=== 1){
+        //usuario pst normal
+        this.ApiService.getNorma(data.IdUsuarioPst)
+        .subscribe((data:any)=>{
+          debugger;
+          console.log(data,"datanueva")
+            if(data[0].idCategoriarnt === 5 ||data[0].idCategoriarnt === 2){
+              this.arrResult = data;
+              debugger;
+              localStorage.setItem('norma',JSON.stringify(this.arrResult))
+              const modalInicial = document.querySelector("#modal-inicial") as HTMLElement;
+              modalInicial.style.display = "block"; 
+            }else{
+              this.arrResult = data;
+              localStorage.setItem('norma',JSON.stringify(this.arrResult))
+              localStorage.setItem("normaSelected",data[0].norma);
+              this.router.navigate(['/dashboard']);
+            }
+        })
+       
+      }else{
+       // cuando el item es != de 1 es un asesor
+       this.router.navigate(['/gestionUsuario']);
+      }
+
+   
   }, 
   (e: HttpErrorResponse) => {
     e.status

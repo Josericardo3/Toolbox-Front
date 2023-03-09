@@ -1,0 +1,18 @@
+
+<div id="modalPst">
+  <div class="modal-background"><!--*ngIf="isOpen" -->
+    <div class="modal-content">
+      <div class="modal-title">
+        <select name="select" id="select-pst" [(ngModel)]="opcionSeleccionado" (change)="capturarValueSelect($event)" >
+            <option value="0">Selecciona una opción</option>
+            <option *ngFor="let element of resListAsesor"  [ngValue]="element" selected>{{element.nombre}}</option>
+          </select>
+          
+        </div>
+          <div class="btn-grup">
+            <button type="button" class="modal-btn" (click)="saveAsesor($event)">OK</button>
+            <button type="button" class="modal-btn-cancel" >Cancelar</button>
+          </div>
+    </div>
+    </div>
+</div>

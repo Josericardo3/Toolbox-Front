@@ -1,14 +1,19 @@
-.container{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background:#068460;
-    color: white;
-    font-size: 48px;
-    height: 48px;
-    padding-right: 13px;
-    cursor: pointer;
-  }
+
+.password-toggle {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 0.5rem;
+  cursor: pointer;
+}
+
+.password-toggle i {
+  font-size: 1.25rem;
+}
+  
+  
+  
   
   .item-1:active{
     background-color: green;
@@ -16,7 +21,7 @@
 
   .grid-img{
     justify-items: center;
-    margin: 61px 110px 60px 110px;
+    margin: 72px 110px 60px 110px;
     display: grid;
     grid-template-rows: repeat(3, 1fr);
     grid-template-columns: repeat(3, 1fr);
@@ -35,8 +40,10 @@
     font-size: 14px;
     display: flex;
     justify-content: end;
-    margin: 15px 50px 6px 26px !important;
+    margin: 104px 50px 6px 26px !important;
     cursor: pointer;
+    flex-direction: row;
+    justify-content: flex-end;
   }
 
   .button-cerrar:hover{
@@ -62,8 +69,9 @@
 }
 
 .container-norma{
-  display:flex;
-  margin: 0px 10px 20px 20px;
+  display: flex;
+  margin: -42px 10px 20px 20px;
+  flex-direction: row-reverse;
 }
 
 select{

@@ -1,12 +1,12 @@
-export interface FiltroProductoLista {
-    Modo                   : number;
-    Filtro                 : string;
-    Orden                  : string;
+export interface FiltroTableLista {
+    RNT                   : number;
+    Estado                  : string;
     Filas                  : number;
     Pagina                 : number;
     Empresa?               : any;
-    Codigo?                : string;
-    TotalPaginas?          : number;
+    Asesor?                : string;
+    TotalPaginas          : any;
     TotalRegistros?        : number;
-    [key: string]          : any;
   };
+
+    

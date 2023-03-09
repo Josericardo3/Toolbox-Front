@@ -39,8 +39,12 @@ export class AppDashboardComponent implements OnInit {
     //PG this.counter$= store.select('initialState')
     // console.log(this.counter$,'counter')
   }
-
+  
   ngOnInit(): void {
+    debugger;
+    //borrar
+    var arrNormas = JSON.parse(localStorage.getItem('norma')||'');
+    var normaSelected = localStorage.getItem("normaSelected");
     //prueba global selectFeatureCount
   }
 

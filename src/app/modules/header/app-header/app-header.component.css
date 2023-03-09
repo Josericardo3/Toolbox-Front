@@ -1,14 +1,16 @@
-.container{
-    display: flex;
-    background:#068460;
-    color: white;
-    font-size: 48px;
-    height: 48px;
-    cursor: pointer;
-  }
 
+.container{
+  width: 100%;
+  background-color: #068460;
+  position: fixed;
+  top: 0;
+  z-index: 999;
+  }
+.logo{
+  padding: 12px 10px;
+  cursor: pointer;
+}
   .logo-escudo{
-    width: 136px;
-    height: 24px;
-    margin: -3px 17px 0px 86px !important;
-  } 
+    height: 32px;
+    
+}

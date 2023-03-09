@@ -1,15 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-app-documentacion',
-  templateUrl: './app-documentacion.component.html',
-  styleUrls: ['./app-documentacion.component.css']
+  selector: 'app-app-evidencia',
+  templateUrl: './app-evidencia.component.html',
+  styleUrls: ['./app-evidencia.component.css']
 })
-export class AppDocumentacionComponent implements OnInit {
+export class AppEvidenciaComponent implements OnInit{
 
   lastVisible: any;
 
-  normaVisible = false;
   contextsVisible = false;
   subContextsVisible = false;
   liderazgoVisible = false;
@@ -26,22 +25,11 @@ export class AppDocumentacionComponent implements OnInit {
   anexoBVisible = false;
   anexoCVisible = false;
 
-  normaSelected: string;
-  ntc: string;
-  pdfUrl: string;
-
   constructor() {}
-  ngOnInit(): void {
-    this.normaSelected = localStorage.getItem('normaSelected');
-    this.ntc = this.normaSelected.substring(0, 8);
-    console.log(this.ntc);
-    // this.pdfUrl = `../../../../assets/DOCS/Norma/${this.ntc}-MATRIZ REQUISITOS LEGALES-Aprobada V2.pdf`;
-  }
+  ngOnInit(): void {}
 
   toggleSection(section) {
-    if (section === 'norma') {
-      this.normaVisible = !this.normaVisible;
-    } else if (section === 'contexts') {
+ if (section === 'contexts') {
       this.contextsVisible = !this.contextsVisible;
     } else if (section === 'subContexts') {
       this.subContextsVisible = !this.subContextsVisible;
@@ -72,12 +60,10 @@ export class AppDocumentacionComponent implements OnInit {
     } else if (section === 'anexoC') {
       this.anexoCVisible = !this.anexoCVisible;
     }
-
+    
     // Cierra el div abierto si se hace clic en otro div
     if (this.lastVisible && this.lastVisible !== section) {
-      if (this.lastVisible === 'norma') {
-        this.normaVisible = false;
-      } else if (this.lastVisible === 'contexts') {
+      if (this.lastVisible === 'contexts') {
         this.contextsVisible = false;
       } else if (this.lastVisible === 'subContexts') {
         this.subContextsVisible = false;
@@ -133,17 +119,5 @@ export class AppDocumentacionComponent implements OnInit {
   toggleSubEvaluacion(){
     this.subEvaluacionVisible = !this.subEvaluacionVisible;
   }
-
-  downloadPdf(fileName: string) {
-    const pdfUrl = `../../../../assets/DOCS/Norma/${fileName}`;
-    const pdfName = `${this.ntc}-${fileName}`;
-    const link = document.createElement('a');
-    link.setAttribute('target', '_blank');
-    link.setAttribute('href', pdfUrl);
-    link.setAttribute('download', pdfName);
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-}
 
 }

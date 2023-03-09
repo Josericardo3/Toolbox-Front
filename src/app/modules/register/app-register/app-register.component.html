@@ -39,7 +39,6 @@
           </label>
           <select
             name="select"
-           
             id="1"
             formControlName="subcategoriaRnt"
           >  
@@ -74,14 +73,23 @@
         Debe contener un correo válido
       </label>
       <br>
-      <label>Telefóno del PST</label>
-      <input
+      <label>Teléfono del PST</label>
+      <!-- <input
         type="text"
         maxlength="10" 
-        placeholder="Telefóno del PST"
+        placeholder="Teléfono del PST"
         formControlName="telefonoDelPst"
         appNumeros
-      />
+      /> -->
+      <input type="text" [formControl]="telefono"  maxlength="10"  appNumeros placeholder="Ingresa tu número de teléfono">
+      <div *ngIf="telefono.invalid && (telefono.dirty || telefono.touched)" class="alert alert-danger">
+      <!-- <div *ngIf="telefono.errors.required">
+    El número de teléfono es requerido.
+  </div> -->
+  <div *ngIf="telefono.errors.pattern" class="control-error textDanger">
+    Ingresa un número de teléfono válido con 10 dígitos.
+  </div>
+</div>
       <label>Nombre del representate Legal</label>
       <input
         type="text"
@@ -103,11 +111,11 @@
         Debe contener un correo válido
       </label>
       <br>
-      <label>Telefóno del Representante Legal</label>
+      <label>Teléfono del Representante Legal</label>
       <input
         type="text"
         maxlength="10" 
-        placeholder="Telefóno del Representante Legal"
+        placeholder="Teléfono del Representante Legal"
         formControlName="telefonoDelRepresentanteLegal"
         appNumeros
       />
@@ -120,7 +128,6 @@
           <option value="value1" >Cédula de Ciudadanía</option>
           <option value="value2" >Cédula de Extranjería</option>
           <option value="value3" >Pasaporte</option>
-          <option value="value4" >NUIP</option>
           <option value="value4" >Documento Nacional de Identidad</option>
         </select>
       </div>
@@ -134,13 +141,13 @@
       <div class="selectDepar select-botton">
         <div class="select-value">
           <label>Departamento</label>
-          <select id="selectDepartment" name="select" formControlName="departamento" (change)="setDepartments($event)">
+          <select  id="selectDepartment" name="select" formControlName="departamento" (change)="setDepartments($event)">
           </select>
         </div>
         <div class="select-value select-margin margin-div padding-label">
           <label>Municipio</label>
           <select id="selectMunicipality" name="select" formControlName="municipio">
-            <option value="value1"></option>
+            <option></option>
           </select>
         </div>
       </div>
@@ -176,98 +183,89 @@
         appNumeros
       />
       <div class="contraseña">
-        <div class="password-input">
-          <div class="passC">
-            <label for="pass">Contraseña</label>
-            <div class="eye">
-              <span class="iconEye" (click)="seePasswordRegister()"
-                ><i class="fas fa-eye-slash"></i
-              ></span>
-              <input
-                type="password"
-                id="passRegister"
-                formControlName="password1"
-                required="required"
-              />
-            </div>
-          </div>
+        <div class="password">
+          <label for="pass">Contraseña</label>
+          <div class="eye">
+            <span class='iconEye' (click)="seePasswordRegister()"><i class="fas fa-eye-slash"></i></span>
+        </div>
+        <input type="password" formControlName="password1" placeholder="Ingrese contraseña" id="passRegister" required="required" class="passLogin">
 
-          <label
+
+            <label 
             class="textDanger"
             *ngIf="
               registerForm.controls['password1'].hasError('required') ||
               registerForm.controls['password1'].hasError('minlength') ||
-              registerForm.controls['password1'].hasError('maxlength')
-            "
-          >
+              registerForm.controls['password1'].hasError('maxlength')">
+          <div style="margin-top: 0;">
             Debe contener mínimo 8 caracteres y máximo 12 caracteres.
+          </div>
+            
           </label>
-          <br />
-          <label
+ 
+            <label
             class="textDanger"
             *ngIf="
               registerForm.controls['password1'].hasError('required') ||
-              registerForm.controls['password1'].hasError('hasNumber')
-            "
-          >
-            Debe contener al menos 1 número.
+              registerForm.controls['password1'].hasError('hasNumber')">
+            <div style="margin-top: 0;">
+              Debe contener al menos 1 número.
+            </div>
+         
           </label>
-          <br />
-          <label
+         
+            <label
             class="textDanger"
             *ngIf="
               registerForm.controls['password1'].hasError('required') ||
-              registerForm.controls['password1'].hasError('hasCapitalCase')
-            "
-          >
+              registerForm.controls['password1'].hasError('hasCapitalCase')">
+          <div style="margin-top: 0;">
             Debe contener 1 letra mayúscula.
+          </div>
+           
           </label>
-          <br />
-          <label
+         
+            <label
             class="textDanger"
             *ngIf="
               registerForm.controls['password1'].hasError('required') ||
-              registerForm.controls['password1'].hasError('hasSmallCase')
-            "
-          >
-            Debe contener 1 letra minúscula.
+              registerForm.controls['password1'].hasError('hasSmallCase') ">
+          <div style="margin-top: 0;">
+          Debe contener 1 letra minúscula.
+          </div>
+          
           </label>
-          <br />
-          <label
+
+            <label
             class="textDanger"
             *ngIf="
               registerForm.controls['password1'].hasError('required') ||
               registerForm.controls['password1'].hasError(
-                'hasSpecialCharacters'
-              )
-            "
-          >
+                'hasSpecialCharacters')">
+          <div style="margin-top: 0;">
             Debe contener 1 caracter especial.
+          </div>
+            
           </label>
         </div>
+ 
         <div class="password">
-          <div class="passC">
-            <label>Repetir contraseña</label>
-            <div class="eye">
-              <span class="iconEye" (click)="seePasswordRegister2()"
-                ><i id="i" class="fas fa-eye-slash"></i
-              ></span>
-              <input
-                type="password"
-                formControlName="confirmPassword"
-                required="required"
-                id="passRegister2"
-              />
-            </div>
-          </div>
+          <label for="pass">Repetir contraseña</label>
+          <div class="eye">
+            <span class='iconEye' (click)="seePasswordRegister2()"><i class="fas fa-eye-slash"></i></span>
+        </div>
+        <input type="password" formControlName="confirmPassword" required="required" placeholder="Ingrese contraseña" id="passRegister2" class="passLogin">
+
           <label
             class="control-error"
+
             *ngIf="
               registerForm.controls['confirmPassword'].hasError(
                 'NoPassswordMatch'
               )
             "
           >
+
             Las contraseñas deben coincidir
           </label>
         </div>
@@ -282,37 +280,36 @@
         </button>
       </div>
     </div>
-      
-      <div id="modalTerminos" style="width: 100vw">
-        <div class="content-fluid" title="TERMINOS Y CONDICIONES">
-          <section class="modal-content">
-            <h2 class="datos">Política de tratamiento de datos</h2>
-            <p class="terminos">
-              Acepto y autorizo el uso de mis datos personales por 
-              Innovación Empresarial Isoluciones SAS, los cuales 
-              serán tratados de acuerdo con la política de tratamiento 
-              de datos de Innovación Empresarial Isoluciones SAS, la cual puede 
-              consultar en: 
-            </p>
-            <a href="http://drive.google.com/file/d/1VOCQrTfuhWNpcZuLRQlRs-ZbH8BDDGJ_/view?usp=sharing">Política de protección de datos personales</a>
-            <div class="forma-label-sin-izquierda col-xs-12 col-md-12">
-              <input
-                class="checkbox"
-                type="checkbox"
-                formControlName="checkbox"
-                (click)="change($event)"
-              />
-              <label class="checkbox-datos"
-                >He leído la política de tratamiento de datos</label
-              >
-            </div>
-            <div class="button-container-2">
-              <button class="btn" (click)="closeModal($event)" id="btnAceptar" disabled>Aceptar</button>
-            </div>
-          </section>
-        </div>
-      </div>
     </form>
+    <div id="modalTerminos" style="width: 100vw">
+      <div class="content-terminos" title="TERMINOS Y CONDICIONES">
+        <section class="modal-content">
+          <h2 class="datos">Política de tratamiento de datos</h2>
+          <p class="terminos">
+            Acepto y autorizo el uso de mis datos personales por 
+            Innovación Empresarial Isoluciones SAS, los cuales 
+            serán tratados de acuerdo con la política de tratamiento 
+            de datos de Innovación Empresarial Isoluciones SAS, la cual puede 
+            consultar en: 
+          </p>
+          <a class="enlace" href="http://drive.google.com/file/d/1VOCQrTfuhWNpcZuLRQlRs-ZbH8BDDGJ_/view?usp=sharing">Política de protección de datos personales</a>
+          <div class="forma-label-sin-izquierda ">
+            <input
+              class="checkbox"
+              type="checkbox"
+              formControlName="checkbox"
+              (click)="change($event)"
+            />
+            <label class="checkbox-datos"
+              >He leído la política de tratamiento de datos</label
+            >
+          </div>
+          <div class="button-container-2">
+            <button class="btn" (click)="closeModal($event)" id="btnAceptar" disabled>Aceptar</button>
+          </div>
+        </section>
+      </div>
+    </div>
     <app-app-modal-success></app-app-modal-success>
   </div>
 </div> 

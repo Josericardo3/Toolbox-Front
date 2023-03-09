@@ -130,7 +130,6 @@ export class ApiService {
     const observables = [];
   
     for (let i = 0; i < request.length; i++) {
-      
       const respuesta = {
         valor: request[i].valor.toString(),
         idnormatecnica: request[i].idnormatecnica,
@@ -142,7 +141,33 @@ export class ApiService {
       observables.push(observable);
     }
     return of(observables).pipe(mergeMap(responses => forkJoin(responses)));
+
+  }
+
+  addAsesor(): Observable<any> {
+    //console.log("entro al add asesor")
+    let assign = `${this.apiURL}/api/Usuario/ListarAsesor`
+    return this.http.get<any>(assign)
+  }
+ 
+  updateAsesor(resquest): Observable<any> {
+    //console.log("entro al add asesor")
+    let assign = `${this.apiURL}/api/Usuario/registrarPSTxAsesor`
+    return this.http.post<any>(assign,resquest)
+  }
+  getListaChequeoApi(){
+    // const id = localStorage.getItem('id');
+    // let diagnostico = `${this.apiURL}/api/Usuario/Diagnostico/${id}`
+    // return this.http.get<any>(diagnostico)
+  }
+  getListaDiagnosticoApi(){
+    const id = localStorage.getItem('id');
+    const normaValue = JSON.parse(window.localStorage.getItem('norma'));
+    const idn = normaValue[0].id;
+    let ListaDiagnostico = `${this.apiURL}/api/Usuario/ListaDiagnostico?idnorma=${idn}&idusuariopst=${id}` 
+    return this.http.get<any>(ListaDiagnostico)
   }
 }
+
   
 

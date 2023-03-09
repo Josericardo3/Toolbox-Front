@@ -1,4 +1,3 @@
-
 .registre{
     width: 60vw;
     display: flex;
@@ -72,7 +71,7 @@ h1{
     color: #068460;
     display: flex;
     justify-content: center;
-    margin: 15px;
+    margin: 71px 6px 10px;
  }
  
  .label {
@@ -92,7 +91,7 @@ input{
     height: 16px;
     width: 323px;
     padding: 4px;
-    margin: 9px; 
+    margin-top: 9px; 
 }
 
  .p{
@@ -108,7 +107,7 @@ input{
     color: #999999;
 }
 
-.eye{
+/* .eye{
     display: flex;
     align-items:center;
     position: relative;
@@ -121,7 +120,26 @@ input{
     margin: 5px;
     cursor: pointer;
     margin-top: 8px;
+  } */
+
+.password{
+    display: flex;
+    flex-direction: column;
+}
+.eye{
+    position: relative;
+    display: inline-block;
   }
+.iconEye{
+    color: #068460;
+    cursor: pointer;
+    position: absolute;
+    right: 0;
+    margin: 2.5vh 3vw 0 0;
+  }
+
+
+
 
   .nota{
     font-family: 'Work Sans', sans-serif;
@@ -136,7 +154,12 @@ input{
     color: #474749;
     font-weight: bold;
 }
-
+/* .textDanger{
+    margin-bottom: 30px;
+}
+.textDanger label{
+    margin-top: 10px;
+} */
 .formRegister label, .control-error{
     /* margin: 5px 0 8px 0; */
     font-family: 'Work Sans', sans-serif;
@@ -190,9 +213,12 @@ input.ng-invalid.ng-touched {
     justify-content: space-between;
 }
 
-.password-input{
+/* .password {
+    margin-top: 10px;
+} */
+/* .password-input{
     flex-direction:column;   
-}
+} */
 
 .passC{
     width: 100% !important; 
@@ -260,7 +286,7 @@ input.ng-invalid.ng-touched {
   transition: all .5s;
 }
 
-#modalTerminos.active>.content-fluid{
+#modalTerminos.active>.content-terminos{
     background-color: white;
     border: 1px solid orange;
     width: 723px;
@@ -271,13 +297,13 @@ input.ng-invalid.ng-touched {
     border-radius: 15px;
 }
 
-#modalTerminos.active>.content-fluid>.modal-content{
+#modalTerminos.active>.content-terminos>.modal-content{
     color: #474749;
     padding-top: 58px;
     width:600px;
    
 }
-#modalTerminos.active>.content-fluid>.modal-content>.forma-label-sin-izquierda {
+#modalTerminos.active>.content-terminos>.modal-content>.forma-label-sin-izquierda {
     font: bold 12px helvetica;
     text-align: left;
     color: #4D4C4D;
@@ -288,7 +314,7 @@ input.ng-invalid.ng-touched {
     margin-top:22px;
 }
 
-#modalTerminos.active>.content-fluid>.modal-content>.forma-label {
+#modalTerminos.active>.content-terminos>.modal-content>.forma-label {
     font: bold 12px helvetica;
     text-align: left;
     color: #666;
@@ -296,7 +322,7 @@ input.ng-invalid.ng-touched {
     display: inline-block;
     padding: 1px 0px 1px 20px !important;
 }
-#modalTerminos.active>.content-fluid>.modal-content>.forma-label-sin-izquierda>.checkbox {
+#modalTerminos.active>.content-terminos>.modal-content>.forma-label-sin-izquierda>.checkbox {
    width: 20px!important;
    height:  20px!important;
    margin: 0px;
@@ -313,13 +339,15 @@ input.ng-invalid.ng-touched {
     text-align: justify;
 }
 
-.content-fluid{
+.content-terminos{
     display: flex; 
     justify-content: center;
 }
 
 .datos{
     margin: 25px 5px 19px 146px ;
+    font-size: 16px;
+    font-family:'Work Sans', sans-serif;
 }
 
 .checkbox-datos{
@@ -332,7 +360,7 @@ input.ng-invalid.ng-touched {
         flex-direction:column;
         align-items: stretch;
     } 
-    #modalTerminos.active>.content-fluid{
+    #modalTerminos.active>.content-terminos{
         width: 330px;
         display: flex;
         margin: 22% auto;
@@ -343,13 +371,17 @@ input.ng-invalid.ng-touched {
     display: flex;
     justify-content: space-around;
     margin: 5px;
+    
 }
 .terminos{
     font-size: 14px;
     margin: 10px;
 }
-a {
+.enlace {
+    font-family:'Work Sans', sans-serif;
     margin: 9px;
+    color: red !important;
+    text-decoration:double !important;
     
 }
 .registre{

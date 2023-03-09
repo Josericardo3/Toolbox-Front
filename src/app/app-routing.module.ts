@@ -10,8 +10,8 @@ import { AppHeaderComponent } from './modules/header/app-header/app-header.compo
 import { AppDiagnosticoDocComponent } from './modules/diagnosticoDoc/app-diagnostico-doc/app-diagnostico-doc.component';
 import { AppDocumentacionComponent } from './modules/documentacion/app-documentacion/app-documentacion.component';
 import { AppGestionDeUsuariosComponent } from './modules/gestionDeUsuarios/app-gestion-de-usuarios/app-gestion-de-usuarios.component';
+import { AppEvidenciaComponent } from './modules/evidencia/app-evidencia/app-evidencia.component';
 import { RecoveryComponent } from './recovery/app-recovery/recovery.component';
-
 
 const routes: Routes = [
   {path: '', component: AppLoginComponent},
@@ -23,9 +23,9 @@ const routes: Routes = [
   {path: 'diagnosticoDoc', component: AppDiagnosticoDocComponent},
   {path: 'documentacion', component: AppDocumentacionComponent},
   {path: 'gestionUsuario', component: AppGestionDeUsuariosComponent},
+  {path: 'evidencia', component: AppEvidenciaComponent},
   {path: 'recovery/:id', component: RecoveryComponent},
   //{path: '', component: AppMyExampleComponent},
-
 ];
 
 @NgModule({

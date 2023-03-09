@@ -43,8 +43,8 @@ observacionF: string;
     });
 
     // this.http.get('https://www.toolbox.somee.com/api/Usuario/Diagnostico/5')
-    this.http.get('assets/datos.json')
-    // this.ApiService.getDiagnostico()
+    // this.http.get('assets/datos.json')
+    this.ApiService.getDiagnostico()
     .subscribe((data: any) => {
       this.datos = data;
       // this.datos.campos.forEach((campo:any) => {

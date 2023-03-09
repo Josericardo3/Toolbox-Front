@@ -3,8 +3,6 @@ import { Component, CUSTOM_ELEMENTS_SCHEMA, NgModule, OnInit } from '@angular/co
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { ApiService } from 'src/app/servicios/api/api.service';
 // import 'core-js/es/object';
-import { ApiServiceService } from 'src/app/servicios/apiServiceForm/api-form-service.service';
-import { FormServiceService } from 'src/app/servicios/formService/form-service.service';
 import { Router } from '@angular/router';
 import { Categoria } from '../../../utils/constants';
 import { SpinnerService } from 'src/app/servicios/spinnerService/spinner.service';
@@ -40,8 +38,6 @@ export class AppCaracterizacionComponent implements OnInit {
     private formBuilder: FormBuilder,
     private ApiService: ApiService,
     private http: HttpClient,
-    private apiForm: ApiServiceService,
-    private formServiceService : FormServiceService,
     private router: Router,
     private spinnerService: SpinnerService,
     ) { 
