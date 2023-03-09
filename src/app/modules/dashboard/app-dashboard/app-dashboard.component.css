@@ -12,9 +12,6 @@
   font-size: 1.25rem;
 }
   
-  
-  
-  
   .item-1:active{
     background-color: green;
   }
@@ -67,11 +64,13 @@
     align-items: center;
     flex-direction: column;
 }
-
-.container-norma{
+.container{
   display: flex;
-  margin: -42px 10px 20px 20px;
   flex-direction: row-reverse;
+}
+.container-norma{
+  margin: 16px;
+  position: absolute;
 }
 
 select{

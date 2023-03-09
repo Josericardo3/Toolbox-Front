@@ -1,7 +1,8 @@
 <div class = "cointainer">
   <app-app-header></app-app-header>
 <form [formGroup]="formParent" class="controllerCaracterizacion" (ngSubmit)="saveForm()">
-  <h1>Formulario de caracterización de agencias de viaje</h1>
+
+  <h1>FORMULARIO DE CARACTERIZACIÓN DE {{ categoriaRNTValues }}</h1>
   <p>Todos los campos con el asterisco (*) son obligatorios</p>
 
     <div *ngFor="let campo of datos.campos; let i = index" class="caracterizacion">
@@ -34,13 +35,14 @@
             </select>
           </div>
 
-          <div *ngSwitchCase="'option'">
+          <!--OPTION DE MUNICIPIO-->
+          <!-- <div>
             <select [formControlName]="campo.ffcontext" id="id-del-select" 
-            [id]="i" (ngModelChange)="capturarValor(i, $event, campo.idcaracterizaciondinamica)">
-                <option *ngFor="let opcion of campo.municipios" [value]="opcion.municipio">{{opcion.municipio}}</option>
+            [id]="i" id="selectMunicipality" (ngModelChange)="capturarValor(i, $event, campo.idcaracterizaciondinamica)">
+              <option value="value1"></option>
             </select>
-          </div>
-   
+          </div> -->
+            
             <div *ngIf="campo.mensaje != 'dependencia'">
               <div *ngSwitchCase="'checkbox'" class="containerCheck">
               <div *ngFor="let opcion of campo.desplegable" class="check"> 

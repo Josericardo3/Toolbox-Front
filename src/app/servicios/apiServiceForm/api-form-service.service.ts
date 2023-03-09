@@ -13,11 +13,11 @@ export class ApiServiceService {
   getData(data: any) {
     const {id} = data;
     // let direccion = `${this.apiURL}/api/Usuario/caracterizacion/${id}`
-    return this.http.get(`${this.apiURL}/api/Usuario/caracterizacion/${id}`, data);
+    return this.http.get(`${this.apiURL}/api/Caracterizacion/caracterizacion/${id}`, data);
   }
 
   submitForm(data: any) {
     const {id} = data;
-    return this.http.post(`${this.apiURL}/api/Usuario/caracterizacion/${id}`, data);
+    return this.http.post(`${this.apiURL}/api/Caracterizacion/caracterizacion/${id}`, data);
   }
 }

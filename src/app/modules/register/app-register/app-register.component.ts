@@ -12,6 +12,7 @@ import 'jquery-ui/ui/widgets/dialog.js'
 import { Categoria } from '../../../utils/constants'
 
 
+
 @Component({
   selector: 'app-app-register',
   templateUrl: './app-register.component.html',
@@ -23,12 +24,19 @@ export class AppRegisterComponent implements OnInit {
   showPassword: boolean = false;
   showRepeatPassword: boolean = false;
 
-
-
   telefono = new FormControl('', [
     Validators.required,
     Validators.pattern(/^\d{10}$/)
   ])
+  telefonoDelRepresentanteLegal = new FormControl('', [
+    Validators.required,
+    Validators.pattern(/^\d{10}$/)
+  ])
+  telefonoDelResponsableDeSostenibilidad = new FormControl('', [
+    Validators.required,
+    Validators.pattern(/^\d{10}$/)
+  ])
+
   showModalSuccess:any
   data: any
   arrAgency: any
@@ -72,7 +80,7 @@ export class AppRegisterComponent implements OnInit {
             Validators.required,
           ]),
         ],
-        telefonoDelRepresentanteLegal: ['', Validators.required],
+        //telefonoDelRepresentanteLegal: ['', Validators.required],
         tipoDeIdentificacionDelRepresentanteLegal: ['', Validators.required],
         identificacionDelRepresentanteLegal: ['', Validators.required],
         departamento: ['', Validators.required],
@@ -84,7 +92,7 @@ export class AppRegisterComponent implements OnInit {
             Validators.required,
           ]),
         ],
-        telefonoDelResponsableDeSostenibilidad: ['', Validators.required],
+        //telefonoDelResponsableDeSostenibilidad: ['', Validators.required],
         nombreDelResponsableDeSostenibilidad: ['', Validators.required],
         password1: [
           '',
@@ -143,13 +151,13 @@ export class AppRegisterComponent implements OnInit {
           if (select != null && departments.length === 0) {
             departments = Array.from(
               new Set(data.map((item: any) => {
-                console.log(item,"nuevoItem")
+                //console.log(item,"nuevoItem")
                 return item.dpto
               })),
             )
             departmentsCode = Array.from(
               new Set(data.map((item: any) => {
-                console.log(item,"nuevoItem")
+                //console.log(item,"nuevoItem")
                 return item.cod_depto
               })),
             )
@@ -157,9 +165,9 @@ export class AppRegisterComponent implements OnInit {
             departments.forEach((item: any,index) => {
               let option = document.createElement('option')
               option.id = departmentsCode[index]
-              console.log(item,"item")
+              //console.log(item,"item")
               option.text = item
-              console.log(option,"option")
+              //console.log(option,"option")
               select.add(option)
 
             })
@@ -251,7 +259,7 @@ export class AppRegisterComponent implements OnInit {
   }
 
   saveUser() {
-    console.log(this.registerForm.get("departamento"), 'valores')
+    //console.log(this.registerForm.get("departamento"), 'valores')
     const request = {
       //usuariopst: this.registerForm.get('categoriaRnt')?.value.id,
       nit: this.registerForm.get("numeroDeIdentificacionTributaria")?.value,
@@ -319,4 +327,8 @@ export class AppRegisterComponent implements OnInit {
       return btnAceptar.removeAttribute("disabled");
     }
   }
+
+  //prueba limpiar(){
+  // this.registerForm.reset();
+  // }
 }

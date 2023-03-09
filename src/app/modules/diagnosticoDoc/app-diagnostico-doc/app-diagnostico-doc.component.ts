@@ -39,8 +39,8 @@ export class AppDiagnosticoDocComponent implements OnInit {
   }
 
   getListaChequeo(){
-    this.http.get('https://www.toolbox.somee.com/api/Usuario/ListaChequeo?idnorma=5&idusuariopst=15')
-    // this.ApiService.getDiagnostico()
+    // this.http.get('https://www.toolbox.somee.com/api/Usuario/ListaChequeo?idnorma=5&idusuariopst=15')
+    this.ApiService.getListaChequeoApi()
     .subscribe((data: any) => {
       this.datos = data;
       this.nombrePst = this.datos.usuario?.nombrePst;
@@ -72,7 +72,7 @@ export class AppDiagnosticoDocComponent implements OnInit {
   }
 
   getListaPlanMejora(){
-    this.http.get('')
+    this.ApiService.getPlanMejoraApi()
     .subscribe((data: any) => {
       this.datos = data;
       this.datos = data;
@@ -477,24 +477,44 @@ export class AppDiagnosticoDocComponent implements OnInit {
             widths: [ '*', '*', '*' ],
             body: [
               [
-                { text: 'ACCIONES A APLICAR SEGÚN RESULTADOS', colSpan: 3, style: [ 'planMejora' ] },
-                {},
+                { text: '2. Metodología de calificación diagnóstico', alignment: 'center', bold: true, colSpan: 2},
                 {}
               ],
               [
-                { text: 'ACCIÓN PARA NO CUMPLE (NC)', style: [ 'planMejora' ] },
-                { text: 'ACCIÓN PARA CUMPLE PARCIALMENTE (CP)', style: [ 'planMejora' ] },
-                { text: 'ACCIÓN PARA CUMPLE (C)', style: [ 'planMejora' ] },
-              ],
-              [
-                'Por medio de la asistencia técnica del proyecto se apoyará para que junto al PEST se logre cumplir con los productos.',
-                'Se revisará, adecuará, actualizará, implementará y se hará seguimiento durante la asistencia técnica del proyecto para lograr cumplir con la totalidad del requisito.',
-                'El PEST debe mantener el cumpliendo de este requisito y nuestra asistencia técnica apoyará para que así sea, acompañando en la implementación del presente requisito.'
+                {
+                  text: 'Califique, acorde con la siguiente escala:\n\nC = Cumple: Se encuentra documentado, implementado, socializado y es adecuado para la organización.\nCP = Cumple parcialmente: Se encuentra parcialmente documentado o en su totalidad pero no está implementado o está en proceso de implementación o se ejecutan actividades pero no están documentadas.\nNC = No cumple: No se ha realizado ninguna acción respecto al requisito.\nNA = No aplica: No es aplicable el requisito a la organización.',
+                  colSpan: 2
+                },
+                {}
               ]
             ]
           }
         },
         '\n',
+        {
+          table: {
+            widths: [ 80, 85, 'auto', 'auto','auto', 'auto' ],
+            body: [
+              [
+                {text: 'Numeral', style: ['tituloDinamico']},
+                {text: 'Titulo del requisito', style: ['tituloDinamico']},
+                {text: 'Posible evidencia', style: ['tituloDinamico']},
+                {text: 'Estado', style: ['tituloDinamico']},
+                {text: 'Actividad general o fase a realizar', style: ['tituloDinamico']},
+                {text: 'Duración', style: ['tituloDinamico']},
+              ],
+              // Aquí va el título NUMERAL
+              ...this.datos.calificacion.map((item: any) => [
+                {text: item.numeral, style: [ 'dinamicTable' ]},
+                {text: item.tituloRequisito, style: [ 'dinamicTable' ]},
+                {text: item.requisito, fontSize: 10},
+                {text: item.evidencia, fontSize: 10},
+                {text: item.calificado, style: [ 'dinamicTable' ]},
+                {text: item.observacion, style: [ 'dinamicTable' ]}
+              ]),
+            ]
+          }
+        }
       ],
       styles: {
         header: {
@@ -507,6 +527,15 @@ export class AppDiagnosticoDocComponent implements OnInit {
           alignment: 'center', 
           bold: true, 
           fontSize: 10
+        },
+        tituloDinamico: {
+          alignment: 'center', 
+          bold: true,
+          fontSize: 10,
+        },
+        dinamicTable: {
+          fontSize: 10,
+          alignment: 'center'
         }
       }
     }

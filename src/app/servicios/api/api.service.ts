@@ -27,6 +27,7 @@ export class ApiService {
   //   return this.http.post<any>(direccion, {})
 
   apiURL = environment.apiURL
+  
   constructor(private http: HttpClient) {}
 
   login(form: LoginI): Observable<ResponseI> {
@@ -64,15 +65,14 @@ export class ApiService {
   }
 
   getNorma(idCategoria:any){
-    let norma = `${this.apiURL}/api/Usuario/SelectorDeNorma?id=${idCategoria}`
+    let norma = `${this.apiURL}/api/Caracterizacion/SelectorDeNorma?id=${idCategoria}`
     return this.http.get<any>(norma, idCategoria)
   }
 
   //para obtener la data de caracterizacion
   getData(): Observable<any> {
-    debugger
     const id = localStorage.getItem('Id');
-    let caracterizacion = `${this.apiURL}/api/Usuario/caracterizacion/${id}`
+    let caracterizacion = `${this.apiURL}/api/Caracterizacion/caracterizacion/${id}`
     return this.http.get<any>(caracterizacion)
   }
 
@@ -94,12 +94,11 @@ export class ApiService {
   return response;
   }*/
   saveData(request: any): Observable<any[]> {
-    const caracterizacion = `${this.apiURL}/api/Usuario/caracterizacion/respuesta`;
+    const caracterizacion = `${this.apiURL}/api/Caracterizacion/caracterizacion/respuesta`;
     const categoriarnt = localStorage.getItem('norma');
     const observables = [];
   
     for (let i = 0; i < request.length; i++) {
-      debugger
       const respuesta = {
         valor: request[i].valor.toString(),
         idUsuarioPst: request[i].idUsuarioPst,
@@ -114,7 +113,7 @@ export class ApiService {
   }
 
   assignAdvisor(id: any): Observable<any> {
-    let assign = `${this.apiURL}/api/Usuario/usuarioPstxAsesor/${id}`
+    let assign = `${this.apiURL}/api/Asesor/usuarioPstxAsesor/${id}`
     return this.http.get<any>(assign,id)
   }
 
@@ -125,7 +124,7 @@ export class ApiService {
   }
 
   saveDataDiagnostico(request: any): Observable<any[]> {
-    const diagnostico = `${this.apiURL}/api/Usuario/Diagnosticorespuesta`;
+    const diagnostico = `${this.apiURL}/api/Diagnostico/Diagnosticorespuesta`;
     const categoriarnt = localStorage.getItem('id');
     const observables = [];
   
@@ -146,26 +145,35 @@ export class ApiService {
 
   addAsesor(): Observable<any> {
     //console.log("entro al add asesor")
-    let assign = `${this.apiURL}/api/Usuario/ListarAsesor`
+    let assign = `${this.apiURL}/api/Asesor/ListarAsesor`
     return this.http.get<any>(assign)
   }
  
   updateAsesor(resquest): Observable<any> {
     //console.log("entro al add asesor")
-    let assign = `${this.apiURL}/api/Usuario/registrarPSTxAsesor`
+    let assign = `${this.apiURL}/api/Asesor/registrarPSTxAsesor`
     return this.http.post<any>(assign,resquest)
   }
   getListaChequeoApi(){
-    // const id = localStorage.getItem('id');
-    // let diagnostico = `${this.apiURL}/api/Usuario/Diagnostico/${id}`
-    // return this.http.get<any>(diagnostico)
+    const id = localStorage.getItem('id');
+    const normaValue = JSON.parse(window.localStorage.getItem('norma'));
+    const idn = normaValue[0].id;
+    let lista = `${this.apiURL}/api/ListaChequeo/ListaChequeo?idnorma=${idn}&idusuariopst=${id}` 
+    return this.http.get<any>(lista)
   }
   getListaDiagnosticoApi(){
     const id = localStorage.getItem('id');
     const normaValue = JSON.parse(window.localStorage.getItem('norma'));
     const idn = normaValue[0].id;
-    let ListaDiagnostico = `${this.apiURL}/api/Usuario/ListaDiagnostico?idnorma=${idn}&idusuariopst=${id}` 
-    return this.http.get<any>(ListaDiagnostico)
+    let lista = `${this.apiURL}/api/ListaChequeo/ListaDiagnostico?idnorma=${idn}&idusuariopst=${id}` 
+    return this.http.get<any>(lista)
+  }
+  getPlanMejoraApi(){
+    const id = localStorage.getItem('id');
+    const normaValue = JSON.parse(window.localStorage.getItem('norma'));
+    const idn = normaValue[0].id;
+    let lista = `${this.apiURL}/api/PlanMejora/PlanMejora?idnorma=${idn}&idusuariopst=${id}` 
+    return this.http.get<any>(lista)
   }
 }
 

@@ -80,7 +80,7 @@ export class AppLoginComponent implements OnInit {
   }
 
  onLogin(){
-  console.log('onLogin')
+  //console.log('onLogin')
   this.usuario.correo = this.loginForm.get('correo')?.value;
   this.usuario.registroNacionalDeTurismo = this.loginForm.get('registroNacionalDeTurismo')?.value;
   this.usuario.correo = this.loginForm.get('correo')?.value;
@@ -104,11 +104,10 @@ export class AppLoginComponent implements OnInit {
         //usuario pst normal
         this.ApiService.getNorma(data.IdUsuarioPst)
         .subscribe((data:any)=>{
-          debugger;
-          console.log(data,"datanueva")
+          //console.log(data,"datanueva")
             if(data[0].idCategoriarnt === 5 ||data[0].idCategoriarnt === 2){
               this.arrResult = data;
-              debugger;
+  
               localStorage.setItem('norma',JSON.stringify(this.arrResult))
               const modalInicial = document.querySelector("#modal-inicial") as HTMLElement;
               modalInicial.style.display = "block"; 

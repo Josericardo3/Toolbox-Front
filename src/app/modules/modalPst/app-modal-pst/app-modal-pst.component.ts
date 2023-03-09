@@ -29,7 +29,7 @@ export class AppModalPstComponent implements OnInit {
   capturarValueSelect(evnt:any){
    //valor seleccionado
    this.verSeleccion = this.opcionSeleccionado.nombre ;
-   console.log(this.verSeleccion,"evento")
+   //console.log(this.verSeleccion,"evento")
   }
 
   saveAsesor(evnt: any){

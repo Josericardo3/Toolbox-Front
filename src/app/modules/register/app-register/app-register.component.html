@@ -84,12 +84,12 @@
       <input type="text" [formControl]="telefono"  maxlength="10"  appNumeros placeholder="Ingresa tu número de teléfono">
       <div *ngIf="telefono.invalid && (telefono.dirty || telefono.touched)" class="alert alert-danger">
       <!-- <div *ngIf="telefono.errors.required">
-    El número de teléfono es requerido.
-  </div> -->
-  <div *ngIf="telefono.errors.pattern" class="control-error textDanger">
-    Ingresa un número de teléfono válido con 10 dígitos.
-  </div>
-</div>
+       El número de teléfono es requerido.
+       </div> -->
+      <div *ngIf="telefono.errors.pattern" class="control-error textDanger">
+      Ingresa un número de teléfono válido con 10 dígitos.
+      </div>
+      </div>
       <label>Nombre del representate Legal</label>
       <input
         type="text"
@@ -112,13 +112,19 @@
       </label>
       <br>
       <label>Teléfono del Representante Legal</label>
-      <input
+      <!-- <input
         type="text"
         maxlength="10" 
         placeholder="Teléfono del Representante Legal"
         formControlName="telefonoDelRepresentanteLegal"
         appNumeros
-      />
+      /> -->
+      <input type="text" [formControl]="telefonoDelRepresentanteLegal"  maxlength="10"  appNumeros placeholder="Teléfono del Representante Legal">
+      <div *ngIf="telefonoDelRepresentanteLegal.invalid && (telefonoDelRepresentanteLegal.dirty || telefonoDelRepresentanteLegal.touched)" class="alert alert-danger">
+      <div *ngIf="telefonoDelRepresentanteLegal.errors.pattern" class="control-error textDanger">
+      Ingresa un número de teléfono válido con 10 dígitos.
+      </div>
+      </div>
       <div class="select-botton">
         <label>Tipo de Identificación del Representante Legal</label>
         <select
@@ -175,13 +181,19 @@
       </label>
       <br>
       <label>Teléfono del Responsable de Sostenibilidad</label>
-      <input
+      <!-- <input
         type="text"
         maxlength="10" 
         placeholder="Teléfono del Responsable de Sostenibilidad"
         formControlName="telefonoDelResponsableDeSostenibilidad"
         appNumeros
-      />
+      /> -->
+      <input type="text" [formControl]="telefonoDelResponsableDeSostenibilidad"  maxlength="10"  appNumeros placeholder="Teléfono del Responsable de Sostenibilidad">
+      <div *ngIf="telefonoDelResponsableDeSostenibilidad.invalid && (telefonoDelResponsableDeSostenibilidad.dirty || telefonoDelResponsableDeSostenibilidad.touched)" class="alert alert-danger">
+      <div *ngIf="telefonoDelResponsableDeSostenibilidad.errors.pattern" class="control-error textDanger">
+      Ingresa un número de teléfono válido con 10 dígitos.
+      </div>
+      </div>
       <div class="contraseña">
         <div class="password">
           <label for="pass">Contraseña</label>
@@ -274,10 +286,14 @@
         <i class="checkbox-tema" (click)="openModal()">Acepto y autorizo el uso de mis datos por parte de MinCIT y Fontur
           </i>
       </div>
+      <p *ngIf="registerForm.invalid === false">Todos los campos son requeridos </p>
       <div class="button-container">
         <button type="submit" class="btn" [disabled]="registerForm.invalid" >
           Guardar
         </button>
+        <!-- <button type="button" class="btn" (click)="limpiar()" >
+          Limpiar
+        </button> -->
       </div>
     </div>
     </form>

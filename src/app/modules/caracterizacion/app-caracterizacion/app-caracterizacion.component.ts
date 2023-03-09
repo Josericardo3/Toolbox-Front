@@ -30,6 +30,8 @@ export class AppCaracterizacionComponent implements OnInit {
   showDependency: boolean | any= false;
   mostrarInput = false;
   idCaracterizacionDinamicaCondicion!: any;
+
+  categoriaRNTValues: string;
   
   private emailPattern: any = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   private webPattern: any = /^(http:\/\/www\.|http:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/;
@@ -43,6 +45,7 @@ export class AppCaracterizacionComponent implements OnInit {
     ) { 
       // this.formParent = new FormGroup({});
       this.formParent = this.formBuilder.group({});
+      
 }
 
   
@@ -54,6 +57,12 @@ export class AppCaracterizacionComponent implements OnInit {
     // this.http.get('assets/datos.json')
     .subscribe((data: any) => {
       this.datos = data;
+      const campoCategoriaRNT = this.datos.campos.find(campo => campo.nombre === 'Categoría RNT');
+
+      // Obtiene el valor de "values" de "nombre": "Categoría RNT"
+      this.categoriaRNTValues = campoCategoriaRNT.values;
+      console.log(this.categoriaRNTValues);
+
       this.datos.campos.forEach((campo:any) => {
         if(campo.values !== null){
           this.formParent.addControl(campo.ffcontext, new FormControl({value: campo.values, disabled: true}))
@@ -66,6 +75,10 @@ export class AppCaracterizacionComponent implements OnInit {
       // this.formValidator();
 
   });
+
+  // const campo = this.datos.campos;
+  // this.categoriaRNT = campo.find((campo: any) => campo.nombre === 'Categoría RNT').values;
+  //     console.log(campo, this.categoriaRNT)
 
     //EJEMPLO01
     // this.initFormParent();
@@ -80,6 +93,41 @@ export class AppCaracterizacionComponent implements OnInit {
     //   const refSkills = this.formParent.get('campos') as FormArray;
     //   refSkills.push(this.intiFormSkill());
     // });
+}
+
+
+
+
+setMunicipalities(selectedDepartament: any) {
+  let arrFilterMpio: any[] = []
+  let select = document.getElementById(
+    'selectMunicipality',
+  ) as HTMLSelectElement
+  select.length = 0
+  if (select.options.length > 0) {
+    arrFilterMpio.forEach((item: any, index: any) => {
+      select.remove(index)
+    })
+  }
+  fetch('https://www.datos.gov.co/resource/gdxc-w37w.json')
+    .then((response) => response.json())
+    .then((data) => {
+      arrFilterMpio = data.filter(
+        (item: any) => item.dpto === selectedDepartament,
+      )
+      //console.log('municipalidad', arrFilterMpio)
+      let select = document.getElementById(
+        'selectMunicipality',
+      ) as HTMLSelectElement
+      if (select != null) {
+        select.add(new Option('Seleccione un municipio', '0'))
+        arrFilterMpio.forEach((item: any, index: any) => {
+          let option = document.createElement('option')
+          option.text = item.nom_mpio
+          select.add(option)
+        })
+      }
+    })
 }
 
 allFieldsFilled(): boolean {
