@@ -27,7 +27,6 @@ export class ApiService {
   //   return this.http.post<any>(direccion, {})
 
   apiURL = environment.apiURL
-  
   constructor(private http: HttpClient) {}
 
   login(form: LoginI): Observable<ResponseI> {
@@ -49,7 +48,6 @@ export class ApiService {
     return this.http.post<any>(direccion, request)
   }
   sendEmailRecovery(request: any): Observable<any> {
-    debugger
     let direccion = `${this.apiURL}/api/Usuario/EnviarEmail?correo=${request}`
     return this.http.post<any>(direccion, request)
   }
@@ -69,12 +67,14 @@ export class ApiService {
     return this.http.get<any>(norma, idCategoria)
   }
 
+
   //para obtener la data de caracterizacion
   getData(): Observable<any> {
     const id = localStorage.getItem('Id');
     let caracterizacion = `${this.apiURL}/api/Caracterizacion/caracterizacion/${id}`
     return this.http.get<any>(caracterizacion)
   }
+
 
   //para guardar caracterizacion en la BD
   /*saveData(request: any): Observable<any> {
@@ -117,15 +117,18 @@ export class ApiService {
     return this.http.get<any>(assign,id)
   }
 
+
   getDiagnostico(): Observable<any> {
-    const id = 1;//localStorage.getItem('Id');
-    let diagnostico = `${this.apiURL}/api/Diagnostico/Diagnostico/${id}`
+    const normaValue = JSON.parse(window.localStorage.getItem('norma'));
+    debugger
+    const idn = normaValue[0].id;
+    let diagnostico = `${this.apiURL}/api/Diagnostico/Diagnostico/${idn}`
     return this.http.get<any>(diagnostico)
   }
 
   saveDataDiagnostico(request: any): Observable<any[]> {
     const diagnostico = `${this.apiURL}/api/Diagnostico/Diagnosticorespuesta`;
-    const categoriarnt = localStorage.getItem('Id');
+    const categoriarnt = localStorage.getItem('id');
     const observables = [];
   
     for (let i = 0; i < request.length; i++) {
@@ -175,7 +178,5 @@ export class ApiService {
     let lista = `${this.apiURL}/api/PlanMejora/PlanMejora?idnorma=${idn}&idusuariopst=${id}` 
     return this.http.get<any>(lista)
   }
+
 }
-
-  
-

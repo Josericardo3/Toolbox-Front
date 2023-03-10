@@ -107,20 +107,6 @@ input{
     color: #999999;
 }
 
-/* .eye{
-    display: flex;
-    align-items:center;
-    position: relative;
-    justify-content: center;
-  }
-  .iconEye{
-    color: #068460;
-    position: absolute;
-    right: 5px;
-    margin: 5px;
-    cursor: pointer;
-    margin-top: 8px;
-  } */
 
 .password{
     display: flex;

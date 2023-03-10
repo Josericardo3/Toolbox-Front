@@ -1,22 +1,27 @@
-import { NumerosDirective } from '../directives/numeros.directive'
+
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common'
 //import { DynamicHostDirective } from './dynamic-host.directive';
 import { TrueFalseValueDirective } from './true-false-value.directive';
+import { MayusculasDirective } from './mayusculas.directive';
+
 
 @NgModule({
     declarations:[
-        NumerosDirective,
+  
        // DynamicHostDirective,
-        TrueFalseValueDirective
+        TrueFalseValueDirective,
+       MayusculasDirective,
     ],
     imports:[
         CommonModule
     ],
     exports:[
-        NumerosDirective,
+
         //DynamicHostDirective,
-        TrueFalseValueDirective
+        TrueFalseValueDirective,
+        MayusculasDirective,
+       
     ]
 })
 

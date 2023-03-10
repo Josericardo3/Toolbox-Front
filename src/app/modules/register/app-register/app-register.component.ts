@@ -42,6 +42,7 @@ export class AppRegisterComponent implements OnInit {
   arrAgency: any
   public registerForm!: FormGroup
   private emailPattern: any = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+  //private telefonoPattern: any = /^\d{10}$/
   constructor(
     private router: Router,
     private formBuilder: FormBuilder,
@@ -52,6 +53,10 @@ export class AppRegisterComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.telefono = new FormControl('', [
+      Validators.required,
+      Validators.pattern(/^\d{10}$/)
+    ])
     localStorage.removeItem("newUser")
     this.data = this.categoria.name.tipo
     this.setDepartments('')
@@ -70,7 +75,7 @@ export class AppRegisterComponent implements OnInit {
             Validators.required,
           ]),
         ],
-        // telefonoDelPst: ['', Validators.required], 
+        //telefonoDelPst:['', Validators.required],
        
         nombreDelRepresenteLegal: ['', Validators.required],
         correoRepresentanteLegal: [
@@ -119,6 +124,7 @@ export class AppRegisterComponent implements OnInit {
       },
     )
   }
+
 
   onLoadCategory(evt: any) {
     //console.log(evt.target.options.selectedIndex, 'categoria valor')
@@ -269,53 +275,41 @@ export class AppRegisterComponent implements OnInit {
       nombrePst: this.registerForm.get("nombreDelPst")?.value,
       razonSocialPst: this.registerForm.get("razonSocialDelPst")?.value,
       correoPst: this.registerForm.get("correo")?.value,
-      telefonoPst: this.registerForm.get("telefono")?.value,
+      telefonoPst: this.telefono.value,
       nombreRepresentanteLegal: this.registerForm.get(
         "nombreDelRepresenteLegal",
       )?.value,
       correoRepresentanteLegal: this.registerForm.get(
         "correoRepresentanteLegal",
       )?.value,
-      telefonoRepresentanteLegal: this.registerForm.get(
-        "telefonoDelRepresentanteLegal",
-      )?.value,
+      telefonoRepresentanteLegal: this.telefono.value,
       idTipoIdentificacion: 1,//modificado
       identificacionRepresentanteLegal: this.registerForm.get(
         "identificacionDelRepresentanteLegal",
       )?.value,
-      idDepartamento:this.registerForm.get("departamento")?.value,
-      idMunicipio:this.registerForm.get("municipio")?.value,
+      departamento:this.registerForm.get("departamento")?.value,
+      municipio:this.registerForm.get("municipio")?.value,
       nombreResponsableSostenibilidad: this.registerForm.get(
         "nombreDelResponsableDeSostenibilidad",
       )?.value,
       correoResponsableSostenibilidad: this.registerForm.get(
         "correoDelResponsableDeSostenibilidad",
       )?.value,
-      telefonoResponsableSostenibilidad: this.registerForm.get(
-        "telefonoDelResponsableDeSostenibilidad",
-      )?.value,
+      telefonoResponsableSostenibilidad: this.telefono.value,
       password: this.registerForm.get("password1")?.value,
       idTipoAvatar: 1,
     }
-
+debugger;
         localStorage.setItem("newUser",'yes')
         const modalInicial = document.querySelector("#modal-success") as HTMLElement;
         modalInicial.style.display = "block";
     //console.log(request, 'newrequest')
     return this.ApiService.createUser(request).subscribe((data: any) => {
       if (data.statusCode === 201) {
+         this.router.navigate(['/']); 
        
-
-
-
-      // setTimeout(() => {
-      //   this.router.navigate(['/dashboard']); 
-      // }, 3000);
-    
-        //this.router.navigate(['/dashboard'])
       }
-      // el servicio responde con 200 que todo se guardó
-      //console.log(data, 'respuesta')
+      
     })
   }
 

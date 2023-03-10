@@ -1,4 +1,3 @@
-import { HttpClient } from '@angular/common/http';
 import { compileDeclareInjectorFromMetadata } from '@angular/compiler';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
@@ -29,13 +28,13 @@ export class AppDiagnosticoDocComponent implements OnInit {
   
   constructor( 
     private router: Router,
-    private http: HttpClient,
     private ApiService: ApiService,
   ) { }
 
   ngOnInit(): void {
     this.getListaChequeo();
     this.getListaDiagnostico();
+    this.getListaPlanMejora();
   }
 
   getListaChequeo(){

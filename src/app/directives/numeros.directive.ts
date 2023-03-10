@@ -1,18 +1,20 @@
-import { Directive, HostListener } from '@angular/core';
+// import { Directive, HostListener } from '@angular/core';
 
-@Directive({
-  selector: '[appNumeros]'
-})
-export class NumerosDirective {
+// @Directive({
+//   selector: '[appMayuscula]'
+// })
+// export class MayusculaDirective {
 
-  constructor() { }
+//   constructor() { }
 
-  @HostListener('keypress', ['$event'])
+//   @HostListener('keypress', ['$event'])
 
-  onKeyPress(event: any) {
-    const e = <KeyboardEvent>event;
-    let charCode = (e.which) ? e.which : e.keyCode;
-    if (charCode > 31 && (charCode < 46 || charCode > 57 || charCode == 47))
-      e.preventDefault();
-  }
-}
+//   onKeyPress(event: any) {
+//     const e = <KeyboardEvent>event;
+    
+//     // let charCode = (e.which) ? e.which : e.keyCode;
+//     // if (charCode > 31 && (charCode < 46 || charCode > 57 || charCode == 47))
+//     //   e.preventDefault();
+//   }
+// }
+

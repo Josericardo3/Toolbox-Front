@@ -21,6 +21,7 @@ export class AppCaracterizacionComponent implements OnInit {
 
   formParent!: FormGroup;
   datos: any = [];
+  municipios: any = [];
 
   dataSelect!: any[];
   dataOption!: any[];
@@ -43,46 +44,17 @@ export class AppCaracterizacionComponent implements OnInit {
     private router: Router,
     private spinnerService: SpinnerService,
     ) { 
-      // this.formParent = new FormGroup({});
       this.formParent = this.formBuilder.group({});
-      
 }
 
-  
-  ngOnInit(): void {
-    // this.http.get('http://10.4.3.140:8050/api/Usuario/caracterizacion/1')
-    this.ApiService.getData() //para obtener datos de la api
-    // let id = localStorage.getItem("Id");
-    // this.http.get('https://www.toolbox.somee.com/api/Usuario/caracterizacion/'+id)
-    // this.http.get('assets/datos.json')
-    .subscribe((data: any) => {
-      this.datos = data;
-      const campoCategoriaRNT = this.datos.campos.find(campo => campo.nombre === 'Categoría RNT');
-
-      // Obtiene el valor de "values" de "nombre": "Categoría RNT"
-      this.categoriaRNTValues = campoCategoriaRNT.values;
-      console.log(this.categoriaRNTValues);
-
-      this.datos.campos.forEach((campo:any) => {
-        if(campo.values !== null){
-          this.formParent.addControl(campo.ffcontext, new FormControl({value: campo.values, disabled: true}))
-        }else{
-          this.formParent.addControl(campo.ffcontext, new FormControl('', [Validators.required]))          
-        }
-      });
-      this.createFormControls();
-
-      // this.formValidator();
-
-  });
-
-  // const campo = this.datos.campos;
-  // this.categoriaRNT = campo.find((campo: any) => campo.nombre === 'Categoría RNT').values;
-  //     console.log(campo, this.categoriaRNT)
-
+  ngOnInit(): void { 
+    this.getCaracterizacion();
+    this.http.get('https://www.datos.gov.co/resource/gdxc-w37w.json')
+    .subscribe((data: any[]) => {
+      this.municipios = data;
+    });
     //EJEMPLO01
     // this.initFormParent();
-    
     // this.http.get('http://10.4.3.140:8050/api/Usuario/caracterizacion/1')
     // .subscribe((data: any) => {
     //   this.datos = data;
@@ -95,39 +67,23 @@ export class AppCaracterizacionComponent implements OnInit {
     // });
 }
 
+getCaracterizacion(){
+  this.ApiService.getData()
+  .subscribe((data: any) => {
+    this.datos = data;
+    // Obtiene el valor de "values" de "nombre": "Categoría RNT"
+    const campoCategoriaRNT = this.datos.campos.find(campo => campo.nombre === 'Categoría RNT');
+    this.categoriaRNTValues = campoCategoriaRNT.values;
 
-
-
-setMunicipalities(selectedDepartament: any) {
-  let arrFilterMpio: any[] = []
-  let select = document.getElementById(
-    'selectMunicipality',
-  ) as HTMLSelectElement
-  select.length = 0
-  if (select.options.length > 0) {
-    arrFilterMpio.forEach((item: any, index: any) => {
-      select.remove(index)
-    })
-  }
-  fetch('https://www.datos.gov.co/resource/gdxc-w37w.json')
-    .then((response) => response.json())
-    .then((data) => {
-      arrFilterMpio = data.filter(
-        (item: any) => item.dpto === selectedDepartament,
-      )
-      //console.log('municipalidad', arrFilterMpio)
-      let select = document.getElementById(
-        'selectMunicipality',
-      ) as HTMLSelectElement
-      if (select != null) {
-        select.add(new Option('Seleccione un municipio', '0'))
-        arrFilterMpio.forEach((item: any, index: any) => {
-          let option = document.createElement('option')
-          option.text = item.nom_mpio
-          select.add(option)
-        })
+    this.datos.campos.forEach((campo:any) => {
+      if(campo.values !== null){
+        this.formParent.addControl(campo.ffcontext, new FormControl({value: campo.values, disabled: true}))
+      }else{
+        this.formParent.addControl(campo.ffcontext, new FormControl('', [Validators.required]))          
       }
-    })
+    });
+    this.createFormControls();
+});
 }
 
 allFieldsFilled(): boolean {
@@ -207,6 +163,8 @@ getControlType(campo: any) {
     case 'radio':
       return new FormControl(campo.values);
     case 'norma':
+      return new FormControl(campo.values);
+    case 'municipio':
       return new FormControl(campo.values);
     default:
       return new FormControl('');

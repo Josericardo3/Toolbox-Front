@@ -69,7 +69,8 @@
   flex-direction: row-reverse;
 }
 .container-norma{
-  margin: 16px;
+  margin: 15px;
+  z-index: 999;
   position: absolute;
 }
 
