@@ -81,6 +81,7 @@ export class AppLoginComponent implements OnInit {
       this.ApiService.sendEmailRecovery(this.usuario.correo).subscribe(
         (data: any) => {
           console.log(data, 'data recovery');
+          this.router.navigate(['/recovery/1']);
         }
       )
     }else{

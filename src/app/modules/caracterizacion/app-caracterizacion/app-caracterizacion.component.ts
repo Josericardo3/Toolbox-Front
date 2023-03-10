@@ -33,7 +33,7 @@ export class AppCaracterizacionComponent implements OnInit {
   idCaracterizacionDinamicaCondicion!: any;
 
   categoriaRNTValues: string;
-  
+ 
   private emailPattern: any = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   private webPattern: any = /^(http:\/\/www\.|http:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/;
 
@@ -85,6 +85,37 @@ getCaracterizacion(){
     this.createFormControls();
 });
 }
+
+// opcionesSeleccionadas: any[] = [];
+// selectMunicipio: any = {};
+
+// agregarNuevoControl(valor: string, index: number) {
+//   if (valor !== "") {
+//     const nuevoControl = new FormControl("");
+//     this.formParent.addControl("nuevoCampo" + (index + 1), nuevoControl);
+//     nuevoControl.setValue(valor);
+//   }
+// }
+
+// eliminarControl(index: number) {
+//   this.formParent.removeControl("nuevoCampo" + index);
+// }
+// capturarValor2(i: number, select: HTMLSelectElement, id: number) {
+//   const valor = select.value;
+//   console.log(valor)
+//   // restante del código
+// }
+
+selectedOption: string;
+selectedOptions: string[] = [];
+
+printSelectedOption() {
+  this.selectedOptions.push(this.selectedOption);
+}
+
+
+
+
 
 allFieldsFilled(): boolean {
   console.log(this.formParent.value); // imprime los valores de los campos del formulario

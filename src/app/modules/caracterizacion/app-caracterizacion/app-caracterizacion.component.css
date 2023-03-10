@@ -10,8 +10,7 @@
 .caracterizacion{
   width: 60vw;
 }
-label{
-    margin: 10px 0;
+.labelAll{
     font-family: 'Work Sans', sans-serif;
     font-size: 16px;
     color: #000000;
@@ -165,7 +164,26 @@ input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button { 
   -webkit-appearance: none; 
   margin: 0; 
-  
 }
 
-input[type=number] { -moz-appearance:textfield; }
+input[type=number] { 
+  -moz-appearance:textfield; 
+}
+
+.x{
+  all: unset;
+  font-family: 'Work Sans', sans-serif;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.labelX{
+  font-family: 'Work Sans', sans-serif;
+  font-size: 14px;
+  margin: 0 2vw 0 0.5vw; 
+}
+
+.selectedOption{
+  margin: 0 0 1.5vh 0;
+  width: 60vw;
+}

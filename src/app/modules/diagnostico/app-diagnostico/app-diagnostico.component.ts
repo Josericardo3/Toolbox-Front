@@ -175,11 +175,13 @@ capturarValorObs(i: number, event: Event, idObs: string){
     console.log(this.v);
     console.log(this.valorSeleccionado)
     console.log("save")
-    this.ApiService.saveDataDiagnostico(this.valoresForm)
-    .subscribe((data: any) =>{
+    //this.ApiService.saveDataDiagnostico(this.valoresForm)
+    /*.subscribe((data: any) =>{
       console.log(data, 'new data')
-      this.router.navigate(['/diagnosticoDoc'])
-    })
+      
+      
+    })*/
+    this.router.navigate(['/diagnosticoDoc'])
   }
 
 }
