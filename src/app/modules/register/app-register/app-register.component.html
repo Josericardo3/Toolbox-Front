@@ -1,4 +1,3 @@
-
 <app-app-header></app-app-header> 
 <div id="registerContainer" class="registerContainer">
   <div class="registre">
@@ -50,13 +49,14 @@
       <label>Nombre del PST</label>
       <input
         type="text"
-        
+        appLetras
         placeholder="Nombre del PST"
         formControlName="nombreDelPst"
       />
       <label>Razón Social del PST</label>
       <input
         type="text"
+        appLetras
         placeholder="Razón Social del PST"
         formControlName="razonSocialDelPst"
         
@@ -75,25 +75,20 @@
       </label>
       <br>
       <label>Teléfono del PST</label>
-      <!-- <input
-        type="text"
-        maxlength="10" 
-        placeholder="Teléfono del PST"
-        formControlName="telefonoDelPst"
-        appNumeros
-      /> -->
-      <input type="text" [formControl]="telefono"  maxlength="10"  appNumeros placeholder="Ingresa tu número de teléfono">
-      <div *ngIf="telefono.invalid && (telefono.dirty || telefono.touched)" class="alert alert-danger">
-      <!-- <div *ngIf="telefono.errors.required">
-       El número de teléfono es requerido.
-       </div> -->
-      <div *ngIf="telefono.errors.pattern" class="control-error textDanger">
-      Ingresa un número de teléfono válido con 10 dígitos.
-      </div>
-      </div>
+      <input type="text" formControlName="telefono"  maxlength="10"  appNumeros placeholder="Ingresa tu número de teléfono">
+       <label
+       class="control-error textDanger"
+       *ngIf="
+         registerForm.controls['telefono'].hasError('pattern')
+       "
+     >
+     Ingresa un número de teléfono válido con 10 dígitos.
+     </label>
+     <br>
       <label>Nombre del representate Legal</label>
       <input
         type="text"
+        appLetras
         placeholder="Nombre del representate Legal"
         formControlName="nombreDelRepresenteLegal"
       />
@@ -113,19 +108,16 @@
       </label>
       <br>
       <label>Teléfono del Representante Legal</label>
-      <!-- <input
-        type="text"
-        maxlength="10" 
-        placeholder="Teléfono del Representante Legal"
-        formControlName="telefonoDelRepresentanteLegal"
-        appNumeros
-      /> -->
-      <input type="text" [formControl]="telefonoDelRepresentanteLegal"  maxlength="10"  appNumeros placeholder="Teléfono del Representante Legal">
-      <div *ngIf="telefonoDelRepresentanteLegal.invalid && (telefonoDelRepresentanteLegal.dirty || telefonoDelRepresentanteLegal.touched)" class="alert alert-danger">
-      <div *ngIf="telefonoDelRepresentanteLegal.errors.pattern" class="control-error textDanger">
-      Ingresa un número de teléfono válido con 10 dígitos.
-      </div>
-      </div>
+      <input type="text" formControlName="telefonoDelRepresentanteLegal"  maxlength="10"  appNumeros placeholder="Teléfono del Representante Legal">
+      <label
+       class="control-error textDanger"
+       *ngIf="
+         registerForm.controls['telefonoDelRepresentanteLegal'].hasError('pattern')
+       "
+     >
+     Ingresa un número de teléfono válido con 10 dígitos.
+     </label>
+     <br>
       <div class="select-botton">
         <label>Tipo de Identificación del Representante Legal</label>
         <select
@@ -161,6 +153,7 @@
       <label>Nombre del Responsable de Sostenibilidad</label>
       <input
         type="text"
+        appLetras
         placeholder="Nombre del Responsable de Sostenibilidad"
         formControlName="nombreDelResponsableDeSostenibilidad"
       />
@@ -182,19 +175,16 @@
       </label>
       <br>
       <label>Teléfono del Responsable de Sostenibilidad</label>
-      <!-- <input
-        type="text"
-        maxlength="10" 
-        placeholder="Teléfono del Responsable de Sostenibilidad"
-        formControlName="telefonoDelResponsableDeSostenibilidad"
-        appNumeros
-      /> -->
-      <input type="text" [formControl]="telefonoDelResponsableDeSostenibilidad"  maxlength="10"  appNumeros placeholder="Teléfono del Responsable de Sostenibilidad">
-      <div *ngIf="telefonoDelResponsableDeSostenibilidad.invalid && (telefonoDelResponsableDeSostenibilidad.dirty || telefonoDelResponsableDeSostenibilidad.touched)" class="alert alert-danger">
-      <div *ngIf="telefonoDelResponsableDeSostenibilidad.errors.pattern" class="control-error textDanger">
-      Ingresa un número de teléfono válido con 10 dígitos.
-      </div>
-      </div>
+      <input type="text" formControlName="telefonoDelResponsableDeSostenibilidad"  maxlength="10"  appNumeros placeholder="Teléfono del Responsable de Sostenibilidad">
+      <label
+       class="control-error textDanger"
+       *ngIf="
+         registerForm.controls['telefonoDelResponsableDeSostenibilidad'].hasError('pattern')
+       "
+     >
+     Ingresa un número de teléfono válido con 10 dígitos.
+     </label>
+     <br>
       <div class="contraseña">
         <div class="password">
           <label for="pass">Contraseña</label>
@@ -273,10 +263,7 @@
             class="control-error"
 
             *ngIf="
-              registerForm.controls['confirmPassword'].hasError(
-                'NoPassswordMatch'
-              )
-            "
+              registerForm.controls['confirmPassword'].hasError('NoPassswordMatch')"
           >
 
             Las contraseñas deben coincidir
@@ -287,7 +274,7 @@
         <i class="checkbox-tema" (click)="openModal()">Acepto y autorizo el uso de mis datos por parte de MinCIT y Fontur
           </i>
       </div>
-      <p *ngIf="registerForm.invalid === false">Todos los campos son requeridos </p>
+      <p class="campo-final"    *ngIf="registerForm.invalid">Todos los campos son requeridos </p>
       <div class="button-container">
         <button type="submit" class="btn" [disabled]="registerForm.invalid" >
           Guardar

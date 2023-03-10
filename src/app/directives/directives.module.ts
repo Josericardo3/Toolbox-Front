@@ -3,7 +3,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common'
 //import { DynamicHostDirective } from './dynamic-host.directive';
 import { TrueFalseValueDirective } from './true-false-value.directive';
-import { MayusculasDirective } from './mayusculas.directive';
+import { NumerosDirective } from './numeros.directive';
+import { LetrasDirective } from './letras.directive';
 
 
 @NgModule({
@@ -11,7 +12,9 @@ import { MayusculasDirective } from './mayusculas.directive';
   
        // DynamicHostDirective,
         TrueFalseValueDirective,
-       MayusculasDirective,
+       LetrasDirective,
+       NumerosDirective,
+
     ],
     imports:[
         CommonModule
@@ -20,7 +23,8 @@ import { MayusculasDirective } from './mayusculas.directive';
 
         //DynamicHostDirective,
         TrueFalseValueDirective,
-        MayusculasDirective,
+        LetrasDirective,
+        NumerosDirective,
        
     ]
 })

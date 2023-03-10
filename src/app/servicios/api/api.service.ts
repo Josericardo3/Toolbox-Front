@@ -48,7 +48,7 @@ export class ApiService {
     return this.http.post<any>(direccion, request)
   }
   sendEmailRecovery(request: any): Observable<any> {
-    let direccion = `${this.apiURL}/api/Usuario/EnviarEmail?correo=${request}`
+    let direccion = `${this.apiURL}/api/Validaciones/EnviarEmail?correo=${request}`
     return this.http.post<any>(direccion, request)
   }
   refreshToken(token:string){

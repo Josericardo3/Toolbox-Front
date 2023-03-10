@@ -9,6 +9,7 @@ import { ResponseI } from 'src/app/models/responseInterface';
 import { Store } from '@ngrx/store';
 import { saveDataLogin } from 'src/app/state/action/example.action';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { ModalService } from 'src/app/messagemodal/messagemodal.component.service' 
 //PG import { TokenStorageService } from '../../../servicios/token/token-storage.service';
 
 
@@ -28,6 +29,7 @@ export class AppLoginComponent implements OnInit {
     private router: Router,
     private formBuilder: FormBuilder,
     private ApiService: ApiService,
+    private Message: ModalService,
     private store: Store<{ dataLogin: any }>
   //   { 
   //     console.log(store.select('dataLogin'),'strore mensaje')
@@ -55,6 +57,8 @@ export class AppLoginComponent implements OnInit {
     ],
     });
   }
+
+
  
   seePassword(){
     const passLogin = document.querySelector('#passLogin') as HTMLInputElement
@@ -72,11 +76,18 @@ export class AppLoginComponent implements OnInit {
   }
   recoveryPass(){
     this.usuario.correo = this.loginForm.get('correo')?.value;
-    this.ApiService.sendEmailRecovery(this.usuario.correo).subscribe(
-      (data: any) => {
-        console.log(data, 'data recovery');
-      }
-    )
+    debugger
+    if(!!this.usuario.correo){
+      this.ApiService.sendEmailRecovery(this.usuario.correo).subscribe(
+        (data: any) => {
+          console.log(data, 'data recovery');
+        }
+      )
+    }else{
+      const title = "Error";
+      const message = "Ingrese un correo"
+      this.Message.showModal(title,message);
+    }
   }
 
  onLogin(){
@@ -85,6 +96,7 @@ export class AppLoginComponent implements OnInit {
   this.usuario.registroNacionalDeTurismo = this.loginForm.get('registroNacionalDeTurismo')?.value;
   this.usuario.correo = this.loginForm.get('correo')?.value;
   this.usuario.pass = this.loginForm.get('pass')?.value;
+  this.usuario.pass = reemplazarCaracteresEspeciales(this.usuario.pass);
   console.log(this.usuario.registroNacionalDeTurismo, this.usuario.pass)
   //jalar el valor del correo
   this.ApiService.login(this.usuario)
@@ -134,4 +146,19 @@ export class AppLoginComponent implements OnInit {
   )
 }
   
+}
+
+function reemplazarCaracteresEspeciales(str) {
+  let nuevoStr = "";
+  
+  for (let i = 0; i < str.length; i++) {
+      let asciiCode = str.charCodeAt(i);
+      
+      if (asciiCode < 48 || asciiCode > 126) {
+          nuevoStr += encodeURIComponent(str[i]);
+      } else {
+          nuevoStr += str[i];
+      }
+  }
+  return nuevoStr;
 }

@@ -24,10 +24,10 @@ export class AppRegisterComponent implements OnInit {
   showPassword: boolean = false;
   showRepeatPassword: boolean = false;
 
-  telefono = new FormControl('', [
-    Validators.required,
-    Validators.pattern(/^\d{10}$/)
-  ])
+  // telefono = new FormControl('', [
+  //   Validators.required,
+  //   Validators.pattern(/^\d{10}$/)
+  // ])
   telefonoDelRepresentanteLegal = new FormControl('', [
     Validators.required,
     Validators.pattern(/^\d{10}$/)
@@ -53,15 +53,27 @@ export class AppRegisterComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.telefono = new FormControl('', [
-      Validators.required,
-      Validators.pattern(/^\d{10}$/)
-    ])
     localStorage.removeItem("newUser")
     this.data = this.categoria.name.tipo
     this.setDepartments('')
     this.registerForm = this.formBuilder.group(
       {
+        telefono:[
+          '',
+          Validators.compose([ 
+            Validators.required,
+            Validators.pattern(/^\d{10}$/)]),
+        ],
+        telefonoDelRepresentanteLegal :['', 
+          Validators.compose([ 
+          Validators.required,
+          Validators.pattern(/^\d{10}$/)]),
+        ],
+        telefonoDelResponsableDeSostenibilidad:['', 
+        Validators.compose([ 
+        Validators.required,
+        Validators.pattern(/^\d{10}$/)]),
+        ],
         numeroDeIdentificacionTributaria: ['', Validators.required],
         registroNacionalDeTurismo: ['', Validators.required],
         categoriaRnt: ['', Validators.required],
@@ -275,14 +287,14 @@ export class AppRegisterComponent implements OnInit {
       nombrePst: this.registerForm.get("nombreDelPst")?.value,
       razonSocialPst: this.registerForm.get("razonSocialDelPst")?.value,
       correoPst: this.registerForm.get("correo")?.value,
-      telefonoPst: this.telefono.value,
+      telefonoPst: this.registerForm.get("telefono")?.value,
       nombreRepresentanteLegal: this.registerForm.get(
         "nombreDelRepresenteLegal",
       )?.value,
       correoRepresentanteLegal: this.registerForm.get(
         "correoRepresentanteLegal",
       )?.value,
-      telefonoRepresentanteLegal: this.telefono.value,
+      telefonoRepresentanteLegal: this.registerForm.get("telefonoDelRepresentanteLegal")?.value,
       idTipoIdentificacion: 1,//modificado
       identificacionRepresentanteLegal: this.registerForm.get(
         "identificacionDelRepresentanteLegal",
@@ -295,11 +307,10 @@ export class AppRegisterComponent implements OnInit {
       correoResponsableSostenibilidad: this.registerForm.get(
         "correoDelResponsableDeSostenibilidad",
       )?.value,
-      telefonoResponsableSostenibilidad: this.telefono.value,
+      telefonoResponsableSostenibilidad: this.registerForm.get("telefonoDelResponsableDeSostenibilidad")?.value,
       password: this.registerForm.get("password1")?.value,
       idTipoAvatar: 1,
     }
-debugger;
         localStorage.setItem("newUser",'yes')
         const modalInicial = document.querySelector("#modal-success") as HTMLElement;
         modalInicial.style.display = "block";
