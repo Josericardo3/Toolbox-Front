@@ -32,7 +32,6 @@ export class AppLoginComponent implements OnInit {
     private Message: ModalService,
     private store: Store<{ dataLogin: any }>
   //   { 
-  //     console.log(store.select('dataLogin'),'strore mensaje')
   //  }
   ) { }
 
@@ -80,7 +79,6 @@ export class AppLoginComponent implements OnInit {
     if(!!this.usuario.correo){
       this.ApiService.sendEmailRecovery(this.usuario.correo).subscribe(
         (data: any) => {
-          console.log(data, 'data recovery');
           this.router.navigate(['/recovery/1']);
         }
       )
@@ -92,32 +90,25 @@ export class AppLoginComponent implements OnInit {
   }
 
  onLogin(){
-  //console.log('onLogin')
   this.usuario.correo = this.loginForm.get('correo')?.value;
   this.usuario.registroNacionalDeTurismo = this.loginForm.get('registroNacionalDeTurismo')?.value;
   this.usuario.correo = this.loginForm.get('correo')?.value;
   this.usuario.pass = this.loginForm.get('pass')?.value;
   this.usuario.pass = reemplazarCaracteresEspeciales(this.usuario.pass);
-  console.log(this.usuario.registroNacionalDeTurismo, this.usuario.pass)
   //jalar el valor del correo
   this.ApiService.login(this.usuario)
   .subscribe((data: any) => {
-    console.log(data)   
       this.store.dispatch(saveDataLogin({request:data}));
       localStorage.setItem('rol',data.permisoUsuario[0]?.item || 1)
       localStorage.setItem('access',data.TokenAcceso)
       localStorage.setItem('refresh',data.TokenRefresco)
       localStorage.setItem("idGrupo",data.Grupo[0].item)
-      //console.log(data.Grupo,"grupo")
-      // localStorage.setItem("valuePST",data.Grupo.item)
       localStorage.setItem('Id',data.IdUsuarioPst)
 
-      console.log(data.Grupo[0].item,"valor buscado")
       if(data.Grupo[0].item=== 1){
         //usuario pst normal
         this.ApiService.getNorma(data.IdUsuarioPst)
         .subscribe((data:any)=>{
-          //console.log(data,"datanueva")
             if(data[0].idCategoriarnt === 5 ||data[0].idCategoriarnt === 2){
               this.arrResult = data;
   
@@ -141,7 +132,6 @@ export class AppLoginComponent implements OnInit {
   }, 
   (e: HttpErrorResponse) => {
     e.status
-    console.log('no hay correo o pass')
     this.errorMessage = "Correo o contraseña inválidos";
   }
   )

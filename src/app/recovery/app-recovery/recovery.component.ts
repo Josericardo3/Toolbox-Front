@@ -19,7 +19,6 @@ export class RecoveryComponent implements OnInit {
 
   ngOnInit() {
     this.id = this.route.snapshot.paramMap.get('id');
-    console.log('ID:', this.id);
     $('#passwordChangedModal').modal('hide');
   }
 
@@ -39,7 +38,6 @@ export class RecoveryComponent implements OnInit {
       .subscribe(
         (response) => {
           this.router.navigate(['/']);
-          console.log(response)
           
           
         },

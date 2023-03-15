@@ -69,11 +69,6 @@ observacionF: string;
           // });
         });
       });
-
-      console.log(this.numeralprincipalString);
-      console.log(this.numeralespecificoString);
-      // console.log(this.itemArray);
-      // console.log(this.ObsArray);
     });
 
 }
@@ -130,7 +125,6 @@ observacionF: string;
       //   const idObs = `observacion-${iddiagnosticodinamico}`;
       //   const valorObs = document.querySelector('#idObs') as HTMLInputElement;
       //   const val = valorObs.value
-      //   console.log(`La observación del id ${idObs} es ${val}`);
       // };
 
     const result = this.valoresForm.find((o: any) => o.numeralespecifico === iddiagnosticodinamico);
@@ -146,18 +140,15 @@ observacionF: string;
       });
       // capturarObservacion();
     }
-    console.log(this.valoresForm[id], 'capturar valor')
 }
 
 valorObs:any;
 capturarValorObs(i: number, event: Event, idObs: string){
   this.valorObs = (event.target as HTMLInputElement).value;
-  console.log(`El valor de ${idObs} es ${this.valorObs}`);
 }
 
 
   saveForm(){
-    console.log(this.opcionSeleccionada)
     const observaciones = document.querySelectorAll('.obs');
     observaciones.forEach((observacion: HTMLTextAreaElement) => {
       this.valoresObservaciones.push(observacion.value);
@@ -170,14 +161,8 @@ capturarValorObs(i: number, event: Event, idObs: string){
       }
     });
     this.v = this.valoresObservaciones.concat(this.valoresRadios).join(" - ");
-    console.log(this.valoresObservaciones);
-    console.log(this.valoresRadios);
-    console.log(this.v);
-    console.log(this.valorSeleccionado)
-    console.log("save")
     //this.ApiService.saveDataDiagnostico(this.valoresForm)
     /*.subscribe((data: any) =>{
-      console.log(data, 'new data')
       
       
     })*/

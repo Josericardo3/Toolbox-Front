@@ -139,8 +139,6 @@ export class AppRegisterComponent implements OnInit {
 
 
   onLoadCategory(evt: any) {
-    //console.log(evt.target.options.selectedIndex, 'categoria valor')
-    //console.log(this.data, 'data', this.categoria)
     const filterCategory = this.categoria.name.agencias.filter(
       (agency: { id_categoria: number; name: string }) =>
         agency.id_categoria === evt.target.options.selectedIndex
@@ -149,18 +147,14 @@ export class AppRegisterComponent implements OnInit {
     this.arrAgency = filterCategory.sort();
    
     return this.arrAgency;
-    //console.log(this.registerForm, 'registronuevo')
-    //console.log(filterCategory,"filtro")
   }
 
   setDepartments(evt: any) {
     let departments: any[] = [];
     let departmentsCode: any[] = [];
-    //console.log(evt?.target?.value,"departa");
     let select = document.getElementById(
       'selectDepartment',
     ) as HTMLSelectElement
-    //console.log(select.options, 'opciones', select.options.length)
     if (select.options.length === 0) {
       fetch('https://www.datos.gov.co/resource/gdxc-w37w.json')
         .then((response) => response.json())
@@ -169,13 +163,11 @@ export class AppRegisterComponent implements OnInit {
           if (select != null && departments.length === 0) {
             departments = Array.from(
               new Set(data.map((item: any) => {
-                //console.log(item,"nuevoItem")
                 return item.dpto
               })),
             )
             departmentsCode = Array.from(
               new Set(data.map((item: any) => {
-                //console.log(item,"nuevoItem")
                 return item.cod_depto
               })),
             )
@@ -183,9 +175,7 @@ export class AppRegisterComponent implements OnInit {
             departments.forEach((item: any,index) => {
               let option = document.createElement('option')
               option.id = departmentsCode[index]
-              //console.log(item,"item")
               option.text = item
-              //console.log(option,"option")
               select.add(option)
 
             })
@@ -213,7 +203,6 @@ export class AppRegisterComponent implements OnInit {
         arrFilterMpio = data.filter(
           (item: any) => item.dpto === selectedDepartament,
         )
-        //console.log('municipalidad', arrFilterMpio)
         let select = document.getElementById(
           'selectMunicipality',
         ) as HTMLSelectElement
@@ -266,9 +255,7 @@ export class AppRegisterComponent implements OnInit {
   }
 
   closeModal(evt: any) {
-    console.log(this.registerForm,"aca esta el errror")
     evt.defaultPrevented
-    // console.log(evt, 'evt')
     const modal = document.querySelector('#modalTerminos') as HTMLInputElement
     modal.classList.remove('active');
     this.registerForm.controls['checkbox'].setValue(true);
@@ -277,9 +264,7 @@ export class AppRegisterComponent implements OnInit {
   }
 
   saveUser() {
-    //console.log(this.registerForm.get("departamento"), 'valores')
     const request = {
-      //usuariopst: this.registerForm.get('categoriaRnt')?.value.id,
       nit: this.registerForm.get("numeroDeIdentificacionTributaria")?.value,
       rnt: this.registerForm.get("registroNacionalDeTurismo")?.value,
       idCategoriaRnt: this.registerForm.get("categoriaRnt")?.value.id,
@@ -314,7 +299,6 @@ export class AppRegisterComponent implements OnInit {
         localStorage.setItem("newUser",'yes')
         const modalInicial = document.querySelector("#modal-success") as HTMLElement;
         modalInicial.style.display = "block";
-    //console.log(request, 'newrequest')
     return this.ApiService.createUser(request).subscribe((data: any) => {
       if (data.statusCode === 201) {
          this.router.navigate(['/']); 

@@ -59,8 +59,6 @@ export class AppCaracterizacionComponent implements OnInit {
     // .subscribe((data: any) => {
     //   this.datos = data;
     //   this.getTable(this.datos);
-    //   console.log(data);
-    //   console.log(this.datos);
     //   this.getSelect();
     //   const refSkills = this.formParent.get('campos') as FormArray;
     //   refSkills.push(this.intiFormSkill());
@@ -102,7 +100,6 @@ getCaracterizacion(){
 // }
 // capturarValor2(i: number, select: HTMLSelectElement, id: number) {
 //   const valor = select.value;
-//   console.log(valor)
 //   // restante del código
 // }
 
@@ -118,10 +115,8 @@ printSelectedOption() {
 
 
 allFieldsFilled(): boolean {
-  console.log(this.formParent.value); // imprime los valores de los campos del formulario
   const campos = Object.values(this.formParent.value);
   const lleno = campos.every(campo => typeof campo === 'string' && campo.trim() !== '');
-  console.log(lleno); // imprime el valor booleano que se devuelve
   return lleno;
 }
 
@@ -140,7 +135,6 @@ createFormControls() {
       .filter((campo: { desplegable: string; }) => campo.desplegable !== '{}' && campo.desplegable !== '')
       .flatMap((campo: { desplegable: any; }) => this.getOption(campo.desplegable))
       .reduce((prev: any, next: any) => prev.concat(next), []);
-      console.log(campo.desplegable)
     }
     if(campo.tipodedato === "norma"){
       this.dataNorma = this.datos.campos
@@ -215,9 +209,6 @@ capturarValor(id: string | number, valor: any, idcaracterizaciondinamica: any) {
       "idCaracterizacion": 1
     });
   }
-
-
-  console.log(this.valoresForm[id], 'capturar valor')
 }
 
 hasDepency(id: number) {
@@ -228,10 +219,7 @@ hasDepency(id: number) {
 // saveForm(){
    //melissa prueba
 //    const values = this.datos.campos.forEach((dato: any) => {
-//    console.log(this.formParent.get('categoriarnt')?.value,"campo prueba")
 //     if(dato.values !== null){
-//       console.log(dato,"dato nuevo",this.formParent)
-//       console.log(dato.campo_local)
 //       this.formParent.get(dato.campo_local)?.value
 //     } 
 //     });
@@ -240,7 +228,6 @@ hasDepency(id: number) {
 //       categoria:values,
 //     }
 
-// console.log(request,"este es el request")
 
 // }
   numOfFields!: number;
@@ -248,7 +235,6 @@ hasDepency(id: number) {
   saveForm(){
     this.ApiService.saveData(this.valoresForm)
     .subscribe((data: any) => {
-      console.log(data, 'new data')
       this.router.navigate(['/dashboard'])
     })
 }

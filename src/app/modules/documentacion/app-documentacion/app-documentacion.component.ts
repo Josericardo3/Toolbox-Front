@@ -34,7 +34,6 @@ export class AppDocumentacionComponent implements OnInit {
   ngOnInit(): void {
     this.normaSelected = localStorage.getItem('normaSelected');
     this.ntc = this.normaSelected.substring(0, 8);
-    console.log(this.ntc);
     // this.pdfUrl = `../../../../assets/DOCS/Norma/${this.ntc}-MATRIZ REQUISITOS LEGALES-Aprobada V2.pdf`;
   }
 

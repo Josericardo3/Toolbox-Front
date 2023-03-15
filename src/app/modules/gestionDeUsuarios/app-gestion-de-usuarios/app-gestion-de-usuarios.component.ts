@@ -45,11 +45,9 @@ export class AppGestionDeUsuariosComponent {
   valoresPst: any = {}
   capturarValor(id: string | number, valor: any) {
     this.valoresPst[id] = valor
-    //console.log(this.valoresPst[id], 'capturar valor')
   }
 
   linkToDashboard(user: any) {
-    //console.log(user,"user");
     localStorage.setItem('rolPst',user.rnt)
     return this.router.navigate(['/dashboard'])
     
@@ -71,7 +69,6 @@ export class AppGestionDeUsuariosComponent {
   filterRnt() {
     if (this.guardarEvent != '') {
       let rnt = this.dataInitial.map((item) => {
-        //console.log(item, 'item', this.guardarEvent, 'guardarevent')
         return item.rnt.toUpperCase().includes(this.guardarEvent.toUpperCase())
           ? item
           : 'no hay resultado'
@@ -91,7 +88,6 @@ export class AppGestionDeUsuariosComponent {
   filterEmpresa() {
     if (this.guardarEvent != '') {
       let razonsocial = this.dataInitial.map((item) => {
-        //console.log(item, 'item', this.guardarEvent, 'guardarevent')
         return item.razonsocial
           .toUpperCase()
           .includes(this.guardarEvent.toUpperCase())
@@ -126,7 +122,6 @@ export class AppGestionDeUsuariosComponent {
   }
   filterEstado(evnt: any) {
     if (this.guardarEvent != '') {
-      //console.log(this.guardarEvent, 'evento estado')
       let estado = this.dataInitial.map((item) => {
         return item.estadoatencion
           .toUpperCase()
@@ -150,14 +145,12 @@ export class AppGestionDeUsuariosComponent {
     this.pages = event.page;
     const startItem = (event.page - 1) * event.itemsPerPage
     const endItem = event.page * event.itemsPerPage;
-    //console.log(startItem,endItem,event.itemsPerPage,event.page,"finalpage")
     this.returnedArray = this.dataInitial.slice(startItem, endItem)
   }
 
   contenidoAsignacion: any = {};
    nuevoAsesor(evnt:any){
     this.contenidoAsignacion=evnt;
-    //console.log(evnt,'contenido')
     return this.openModalPst()
    }
 
@@ -168,9 +161,7 @@ export class AppGestionDeUsuariosComponent {
         JSON.stringify(dataAsesor),
       )
       this.arrListAsesor = dataAsesor
-      //console.log('asesor,gestion')
       this.isOpen = !this.isOpen;
-      //document.getElementById('modalPst').style.display = 'block'
     })
   }
  
@@ -187,7 +178,6 @@ export class AppGestionDeUsuariosComponent {
     this.verSeleccion = this.opcionSeleccionado.nombre;
     //seleccion de la lista
     this.guardarSeleccion = this.opcionSeleccionado;
-    //console.log(this.verSeleccion,this.opcionSeleccionado, 'evento', 'nuevoseleccion')
   }
 
   //actualizar asesor

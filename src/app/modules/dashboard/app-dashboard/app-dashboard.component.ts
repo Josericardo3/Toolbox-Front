@@ -37,7 +37,6 @@ export class AppDashboardComponent implements OnInit {
   ) {
  
     //PG this.counter$= store.select('initialState')
-    // console.log(this.counter$,'counter')
   }
   
   ngOnInit(): void {
@@ -52,7 +51,6 @@ export class AppDashboardComponent implements OnInit {
       (menuItem) =>
         menuItem.rol === this.userRol && menuItem.view.includes(evt.target.alt),
     )
-    //console.log(menuResult[0],"MENU")
     return menuResult[0];
   }
 

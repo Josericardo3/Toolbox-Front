@@ -147,13 +147,11 @@ export class ApiService {
   }
 
   addAsesor(): Observable<any> {
-    //console.log("entro al add asesor")
     let assign = `${this.apiURL}/api/Asesor/ListarAsesor`
     return this.http.get<any>(assign)
   }
  
   updateAsesor(resquest): Observable<any> {
-    //console.log("entro al add asesor")
     let assign = `${this.apiURL}/api/Asesor/registrarPSTxAsesor`
     return this.http.post<any>(assign,resquest)
   }

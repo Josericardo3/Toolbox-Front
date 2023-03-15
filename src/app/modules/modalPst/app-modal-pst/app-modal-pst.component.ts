@@ -23,13 +23,11 @@ export class AppModalPstComponent implements OnInit {
   ListarAsesor(){
     const resAsesor = JSON.parse(localStorage.getItem('listaAsesor'));
     this.resListAsesor = resAsesor;
-    //console.log(resAsesor,"datalista")
   }
 
   capturarValueSelect(evnt:any){
    //valor seleccionado
    this.verSeleccion = this.opcionSeleccionado.nombre ;
-   //console.log(this.verSeleccion,"evento")
   }
 
   saveAsesor(evnt: any){
