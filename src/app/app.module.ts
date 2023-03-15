@@ -11,7 +11,7 @@ import { AppHeaderComponent } from './modules/header/app-header/app-header.compo
 import { AppRegisterComponent } from './modules/register/app-register/app-register.component';
 import { AppDashboardComponent } from './modules/dashboard/app-dashboard/app-dashboard.component';
 import { StoreModule } from '@ngrx/store'; 
-import { reducer, stateReducer } from './state/reducer/example.reducer';
+import { stateReducer } from './state/reducer/example.reducer';
 import { AppMyExampleComponent } from './modules/example/example';
 import { DirectivesModule } from './directives/directives.module';
 import { AppCaracterizacionComponent } from './modules/caracterizacion/app-caracterizacion/app-caracterizacion.component';
@@ -57,8 +57,8 @@ import { ModalComponent } from './messagemodal/messagemodal.component';
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule, 
-    // StoreModule.forRoot({ data: stateReducer }),
-    StoreModule.forRoot(reducer),
+    StoreModule.forRoot({ data: stateReducer }),
+    //StoreModule.forRoot(reducer),
     ModalModule.forRoot(),
     HttpClientModule,
     DirectivesModule,

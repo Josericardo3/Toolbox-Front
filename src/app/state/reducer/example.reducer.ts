@@ -21,11 +21,11 @@ export function stateReducer(state: any, action: any) {
   return _stateReducer(state, action)
 }
 
-export const reducers = {
+/*export const reducers = {
   stateReducer
 }
 
 export const rootReducer = compose(combineReducers)(reducers)
 export function reducer(state, action) {
   return rootReducer(state, action)
-}
+}*/
