@@ -1,4 +1,4 @@
-import { createReducer, on } from '@ngrx/store'
+import { combineReducers, compose, createReducer, on } from '@ngrx/store'
 // M import { increment, decrement, reset } from '../action/example.action';
 import { saveDataLogin } from '../action/example.action'
 
@@ -19,4 +19,13 @@ const _stateReducer = createReducer(
 //guarda estado global
 export function stateReducer(state: any, action: any) {
   return _stateReducer(state, action)
+}
+
+export const reducers = {
+  stateReducer
+}
+
+export const rootReducer = compose(combineReducers)(reducers)
+export function reducer(state, action) {
+  return rootReducer(state, action)
 }
