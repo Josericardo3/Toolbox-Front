@@ -1,4 +1,4 @@
-import {createReducer, on } from '@ngrx/store'
+import { combineReducers, compose, createReducer, on } from '@ngrx/store'
 // M import { increment, decrement, reset } from '../action/example.action';
 import { saveDataLogin } from '../action/example.action'
 

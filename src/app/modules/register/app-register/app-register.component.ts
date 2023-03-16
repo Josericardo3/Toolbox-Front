@@ -1,8 +1,5 @@
-import {
-  Component,
-  OnInit,
-  ComponentFactoryResolver,
-} from '@angular/core'
+import { ModalService } from 'src/app/messagemodal/messagemodal.component.service' 
+import {Component, OnInit, ComponentFactoryResolver} from '@angular/core'
 import { Router } from '@angular/router'
 import { FormGroup, Validators, FormBuilder,FormControl } from '@angular/forms'
 import { CustomValidators } from '../../../models/customeValidator'
@@ -49,6 +46,7 @@ export class AppRegisterComponent implements OnInit {
     private ComponentFactoryResolver: ComponentFactoryResolver,
     public ApiService: ApiService,
     private categoria: Categoria,
+    private Message: ModalService,
     private store: Store<{ dataLogin: any }>,
   ) {}
 
@@ -297,14 +295,14 @@ export class AppRegisterComponent implements OnInit {
       idTipoAvatar: 1,
     }
         localStorage.setItem("newUser",'yes')
-        const modalInicial = document.querySelector("#modal-success") as HTMLElement;
-        modalInicial.style.display = "block";
+      const title = "Registro exitoso";
+      const message = "El registro se ha realizado exitosamente"
+      this.Message.showModal(title,message);
     return this.ApiService.createUser(request).subscribe((data: any) => {
       if (data.statusCode === 201) {
          this.router.navigate(['/']); 
        
       }
-      
     })
   }
 

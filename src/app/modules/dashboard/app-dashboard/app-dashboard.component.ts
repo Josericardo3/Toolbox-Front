@@ -5,6 +5,7 @@ import { Observable } from 'rxjs'
 import { Store } from '@ngrx/store'
 import * as fromRoot from 'src/app/state/reducer/example.reducer'
 import { AppState } from 'src/app/state/selectors/app.state'
+import { ModalService } from 'src/app/messagemodal/messagemodal.component.service' 
 
 
 //@Injectable()
@@ -34,6 +35,7 @@ export class AppDashboardComponent implements OnInit {
   constructor(
     //PG private store: Store<{ initialState:any }>,
     private router: Router,
+    private Message: ModalService,
   ) {
  
     //PG this.counter$= store.select('initialState')
@@ -56,8 +58,11 @@ export class AppDashboardComponent implements OnInit {
 
   menuFilter(evt: any) { //redireccionar
       if (this.validateRol(evt)) {// condicional cuando sí tiene acceso
-        evt.target.src='../../../../assets/img-dashboard/'+evt.target.alt+'-3.svg'; 
-        this.router.navigate(['/' + evt.target.alt])
+        evt.target.src='../../../../assets/img-dashboard/'+evt.target.alt+'-3.svg';   
+        const title = "Error";
+        const message = "Sección aún no disponible"
+        this.Message.showModal(title,message);
+        //this.router.navigate(['/' + evt.target.alt])
     }  
   }
 

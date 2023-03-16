@@ -5,7 +5,9 @@
     justify-content: center;
     width: 100%;
     height: 100vh;
+    margin-top: 25px;
 }
+
 .login{
     flex: 1;
     display: flex;

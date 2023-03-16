@@ -15,17 +15,11 @@
       <label for="confirm-password">Confirmar contraseña:</label>
       <input type="password" id="confirm-password" name="confirm-password" (input)="onPasswordInput()">
     </div>
-
-    <button type="button" (click)="resetPassword()">Actualizar contraseña</button>
-
     <div class="error-message" *ngIf="error">{{ error }}</div>
+    <button type="button" (click)="resetPassword()">Actualizar contraseña</button>
   </form>
 </div>
-
-
-
-
-
 <app-app-footer
   index->
 </app-app-footer>
+<app-modal></app-modal>

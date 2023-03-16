@@ -1,5 +1,5 @@
-import { Component, OnInit} from '@angular/core';
-import {FormGroup, FormControl, Validators, FormBuilder} from '@angular/forms'
+import { Component, OnInit, CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
+import {FormGroup, FormControl, Validators, FormBuilder, NgModel} from '@angular/forms'
 import { ApiService } from 'src/app/servicios/api/api.service';
 import { LoginI } from '../../../models/loginInterface';
 import { Router } from '@angular/router';
@@ -11,7 +11,6 @@ import { saveDataLogin } from 'src/app/state/action/example.action';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { ModalService } from 'src/app/messagemodal/messagemodal.component.service' 
 //PG import { TokenStorageService } from '../../../servicios/token/token-storage.service';
-
 
 @Component({
   selector: 'app-app-login',
@@ -75,7 +74,6 @@ export class AppLoginComponent implements OnInit {
   }
   recoveryPass(){
     this.usuario.correo = this.loginForm.get('correo')?.value;
-    debugger
     if(!!this.usuario.correo){
       this.ApiService.sendEmailRecovery(this.usuario.correo).subscribe(
         (data: any) => {
@@ -84,7 +82,7 @@ export class AppLoginComponent implements OnInit {
       )
     }else{
       const title = "Error";
-      const message = "Ingrese un correo"
+      const message = "Debe ingresar un correo"
       this.Message.showModal(title,message);
     }
   }
