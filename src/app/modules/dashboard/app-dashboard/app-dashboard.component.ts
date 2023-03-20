@@ -61,8 +61,8 @@ export class AppDashboardComponent implements OnInit {
         evt.target.src='../../../../assets/img-dashboard/'+evt.target.alt+'-3.svg';   
         const title = "Error";
         const message = "Sección aún no disponible"
-        this.Message.showModal(title,message);
-        //this.router.navigate(['/' + evt.target.alt])
+        //this.Message.showModal(title,message);
+        this.router.navigate(['/' + evt.target.alt])
     }  
   }
 
