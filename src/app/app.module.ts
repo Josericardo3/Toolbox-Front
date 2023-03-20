@@ -30,7 +30,6 @@ import { InterceptorService } from './servicios/interceptorService/interceptor.s
 import { AppEvidenciaComponent } from './modules/evidencia/app-evidencia/app-evidencia.component';
 import { RecoveryComponent } from './recovery/app-recovery/recovery.component';
 import { ModalComponent } from './messagemodal/messagemodal.component';
-
 @NgModule({
   declarations: [
     AppComponent,

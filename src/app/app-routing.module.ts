@@ -24,7 +24,7 @@ const routes: Routes = [
   {path: 'documentacion', component: AppDocumentacionComponent},
   {path: 'gestionUsuario', component: AppGestionDeUsuariosComponent},
   {path: 'evidencia', component: AppEvidenciaComponent},
-  {path: 'recovery/:id', component: RecoveryComponent},
+  {path: 'recovery', component: RecoveryComponent},
   //{path: '', component: AppMyExampleComponent},
 ];
 

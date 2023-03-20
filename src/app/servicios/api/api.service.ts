@@ -66,7 +66,12 @@ export class ApiService {
     let norma = `${this.apiURL}/api/Caracterizacion/SelectorDeNorma?id=${idCategoria}`
     return this.http.get<any>(norma, idCategoria)
   }
-
+  validateCaracterizacion(idUsuario:any): Observable<string> {
+    let validate = `${this.apiURL}/api/Validaciones/UsuarioCaracterizacion/${idUsuario}`
+    let response = this.http.get<string>(validate);
+    debugger
+    return response;
+  }
 
   //para obtener la data de caracterizacion
   getData(): Observable<any> {

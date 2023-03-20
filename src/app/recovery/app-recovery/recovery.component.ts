@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { ApiService } from 'src/app/servicios/api/api.service';
+import {FormGroup, FormControl, Validators, FormBuilder, NgModel} from '@angular/forms'
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
 import { ModalService } from 'src/app/messagemodal/messagemodal.component.service' 
@@ -11,20 +13,53 @@ declare var $: any;
   styleUrls: ['./recovery.component.css']
 })
 export class RecoveryComponent implements OnInit {
-  password: string;
-  confirmPassword: string;
+  recoveryForm: FormGroup;  
   error: string;
+  mostrarFormulario2: boolean = false;
+  passwordHidden = true;
+  //password: string;
+  //confirmPassword: string;
+  //error: string;
   id: string;
-
-  constructor(private http: HttpClient, private route: ActivatedRoute,private router: Router, private Message: ModalService,) { }
-
-  ngOnInit() {
-    //this.id = this.route.snapshot.paramMap.get('id');
-    const title = "Aviso";
-    const message = "Se le ha enviado un correo con su codigo de recuperación"
-    this.Message.showModal(title,message);
+  correo: string;
+  constructor(
+    private http: HttpClient,
+    private route: ActivatedRoute,
+    private router: Router,
+    private Message: ModalService,
+    private ApiService: ApiService,
+    private formBuilder: FormBuilder
+    ) {
+      this.recoveryForm = this.formBuilder.group({
+      correo: ['', [Validators.required, Validators.email]],
+      codigo: ['', Validators.required],
+      password: ['', Validators.required],
+      confirmarPassword: ['', Validators.required]
+    }); }
+  togglePasswordVisibility() {
+    this.passwordHidden = !this.passwordHidden;
   }
-
+  ngOnInit() {
+    this.id = this.route.snapshot.paramMap.get('id');
+    //const title = "Aviso";
+    //const message = "Se le ha enviado un correo con su codigo de recuperación"
+    //this.Message.showModal(title,message);
+  }
+  sendEmail(){
+    debugger
+    this.correo = this.recoveryForm.get('correo')?.value;
+    if(!!this.correo){
+      this.ApiService.sendEmailRecovery(this.correo).subscribe(
+        (data: any) => {
+          this.mostrarFormulario2 = true;
+        }
+      )
+    }else{
+      const title = "Error";
+      const message = "Debe ingresar un correo"
+      this.Message.showModal(title,message);
+    }
+  }
   resetPassword() {
     const passwordInput = document.querySelector('#password') as HTMLInputElement;
     const password = passwordInput.value;
@@ -44,13 +79,16 @@ export class RecoveryComponent implements OnInit {
     }
     this.http.post(`https://www.toolbox.somee.com/api/Validaciones/CambioContraseña?password=${password}&id=${userCode}`, { id: this.id })
       .subscribe(
-        (response) => {
-          const title = "Exito";
-          const message = "Contraseña cambiada con exito"
-          this.Message.showModal(title,message);
-          this.router.navigate(['/']);
-          
-          
+        (response: any) => {
+          debugger
+          if(response.valor == "Contraseña cambiada satisfactoriamente"){
+            const title = "Exito";
+            const message = "Contraseña cambiada con exito"
+            this.Message.showModal(title,message);
+            this.router.navigate(['/']);
+          }else{
+            this.error = "El codigo ingresado es incorrecto"
+          }
         },
         (error: string) => console.log(error)
       );

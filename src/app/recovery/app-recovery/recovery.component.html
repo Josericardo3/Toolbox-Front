@@ -1,25 +1,53 @@
 <app-app-header></app-app-header>
-<div class="form-container">
-  <h1>Recuperación de contraseña</h1>
-  <form>
-    <div class="form-group">
-      <label>Código de Recuperación:</label>
-      <input id="code" name="code" (input)="onPasswordInput()">
-    </div>
-    <div class="form-group">
-      <label for="password">Contraseña:</label>
-      <input type="password" id="password" name="password" (input)="onPasswordInput()">
-    </div>
-
-    <div class="form-group">
-      <label for="confirm-password">Confirmar contraseña:</label>
-      <input type="password" id="confirm-password" name="confirm-password" (input)="onPasswordInput()">
-    </div>
-    <div class="error-message" *ngIf="error">{{ error }}</div>
-    <button type="button" (click)="resetPassword()">Actualizar contraseña</button>
-  </form>
+<!-- Formulario 1: ingresar correo -->
+<div *ngIf="!mostrarFormulario2">
+  <div class="form-container">
+    <h1>Recuperación de contraseña</h1>
+    <form [formGroup]="recoveryForm">
+      <div class="form-group" for="correo">
+        <label id="correo">Correo electrónico:</label>
+        <input type="email" id="correo" name="correo" formControlName="correo">
+      </div>
+      <div class="error-message" *ngIf="error">{{ error }}</div>
+      <button type="button" (click)="sendEmail()">Enviar código</button>
+    </form>
+  </div>
 </div>
-<app-app-footer
-  index->
-</app-app-footer>
+
+<!-- Formulario 2: ingresar código y contraseña -->
+<div *ngIf="mostrarFormulario2">
+  <div class="form-container">
+    <h1>Recuperación de contraseña</h1>
+    <form>
+      <div class="form-group">
+        <label>Código de Recuperación:</label>
+        <input id="code" name="code" (input)="onPasswordInput()">
+      </div>
+      <div class="form-group">
+        <label for="password">Contraseña:</label>
+        <!--<div class="input-group"> -->
+          <input type="password"  id="password" name="password">
+          <!-- <span class="input-group-addon">
+            <i class="glyphicon glyphicon-eye-open" id="show_password" aria-hidden="true"></i>
+          </span> -->
+        <!--</div> -->
+      </div>
+
+      <div class="form-group">
+        <label for="confirm-password">Confirmar contraseña:</label>
+          <input type="password" id="confirm-password" name="confirm-password">
+          <!-- <span class="input-group-addon">
+            <i class="glyphicon glyphicon-eye-open" id="show_confirm_password" aria-hidden="true"></i>
+          </span> -->
+        
+      </div>
+
+
+      <div class="error-message" *ngIf="error">{{ error }}</div>
+      <button type="button" (click)="resetPassword()">Actualizar contraseña</button>
+    </form>
+  </div>
+</div>
+
+<app-app-footer></app-app-footer>
 <app-modal></app-modal>
