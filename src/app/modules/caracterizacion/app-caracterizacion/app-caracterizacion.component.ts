@@ -33,6 +33,13 @@ export class AppCaracterizacionComponent implements OnInit {
   idCaracterizacionDinamicaCondicion!: any;
 
   categoriaRNTValues: string;
+
+  selectedOption: string;
+  selectedOptions: string[] = [];
+
+  aventuraSeleccionada: boolean = false;
+  opcionesNorma: any[] = [];
+  aventura: boolean = false;
  
   private emailPattern: any = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   private webPattern: any = /^(http:\/\/www\.|http:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/;
@@ -43,30 +50,41 @@ export class AppCaracterizacionComponent implements OnInit {
     private http: HttpClient,
     private router: Router,
     private spinnerService: SpinnerService,
-    ) { 
-      this.formParent = this.formBuilder.group({});
-}
+    ) {}
 
   ngOnInit(): void { 
+    this.formParent = this.formBuilder.group({});
     this.getCaracterizacion();
     this.http.get('https://www.datos.gov.co/resource/gdxc-w37w.json')
     .subscribe((data: any[]) => {
       this.municipios = data;
     });
-    //EJEMPLO01
-    // this.initFormParent();
-    // this.http.get('http://10.4.3.140:8050/api/Usuario/caracterizacion/1')
-    // .subscribe((data: any) => {
-    //   this.datos = data;
-    //   this.getTable(this.datos);
-    //   this.getSelect();
-    //   const refSkills = this.formParent.get('campos') as FormArray;
-    //   refSkills.push(this.intiFormSkill());
-    // });
+
+}
+
+onChangeAventuraSeleccionada(value: boolean) {
+  // this.aventuraSeleccionada = value;
+  // if (this.aventuraSeleccionada) {
+  //   this.opcionesNorma = this.dataNorma.map(opcion => opcion.id);
+  // } else {
+  //   this.opcionesNorma = this.dataNorma.filter((opcion:any) => 
+  //   {opcion.norma.startsWith('NTC 6502') || opcion.norma.toString().startsWith('NTC 6505')}
+  //   ).map(opcion => opcion.id);
+  // }
+
+    this.aventuraSeleccionada = value;
+    if (this.aventuraSeleccionada) {
+      this.opcionesNorma = this.dataNorma.map(opcion => opcion.id);
+    } else {
+      this.opcionesNorma = this.dataNorma.filter(opcion => opcion.norma && (opcion.norma.startsWith('NTC 6502') || opcion.norma.toString().indexOf('NTC 6505') === 0))
+        .map(opcion => opcion.id);
+    }
+  
 }
 
 getCaracterizacion(){
   this.ApiService.getData()
+  // this.http.get('assets/datos.json')
   .subscribe((data: any) => {
     this.datos = data;
     // Obtiene el valor de "values" de "nombre": "Categoría RNT"
@@ -75,14 +93,64 @@ getCaracterizacion(){
 
     this.datos.campos.forEach((campo:any) => {
       if(campo.values !== null){
-        this.formParent.addControl(campo.ffcontext, new FormControl({value: campo.values, disabled: true}))
-      }else{
-        this.formParent.addControl(campo.ffcontext, new FormControl('', [Validators.required]))          
+        this.formParent.addControl(campo.nombre, new FormControl({value: campo.values, disabled: true}))
+      }
+      else{
+        this.formParent.addControl(campo.nombre, new FormControl(''))          
       }
     });
+
+    for (let campo of this.datos.campos) {
+      if (campo.requerido) {
+        this.formParent.addControl(campo.nombre, this.formBuilder.control(''));
+      }
+    }
+    this.formParent.valueChanges.subscribe(() => {
+      let formValid = true;
+      for (let campo of this.datos.campos) {
+        if (campo.requerido && campo.values == null && !this.formParent.controls[campo.nombre].value) {
+          formValid = false;
+          break;
+        }
+      }
+      if (formValid) {
+        this.formParent.markAsPristine();
+      } else {
+        this.formParent.markAsDirty();
+      }
+    });
+
     this.createFormControls();
+
+    const index = this.datos.campos.findIndex(campo => campo.nombre === 'Norma Técnica Colombiana aplicable');
+    // Si se encontró el campo
+    if (index >= 0) {
+      // Mover el elemento a la última posición del array
+      const campoMovido = this.datos.campos.splice(index, 1)[0];
+      this.datos.campos.push(campoMovido);
+    }
 });
 }
+
+
+
+
+// public todosLosCamposCompletos(): boolean {
+//   if (!this.datos || !Array.isArray(this.datos.campos)) {
+//     return false;
+//   }
+//   let hasEmptyRequiredFields = this.datos.campos.some(campo => campo.requerido && (campo.values == null || campo.values === ''));
+//   return !hasEmptyRequiredFields;
+//   // for (let campo of this.datos.campos) {
+//   //   if (campo.requerido && campo.values === null) {
+//   //     return false;
+//   //   }
+//   // }
+//   // return true;
+// }
+
+
+
 
 // opcionesSeleccionadas: any[] = [];
 // selectMunicipio: any = {};
@@ -103,16 +171,9 @@ getCaracterizacion(){
 //   // restante del código
 // }
 
-selectedOption: string;
-selectedOptions: string[] = [];
-
 printSelectedOption() {
   this.selectedOptions.push(this.selectedOption);
 }
-
-
-
-
 
 allFieldsFilled(): boolean {
   const campos = Object.values(this.formParent.value);
@@ -145,6 +206,7 @@ createFormControls() {
     this.formParent.addControl(campo.campo_local, control);
   }
 }
+
 getTable(relations: any): any {
   if (typeof relations === 'string') {
     this.dataSelect = JSON.parse(relations).table;
@@ -162,6 +224,7 @@ getOption(desplegable: any): any{
     return desplegable;
   }
 }
+
 getNorma(relations: any): any {
   if (typeof relations === 'string') {
     this.dataNorma = JSON.parse(relations).table;
@@ -195,6 +258,7 @@ getControlType(campo: any) {
       return new FormControl('');
   }
 }
+
 valoresForm: any = [];
 capturarValor(id: string | number, valor: any, idcaracterizaciondinamica: any) {
   const result = this.valoresForm.find((o: any) => o.id === id);
@@ -216,22 +280,8 @@ hasDepency(id: number) {
   const dictionay = new Map(campos.map(d => [d.idcaracterizaciondinamica, d]));
   return dictionay.has(+id);
 }
-// saveForm(){
-   //melissa prueba
-//    const values = this.datos.campos.forEach((dato: any) => {
-//     if(dato.values !== null){
-//       this.formParent.get(dato.campo_local)?.value
-//     } 
-//     });
-  
-//     const request={
-//       categoria:values,
-//     }
 
-
-// }
   numOfFields!: number;
-// saveForm(request:FormGroup){
   saveForm(){
     this.ApiService.saveData(this.valoresForm)
     .subscribe((data: any) => {
@@ -239,32 +289,8 @@ hasDepency(id: number) {
     })
 }
 
-  //--------------EJEMPLO1--------------------
-
-  // initFormParent(): void{
-  //   this.formParent = new FormGroup({
-  //     // id_user: new FormControl('', [Validators.required, Validators.minLength(5)]),
-  //     campos: new FormArray([], [ Validators.required])
-  //   });
-  // }
-
-  // //esta funcion retorna un nuevo grupo de formulario. Inicializa el formulario de los skills
-  // intiFormSkill(): FormGroup{
-  //   return new FormGroup({
-  //     c0: new FormControl('', [Validators.required]),
-  //     c2: new FormControl('', [Validators.required]),
-  //     c3: new FormControl('', [Validators.required]),
-  //     c4: new FormControl('', [Validators.required]),
-  //     c5: new FormControl('', [Validators.required]),
-  //     c6: new FormControl('', [Validators.required]),
-  //   })
-  // }
-
-  // //addSkill usa intiFormSkill. Agrega el formulario al hacer clic en el boton
-  // // addSkills(){ }
-
-  // getCtrl(key: string, form: FormGroup): any{
-  //   return form.get(key);
-  // }
+goBack() {
+  this.router.navigate(['/dashboard'])
+}
 
 }

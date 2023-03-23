@@ -91,11 +91,14 @@ p, a{
     margin: 10px 0;
     font-family: 'Work Sans', sans-serif;
     font-size: 17px;
-    color: #474749;
-    margin: 5px 0 5px 0;
+    color: #068460;
+    margin: 5px;
+}
+p{
+    color: #474749 !important;
 }
 a{
-    color: rgb(14, 14, 232) !important;
+    text-decoration: none;
 }
 .btn{
     margin: 10vh 0 5vh 0;
@@ -123,4 +126,54 @@ a{
     font-family: 'Work Sans', sans-serif;
     font-size: 19px;
     font-weight: lighter;
+}
+.subDetalleSubirVisible{
+    display: flex;
+    flex-direction: column;
+    width: 81vw;
+    align-items: center;
+    height: auto;
+    padding: 15px 0 10px 20px;
+}
+.btnFile{
+    margin: 1vh 0;
+    height: 35px;
+    width: 80px;
+    padding: 3px;
+    background-color: #068460;
+    border-radius: 100px;
+    color: #FFFFFF;
+    font-family: 'Work Sans', sans-serif;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+}
+.containerFile{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+.file{
+    display: none;
+}
+.file + label{
+    display: flex;
+    flex: 1;
+}
+.fileName,
+.fileBtn{
+    padding: 5px 10px;
+    font-family: 'Work Sans', sans-serif;
+    font-size: 16px;
+    margin: 1vh 0;
+}
+.fileBtn{
+    background: #f9f9f9;
+    border: 1px solid #CACACA;
+    flex: 1;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.fileBtn:hover {
+    background-color: #dddddd;
 }

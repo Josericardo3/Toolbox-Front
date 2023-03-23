@@ -14,12 +14,9 @@ export class AppDiagnosticoComponent implements OnInit {
   datos: any = [];
 
   valorSeleccionado: string[] = [];
-  // valorObs: string[] = [];
-
-  // public isValid = false;
 
   itemSeleccionado: string;
-observacionF: string;
+  observacionF: string;
 
   numeralprincipalArray: string[] = [];
   numeralespecificoArray: string[] = [];
@@ -30,6 +27,7 @@ observacionF: string;
   // opcionesSeleccionadas: string[][] = [[]];
   // opcionSeleccionada: string[] = [];
 
+
   constructor(
     private fb: FormBuilder,
     private http: HttpClient,
@@ -39,10 +37,11 @@ observacionF: string;
 
   ngOnInit(): void {
     this.formParent = this.fb.group({
-      campos: this.fb.array([])
+      // campos: this.fb.array([])
+      radio: ['', Validators.required],
+      observacion: ['', Validators.required]
     });
 
-    // this.http.get('https://www.toolbox.somee.com/api/Usuario/Diagnostico/5')
     // this.http.get('assets/datos.json')
     this.ApiService.getDiagnostico()
     .subscribe((data: any) => {
@@ -73,6 +72,22 @@ observacionF: string;
 
 }
 
+validarCampos() {
+  let camposVacios = false;
+  if (this.datos && this.datos.campos) { // Verifica si hay campos definidos
+    this.datos.campos.forEach(campo => {
+      campo.listacampos.forEach(subcampo => {
+        if (!subcampo.valorSeleccionado || !subcampo.observacion) {
+          camposVacios = true;
+          this.formParent.addControl(`observacion_${subcampo.numeralespecifico}`, this.fb.control('', Validators.required));
+      this.formParent.addControl(`radio_${subcampo.numeralespecifico}}`, this.fb.control('', Validators.required));
+    
+        }
+      });
+    });
+  }
+  return camposVacios;
+}
 
   // getCampo(i: number) {
   //   return (this.formParent.get('campos') as FormArray).at(i).get('opcionSeleccionada');
@@ -98,6 +113,7 @@ observacionF: string;
 // valorSeleccionado() {
 //   this.radiosSeleccionados = true;
 // }
+
 
   getControlType(campo: any) {
     switch (campo.tipodedato) {
@@ -147,7 +163,6 @@ capturarValorObs(i: number, event: Event, idObs: string){
   this.valorObs = (event.target as HTMLInputElement).value;
 }
 
-
   saveForm(){
     const observaciones = document.querySelectorAll('.obs');
     observaciones.forEach((observacion: HTMLTextAreaElement) => {
@@ -167,6 +182,10 @@ capturarValorObs(i: number, event: Event, idObs: string){
       
     })*/
     this.router.navigate(['/diagnosticoDoc'])
+  }
+
+  goBack() {
+    this.router.navigate(['/dashboard'])
   }
 
 }

@@ -9,18 +9,59 @@
                 </div>
             </div>
             <div class="detalle" *ngIf="contextsVisible">
-                <p>4.1 Cumplimiento de la legislación | 
-                    <a >Generar documento</a> | 
-                    <a>Cargar documento</a></p>
-                <p>4.2 Comprensión de la organización y de su contexto | 
-                    <a>Generar documento</a> | 
-                    <a>Cargar documento</a></p>
-                <p>4.3 Comprensión de las necesidades y expectativas de las partes interesadas | 
-                    <a>Generar documento</a> | 
-                    <a>Cargar documento</a></p>
-                <p>4.4 Determinación del alcance del sistema de gestión de la sostenibilidad | 
-                    <a>Generar documento</a> | 
-                    <a>Cargar documento</a></p>
+                <div>
+                    <p>4.1 Cumplimiento de la legislación 
+                        <a routerLink="/EMatrizRequisitosLegales" routerLinkActive="activebutton"> | Matriz de requisitos legales</a> |
+                        <a (click)="toggleSubir('item41')">Cargar documento</a> 
+                    </p> 
+                    <div *ngIf="subirVisible41" class="subDetalleSubirVisible">
+                        <div class="containerFile">
+                            <input type="file" (change)="capturarFile()" class="file" id="archivo" #archivo>
+                            <label for="archivo" class="fileBtn">Seleccionar archivo</label>
+                            <label id="nombre" class="fileName">Ningun archivo seleccionado</label>
+                        </div>
+                        <button class="btnFile" (click)="uploadFile()">Subir</button>
+                    </div>
+                </div>
+                <div>
+                    <p>4.2 Comprensión de la organización y de su contexto <a> | Generar documento</a> | 
+                        <a (click)="toggleSubir('item42')">Cargar documento</a>
+                    </p>
+                    <div *ngIf="subirVisible42" class="subDetalleSubirVisible">
+                        <div class="containerFile">
+                            <input type="file" (change)="capturarFile()" class="file" id="archivo" #archivo>
+                            <label for="archivo" class="fileBtn">Seleccionar archivo</label>
+                            <label id="nombre" class="fileName">Ningun archivo seleccionado</label>
+                        </div>
+                        <button class="btnFile" (click)="uploadFile()">Subir</button>
+                    </div>
+                </div>
+                <div>
+                    <p>4.3 Comprensión de las necesidades y expectativas de las partes interesadas <a> | Generar documento</a> | 
+                        <a (click)="toggleSubir('item43')">Cargar documento</a>
+                    </p>
+                    <div *ngIf="subirVisible43" class="subDetalleSubirVisible">
+                        <div class="containerFile">
+                            <input type="file" (change)="capturarFile()" class="file" id="archivo" #archivo>
+                            <label for="archivo" class="fileBtn">Seleccionar archivo</label>
+                            <label id="nombre" class="fileName">Ningun archivo seleccionado</label>
+                        </div>
+                        <button class="btnFile" (click)="uploadFile()">Subir</button>
+                    </div>
+                </div>
+                <div>
+                    <p>4.4 Determinación del alcance del sistema de gestión de la sostenibilidad <a> | Generar documento</a> | 
+                        <a (click)="toggleSubir('item44')">Cargar documento</a>
+                    </p>
+                    <div *ngIf="subirVisible44" class="subDetalleSubirVisible">
+                        <div class="containerFile">
+                            <input type="file" (change)="capturarFile()" class="file" id="archivo" #archivo>
+                            <label for="archivo" class="fileBtn">Seleccionar archivo</label>
+                            <label id="nombre" class="fileName">Ningun archivo seleccionado</label>
+                        </div>
+                        <button class="btnFile" (click)="uploadFile()">Subir</button>
+                    </div>
+                </div>
                 <div class="subDetalle">
                     <div class="subtitulo" (click)="toggleSubContexts()" [ngClass]="{'verde': subContextsVisible}">
                         <p>4.5 Sistema de gestión de la sostenibilidad</p>
@@ -29,15 +70,34 @@
                         </div>
                     </div>
                     <div class="subDetalleContext" *ngIf="subContextsVisible">
-                        <p>4.5.1 Sistema de gestión de la sostenibilidad | 
-                            <a>Generar documento</a> | 
-                            <a>Cargar documento</a></p>
-                        <p>4.5.2 Sistema de gestión de la sostenibilidad | 
-                            <a>Generar documento</a> | 
-                            <a>Cargar documento</a></p>
+                        <div>
+                            <p>4.5.1 Sistema de gestión de la sostenibilidad <a> | Generar documento</a> | 
+                                <a (click)="toggleSubir('item451')">Cargar documento</a>
+                            </p>
+                            <div *ngIf="subirVisible451" class="subDetalleSubirVisible">
+                                <div class="containerFile">
+                                    <input type="file" (change)="capturarFile()" class="file" id="archivo" #archivo>
+                                    <label for="archivo" class="fileBtn">Seleccionar archivo</label>
+                                    <label id="nombre" class="fileName">Ningun archivo seleccionado</label>
+                                </div>
+                                <button class="btnFile" (click)="uploadFile()">Subir</button>
+                            </div>
+                        </div>
+                        <div>
+                            <p>4.5.2 Sistema de gestión de la sostenibilidad <a> | Generar documento</a> | 
+                                <a (click)="toggleSubir('item452')">Cargar documento</a>
+                            </p>
+                            <div *ngIf="subirVisible452" class="subDetalleSubirVisible">
+                                <div class="containerFile">
+                                    <input type="file" (change)="capturarFile()" class="file" id="archivo" #archivo>
+                                    <label for="archivo" class="fileBtn">Seleccionar archivo</label>
+                                    <label id="nombre" class="fileName">Ningun archivo seleccionado</label>
+                                </div>
+                                <button class="btnFile" (click)="uploadFile()">Subir</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                
             </div>
         </div>
         <div class="div">
@@ -48,9 +108,45 @@
                 </div>
             </div>
             <div class="detalle" *ngIf="liderazgoVisible">
-                <p>5.1. Liderazgo y compromiso | <a>Generar documento</a> | <a>Cargar documento</a></p>
-                <p>5.2. Política | <a>Generar documento</a> | <a>Cargar documento</a></p>
-                <p>5.3 Roles, responsabilidades y autoridades | <a>Generar documento</a> | <a>Cargar documento</a></p>
+                <div>
+                    <p>5.1. Liderazgo y compromiso <a> | Generar documento</a> | 
+                        <a (click)="toggleSubir('item51')">Cargar documento</a>
+                    </p>
+                    <div *ngIf="subirVisible51" class="subDetalleSubirVisible">
+                        <div class="containerFile">
+                            <input type="file" (change)="capturarFile()" class="file" id="archivo" #archivo>
+                            <label for="archivo" class="fileBtn">Seleccionar archivo</label>
+                            <label id="nombre" class="fileName">Ningun archivo seleccionado</label>
+                        </div>
+                        <button class="btnFile" (click)="uploadFile()">Subir</button>
+                    </div>
+                </div>
+                <div>
+                    <p>5.2. Política <a> | Generar documento</a> | 
+                        <a (click)="toggleSubir('item52')">Cargar documento</a>
+                    </p>
+                    <div *ngIf="subirVisible52" class="subDetalleSubirVisible">
+                        <div class="containerFile">
+                            <input type="file" (change)="capturarFile()" class="file" id="archivo" #archivo>
+                            <label for="archivo" class="fileBtn">Seleccionar archivo</label>
+                            <label id="nombre" class="fileName">Ningun archivo seleccionado</label>
+                        </div>
+                        <button class="btnFile" (click)="uploadFile()">Subir</button>
+                    </div>
+                </div>
+                <div>
+                    <p>5.3 Roles, responsabilidades y autoridades <a> | Generar documento</a> | 
+                        <a (click)="toggleSubir('item53')">Cargar documento</a>
+                    </p>
+                    <div *ngIf="subirVisible53" class="subDetalleSubirVisible">
+                        <div class="containerFile">
+                            <input type="file" (change)="capturarFile()" class="file" id="archivo" #archivo>
+                            <label for="archivo" class="fileBtn">Seleccionar archivo</label>
+                            <label id="nombre" class="fileName">Ningun archivo seleccionado</label>
+                        </div>
+                        <button class="btnFile" (click)="uploadFile()">Subir</button>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="div">
@@ -69,8 +165,32 @@
                         </div>
                     </div>
                     <div class="subDetallePlanificacion" *ngIf="subPlanificacionA">
-                        <p>6.1.1 Generalidades | <a>Generar documento</a> | <a>Cargar documento</a></p>
-                        <p>6.1.2 Identificación y evaluación de las cuestiones | <a>Generar documento</a> | <a>Cargar documento</a></p>
+                        <div>
+                            <p>6.1.1 Generalidades <a> | Generar documento</a> | 
+                            <a (click)="toggleSubir('item611')">Cargar documento</a>
+                            </p>
+                            <div *ngIf="subirVisible611" class="subDetalleSubirVisible">
+                                <div class="containerFile">
+                                    <input type="file" (change)="capturarFile()" class="file" id="archivo" #archivo>
+                                    <label for="archivo" class="fileBtn">Seleccionar archivo</label>
+                                    <label id="nombre" class="fileName">Ningun archivo seleccionado</label>
+                                </div>
+                                <button class="btnFile" (click)="uploadFile()">Subir</button>
+                            </div>
+                        </div>
+                        <div>
+                            <p>6.1.2 Identificación y evaluación de las cuestiones <a> | Generar documento</a> | 
+                            <a (click)="toggleSubir('item612')">Cargar documento</a>
+                            </p>
+                            <div *ngIf="subirVisible612" class="subDetalleSubirVisible">
+                                <div class="containerFile">
+                                    <input type="file" (change)="capturarFile()" class="file" id="archivo" #archivo>
+                                    <label for="archivo" class="fileBtn">Seleccionar archivo</label>
+                                    <label id="nombre" class="fileName">Ningun archivo seleccionado</label>
+                                </div>
+                                <button class="btnFile" (click)="uploadFile()">Subir</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="subDetalleB">
@@ -81,7 +201,19 @@
                         </div>
                     </div>
                     <div class="subDetallePlanificacion" *ngIf="subPlanificacionB">
-                        <p>6.2.1 Objetivos de sostenibilidad y planificación para lograrlos | <a>Generar documento</a> | <a>Cargar documento</a></p>
+                        <div>
+                            <p>6.2.1 Objetivos de sostenibilidad y planificación para lograrlos <a> | Generar documento</a> | 
+                                <a (click)="toggleSubir('item621')">Cargar documento</a>
+                            </p>
+                            <div *ngIf="subirVisible621" class="subDetalleSubirVisible">
+                                <div class="containerFile">
+                                    <input type="file" (change)="capturarFile()" class="file" id="archivo" #archivo>
+                                    <label for="archivo" class="fileBtn">Seleccionar archivo</label>
+                                    <label id="nombre" class="fileName">Ningun archivo seleccionado</label>
+                                </div>
+                                <button class="btnFile" (click)="uploadFile()">Subir</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -94,18 +226,58 @@
                 </div>
             </div>
             <div class="detalle" *ngIf="apoyoVisible">
-                <p>7.1 Recursos | 
-                    <a>Generar documento</a> | 
-                    <a>Cargar documento</a></p>
-                <p>7.2 Competencia | 
-                    <a>Generar documento</a> | 
-                    <a>Cargar documento</a></p>
-                <p>7.3 Toma de conciencia | 
-                    <a>Generar documento</a> | 
-                    <a>Cargar documento</a></p>
-                <p>7.4 Comunicación | 
-                    <a>Generar documento</a> | 
-                    <a>Cargar documento</a></p>
+                <div>
+                    <p>7.1 Recursos <a> | Generar documento</a> | 
+                        <a (click)="toggleSubir('item71')">Cargar documento</a>
+                    </p>
+                    <div *ngIf="subirVisible71" class="subDetalleSubirVisible">
+                        <div class="containerFile">
+                            <input type="file" (change)="capturarFile()" class="file" id="archivo" #archivo>
+                            <label for="archivo" class="fileBtn">Seleccionar archivo</label>
+                            <label id="nombre" class="fileName">Ningun archivo seleccionado</label>
+                        </div>
+                        <button class="btnFile" (click)="uploadFile()">Subir</button>
+                    </div>
+                </div>
+                <div>
+                    <p>7.2 Competencia <a> | Generar documento</a> | 
+                        <a (click)="toggleSubir('item72')">Cargar documento</a>
+                    </p>
+                    <div *ngIf="subirVisible72" class="subDetalleSubirVisible">
+                        <div class="containerFile">
+                            <input type="file" (change)="capturarFile()" class="file" id="archivo" #archivo>
+                            <label for="archivo" class="fileBtn">Seleccionar archivo</label>
+                            <label id="nombre" class="fileName">Ningun archivo seleccionado</label>
+                        </div>
+                        <button class="btnFile" (click)="uploadFile()">Subir</button>
+                    </div>
+                </div>
+                <div>
+                    <p>7.3 Toma de conciencia <a> | Generar documento</a> | 
+                        <a (click)="toggleSubir('item73')">Cargar documento</a>
+                    </p>
+                    <div *ngIf="subirVisible73" class="subDetalleSubirVisible">
+                        <div class="containerFile">
+                            <input type="file" (change)="capturarFile()" class="file" id="archivo" #archivo>
+                            <label for="archivo" class="fileBtn">Seleccionar archivo</label>
+                            <label id="nombre" class="fileName">Ningun archivo seleccionado</label>
+                        </div>
+                        <button class="btnFile" (click)="uploadFile()">Subir</button>
+                    </div>
+                </div>
+                <div>
+                    <p>7.4 Comunicación <a> | Generar documento</a> | 
+                        <a (click)="toggleSubir('item74')">Cargar documento</a>
+                    </p>
+                    <div *ngIf="subirVisible74" class="subDetalleSubirVisible">
+                        <div class="containerFile">
+                            <input type="file" (change)="capturarFile()" class="file" id="archivo" #archivo>
+                            <label for="archivo" class="fileBtn">Seleccionar archivo</label>
+                            <label id="nombre" class="fileName">Ningun archivo seleccionado</label>
+                        </div>
+                        <button class="btnFile" (click)="uploadFile()">Subir</button>
+                    </div>
+                </div>  
                 <div class="subDetalle">
                     <div class="subtituloApoyo" (click)="toggleSubApoyo()" [ngClass]="{'verde': subApoyoVisible}">
                         <p>7.5 Información documentada</p>
@@ -114,9 +286,45 @@
                         </div>
                     </div>
                     <div class="subDetalleApoyo" *ngIf="subApoyoVisible">
-                        <p>7.5.1 Generalidades | <a>Generar documento</a> | <a>Cargar documento</a></p>
-                        <p>7.5.2 Creación y actualización | <a>Generar documento</a> | <a>Cargar documento</a></p>
-                        <p>7.5.3 Control de la información documentada | <a>Generar documento</a> | <a>Cargar documento</a></p>
+                        <div>
+                            <p>7.5.1 Generalidades <a> | Generar documento</a> | 
+                                <a (click)="toggleSubir('item751')">Cargar documento</a>
+                            </p>
+                            <div *ngIf="subirVisible751" class="subDetalleSubirVisible">
+                                <div class="containerFile">
+                                    <input type="file" (change)="capturarFile()" class="file" id="archivo" #archivo>
+                                    <label for="archivo" class="fileBtn">Seleccionar archivo</label>
+                                    <label id="nombre" class="fileName">Ningun archivo seleccionado</label>
+                                </div>
+                                <button class="btnFile" (click)="uploadFile()">Subir</button>
+                            </div>
+                        </div>
+                        <div>
+                            <p>7.5.2 Creación y actualización <a> | Generar documento</a> | 
+                                <a (click)="toggleSubir('item752')">Cargar documento</a>
+                            </p>
+                            <div *ngIf="subirVisible752" class="subDetalleSubirVisible">
+                                <div class="containerFile">
+                                    <input type="file" (change)="capturarFile()" class="file" id="archivo" #archivo>
+                                    <label for="archivo" class="fileBtn">Seleccionar archivo</label>
+                                    <label id="nombre" class="fileName">Ningun archivo seleccionado</label>
+                                </div>
+                                <button class="btnFile" (click)="uploadFile()">Subir</button>
+                            </div>
+                        </div>
+                        <div>
+                            <p>7.5.3 Control de la información documentada <a> | Generar documento</a> | 
+                                <a (click)="toggleSubir('item753')">Cargar documento</a>
+                            </p>
+                            <div *ngIf="subirVisible753" class="subDetalleSubirVisible">
+                                <div class="containerFile">
+                                    <input type="file" (change)="capturarFile()" class="file" id="archivo" #archivo>
+                                    <label for="archivo" class="fileBtn">Seleccionar archivo</label>
+                                    <label id="nombre" class="fileName">Ningun archivo seleccionado</label>
+                                </div>
+                                <button class="btnFile" (click)="uploadFile()">Subir</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -129,9 +337,45 @@
                 </div>
             </div>
             <div class="detalle" *ngIf="operacionVisible">
-                <p>8.1 Planificación y control operacional | <a>Generar documento</a> | <a>Cargar documento</a></p>
-                <p>8.2 Tratamiento de actividades, productos o servicios modificados | <a>Generar documento</a> | <a>Cargar documento</a></p>
-                <p>8.3 Gestión de la cadena de suministro | <a>Generar documento</a> | <a>Cargar documento</a></p>
+                <div>
+                    <p>8.1 Planificación y control operacional <a> | Generar documento</a> | 
+                        <a (click)="toggleSubir('item81')">Cargar documento</a>
+                    </p>
+                    <div *ngIf="subirVisible81" class="subDetalleSubirVisible">
+                        <div class="containerFile">
+                            <input type="file" (change)="capturarFile()" class="file" id="archivo" #archivo>
+                            <label for="archivo" class="fileBtn">Seleccionar archivo</label>
+                            <label id="nombre" class="fileName">Ningun archivo seleccionado</label>
+                        </div>
+                        <button class="btnFile" (click)="uploadFile()">Subir</button>
+                    </div>
+                </div>
+                <div>
+                    <p>8.2 Tratamiento de actividades, productos o servicios modificados <a> | Generar documento</a> | 
+                        <a (click)="toggleSubir('item82')">Cargar documento</a>
+                    </p>
+                    <div *ngIf="subirVisible82" class="subDetalleSubirVisible">
+                        <div class="containerFile">
+                            <input type="file" (change)="capturarFile()" class="file" id="archivo" #archivo>
+                            <label for="archivo" class="fileBtn">Seleccionar archivo</label>
+                            <label id="nombre" class="fileName">Ningun archivo seleccionado</label>
+                        </div>
+                        <button class="btnFile" (click)="uploadFile()">Subir</button>
+                    </div>
+                </div>
+                <div>
+                    <p>8.3 Gestión de la cadena de suministro <a> | Generar documento</a> | 
+                        <a (click)="toggleSubir('item83')">Cargar documento</a>
+                    </p>
+                    <div *ngIf="subirVisible83" class="subDetalleSubirVisible">
+                        <div class="containerFile">
+                            <input type="file" (change)="capturarFile()" class="file" id="archivo" #archivo>
+                            <label for="archivo" class="fileBtn">Seleccionar archivo</label>
+                            <label id="nombre" class="fileName">Ningun archivo seleccionado</label>
+                        </div>
+                        <button class="btnFile" (click)="uploadFile()">Subir</button>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="div">
@@ -142,7 +386,19 @@
                 </div>
             </div>
             <div class="detalle" *ngIf="evaluacionVisible">
-                <p>9.1 Seguimiento, medición, análisis y evaluación | <a>Generar documento</a> | <a>Cargar documento</a></p>
+                <div>
+                    <p>9.1 Seguimiento, medición, análisis y evaluación <a> | Generar documento</a> | 
+                        <a (click)="toggleSubir('item91')">Cargar documento</a>
+                    </p>
+                    <div *ngIf="subirVisible91" class="subDetalleSubirVisible">
+                        <div class="containerFile">
+                            <input type="file" (change)="capturarFile()" class="file" id="archivo" #archivo>
+                            <label for="archivo" class="fileBtn">Seleccionar archivo</label>
+                            <label id="nombre" class="fileName">Ningun archivo seleccionado</label>
+                        </div>
+                        <button class="btnFile" (click)="uploadFile()">Subir</button>
+                    </div>
+                </div>
                 <div class="subDetalle">
                     <div class="subtituloEvaluacion" (click)="toggleSubEvaluacion()" [ngClass]="{'verde': subEvaluacionVisible}">
                         <p>9.2 Auditoría interna</p>
@@ -151,10 +407,32 @@
                         </div>
                     </div>
                     <div class="subDetalleEvaluacion" *ngIf="subEvaluacionVisible">
-                        <p>9.2.2 Auditoría interna | <a>Generar documento</a> | <a>Cargar documento</a></p>
+                        <p>9.2.2 Auditoría interna <a> | Generar documento</a> | 
+                            <a (click)="toggleSubir('item922')">Cargar documento</a>
+                        </p>
+                        <div *ngIf="subirVisible922" class="subDetalleSubirVisible">
+                            <div class="containerFile">
+                                <input type="file" (change)="capturarFile()" class="file" id="archivo" #archivo>
+                                <label for="archivo" class="fileBtn">Seleccionar archivo</label>
+                                <label id="nombre" class="fileName">Ningun archivo seleccionado</label>
+                            </div>
+                            <button class="btnFile" (click)="uploadFile()">Subir</button>
+                        </div>
                     </div>
                 </div>
-                <p>9.3 Revisión por la dirección | <a>Generar documento</a> | <a>Cargar documento</a></p>
+                <div>
+                    <p>9.3 Revisión por la dirección <a> | Generar documento</a> | 
+                        <a (click)="toggleSubir('item93')">Cargar documento</a>
+                    </p>
+                    <div *ngIf="subirVisible93" class="subDetalleSubirVisible">
+                        <div class="containerFile">
+                            <input type="file" (change)="capturarFile()" class="file" id="archivo" #archivo>
+                            <label for="archivo" class="fileBtn">Seleccionar archivo</label>
+                            <label id="nombre" class="fileName">Ningun archivo seleccionado</label>
+                        </div>
+                        <button class="btnFile" (click)="uploadFile()">Subir</button>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="div">
@@ -165,8 +443,32 @@
                 </div>
             </div>
             <div class="detalle" *ngIf="mejoraVisible">
-                <p>10.1 No conformidad y acción correctiva | <a>Generar documento</a> | <a>Cargar documento</a></p>
-                <p>10.2 Mejora continua | <a>Generar documento</a> | <a>Cargar documento</a></p>
+                <div>
+                    <p>10.1 No conformidad y acción correctiva <a> | Generar documento</a> | 
+                        <a (click)="toggleSubir('item101')">Cargar documento</a>
+                    </p>
+                    <div *ngIf="subirVisible101" class="subDetalleSubirVisible">
+                        <div class="containerFile">
+                            <input type="file" (change)="capturarFile()" class="file" id="archivo" #archivo>
+                            <label for="archivo" class="fileBtn">Seleccionar archivo</label>
+                            <label id="nombre" class="fileName">Ningun archivo seleccionado</label>
+                        </div>
+                        <button class="btnFile" (click)="uploadFile()">Subir</button>
+                    </div>
+                </div>
+                <div>
+                    <p>10.2 Mejora continua <a> | Generar documento</a> | 
+                        <a (click)="toggleSubir('item102')">Cargar documento</a>
+                    </p>
+                    <div *ngIf="subirVisible102" class="subDetalleSubirVisible">
+                        <div class="containerFile">
+                            <input type="file" (change)="capturarFile()" class="file" id="archivo" #archivo>
+                            <label for="archivo" class="fileBtn">Seleccionar archivo</label>
+                            <label id="nombre" class="fileName">Ningun archivo seleccionado</label>
+                        </div>
+                        <button class="btnFile" (click)="uploadFile()">Subir</button>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="div">
@@ -177,7 +479,17 @@
                 </div>
             </div>
             <div class="detalle" *ngIf="anexoAVisible">
-                <p>Contenido Anexo A | <a>Generar documento</a> | <a>Cargar documento</a></p>
+                <p>Contenido Anexo A <a> | Generar documento</a> | 
+                    <a (click)="toggleSubir('itemA')">Cargar documento</a>
+                </p>
+                <div *ngIf="subirVisibleA" class="subDetalleSubirVisible">
+                    <div class="containerFile">
+                        <input type="file" (change)="capturarFile()" class="file" id="archivo" #archivo>
+                        <label for="archivo" class="fileBtn">Seleccionar archivo</label>
+                        <label id="nombre" class="fileName">Ningun archivo seleccionado</label>
+                    </div>
+                    <button class="btnFile" (click)="uploadFile()">Subir</button>
+                </div>
             </div>
         </div>
         <div class="div">
@@ -188,7 +500,17 @@
                 </div>
             </div>
             <div class="detalle" *ngIf="anexoBVisible">
-                <p>Contenido Anexo B | <a>Generar documento</a> | <a>Cargar documento</a></p>
+                <p>Contenido Anexo B <a> | Generar documento</a> | 
+                    <a (click)="toggleSubir('itemB')">Cargar documento</a>
+                </p>
+                <div *ngIf="subirVisibleB" class="subDetalleSubirVisible">
+                    <div class="containerFile">
+                        <input type="file" (change)="capturarFile()" class="file" id="archivo" #archivo>
+                        <label for="archivo" class="fileBtn">Seleccionar archivo</label>
+                        <label id="nombre" class="fileName">Ningun archivo seleccionado</label>
+                    </div>
+                    <button class="btnFile" (click)="uploadFile()">Subir</button>
+                </div>
             </div>
         </div>
         <div class="div">
@@ -199,9 +521,20 @@
                 </div>
             </div>
             <div class="detalle" *ngIf="anexoCVisible">
-                <p>Contenido Anexo C | <a>Generar documento</a> | <a>Cargar documento</a></p>
+                <p>Contenido Anexo C <a> | Generar documento</a> | 
+                    <a (click)="toggleSubir('itemC')">Cargar documento</a>
+                </p>
+                <div *ngIf="subirVisibleC" class="subDetalleSubirVisible">
+                    <div class="containerFile">
+                        <input type="file" (change)="capturarFile()" class="file" id="archivo" #archivo>
+                        <label for="archivo" class="fileBtn">Seleccionar archivo</label>
+                        <label id="nombre" class="fileName">Ningun archivo seleccionado</label>
+                    </div>
+                    <button class="btnFile" (click)="uploadFile()">Subir</button>
+                </div>
             </div>
         </div>
     <button type="submit" class="btn" routerLink="/dashboard" routerLinkActive="activebutton">Atrás</button>
 </div>
 <app-app-footer></app-app-footer>
+<ngx-spinner></ngx-spinner>

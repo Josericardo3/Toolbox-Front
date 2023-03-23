@@ -178,8 +178,8 @@
                 </div>
             </div>
             <div class="detalle" *ngIf="mejoraVisible">
-                <p>10.1 No conformidad y acción correctiva | <a>Generar documento</a> | <a>Cargar documento</a></p>
-                <p>10.2 Mejora continua | <a>Generar documento</a> | <a>Cargar documento</a></p>
+                <p>10.1 No conformidad y acción correctiva | <a>Ver documento</a> | <a routerLink="/evidencia" routerLinkActive="activebutton">Evidencia</a></p>
+                <p>10.2 Mejora continua | <a>Ver documento</a> | <a routerLink="/evidencia" routerLinkActive="activebutton">Evidencia</a></p>
             </div>
         </div>
         <div class="div">
@@ -190,7 +190,7 @@
                 </div>
             </div>
             <div class="detalle" *ngIf="anexoAVisible">
-                <p>Contenido Anexo A | <a>Generar documento</a> | <a>Cargar documento</a></p>
+                <p>Contenido Anexo A | <a>Ver documento</a> | <a routerLink="/evidencia" routerLinkActive="activebutton">Evidencia</a></p>
             </div>
         </div>
         <div class="div">
@@ -201,7 +201,7 @@
                 </div>
             </div>
             <div class="detalle" *ngIf="anexoBVisible">
-                <p>Contenido Anexo B | <a>Generar documento</a> | <a>Cargar documento</a></p>
+                <p>Contenido Anexo B | <a>Ver documento</a> | <a routerLink="/evidencia" routerLinkActive="activebutton">Evidencia</a></p>
             </div>
         </div>
         <div class="div">
@@ -212,9 +212,10 @@
                 </div>
             </div>
             <div class="detalle" *ngIf="anexoCVisible">
-                <p>Contenido Anexo C | <a>Generar documento</a> | <a>Cargar documento</a></p>
+                <p>Contenido Anexo C | <a>Ver documento</a> | <a routerLink="/evidencia" routerLinkActive="activebutton">Evidencia</a></p>
             </div>
         </div>
     <button type="submit" class="btn">Atrás</button>
 </div>
 <app-app-footer></app-app-footer>
+<ngx-spinner></ngx-spinner>

@@ -29,27 +29,33 @@
           <input type="text" [value]="subcampo.numeralespecifico" disabled="true" [id]="'requisito-' + i">
           <label>Titulo del requisito</label>
           <input type="text" [value]="subcampo.titulo" disabled="true" [id]="'requisito-' + i">
-          <label>*Requisito</label>
+           <label>*Requisito</label>
           <textarea type="text" [value]="subcampo.requisito" style="height: 200px" disabled="true" [id]="'requisito-' + i"></textarea>
           <label>*Posible evidencia</label>
           <textarea type="text" [value]="subcampo.nombre_evidencia" style="height: 200px" disabled="true" [id]="'requisito-' + i"></textarea>
+          <label>Escoge una de las siguientes opciones<span style="color: red;">*</span></label>
           <div class="cont">
             <div *ngFor="let opcion of subcampo.desplegable" class="containerRadio">
-              <label>{{opcion.descripcion}}<span style="color: red;">*</span></label>
+              <label>{{opcion.descripcion}}</label>
               <div class="radio">
-                <input type="radio" [value]="opcion.item" [name]="i" (change)="capturarValor(i, $event, opcion.item, subcampo.numeralespecifico)" 
-                (click)="valorSeleccionado = opcion.item" [id]="subcampo.numeralespecifico" (change)="opcionSeleccionada = true"> {{opcion.valor}}
+                <input type="radio" [value]="opcion.item" [name]="'radio' + j + '-' + i" (change)="capturarValor(i, $event, opcion.item, subcampo.numeralespecifico)" 
+                (click)="valorSeleccionado = opcion.item" [id]="subcampo.numeralespecifico" (change)="opcionSeleccionada = true"
+                > {{opcion.valor}}
               </div>
             </div>
           </div>
-          <label>Observacion</label>
+          <label>Observacion<span style="color: red;">*</span></label>
           <textarea type="text" style="height: 200px" [id]="'observacion-' + subcampo.numeralespecifico" 
-          (input)="capturarValorObs(i, $event, 'observacion-' + subcampo.numeralespecifico)" class="obs"></textarea>
+          (input)="capturarValorObs(i, $event, 'observacion-' + subcampo.numeralespecifico)" class="obs"
+          formControlName="observacion"></textarea>
           <div class="linea"></div>
         </div>
     </div>
-    <!-- <button type="button" class="btn" [disabled]="!opcionSeleccionada" (click)="siguienteFormulario()">Siguiente</button> -->
-  <button type="submit" class="btn" [disabled]="!opcionSeleccionada">Guardar</button>
+    <div>
+      <button type="submit" class="btn" >Guardar</button>
+      <button type="button" (click)="goBack()" class="btn">Atrás</button>
+    </div>
+  
 </form>
 <app-app-footer></app-app-footer>
 <ngx-spinner></ngx-spinner>

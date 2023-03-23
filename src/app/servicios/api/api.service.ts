@@ -125,7 +125,6 @@ export class ApiService {
 
   getDiagnostico(): Observable<any> {
     const normaValue = JSON.parse(window.localStorage.getItem('norma'));
-    debugger
     const idn = normaValue[0].id;
     let diagnostico = `${this.apiURL}/api/Diagnostico/Diagnostico/${idn}`
     return this.http.get<any>(diagnostico)
@@ -161,21 +160,21 @@ export class ApiService {
     return this.http.post<any>(assign,resquest)
   }
   getListaChequeoApi(){
-    const id = localStorage.getItem('id');
+    const id = localStorage.getItem('Id');
     const normaValue = JSON.parse(window.localStorage.getItem('norma'));
     const idn = normaValue[0].id;
     let lista = `${this.apiURL}/api/ListaChequeo/ListaChequeo?idnorma=${idn}&idusuariopst=${id}` 
     return this.http.get<any>(lista)
   }
   getListaDiagnosticoApi(){
-    const id = localStorage.getItem('id');
+    const id = localStorage.getItem('Id');
     const normaValue = JSON.parse(window.localStorage.getItem('norma'));
     const idn = normaValue[0].id;
     let lista = `${this.apiURL}/api/ListaChequeo/ListaDiagnostico?idnorma=${idn}&idusuariopst=${id}` 
     return this.http.get<any>(lista)
   }
   getPlanMejoraApi(){
-    const id = localStorage.getItem('id');
+    const id = localStorage.getItem('Id');
     const normaValue = JSON.parse(window.localStorage.getItem('norma'));
     const idn = normaValue[0].id;
     let lista = `${this.apiURL}/api/PlanMejora/PlanMejora?idnorma=${idn}&idusuariopst=${id}` 

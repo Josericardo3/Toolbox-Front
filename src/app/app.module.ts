@@ -30,6 +30,8 @@ import { InterceptorService } from './servicios/interceptorService/interceptor.s
 import { AppEvidenciaComponent } from './modules/evidencia/app-evidencia/app-evidencia.component';
 import { RecoveryComponent } from './recovery/app-recovery/recovery.component';
 import { ModalComponent } from './messagemodal/messagemodal.component';
+import { EMatrizRequisitosLegalesComponent } from './modules/e-matriz-requisitos-legales/e-matriz-requisitos-legales.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -50,6 +52,7 @@ import { ModalComponent } from './messagemodal/messagemodal.component';
     AppEvidenciaComponent,
     RecoveryComponent,
     ModalComponent,
+    EMatrizRequisitosLegalesComponent,
   ],
   imports: [
     BrowserModule,

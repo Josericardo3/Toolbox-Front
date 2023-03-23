@@ -5,6 +5,7 @@ import { head } from 'lodash';
 import { ApiService } from 'src/app/servicios/api/api.service';
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
+import { HttpClient } from '@angular/common/http';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 @Component({
@@ -13,10 +14,29 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
   styleUrls: ['./app-diagnostico-doc.component.css']
 })
 export class AppDiagnosticoDocComponent implements OnInit {
-  datos: any = [];
+  //Lista diagnóstico
   datosD: any = [];
-  idn: string;
+  idnD: string;
+  nombrePstD: string;
+  nitD: string;
+  rntD: string;
+  nombreResponsableSostenibilidadD: string;
+  telefonoResponsableSostenibilidadD: string;
+  correoResponsableSostenibilidadD: string;
 
+  //Lista Pla de nMejora
+  datosP: any = [];
+  idnP: string;
+  nombrePstP: string;
+  nitP: string;
+  rntP: string;
+  nombreResponsableSostenibilidadP: string;
+  telefonoResponsableSostenibilidadP: string;
+  correoResponsableSostenibilidadP: string;
+
+  //Lista de chequeo
+  idnL: string;
+  datosL: any = [];
   nombrePst: string;
   nit: string;
   rnt: string;
@@ -29,6 +49,7 @@ export class AppDiagnosticoDocComponent implements OnInit {
   constructor( 
     private router: Router,
     private ApiService: ApiService,
+    private http: HttpClient,
   ) { }
 
   ngOnInit(): void {
@@ -38,51 +59,52 @@ export class AppDiagnosticoDocComponent implements OnInit {
   }
 
   getListaChequeo(){
-    // this.http.get('https://www.toolbox.somee.com/api/Usuario/ListaChequeo?idnorma=5&idusuariopst=15')
-    this.ApiService.getListaChequeoApi()
+    this.http.get('https://www.toolbox.somee.com/api/ListaChequeo/ListaChequeo?idnorma=5&idusuariopst=15')
+    // this.ApiService.getListaChequeoApi()
     .subscribe((data: any) => {
-      this.datos = data;
-      this.nombrePst = this.datos.usuario?.nombrePst;
-      this.nit = this.datos.usuario?.nit;
-      this.rnt = this.datos.usuario?.rnt;
+      this.datosL = data;
+      this.nombrePst = this.datosL.usuario?.nombrePst;
+      this.nit = this.datosL.usuario?.nit;
+      this.rnt = this.datosL.usuario?.rnt;
       const normaValue = JSON.parse(window.localStorage.getItem('norma'));
-      this.idn = normaValue[0].id;
-      this.nombreResponsableSostenibilidad = this.datos.usuario?.nombreResponsableSostenibilidad;
-      this.telefonoResponsableSostenibilidad = this.datos.usuario?.telefonoResponsableSostenibilidad;
-      this.correoResponsableSostenibilidad = this.datos.usuario?.correoResponsableSostenibilidad;
+      this.idnL = normaValue[0].id;
+      this.nombreResponsableSostenibilidad = this.datosL.usuario?.nombreResponsableSostenibilidad;
+      this.telefonoResponsableSostenibilidad = this.datosL.usuario?.telefonoResponsableSostenibilidad;
+      this.correoResponsableSostenibilidad = this.datosL.usuario?.correoResponsableSostenibilidad;
+      console.log(this.nombrePst, this.nit, this.rnt, this.nombreResponsableSostenibilidad, this.telefonoResponsableSostenibilidad)
     });
   }
 
   getListaDiagnostico(){
-    // this.http.get('https://www.toolbox.somee.com/api/Usuario/ListaDiagnostico?idnorma=5&idusuariopst=15')
-    this.ApiService.getListaDiagnosticoApi()
+    this.http.get('https://www.toolbox.somee.com/api/ListaChequeo/ListaDiagnostico?idnorma=5&idusuariopst=15')
+    // this.ApiService.getListaDiagnosticoApi()
     .subscribe((data: any) => {
       this.datosD = data;
-      // this.datosD = data;
-      this.nombrePst = this.datosD.usuario?.nombrePst;
-      this.nit = this.datosD.usuario?.nit;
-      this.rnt = this.datosD.usuario?.rnt;
+      this.nombrePstD = this.datosD.usuario?.nombrePst;
+      this.nitD = this.datosD.usuario?.nit;
+      this.rntD = this.datosD.usuario?.rnt;
       const normaValue = JSON.parse(window.localStorage.getItem('norma'));
-      this.idn = normaValue[0].id;
-      this.nombreResponsableSostenibilidad = this.datosD.usuario?.nombreResponsableSostenibilidad;
-      this.telefonoResponsableSostenibilidad = this.datosD.usuario?.telefonoResponsableSostenibilidad;
-      this.correoResponsableSostenibilidad = this.datosD.usuario?.correoResponsableSostenibilidad;
+      this.idnD = normaValue[0].id;
+      this.nombreResponsableSostenibilidadD = this.datosD.usuario?.nombreResponsableSostenibilidad;
+      this.telefonoResponsableSostenibilidadD = this.datosD.usuario?.telefonoResponsableSostenibilidad;
+      this.correoResponsableSostenibilidadD = this.datosD.usuario?.correoResponsableSostenibilidad;
+      console.log(this.nombrePstD, this.nitD, this.rntD, this.idnD, this.nombreResponsableSostenibilidadD)
     });
   }
 
   getListaPlanMejora(){
-    this.ApiService.getPlanMejoraApi()
+    this.http.get('https://www.toolbox.somee.com/api/PlanMejora/PlanMejora?idnorma=5&idusuariopst=15')
+    // this.ApiService.getPlanMejoraApi()
     .subscribe((data: any) => {
-      this.datos = data;
-      this.datos = data;
-      this.nombrePst = this.datos.usuario?.nombrePst;
-      this.nit = this.datos.usuario?.nit;
-      this.rnt = this.datos.usuario?.rnt;
+      this.datosP = data;
+      this.nombrePstP = this.datosP.usuario?.nombrePst;
+      this.nitP = this.datosP.usuario?.nit;
+      this.rntP = this.datosP.usuario?.rnt;
       const normaValue = JSON.parse(window.localStorage.getItem('norma'));
-      this.idn = normaValue[0].id;
-      this.nombreResponsableSostenibilidad = this.datos.usuario?.nombreResponsableSostenibilidad;
-      this.telefonoResponsableSostenibilidad = this.datos.usuario?.telefonoResponsableSostenibilidad;
-      this.correoResponsableSostenibilidad = this.datos.usuario?.correoResponsableSostenibilidad;
+      this.idnP = normaValue[0].id;
+      this.nombreResponsableSostenibilidadP = this.datosP.usuario?.nombreResponsableSostenibilidad;
+      this.telefonoResponsableSostenibilidadP = this.datosP.usuario?.telefonoResponsableSostenibilidad;
+      this.correoResponsableSostenibilidadP = this.datosP.usuario?.correoResponsableSostenibilidad;
     });
   }
 
@@ -111,15 +133,15 @@ export class AppDiagnosticoDocComponent implements OnInit {
               ],
               [
                 'Nombre del prestador de servicios turísticos PST',
-                {text: this.nombrePst, colSpan:3, alignment: 'center'},
+                {text: this.nombrePstD, colSpan:3, alignment: 'center'},
                 {},
                 {}
               ],
               [
                 'Número de identificación tributaria NIT',
-                this.nit,
+                this.nitD,
                 'Registro Nacional de Turismo RNT',
-                this.rnt
+                this.rntD
               ],
               [
                 'Categoría en el RNT',
@@ -135,19 +157,19 @@ export class AppDiagnosticoDocComponent implements OnInit {
               ],
               [
                 'NTC de Turismo',
-                this.idn,
+                this.idnD,
                 'Etapa del diagnóstico',
                 ''
               ],
               [
                 'Nombre del responsable de sostenibilidad',
-                this.nombreResponsableSostenibilidad,
+                this.nombreResponsableSostenibilidadD,
                 'Teléfono de contacto del responsable de sostenibilidad',
-                this.telefonoResponsableSostenibilidad
+                this.telefonoResponsableSostenibilidadD
               ],
               [
                 'Correo del responsable de sostenibilidad',
-                {text: this.correoResponsableSostenibilidad, colSpan:2, alignment: 'center'},
+                {text: this.correoResponsableSostenibilidadD, colSpan:2, alignment: 'center'},
                 {},
                 ''
               ]
@@ -178,52 +200,16 @@ export class AppDiagnosticoDocComponent implements OnInit {
         '\n',
         {
           table: {
-            widths: [ '*', '*', '*', '*', '*' ],
+            widths: [ '*', '*', '*', '*','*' ],
             body: [
               [
-                {text: '3. Resultados del diagnóstico', alignment: 'center', bold: true, colSpan: 5},
+                { text: '3. Resultados del diagnóstico', colSpan: 5, style: ['tituloDinamico'] },
                 {},
                 {},
                 {},
-                {}
-              ],
-              [
-                {text: 'numeraltitulo', alignment: 'center', bold: true, colSpan: 5},
-                {},
-                {},
-                {},
-                {}
-              ],
-              [
-                {text: 'Cumplimiento' },
-                {text: 'No Aplica' },
-                {text: 'No Cumple' },
-                {text: 'Cumple Parcialmente	' },
-                {text: 'Cumple' }
-              ],
-              [
-                'porNC',      
-                'numeroNA',      
-                'numeroNC',      
-                'numeroCP',      
-                'numeroC'
-              ],
-              [
-                {text: 'Requisito', alignment: 'center', bold: true },
-                {text: 'Calificación', alignment: 'center', bold: true },
-                {text: 'Observaciones', alignment: 'center', bold: true, colSpan: 3 },
-                {},
-                {}
-              ],
-              [
-                { text: 'req', alignment: 'center', bold: true },      
-                { text: 'cal', alignment: 'center', bold: true },      
-                { text: 'evi', alignment: 'center', bold: true, colSpan: 3 },      
-                {},      
                 {}
               ],
             ],
-           
           },
           fontSize: 10,
         }
@@ -234,35 +220,61 @@ export class AppDiagnosticoDocComponent implements OnInit {
           bold: true,
           margin: [0, 10],
           alignment: 'center',
-        }
+        },
+        tituloDinamico: {
+          alignment: 'center', 
+          bold: true,
+          fontSize: 10,
+        },
       }
     }
-
-    // Loop through the objects in the 'agrupacion' array and add a new row to the table body for each object
-    this.datosD.agrupacion.forEach(obj => {
-      pdfDefinition.content[0].table.body.push([
-        { text: obj.numeral, colSpan: 5 },
+    this.datosD.agrupacion.forEach((obj: any) => {
+      pdfDefinition.content[5].table.body.push([
+        { text: obj.tituloprincipal, colSpan: 5, style: ['tituloDinamico'] },
         {},
         {},
         {},
         {}
       ]);
-      pdfDefinition.content[0].table.body.push([
-        obj.porcentajeNC,
-        obj.numeroRequisitoNA,
-        obj.numeroRequisitoNC,
-        obj.numeroRequisitoCP,
-        obj.numeroRequisitoC
+      pdfDefinition.content[5].table.body.push([
+        { text: 'Cumplimiento', style: ['tituloDinamico'] },
+        { text: 'No Aplica', style: ['tituloDinamico'] },
+        { text: 'No Cumple', style: ['tituloDinamico'] },
+        { text: 'Cumple Parcialmente', style: ['tituloDinamico'] },
+        { text: 'Cumple', style: ['tituloDinamico'] }
       ]);
-      pdfDefinition.content[0].table.body.push([
-        { text: obj.requisito, alignment: 'justify' },
-        { text: obj.calificado },
-        { text: obj.evidencia, colSpan: 3 },
+      pdfDefinition.content[5].table.body.push([
+       {text: obj.porcentajeC, style: ['tituloDinamico']},
+       {text: obj.numeroRequisitoNA, style: ['tituloDinamico']},
+       {text: obj.numeroRequisitoNC, style: ['tituloDinamico']},
+       {text: obj.numeroRequisitoCP, style: ['tituloDinamico']},
+       {text: obj.numeroRequisitoC, style: ['tituloDinamico']}
+      ]);
+      pdfDefinition.content[5].table.body.push([
+        { text: 'Requisito', style: ['tituloDinamico'] },
+        { text: 'Calificación', style: ['tituloDinamico'] },
+        { text: 'Observaciones', colSpan: 3, style: ['tituloDinamico'] },
+        {},              
+        {}
+       ]);
+      
+      obj.listacampos.forEach((i : any) => {
+      pdfDefinition.content[5].table.body.push([
+        { text: i.tituloRequisito, alignment: 'center' },
+        { text: i.calificado, alignment: 'center' },
+        { text: i.observacion, colSpan: 3, alignment: 'justify' },
         {},
         {}
       ]);
+      });
+      pdfDefinition.content[5].table.body.push([
+        {text: 'GRÁFICO CIRCULAR', colSpan: 5, alignment: 'center'},
+        {},
+        {},
+        {},              
+        {}
+       ]);
     });
-
     pdfMake.createPdf(pdfDefinition).download('Informe_de_diagnóstico.pdf');
   }
 
@@ -315,7 +327,7 @@ export class AppDiagnosticoDocComponent implements OnInit {
               ],
               [
                 'NTC de Turismo',
-                this.idn,
+                this.idnL,
                 'Etapa del diagnóstico',
                 ''
               ],
@@ -368,15 +380,15 @@ export class AppDiagnosticoDocComponent implements OnInit {
                 {text: 'Observaciones', style: ['tituloDinamico']},
               ],
               // Aquí va el título NUMERAL
-              ...this.datos.calificacion.map((item: any) => [
+              ...this.datosL.calificacion.map((item: any) => [
                 {text: item.numeral, style: [ 'dinamicTable' ]},
                 {text: item.tituloRequisito, style: [ 'dinamicTable' ]},
                 {text: item.requisito, fontSize: 10},
                 {text: item.evidencia, fontSize: 10},
                 {text: item.calificado, style: [ 'dinamicTable' ]},
                 {text: item.observacion, style: [ 'dinamicTable' ]}
-              ]),
-            ]
+              ])
+            ],
           }
         }
       ],
@@ -426,15 +438,15 @@ export class AppDiagnosticoDocComponent implements OnInit {
               ],
               [
                 'Nombre del prestador de servicios turísticos PST',
-                {text: this.nombrePst, colSpan:3, alignment: 'center'},
+                {text: this.nombrePstP, colSpan:3, alignment: 'center'},
                 {},
                 {}
               ],
               [
                 'Número de identificación tributaria NIT',
-                this.nit,
+                this.nitP,
                 'Registro Nacional de Turismo RNT',
-                this.rnt
+                this.rntP
               ],
               [
                 'Categoría en el RNT',
@@ -450,19 +462,19 @@ export class AppDiagnosticoDocComponent implements OnInit {
               ],
               [
                 'NTC de Turismo',
-                this.idn,
+                this.idnP,
                 'Etapa del diagnóstico',
                 ''
               ],
               [
                 'Nombre del responsable de sostenibilidad',
-                this.nombreResponsableSostenibilidad,
+                this.nombreResponsableSostenibilidadP,
                 'Teléfono de contacto del responsable de sostenibilidad',
-                this.telefonoResponsableSostenibilidad
+                this.telefonoResponsableSostenibilidadP
               ],
               [
                 'Correo del responsable de sostenibilidad',
-                {text: this.correoResponsableSostenibilidad, colSpan:2, alignment: 'center'},
+                {text: this.correoResponsableSostenibilidadP, colSpan:2, alignment: 'center'},
                 {},
                 ''
               ]
@@ -473,7 +485,7 @@ export class AppDiagnosticoDocComponent implements OnInit {
         '\n',
         {
           table: {
-            widths: [ '*', '*', '*' ],
+            widths: [ '*', '*' ],
             body: [
               [
                 { text: '2. Metodología de calificación diagnóstico', alignment: 'center', bold: true, colSpan: 2},
@@ -487,7 +499,8 @@ export class AppDiagnosticoDocComponent implements OnInit {
                 {}
               ]
             ]
-          }
+          },
+          fontSize: 10,
         },
         '\n',
         {
@@ -503,13 +516,13 @@ export class AppDiagnosticoDocComponent implements OnInit {
                 {text: 'Duración', style: ['tituloDinamico']},
               ],
               // Aquí va el título NUMERAL
-              ...this.datos.calificacion.map((item: any) => [
+              ...this.datosP.calificacion.map((item: any) => [
                 {text: item.numeral, style: [ 'dinamicTable' ]},
                 {text: item.tituloRequisito, style: [ 'dinamicTable' ]},
-                {text: item.requisito, fontSize: 10},
                 {text: item.evidencia, fontSize: 10},
                 {text: item.calificado, style: [ 'dinamicTable' ]},
-                {text: item.observacion, style: [ 'dinamicTable' ]}
+                {text: item.observacion, fontSize: 10},
+                {text: item.duracion, style: [ 'dinamicTable' ]}
               ]),
             ]
           }
@@ -542,6 +555,6 @@ export class AppDiagnosticoDocComponent implements OnInit {
   }
 
   saveForm(){
-    this.router.navigate(['/diagnostico'])
+    this.router.navigate(['/dashboard'])
   }
 }

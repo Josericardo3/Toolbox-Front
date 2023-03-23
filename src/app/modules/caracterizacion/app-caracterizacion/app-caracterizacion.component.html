@@ -12,23 +12,18 @@
         
         <div [ngSwitch]="campo.tipodedato">
           <!-- {{campo.ffcontext | json}} -->
-          <input *ngSwitchCase="'int'" type="number" [formControlName]="campo.ffcontext" class="campo-nombre"
+          <input *ngSwitchCase="'int'" type="number" [formControlName]="campo.nombre" class="campo-nombre"
          [id]="i" (ngModelChange)="capturarValor(i, $event, campo.idcaracterizaciondinamica)">
 
-          <input *ngSwitchCase="'local_reference_id'" type="text" [formControlName]="campo.ffcontext" 
+          <input *ngSwitchCase="'local_reference_id'" type="text" [formControlName]="campo.nombre" 
          [id]="i" (ngModelChange)="capturarValor(i, $event, campo.idcaracterizaciondinamica)">
 
-          <input *ngSwitchCase="'string'" type="text" [formControlName]="campo.ffcontext" 
+          <input *ngSwitchCase="'string'" type="text" [formControlName]="campo.nombre" 
           [id]="i" (ngModelChange)="capturarValor(i, $event, campo.idcaracterizaciondinamica)">
-          
-          <select *ngSwitchCase="'norma'" [formControlName]="campo.ffcontext" 
-          [id]="i" (ngModelChange)="capturarValor(i, $event, campo.idcaracterizaciondinamica)">
-            <option *ngFor="let opcion of dataNorma" [value]="opcion.id">{{ opcion.norma }}</option>
-          </select>
-
+   
           <div *ngSwitchCase="'option'">
             <div *ngIf="campo.mensaje === 'municipios'; else elseBlock"> 
-              <select [formControlName]="campo.ffcontext" [id]="i" (ngModelChange)="capturarValor(i, $event, campo.idcaracterizaciondinamica)"
+              <select [formControlName]="campo.nombre" [id]="i" (ngModelChange)="capturarValor(i, $event, campo.idcaracterizaciondinamica)"
               [(ngModel)]="selectedOption" (change)="printSelectedOption()">
                 <option *ngFor="let municipio of municipios" [value]="municipio.nom_mpio">{{municipio.nom_mpio}}</option>
               </select>
@@ -39,55 +34,47 @@
               </div>
             </div> 
             <ng-template #elseBlock>
-              <select [formControlName]="campo.ffcontext" id="id-del-select" 
+              <select [formControlName]="campo.nombre" id="id-del-select" 
             [id]="i" (ngModelChange)="capturarValor(i, $event, campo.idcaracterizaciondinamica)">
-                <!-- <option value="" disabled selected>Seleccione una opción</option> -->
                 <option *ngFor="let opcion of campo.desplegable" [value]="opcion.id">{{opcion.nombre}}</option>
             </select>
             </ng-template>
           </div> 
-          <!-- <div *ngIf="formParent.get('nuevoCampo' + i)">
-            <p>Nuevo control: {{formParent.get('nuevoCampo' + i)?.value}}</p>
-            <button (click)="eliminarControl(i)">X</button>
-          </div> -->
 
-            <div *ngIf="campo.mensaje != 'dependencia'">
-              <div *ngSwitchCase="'checkbox'" class="containerCheck">
+          <select *ngSwitchCase="'norma'" [formControlName]="campo.nombre" 
+          [id]="i" (ngModelChange)="capturarValor(i, $event, campo.idcaracterizaciondinamica)">
+            <option *ngFor="let opcion of dataNorma" [value]="opcion.id" 
+            [hidden]="!opcionesNorma.includes(opcion.id)" [hidden]="!aventura">{{ opcion.norma }}</option>
+          </select>
+
+          <div *ngIf="campo.mensaje != 'dependencia'">
+            <div *ngSwitchCase="'checkbox'" class="containerCheck">
               <div *ngFor="let opcion of campo.desplegable" class="check"> 
-                <input type="checkbox" [formControlName]="campo.ffcontext" [value]="opcion.id" 
+                <input type="checkbox" [formControlName]="campo.nombre" [value]="opcion.id" 
                 class="checkbox" (change)="opcion.mostrarInput = opcion.nombre === 'OTROS'? !opcion.mostrarInput : false"
                 [id]="i" (ngModelChange)="capturarValor(i, $event, campo.idcaracterizaciondinamica)">           
                 {{opcion.nombre}}
-                <div >
+                <div>
                   <input type="text" *ngIf="opcion.mostrarInput && opcion.nombre === 'OTROS'" class="inputContainer" 
                   placeholder="Especifica otro" [id]="i" (ngModelChange)="capturarValor(i, $event, campo.idcaracterizaciondinamica)">
                 </div>
-            </div>
+              </div>
             </div>
           </div>
-           
-          <!-- <div *ngSwitchCase="'checkbox'" class="containerCheck">
-            <div *ngFor="let opcion of campo.municipios" class="check">
-              <input type="checkbox" [formControlName]="campo.ffcontext" [value]="opcion.municipio" 
-                class="checkbox" [id]="i" (ngModelChange)="capturarValor(i, $event, campo.idcaracterizaciondinamica)">           
-                {{opcion.municipio}}
-            </div>
-          </div> -->
-        
+
           <div *ngSwitchCase="'radio'" class="containerRadio">
             <div *ngFor="let opcion of campo.desplegable" class="radio">
-              <!-- <input type="radio" [formControlName]="campo.ffcontext" [value]="opcion.id" 
-              name="{{campo.idcaracterizaciondinamica}}" (change)="showDependency = opcion.nombre === 'SI'"
-              [id]="i" (ngModelChange)="capturarValor(i, $event)">  -->
-              <input type="radio" [formControlName]="campo.ffcontext" [value]="opcion.id" 
+              <input type="radio" [formControlName]="campo.nombre" [value]="opcion.id" 
               (change)="showDependency = opcion.nombre === 'SI'"
+              (change)="onChangeAventuraSeleccionada(opcion.nombre === 'SI')"
+              (change)="aventura = true"
               [id]="i" (ngModelChange)="capturarValor(i, $event, campo.idcaracterizaciondinamica)">
               {{opcion.nombre}}
             </div>
           </div>
-            <div *ngIf="showDependency && campo.mensaje === 'dependencia' && hasDepency(campo.dependiente)">
+           <div *ngIf="showDependency && campo.mensaje === 'dependencia' && hasDepency(campo.dependiente)">
             <div *ngFor="let item of campo.desplegable">
-              <input *ngSwitchCase="'string'" type="text" [formControlName]="campo.ffcontext" [value]="item.nombre"
+              <input *ngSwitchCase="'string'" type="text" [formControlName]="campo.nombre" [value]="item.nombre"
                [id]="i" (ngModelChange)="capturarValor(i, $event, campo.idcaracterizaciondinamica)">
             </div>
             <div *ngSwitchCase="'checkbox'" class="containerCheck">
@@ -105,11 +92,16 @@
                 </div>
               </div>
             </div>
-          </div>         
-        </div>        
+          </div>   
+          
+        </div>
+                
     </div>
-  <!-- <button type="submit" class="btn" [disabled]="!allFieldsFilled()">Guardar {{ allFieldsFilled() }}</button> -->
-  <button type="submit" class="btn">Guardar</button>
+    <div class="divBtn">
+      <button type="submit" class="btn" [disabled]="formParent.invalid" >Guardar</button>
+      <button type="button" (click)="goBack()" class="btn">Atrás</button>
+    </div>
+  
 </form>
 <app-app-footer></app-app-footer>
 <ngx-spinner></ngx-spinner>
