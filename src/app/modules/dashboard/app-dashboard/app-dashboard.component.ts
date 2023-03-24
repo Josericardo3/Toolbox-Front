@@ -17,7 +17,7 @@ import { ModalService } from 'src/app/messagemodal/messagemodal.component.servic
 })
 export class AppDashboardComponent implements OnInit {
   //PG counter$: Observable<any>;
-  arrNormas = JSON.parse(localStorage.getItem('norma')||'');
+  arrNormas = JSON.parse(localStorage.getItem('norma')||'[]');
   normaSelected = localStorage.getItem("normaSelected");
   userRol = localStorage.getItem('rol');
   newUser= localStorage.getItem("newUser");
@@ -43,7 +43,8 @@ export class AppDashboardComponent implements OnInit {
   
   ngOnInit(): void {
     //borrar
-    let arrNormas = JSON.parse(localStorage.getItem('norma')||'');
+    debugger
+    let arrNormas = JSON.parse(localStorage.getItem('norma')||'[]');
     let normaSelected = localStorage.getItem("normaSelected");
     //prueba global selectFeatureCount
   }

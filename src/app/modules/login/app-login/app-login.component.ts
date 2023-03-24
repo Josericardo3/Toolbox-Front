@@ -100,6 +100,7 @@ export class AppLoginComponent implements OnInit {
         localStorage.setItem("refresh", data.TokenRefresco);
         localStorage.setItem("idGrupo", data.Grupo[0].item);
         localStorage.setItem("Id", data.IdUsuarioPst);
+        debugger
         if (data.Grupo[0].item === 1) {
           this.ApiService.validateCaracterizacion(data.IdUsuarioPst).subscribe(
             (response) => {
