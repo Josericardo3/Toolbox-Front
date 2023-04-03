@@ -1,20 +1,31 @@
-.containerMatrizRequisitosLegales{
+.containerTurismo{
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    margin: 2vh 0 0 0;
 }
 h1{
     font-family: 'Montserrat', sans-serif;
     font-weight: bolder;
     font-size: 34px;
     color: #068460;
-    margin: 20vh 0 5vh 0;
+    margin: 15vh 0 5vh 5vw;
 }
-h3{
+h3, h2, .parrafo, .estado{
     font-family: 'Work Sans', sans-serif;
     font-size: 19px;
     font-weight: lighter;
+}
+h2,
+.plan{
+    font-weight: bolder;
+    margin: 1vh;
+}
+.parrafo,
+.estado{
+    font-size: 16px !important;
+    margin: 1vh;
 }
 .div{
     display: flex;
@@ -22,7 +33,7 @@ h3{
     align-items: center;
     position: relative;
     flex-direction: column;
-    width: 90vw;
+    width: 85vw;
     height: auto;
 }
 i{
@@ -32,6 +43,19 @@ i{
     position: absolute;
     right: 0;
     margin: -4.5vh 5vw;
+}
+.boton-eliminar {
+    background-color: transparent;
+    font-family: 'Work Sans', sans-serif;
+    color: black;
+    border: none;
+    border-radius: 50%;
+    font-size: 15px;
+    cursor: pointer;
+    position: absolute;
+    right: 0;
+    margin: 0 9vw 1vh 0;
+    font-weight: 600;
 }
 .titulo{
     display: flex;
@@ -99,7 +123,6 @@ i{
 .adicionarLabel{
     font-family: 'Work Sans', sans-serif;
     font-size: 17px;
-    margin: 0 0 1.5vh 0;
 }
 .adicionarInput{
     background: #FFFFFF;
@@ -107,8 +130,125 @@ i{
     border-radius: 10px;
     height: 40px;
     padding: 5px;
-    width: 85vw;
+    width: 84vw;
     font-family: 'Work Sans', sans-serif;
     font-size: 14px;
     color: #000000;
+    margin: 1.5vh 0;
 }
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
+}
+input[type=number] { 
+  -moz-appearance:textfield; 
+}
+.planIntervencion{
+    display: flex;
+    flex-direction: column;
+}
+.containerform,
+.containerformB{
+    display: flex;
+    flex-direction: row;
+    width: 80vw;
+}
+.subContainerformMain,
+.subContainerformMainB{
+    display: flex;
+    flex-direction: column;
+    width: 25vw;
+}
+.subContainerformMainB{
+    margin: 0 27vw 0 0;
+}
+.subContainerform,
+.subContainerformB{
+    display: flex;
+    flex-direction: column;
+    margin: 1vh;
+    width: 25vw;
+}
+.subContainerformB{
+    width: 20vw !important;
+}
+.estadoForm,
+.estadoFormB{ 
+    background: #FFFFFF;
+    border: 2px solid #068460;
+    border-radius: 10px;
+    height: 40px;
+    margin: 5px 0 15px 0;
+    padding: 5px;
+    width: 23vw;
+}
+.estadoFormB{
+    width: 18vw !important;
+}
+#acciones{
+    height: 80px; 
+    width: 200px;
+}
+#tituloNormativa{
+    font-family: 'Work Sans', sans-serif;
+    font-size: 19px;
+    font-weight: lighter;
+}
+
+.containerTabs{
+    display: flex;
+    flex-direction: column;
+    margin: 0 5vw 5vh 5vw;
+}
+.tabs {
+    display: flex;
+}
+.tab {
+    flex: 1;
+    text-align: center;
+    border: 1px solid #ddd;
+    border-bottom: none;
+    cursor: pointer;
+    padding: 10px;
+    font-family: 'Work Sans', sans-serif;
+    font-size: 18px;
+    font-weight: lighter;
+  } 
+  .tab.active {
+    background-color: #fff;
+    border-color: #ddd;
+  }
+  .contenidoTabs{
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-top: none;
+  }
+  .tabs .tab.tab.active {
+    border-bottom: 3px solid #068460; /* Cambia el color y el estilo de la marca según tus necesidades */
+    border-right: 3px solid #068460;
+    font-weight: bolder;
+    color: #068460;
+    transform: scale(1);
+    transition: transform 0.2s ease-in-out;
+  }
+  .tabs .tab.tab.active:hover {
+    transform: scale(1.1);
+  }
+  .buscador{
+    margin: 0 5vw 4vh 0;
+    background: #FFFFFF;
+    border: 2px solid #068460;
+    border-radius: 10px;
+    height: 40px;
+    padding: 5px;
+    width: 30vw;
+    font-family: 'Work Sans', sans-serif;
+    font-size: 14px;
+    color: #000000;
+    align-self: flex-end;
+  }
+  .MainContainerMatrizRequisitosLegales{
+    display: flex;
+    flex-direction: column;
+  }

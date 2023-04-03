@@ -69,7 +69,6 @@ export class ApiService {
   validateCaracterizacion(idUsuario:any): Observable<string> {
     let validate = `${this.apiURL}/api/Validaciones/UsuarioCaracterizacion/${idUsuario}`
     let response = this.http.get<string>(validate);
-    debugger
     return response;
   }
 
@@ -83,7 +82,7 @@ export class ApiService {
 
   //para guardar caracterizacion en la BD
   /*saveData(request: any): Observable<any> {
-    debugger
+   
     let caracterizacion = `${this.apiURL}/api/Usuario/caracterizacion/respuesta`
     let categoriarnt = localStorage.getItem('norma')
     let response;
@@ -150,6 +149,7 @@ export class ApiService {
 
   }
 
+  //enlista el asesor
   addAsesor(): Observable<any> {
     let assign = `${this.apiURL}/api/Asesor/ListarAsesor`
     return this.http.get<any>(assign)
@@ -158,6 +158,12 @@ export class ApiService {
   updateAsesor(resquest): Observable<any> {
     let assign = `${this.apiURL}/api/Asesor/registrarPSTxAsesor`
     return this.http.post<any>(assign,resquest)
+  }
+
+  //crea un nuevo asesor
+  createNewAsesor(request): Observable<any> {
+    let assign = `${this.apiURL}/api/Asesor/Asesor`
+    return this.http.post<any>(assign,request)
   }
   getListaChequeoApi(){
     const id = localStorage.getItem('Id');

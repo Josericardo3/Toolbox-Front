@@ -2,20 +2,6 @@
 <!-- <p>rol colaborador</p> -->
 <a href="../../../../assets//Politica-de-datos/POLITICA DE TRATAMIENTO DE DATOS  ISOLUCIONES.pdf"></a>
 <app-app-header></app-app-header>
-<!-- <form [formGroup]="formParent">
-  <h1>{{datos.tituloPrincipal}}</h1>
-  <div formArrayName="campos">
-    <div *ngFor="let campo of campos.controls; index as i">
-      <!-- <h3>{{campo.titulprincipal}}</h3> ----
-      <div [formGroupName]="i">
-        <p>Numeral Principal: {{campo.value.numeralprincipal}}</p>
-        <p>Numeral Específico: {{campo.value.numeralespecifico}}</p>
-        <p>Título: {{campo.value.titulo}}</p>
-        <p>Requisito: {{campo.value.requisito}}</p>
-      </div>
-    </div>
-  </div>
-</form> -->
 <form [formGroup]="formParent" class="controllerDiagnostico" (ngSubmit)="saveForm()">
   <h1>{{datos.tituloPrincipal}}</h1> 
   <p>Todos los campos con el asterisco (*) son obligatorios</p>
@@ -40,23 +26,26 @@
               <div class="radio">
                 <input type="radio" [value]="opcion.item" [name]="'radio' + j + '-' + i" (change)="capturarValor(i, $event, opcion.item, subcampo.numeralespecifico)" 
                 (click)="valorSeleccionado = opcion.item" [id]="subcampo.numeralespecifico" (change)="opcionSeleccionada = true"
-                > {{opcion.valor}}
+                [formControlName]="'radio' + j + '-' + i"> {{opcion.valor}}
               </div>
             </div>
           </div>
-          <label>Observacion<span style="color: red;">*</span></label>
+          <label>Observacion</label>
           <textarea type="text" style="height: 200px" [id]="'observacion-' + subcampo.numeralespecifico" 
-          (input)="capturarValorObs(i, $event, 'observacion-' + subcampo.numeralespecifico)" class="obs"
-          formControlName="observacion"></textarea>
+          (input)="capturarValorObs(i, $event, 'observacion-' + subcampo.numeralespecifico)" class="obs"></textarea>
           <div class="linea"></div>
         </div>
     </div>
+    <label *ngIf="!isFormValid()" style="color: tomato;">Completa todos los campos</label>
     <div>
-      <button type="submit" class="btn" >Guardar</button>
+      <button type="submit" class="btn" [disabled]="!isFormValid()">Guardar</button>
       <button type="button" (click)="goBack()" class="btn">Atrás</button>
+      
     </div>
-  
+    
 </form>
+
 <app-app-footer></app-app-footer>
+<app-modal></app-modal>
 <ngx-spinner></ngx-spinner>
 </div>

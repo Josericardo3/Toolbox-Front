@@ -3,6 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { FormGroup, FormArray, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ApiService } from 'src/app/servicios/api/api.service';
+// import Swal from 'sweetalert2';
+import { ModalService } from 'src/app/messagemodal/messagemodal.component.service' 
 
 @Component({
   selector: 'app-app-diagnostico',
@@ -27,25 +29,30 @@ export class AppDiagnosticoComponent implements OnInit {
   // opcionesSeleccionadas: string[][] = [[]];
   // opcionSeleccionada: string[] = [];
 
+  valoresObservaciones: string[] = [];
+  valoresRadios: string[] = [];
+  valoresForm: any = [];
+  v: any = [];
+  valor:any;
+  valorObs:any;
+
+  public isDataLoaded: boolean = false;
 
   constructor(
     private fb: FormBuilder,
     private http: HttpClient,
     private router: Router,
     private ApiService: ApiService,
+    private Message: ModalService,
   ) { }
 
   ngOnInit(): void {
-    this.formParent = this.fb.group({
-      // campos: this.fb.array([])
-      radio: ['', Validators.required],
-      observacion: ['', Validators.required]
-    });
-
+    this.formParent = this.fb.group({ });
     // this.http.get('assets/datos.json')
     this.ApiService.getDiagnostico()
     .subscribe((data: any) => {
       this.datos = data;
+      this.isDataLoaded = true;
       // this.datos.campos.forEach((campo:any) => {
       //   if(campo.values !== null){
       //     this.formParent.addControl(campo.campo_local, new FormControl({value: campo.values, disabled: true}))
@@ -54,8 +61,16 @@ export class AppDiagnosticoComponent implements OnInit {
       //   }
       // });
 
+      //Validar Radios para habilitar el formulario
+      const formControls = {};
+      this.datos.campos.forEach((campo, j) => {
+        campo.listacampos.forEach((subcampo, i) => {
+          formControls[`radio${j}-${i}`] = new FormControl(null);
+        });
+      });
+      this.formParent = new FormGroup(formControls);
 
-      // Recorremos el objeto y guardamos los valores en las variables correspondientes
+      // Recorremos el objeto y guardamos los valores en las variables correspondientes      
       this.datos.campos.forEach((campo: any) => {
       this.numeralprincipalArray.push(String(campo.numeralprincipal));
       this.numeralprincipalString = this.numeralprincipalArray.join(',');
@@ -70,50 +85,49 @@ export class AppDiagnosticoComponent implements OnInit {
       });
     });
 
+    console.log(this.isFormValid());
 }
 
-validarCampos() {
-  let camposVacios = false;
-  if (this.datos && this.datos.campos) { // Verifica si hay campos definidos
-    this.datos.campos.forEach(campo => {
-      campo.listacampos.forEach(subcampo => {
-        if (!subcampo.valorSeleccionado || !subcampo.observacion) {
-          camposVacios = true;
-          this.formParent.addControl(`observacion_${subcampo.numeralespecifico}`, this.fb.control('', Validators.required));
-      this.formParent.addControl(`radio_${subcampo.numeralespecifico}}`, this.fb.control('', Validators.required));
-    
-        }
-      });
-    });
-  }
-  return camposVacios;
-}
+// isFormValid(): boolean {
+//   if (!this.datos || !this.datos.campos) {
+//     // Si this.datos o this.datos.campos no están definidos, retornar falso
+//     return false;
+//   }
 
-  // getCampo(i: number) {
-  //   return (this.formParent.get('campos') as FormArray).at(i).get('opcionSeleccionada');
-  // }
-  
-  // addCampo(numeralprincipal: string, numeralespecifico: string, titulo: string, requisito: string) {
-  //   const campo = this.fb.group({
-  //     numeralprincipal: [numeralprincipal],
-  //     numeralespecifico: [numeralespecifico],
-  //     titulo: [titulo],
-  //     requisito: [requisito]
-  //   });
-  
-  //   this.campos.push(campo);
-  // }
+//   return this.datos.campos.every((campo: any) => {
+//     if (!campo.listacampos) {
+//       // Si campo.listacampos no está definido, retornar falso
+//       return false;
+//     }
 
-  // get campos() {
-  //   return this.formParent.get('campos') as FormArray;
-  // }
-  
-//   public radiosSeleccionados = false;
+//     return campo.listacampos.every((i: any) => {
+//       const control = this.formParent.get(`radio${campo.id}-${i}`);
+//       if (!control) {
+//         // Si control no está definido, retornar falso
 
-// valorSeleccionado() {
-//   this.radiosSeleccionados = true;
+//         return false;
+//       }
+//       return control.value !== null;
+//     });
+//   });
 // }
 
+// isFormValid(): boolean {
+//   return this.datos.campos.every((campo, j) => {
+//     return campo.listacampos.every((subcampo, i) => {
+//       const control = this.formParent.get(`radio${j}-${i}`);
+//       return control.value !== null;
+//     });
+//   });
+// }
+
+public isFormValid(): boolean {
+  if (!this.isDataLoaded) {
+    return false;
+  }
+
+  return Object.values(this.formParent.controls).every(control => control.value !== null);
+}
 
   getControlType(campo: any) {
     switch (campo.tipodedato) {
@@ -128,11 +142,6 @@ validarCampos() {
     }
   }
 
-  valoresObservaciones: string[] = [];
-  valoresRadios: string[] = [];
-  valoresForm: any = [];
-  v: any = [];
-  valor:any;
   capturarValor(id: string | number,event: any, value: any, iddiagnosticodinamico: any) {
     const normaValue = JSON.parse(window.localStorage.getItem('norma'));
     const idn = normaValue[0].id;
@@ -156,12 +165,11 @@ validarCampos() {
       });
       // capturarObservacion();
     }
-}
+  }
 
-valorObs:any;
-capturarValorObs(i: number, event: Event, idObs: string){
-  this.valorObs = (event.target as HTMLInputElement).value;
-}
+  capturarValorObs(i: number, event: Event, idObs: string){
+    this.valorObs = (event.target as HTMLInputElement).value;
+  }
 
   saveForm(){
     const observaciones = document.querySelectorAll('.obs');
@@ -176,11 +184,11 @@ capturarValorObs(i: number, event: Event, idObs: string){
       }
     });
     this.v = this.valoresObservaciones.concat(this.valoresRadios).join(" - ");
-    //this.ApiService.saveDataDiagnostico(this.valoresForm)
-    /*.subscribe((data: any) =>{
-      
-      
-    })*/
+    if (this.isFormValid()) {
+      const title = "Registro exitoso";
+      const message = "El registro se ha realizado exitosamente"
+      this.Message.showModal(title,message);
+    }
     this.router.navigate(['/diagnosticoDoc'])
   }
 

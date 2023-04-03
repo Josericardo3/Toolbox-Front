@@ -1,11 +1,11 @@
 <div class="modal-container" *ngIf="showModal">
-    <div class="modal">
-      <div class="modal-header">
-        <h3>{{ title }}</h3>
-      </div>
-      <div class="modal-body">
-        <p>{{ message }}</p>
-      </div>
-      <div class="modal-footer"><button (click)="closeModal()">OK</button></div>
+  <div class="modal-titulo">
+    <div class="modal-header">
+      <h3 class="h-titulo">{{ title }}</h3>
     </div>
+    <div class="modal-body">
+      <p class="p-mensaje">{{ message }}</p>
+    </div>
+    <div class="modal-footer"><button (click)="closeModal()">OK</button></div>
   </div>
+</div>

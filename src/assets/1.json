@@ -1,4 +1,5 @@
 {
+  "idCategoriarnt": 2,
   "campos": [
     {
       "idorden": 1,
@@ -14,7 +15,7 @@
     },
     {
       "idorden": 4,
-      "idcaracterizaciondinamica": 26
+      "idcaracterizaciondinamica": 63
     },
     {
       "idorden": 5,
@@ -38,11 +39,11 @@
     },
     {
       "idorden": 10,
-      "idcaracterizaciondinamica": 27
+      "idcaracterizaciondinamica": 64
     },
     {
       "idorden": 11,
-      "idcaracterizaciondinamica": 28
+      "idcaracterizaciondinamica": 65
     },
     {
       "idorden": 12,
@@ -54,31 +55,31 @@
     },
     {
       "idorden": 14,
-      "idcaracterizaciondinamica": 29
+      "idcaracterizaciondinamica": 66
     },
     {
       "idorden": 15,
-      "idcaracterizaciondinamica": 30
+      "idcaracterizaciondinamica": 67
     },
     {
       "idorden": 16,
-      "idcaracterizaciondinamica": 31
+      "idcaracterizaciondinamica": 68
     },
     {
       "idorden": 17,
-      "idcaracterizaciondinamica": 32
+      "idcaracterizaciondinamica": 69
     },
     {
       "idorden": 18,
-      "idcaracterizaciondinamica": 33
+      "idcaracterizaciondinamica": 70
     },
     {
       "idorden": 19,
-      "idcaracterizaciondinamica": 34
+      "idcaracterizaciondinamica": 71
     },
     {
       "idorden": 20,
-      "idcaracterizaciondinamica": 35
+      "idcaracterizaciondinamica": 72
     },
     {
       "idorden": 21,
@@ -90,18 +91,22 @@
     },
     {
       "idorden": 23,
-      "idcaracterizaciondinamica": 36
+      "idcaracterizaciondinamica": 99
     },
     {
       "idorden": 24,
-      "idcaracterizaciondinamica": 37
+      "idcaracterizaciondinamica": 75
     },
     {
       "idorden": 25,
-      "idcaracterizaciondinamica": 38
+      "idcaracterizaciondinamica": 73
     },
     {
       "idorden": 26,
+      "idcaracterizaciondinamica": 74
+    },
+    {
+      "idorden": 27,
       "idcaracterizaciondinamica": 23
     }
   ]

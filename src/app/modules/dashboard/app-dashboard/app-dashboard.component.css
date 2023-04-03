@@ -74,15 +74,17 @@
   position: absolute;
 }
 
-select{
+.select-norma{
   color: #068460;
   height: 27px;
   border-radius: 5px;
+  margin: 1px -81px 10px 10px;
 }
 
 @media (max-width:480px) {
-  select{
+  .select-norma{
     width: 20px;
+    margin: 1px 17px 10px 10px;
   }
 
   .grid-img{

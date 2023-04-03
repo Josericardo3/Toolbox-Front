@@ -31,6 +31,7 @@ import { AppEvidenciaComponent } from './modules/evidencia/app-evidencia/app-evi
 import { RecoveryComponent } from './recovery/app-recovery/recovery.component';
 import { ModalComponent } from './messagemodal/messagemodal.component';
 import { EMatrizRequisitosLegalesComponent } from './modules/e-matriz-requisitos-legales/e-matriz-requisitos-legales.component';
+// import { MatTabsModule } from '@angular/material/tabs';
 
 @NgModule({
   declarations: [
@@ -66,9 +67,10 @@ import { EMatrizRequisitosLegalesComponent } from './modules/e-matriz-requisitos
     DirectivesModule,
     ModalModule,
     CommonModule,
-    BrowserAnimationsModule,
     NgxSpinnerModule,
-    PaginationModule.forRoot()
+    PaginationModule.forRoot(),
+    // MatTabsModule,
+    BrowserAnimationsModule
   ],
   providers: 
     [

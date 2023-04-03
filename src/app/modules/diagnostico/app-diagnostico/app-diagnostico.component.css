@@ -104,25 +104,41 @@ input, textarea{
     margin: 10px 5px 10px 0 !important;
     padding: 3px;
 }
-input[type=radio]{
+div.radio input[type=radio]{
+    position: relative;
+    width: 20px;
+    height: 20px;
     -webkit-appearance: none;
     -moz-appearance: none;
-    width: 10%;
-    height: 150%;
-    background-color: white;
+    appearance: none;
     border: 2px solid #068460;
-    margin: 10px 10px 10px 0;
-    cursor: pointer;
     border-radius: 50%;
+    outline: none;
+    cursor: pointer;
+    margin: 10px 10px 10px 0 !important;
 }
-div.radio input[type=radio]:checked:before{
+div.radio input[type=radio]:before {
+    content: '';
+    position: absolute;
+    background-color: white;
+    top: 4.9px;
+    left: 4px;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+  }
+  div.radio input[type=radio]:checked:before {
+    background-color: #068460;
+  }
+  div.radio input[type=radio]:checked:after {
     content: "●";
-    font-size: 18px;
+    font-size: 1px;
     color: #068460;
     position: absolute;
     top: 50%;
-    transform: translate(0%, -55%);
-}
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
 .inputContainer {
     background: #FFFFFF;
     border: 2px solid #068460;
@@ -138,6 +154,12 @@ div.radio input[type=radio]:checked:before{
     width: 60vw;
     padding: 0;
     margin: 10px auto 15px auto;
+}
+input:disabled,
+textarea:disabled{
+    background: #FFFFFF;
+    border: 2px solid #068460;
+    background-color: #f2f2f2fa;
 }
 @media (max-width: 900px) {
     .cont{

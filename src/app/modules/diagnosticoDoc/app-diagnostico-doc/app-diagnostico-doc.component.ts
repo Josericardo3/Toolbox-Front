@@ -7,6 +7,8 @@ import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
 import { HttpClient } from '@angular/common/http';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
+// import Swal from 'sweetalert2';
+import { ModalService } from 'src/app/messagemodal/messagemodal.component.service' 
 
 @Component({
   selector: 'app-app-diagnostico-doc',
@@ -50,6 +52,7 @@ export class AppDiagnosticoDocComponent implements OnInit {
     private router: Router,
     private ApiService: ApiService,
     private http: HttpClient,
+    private Message: ModalService,
   ) { }
 
   ngOnInit(): void {
@@ -62,6 +65,7 @@ export class AppDiagnosticoDocComponent implements OnInit {
     this.http.get('https://www.toolbox.somee.com/api/ListaChequeo/ListaChequeo?idnorma=5&idusuariopst=15')
     // this.ApiService.getListaChequeoApi()
     .subscribe((data: any) => {
+      debugger
       this.datosL = data;
       this.nombrePst = this.datosL.usuario?.nombrePst;
       this.nit = this.datosL.usuario?.nit;
@@ -79,6 +83,7 @@ export class AppDiagnosticoDocComponent implements OnInit {
     this.http.get('https://www.toolbox.somee.com/api/ListaChequeo/ListaDiagnostico?idnorma=5&idusuariopst=15')
     // this.ApiService.getListaDiagnosticoApi()
     .subscribe((data: any) => {
+      debugger
       this.datosD = data;
       this.nombrePstD = this.datosD.usuario?.nombrePst;
       this.nitD = this.datosD.usuario?.nit;
@@ -276,6 +281,16 @@ export class AppDiagnosticoDocComponent implements OnInit {
        ]);
     });
     pdfMake.createPdf(pdfDefinition).download('Informe_de_diagnóstico.pdf');
+    // Swal.fire({
+    //   position: 'center',
+    //   icon: 'success',
+    //   html: '<h2 style="font-family: Montserrat, sans-serif">Descarga exitosa</h2>',
+    //   showConfirmButton: false,
+    //   timer: 5000,
+    // })
+    const title = "Se descargó correctamente";
+    const message = "La descarga se ha realizado exitosamente"
+    this.Message.showModal(title,message);
   }
 
   generateListaChequeo(){
@@ -411,6 +426,16 @@ export class AppDiagnosticoDocComponent implements OnInit {
       }
     }
     pdfMake.createPdf(pdfDefinition).download('Informe_de_lista_de_chequeo.pdf');
+    // Swal.fire({
+    //   position: 'center',
+    //   icon: 'success',
+    //   html: '<h2 style="font-family: Montserrat, sans-serif">Descarga exitosa</h2>',
+    //   showConfirmButton: false,
+    //   timer: 5000,
+    // })
+    const title = "Se descargó correctamente";
+    const message = "La descarga se ha realizado exitosamente"
+    this.Message.showModal(title,message);
   }
 
   generatePlanMejora(){
@@ -552,6 +577,16 @@ export class AppDiagnosticoDocComponent implements OnInit {
       }
     }
     pdfMake.createPdf(pdfDefinition).download('Informe_de_plan_de_mejora.pdf');
+    // Swal.fire({
+    //   position: 'center',
+    //   icon: 'success',
+    //   html: '<h2 style="font-family: Montserrat, sans-serif">Descarga exitosa</h2>',
+    //   showConfirmButton: false,
+    //   timer: 5000,
+    // })
+    const title = "Se descargó correctamente";
+    const message = "La descarga se ha realizado exitosamente"
+    this.Message.showModal(title,message);
   }
 
   saveForm(){

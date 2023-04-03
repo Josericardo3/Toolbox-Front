@@ -2,6 +2,7 @@ import { Component, OnInit, HostListener } from '@angular/core'
 import { Router } from '@angular/router'
 import { ApiService } from 'src/app/servicios/api/api.service'
 import { FiltroTableLista } from 'src/app/servicios/api/models/paginador'
+import { FormGroup, Validators, FormBuilder,FormControl } from '@angular/forms'
 
 @Component({
   selector: 'app-app-gestion-de-usuarios',
@@ -9,6 +10,7 @@ import { FiltroTableLista } from 'src/app/servicios/api/models/paginador'
   styleUrls: ['./app-gestion-de-usuarios.component.css'],
 })
 export class AppGestionDeUsuariosComponent {
+ 
   arrListAsesor: any = []
   returnedArray: any = []
   showBoundaryLinks: boolean = true
@@ -29,8 +31,11 @@ export class AppGestionDeUsuariosComponent {
     TotalRegistros: 0,
   }
   arrEstado = ['En proceso', 'Finalizado', 'sin atencion']
+  public registerNewAsesor!: FormGroup
+  private emailPattern: any = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
   constructor(public ApiService: ApiService, 
               private router: Router,
+              private formBuilder: FormBuilder,
               ) {
            }
 
@@ -39,7 +44,22 @@ export class AppGestionDeUsuariosComponent {
   dataUser: any = []
   ngOnInit() {
     this.onLoadPst()
-    //document.getElementById('modalPst').style.display = 'none'
+     document.getElementById('modalAsesor').style.display = 'none'
+ 
+     //validacion registar un nuevo asesor
+     this.registerNewAsesor = this.formBuilder.group(
+      {
+        registroNacionalDeTurismo: ['', Validators.required],
+        nombre: ['', Validators.required],
+        correo: [
+          '',
+          Validators.compose([
+            Validators.pattern(this.emailPattern),
+            Validators.required,
+          ]),
+        ],
+      })
+    
   }
 
   valoresPst: any = {}
@@ -168,8 +188,11 @@ export class AppGestionDeUsuariosComponent {
   isOpen = false;
   cerrar() {
     this.isOpen = !this.isOpen;
+    
   }
-
+cerraModalNewAsesor(){
+  document.getElementById('modalAsesor').style.display = 'none'
+}
   opcionSeleccionado: any = ''
   verSeleccion = {}
   guardarSeleccion: any = {}
@@ -185,14 +208,54 @@ export class AppGestionDeUsuariosComponent {
     const request = { "idusuariopst": this.contenidoAsignacion?.idusuariopst,"idUsuario": this.guardarSeleccion.idUsuario}
     this.ApiService.updateAsesor(request).subscribe((data) =>{
       this.isOpen = !this.isOpen;
-      return this.onLoadPst();
+       return this.onLoadPst();
     })
   }
 
   //registras nuevo asesor
-
   openModalNuevoAsesor(){
-    document.getElementById('modalAsesor').style.display = 'block'
+    //clear
+    //console.log(this.correo,this.registroNacionalDeTurismo,this.nombre,"vacio esperado")
+    this.correo = '';
+    this.registroNacionalDeTurismo = '';
+    this.nombre = '';
+    //console.log(this.correo,this.registroNacionalDeTurismo,this.nombre,"vacio esperado")
+    return document.getElementById('modalAsesor').style.display = 'block'
   }
 
+  nombre = '';
+  correo='';
+  registroNacionalDeTurismo= '';
+
+onChangeModalInput(evnt :any){
+  
+if(evnt.target.id === 'correo'){
+  this.correo = evnt.target.value;
+}
+if(evnt.target.id === 'nombre'){
+  this.nombre = evnt.target.value;
+}
+if(evnt.target.id === 'nuevo'){
+  this.registroNacionalDeTurismo = evnt.target.value;
+  //console.log(evnt.target.value,"rnt valor")
+}
+}
+
+//datos del form
+saveNewAsesor(){
+  const request = {
+    rnt:this.registerNewAsesor.get("registroNacionalDeTurismo")?.value,
+    nombre:this.registerNewAsesor.get("nombre")?.value,
+    correo: this.registerNewAsesor.get("correo")?.value,
+
+  }
+  if(this.registerNewAsesor.status === 'VALID'){
+    //console.log(this.registerNewAsesor.value)
+    this.ApiService.createNewAsesor(request)
+.subscribe((data) =>{
+  //console.log(data,"data nuevo asesor")
+   return this.cerraModalNewAsesor()
+})
+  }
+  }
 }

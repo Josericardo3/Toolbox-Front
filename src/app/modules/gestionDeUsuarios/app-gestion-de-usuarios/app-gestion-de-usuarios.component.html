@@ -1,10 +1,13 @@
-<app-app-header></app-app-header>
+
 <!DOCTYPE html>
 <html lang="en">
 
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
- 
+  <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous"> -->
+  <div class="header">
+  <app-app-header></app-app-header>
+  </div>
   <div class="container-gestion">
     <div class="titulo">
       Gestión de Usuarios
@@ -23,7 +26,7 @@
       <input type="text" (change)="capturarValorE($event)" />
       <button (click)="filterAsesor()" class="buscar">Buscar</button>
       <label class="padding-label">Estado</label>
-      <select  (click)="filterEstado($event) "(change)="capturarValorE($event)" >
+      <select class="estado" (click)="filterEstado($event) "(change)="capturarValorE($event)" >
         <option  *ngFor="let element of arrEstado"  >
           {{ element }}
         </option>
@@ -58,39 +61,103 @@
       </table>
     </div>
     <!-- paginacion -->
- 
     <div class="page-style">
       <tr>
         <td colspan="7">
-            <div style="float:left;">
-                <label class="paginas" style="padding: 6px 12px; margin-bottom: 20px; margin-top: 20px;  border-left-width: 1px; border-top-width: 1px; font-family:'Work Sans', sans-serif;">
+            <div class="container-label"      style="float:left;">
+                <label class="paginas">
                     Página: {{ pages}} / {{filtroTable.TotalPaginas}} Registros: {{filtroTable.TotalRegistros}}
                 </label>
+            <div class="ls-pagina ">
+              <pagination  
+              [ngClass]="{'page-item': true}" 
+              [boundaryLinks]="true" 
+              [totalItems]="dataInitial.length" 
+              [maxSize]="3"
+             (pageChanged)="pageChanged($event)"  
+              previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;"
+              >
+             </pagination>
+         
             </div>
-            <pagination style="float:right;" class="page-item" [boundaryLinks]="true" [totalItems]="dataInitial.length" 
-             [maxSize]="3"
-            (pageChanged)="pageChanged($event)"  
-             previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;">
-            </pagination>
+            </div>
         </td>
       </tr>
     </div>
     </div>
     
-    <!-- modal -->   
+    <!-- modal asignar asesor -->   
     <div id="modalPst"  *ngIf="isOpen">
       <div class="modal-background" >
         <div class="modal-content">
           <div class="modal-title">
             <select name="select" id="select-pst" [(ngModel)]="opcionSeleccionado" (change)="capturarValueSelect($event)" >
-                <option value="" selected>Selecciona un Asesor</option>
-                <option *ngFor="let element of arrListAsesor"  [ngValue]="element" selected>{{element.nombre}}</option>
+                <option value=""  selected>Selecciona un Asesor</option>
+                <option class="po" *ngFor="let element of arrListAsesor"  [ngValue]="element" selected>{{element.nombre}}</option>
               </select>
               
             </div>
               <div class="btn-grup">
                 <button type="button" class="modal-btn"  (click)="updateNewAsesor()" >OK</button>
                 <button type="button" class="modal-btn-cancel" (click)="cerrar()">Cancelar</button>
+              </div>
+        </div>
+        </div>
+    </div>
+
+    <!-- modal para registrar nuevo asesor -->   
+    <div id="modalAsesor">  
+      <div class="modal-asesor" >
+        <div class="asesor">
+          <div class="title-asesor">
+            <h1 class="titulo-modal">Registrar Nuevo Asesor</h1>
+            <form
+            class="formRegister"
+            [formGroup]="registerNewAsesor"
+            (ngSubmit)="saveNewAsesor()"
+            >
+            <label class="label-titulo">Registro Nacional de Turismo</label>
+            <input style="width: 389px;font-size:14px;height: 28px;"
+            (change) = onChangeModalInput($event)
+            class="input-asesor"
+            appNumeros
+            [(ngModel)]="registroNacionalDeTurismo"
+            type="text"
+            id="registroNacionalDeTurismo"
+            formControlName="registroNacionalDeTurismo"
+            />
+           <label class="label-titulo">Nombre</label>
+           <input style="width: 389px;font-size: 14px;height: 28px;"
+           (change) = onChangeModalInput($event)
+           appLetras
+           class="input-asesor"
+           [(ngModel)]="nombre"
+           type="text"
+           id="nombre"
+           formControlName="nombre"
+          />
+          <label class="label-titulo">Correo</label>
+          <br>
+          <input style="width: 389px;font-size:14px;height: 28px;"
+          (change) = onChangeModalInput($event)
+          class="input-asesor"
+          [(ngModel)]="correo"
+          type="email"
+          id="correo"
+          formControlName="correo"
+          />
+          <label
+          class="control-error textDanger"
+          *ngIf="registerNewAsesor.controls['correo'].hasError('pattern')"
+          >
+          Debe contener un correo válido
+          </label>
+          <br>
+        </form>
+          </div>
+              <div class="btn-grup-asesor">
+                <button type="button" class="btn-register" [disabled]="registerNewAsesor.invalid"  (click)="saveNewAsesor()">OK</button>
+                <button type="button" class="btn-cancel" (click)="cerraModalNewAsesor()">Cancelar</button>
               </div>
         </div>
         </div>

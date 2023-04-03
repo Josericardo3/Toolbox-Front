@@ -20,7 +20,11 @@ export class AppCaracterizacionComponent implements OnInit {
   // public   forms!: Form[]: FormGroup = new FormGroup({});
 
   formParent!: FormGroup;
+
   datos: any = [];
+  preguntasDesordenadas: any = [];
+  preguntasOrdenadas: any = [];
+
   municipios: any = [];
 
   dataSelect!: any[];
@@ -28,7 +32,9 @@ export class AppCaracterizacionComponent implements OnInit {
   dataNorma!: any[];
 
   otherChecked: boolean = false;
-  showDependency: boolean | any= false;
+  showDependency: boolean | any = false;
+  showSostenibilidad: boolean | any = false;
+  showPrestaServiciosAventura: boolean | any = false;
   mostrarInput = false;
   idCaracterizacionDinamicaCondicion!: any;
 
@@ -55,48 +61,31 @@ export class AppCaracterizacionComponent implements OnInit {
   ngOnInit(): void { 
     this.formParent = this.formBuilder.group({});
     this.getCaracterizacion();
+    this.getPreguntasOrdenadas();
     this.http.get('https://www.datos.gov.co/resource/gdxc-w37w.json')
     .subscribe((data: any[]) => {
       this.municipios = data;
     });
-
 }
 
-onChangeAventuraSeleccionada(value: boolean) {
-  // this.aventuraSeleccionada = value;
-  // if (this.aventuraSeleccionada) {
-  //   this.opcionesNorma = this.dataNorma.map(opcion => opcion.id);
-  // } else {
-  //   this.opcionesNorma = this.dataNorma.filter((opcion:any) => 
-  //   {opcion.norma.startsWith('NTC 6502') || opcion.norma.toString().startsWith('NTC 6505')}
-  //   ).map(opcion => opcion.id);
-  // }
-
-    this.aventuraSeleccionada = value;
-    if (this.aventuraSeleccionada) {
-      this.opcionesNorma = this.dataNorma.map(opcion => opcion.id);
-    } else {
-      this.opcionesNorma = this.dataNorma.filter(opcion => opcion.norma && (opcion.norma.startsWith('NTC 6502') || opcion.norma.toString().indexOf('NTC 6505') === 0))
-        .map(opcion => opcion.id);
-    }
-  
-}
 
 getCaracterizacion(){
   this.ApiService.getData()
   // this.http.get('assets/datos.json')
   .subscribe((data: any) => {
     this.datos = data;
-    // Obtiene el valor de "values" de "nombre": "Categoría RNT"
+    this.preguntasDesordenadas = data.campos;
+    
+    // Obtiene el valor de "Categoría RNT" para el título
     const campoCategoriaRNT = this.datos.campos.find(campo => campo.nombre === 'Categoría RNT');
     this.categoriaRNTValues = campoCategoriaRNT.values;
 
     this.datos.campos.forEach((campo:any) => {
-      if(campo.values !== null){
+      if(campo.values !== null && campo.idcaracterizaciondinamica !== '29'){
         this.formParent.addControl(campo.nombre, new FormControl({value: campo.values, disabled: true}))
-      }
+    }
       else{
-        this.formParent.addControl(campo.nombre, new FormControl(''))          
+        this.formParent.addControl(campo.nombre, new FormControl('', Validators.required))          
       }
     });
 
@@ -129,47 +118,42 @@ getCaracterizacion(){
       const campoMovido = this.datos.campos.splice(index, 1)[0];
       this.datos.campos.push(campoMovido);
     }
-});
+
+    this.ordenarPreguntas();
+  });
 }
 
+getPreguntasOrdenadas(){
+  this.http.get('assets/datos.json')
+  .subscribe((data: any) => {
+    this.preguntasOrdenadas = data.campos;
+    this.ordenarPreguntas();
+  });
+}
 
+ordenarPreguntas() {
+  if (this.preguntasDesordenadas.length && this.preguntasOrdenadas.length) {
+    this.preguntasOrdenadas = this.preguntasOrdenadas.map((orden: any) => {
+      const pregunta = this.preguntasDesordenadas.find((pregunta: any) => pregunta.idcaracterizaciondinamica === orden.idcaracterizaciondinamica);
+      return {
+        ...pregunta,
+        idorden: orden.idorden
+      };
+    }).sort((a: any, b: any) => a.idorden - b.idorden);
+    console.log(this.preguntasOrdenadas)
+  }
+}
 
-
-// public todosLosCamposCompletos(): boolean {
-//   if (!this.datos || !Array.isArray(this.datos.campos)) {
-//     return false;
-//   }
-//   let hasEmptyRequiredFields = this.datos.campos.some(campo => campo.requerido && (campo.values == null || campo.values === ''));
-//   return !hasEmptyRequiredFields;
-//   // for (let campo of this.datos.campos) {
-//   //   if (campo.requerido && campo.values === null) {
-//   //     return false;
-//   //   }
-//   // }
-//   // return true;
-// }
-
-
-
-
-// opcionesSeleccionadas: any[] = [];
-// selectMunicipio: any = {};
-
-// agregarNuevoControl(valor: string, index: number) {
-//   if (valor !== "") {
-//     const nuevoControl = new FormControl("");
-//     this.formParent.addControl("nuevoCampo" + (index + 1), nuevoControl);
-//     nuevoControl.setValue(valor);
-//   }
-// }
-
-// eliminarControl(index: number) {
-//   this.formParent.removeControl("nuevoCampo" + index);
-// }
-// capturarValor2(i: number, select: HTMLSelectElement, id: number) {
-//   const valor = select.value;
-//   // restante del código
-// }
+onChangeAventuraSeleccionada(value: boolean) {
+    this.aventuraSeleccionada = value;
+    if (this.aventuraSeleccionada) {
+      this.opcionesNorma = this.dataNorma.map(opcion => opcion.id);
+    } else {
+      this.opcionesNorma = this.dataNorma.filter(opcion => opcion.norma && (opcion.norma.startsWith('NTC 6502') || opcion.norma.toString().indexOf('NTC 6505') === 0))
+        .map(opcion => opcion.id);
+    }  
+  
+}
 
 printSelectedOption() {
   this.selectedOptions.push(this.selectedOption);

@@ -43,7 +43,6 @@ export class AppDashboardComponent implements OnInit {
   
   ngOnInit(): void {
     //borrar
-    debugger
     let arrNormas = JSON.parse(localStorage.getItem('norma')||'[]');
     let normaSelected = localStorage.getItem("normaSelected");
     //prueba global selectFeatureCount

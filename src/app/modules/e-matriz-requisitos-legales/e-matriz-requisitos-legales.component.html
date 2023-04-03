@@ -1,160 +1,319 @@
 <app-app-header></app-app-header>
-<div class="containerMatrizRequisitosLegales">
-    <h1>Matriz de requisitos legales</h1> 
-    <div class="div">
-        <div class="titulo" (click)="toggleSection('contexts')" [ngClass]="{'verde': contextsVisible}">
-            <h3>Ley 300 de 1996</h3>
-            <div class="iconos">
-                <i class="fa-solid" [class.fa-angle-up]="contextsVisible" [class.fa-angle-down]="!contextsVisible"></i>
+<div class="MainContainerMatrizRequisitosLegales">
+<h1>Matriz de requisitos legales</h1>
+<input type="text" [(ngModel)]="busqueda" (input)="buscarTitulos()" placeholder="Buscar..." class="buscador">
+  
+  <!-- <ul class="tabs">
+    <li [ngClass]="{ 'active': currentTab === 'tab1', 'current': currentTab === 'tab1' }" (click)="changeTab('tab1')">Turismo</li>
+    <li [ngClass]="{ 'active': currentTab === 'tab2', 'current': currentTab === 'tab2' }" (click)="changeTab('tab2')">Ambiental</li>
+    <li [ngClass]="{ 'active': currentTab === 'tab3', 'current': currentTab === 'tab3' }" (click)="changeTab('tab3')">Laboral SGSST</li>
+    <li [ngClass]="{ 'active': currentTab === 'tab4', 'current': currentTab === 'tab4' }" (click)="changeTab('tab4')">Social</li>
+    <li [ngClass]="{ 'active': currentTab === 'tab5', 'current': currentTab === 'tab5' }" (click)="changeTab('tab5')">Económico</li>
+    <li [ngClass]="{ 'active': currentTab === 'tab6', 'current': currentTab === 'tab6' }" (click)="changeTab('tab6')">Particular de Norma</li>
+  </ul>
+  <div class="tab-content">
+    <div [ngClass]="{ 'active': currentTab === 'tab1' }" class="tab-pane">Contenido de la pestaña 1</div>
+    <div [ngClass]="{ 'active': currentTab === 'tab2' }" class="tab-pane">Contenido de la pestaña 2</div>
+    <div [ngClass]="{ 'active': currentTab === 'tab3' }" class="tab-pane">Contenido de la pestaña 3</div>
+    <div [ngClass]="{ 'active': currentTab === 'tab4' }" class="tab-pane">Contenido de la pestaña 4</div>
+    <div [ngClass]="{ 'active': currentTab === 'tab5' }" class="tab-pane">Contenido de la pestaña 5</div>
+    <div [ngClass]="{ 'active': currentTab === 'tab6' }" class="tab-pane">Contenido de la pestaña 6</div>
+  </div> -->
+  <div class="containerTabs">
+    <div class="tabs">
+        <div class="tab" (click)="cambiarTab('tab1')" [ngClass]="{ 'active': tabActual === 'tab1' }">Turismo</div>
+        <div class="tab" (click)="cambiarTab('tab2')" [ngClass]="{ 'active': tabActual === 'tab2' }">Ambiental</div>
+        <div class="tab" (click)="cambiarTab('tab3')" [ngClass]="{ 'active': tabActual === 'tab3' }">Laboral SGSST</div>
+        <div class="tab" (click)="cambiarTab('tab4')" [ngClass]="{ 'active': tabActual === 'tab4' }">Social</div>
+        <div class="tab" (click)="cambiarTab('tab5')" [ngClass]="{ 'active': tabActual === 'tab5' }">Económico</div>
+        <div class="tab" (click)="cambiarTab('tab6')" [ngClass]="{ 'active': tabActual === 'tab6' }">Particular de Norma</div>
+      </div>
+        <div [ngSwitch]="tabActual" class="contenidoTabs">
+          <div *ngSwitchCase="'tab1'">
+            <div class="containerTurismo">
+                <div class="div">
+                    <div class="titulo" (click)="toggleSection('primeraLey')" [ngClass]="{'verde': primeraLeyVisible}">
+                        <h3>Ley 300 de 1996</h3>
+                        <div class="iconos">
+                            <i class="fa-solid" [class.fa-angle-up]="primeraLeyVisible" [class.fa-angle-down]="!primeraLeyVisible"></i>
+                        </div>
+                    </div>
+                    <div class="detalle" *ngIf="primeraLeyVisible">
+                        <h2>Emitida por:</h2>
+                        <p class="parrafo">Por la cual se expide la Ley General de Turismo y se dictan otras disposiciones</p>
+                        <h4 style="font-weight: bolder;" class="parrafo">ARTÍCULOS / SECCIONES / REQUISITOS ESPECÍFICOS QUE APLICAN</h4>
+                        <p class="parrafo">TÍTULO VIII. ASPECTOS OPERATIVOS DEL TURISMO. CAPÍTULO I. DEL REGISTRO NACIONAL DE TURISMO. 
+                        Ir al inicio ARTÍCULO 61. REGISTRO NACIONAL DE TURISMO. Artículo modificado por el artículo 142 
+                        del Decreto Ley 2106 de 2019. El nuevo texto es el siguiente: El Ministerio de Comercio, Industria 
+                        y Turismo delegará en las Cámaras de Comercio el Registro Nacional de Turismo, en el cual deberán 
+                        inscribirse todos los prestadores de servicios turísticos contemplados en el artículo 12 de la Ley 
+                        1101 de 2006.</p>
+                        
+                        <div class="containerform">
+                            <div class="subContainerform">
+                                <label for="estadoCumplimiento" class="estado">Estado de cumplimiento</label>
+                                <select name="estadoCumplimiento" id="estadoCumplimiento" class="estadoForm" [(ngModel)]="opcionSeleccionada">
+                                    <option value="" disabled selected hidden>Seleccione una opción</option>
+                                    <option value="Si">Si</option>
+                                    <option value="No">No</option>
+                                    <option value="En proceso">En proceso</option>
+                                    <option value="No aplica">No aplica</option>
+                                </select>
+                            </div>
+                            <div class="subContainerform">
+                                <label for="" class="estado">Responsable de dar cumplimiento</label>
+                                <select name="" id="" class="estadoForm" >
+                                    <option value="0">Seleccione una opción</option>
+                                    <option value="">Responsable de dar cumplimiento</option>
+                                    <option value="">Responsable</option>
+                                </select>
+                            </div>
+                            <div class="subContainerformMain">
+                                <div class="subContainerform" *ngIf="opcionSeleccionada === 'Si'">
+                                    <label for="evidencia" class="estado">Evidencia del cumplimineto</label>
+                                    <input type="text" id="evidencia" class="estadoForm">
+                                </div>
+                                <div class="subContainerform" *ngIf="opcionSeleccionada === 'No' || opcionSeleccionada === 'En proceso'">
+                                    <label for="observaciones" class="estado">Observaciones / Incumplimiento</label>
+                                    <input type="text" id="observaciones" class="estadoForm">
+                                </div>
+                            </div>
+                        </div>  
+                        <div class="planIntervencion" *ngIf="opcionSeleccionada === 'No' || opcionSeleccionada === 'En proceso'">
+                            <h3 class="plan">PLAN DE INTERVENCIÓN</h3>
+                            <div class="containerformB" >
+                            
+                                <div class="subContainerformB">
+                                    <label for="" class="estado">Acciones a realizar</label>
+                                    <textarea name="" id="acciones" placeholder="Acciones" class="estadoFormB"></textarea>
+                                </div>
+                                <div class="subContainerformB">
+                                    <label for="" class="estado">Responsable de dar cumplimiento</label>
+                                    <select name="" id="" class="estadoFormB">
+                                        <option value="0">Seleccione una opción</option>
+                                        <option value="">Responsable de dar cumplimiento</option>
+                                        <option value="">Responsable</option>
+                                    </select>
+                                </div>
+                                <div class="subContainerformB">
+                                    <label for="" class="estado">Fecha para la ejecución</label>
+                                    <input type="date" class="estadoFormB">
+                                </div>
+                                <div class="subContainerformB">
+                                    <label for="" class="estado">Estado</label>
+                                    <select name="" id="" class="estadoFormB">
+                                        <option value="0">Seleccione una opción</option>
+                                        <option value="Abierto">Abierto</option>
+                                        <option value="Cerrado">Cerrado</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>            
+                    </div>
+                </div>
+                <div class="div">
+                    <div class="titulo" (click)="toggleSection('primeraLey')" [ngClass]="{'verde': primeraLeyVisible}">
+                        <h3>Decreto 400 de 1997</h3>
+                        <div class="iconos">
+                            <i class="fa-solid" [class.fa-angle-up]="primeraLeyVisible" [class.fa-angle-down]="!primeraLeyVisible"></i>
+                        </div>
+                    </div>
+                    <div class="detalle" *ngIf="primeraLeyVisible">
+                        <h2>Emitida por:</h2>
+                        <p class="parrafo">Por la cual se expide la Ley General de Turismo y se dictan otras disposiciones</p>
+                        <h4 style="font-weight: bolder;" class="parrafo">ARTÍCULOS / SECCIONES / REQUISITOS ESPECÍFICOS QUE APLICAN</h4>
+                        <p class="parrafo">TÍTULO VIII. ASPECTOS OPERATIVOS DEL TURISMO. CAPÍTULO I. DEL REGISTRO NACIONAL DE TURISMO. 
+                        Ir al inicio ARTÍCULO 61. REGISTRO NACIONAL DE TURISMO. Artículo modificado por el artículo 142 
+                        del Decreto Ley 2106 de 2019. El nuevo texto es el siguiente: El Ministerio de Comercio, Industria 
+                        y Turismo delegará en las Cámaras de Comercio el Registro Nacional de Turismo, en el cual deberán 
+                        inscribirse todos los prestadores de servicios turísticos contemplados en el artículo 12 de la Ley 
+                        1101 de 2006.</p>
+                        
+                        <div class="containerform">
+                            <div class="subContainerform">
+                                <label for="estadoCumplimiento" class="estado">Estado de cumplimiento</label>
+                                <select name="estadoCumplimiento" id="estadoCumplimiento" class="estadoForm" [(ngModel)]="opcionSeleccionada">
+                                    <option value="" disabled selected hidden>Seleccione una opción</option>
+                                    <option value="Si">Si</option>
+                                    <option value="No">No</option>
+                                    <option value="En proceso">En proceso</option>
+                                    <option value="No aplica">No aplica</option>
+                                </select>
+                            </div>
+                            <div class="subContainerform">
+                                <label for="" class="estado">Responsable de dar cumplimiento</label>
+                                <select name="" id="" class="estadoForm" >
+                                    <option value="0">Seleccione una opción</option>
+                                    <option value="">Responsable de dar cumplimiento</option>
+                                    <option value="">Responsable</option>
+                                </select>
+                            </div>
+                            <div class="subContainerformMain">
+                                <div class="subContainerform" *ngIf="opcionSeleccionada === 'Si'">
+                                    <label for="evidencia" class="estado">Evidencia del cumplimineto</label>
+                                    <input type="text" id="evidencia" class="estadoForm">
+                                </div>
+                                <div class="subContainerform" *ngIf="opcionSeleccionada === 'No' || opcionSeleccionada === 'En proceso'">
+                                    <label for="observaciones" class="estado">Observaciones / Incumplimiento</label>
+                                    <input type="text" id="observaciones" class="estadoForm">
+                                </div>
+                            </div>
+                        </div>  
+                        <div class="planIntervencion" *ngIf="opcionSeleccionada === 'No' || opcionSeleccionada === 'En proceso'">
+                            <h3 class="plan">PLAN DE INTERVENCIÓN</h3>
+                            <div class="containerformB" >
+                            
+                                <div class="subContainerformB">
+                                    <label for="" class="estado">Acciones a realizar</label>
+                                    <textarea name="" id="acciones" placeholder="Acciones" class="estadoFormB"></textarea>
+                                </div>
+                                <div class="subContainerformB">
+                                    <label for="" class="estado">Responsable de dar cumplimiento</label>
+                                    <select name="" id="" class="estadoFormB">
+                                        <option value="0">Seleccione una opción</option>
+                                        <option value="">Responsable de dar cumplimiento</option>
+                                        <option value="">Responsable</option>
+                                    </select>
+                                </div>
+                                <div class="subContainerformB">
+                                    <label for="" class="estado">Fecha para la ejecución</label>
+                                    <input type="date" class="estadoFormB">
+                                </div>
+                                <div class="subContainerformB">
+                                    <label for="" class="estado">Estado</label>
+                                    <select name="" id="" class="estadoFormB">
+                                        <option value="0">Seleccione una opción</option>
+                                        <option value="Abierto">Abierto</option>
+                                        <option value="Cerrado">Cerrado</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>            
+                    </div>
+                </div>
+
+                <div class="div" id="divAdd" style="display: none;" *ngFor="let div of divs">
+                    <div class="titulo" (click)="toggleSection('divAdd')" [ngClass]="{'verde': divAddVisible}">
+                        <h3 id="tituloNormativa">{{div.tipoNormatividad}} {{div.numero}} de {{div.anio}}</h3> 
+                        <div class="iconos">
+                            <i class="fa-solid" [class.fa-angle-up]="divAddVisible" [class.fa-angle-down]="!divAddVisible"></i>
+                        </div>
+                        <button (click)="eliminarDivAdd()" class="boton-eliminar">x</button>
+                    </div>
+                    <div class="detalle" id="detalleAdd" *ngIf="divAddVisible">       
+                        <h2>Emitida por:</h2>
+                        <p class="parrafo">Por la cual se expide la Ley General de Turismo y se dictan otras disposiciones</p>
+                        <h4 style="font-weight: bolder;" class="parrafo">ARTÍCULOS / SECCIONES / REQUISITOS ESPECÍFICOS QUE APLICAN</h4>
+                        <p class="parrafo">{{ div.descripcion }}</p>
+                        <p class="parrafo">{{ div.secciones }}</p>
+            
+                        <div class="containerform">
+                            <div class="subContainerform">
+                                <label for="estadoCumplimiento" class="estado">Estado de cumplimiento</label>
+                                <select name="estadoCumplimiento" id="estadoCumplimiento" class="estadoForm" [(ngModel)]="opcionSeleccionada">
+                                    <option value="" disabled selected hidden>Seleccione una opción</option>
+                                    <option value="Si">Si</option>
+                                    <option value="No">No</option>
+                                    <option value="En proceso">En proceso</option>
+                                    <option value="No aplica">No aplica</option>
+                                </select>
+                            </div>
+                            <div class="subContainerform">
+                                <label for="" class="estado">Responsable de dar cumplimiento</label>
+                                <select name="" id="" class="estadoForm" >
+                                    <option value="0">Seleccione una opción</option>
+                                    <option value="">Responsable de dar cumplimiento</option>
+                                    <option value="">Responsable</option>
+                                </select>
+                            </div>
+                            <div class="subContainerformMain">
+                                <div class="subContainerform" *ngIf="opcionSeleccionada === 'Si'">
+                                    <label for="evidencia" class="estado">Evidencia del cumplimineto</label>
+                                    <input type="text" id="evidencia" class="estadoForm">
+                                </div>
+                                <div class="subContainerform" *ngIf="opcionSeleccionada === 'No' || opcionSeleccionada === 'En proceso'">
+                                    <label for="observaciones" class="estado">Observaciones / Incumplimiento</label>
+                                    <input type="text" id="observaciones" class="estadoForm">
+                                </div>
+                            </div>
+                        </div>  
+                        <div class="planIntervencion" *ngIf="opcionSeleccionada === 'No' || opcionSeleccionada === 'En proceso'">
+                            <h3 class="plan">PLAN DE INTERVENCIÓN</h3>
+                            <div class="containerformB" >
+                            
+                                <div class="subContainerformB">
+                                    <label for="" class="estado">Acciones a realizar</label>
+                                    <textarea name="" id="acciones" placeholder="Acciones" class="estadoFormB"></textarea>
+                                </div>
+                                <div class="subContainerformB">
+                                    <label for="" class="estado">Responsable de dar cumplimiento</label>
+                                    <select name="" id="" class="estadoFormB">
+                                        <option value="0">Seleccione una opción</option>
+                                        <option value="">Responsable de dar cumplimiento</option>
+                                        <option value="">Responsable</option>
+                                    </select>
+                                </div>
+                                <div class="subContainerformB">
+                                    <label for="" class="estado">Fecha para la ejecución</label>
+                                    <input type="date" class="estadoFormB">
+                                </div>
+                                <div class="subContainerformB">
+                                    <label for="" class="estado">Estado</label>
+                                    <select name="" id="" class="estadoFormB">
+                                        <option value="0">Seleccione una opción</option>
+                                        <option value="Abierto">Abierto</option>
+                                        <option value="Cerrado">Cerrado</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div> 
+                    </div>      
+                </div>
+            
+                <div id="ContainerdetalleAdicionar">
+                    <div class="adicionar" (click)="toggleSection('adicionar')">
+                        <button class="adicionarBtn">Adicionar requisito legal +</button>
+                    </div>
+                    <div class="detalleAdicionar" id="detalleAdicionarRequisito" *ngIf="adicionarVisible">
+                        <label class="adicionarLabel">Tipo de normatividad</label>
+                        <select class="adicionarInput" id="tipoNormatividadSelect" #selectOption (change)="onSelect(selectOption.value)">
+                            <option value="" disabled selected hidden>Seleccione una opción</option>
+                            <option value="Ley">Ley</option>
+                            <option value="Decreto">Decreto</option>
+                            <option value="Decreto Ley">Decreto Ley</option>
+                            <option value="otro">Otro</option>
+                        </select>
+                        <div *ngIf="selectedOption === 'otro'" class="changeOtro">
+                            <label class="adicionarLabel">Otro ¿Cuál?</label>
+                            <input type="text" class="adicionarInput" id="otroInput">
+                        </div>
+                        
+                        <label class="adicionarLabel">Número</label>
+                        <input type="number" class="adicionarInput" id="numeroInput"> 
+                        
+                        <label class="adicionarLabel">Año</label>
+                        <input type="number" class="adicionarInput" id="anioInput" maxlength="4">
+                        
+                        <label class="adicionarLabel">Descripción</label>
+                        <textarea style="height: 100px" class="adicionarInput" id="descripcionTextAreaAdd"></textarea>
+                        
+                        <label class="adicionarLabel">Artículos / Secciones / Requisitos específicos que aplican</label>
+                        <textarea style="height: 100px" class="adicionarInput" id="seccionesTextAreaAdd"></textarea>
+                        
+                        <button type="submit" class="btnAdd" (click)="agregarDiv()" (click)="showDivAdd()">Agregar</button>
+                    </div>
+                </div>
+            
+                <button type="submit" class="btn">Guardar</button>
             </div>
+          </div>
+          <div *ngSwitchCase="'tab2'">Contenido del Tab 2</div>
+          <div *ngSwitchCase="'tab3'">Contenido del Tab 3</div>
+          <div *ngSwitchCase="'tab4'">Contenido del Tab 4</div>
+          <div *ngSwitchCase="'tab5'">Contenido del Tab 5</div>
+          <div *ngSwitchCase="'tab6'">Contenido del Tab 6</div>
         </div>
-        <div class="detalle" *ngIf="contextsVisible">
-            <h2>Emitida por:</h2>
-            <p>Por la cual se expide la Ley General de Turismo y se dictan otras disposiciones</p>
-            <h4 style="font-weight: bolder;">ARTÍCULOS / SECCIONES / REQUISITOS ESPECÍFICOS QUE APLICAN</h4>
-            <p>TÍTULO VIII. ASPECTOS OPERATIVOS DEL TURISMO. CAPÍTULO I. DEL REGISTRO NACIONAL DE TURISMO. 
-            Ir al inicio ARTÍCULO 61. REGISTRO NACIONAL DE TURISMO. Artículo modificado por el artículo 142 
-            del Decreto Ley 2106 de 2019. El nuevo texto es el siguiente: El Ministerio de Comercio, Industria 
-            y Turismo delegará en las Cámaras de Comercio el Registro Nacional de Turismo, en el cual deberán 
-            inscribirse todos los prestadores de servicios turísticos contemplados en el artículo 12 de la Ley 
-            1101 de 2006.</p>
-            <br>
-            <label>Estado de cumplimiento</label>
-            <select name="" id="">
-                <option value="">Si</option>
-                <option name="" id="">No</option>
-                <option name="" id="">En proceso</option>
-                <option name="" id="">No aplica</option>
-            </select>
-            <br>
-            <label for="">RESPONSABLE DE DAR CUMPLIMIENTO</label>
-            <select name="" id="">
-                <option value="">Responsable de dar cumplimiento</option>
-                <option value="">Responsable</option>
-            </select>
-            <br>
-            <label for="">EVIDENCIA DEL CUMPLIMIENTO</label>
-            <input type="text">
-            <br>
-            <label for="">OBSERVACIONES / INCUMPLIMIENTO</label>
-            <input type="text">
-            <br>
-            <h3>Plan de intervención</h3>
-            <br>
-            <label for="">ACCIONES A REALIZAR</label>
-            <textarea name="" id="" cols="20" rows="10" placeholder="Acciones"></textarea>
-            <br>
-            <label for="">FECHA PARA LA EJECUCIÓN</label>
-            <input type="date">
-            <br>
-            <label for="">RESPONSABLE DE DAR CUMPLIMIENTO</label>
-            <select name="" id="">
-                <option value="">Responsable de dar cumplimiento</option>
-                <option value="">Responsable</option>
-            </select>
-            <br>
-            <label for="">ESTADO</label>
-            <select name="" id="">
-                <option value="">Abierto</option>
-                <option value="">Cerrado</option>
-            </select>
-        </div>
-    </div>
-    <div id="divAdd" class="div">
-        <div class="titulo" (click)="toggleSection('contexts')" [ngClass]="{'verde': contextsVisible}">
-            <h3 id="tituloNormativa"></h3>
-            <!-- <div class="iconos">
-                <i class="fa-solid" [class.fa-angle-up]="contextsVisible" [class.fa-angle-down]="!contextsVisible"></i>
-            </div> -->
-        </div>
-        <div class="detalle" *ngIf="contextsVisible">
-             
-        <!-- <p id="anio"></p>
-        <p ></p>
-        <p id="numero"></p> -->
-            <!-- <h2>Emitida por:</h2>
-            <p>Por la cual se expide la Ley General de Turismo y se dictan otras disposiciones</p>
-            <h4 style="font-weight: bolder;">ARTÍCULOS / SECCIONES / REQUISITOS ESPECÍFICOS QUE APLICAN</h4> -->
-            <textarea id="descripcion" *ngIf="contextsVisible"></textarea>
-            <br>
-            <!-- <div>
-                <label>Estado de cumplimiento</label>
-                <select name="" id="">
-                    <option value="">Si</option>
-                    <option name="" id="">No</option>
-                    <option name="" id="">En proceso</option>
-                    <option name="" id="">No aplica</option>
-                </select>
-                <br>
-                <label for="">RESPONSABLE DE DAR CUMPLIMIENTO</label>
-                <select name="" id="">
-                    <option value="">Responsable de dar cumplimiento</option>
-                    <option value="">Responsable</option>
-                </select>
-                <br>
-                <label for="">EVIDENCIA DEL CUMPLIMIENTO</label>
-                <input type="text">
-                <br>
-                <label for="">OBSERVACIONES / INCUMPLIMIENTO</label>
-                <input type="text">
-                <br>
-                <h3>Plan de intervención</h3>
-                <br>
-                <label for="">ACCIONES A REALIZAR</label>
-                <textarea name="" id="" cols="20" rows="10" placeholder="Acciones"></textarea>
-                <br>
-                <label for="">FECHA PARA LA EJECUCIÓN</label>
-                <input type="date">
-                <br>
-                <label for="">RESPONSABLE DE DAR CUMPLIMIENTO</label>
-                <select name="" id="">
-                    <option value="">Responsable de dar cumplimiento</option>
-                    <option value="">Responsable</option>
-                </select>
-                <br>
-                <label for="">ESTADO</label>
-                <select name="" id="">
-                    <option value="">Abierto</option>
-                    <option value="">Cerrado</option>
-                </select>
-            </div> -->
-        </div>
-    </div>
-    <div>
-        <div class="adicionar" (click)="toggleSection('adicionar')">
-            <button class="adicionarBtn">Adicionar requisito legal +</button>
-        </div>
-        <div class="detalleAdicionar" *ngIf="adicionarVisible">
-            <!-- <label class="adicionarLabel">Tipo de normatividad</label>
-            <select class="adicionarInput" #selectOption (change)="onSelect(selectOption.value)">
-                <option value="0">Seleccione una opción</option>
-                <option value="ley">Ley</option>
-                <option value="decreto">Decreto</option>
-                <option value="decretoLey">Decreto Ley</option>
-                <option value="otro">Otro</option>
-            </select>
-            
-            <div *ngIf="selectedOption === 'otro'" class="changeOtro">
-                <label class="adicionarLabel">Otro ¿Cuál?</label>
-                <input type="text" class="adicionarInput" (change)="otro">
-            </div>-->
-            
-            <label class="adicionarLabel">Número</label>
-            <input type="text" class="adicionarInput" id="numeroInput"> 
-            
-            <label class="adicionarLabel">Año</label>
-            <input type="text" class="adicionarInput" id="anioInput">
-            
-            <label class="adicionarLabel">Descripción</label>
-            <textarea style="height: 100px" class="adicionarInput" id="descripcionTextArea"></textarea>
-            
-            <!-- <label class="adicionarLabel">Artículos / Secciones / Requisitos específicos que aplican</label>
-            <textarea style="height: 100px" class="adicionarInput"></textarea> -->
-            
-            <button type="submit" class="btnAdd" (click)="agregarDiv()">Agregar</button>
-        </div>
-    </div>
-    <button type="submit" class="btn">Guardar</button>
+  </div>
 </div>
 <app-app-footer></app-app-footer>
 <ngx-spinner></ngx-spinner>

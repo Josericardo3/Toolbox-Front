@@ -12,13 +12,12 @@
 <div class="container">
  <div class="container-norma" *ngIf="!newUser">
     <div class="norma-opcion">
-      <select name="select" *ngIf="arrNormas.length > 0"   >    
+      <select  class="select-norma" name="select" *ngIf="arrNormas.length > 0"   >    
         <option 
           value="1" 
           *ngFor="let element of arrNormas"
           id="selectNorma"
-          [selected]="element.norma===normaSelected"
-          style="width: 400px; margin: 6px 6px 6px 6px">
+          [selected]="element.norma===normaSelected">
           {{element.norma}}
         ​</option>
       </select>

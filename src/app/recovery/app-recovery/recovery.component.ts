@@ -46,7 +46,6 @@ export class RecoveryComponent implements OnInit {
     //this.Message.showModal(title,message);
   }
   sendEmail(){
-    debugger
     this.correo = this.recoveryForm.get('correo')?.value;
     if(!!this.correo){
       this.ApiService.sendEmailRecovery(this.correo).subscribe(
@@ -80,7 +79,6 @@ export class RecoveryComponent implements OnInit {
     this.http.post(`https://www.toolbox.somee.com/api/Validaciones/CambioContraseña?password=${password}&id=${userCode}`, { id: this.id })
       .subscribe(
         (response: any) => {
-          debugger
           if(response.valor == "Contraseña cambiada satisfactoriamente"){
             const title = "Exito";
             const message = "Contraseña cambiada con exito"

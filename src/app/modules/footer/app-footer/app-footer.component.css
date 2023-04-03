@@ -1,12 +1,12 @@
 /* agregados */
 .govco-portales-contenedor {
-    display: grid;
-    grid-template-columns: 0.8fr 1fr 1fr 0.8fr;
-    grid-gap: 8px;
-    gap: 8px;
-    background-color: #068460;
-    color: white;
-    padding: 40px 50px;
+    display: grid !important;
+    grid-template-columns: 0.8fr 1fr 1fr 0.8fr !important;
+    grid-gap: 8px !important;
+    gap: 8px !important;
+    background-color: #068460 !important;
+    color: white !important;
+    padding: 40px 50px !important;
 }
 
 .govco-logo {
@@ -34,9 +34,7 @@ color: white;
     margin-bottom: 1rem;
 }
 
-/* .t-bold{
-font-weight: bold;
-} */
+
 .govco-separator-rows{
     border-left: 1px solid #fff;
     padding-left: 30px;

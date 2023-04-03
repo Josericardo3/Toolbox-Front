@@ -20,26 +20,11 @@ export class AppRegisterComponent implements OnInit {
   repeatPassword: string = '';
   showPassword: boolean = false;
   showRepeatPassword: boolean = false;
-
-  // telefono = new FormControl('', [
-  //   Validators.required,
-  //   Validators.pattern(/^\d{10}$/)
-  // ])
-  telefonoDelRepresentanteLegal = new FormControl('', [
-    Validators.required,
-    Validators.pattern(/^\d{10}$/)
-  ])
-  telefonoDelResponsableDeSostenibilidad = new FormControl('', [
-    Validators.required,
-    Validators.pattern(/^\d{10}$/)
-  ])
-
   showModalSuccess:any
   data: any
   arrAgency: any
   public registerForm!: FormGroup
   private emailPattern: any = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-  //private telefonoPattern: any = /^\d{10}$/
   constructor(
     private router: Router,
     private formBuilder: FormBuilder,
@@ -85,8 +70,7 @@ export class AppRegisterComponent implements OnInit {
             Validators.required,
           ]),
         ],
-        //telefonoDelPst:['', Validators.required],
-       
+
         nombreDelRepresenteLegal: ['', Validators.required],
         correoRepresentanteLegal: [
           '',
@@ -95,7 +79,7 @@ export class AppRegisterComponent implements OnInit {
             Validators.required,
           ]),
         ],
-        //telefonoDelRepresentanteLegal: ['', Validators.required],
+
         tipoDeIdentificacionDelRepresentanteLegal: ['', Validators.required],
         identificacionDelRepresentanteLegal: ['', Validators.required],
         departamento: ['', Validators.required],
@@ -107,7 +91,7 @@ export class AppRegisterComponent implements OnInit {
             Validators.required,
           ]),
         ],
-        //telefonoDelResponsableDeSostenibilidad: ['', Validators.required],
+  
         nombreDelResponsableDeSostenibilidad: ['', Validators.required],
         password1: [
           '',
@@ -300,7 +284,7 @@ export class AppRegisterComponent implements OnInit {
       this.Message.showModal(title,message);
     return this.ApiService.createUser(request).subscribe((data: any) => {
       if (data.statusCode === 201) {
-         this.router.navigate(['/']); 
+        this.router.navigate(['/']); 
        
       }
     })

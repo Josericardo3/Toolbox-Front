@@ -274,7 +274,7 @@
         <i class="checkbox-tema" (click)="openModal()">Acepto y autorizo el uso de mis datos por parte de MinCIT y Fontur
           </i>
       </div>
-      <p class="campo-final"    *ngIf="registerForm.invalid">Todos los campos son requeridos </p>
+      <p class="campo-final"   *ngIf="registerForm.invalid">Todos los campos son requeridos </p>
       <div class="button-container">
         <button type="submit" class="btn" [disabled]="registerForm.invalid" >
           Guardar
@@ -285,6 +285,9 @@
       </div>
     </div>
     </form>
+
+    <!-- modal de terminos y condiciones -->
+    
     <div id="modalTerminos" style="width: 100vw">
       <div class="content-terminos" title="TERMINOS Y CONDICIONES">
         <section class="modal-content">

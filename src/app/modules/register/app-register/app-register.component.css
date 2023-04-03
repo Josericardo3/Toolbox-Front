@@ -131,9 +131,6 @@ input{
     margin: 2.5vh 1vw 0 0;
   }
 
-
-
-
   .nota{
     font-family: 'Work Sans', sans-serif;
     font-size: 14px;
@@ -147,14 +144,8 @@ input{
     color: #474749;
     font-weight: bold;
 }
-/* .textDanger{
-    margin-bottom: 30px;
-}
-.textDanger label{
-    margin-top: 10px;
-} */
+
 .formRegister label, .control-error{
-    /* margin: 5px 0 8px 0; */
     font-family: 'Work Sans', sans-serif;
     font-size: 16px;
     color: #474749;
@@ -206,13 +197,6 @@ input.ng-invalid.ng-touched {
     justify-content: space-between;
 }
 
-/* .password {
-    margin-top: 10px;
-} */
-/* .password-input{
-    flex-direction:column;   
-} */
-
 .passC{
     width: 100% !important; 
 }
@@ -238,6 +222,7 @@ input.ng-invalid.ng-touched {
     color: #000000;
 }
 
+/* autorizacion de datos */
 .checkbox-container{
     display: flex;
     flex-direction: row;
@@ -248,8 +233,9 @@ input.ng-invalid.ng-touched {
 }
 
 .checkbox-container > i {
-    text-decoration: underline;
+    text-decoration: underline !important
 }
+
 .checkbox-container > .checkbox{
     width: 20px;
     height: 20px;
@@ -257,6 +243,7 @@ input.ng-invalid.ng-touched {
 } 
 .checkbox-tema{
     margin: 25px 5px 7px 0px !important;
+    cursor: pointer;
 }
 .button-container{
     display: flex;
@@ -264,6 +251,23 @@ input.ng-invalid.ng-touched {
     width: 100%; 
     justify-content:center;
 }
+
+/* Modal de terminos y condiciones */
+
+
+.enlace{
+    font-family:'Work Sans', sans-serif;
+    cursor: pointer;
+    margin: 25px;
+    text-decoration: none;
+}
+/* .enlace {
+    font-family:'Work Sans', sans-serif;
+    margin: 25px;
+    color: red !important;
+    text-decoration:double !important;
+    
+} */
 #modalTerminos{
     display: none;
 }
@@ -293,7 +297,8 @@ input.ng-invalid.ng-touched {
 #modalTerminos.active>.content-terminos>.modal-content{
     color: #474749;
     padding-top: 58px;
-    width:600px;
+    width: 722px;
+    border-radius: 14px;
    
 }
 #modalTerminos.active>.content-terminos>.modal-content>.forma-label-sin-izquierda {
@@ -302,7 +307,7 @@ input.ng-invalid.ng-touched {
     color: #4D4C4D;
     vertical-align: bottom;
     display: flex;
-    padding: 1px 0px 1px 0px !important;
+    padding: 2px 0px 1px 25px !important;
     column-gap: 9px;
     margin-top:22px;
 }
@@ -330,22 +335,25 @@ input.ng-invalid.ng-touched {
     font-family:'Work Sans', sans-serif;
     font-size: 16px;
     text-align: justify;
+    margin: 20px 23px 10px 23px;
 }
 
 .content-terminos{
-    display: flex; 
-    justify-content: center;
+    display: flex !important; 
+    justify-content: center !important;
 }
 
 .datos{
-    margin: 25px 5px 19px 146px ;
-    font-size: 16px;
+    text-align: center;
+    font-size: 20px;
     font-family:'Work Sans', sans-serif;
+    font-weight: bold;
 }
 
 .checkbox-datos{
     font-family:'Work Sans', sans-serif;
     font-size: 16px;
+    cursor: pointer;
 }
  @media(max-width: 480px) {
      .selectDepar{
@@ -357,7 +365,7 @@ input.ng-invalid.ng-touched {
         width: 330px;
         display: flex;
         margin: 22% auto;
-        padding: 0px 16px;
+        /* padding: 0px 16px; */
    }
 
    .datos{
@@ -370,13 +378,7 @@ input.ng-invalid.ng-touched {
     font-size: 14px;
     margin: 10px;
 }
-.enlace {
-    font-family:'Work Sans', sans-serif;
-    margin: 9px;
-    color: red !important;
-    text-decoration:double !important;
-    
-}
+
 .registre{
     width: 90vw;
 
@@ -401,5 +403,9 @@ input.ng-invalid.ng-touched {
 
 .margin-div{
     margin-left: 0px;
+}
+
+.enlace{
+margin: 13px;
 }
 }
