@@ -52,6 +52,7 @@ export class AppDiagnosticoComponent implements OnInit {
     this.ApiService.getDiagnostico()
     .subscribe((data: any) => {
       this.datos = data;
+      console.log(this.datos)
       this.isDataLoaded = true;
       // this.datos.campos.forEach((campo:any) => {
       //   if(campo.values !== null){
@@ -60,6 +61,7 @@ export class AppDiagnosticoComponent implements OnInit {
       //     this.formParent.addControl(campo.campo_local, new FormControl('', Validators.required))
       //   }
       // });
+
 
       //Validar Radios para habilitar el formulario
       const formControls = {};
@@ -125,7 +127,6 @@ public isFormValid(): boolean {
   if (!this.isDataLoaded) {
     return false;
   }
-
   return Object.values(this.formParent.controls).every(control => control.value !== null);
 }
 
@@ -142,9 +143,8 @@ public isFormValid(): boolean {
     }
   }
 
-  capturarValor(id: string | number,event: any, value: any, iddiagnosticodinamico: any) {
-    const normaValue = JSON.parse(window.localStorage.getItem('norma'));
-    const idn = normaValue[0].id;
+  capturarValor(event: any, value: any ,numeralprincipal: any , numeralEspecifico: any) {
+    const normaValue = localStorage.getItem('idNormaSelected');
 
       // const capturarObservacion = () => {
       //   const idObs = `observacion-${iddiagnosticodinamico}`;
@@ -152,41 +152,50 @@ public isFormValid(): boolean {
       //   const val = valorObs.value
       // };
 
-    const result = this.valoresForm.find((o: any) => o.numeralespecifico === iddiagnosticodinamico);
+    const result = this.valoresForm.find((o: any) => o.numeralespecifico === numeralEspecifico);
     if (result) {
       result.valor = value;
     }else{
       this.valoresForm.push({
         "valor": value,
-        "idnormatecnica": idn,
+        "idnormatecnica": normaValue,
         "idusuario": localStorage.getItem('Id'),
-        "numeralprincipal": iddiagnosticodinamico,
-        "numeralespecifico": iddiagnosticodinamico,
+        "numeralprincipal": numeralprincipal,
+        "numeralespecifico": numeralEspecifico,
+        "observacion": "",
       });
       // capturarObservacion();
     }
   }
 
-  capturarValorObs(i: number, event: Event, idObs: string){
+  capturarValorObs(event: Event,numeralprincipal: any , numeralEspecifico: any){
     this.valorObs = (event.target as HTMLInputElement).value;
+    const normaValue = localStorage.getItem('idNormaSelected');
+    const result = this.valoresForm.find((o: any) => o.numeralespecifico === numeralEspecifico);
+    if (result) {
+      result.observacion = this.valorObs;
+    }else{
+      this.valoresForm.push({
+        "valor": "",
+        "idnormatecnica": normaValue,
+        "idusuario": localStorage.getItem('Id'),
+        "numeralprincipal": numeralprincipal,
+        "numeralespecifico": numeralEspecifico,
+        "observacion": this.valorObs,
+      });
+      // capturarObservacion();
+    }
   }
 
   saveForm(){
-    const observaciones = document.querySelectorAll('.obs');
-    observaciones.forEach((observacion: HTMLTextAreaElement) => {
-      this.valoresObservaciones.push(observacion.value);
-    });
-
-    const radios = document.querySelectorAll('.checkRadio');
-    radios.forEach((rad: HTMLInputElement) => {
-      if (rad.checked) {
-        this.valoresRadios.push((rad.value));
-      }
-    });
-    this.v = this.valoresObservaciones.concat(this.valoresRadios).join(" - ");
     if (this.isFormValid()) {
+      this.ApiService.saveDataDiagnostico(this.valoresForm).subscribe((data: any) => {
+        console.log(data);
+  
+      });
+
       const title = "Registro exitoso";
-      const message = "El registro se ha realizado exitosamente"
+      const message = "Se guardaron los campos correctamente"
       this.Message.showModal(title,message);
     }
     this.router.navigate(['/diagnosticoDoc'])

@@ -1,5 +1,6 @@
 import { Component, OnInit, TemplateRef, ViewChild, ViewContainerRef} from '@angular/core';
 // import { MatTabsModule } from '@angular/material/tabs';
+import { ApiService } from 'src/app/servicios/api/api.service';
 
 @Component({
   selector: 'app-e-matriz-requisitos-legales',
@@ -9,6 +10,8 @@ import { Component, OnInit, TemplateRef, ViewChild, ViewContainerRef} from '@ang
 export class EMatrizRequisitosLegalesComponent implements OnInit{
   @ViewChild('nuevoDiv', {static: true}) nuevoDivRef!: TemplateRef<any>;
   @ViewChild('container', {read: ViewContainerRef}) containerRef!: ViewContainerRef;
+
+  datos: any = [];
 
   detalles: any[] = [];
   showAdd = false;
@@ -29,17 +32,45 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
   tabActual = 'tab1';
   busqueda: string = '';
 
-  constructor() {}
-  ngOnInit() {}
+  constructor(private ApiService: ApiService,) {}
+  ngOnInit() {
+    this.ApiService.getLeyes()
+    .subscribe((data: any) => {
+      this.datos = data;
+      console.log(this.datos)
+    });
+  }
+
+  // getLeyesApi(){
+  //   this.ApiService.getLeyes()
+  //   .subscribe((data: any) => {
+  //     this.datos = data;
+  //     console.log(this.datos)
+  //   });
+  // }
 
   cambiarTab(tab: string) {
     this.tabActual = tab;
   }
   
+
+leyesVisibles: boolean[] = [];
+toggleSectionLey(section, index) {
+  if (section === 'primeraLey') {
+    this.leyesVisibles[index] = !this.leyesVisibles[index];
+  }
+
+  // Cierra el div abierto si se hace clic en otro div
+  if (this.lastVisible && this.lastVisible.section !== section) {
+      if (this.lastVisible.section === 'primeraLey') {
+        this.leyesVisibles[this.lastVisible.index] = false;
+    }
+  }
+  this.lastVisible = { section, index };
+}
+
   toggleSection(section) {
-    if (section === 'primeraLey') {
-      this.primeraLeyVisible = !this.primeraLeyVisible;
-    } else if (section === 'adicionar') {
+  if (section === 'adicionar') {
       this.adicionarVisible = !this.adicionarVisible
     } else if (section === 'divAdd') {
       this.divAddVisible = !this.divAddVisible
@@ -47,9 +78,7 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
 
     // Cierra el div abierto si se hace clic en otro div
     if (this.lastVisible && this.lastVisible !== section) {
-      if (this.lastVisible === 'primeraLey') {
-        this.primeraLeyVisible = false;
-      } else if (section === 'adicionar') {
+  if (section === 'adicionar') {
         this.adicionarVisible = false;
       } else if (section === 'divAdd') {
         this.divAddVisible = false;
@@ -57,6 +86,10 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
     }
 
     this.lastVisible = section;
+  }
+
+  isLeyVisible(index) {
+    return this.leyesVisibles[index];
   }
 
   onSelect(value: string) {

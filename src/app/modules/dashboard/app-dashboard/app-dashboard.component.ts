@@ -55,7 +55,11 @@ export class AppDashboardComponent implements OnInit {
     )
     return menuResult[0];
   }
-
+  changeSelected(evt: any){
+    localStorage.setItem("idNormaSelected",evt.target.options[evt.target.selectedIndex].id);
+    localStorage.setItem("normaSelected",evt.target.value);
+    this.normaSelected = evt.target.value;
+  }
   menuFilter(evt: any) { //redireccionar
       if (this.validateRol(evt)) {// condicional cuando sí tiene acceso
         evt.target.src='../../../../assets/img-dashboard/'+evt.target.alt+'-3.svg';   

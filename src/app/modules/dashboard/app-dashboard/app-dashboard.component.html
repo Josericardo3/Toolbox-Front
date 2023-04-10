@@ -12,11 +12,11 @@
 <div class="container">
  <div class="container-norma" *ngIf="!newUser">
     <div class="norma-opcion">
-      <select  class="select-norma" name="select" *ngIf="arrNormas.length > 0"   >    
+      <select  class="select-norma" name="select" *ngIf="arrNormas.length > 0"(change) = "changeSelected($event)">    
         <option 
-          value="1" 
           *ngFor="let element of arrNormas"
-          id="selectNorma"
+          [value]="element.norma" 
+          [id]="element.id"
           [selected]="element.norma===normaSelected">
           {{element.norma}}
         ​</option>

@@ -108,7 +108,7 @@ h1{
     cursor: pointer;
     position: absolute;
     right: 0;
-    margin: 2vh 3vw 0 0;
+    margin: 1.2vh 3vw 0 0;
   }
 input.ng-invalid.ng-touched {
     border: solid 2px tomato !important;

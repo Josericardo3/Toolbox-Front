@@ -121,22 +121,19 @@ export class ApiService {
     return this.http.get<any>(assign,id)
   }
 
-
   getDiagnostico(): Observable<any> {
-    const normaValue = JSON.parse(window.localStorage.getItem('norma'));
-    const idn = normaValue[0].id;
-    let diagnostico = `${this.apiURL}/api/Diagnostico/Diagnostico/${idn}`
+    const idNorma = JSON.parse(window.localStorage.getItem('idNormaSelected')|| '[]');
+    let diagnostico = `${this.apiURL}/api/Diagnostico/Diagnostico/${idNorma}`
     return this.http.get<any>(diagnostico)
   }
 
   saveDataDiagnostico(request: any): Observable<any[]> {
     const diagnostico = `${this.apiURL}/api/Diagnostico/Diagnosticorespuesta`;
-    const categoriarnt = localStorage.getItem('id');
     const observables = [];
   
     for (let i = 0; i < request.length; i++) {
       const respuesta = {
-        valor: request[i].valor.toString(),
+        valor: request[i].observacion.toString() + " - " + request[i].valor.toString(),
         idnormatecnica: request[i].idnormatecnica,
         idusuario: request[i].idusuario,
         numeralprincipal: request[i].numeralprincipal.toString(),
@@ -172,6 +169,7 @@ export class ApiService {
     let lista = `${this.apiURL}/api/ListaChequeo/ListaChequeo?idnorma=${idn}&idusuariopst=${id}` 
     return this.http.get<any>(lista)
   }
+
   getListaDiagnosticoApi(){
     const id = localStorage.getItem('Id');
     const normaValue = JSON.parse(window.localStorage.getItem('norma'));
@@ -179,11 +177,25 @@ export class ApiService {
     let lista = `${this.apiURL}/api/ListaChequeo/ListaDiagnostico?idnorma=${idn}&idusuariopst=${id}` 
     return this.http.get<any>(lista)
   }
+
   getPlanMejoraApi(){
     const id = localStorage.getItem('Id');
     const normaValue = JSON.parse(window.localStorage.getItem('norma'));
     const idn = normaValue[0].id;
     let lista = `${this.apiURL}/api/PlanMejora/PlanMejora?idnorma=${idn}&idusuariopst=${id}` 
+    return this.http.get<any>(lista)
+  }
+
+  getOrdenCaracterizacion(){
+    // const normaValue = JSON.parse(window.localStorage.getItem('idCategoria'));
+    const normaValue = localStorage.getItem('idCategoria');
+    let lista = `${this.apiURL}/api/Caracterizacion/OrdenCaracterizacion?id=${normaValue}`
+    return this.http.get<any>(lista)
+  }
+
+  //Matriz de Requisitos Legales
+  getLeyes(){
+    let lista = `${this.apiURL}/api/MatrizLegal/MatrizLegal?IdDoc=1`
     return this.http.get<any>(lista)
   }
 

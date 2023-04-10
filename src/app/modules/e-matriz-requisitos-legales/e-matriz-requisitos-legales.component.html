@@ -31,103 +31,18 @@
         <div [ngSwitch]="tabActual" class="contenidoTabs">
           <div *ngSwitchCase="'tab1'">
             <div class="containerTurismo">
-                <div class="div">
-                    <div class="titulo" (click)="toggleSection('primeraLey')" [ngClass]="{'verde': primeraLeyVisible}">
-                        <h3>Ley 300 de 1996</h3>
+                <div class="div" *ngFor="let campo of datos; let i = index">
+                    <div class="titulo" (click)="toggleSectionLey('primeraLey', i)" [ngClass]="{'verde': isLeyVisible(i)}">
+                        <h3>{{ campo.tipO_NORMATIVIDAD }} {{ campo.numero }} de {{ campo.anio }}</h3>
                         <div class="iconos">
-                            <i class="fa-solid" [class.fa-angle-up]="primeraLeyVisible" [class.fa-angle-down]="!primeraLeyVisible"></i>
+                            <i class="fa-solid" [class.fa-angle-up]="isLeyVisible(i)" [class.fa-angle-down]="!isLeyVisible(i)"></i>
                         </div>
                     </div>
-                    <div class="detalle" *ngIf="primeraLeyVisible">
+                    <div class="detalle" *ngIf="isLeyVisible(i)">
                         <h2>Emitida por:</h2>
-                        <p class="parrafo">Por la cual se expide la Ley General de Turismo y se dictan otras disposiciones</p>
+                        <p class="parrafo">{{campo.descripcion}}</p>
                         <h4 style="font-weight: bolder;" class="parrafo">ARTÍCULOS / SECCIONES / REQUISITOS ESPECÍFICOS QUE APLICAN</h4>
-                        <p class="parrafo">TÍTULO VIII. ASPECTOS OPERATIVOS DEL TURISMO. CAPÍTULO I. DEL REGISTRO NACIONAL DE TURISMO. 
-                        Ir al inicio ARTÍCULO 61. REGISTRO NACIONAL DE TURISMO. Artículo modificado por el artículo 142 
-                        del Decreto Ley 2106 de 2019. El nuevo texto es el siguiente: El Ministerio de Comercio, Industria 
-                        y Turismo delegará en las Cámaras de Comercio el Registro Nacional de Turismo, en el cual deberán 
-                        inscribirse todos los prestadores de servicios turísticos contemplados en el artículo 12 de la Ley 
-                        1101 de 2006.</p>
-                        
-                        <div class="containerform">
-                            <div class="subContainerform">
-                                <label for="estadoCumplimiento" class="estado">Estado de cumplimiento</label>
-                                <select name="estadoCumplimiento" id="estadoCumplimiento" class="estadoForm" [(ngModel)]="opcionSeleccionada">
-                                    <option value="" disabled selected hidden>Seleccione una opción</option>
-                                    <option value="Si">Si</option>
-                                    <option value="No">No</option>
-                                    <option value="En proceso">En proceso</option>
-                                    <option value="No aplica">No aplica</option>
-                                </select>
-                            </div>
-                            <div class="subContainerform">
-                                <label for="" class="estado">Responsable de dar cumplimiento</label>
-                                <select name="" id="" class="estadoForm" >
-                                    <option value="0">Seleccione una opción</option>
-                                    <option value="">Responsable de dar cumplimiento</option>
-                                    <option value="">Responsable</option>
-                                </select>
-                            </div>
-                            <div class="subContainerformMain">
-                                <div class="subContainerform" *ngIf="opcionSeleccionada === 'Si'">
-                                    <label for="evidencia" class="estado">Evidencia del cumplimineto</label>
-                                    <input type="text" id="evidencia" class="estadoForm">
-                                </div>
-                                <div class="subContainerform" *ngIf="opcionSeleccionada === 'No' || opcionSeleccionada === 'En proceso'">
-                                    <label for="observaciones" class="estado">Observaciones / Incumplimiento</label>
-                                    <input type="text" id="observaciones" class="estadoForm">
-                                </div>
-                            </div>
-                        </div>  
-                        <div class="planIntervencion" *ngIf="opcionSeleccionada === 'No' || opcionSeleccionada === 'En proceso'">
-                            <h3 class="plan">PLAN DE INTERVENCIÓN</h3>
-                            <div class="containerformB" >
-                            
-                                <div class="subContainerformB">
-                                    <label for="" class="estado">Acciones a realizar</label>
-                                    <textarea name="" id="acciones" placeholder="Acciones" class="estadoFormB"></textarea>
-                                </div>
-                                <div class="subContainerformB">
-                                    <label for="" class="estado">Responsable de dar cumplimiento</label>
-                                    <select name="" id="" class="estadoFormB">
-                                        <option value="0">Seleccione una opción</option>
-                                        <option value="">Responsable de dar cumplimiento</option>
-                                        <option value="">Responsable</option>
-                                    </select>
-                                </div>
-                                <div class="subContainerformB">
-                                    <label for="" class="estado">Fecha para la ejecución</label>
-                                    <input type="date" class="estadoFormB">
-                                </div>
-                                <div class="subContainerformB">
-                                    <label for="" class="estado">Estado</label>
-                                    <select name="" id="" class="estadoFormB">
-                                        <option value="0">Seleccione una opción</option>
-                                        <option value="Abierto">Abierto</option>
-                                        <option value="Cerrado">Cerrado</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>            
-                    </div>
-                </div>
-                <div class="div">
-                    <div class="titulo" (click)="toggleSection('primeraLey')" [ngClass]="{'verde': primeraLeyVisible}">
-                        <h3>Decreto 400 de 1997</h3>
-                        <div class="iconos">
-                            <i class="fa-solid" [class.fa-angle-up]="primeraLeyVisible" [class.fa-angle-down]="!primeraLeyVisible"></i>
-                        </div>
-                    </div>
-                    <div class="detalle" *ngIf="primeraLeyVisible">
-                        <h2>Emitida por:</h2>
-                        <p class="parrafo">Por la cual se expide la Ley General de Turismo y se dictan otras disposiciones</p>
-                        <h4 style="font-weight: bolder;" class="parrafo">ARTÍCULOS / SECCIONES / REQUISITOS ESPECÍFICOS QUE APLICAN</h4>
-                        <p class="parrafo">TÍTULO VIII. ASPECTOS OPERATIVOS DEL TURISMO. CAPÍTULO I. DEL REGISTRO NACIONAL DE TURISMO. 
-                        Ir al inicio ARTÍCULO 61. REGISTRO NACIONAL DE TURISMO. Artículo modificado por el artículo 142 
-                        del Decreto Ley 2106 de 2019. El nuevo texto es el siguiente: El Ministerio de Comercio, Industria 
-                        y Turismo delegará en las Cámaras de Comercio el Registro Nacional de Turismo, en el cual deberán 
-                        inscribirse todos los prestadores de servicios turísticos contemplados en el artículo 12 de la Ley 
-                        1101 de 2006.</p>
+                        <p class="parrafo">{{campo.docS_ESPECIFICOS}}</p>
                         
                         <div class="containerform">
                             <div class="subContainerform">

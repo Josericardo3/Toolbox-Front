@@ -93,11 +93,13 @@ div.radio{
   font-family: 'Work Sans', sans-serif;
   font-size: 16px;
   width: 60vw;
+  /* width: 90%; */
   height: 20px !important;
   margin: 10px 5px 10px 0 !important;
   padding: 3px;
   }
-  input[type=checkbox] {
+  input[type=checkbox]
+  {
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
@@ -111,12 +113,13 @@ div.radio{
     height: 25px;
     outline: none;
     margin: 10px 10px 10px 0 !important;
-}
+  }
   input[type=checkbox].label
   {
     margin: 40px 10px 10px 0 !important;
   }
-  div.check input[type=checkbox]:checked::before {
+  div.check input[type=checkbox]:checked::before
+  {
     content: "✔";
     font-size: 18px;
     color: #068460;
@@ -124,7 +127,7 @@ div.radio{
     top: 10px;
     left: 11px;
     transform: translate(-51%, -52%);
-}
+  }
   div.radio input[type=radio] {
     position: relative;
     width: 20px;
@@ -142,16 +145,19 @@ div.radio{
     content: '';
     position: absolute;
     background-color: white;
-    top: 4.5px;
-    left: 4.5px;
-    width: 9px;
-    height: 9px;
+    /* top: 4px;
+    left: 4px; */
+    width: 12px;
+    height: 12px;
     border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
   div.radio input[type=radio]:checked:before {
     background-color: #068460;
   }
-  div.radio input[type=radio]:checked:after {
+  /* div.radio input[type=radio]:checked:after {
     content: "●";
     font-size: 1px;
     color: #068460;
@@ -159,7 +165,7 @@ div.radio{
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-  }
+  } */
 .btn{
   margin: 6vh 3vw;
   height: 35px;
@@ -192,6 +198,7 @@ input[type=number] {
   font-family: 'Work Sans', sans-serif;
   font-size: 14px;
   font-weight: bold;
+  cursor: pointer;
 }
 
 .labelX{
@@ -203,6 +210,13 @@ input[type=number] {
 .selectedOption{
   margin: 0 0 1.5vh 0;
   width: 60vw;
+}
+
+.completarCamposLabel{
+  color: tomato;
+  font-family: 'Work Sans', sans-serif;
+  font-size: 17px;
+  margin: 10px 0 5px 0;
 }
 @media (max-width: 900px) {
   .containerRadio {

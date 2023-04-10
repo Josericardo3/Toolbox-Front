@@ -62,10 +62,11 @@ export class AppDiagnosticoDocComponent implements OnInit {
   }
 
   getListaChequeo(){
-    this.http.get('https://www.toolbox.somee.com/api/ListaChequeo/ListaChequeo?idnorma=5&idusuariopst=15')
+    var normaValue = window.localStorage.getItem('idNormaSelected');
+    var idUsuario = window.localStorage.getItem('Id');
+    this.http.get(`https://www.toolbox.somee.com/api/ListaChequeo/ListaChequeo?idnorma=${normaValue}&idusuariopst=${idUsuario}`)
     // this.ApiService.getListaChequeoApi()
     .subscribe((data: any) => {
-      debugger
       this.datosL = data;
       this.nombrePst = this.datosL.usuario?.nombrePst;
       this.nit = this.datosL.usuario?.nit;
@@ -80,10 +81,11 @@ export class AppDiagnosticoDocComponent implements OnInit {
   }
 
   getListaDiagnostico(){
-    this.http.get('https://www.toolbox.somee.com/api/ListaChequeo/ListaDiagnostico?idnorma=5&idusuariopst=15')
+    var normaValue = window.localStorage.getItem('idNormaSelected');
+    var idUsuario = window.localStorage.getItem('Id');
+    this.http.get(`https://www.toolbox.somee.com/api/ListaChequeo/ListaDiagnostico?idnorma=${normaValue}&idusuariopst=${idUsuario}`)
     // this.ApiService.getListaDiagnosticoApi()
     .subscribe((data: any) => {
-      debugger
       this.datosD = data;
       this.nombrePstD = this.datosD.usuario?.nombrePst;
       this.nitD = this.datosD.usuario?.nit;
@@ -98,7 +100,9 @@ export class AppDiagnosticoDocComponent implements OnInit {
   }
 
   getListaPlanMejora(){
-    this.http.get('https://www.toolbox.somee.com/api/PlanMejora/PlanMejora?idnorma=5&idusuariopst=15')
+    var normaValue = window.localStorage.getItem('idNormaSelected');
+    var idUsuario = window.localStorage.getItem('Id');
+    this.http.get(`https://www.toolbox.somee.com/api/PlanMejora/PlanMejora?idnorma=${normaValue}&idusuariopst=${idUsuario}`)
     // this.ApiService.getPlanMejoraApi()
     .subscribe((data: any) => {
       this.datosP = data;

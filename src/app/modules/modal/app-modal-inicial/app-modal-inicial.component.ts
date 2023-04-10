@@ -18,7 +18,8 @@ data= JSON.parse(localStorage.getItem('norma') || '');
   ngOnInit(): void {
   }
 
-  linkToDashboard(evt:any){
+  linkToDashboard(evt:any, idNorma:any){
+    localStorage.setItem("idNormaSelected", idNorma);
     localStorage.setItem("normaSelected", evt.target.id);
     setTimeout(() => {
       this.router.navigate(['/dashboard']); 

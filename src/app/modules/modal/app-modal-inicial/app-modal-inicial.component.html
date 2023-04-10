@@ -21,7 +21,7 @@
                   *ngFor="let element of data"
                   id="{{ element.norma }}"
                   style="width: 350px; margin: 6px 6px 6px 6px"
-                  (click)="linkToDashboard($event)"
+                  (click)="linkToDashboard($event,element.id)"
                 >
                   {{ element.norma }}
                 </th>

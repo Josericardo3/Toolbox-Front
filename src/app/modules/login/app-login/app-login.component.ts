@@ -25,6 +25,7 @@ import { ModalService } from "src/app/messagemodal/messagemodal.component.servic
 })
 export class AppLoginComponent implements OnInit {
   arrResult: any;
+  arrNormas: any;
   usuario = { registroNacionalDeTurismo: "", pass: "", correo: "" };
   public loginForm!: FormGroup;
   errorMessage!: string;
@@ -42,6 +43,8 @@ export class AppLoginComponent implements OnInit {
   {}
 
   ngOnInit(): void {
+    
+    localStorage.clear();
     //limpia el storage
     localStorage.removeItem("normaSelected");
     this.loginForm = this.formBuilder.group({
@@ -100,6 +103,15 @@ export class AppLoginComponent implements OnInit {
         localStorage.setItem("refresh", data.TokenRefresco);
         localStorage.setItem("idGrupo", data.Grupo[0].item);
         localStorage.setItem("Id", data.IdUsuarioPst);
+        
+        this.ApiService.getNorma(data.IdUsuarioPst).subscribe(
+          (categ: any) => {
+            this.arrNormas = categ;
+            localStorage.setItem(
+              "idCategoria",
+              JSON.stringify(this.arrNormas[0].idCategoriarnt));
+        });
+
         if (data.Grupo[0].item === 1) {
           this.ApiService.validateCaracterizacion(data.IdUsuarioPst).subscribe(
             (response) => {
@@ -116,10 +128,12 @@ export class AppLoginComponent implements OnInit {
                         "norma",
                         JSON.stringify(this.arrResult)
                       );
+                      //No funciona
+                      /*
                       const modalInicial = document.querySelector(
                         "#modal-inicial"
                       ) as HTMLElement;
-                      modalInicial.style.display = "block";
+                      modalInicial.style.display = "block";*/
                     } else {
                       this.arrResult = data;
                       localStorage.setItem(
@@ -127,6 +141,7 @@ export class AppLoginComponent implements OnInit {
                         JSON.stringify(this.arrResult)
                       );
                       localStorage.setItem("normaSelected", data[0].norma);
+                      localStorage.setItem("idNormaSelected", data[0].id);
                       this.router.navigate(["/dashboard"]);
                     }
                   }
