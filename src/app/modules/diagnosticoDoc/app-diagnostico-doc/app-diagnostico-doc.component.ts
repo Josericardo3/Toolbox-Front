@@ -3,17 +3,23 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { head } from 'lodash';
 import { ApiService } from 'src/app/servicios/api/api.service';
-import pdfMake from 'pdfmake/build/pdfmake';
-import pdfFonts from 'pdfmake/build/vfs_fonts';
+import * as pdfMake from 'pdfmake/build/pdfmake';
+import * as pdfFonts from 'pdfmake/build/vfs_fonts';
 import { HttpClient } from '@angular/common/http';
-pdfMake.vfs = pdfFonts.pdfMake.vfs;
 // import Swal from 'sweetalert2';
-import { ModalService } from 'src/app/messagemodal/messagemodal.component.service' 
+import { ModalService } from 'src/app/messagemodal/messagemodal.component.service'
+import * as Chart from 'chart.js';
+import * as pdfMakeChart from 'pdfmake/build/vfs_fonts';
+(pdfMake as any).vfs = pdfFonts.pdfMake.vfs;
+// import * as pdfPieChart from 'pdfmake-extensions/pdfmake.js';
+// import * as pdfMakeBarcodes from 'pdfmake-extensions/pdfmake.js';
+// pdfMake.registerModule(pdfPieChart);
+// pdfMake.registerModule(pdfMakeBarcodes);
 
 @Component({
   selector: 'app-app-diagnostico-doc',
   templateUrl: './app-diagnostico-doc.component.html',
-  styleUrls: ['./app-diagnostico-doc.component.css']
+  styleUrls: ['./app-diagnostico-doc.component.css'], 
 })
 export class AppDiagnosticoDocComponent implements OnInit {
   //Lista diagnóstico
@@ -276,26 +282,22 @@ export class AppDiagnosticoDocComponent implements OnInit {
         {}
       ]);
       });
+   
+
       pdfDefinition.content[5].table.body.push([
-        {text: 'GRÁFICO CIRCULAR', colSpan: 5, alignment: 'center'},
+        {text: 'gc', colSpan: 5, alignment: 'center'},
         {},
         {},
         {},              
         {}
        ]);
+      
     });
     pdfMake.createPdf(pdfDefinition).download('Informe_de_diagnóstico.pdf');
-    // Swal.fire({
-    //   position: 'center',
-    //   icon: 'success',
-    //   html: '<h2 style="font-family: Montserrat, sans-serif">Descarga exitosa</h2>',
-    //   showConfirmButton: false,
-    //   timer: 5000,
-    // })
     const title = "Se descargó correctamente";
     const message = "La descarga se ha realizado exitosamente"
     this.Message.showModal(title,message);
-  }
+  }  
 
   generateListaChequeo(){
     const pdfDefinition: any = {

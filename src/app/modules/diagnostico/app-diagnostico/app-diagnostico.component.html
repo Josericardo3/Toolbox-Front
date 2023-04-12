@@ -9,7 +9,7 @@
         <h3>{{campo.tituloprincipal}}</h3>
         <div *ngFor="let subcampo of campo.listacampos; let i = index" class="formDiagnostico">
           <h2>{{subcampo.titulo}}</h2>  
-          <!-- <label>Numero principal</label>
+          <label>Numero principal</label>
           <input type="text" [value]="subcampo.numeralprincipal" disabled="true" [id]="'requisito-' + i">
           <label>Numero específico</label>
           <input type="text" [value]="subcampo.numeralespecifico" disabled="true" [id]="'requisito-' + i">
@@ -18,7 +18,7 @@
            <label>*Requisito</label>
           <textarea type="text" [value]="subcampo.requisito" style="height: 200px" disabled="true" [id]="'requisito-' + i"></textarea>
           <label>*Posible evidencia</label>
-          <textarea type="text" [value]="subcampo.nombre_evidencia" style="height: 200px" disabled="true" [id]="'requisito-' + i"></textarea> -->
+          <textarea type="text" [value]="subcampo.nombre_evidencia" style="height: 200px" disabled="true" [id]="'requisito-' + i"></textarea>
           <label>Escoge una de las siguientes opciones<span style="color: red;">*</span></label>
           <div class="cont">
             <div *ngFor="let opcion of subcampo.desplegable" class="containerRadio">
@@ -26,7 +26,7 @@
               <div class="radio">
                 <input type="radio" [value]="opcion.item" [name]="'radio' + j + '-' + i" (change)="capturarValor($event, opcion.item, subcampo.numeralprincipal , subcampo.numeralespecifico)" 
                 (click)="valorSeleccionado = opcion.item" [id]="subcampo.numeralespecifico" (change)="opcionSeleccionada = true"
-                [formControlName]="'radio' + j + '-' + i"> {{opcion.valor}}
+                [formControlName]="'radio' + j + '-' + i"> {{opcion.valor}} {{opcion.item}}
               </div>
             </div>
           </div>
