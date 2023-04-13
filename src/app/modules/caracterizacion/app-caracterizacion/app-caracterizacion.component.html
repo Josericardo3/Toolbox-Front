@@ -5,8 +5,8 @@
   <p>Todos los campos con el asterisco (*) son obligatorios</p>
     <div *ngFor="let campo of preguntasOrdenadas; let i = index" class="caracterizacion">
       <!-- <div *ngFor="let campo of datos.campos; let i = index" class="caracterizacion"> -->
-        <div *ngIf="campo.mensaje != 'dependencia' && campo.nombre != '¿Cuáles servicios de aventura presta?'">
-          <label class="labelAll">{{ campo.nombre }} 
+        <div *ngIf="campo.mensaje != 'dependencia' && campo.nombre !== '¿Cuáles servicios de aventura presta?'">
+          <label class="labelAll">{{ campo.nombre }}
             <span *ngIf="campo.requerido == true && campo.values == null" style="color: red;">*</span>
           </label>
         </div>
@@ -15,13 +15,13 @@
           <div *ngIf="campo.mensaje != 'dependencia'">
               <input *ngSwitchCase="'int'" type="number" [formControlName]="campo.nombre" class="campo-nombre"
               [id]="i" (ngModelChange)="capturarValor(i, $event, campo.idcaracterizaciondinamica)" appNumeros 
-              [required]="campo.requerido ? true : false">
+              [required]="campo.requerido">
 
               <input *ngSwitchCase="'local_reference_id'" type="text" [formControlName]="campo.nombre" 
               [id]="i" (ngModelChange)="capturarValor(i, $event, campo.idcaracterizaciondinamica)" [required]="campo.requerido ? true : false">
-
+              
               <input *ngSwitchCase="'string'" type="text" [formControlName]="campo.nombre" [id]="i" 
-              (ngModelChange)="capturarValor(i, $event, campo.idcaracterizaciondinamica)" [required]="campo.requerido ? true : false">
+              (ngModelChange)="capturarValor(i, $event, campo.idcaracterizaciondinamica)" [required]="campo.requerido">
           </div>
          
           <div *ngSwitchCase="'option'">
@@ -44,13 +44,79 @@
             </ng-template>
           </div>
 
-          <select *ngSwitchCase="'norma'" [formControlName]="campo.nombre" 
-          [id]="i" (ngModelChange)="capturarValor(i, $event, campo.idcaracterizaciondinamica)" [required]="campo.requerido ? true : false">
-            <option *ngFor="let opcion of dataNorma" [value]="opcion.id" 
-            [hidden]="!opcionesNorma.includes(opcion.id)">{{ opcion.norma }}</option>
-          </select>
+          <!-- <div *ngSwitchCase="'norma'"> -->
+            <!-- <div *ngIf="campo.ffcontext === 'p23' && campo.values === 'AGENCIAS DE VIAJES '; else elseBlock"> -->
+              <!-- <div *ngSwitchCase="'norma'">
+                <select [formControlName]="campo.nombre" (ngModelChange)="capturarValor(i, $event, campo.idcaracterizaciondinamica)"
+                [id]="i"  [required]="campo.requerido ? true : false">
+                  <option *ngFor="let opcion of dataNorma" [value]="opcion.id" [hidden]="!showNorma(opcion)">
+                  {{ opcion.norma }} </option>
+                </select>
+              </div>          -->
+
+
+              <!-- <div *ngIf="campo.values === 'AGENCIAS DE VIAJES '">
+                <h1>hola</h1>
+                
+                  <select>
+                    <option>
+                      1
+                    </option>
+                  </select>
+                
+              </div> -->
+              <!-- <div *ngSwitchCase="'norma'">
+                <div *ngIf="campo.values === 'AGENCIAS DE VIAJES '; else elseBlock">
+                  <select [formControlName]="campo.nombre" [id]="i" [required]="campo.requerido ? true : false">
+                    <option *ngFor="let opcion of dataNorma" [value]="opcion.id" [hidden]="!opcionesNorma.includes(opcion.id)">
+                      {{ opcion.norma }}
+                    </option>
+                  </select>
+                </div>
+                <ng-template #elseBlock>
+                  <select [formControlName]="campo.nombre" [id]="i" [required]="campo.requerido ? true : false">
+                    <option *ngFor="let opcion of dataNorma" [value]="opcion.id" >
+                      {{ opcion.norma }}
+                    </option>
+                  </select>
+                </ng-template>
+              </div> -->
+              
+              
+
+
+
+            <!-- </div> -->
+            <!-- <ng-template #elseBlock>
+              <div *ngSwitchCase="'norma'">
+                <select [formControlName]="campo.nombre" (ngModelChange)="capturarValor(i, $event, campo.idcaracterizaciondinamica)"
+                [id]="i"  [required]="campo.requerido ? true : false">
+                  <option *ngFor="let opcion of dataNorma" [value]="opcion.id">{{ opcion.norma }}</option>
+                </select>
+              </div>
+            </ng-template> -->
+          <!-- </div> -->
+          <div *ngIf="categoriaRNTValues && categoriaRNTValues.includes('AGENCIAS DE VIAJES ')">
+            <select *ngSwitchCase="'norma'" [formControlName]="campo.nombre" 
+            [id]="i" (ngModelChange)="capturarValor(i, $event, campo.idcaracterizaciondinamica)" [required]="campo.requerido ? true : false">
+              <option *ngFor="let opcion of dataNorma" [value]="opcion.id" 
+              [hidden]="!opcionesNorma.includes(opcion.id)" >{{ opcion.norma }}</option>
+            </select>
+          </div>
+          <div *ngIf="categoriaRNTValues && !categoriaRNTValues.includes('AGENCIAS DE VIAJES ')">
+            <select *ngSwitchCase="'norma'" [formControlName]="campo.nombre" 
+            [id]="i" (ngModelChange)="capturarValor(i, $event, campo.idcaracterizaciondinamica)" [required]="campo.requerido ? true : false">
+              <option *ngFor="let opcion of dataNorma" [value]="opcion.id" 
+              >{{ opcion.norma }}</option>
+            </select>
+          </div>
+            
+          
+          <!-- <div *ngIf="campo.nombre == '¿Presta servicios de aventura?'"> -->
+            
+          <!-- </div> -->
          
-          <div *ngIf="campo.mensaje != 'dependencia' && campo.nombre != '¿Cuáles servicios de aventura presta?'">
+          <div *ngIf="campo.mensaje != 'dependencia' && campo.nombre !== '¿Cuáles servicios de aventura presta?'">
             <div *ngSwitchCase="'checkbox'" class="containerCheck">
               <div *ngFor="let opcion of campo.desplegable" class="check"> 
                 <input type="checkbox" [formControlName]="campo.nombre" [value]="opcion.id" [required]="campo.requerido ? true : false"
@@ -58,7 +124,7 @@
                 [id]="i" (ngModelChange)="capturarValor(i, $event, campo.idcaracterizaciondinamica)">           
                 {{opcion.nombre}}
                 <div>
-                  <input type="text" *ngIf="opcion.mostrarInput && opcion.nombre === 'OTROS'" class="inputContainer" [required]="campo.requerido ? true : false"
+                  <input type="text" *ngIf="opcion.mostrarInput && opcion.nombre === 'OTROS'" class="inputContainer"
                   placeholder="Especifica otro" [id]="i" (ngModelChange)="capturarValor(i, $event, campo.idcaracterizaciondinamica)">
                 </div>
               </div>
@@ -70,23 +136,25 @@
               <div *ngIf="campo.nombre === 'Cuenta con líder de sostenibilidad   (Si / No)'; else elseRadio" class="radio">
                 <input type="radio" [formControlName]="campo.nombre" [value]="opcion.id" [id]="i"   
                 (change)="showSostenibilidad = (opcion.nombre === 'SI')" [required]="campo.requerido ? true : false"         
-                (ngModelChange)="capturarValor(i, $event, campo.idcaracterizaciondinamica)">              
-                {{opcion.nombre}}
+                (ngModelChange)="capturarValor(i, $event, campo.idcaracterizaciondinamica)"> {{opcion.nombre}}
               </div>
               <ng-template #elseRadio>
-                <input type="radio" [formControlName]="campo.nombre" [value]="opcion.id" [id]="i"
-                (change)="showDependency = opcion.nombre === 'SI'" 
-                (change)="onChangeAventuraSeleccionada(opcion.nombre === 'SI')"                 
-                (ngModelChange)="capturarValor(i, $event, campo.idcaracterizaciondinamica)"
-                [required]="campo.requerido ? true : false">  
-                <!-- (change)="onChangeRadio(opcion, i)" -->
-                <!-- (change)="onChangeRadio({nombre: 'SI'}, i)"    -->
-                <!-- (ngModelChange)="capturarValorSostenibilidad(i, $event, campo.idcaracterizaciondinamica)" -->
-                <!-- (change)="aventura = true" -->
-                <!-- (change)="showPrestaServiciosAventura = opcion.nombre === 'SI'" -->
-                <!-- (change)="showSostenibilidad = opcion.nombre === 'SI'" -->
-                <!-- (change)="showSostenibilidad = (opcion.nombre === 'SI' && campo.nombre === 'Cuenta con líder de sostenibilidad   (Si / No)')" -->              
-                {{opcion.nombre}}
+                 <div *ngIf="campo.nombre === '¿Presta servicios de aventura?'; else elseBlock2" class="radio">
+                  <input type="radio" [formControlName]="campo.nombre" [value]="opcion.id" [id]="i"   
+                  (change)="showPrestaServiciosAventura = (opcion.nombre === 'SI')" 
+                  (change)="onChangeAventuraSeleccionada(opcion.nombre === 'SI')"
+                  [required]="campo.requerido ? true : false"         
+                  (ngModelChange)="capturarValor(i, $event, campo.idcaracterizaciondinamica)"> {{opcion.nombre}}
+                </div>
+                <ng-template #elseBlock2>
+                  <input type="radio" [formControlName]="campo.nombre" [value]="opcion.id" [id]="i"
+                  (change)="showDependency = opcion.nombre === 'SI'"               
+                  (ngModelChange)="capturarValor(i, $event, campo.idcaracterizaciondinamica)"
+                  [required]="campo.requerido ? true : false"> {{opcion.nombre}}
+                  <!-- (change)="onChangeRadio({nombre: 'SI'}, i)"    -->                
+                  <!-- (change)="showSostenibilidad = opcion.nombre === 'SI'" -->
+                  <!-- (change)="showSostenibilidad = (opcion.nombre === 'SI' && campo.nombre === 'Cuenta con líder de sostenibilidad   (Si / No)')" --> 
+                </ng-template>             
               </ng-template>
             </div>
           </div>
@@ -94,30 +162,26 @@
           <div *ngIf="showDependency && campo.mensaje === 'dependencia' && hasDepency(campo.dependiente)">
             <div *ngFor="let item of campo.desplegable">
               <input *ngSwitchCase="'string'" type="text" [formControlName]="campo.nombre" [value]="item.nombre"
-               [id]="i" (ngModelChange)="capturarValor(i, $event, campo.idcaracterizaciondinamica)" [required]="campo.requerido ? true : false">
+              [id]="i" (ngModelChange)="capturarValor(i, $event, campo.idcaracterizaciondinamica)">
             </div>
             <div *ngSwitchCase="'checkbox'" class="containerCheck">
               <label class="labelDependency">{{ campo.nombre }} 
                 <span *ngIf="campo.requerido == true && campo.values == null" style="color: red;">*</span>
               </label>
               <div *ngFor="let opcion of campo.desplegable" class="check"> 
-                <input type="checkbox" [value]="opcion.id" class="checkbox" 
+                <input type="checkbox" [value]="opcion.id" class="checkbox" [formControlName]="campo.nombre"
                 (change)="opcion.mostrarInput = opcion.nombre === 'OTROS'? !opcion.mostrarInput : false" 
-                [id]="i" (ngModelChange)="capturarValor(i, $event, campo.idcaracterizaciondinamica)" [required]="campo.requerido ? true : false">           
+                [id]="i" (ngModelChange)="capturarValor(i, $event, campo.idcaracterizaciondinamica)"
+                [required]="campo.requerido ? true : false">           
                 {{opcion.nombre}}
                 <div>
                   <input type="text" *ngIf="opcion.mostrarInput && opcion.nombre === 'OTROS'" class="inputContainer" 
-                  placeholder="Especifica otro" [id]="i" [required]="campo.requerido ? true : false"
-                  (ngModelChange)="capturarValor(i, $event, campo.idcaracterizaciondinamica)">
+                  placeholder="Especifica otro" [id]="i" (ngModelChange)="capturarValor(i, $event, campo.idcaracterizaciondinamica)">
                 </div>
               </div>
             </div>
           </div>   
-          <!-- <div [innerHTML]="generarTemplate(campo, i)"></div> -->
-          <!-- <div *ngIf="showSostenibilidad">
-            {{ templateGenerado }}
-          </div> -->
-          
+
           <div *ngIf="showSostenibilidad && campo.mensaje === 'dependencia'">
               <label class="labelDependency">{{ campo.nombre }} </label>
               <input *ngSwitchCase="'string'" type="text" [formControlName]="campo.nombre"
@@ -129,13 +193,17 @@
               <input *ngSwitchCase="'local_reference_id'" type="text" [formControlName]="campo.nombre" 
               [id]="i" (ngModelChange)="capturarValor(i, $event, campo.idcaracterizaciondinamica)" [required]="campo.requerido ? true : false">
           </div>
-          <!-- <div *ngIf="showPrestaServiciosAventura && campo.nombre === '¿Cuáles servicios de aventura presta?'">
-            <label class="labelDependency">{{ campo.nombre }} </label>
+
+          <div *ngIf="showPrestaServiciosAventura && campo.mensaje === 'dependencia'" >
             <div *ngSwitchCase="'checkbox'" class="containerCheck">
+              <label class="labelDependency">{{ campo.nombre }} 
+                <span *ngIf="campo.requerido == true && campo.values == null" style="color: red;">*</span>
+              </label>
               <div *ngFor="let opcion of campo.desplegable" class="check"> 
                 <input type="checkbox" [formControlName]="campo.nombre" [value]="opcion.id" 
                 class="checkbox" (change)="opcion.mostrarInput = opcion.nombre === 'OTROS'? !opcion.mostrarInput : false"
-                [id]="i" (ngModelChange)="capturarValor(i, $event, campo.idcaracterizaciondinamica)">           
+                [id]="i" (ngModelChange)="capturarValor(i, $event, campo.idcaracterizaciondinamica)"
+                [required]="campo.requerido ? true : false">           
                 {{opcion.nombre}}
                 <div>
                   <input type="text" *ngIf="opcion.mostrarInput && opcion.nombre === 'OTROS'" class="inputContainer" 
@@ -143,7 +211,7 @@
                 </div>
               </div>
             </div>
-          </div> -->
+          </div>
         </div>                
     </div>
     <div *ngIf="mostrarMensaje && !formParent.valid" class="completarCamposLabel">

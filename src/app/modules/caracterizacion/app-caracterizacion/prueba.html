@@ -26,47 +26,160 @@
 </form>
 
 
-<div class="div">
-  <div class="titulo" (click)="toggleSection('contexts')" [ngClass]="{'verde': contextsVisible}">
-      <h3>Ley 300 de 1996</h3>
-  </div>
-  <div class="detalle" *ngIf="contextsVisible">
-      <h2>Emitida por:</h2>
-      <p>Por la cual se expide la Ley General de Turismo y se dictan otras disposiciones</p>
-      <h4 style="font-weight: bolder;">ARTÍCULOS / SECCIONES / REQUISITOS ESPECÍFICOS QUE APLICAN</h4>
-      <p>TÍTULO VIII. ASPECTOS OPERATIVOS DEL TURISMO. CAPÍTULO I. DEL REGISTRO NACIONAL DE TURISMO. 
-      Ir al inicio ARTÍCULO 61. REGISTRO NACIONAL DE TURISMO. Artículo modificado por el artículo 142 
-      del Decreto Ley 2106 de 2019. El nuevo texto es el siguiente: El Ministerio de Comercio, Industria 
-      y Turismo delegará en las Cámaras de Comercio el Registro Nacional de Turismo, en el cual deberán 
-      inscribirse todos los prestadores de servicios turísticos contemplados en el artículo 12 de la Ley 
-      1101 de 2006.</p>
-  </div>
+
+<div class = "cointainer">
+  <app-app-header></app-app-header>
+<form [formGroup]="formParent" class="controllerCaracterizacion" (ngSubmit)="saveForm()">
+  <h1>FORMULARIO DE CARACTERIZACIÓN DE {{ categoriaRNTValues }}</h1>
+  <p>Todos los campos con el asterisco (*) son obligatorios</p>
+    <!-- <div *ngFor="let campo of preguntasOrdenadas; let i = index" class="caracterizacion"> -->
+      <div *ngFor="let campo of datos.campos; let i = index" class="caracterizacion">
+        <div *ngIf="campo.mensaje != 'dependencia'">
+          <label class="labelAll">{{ campo.nombre }} 
+            <span *ngIf="campo.requerido == true && campo.values == null" style="color: red;">*</span>
+          </label>
+        </div>       
+        <div [ngSwitch]="campo.tipodedato">
+          <!-- {{campo.nombre | json}} --> <!-- {{campo.ffcontext | json}} -->
+          <div *ngIf="campo.mensaje != 'dependencia'">
+             <input *ngSwitchCase="'int'" type="number" [formControlName]="campo.nombre" class="campo-nombre"
+              [id]="i" (ngModelChange)="capturarValor(i, $event, campo.idcaracterizaciondinamica)" appNumeros>
+
+                <input *ngSwitchCase="'local_reference_id'" type="text" [formControlName]="campo.nombre" 
+              [id]="i" (ngModelChange)="capturarValor(i, $event, campo.idcaracterizaciondinamica)">
+
+              <input *ngSwitchCase="'string'" type="text" [formControlName]="campo.nombre" 
+              [id]="i" (ngModelChange)="capturarValor(i, $event, campo.idcaracterizaciondinamica)">
+          </div>
+         
+          <div *ngSwitchCase="'option'">
+            <div *ngIf="campo.mensaje === 'municipios'; else elseBlock"> 
+              <select [formControlName]="campo.nombre" [id]="i" (ngModelChange)="capturarValor(i, $event, campo.idcaracterizaciondinamica)"
+              [(ngModel)]="selectedOption" (change)="printSelectedOption()">
+                <option *ngFor="let municipio of municipios" [value]="municipio.nom_mpio">{{municipio.nom_mpio}}</option>
+              </select>
+              <div class="selectedOption">
+                <label class="labelAll" *ngFor="let option of selectedOptions; let i = index" class="labelX">{{ option }} 
+                  <span><button class="x" (click)="selectedOptions.splice(i, 1)">X</button></span>
+                </label>
+              </div>
+            </div> 
+            <ng-template #elseBlock>
+              <select [formControlName]="campo.nombre" id="id-del-select" 
+            [id]="i" (ngModelChange)="capturarValor(i, $event, campo.idcaracterizaciondinamica)">
+                <option *ngFor="let opcion of campo.desplegable" [value]="opcion.id">{{opcion.nombre}}</option>
+            </select>
+            </ng-template>
+          </div> 
+
+          <select *ngSwitchCase="'norma'" [formControlName]="campo.nombre" 
+          [id]="i" (ngModelChange)="capturarValor(i, $event, campo.idcaracterizaciondinamica)">
+            <option *ngFor="let opcion of dataNorma" [value]="opcion.id" 
+            [hidden]="!opcionesNorma.includes(opcion.id)" [hidden]="!aventura">{{ opcion.norma }}</option>
+          </select>
+
+          <div *ngIf="campo.mensaje != 'dependencia' && campo.nombre != '¿Cuáles servicios de aventura presta?'">
+            <div *ngSwitchCase="'checkbox'" class="containerCheck">
+              <div *ngFor="let opcion of campo.desplegable" class="check"> 
+                <input type="checkbox" [formControlName]="campo.nombre" [value]="opcion.id" 
+                class="checkbox" (change)="opcion.mostrarInput = opcion.nombre === 'OTROS'? !opcion.mostrarInput : false"
+                [id]="i" (ngModelChange)="capturarValor(i, $event, campo.idcaracterizaciondinamica)">           
+                {{opcion.nombre}}
+                <div>
+                  <input type="text" *ngIf="opcion.mostrarInput && opcion.nombre === 'OTROS'" class="inputContainer" 
+                  placeholder="Especifica otro" [id]="i" (ngModelChange)="capturarValor(i, $event, campo.idcaracterizaciondinamica)">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div *ngSwitchCase="'radio'" class="containerRadio">
+            <div *ngFor="let opcion of campo.desplegable" class="radio">
+              <input type="radio" [formControlName]="campo.nombre" [value]="opcion.id" 
+              (change)="showDependency = opcion.nombre === 'SI'"
+              (change)="onChangeAventuraSeleccionada(opcion.nombre === 'SI')"
+              (change)="showSostenibilidad = opcion.nombre === 'SI'"
+              (change)="aventura = true"
+              (change)="showPrestaServiciosAventura = opcion.nombre === 'SI'"
+              [id]="i" (ngModelChange)="capturarValor(i, $event, campo.idcaracterizaciondinamica)">    
+              {{opcion.nombre}}
+            </div>
+          </div>
+
+           <div *ngIf="showDependency && campo.mensaje === 'dependencia' && hasDepency(campo.dependiente)">
+            <div *ngFor="let item of campo.desplegable">
+              <input *ngSwitchCase="'string'" type="text" [formControlName]="campo.nombre" [value]="item.nombre"
+               [id]="i" (ngModelChange)="capturarValor(i, $event, campo.idcaracterizaciondinamica)">
+            </div>
+            <div *ngSwitchCase="'checkbox'" class="containerCheck">
+              <label class="labelDependency">{{ campo.nombre }} 
+                <span *ngIf="campo.requerido == true && campo.values == null" style="color: red;">*</span>
+              </label>
+              <div *ngFor="let opcion of campo.desplegable" class="check"> 
+                <input type="checkbox" [value]="opcion.id" class="checkbox" 
+                (change)="opcion.mostrarInput = opcion.nombre === 'OTROS'? !opcion.mostrarInput : false" 
+                [id]="i" (ngModelChange)="capturarValor(i, $event, campo.idcaracterizaciondinamica)">           
+                {{opcion.nombre}}
+                <div>
+                  <input type="text" *ngIf="opcion.mostrarInput && opcion.nombre === 'OTROS'" class="inputContainer" 
+                  placeholder="Especifica otro" [id]="i" (ngModelChange)="capturarValor(i, $event, campo.idcaracterizaciondinamica)">
+                </div>
+              </div>
+            </div>
+          </div>   
+          <div *ngIf="showSostenibilidad && campo.mensaje === 'dependencia'">
+              <label class="labelDependency">{{ campo.nombre }} </label>
+              <input *ngSwitchCase="'string'" type="text" [formControlName]="campo.nombre"
+              [id]="i" (ngModelChange)="capturarValor(i, $event, campo.idcaracterizaciondinamica)">
+              
+              <input *ngSwitchCase="'int'" type="number" [formControlName]="campo.nombre" class="campo-nombre"
+              [id]="i" (ngModelChange)="capturarValor(i, $event, campo.idcaracterizaciondinamica)">
+
+              <input *ngSwitchCase="'local_reference_id'" type="text" [formControlName]="campo.nombre" 
+              [id]="i" (ngModelChange)="capturarValor(i, $event, campo.idcaracterizaciondinamica)">
+          </div>
+          <!-- <div *ngIf="showPrestaServiciosAventura && campo.mensaje === 'dependencia'">
+            <label class="labelDependency">{{ campo.nombre }} </label>
+            <div *ngSwitchCase="'checkbox'" class="containerCheck">
+              
+              <div *ngFor="let opcion of campo.desplegable" class="check"> 
+                
+                <input type="checkbox" [formControlName]="campo.nombre" [value]="opcion.id" 
+                class="checkbox" (change)="opcion.mostrarInput = opcion.nombre === 'OTROS'? !opcion.mostrarInput : false"
+                [id]="i" (ngModelChange)="capturarValor(i, $event, campo.idcaracterizaciondinamica)">           
+                {{opcion.nombre}}
+                <div>
+                  <input type="text" *ngIf="opcion.mostrarInput && opcion.nombre === 'OTROS'" class="inputContainer" 
+                  placeholder="Especifica otro" [id]="i" (ngModelChange)="capturarValor(i, $event, campo.idcaracterizaciondinamica)">
+                </div>
+              </div>
+            </div>
+          </div> -->
+        </div>
+                
+    </div>
+    <div class="divBtn">
+      <button type="submit" class="btn" [disabled]="formParent.invalid" >Guardar</button>
+      <button type="button" (click)="goBack()" class="btn">Atrás</button>
+    </div>
+  
+</form>
+<app-app-footer></app-app-footer>
+<ngx-spinner></ngx-spinner>
 </div>
-<div>
-  <div class="adicionar" (click)="toggleSection('adicionar')">
-      <button class="adicionarBtn">Adicionar requisito legal +</button>
+
+
+
+<div *ngFor="let ley of datos" class="div">
+  <div class="titulo" (click)="toggleSection('primeraLey')" [ngClass]="{'verde': primeraLeyVisible}">
+    <h3>{{ ley.tipO_NORMATIVIDAD }} {{ ley.numero }} {{ ley.anio.slice(-4) }}</h3>
   </div>
-  <div class="detalleAdicionar" *ngIf="adicionarVisible">
-      <label class="adicionarLabel">Tipo de normatividad</label>
-      <select class="adicionarInput" #selectOption (change)="onSelect(selectOption.value)">
-          <option value="0">Seleccione una opción</option>
-          <option value="ley">Ley</option>
-          <option value="decreto">Decreto</option>
-          <option value="decretoLey">Decreto Ley</option>
-          <option value="otro">Otro</option>
-      </select>
-      <div *ngIf="selectedOption === 'otro'" class="changeOtro">
-          <label class="adicionarLabel">Otro ¿Cuál?</label>
-          <input type="text" class="adicionarInput">
-      </div>
-      <label class="adicionarLabel" for="numero">Número</label>
-      <input type="text" class="adicionarInput" id="numero">
-      <label class="adicionarLabel" for="año">Año</label>
-      <input type="text" class="adicionarInput" id="año">
-      <label class="adicionarLabel">Descripción</label>
-      <textarea style="height: 100px" class="adicionarInput"></textarea>
-      <label class="adicionarLabel">Artículos / Secciones / Requisitos específicos que aplican</label>
-      <textarea style="height: 100px" class="adicionarInput"></textarea>
-      <button type="submit" class="btnAdd">Agregar</button>
+  <div class="detalle" *ngIf="primeraLeyVisible">
+    <h2>Emitida por:</h2>
+    <p>{{ ley.emisor }}</p>
+    <h4>ARTÍCULOS</h4>
+    <p>{{ ley.docS_ESPECIFICOS }}</p>
+    <h4>TÍTULO</h4>
+    <p>{{ ley.descripcion }}</p>         
   </div>
 </div>
