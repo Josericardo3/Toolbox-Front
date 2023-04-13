@@ -13,9 +13,9 @@ import { ModalService } from 'src/app/messagemodal/messagemodal.component.servic
 (pdfMake as any).vfs = pdfFonts.pdfMake.vfs;
 import { Chart } from 'chart.js';
 
-import { ChartJSNodeCanvas } from 'chartjs-node-canvas';
-import { createCanvas } from 'canvas';
-const chartJSNodeCanvas = require('chartjs-node-canvas');
+//import { ChartJSNodeCanvas } from 'chartjs-node-canvas';
+//import { createCanvas } from 'canvas';
+//const chartJSNodeCanvas = require('chartjs-node-canvas');
 // import { CanvasRenderService } from 'chartjs-node-canvas';
 // import * as pdfPieChart from 'pdfmake-extensions/pdfmake.js';
 // import * as pdfMakeBarcodes from 'pdfmake-extensions/pdfmake.js';
