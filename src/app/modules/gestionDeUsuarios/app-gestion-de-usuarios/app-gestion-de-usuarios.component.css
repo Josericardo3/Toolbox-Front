@@ -1,214 +1,306 @@
 /* @import 'bootstrap/dist/css/bootstrap.min.css';   */
 
 .container-gestion{
-margin: 20px 20px 0px 20px;
-}
-
-.titulo{
-    background: #068460;
-    width: 100%;
-    height: 43px;
-    display: flex;
-    padding: 9px;
-    font-size: 18px;
-    font-family: sans-serif;
-    color: white;
-    justify-content: space-between;
-    margin-top: 77px;
-    align-items: center;
-}
-
-.btn-registrar{
-  background: none;
-  border: 1px solid white;
-  cursor: pointer;
-  font-size: 14px;
-  width: 187px;
-  height: 20px;
-  font-family: 'Work Sans', sans-serif;
-
-}
- .usuario{
-    padding: 2px 83px 2px;;
- }
-.subtitulo{
-  font-size: 14px;
-    display: flex;
-    align-items: center;
-    margin: 19px 10px 19px 11px;
-    flex-direction: row;
-    justify-content: space-between;
-    font-family: 'Work Sans', sans-serif;
-}
-
-input {
-    border-radius: 5px;
-    height: 22px;
-    border: 1px solid#068460;
-}
-
-.btn-atencion{
-    border-radius: 5px;
-    border: 1px solid#068460;
-    margin-right: 10px;
-    font-family:'Work Sans', sans-serif;
-    background: none !important;
-}
-.btn-asignar{
-    border-radius: 5px;
-    border: 1px solid#337ab7;
-    background: none !important;
-    font-family:'Work Sans', sans-serif;
-}
-.btn-container{
-    display: flex;
-    justify-content:center;
-}
-
-.pagination.list-unstyled .page-link {
-  border-radius: 0;
-  padding: 5px 10px;
-  font-size: 16px;
-}
-
-.page-item::marker{
-  background: #E3434D;
-  list-style-type: none;
-
-}
-select{
-    border-radius: 5px;
-    height: 22px;
-    border: 1px solid#068460; 
-    font-size: 14px;
-    font-family: 'Work Sans', sans-serif;
-}
-
-#select-pst {
-  height: 19px;
-  width: 252px;
-  border-radius: 5px;
-  font-size: 11px;
-  font-family: 'Work Sans', sans-serif;
-  border: 1px solid#068460; 
-}
-option{ /*es aquí donde esta todo el desarrollo principal*/
-word-wrap: break-word; /* Declara que el texto deberá ser Wrap Break en */
-white-space: -moz-pre-wrap; /* lo mismo que lo anterior pero para Firefox*/
-white-space: pre-wrap;  /* lo mismo que lo anterior pero para el resto de los navegadores.*/
-width:300px; /*Se establece un ancho en especifico*/
-}
-#select-pst option:nth-child(odd){
-background: white;
-}
-
-#select-pst option:nth-of-type(n+6){
-display: block;
-
-}
-
-.table-gestion {
-     width: 100%;
-     margin: 25px 0; 
-     font-size: 16px; 
-     font-family:'Work Sans', sans-serif;
-     min-width: 450px;
-     border: 2px solid #068460;
-     box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
-     }
-
-     .accion-center{
-      text-align: center !important;
-     }
-
-     .accion-left{
-        text-align: left !important;
-       }
-.table-gestion thead tr {
-     background-color: #068460;
-     color: #ffffff;
-     font-family:'Work Sans', sans-serif;
-    }
-
-.table-gestion th, .table-gestion tbody td {
-  padding: 15px;
+  margin: 20px 20px 0px 20px;
   }
-
-.table-gestion tbody tr { 
-  border-bottom: 1px solid white;
-
-  } 
-
-.table-gestion tbody tr:last-of-type {
-  border-bottom: 2px solid #009879; 
-}
-
-.buscar{
-    background: #068460;
-    color: white;
-    border-radius: 3px;
-    width: 58px;
-    height: 24px;
+  
+  .titulo{
+      background: #068460;
+      width: 100%;
+      height: 43px;
+      display: flex;
+      padding: 9px;
+      font-size: 18px;
+      font-family: sans-serif;
+      color: white;
+      justify-content: space-between;
+      margin-top: 77px;
+      align-items: center;
+  }
+  
+  .btn-registrar{
+    background: none;
     border: 1px solid white;
     cursor: pointer;
-}
-
-/* pagination */
-.page-style{
+    font-size: 14px;
+    width: 187px;
+    height: 20px;
+    font-family: 'Work Sans', sans-serif;
+    margin-left: 9px;
+  }
+  .p-close{
+    background: none;
+    cursor: pointer;
+    font-size: 14px;
+    width: 187px;
+    height: 20px;
+    font-family: 'Work Sans', sans-serif;
+    margin-top: 4px;
+    display: flex;
+    justify-content: space-evenly;
+  }
+  
+  .p-close:hover{
+    color: #111312;
+  }
+   .usuario{
+      padding: 2px 83px 2px;;
+   }
+  .subtitulo{
+    font-size: 14px;
+      display: flex;
+      align-items: center;
+      margin: 19px 10px 19px 11px;
+      flex-direction: row;
+      justify-content: space-between;
+      font-family: 'Work Sans', sans-serif;
+  }
+  
+  input {
+      border-radius: 5px;
+      height: 22px;
+      border: 1px solid#068460;
+  }
+  
+  .btn-atencion{
+      border-radius: 5px;
+      border: 1px solid#068460;
+      margin-right: 10px;
+      font-family:'Work Sans', sans-serif;
+      background: none !important;
+  }
+  .btn-asignar{
+      border-radius: 5px;
+      border: 1px solid#337ab7;
+      background: none !important;
+      font-family:'Work Sans', sans-serif;
+  }
+  .btn-container{
+      display: flex;
+      justify-content:center;
+  }
+  
+  .pagination.list-unstyled .page-link {
+    border-radius: 0;
+    padding: 5px 10px;
+    font-size: 16px;
+  }
+  
+  .page-item::marker{
+    background: #E3434D;
+    list-style-type: none;
+  
+  }
+  select{
+      border-radius: 5px;
+      height: 22px;
+      border: 1px solid#068460; 
+      font-size: 14px;
+      font-family: 'Work Sans', sans-serif;
+  }
+  
+  .container-btn{
     display: flex;
     justify-content: flex-end;
+  }
+  
+  #select-pst {
+    height: 19px;
+    width: 252px;
+    border-radius: 5px;
+    font-size: 11px;
+    font-family: 'Work Sans', sans-serif;
+    border: 1px solid#068460; 
+  }
+  option{ /*es aquí donde esta todo el desarrollo principal*/
+  word-wrap: break-word; /* Declara que el texto deberá ser Wrap Break en */
+  white-space: -moz-pre-wrap; /* lo mismo que lo anterior pero para Firefox*/
+  white-space: pre-wrap;  /* lo mismo que lo anterior pero para el resto de los navegadores.*/
+  width:300px; /*Se establece un ancho en especifico*/
+  }
+  #select-pst option:nth-child(odd){
+  background: white;
+  }
+  
+  #select-pst option:nth-of-type(n+6){
+  display: block;
+  
+  }
+  
+  .table-gestion {
+       width: 100%;
+       margin: 25px 0; 
+       font-size: 16px; 
+       font-family:'Work Sans', sans-serif;
+       min-width: 450px;
+       border: 2px solid #068460;
+       box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+       }
+  
+       .accion-center{
+        text-align: center !important;
+       }
+  
+       .accion-left{
+          text-align: left !important;
+         }
+  .table-gestion thead tr {
+       background-color: #068460;
+       color: #ffffff;
+       font-family:'Work Sans', sans-serif;
+      }
+  
+  .table-gestion th, .table-gestion tbody td {
+    padding: 15px;
+    }
+  
+  .table-gestion tbody tr { 
+    border-bottom: 1px solid white;
+  
+    } 
+  
+  .table-gestion tbody tr:last-of-type {
+    border-bottom: 2px solid #009879; 
+  }
+  
+  .buscar{
+      background: #068460;
+      color: white;
+      border-radius: 3px;
+      width: 58px;
+      height: 24px;
+      border: 1px solid white;
+      cursor: pointer;
+  }
+  
+  /* pagination */
+  .page-style{
+      display: flex;
+      justify-content: flex-end;
+      
+  }
+  .paginas{
+    display: inline-block;
+    max-width: 100%;
+    margin: 10px;
+    font-weight: 700;
+    font-size: 14px;
+    font-family:'Work Sans', sans-serif;
+  }
+  
+  .container-label{
+    display: flex;
+    align-items: center;
+  }
+  
+  /* modal asignar asesor*/
+  
+  .titulo-modal{
+    text-align: center;
+    font-weight: bold;
+    font-size: 24px;
+    font-family:'Work Sans', sans-serif;
+  }
+  
+  input.ng-invalid.ng-touched {
+    border: solid 2px tomato !important;
+    border-radius: 10px;
+  }
+  input.ng-valid,select.ng-valid{
+    border: solid 2px #068460 !important;
+    border-radius: 10px;
+  }
+  .textDanger{
+    font-family: 'Work Sans', sans-serif;
+    font-size: 13px;
+    color: #474749;
+    font-weight: bold;
+  }
+  
+  .btn-register:disabled{
+    background-color: #999999;
+    color: #000000;
+  }
+  
+  .po{
+    width:245px;
+    height: auto;
+    word-wrap: break-word;
+  }
+  .modal-background {
+      /* background-color: rgba(0, 0, 0, 0.5); */
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
     
-}
-.paginas{
-  display: inline-block;
-  max-width: 100%;
-  margin: 10px;
-  font-weight: 700;
-  font-size: 14px;
-  font-family:'Work Sans', sans-serif;
-}
-
-.container-label{
-  display: flex;
-  align-items: center;
-}
-
-/* modal asignar asesor*/
-
-.titulo-modal{
-  text-align: center;
-  font-weight: bold;
-  font-size: 24px;
-  font-family:'Work Sans', sans-serif;
-}
-
-input.ng-invalid.ng-touched {
-  border: solid 2px tomato !important;
-  border-radius: 10px;
-}
-input.ng-valid,select.ng-valid{
-  border: solid 2px #068460 !important;
-  border-radius: 10px;
-}
-.textDanger{
-  font-family: 'Work Sans', sans-serif;
-  font-size: 13px;
-  color: #474749;
-  font-weight: bold;
-}
-
-.btn-register:disabled{
-  background-color: #999999;
-  color: #000000;
-}
-
-.po{
-  width:245px;
-  height: auto;
-  word-wrap: break-word;
-}
-.modal-background {
-    /* background-color: rgba(0, 0, 0, 0.5); */
+    .modal-content {
+      display: flex;
+      background-color: white;
+      padding: 20px;
+      border-radius: 5px;
+      height: 391px;
+      width: 300px;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow: hidden;
+    }
+    
+    .modal-title{
+      border-radius: 5px;
+      height: 300px;
+    
+    }
+    
+    .btn-grup{
+      display: flex;
+      justify-content: space-around;
+    }
+    .modal-btn{
+      background:#0C9D74;
+      border-radius: 5px;
+      color: white;
+      padding: 0px 14px;
+      cursor: pointer;
+      border: #0C9D74;
+      height: 23px;
+      font-size: 14px;
+    }
+  
+    .modal-btn-cancel{
+      background:#E3434D;
+      border-radius: 5px;
+      color: white;
+      padding: 0px 14px;
+      cursor: pointer;
+      border:#E3434D;
+      height: 23px;
+      font-size: 14px;
+    }
+  
+    .modal-cerrar-container{
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-end;
+    }
+   
+    .modal-cerrar{
+      background: #068460;
+      color: white;
+      width: 19px;
+      cursor: pointer;
+      border: 2px solid white;
+      
+    }
+  
+  
+  /* modal registrar un asesor */
+  .modal-asesor {
     position: fixed;
     top: 0;
     bottom: 0;
@@ -219,29 +311,39 @@ input.ng-valid,select.ng-valid{
     justify-content: center;
   }
   
-  .modal-content {
+  .asesor {
     display: flex;
     background-color: white;
     padding: 20px;
     border-radius: 5px;
-    height: 391px;
-    width: 300px;
+    height: 316px;
+    width: 438px;
     flex-direction: column;
     justify-content: space-between;
-    overflow: hidden;
+    border: 1px solid #0C9D74;
   }
+  .inpunt-asesor{
+    width: 90px;
   
-  .modal-title{
+  }
+  .title-asesor{
     border-radius: 5px;
-    height: 300px;
-  
+    height: 360px;
+    padding: 5px; 
   }
   
-  .btn-grup{
+  .label-titulo{
+    font-family: 'Work Sans', sans-serif;
+    font-size: 14px;
+    margin: 3px;
+  }
+  
+  .btn-grup-asesor{
     display: flex;
     justify-content: space-around;
+    margin-top: 8px;
   }
-  .modal-btn{
+  .btn-register{
     background:#0C9D74;
     border-radius: 5px;
     color: white;
@@ -251,8 +353,8 @@ input.ng-valid,select.ng-valid{
     height: 23px;
     font-size: 14px;
   }
-
-  .modal-btn-cancel{
+  
+  .btn-cancel{
     background:#E3434D;
     border-radius: 5px;
     color: white;
@@ -262,97 +364,15 @@ input.ng-valid,select.ng-valid{
     height: 23px;
     font-size: 14px;
   }
-
-  .modal-cerrar-container{
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-end;
-  }
- 
-  .modal-cerrar{
-    background: #068460;
-    color: white;
-    width: 19px;
-    cursor: pointer;
-    border: 2px solid white;
-    
-  }
-
-
-/* modal registrar un asesor */
-.modal-asesor {
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.asesor {
-  display: flex;
-  background-color: white;
-  padding: 20px;
-  border-radius: 5px;
-  height: 316px;
-  width: 438px;
-  flex-direction: column;
-  justify-content: space-between;
-  border: 1px solid #0C9D74;
-}
-.inpunt-asesor{
-  width: 90px;
-
-}
-.title-asesor{
-  border-radius: 5px;
-  height: 360px;
-  padding: 5px; 
-}
-
-.label-titulo{
-  font-family: 'Work Sans', sans-serif;
-  font-size: 14px;
-  margin: 3px;
-}
-
-.btn-grup-asesor{
-  display: flex;
-  justify-content: space-around;
-  margin-top: 8px;
-}
-.btn-register{
-  background:#0C9D74;
-  border-radius: 5px;
-  color: white;
-  padding: 0px 14px;
-  cursor: pointer;
-  border: #0C9D74;
-  height: 23px;
-  font-size: 14px;
-}
-
-.btn-cancel{
-  background:#E3434D;
-  border-radius: 5px;
-  color: white;
-  padding: 0px 14px;
-  cursor: pointer;
-  border:#E3434D;
-  height: 23px;
-  font-size: 14px;
-}
-
-
-
-
-
-
-@media (max-width:480px) {
-    .titulo{
-        margin: 30px 0px 0px 4px;
-    }
   
-  }
+  
+  
+  
+  
+  
+  @media (max-width:480px) {
+      .titulo{
+          margin: 30px 0px 0px 4px;
+      }
+    
+    }

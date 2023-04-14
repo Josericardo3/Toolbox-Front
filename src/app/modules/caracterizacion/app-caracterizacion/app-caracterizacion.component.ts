@@ -42,6 +42,7 @@ export class AppCaracterizacionComponent implements OnInit {
   numOfFields!: number;
   selectedOption: string;
   selectedOptions: string[] = [];
+  seleccione: string = 'Seleccione una opción';
 
   aventuraSeleccionada: boolean = false;
   opcionesNorma: any[] = [];
@@ -92,15 +93,15 @@ getCaracterizacion(){
         this.formParent.addControl(campo.nombre, new FormControl({value: campo.values, disabled: true}))
       }
       else{
-        this.formParent.addControl(campo.nombre, new FormControl('', Validators.required))          
+        this.formParent.addControl(campo.nombre, new FormControl(null))          
       }
     });
 
-    for (let campo of this.datos.campos) {
-      if (campo.requerido) {
-        this.formParent.addControl(campo.nombre, this.formBuilder.control(''));
-      }
-    }
+    // for (let campo of this.datos.campos) {
+    //   if (campo.requerido) {
+    //     this.formParent.addControl(campo.nombre, this.formBuilder.control(''));
+    //   }
+    // }
 
     this.createFormControls();
     this.ordenarPreguntas();
@@ -135,16 +136,15 @@ onChangeAventuraSeleccionada(value: boolean) {
     if (this.aventuraSeleccionada) {
       // Si se seleccionó "SI", se muestra solo la norma que comienza con "NTC 6502"
       this.opcionesNorma = this.dataNorma.filter(
-        opcion => opcion.norma && opcion.norma.startsWith('NTC 6502')
+        opcion => opcion.norma && opcion.norma.startsWith('NTC 6502') ||
+        opcion.norma.startsWith('NTC ISO 21101') ||
+        opcion.norma.startsWith('NTC 6523')
       ).map(opcion => opcion.id);
     } else {
       // Si se seleccionó "NO", se muestran las tres normas
       this.opcionesNorma = this.dataNorma.filter(
         opcion => opcion.norma && (
-          opcion.norma.startsWith('NTC 6502') ||
-          opcion.norma.startsWith('NTC ISO 21101') ||
-          opcion.norma.startsWith('NTC 6523')
-        )
+          opcion.norma.startsWith('NTC 6502'))
       ).map(opcion => opcion.id);
     } 
 }
@@ -238,6 +238,7 @@ getControlType(campo: any) {
 }
 
 capturarValor(id: string | number, valor: any, idcaracterizaciondinamica: any) {
+ 
   const result = this.valoresForm.find((o: any) => o.id === id);
   if (result) {
     result.valor = valor;
@@ -246,8 +247,8 @@ capturarValor(id: string | number, valor: any, idcaracterizaciondinamica: any) {
       "id": id,
       "valor": valor,
       "idUsuarioPst": localStorage.getItem('Id'),
-      "idCategoriaRnt": 1,
-      "idCaracterizacion": 1
+      "idCategoriaRnt": localStorage.getItem('idCategoria'),
+      "idCaracterizacion": 1 //id de la pregunta
     });
   }
 }
@@ -261,6 +262,7 @@ hasDepency(id: number) {
 public saveForm(){
     this.mostrarMensaje = true;
     if (this.formParent.valid) {
+
       this.ApiService.saveData(this.valoresForm).subscribe((data: any) => {
         const title = "Se guardó correctamente";
         const message = "El formulario se ha guardado exitosamente"

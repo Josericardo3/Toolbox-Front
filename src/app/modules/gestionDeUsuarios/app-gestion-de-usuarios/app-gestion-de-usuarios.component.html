@@ -11,19 +11,24 @@
   <div class="container-gestion">
     <div class="titulo">
       Gestión de Usuarios
+      <div class="container-btn">
       <div>
-        <button class="btn-registrar" (click)="openModalNuevoAsesor()">Registrar un nuevo asesor</button>
+        <p class="p-close" (click)="openModalNuevoAsesor()">Registrar un nuevo asesor</p>
+      </div>
+      <div>
+         <p class="p-close"routerLink="">Cerrar Sesión</p>
       </div>
     </div>
+  </div>
     <div class="subtitulo">
       <label>RNT</label>
       <input type="text" [value]="rnt" (change)="capturarValorE($event)"/>
       <button (click)="filterRnt()" class="buscar">Buscar</button>
       <label>Empresa</label>
-      <input type="text" [value]="razonsocial" (change)="capturarValorE($event)" />
+      <input type="text" [value]="razonsocial" (change)="capturarValorEmpresa($event)" />
       <button (click)="filterEmpresa()" class="buscar">Buscar</button>
       <label>Asesor</label>
-      <input type="text" (change)="capturarValorE($event)" />
+      <input type="text" (change)="capturarValorAsesor($event)" />
       <button (click)="filterAsesor()" class="buscar">Buscar</button>
       <label class="padding-label">Estado</label>
       <select class="estado" (click)="filterEstado($event) "(change)="capturarValorE($event)" >
@@ -54,11 +59,14 @@
               <button type="button" class="btn btn-default btn-atencion" (click)="linkToDashboard(user)">
                 Iniciar atención
               </button>
-              <button type="button" class="btn btn-default btn-asignar" (click)="nuevoAsesor(user)">Asignar asesor</button>
+              <button *ngIf="estadoatencionBtn" type="button" class="btn btn-default btn-asignar"  (click)="nuevoAsesor(user)">Asignar asesor</button>
             </td>
           </tr>
         </tbody>
       </table>
+      <p *ngIf="result"  style="text-align: center;margin-top: 10px; font-size: 19px; font-family: 'Work Sans', sans-serif;" >
+        No hay resultado para la búsqueda
+      </p>
     </div>
     <!-- paginacion -->
     <div class="page-style">
@@ -163,4 +171,4 @@
         </div>
     </div>
 </html>
-
+<app-modal></app-modal>

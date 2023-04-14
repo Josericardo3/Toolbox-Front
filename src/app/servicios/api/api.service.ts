@@ -101,7 +101,7 @@ export class ApiService {
     const caracterizacion = `${this.apiURL}/api/Caracterizacion/caracterizacion/respuesta`;
     const categoriarnt = localStorage.getItem('norma');
     const observables = [];
-  
+    debugger
     for (let i = 0; i < request.length; i++) {
       const respuesta = {
         valor: request[i].valor.toString(),
