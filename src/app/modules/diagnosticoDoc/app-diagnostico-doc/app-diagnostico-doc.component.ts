@@ -12,9 +12,9 @@ import { ModalService } from 'src/app/messagemodal/messagemodal.component.servic
 
 import { Chart } from 'chart.js';
 
-import { ChartJSNodeCanvas } from 'chartjs-node-canvas';
-import { createCanvas } from 'canvas';
-const chartJSNodeCanvas = require('chartjs-node-canvas');
+//import { ChartJSNodeCanvas } from 'chartjs-node-canvas';
+//import { createCanvas } from 'canvas';
+//const chartJSNodeCanvas = require('chartjs-node-canvas');
 
 
 @Component({
