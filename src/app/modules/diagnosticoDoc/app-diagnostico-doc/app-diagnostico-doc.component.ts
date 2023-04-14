@@ -6,26 +6,14 @@ import { ApiService } from 'src/app/servicios/api/api.service';
 import * as pdfMake from 'pdfmake/build/pdfmake';
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';
 import { HttpClient } from '@angular/common/http';
-// import Swal from 'sweetalert2';
-import { ModalService } from 'src/app/messagemodal/messagemodal.component.service'
-// import * as Chart from 'chart.js';
-// import * as pdfMakeChart from 'pdfmake/build/vfs_fonts';
 (pdfMake as any).vfs = pdfFonts.pdfMake.vfs;
-import { Chart } from 'chart.js';
-
-//import { ChartJSNodeCanvas } from 'chartjs-node-canvas';
-//import { createCanvas } from 'canvas';
-//const chartJSNodeCanvas = require('chartjs-node-canvas');
-// import { CanvasRenderService } from 'chartjs-node-canvas';
-// import * as pdfPieChart from 'pdfmake-extensions/pdfmake.js';
-// import * as pdfMakeBarcodes from 'pdfmake-extensions/pdfmake.js';
-// pdfMake.registerModule(pdfPieChart);
-// pdfMake.registerModule(pdfMakeBarcodes);
+// import Swal from 'sweetalert2';
+import { ModalService } from 'src/app/messagemodal/messagemodal.component.service' 
 
 @Component({
   selector: 'app-app-diagnostico-doc',
   templateUrl: './app-diagnostico-doc.component.html',
-  styleUrls: ['./app-diagnostico-doc.component.css'], 
+  styleUrls: ['./app-diagnostico-doc.component.css']
 })
 export class AppDiagnosticoDocComponent implements OnInit {
   //Lista diagnóstico
@@ -58,12 +46,8 @@ export class AppDiagnosticoDocComponent implements OnInit {
   telefonoResponsableSostenibilidad: string;
   correoResponsableSostenibilidad: string;
 
-  public chart: any = [];
-  porcentajeNA: any;
-  porcentajeNC: any;
-  porcentajeCP: any;
-  porcentajeC: any;
-  chartDataUrl: string;
+  numeral: string;
+  
   constructor( 
     private router: Router,
     private ApiService: ApiService,
@@ -84,6 +68,7 @@ export class AppDiagnosticoDocComponent implements OnInit {
     // this.ApiService.getListaChequeoApi()
     .subscribe((data: any) => {
       this.datosL = data;
+      debugger
       this.nombrePst = this.datosL.usuario?.nombrePst;
       this.nit = this.datosL.usuario?.nit;
       this.rnt = this.datosL.usuario?.rnt;
@@ -95,7 +80,7 @@ export class AppDiagnosticoDocComponent implements OnInit {
       console.log(this.nombrePst, this.nit, this.rnt, this.nombreResponsableSostenibilidad, this.telefonoResponsableSostenibilidad)
     });
   }
-  
+
   getListaDiagnostico(){
     var normaValue = window.localStorage.getItem('idNormaSelected');
     var idUsuario = window.localStorage.getItem('Id');
@@ -112,14 +97,6 @@ export class AppDiagnosticoDocComponent implements OnInit {
       this.telefonoResponsableSostenibilidadD = this.datosD.usuario?.telefonoResponsableSostenibilidad;
       this.correoResponsableSostenibilidadD = this.datosD.usuario?.correoResponsableSostenibilidad;
       console.log(this.nombrePstD, this.nitD, this.rntD, this.idnD, this.nombreResponsableSostenibilidadD)
-
-      this.porcentajeNA = this.datosD.agrupacion.map(res => res.porcentajeNA);
-      this.porcentajeNC = this.datosD.agrupacion.map(res => res.porcentajeNC);
-      this.porcentajeCP = this.datosD.agrupacion.map(res => res.porcentajeCP);
-      this.porcentajeC = this.datosD.agrupacion.map(res => res.porcentajeC);
-      console.log(this.porcentajeNA, this.porcentajeNC, this.porcentajeCP, this.porcentajeC)
-      // this.createChart();
-
     });
   }
 
@@ -140,31 +117,14 @@ export class AppDiagnosticoDocComponent implements OnInit {
       this.correoResponsableSostenibilidadP = this.datosP.usuario?.correoResponsableSostenibilidad;
     });
   }
-  
-  generateDiagnostico() {
-    // Crear el gráfico circular
-// const chartData = {
-//   labels: ['NA', 'NC', 'CP', 'C'],
-//   datasets: [{
-//     data: [this.porcentajeNA, this.porcentajeNC, this.porcentajeCP, this.porcentajeC],
-//     backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0']
-//   }]
-// };
-// const chartConfig = {
-//   type: 'doughnut',
-//   options: {
-//     responsive: false,
-//     maintainAspectRatio: false
-//   }
-// };
-// const chartCanvas = document.createElement('canvas');
-// const chartCtx = chartCanvas.getContext('2d');
-// const chart: Chart = new Chart(chartCtx, chartConfig);
-// const chart = new Chart(chartCtx, chartConfig);
-// chart.data = chartData;
-// chart.update();
-// const chartImage = chart.toDataURL('image/png'); // Convertir el canvas del gráfico en una imagen base64
 
+  generateDiagnostico() {
+    debugger
+    if(!!!this.datosD){
+      const title = "Error";
+    const message = "No se encontró información para generar el informe de diagnóstico"
+    this.Message.showModal(title,message);
+    }else{
     const pdfDefinition: any = {
       pageSize: {
         width: 794,
@@ -201,21 +161,21 @@ export class AppDiagnosticoDocComponent implements OnInit {
               ],
               [
                 'Categoría en el RNT',
-                '',
+                this.datosD.usuario.idCategoriaRnt,
                 'Subcategoría en el RNT	',
-                ''
+                this.datosD.usuario.idSubCategoriaRnt
               ],
               [
                 'Municipio',
-                '',
+                this.datosD.usuario.municipio,
                 'Departamento',
-                ''
+                this.datosD.usuario.departamento
               ],
               [
                 'NTC de Turismo',
                 this.idnD,
                 'Etapa del diagnóstico',
-                ''
+                'Primera Etapa'
               ],
               [
                 'Nombre del responsable de sostenibilidad',
@@ -312,7 +272,7 @@ export class AppDiagnosticoDocComponent implements OnInit {
         { text: 'Observaciones', colSpan: 3, style: ['tituloDinamico'] },
         {},              
         {}
-      ]);
+       ]);
       
       obj.listacampos.forEach((i : any) => {
       pdfDefinition.content[5].table.body.push([
@@ -323,100 +283,37 @@ export class AppDiagnosticoDocComponent implements OnInit {
         {}
       ]);
       });
-      // this.datosD.agrupacion.forEach((obj: any) => {
-        const data = {
-          datasets: [{
-            // data: [obj.porcentajeNA, obj.porcentajeNC, obj.porcentajeCP, obj.porcentajeC],
-            data: [20, 40, 10, 30],
-            backgroundColor: ['red', 'green', 'blue', 'orange']
-          }],
-          labels: ['NA', 'NC', 'CP', 'C']
-        };
-        const chart = new Chart('canvas', {
-          type: 'pie',
-          data: data,
-          options: {
-            responsive: true,
-            plugins: {
-              legend: {
-                position: 'bottom',
-                labels: {
-                  fontColor: 'black',
-                  fontSize: 14
-                }
-              },
-            },
-          }
-        });
-        const imageData = chart.toBase64Image();
-        pdfDefinition.content[5].table.body.push([
-          {  image: imageData, width: 100, height: 100, alignment: 'center', colSpan: 5 },
-          {},
-          {},              
-          {},
-          {}
-         ]);
-      // })
-
-      // });
-      // const colors = ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0'];
-      // this.chart = new Chart("canvas", {
-      //   type: "pie",
-      //   data: {
-      //     labels: ['No Aplica', 'No Cumple', 'Cumple Parcialmente', 'Cumple'],
-      //     datasets: [
-      //       {
-      //         data: [
-      //           parseInt(obj.numeroRequisitoNA),
-      //           parseInt(obj.numeroRequisitoNC),
-      //           parseInt(obj.numeroRequisitoCP),
-      //           parseInt(obj.numeroRequisitoC)
-      //         ],
-      //         backgroundColor: colors,
-      //         fill: false
-      //       }
-      //     ]
-      //   }
-      // });
-      // pdfDefinition.content[5].table.body.push([
-      //   { image: this.chart, colSpan: 5, alignment: 'center' },
-      //   {},
-      //   {},
-      //   {},              
-      //   {}
-      //  ]);
+      pdfDefinition.content[5].table.body.push([
+        {text: 'GRÁFICO CIRCULAR', colSpan: 5, alignment: 'center'},
+        {},
+        {},
+        {},              
+        {}
+       ]);
     });
+    pdfMake.createPdf(pdfDefinition).download('Informe_de_diagnóstico.pdf');
+    // Swal.fire({
+    //   position: 'center',
+    //   icon: 'success',
+    //   html: '<h2 style="font-family: Montserrat, sans-serif">Descarga exitosa</h2>',
+    //   showConfirmButton: false,
+    //   timer: 5000,
+    // })
     const title = "Se descargó correctamente";
     const message = "La descarga se ha realizado exitosamente"
     this.Message.showModal(title,message);
-    pdfMake.createPdf(pdfDefinition).download('Informe_de_diagnóstico.pdf');
-  }  
-  
-  // createChart() {
-  //   const canvas: any = document.createElement('canvas');
-  //   const ctx = canvas.getContext('2d');
-  //   const chart = new Chart(ctx, {
-  //     type: 'pie',
-  //     data: {
-  //       labels: ['NA', 'NC', 'CP', 'C'],
-  //       datasets: [{
-  //         data: [this.porcentajeNA, this.porcentajeNC, this.porcentajeCP, this.porcentajeC],
-  //         backgroundColor: ['rgba(255, 99, 132, 0.2)','rgba(54, 162, 235, 0.2)','rgba(255, 206, 86, 0.2)','rgba(75, 192, 192, 0.2)'],
-  //         borderColor: ['rgba(255,99,132,1)','rgba(54, 162, 235, 1)','rgba(255, 206, 86, 1)','rgba(75, 192, 192, 1)'],
-  //         borderWidth: 1
-  //       }]
-  //     },
-  //     options: {
-  //       responsive: true
-  //     }
-  //   });
-  //   this.chartDataUrl = chart.toBase64Image();
-  
-  //   // Código para generar el PDF aquí
-  // }
+    }
+    
+  }
 
-  
   generateListaChequeo(){
+    debugger
+    if(!!!this.datosL){
+      const title = "No hay datos";
+      const message = "No hay datos para generar el informe"
+      this.Message.showModal(title,message);
+      return;
+    }
     const pdfDefinition: any = {
       pageSize: {
         width: 794,
@@ -453,21 +350,21 @@ export class AppDiagnosticoDocComponent implements OnInit {
               ],
               [
                 'Categoría en el RNT',
-                '',
+                this.datosD.usuario.idCategoriaRnt,
                 'Subcategoría en el RNT	',
-                ''
+                this.datosD.usuario.idSubCategoriaRnt
               ],
               [
                 'Municipio',
-                '',
+                this.datosD.usuario.municipio,
                 'Departamento',
-                ''
+                this.datosD.usuario.departamento
               ],
               [
                 'NTC de Turismo',
                 this.idnL,
                 'Etapa del diagnóstico',
-                ''
+                'Primera Etapa'
               ],
               [
                 'Nombre del responsable de sostenibilidad',
@@ -548,13 +445,21 @@ export class AppDiagnosticoDocComponent implements OnInit {
       }
       }
     }
+    pdfMake.createPdf(pdfDefinition).download('Informe_de_lista_de_chequeo.pdf');
+    // Swal.fire({
+    //   position: 'center',
+    //   icon: 'success',
+    //   html: '<h2 style="font-family: Montserrat, sans-serif">Descarga exitosa</h2>',
+    //   showConfirmButton: false,
+    //   timer: 5000,
+    // })
     const title = "Se descargó correctamente";
     const message = "La descarga se ha realizado exitosamente"
     this.Message.showModal(title,message);
-    pdfMake.createPdf(pdfDefinition).download('Informe_de_lista_de_chequeo.pdf');
   }
 
   generatePlanMejora(){
+    debugger
     const pdfDefinition: any = {
       pageSize: {
         width: 794,
@@ -591,21 +496,21 @@ export class AppDiagnosticoDocComponent implements OnInit {
               ],
               [
                 'Categoría en el RNT',
-                '',
-                'Subcategoría en el RNT	',
-                ''
+                this.datosD.usuario.idCategoriaRnt,
+                'Subcategoría en el RNT',
+                this.datosD.usuario.idSubCategoriaRnt
               ],
               [
                 'Municipio',
-                '',
+                this.datosD.usuario.municipio,
                 'Departamento',
-                ''
+                this.datosD.usuario.departamento
               ],
               [
                 'NTC de Turismo',
                 this.idnP,
                 'Etapa del diagnóstico',
-                ''
+                'Primera Etapa'
               ],
               [
                 'Nombre del responsable de sostenibilidad',
@@ -692,10 +597,17 @@ export class AppDiagnosticoDocComponent implements OnInit {
         }
       }
     }
+    pdfMake.createPdf(pdfDefinition).download('Informe_de_plan_de_mejora.pdf');
+    // Swal.fire({
+    //   position: 'center',
+    //   icon: 'success',
+    //   html: '<h2 style="font-family: Montserrat, sans-serif">Descarga exitosa</h2>',
+    //   showConfirmButton: false,
+    //   timer: 5000,
+    // })
     const title = "Se descargó correctamente";
     const message = "La descarga se ha realizado exitosamente"
     this.Message.showModal(title,message);
-    pdfMake.createPdf(pdfDefinition).download('Informe_de_plan_de_mejora.pdf');
   }
 
   saveForm(){
