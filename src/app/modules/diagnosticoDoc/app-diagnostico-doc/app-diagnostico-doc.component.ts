@@ -12,9 +12,9 @@ import { ModalService } from 'src/app/messagemodal/messagemodal.component.servic
 
 import { Chart } from 'chart.js';
 
-//import { ChartJSNodeCanvas } from 'chartjs-node-canvas';
-//import { createCanvas } from 'canvas';
-//const chartJSNodeCanvas = require('chartjs-node-canvas');
+import { ChartJSNodeCanvas } from 'chartjs-node-canvas';
+import { createCanvas } from 'canvas';
+const chartJSNodeCanvas = require('chartjs-node-canvas');
 
 
 @Component({
@@ -625,15 +625,15 @@ export class AppDiagnosticoDocComponent implements OnInit {
               ],
               [
                 'Categoría en el RNT',
-                this.datosD.usuario.idCategoriaRnt,
+                this.datosL.usuario.idCategoriaRnt,
                 'Subcategoría en el RNT	',
-                this.datosD.usuario.idSubCategoriaRnt
+                this.datosL.usuario.idSubCategoriaRnt
               ],
               [
                 'Municipio',
-                this.datosD.usuario.municipio,
+                this.datosL.usuario.municipio,
                 'Departamento',
-                this.datosD.usuario.departamento
+                this.datosL.usuario.departamento
               ],
               [
                 'NTC de Turismo',
@@ -763,15 +763,15 @@ export class AppDiagnosticoDocComponent implements OnInit {
               ],
               [
                 'Categoría en el RNT',
-                this.datosD.usuario.idCategoriaRnt,
+                this.datosP.usuario.idCategoriaRnt,
                 'Subcategoría en el RNT',
                 this.datosD.usuario.idSubCategoriaRnt
               ],
               [
                 'Municipio',
-                this.datosD.usuario.municipio,
+                this.datosP.usuario.municipio,
                 'Departamento',
-                this.datosD.usuario.departamento
+                this.datosP.usuario.departamento
               ],
               [
                 'NTC de Turismo',
