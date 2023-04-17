@@ -10,7 +10,7 @@ import { HttpClient } from '@angular/common/http';
 // import Swal from 'sweetalert2';
 import { ModalService } from 'src/app/messagemodal/messagemodal.component.service' 
 
-//import { Chart } from 'chart.js';
+import { Chart } from 'chart.js';
 
 //import { ChartJSNodeCanvas } from 'chartjs-node-canvas';
 //import { createCanvas } from 'canvas';
@@ -297,7 +297,7 @@ export class AppDiagnosticoDocComponent implements OnInit {
     }],
     labels: ['NA', 'NC', 'CP', 'C']
   };
-  /*const chart = new Chart('canvas', {
+  const chart = new Chart('canvas', {
     type: 'pie',
     data: data,
     options: {
@@ -312,7 +312,7 @@ export class AppDiagnosticoDocComponent implements OnInit {
         },
       },
     }
-  });*/
+  });
   const imageData = chart.toBase64Image();
   pdfDefinition.content[5].table.body.push([
     {  image: imageData, width: 100, height: 100, alignment: 'center', colSpan: 5 },
