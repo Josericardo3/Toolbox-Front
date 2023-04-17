@@ -10,11 +10,11 @@ import { HttpClient } from '@angular/common/http';
 // import Swal from 'sweetalert2';
 import { ModalService } from 'src/app/messagemodal/messagemodal.component.service' 
 
-import { Chart } from 'chart.js';
+//import { Chart } from 'chart.js';
 
-import { ChartJSNodeCanvas } from 'chartjs-node-canvas';
-import { createCanvas } from 'canvas';
-const chartJSNodeCanvas = require('chartjs-node-canvas');
+//import { ChartJSNodeCanvas } from 'chartjs-node-canvas';
+//import { createCanvas } from 'canvas';
+//const chartJSNodeCanvas = require('chartjs-node-canvas');
 
 
 @Component({
