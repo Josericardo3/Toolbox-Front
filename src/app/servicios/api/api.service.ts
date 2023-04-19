@@ -30,7 +30,6 @@ export class ApiService {
   constructor(private http: HttpClient) {}
 
   login(form: LoginI): Observable<ResponseI> {
-
     const { registroNacionalDeTurismo, pass, correo } = form
     const refresh = localStorage.getItem('refresh');
     const headers = { 'Content-Type': 'application/json', 'tokenAccess': refresh || 'falta token' };
@@ -47,10 +46,12 @@ export class ApiService {
     let direccion = `${this.apiURL}/api/Usuario`
     return this.http.post<any>(direccion, request)
   }
+
   sendEmailRecovery(request: any): Observable<any> {
     let direccion = `${this.apiURL}/api/Validaciones/EnviarEmail?correo=${request}`
     return this.http.post<any>(direccion, request)
   }
+
   refreshToken(token:string){
     return this.http.post(this.apiURL + 'refreshtoken', {
       refreshToken: token
@@ -66,6 +67,7 @@ export class ApiService {
     let norma = `${this.apiURL}/api/Caracterizacion/SelectorDeNorma?id=${idCategoria}`
     return this.http.get<any>(norma, idCategoria)
   }
+
   validateCaracterizacion(idUsuario:any): Observable<string> {
     let validate = `${this.apiURL}/api/Validaciones/UsuarioCaracterizacion/${idUsuario}`
     let response = this.http.get<string>(validate);
@@ -79,29 +81,11 @@ export class ApiService {
     return this.http.get<any>(caracterizacion)
   }
 
-
   //para guardar caracterizacion en la BD
-  /*saveData(request: any): Observable<any> {
-   
-    let caracterizacion = `${this.apiURL}/api/Usuario/caracterizacion/respuesta`
-    let categoriarnt = localStorage.getItem('norma')
-    let response;
-    for (let i = 0; i < request.length; i++) {
-      var respuesta = {
-        "valor": request[i].valor,
-        "idUsuarioPst": request[i].idUsuarioPst,
-        "idCategoriaRnt": request[i].idCategoriaRnt,
-        "idCaracterizacion": request[i].idCaracterizacion
-      }
-      response = this.http.post<any>(caracterizacion, respuesta)}
-    
-  return response;
-  }*/
   saveData(request: any): Observable<any[]> {
     const caracterizacion = `${this.apiURL}/api/Caracterizacion/caracterizacion/respuesta`;
     const categoriarnt = localStorage.getItem('norma');
     const observables = [];
-    debugger
     for (let i = 0; i < request.length; i++) {
       const respuesta = {
         valor: request[i].valor.toString(),
@@ -111,8 +95,7 @@ export class ApiService {
       };
       const observable = this.http.post<any>(caracterizacion, respuesta);
       observables.push(observable);
-    }
-  
+    }  
     return of(observables).pipe(mergeMap(responses => forkJoin(responses)));
   }
 
@@ -143,7 +126,24 @@ export class ApiService {
       observables.push(observable);
     }
     return of(observables).pipe(mergeMap(responses => forkJoin(responses)));
+  }
 
+  saveModalDiagnostico(request: any): Observable<any[]> {
+    debugger
+    const modalDiagnostico = `${this.apiURL}/api/Asesor/RespuestaAsesor`;
+    const observables = [];
+  
+    for (let i = 0; i < request.length; i++) {
+      const respuesta = {
+        fK_ID_NORMA: request[i].fK_ID_NORMA,
+        fK_ID_USUARIO: request[i].fK_ID_USUARIO,
+        fK_ID_ASESOR: request[i].fK_ID_ASESOR,
+        respuestA_ANALISIS: request[i].respuestA_ANALISIS
+      };
+      const observable = this.http.post<any>(modalDiagnostico, respuesta);
+      observables.push(observable);
+    }
+    return of(observables).pipe(mergeMap(responses => forkJoin(responses)));
   }
 
   //enlista el asesor
@@ -162,27 +162,35 @@ export class ApiService {
     let assign = `${this.apiURL}/api/Asesor/Asesor`
     return this.http.post<any>(assign,request)
   }
+
   getListaChequeoApi(){
-    const id = localStorage.getItem('Id');
-    const normaValue = JSON.parse(window.localStorage.getItem('norma'));
-    const idn = normaValue[0].id;
-    let lista = `${this.apiURL}/api/ListaChequeo/ListaChequeo?idnorma=${idn}&idusuariopst=${id}` 
+    const normaValue = window.localStorage.getItem('idNormaSelected');
+    const idUsuario = window.localStorage.getItem('Id');
+    
+    // const id = localStorage.getItem('Id');
+    // const normaValue = JSON.parse(window.localStorage.getItem('norma'));
+    // const idn = normaValue[0].id;
+    let lista = `${this.apiURL}/api/ListaChequeo/ListaChequeo?idnorma=${normaValue}&idusuariopst=${idUsuario}` 
     return this.http.get<any>(lista)
   }
 
   getListaDiagnosticoApi(){
-    const id = localStorage.getItem('Id');
-    const normaValue = JSON.parse(window.localStorage.getItem('norma'));
-    const idn = normaValue[0].id;
-    let lista = `${this.apiURL}/api/ListaChequeo/ListaDiagnostico?idnorma=${idn}&idusuariopst=${id}` 
+    const normaValue = window.localStorage.getItem('idNormaSelected');
+    const idUsuario = window.localStorage.getItem('Id');
+    // const id = localStorage.getItem('Id');
+    // const normaValue = JSON.parse(window.localStorage.getItem('norma'));
+    // const idn = normaValue[0].id;
+    let lista = `${this.apiURL}/api/ListaChequeo/ListaDiagnostico?idnorma=${normaValue}&idusuariopst=${idUsuario}` 
     return this.http.get<any>(lista)
   }
 
   getPlanMejoraApi(){
-    const id = localStorage.getItem('Id');
-    const normaValue = JSON.parse(window.localStorage.getItem('norma'));
-    const idn = normaValue[0].id;
-    let lista = `${this.apiURL}/api/PlanMejora/PlanMejora?idnorma=${idn}&idusuariopst=${id}` 
+    const normaValue = window.localStorage.getItem('idNormaSelected');
+    const idUsuario = window.localStorage.getItem('Id');
+    // const id = localStorage.getItem('Id');
+    // const normaValue = JSON.parse(window.localStorage.getItem('norma'));
+    // const idn = normaValue[0].id;
+    let lista = `${this.apiURL}/api/PlanMejora/PlanMejora?idnorma=${normaValue}&idusuariopst=${idUsuario}` 
     return this.http.get<any>(lista)
   }
 

@@ -26,8 +26,6 @@ export class AppDiagnosticoComponent implements OnInit {
   numeralespecificoString: string;
 
   public opcionSeleccionada: boolean = false;
-  // opcionesSeleccionadas: string[][] = [[]];
-  // opcionSeleccionada: string[] = [];
 
   valoresObservaciones: string[] = [];
   valoresRadios: string[] = [];
@@ -37,6 +35,8 @@ export class AppDiagnosticoComponent implements OnInit {
   valorObs:any;
 
   public isDataLoaded: boolean = false;
+
+  showModal = false;
 
   constructor(
     private fb: FormBuilder,
@@ -54,14 +54,6 @@ export class AppDiagnosticoComponent implements OnInit {
       this.datos = data;
       console.log(this.datos)
       this.isDataLoaded = true;
-      // this.datos.campos.forEach((campo:any) => {
-      //   if(campo.values !== null){
-      //     this.formParent.addControl(campo.campo_local, new FormControl({value: campo.values, disabled: true}))
-      //   }else{
-      //     this.formParent.addControl(campo.campo_local, new FormControl('', Validators.required))
-      //   }
-      // });
-
 
       //Validar Radios para habilitar el formulario
       const formControls = {};
@@ -186,23 +178,46 @@ public isFormValid(): boolean {
       // capturarObservacion();
     }
   }
+  valorModal: any;
+  valoresModal: any = [];
+  capturarValorModal(event: Event){
+    this.valorModal = (event.target as HTMLInputElement).value;
+    const normaValue = JSON.parse(window.localStorage.getItem('norma'));
+    const idNorma = normaValue[0].id;
+    const idUsuario = localStorage.getItem('Id');
+      this.valoresModal.push({
+        "fK_ID_NORMA": idNorma,
+        "fK_ID_USUARIO": idUsuario,
+        "fK_ID_ASESOR": 2, //CAMBIAR DESPUÉS
+        "respuestA_ANALISIS": this.valorModal
+      });
+  }
 
   saveForm(){
-    if (this.isFormValid()) {
-      this.ApiService.saveDataDiagnostico(this.valoresForm).subscribe((data: any) => {
-        console.log(data);
-  
+    if (this.isFormValid()) {   
+      this.ApiService.saveDataDiagnostico(this.valoresForm)
+      .subscribe((data: any) => {     
+        this.showModal = true; // se muestra el div del modal  
+        console.log(data); 
       });
-
-      const title = "Registro exitoso";
-      const message = "Se guardaron los campos correctamente"
-      this.Message.showModal(title,message);
     }
-    this.router.navigate(['/diagnosticoDoc'])
+  }
+
+  saveModal(){
+    this.ApiService.saveModalDiagnostico(this.valoresModal)
+    .subscribe((data: any) => {     
+      console.log(data); 
+    });
   }
 
   goBack() {
     this.router.navigate(['/dashboard'])
   }
 
+  showMessage() {
+    const title = "Registro exitoso";
+    const message = "Se guardaron los campos correctamente";
+    this.Message.showModal(title, message);
+    this.router.navigate(['/diagnosticoDoc'])
+  }
 }

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-app-documentacion',
@@ -30,7 +31,7 @@ export class AppDocumentacionComponent implements OnInit {
   ntc: string;
   pdfUrl: string;
 
-  constructor() {}
+  constructor(private router: Router) {}
   ngOnInit(): void {
     this.normaSelected = localStorage.getItem('normaSelected');
     this.ntc = this.normaSelected.substring(0, 8);
@@ -143,6 +144,10 @@ export class AppDocumentacionComponent implements OnInit {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+}
+
+goBack() {
+  this.router.navigate(['/dashboard'])
 }
 
 }

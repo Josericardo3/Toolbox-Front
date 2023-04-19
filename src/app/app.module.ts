@@ -53,7 +53,7 @@ import { EMatrizRequisitosLegalesComponent } from './modules/e-matriz-requisitos
     AppEvidenciaComponent,
     RecoveryComponent,
     ModalComponent,
-    EMatrizRequisitosLegalesComponent,
+    EMatrizRequisitosLegalesComponent
   ],
   imports: [
     BrowserModule,

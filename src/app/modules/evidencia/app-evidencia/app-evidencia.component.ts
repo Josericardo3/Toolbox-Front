@@ -3,6 +3,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 // import { readFile, writeFile } from 'fs/promises';
 import { HttpClient } from '@angular/common/http';
 import { FileUploadService } from 'src/app/servicios/file-upload/file-upload.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-app-evidencia',
@@ -67,7 +68,8 @@ export class AppEvidenciaComponent implements OnInit{
   
   constructor(
     private http: HttpClient,
-    private FileUploadService: FileUploadService
+    private FileUploadService: FileUploadService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {}
@@ -301,5 +303,9 @@ export class AppEvidenciaComponent implements OnInit{
     } else if (section === 'itemC') {
       this.subirVisibleC = !this.subirVisibleC;
     }
+  }
+
+  goBack() {
+    this.router.navigate(['/dashboard'])
   }
 }

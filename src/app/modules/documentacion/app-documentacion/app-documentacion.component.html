@@ -25,7 +25,7 @@
                     <a (click)="downloadPdf('MATRIZ REQUISITOS LEGALES-Aprobada V2.pdf'); downloadPdf('PROCEDIMIENTO REQUISITOS LEGALES-Aprobado.pdf')">Ver documento</a> | 
                     <a routerLink="/evidencia" routerLinkActive="activebutton">Evidencia</a></p>
                 <p>4.2 Comprensión de la organización y de su contexto | 
-                    <a href="../../../../assets/DOCS/Norma/MATRIZ DE COMUNICACION-Aprobada con observaciones.pdf">Ver documento</a> | 
+                    <a>Ver documento</a> | 
                     <a routerLink="/evidencia" routerLinkActive="activebutton">Evidencia</a></p>
                 <p>4.3 Comprensión de las necesidades y expectativas de las partes interesadas | 
                     <a (click)="downloadPdf('TALLER PARTES INTERESADAS - Aprobado.pdf'); downloadPdf('MATRIZ PARTES INTERESADAS.pdf')">Ver documento</a> | 
@@ -215,7 +215,7 @@
                 <p>Contenido Anexo C | <a>Ver documento</a> | <a routerLink="/evidencia" routerLinkActive="activebutton">Evidencia</a></p>
             </div>
         </div>
-    <button type="submit" class="btn">Atrás</button>
+    <button type="button" (click)="goBack()" class="btn">Atrás</button>
 </div>
 <app-app-footer></app-app-footer>
 <ngx-spinner></ngx-spinner>

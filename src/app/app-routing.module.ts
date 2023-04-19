@@ -27,7 +27,7 @@ const routes: Routes = [
   {path: 'evidencia', component: AppEvidenciaComponent},
   {path: 'recovery/:id', component: RecoveryComponent},
   {path: 'EMatrizRequisitosLegales', component: EMatrizRequisitosLegalesComponent},
-  {path: 'recovery', component: RecoveryComponent},
+  {path: 'recovery', component: RecoveryComponent}
   //{path: '', component: AppMyExampleComponent},
 ];
 
