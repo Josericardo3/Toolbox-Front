@@ -52,7 +52,7 @@
       align-items: center;
       margin: 19px 10px 19px 11px;
       flex-direction: row;
-      justify-content: space-between;
+      justify-content: space-evenly;
       font-family: 'Work Sans', sans-serif;
   }
   
@@ -167,8 +167,8 @@
       background: #068460;
       color: white;
       border-radius: 3px;
-      width: 58px;
-      height: 24px;
+      width: 120px;
+      height: 30px;
       border: 1px solid white;
       cursor: pointer;
   }
@@ -194,12 +194,16 @@
   }
   
   /* modal asignar asesor*/
-  
+ 
   .titulo-modal{
     text-align: center;
-    font-weight: bold;
-    font-size: 24px;
-    font-family:'Work Sans', sans-serif;
+    /* font-weight: bold;*/
+    font-size: 24px; 
+    font-family:'Montserrat', sans-serif;
+    /* font-family:'Work Sans', sans-serif; */
+    font-weight: 600;
+    margin-top: 12px;
+    margin-bottom: 15px;
   }
   
   input.ng-invalid.ng-touched {
@@ -350,9 +354,13 @@
     padding: 0px 14px;
     cursor: pointer;
     border: #0C9D74;
-    height: 23px;
+    height: 26px;
     font-size: 14px;
-  }
+    text-align: center;
+    padding-top: 3px;
+    padding-bottom: 23px;
+    width: 70px;
+    }
   
   .btn-cancel{
     background:#E3434D;
@@ -361,8 +369,12 @@
     padding: 0px 14px;
     cursor: pointer;
     border:#E3434D;
-    height: 23px;
+    height: 26px;
     font-size: 14px;
+    text-align: center;
+    padding-top: 3px;
+    padding-bottom: 23px;
+    
   }
   
   
