@@ -154,7 +154,7 @@ export class AppDiagnosticoDocComponent implements OnInit {
   }
 
   generateDiagnostico() {
-    if(!!!this.datosD){
+    if(!!!this.datosD.usuario){
       const title = "Error";
       const message = "No se encontró información para generar el informe de diagnóstico"
       this.Message.showModal(title,message);
@@ -360,7 +360,7 @@ export class AppDiagnosticoDocComponent implements OnInit {
   }
 
   generateListaChequeo(){
-    if(!!!this.datosL){
+    if(!!!this.datosL.usuario){
       const title = "No hay datos";
       const message = "No hay datos para generar el informe"
       this.Message.showModal(title,message);
@@ -504,6 +504,12 @@ export class AppDiagnosticoDocComponent implements OnInit {
   }
 
   generatePlanMejora(){
+    if(!!!this.datosP.usuario){
+      const title = "No hay datos";
+      const message = "No hay datos para generar el informe"
+      this.Message.showModal(title,message);
+      return;
+    }
     const pdfDefinition: any = {
       pageSize: {
         width: 794,
