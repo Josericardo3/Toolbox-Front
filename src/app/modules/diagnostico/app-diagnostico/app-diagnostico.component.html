@@ -26,7 +26,7 @@
               <div class="radio">
                 <input type="radio" [value]="opcion.item" [name]="'radio' + j + '-' + i" (change)="capturarValor($event, opcion.item, subcampo.numeralprincipal , subcampo.numeralespecifico)" 
                 (click)="valorSeleccionado = opcion.item" [id]="subcampo.numeralespecifico" (change)="opcionSeleccionada = true"
-                [formControlName]="'radio' + j + '-' + i"> {{opcion.valor}}
+                [formControlName]="'radio' + j + '-' + i"> {{opcion.valor}} {{opcion.item}}
               </div>
             </div>
           </div>
@@ -39,19 +39,12 @@
     <label *ngIf="!isFormValid()" class="completarCamposLabel">Completa todos los campos obligatorios del formulario</label>
     <div>
       <button type="submit" class="btn" [disabled]="!isFormValid()">Guardar</button>
-      <button type="button" (click)="goBack()" class="btn">Atrás</button>     
+      <button type="button" (click)="goBack()" class="btn">Atrás</button>
+      
     </div>
     
 </form>
-<div class="modal-background" id="modal-success" *ngIf="showModal">
-  <div class="modal-content">
-    <h2 class="modal-title">Título del modal</h2>
-    <textarea style="height: 200px; width: 400px" (input)="capturarValorModal($event)"></textarea>
-    <div class="modal-btn" >
-     <button (click)="showModal = false; showMessage(); saveModal()">Guardar</button>
-    </div>
-  </div>
-</div>
+
 <app-app-footer></app-app-footer>
 <app-modal></app-modal>
 <ngx-spinner></ngx-spinner>

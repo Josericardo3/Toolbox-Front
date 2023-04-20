@@ -36,7 +36,7 @@ export class AppGestionDeUsuariosComponent {
     TotalPaginas: 0,
     TotalRegistros: 0,
   }
-  arrEstado = ['En proceso', 'Finalizado', 'sin atencion']
+  arrEstado = ['En Proceso', 'Finalizado', 'Sin Atencion']
   public registerNewAsesor!: FormGroup
   private emailPattern: any = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
   constructor(public ApiService: ApiService,

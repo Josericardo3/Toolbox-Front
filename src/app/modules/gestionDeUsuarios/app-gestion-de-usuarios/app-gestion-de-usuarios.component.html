@@ -29,9 +29,7 @@
       <input type="text" (change)="capturarValorAsesor($event)" />   
       <label class="padding-label">Estado</label>
       <select class="estado" (click)="filterResult() "(change)="capturarValorE($event)" >
-        <option  *ngFor="let element of arrEstado"  >
-          {{ element | titlecase}}
-        </option>
+        <option  *ngFor="let element of arrEstado">{{ element }}</option>
       </select>
       <button (click)="filterResult()" class="buscar">
         <i class="fa-solid fa-magnifying-glass" style="color: #f4f7fa;"></i>
