@@ -126,7 +126,6 @@ ordenarPreguntas() {
         idorden: orden.idorden
       };
     }).sort((a: any, b: any) => a.idorden - b.idorden);
-    console.log(this.preguntasOrdenadas)
   }
 }
 

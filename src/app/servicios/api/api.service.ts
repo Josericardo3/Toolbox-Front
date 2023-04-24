@@ -5,6 +5,7 @@ import { environment } from 'src/environments/environment.prod'
 import { LoginI } from '../../models/loginInterface'
 import { ResponseI } from '../../models/responseInterface'
 import { mergeMap } from 'rxjs/operators';
+import { debug } from 'console'
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
 };
@@ -128,22 +129,9 @@ export class ApiService {
     return of(observables).pipe(mergeMap(responses => forkJoin(responses)));
   }
 
-  saveModalDiagnostico(request: any): Observable<any[]> {
-    debugger
+  saveModalDiagnostico(request: any) {
     const modalDiagnostico = `${this.apiURL}/api/Asesor/RespuestaAsesor`;
-    const observables = [];
-  
-    for (let i = 0; i < request.length; i++) {
-      const respuesta = {
-        fK_ID_NORMA: request[i].fK_ID_NORMA,
-        fK_ID_USUARIO: request[i].fK_ID_USUARIO,
-        fK_ID_ASESOR: request[i].fK_ID_ASESOR,
-        respuestA_ANALISIS: request[i].respuestA_ANALISIS
-      };
-      const observable = this.http.post<any>(modalDiagnostico, respuesta);
-      observables.push(observable);
-    }
-    return of(observables).pipe(mergeMap(responses => forkJoin(responses)));
+    return this.http.post<any>(modalDiagnostico, request)
   }
 
   //enlista el asesor
@@ -185,8 +173,8 @@ export class ApiService {
   }
 
   getPlanMejoraApi(){
-    const normaValue = window.localStorage.getItem('idNormaSelected');
-    const idUsuario = window.localStorage.getItem('Id');
+    var normaValue = window.localStorage.getItem('idNormaSelected');
+    var idUsuario = window.localStorage.getItem('Id');
     // const id = localStorage.getItem('Id');
     // const normaValue = JSON.parse(window.localStorage.getItem('norma'));
     // const idn = normaValue[0].id;

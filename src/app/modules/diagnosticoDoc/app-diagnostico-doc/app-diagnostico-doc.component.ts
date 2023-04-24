@@ -9,11 +9,13 @@ import { HttpClient } from '@angular/common/http';
 (pdfMake as any).vfs = pdfFonts.pdfMake.vfs;
 import { ModalService } from 'src/app/messagemodal/messagemodal.component.service' 
 
-// import { Chart } from 'chart.js';
+import { Chart } from 'chart.js';
 
-// import { ChartJSNodeCanvas } from 'chartjs-node-canvas';
-// import { createCanvas } from 'canvas';
-// const chartJSNodeCanvas = require('chartjs-node-canvas');
+import { ChartJSNodeCanvas } from 'chartjs-node-canvas';
+import { createCanvas, Image } from 'canvas';
+const chartJSNodeCanvas = require('chartjs-node-canvas');
+import html2canvas from 'html2canvas';
+
 
 @Component({
   selector: 'app-app-diagnostico-doc',
@@ -34,6 +36,7 @@ export class AppDiagnosticoDocComponent implements OnInit {
   subcategoriarntD: string;
   municipioD: any;
   departamentoD: any;
+  etapaD: any;
 
   //Lista Pla de Mejora
   datosP: any = [];
@@ -48,6 +51,7 @@ export class AppDiagnosticoDocComponent implements OnInit {
   subcategoriarntP: string;
   municipioP: any;
   departamentoP: any;
+  etapaP: any;
 
   //Lista de chequeo
   NTCL: string;
@@ -62,8 +66,12 @@ export class AppDiagnosticoDocComponent implements OnInit {
   subcategoriarnt: string;
   municipio: any;
   departamento: any;
+  etapa: any;
 
   numeral: string;
+  showModal = false;
+  valorModal: any;
+  valoresModal: any;
   
   constructor( 
     private router: Router,
@@ -98,8 +106,9 @@ export class AppDiagnosticoDocComponent implements OnInit {
       this.correoResponsableSostenibilidad = this.datosL.usuario?.correoResponsableSostenibilidad;
       this.categoriarnt = this.datosL.usuario?.categoriarnt;
       this.subcategoriarnt = this.datosL.usuario?.subcategoriarnt;
-      this.municipio = this.datosL.usuario?.municipio,
-      this.departamento = this.datosL.usuario?.departamento
+      this.municipio = this.datosL.usuario?.municipio;
+      this.departamento = this.datosL.usuario?.departamento;
+      this.etapa = this.datosL.usuario?.etapaDiagnostico;
     });
   }
 
@@ -125,6 +134,7 @@ export class AppDiagnosticoDocComponent implements OnInit {
       this.subcategoriarntD = this.datosD.usuario?.subcategoriarnt;
       this.municipioD = this.datosD.usuario?.municipio,
       this.departamentoD = this.datosD.usuario?.departamento
+      this.etapaD = this.datosD.usuario?.etapaDiagnostico;
     })
   }
 
@@ -148,13 +158,13 @@ export class AppDiagnosticoDocComponent implements OnInit {
       this.correoResponsableSostenibilidadP = this.datosP.usuario?.correoResponsableSostenibilidad;
       this.categoriarntP = this.datosP.usuario?.categoriarnt;
       this.subcategoriarntP = this.datosP.usuario?.subcategoriarnt;
-      this.municipioP = this.datosP.usuario?.municipio,
-      this.departamentoP = this.datosP.usuario?.departamento
+      this.municipioP = this.datosP.usuario?.municipio;
+      this.departamentoP = this.datosP.usuario?.departamento;
+      this.etapaP = this.datosP.usuario?.etapaDiagnostico;
     });
   }
-
   generateDiagnostico() {
-    if(!!!this.datosD.usuario){
+    if(!!!this.datosD){
       const title = "Error";
       const message = "No se encontró información para generar el informe de diagnóstico"
       this.Message.showModal(title,message);
@@ -209,7 +219,7 @@ export class AppDiagnosticoDocComponent implements OnInit {
                 'NTC de Turismo',
                 this.NTC,
                 'Etapa del diagnóstico',
-                'Inicial'
+                this.etapaD
               ],
               [
                 'Nombre del responsable de sostenibilidad',
@@ -238,7 +248,7 @@ export class AppDiagnosticoDocComponent implements OnInit {
               ],
               [
                 {
-                  text: 'Califique, acorde con la siguiente escala:\n\nC = Cumple: Se encuentra documentado, implementado, socializado y es adecuado para la organización.\nCP = Cumple parcialmente: Se encuentra parcialmente documentado o en su totalidad pero no está implementado o está en proceso de implementación o se ejecutan actividades pero no están documentadas.\nNC = No cumple: No se ha realizado ninguna acción respecto al requisito.\nNA = No aplica: No es aplicable el requisito a la organización.',
+                  text: 'Califique, acorde con la siguiente escala:\n\nC = Cumple: Se encuentra documentado, implementado, socializado y es adecuado para la organización.\nCP = Cumple parcialmente: Se encuentra parcialmente documentado o en su totalidad, pero no está implementado o está en proceso de implementación o se ejecutan actividades pero no están documentadas.\nNC = No cumple: No se ha realizado ninguna acción respecto al requisito.\nNA = No aplica: No es aplicable el requisito a la organización.',
                   colSpan: 2
                 },
                 {}
@@ -358,7 +368,283 @@ export class AppDiagnosticoDocComponent implements OnInit {
     }
     
   }
+  // generateDiagnostico() {
+  //     if(!!!this.datosD.usuario){
+  //       const title = "Error";
+  //       const message = "No se encontró información para generar el informe de diagnóstico"
+  //       this.Message.showModal(title,message);
+  //     }else{
+  //       this.showModal = true;
+  //     }
+  // }
 
+  chartImage: any;
+  // chart(){
+  //   // this.chartImage = await this.captureChartImage();
+  //   const data = {
+  //     labels: ['C', 'CP', 'NC', 'NA'],
+  //     datasets: [{
+  //       data: [10, 20, 30, 40],
+  //       backgroundColor: ['#00986c', '#2ca880', '#57bd9e', '#7ad3be'],
+  //       // borderColor: ['white', 'white', 'white', 'white'],
+  //       // borderWidth: 1
+  //     }]
+  //   };
+  //   const canvas = <HTMLCanvasElement>document.getElementById('myChart');
+  //   const ctx = canvas.getContext('2d');
+  //   const myChart = new Chart(ctx, {
+  //     type: 'pie',
+  //     data: data
+  //   });
+  //   const doc: any = {
+  //     content: [
+  //       {
+  //         text: 'Gráfico Circular',
+  //         style: 'header'
+  //       },
+  //       {
+  //         image: this.chartImage,
+  //         width: 300,
+  //         height: 150
+  //       }
+  //     ],
+  //     styles: {
+  //       header: {
+  //         fontSize: 18,
+  //         bold: true,
+  //         margin: [0, 0, 0, 10]
+  //       }
+  //     }
+  //   };
+  //   pdfMake.createPdf(doc).download();
+    
+  // //   const chartImageCanvas = await html2canvas(canvas); // Capturar el canvas del gráfico como una imagen
+  // // this.chartImage = chartImageCanvas.toDataURL(); // Convertir la imagen en base64
+
+  // }
+
+  // crearImagen(){
+  //   html2canvas(document.querySelector("#chart-container"))
+  //   .then(canvas => {
+  //     this.chartImage = canvas.toDataURL();
+  //   })
+  // }
+  
+  // captureChartImage(): Promise<string> {
+  //   return new Promise((resolve, reject) => {
+  //     const canvas = document.getElementById('myChart') as HTMLCanvasElement;
+  //     canvas.toBlob((blob) => {
+  //       const reader = new FileReader();
+  //       reader.readAsDataURL(blob);
+  //       reader.onloadend = () => {
+  //         const base64data: any = reader.result;
+  //         resolve(base64data);
+  //       };
+  //     });
+  //   });
+  // }
+  
+  saveModal(){
+    this.valorModal = document.querySelector('#textAreaModal') as HTMLTextAreaElement
+    const modal = this.valorModal.value
+    const normaValue = JSON.parse(window.localStorage.getItem('norma'));
+    const idNorma = normaValue[0].id;
+    const idUsuario = parseInt(localStorage.getItem('Id'));
+    this.valoresModal = {
+        "idnormatecnica": idNorma,
+        "idusuariopst": idUsuario,
+        "idusuario": 2, //CAMBIAR DESPUÉS
+        "respuestaanalisis": modal
+    }
+    this.ApiService.saveModalDiagnostico(this.valoresModal)
+    .subscribe(() => {
+      // const pdfDefinition: any = {
+      //   pageSize: {
+      //     width: 794,
+      //     height: 1123
+      //   },
+      //   pageMargins: [ 30, 30, 30, 30 ],
+      //   content: [
+      //     {
+      //       toc: {
+      //         title: {text: 'Informe de diagnóstico', style: [ 'header' ]}
+      //       }
+      //     },
+      //     {
+      //       table: {
+      //         widths: [ '*', '*', '*', '*' ],
+      //         body: [
+      //           [
+      //             { text: '1. Información general del Prestador de Servicios Turísticos - PST', colSpan: 4, alignment: 'center', bold: true},
+      //             {},
+      //             {},
+      //             {}
+      //           ],
+      //           [
+      //             'Nombre del prestador de servicios turísticos PST',
+      //             {text: this.nombrePstD, colSpan:3, alignment: 'center'},
+      //             {},
+      //             {}
+      //           ],
+      //           [
+      //             'Número de identificación tributaria NIT',
+      //             this.nitD,
+      //             'Registro Nacional de Turismo RNT',
+      //             this.rntD
+      //           ],
+      //           [
+      //             'Categoría del RNT',
+      //             this.categoriarntD,
+      //             'Subcategoría del RNT	',
+      //             this.subcategoriarntD
+      //           ],
+      //           [
+      //             'Municipio',
+      //             this.municipioD,
+      //             'Departamento',
+      //             this.departamentoD
+      //           ],
+      //           [
+      //             'NTC de Turismo',
+      //             this.NTC,
+      //             'Etapa del diagnóstico',
+      //             this.etapaD
+      //           ],
+      //           [
+      //             'Nombre del responsable de sostenibilidad',
+      //             this.nombreResponsableSostenibilidadD,
+      //             'Teléfono de contacto del responsable de sostenibilidad',
+      //             this.telefonoResponsableSostenibilidadD
+      //           ],
+      //           [
+      //             'Correo del responsable de sostenibilidad',
+      //             {text: this.correoResponsableSostenibilidadD, colSpan:2, alignment: 'center'},
+      //             {},
+      //             ''
+      //           ]
+      //         ]
+      //       },
+      //       fontSize: 10,
+      //     },
+      //     '\n',
+      //     {
+      //       table: {
+      //         widths: [ '*', '*' ],
+      //         body: [
+      //           [
+      //             { text: '2. Metodología de calificación diagnóstico', alignment: 'center', bold: true, colSpan: 2},
+      //             {}
+      //           ],
+      //           [
+      //             {
+      //               text: 'Califique, acorde con la siguiente escala:\n\nC = Cumple: Se encuentra documentado, implementado, socializado y es adecuado para la organización.\nCP = Cumple parcialmente: Se encuentra parcialmente documentado o en su totalidad, pero no está implementado o está en proceso de implementación o se ejecutan actividades pero no están documentadas.\nNC = No cumple: No se ha realizado ninguna acción respecto al requisito.\nNA = No aplica: No es aplicable el requisito a la organización.',
+      //               colSpan: 2
+      //             },
+      //             {}
+      //           ]
+      //         ]
+      //       },
+      //       fontSize: 10,
+      //     },
+      //     '\n',
+      //     {
+      //       table: {
+      //         widths: [ '*', '*', '*', '*','*' ],
+      //         body: [
+      //           [
+      //             { text: '3. Resultados del diagnóstico', colSpan: 5, style: ['tituloDinamico'] },
+      //             {},
+      //             {},
+      //             {},
+      //             {}
+      //           ],
+      //         ],
+      //       },
+      //       fontSize: 10,
+      //     }
+      //   ],
+      //   styles: {
+      //     header: {
+      //       fontSize: 16,
+      //       bold: true,
+      //       margin: [0, 10],
+      //       alignment: 'center',
+      //     },
+      //     tituloDinamico: {
+      //       alignment: 'center', 
+      //       bold: true,
+      //       fontSize: 10,
+      //     }
+      //   }
+      // }
+      // this.datosD.agrupacion.forEach( (obj: any) => {
+      //   pdfDefinition.content[5].table.body.push([
+      //     { text: obj.tituloprincipal, colSpan: 5, style: ['tituloDinamico'] },
+      //     {},
+      //     {},
+      //     {},
+      //     {}
+      //   ]);
+      //   pdfDefinition.content[5].table.body.push([
+      //     { text: 'Cumplimiento', style: ['tituloDinamico'] },
+      //     { text: 'No Aplica', style: ['tituloDinamico'] },
+      //     { text: 'No Cumple', style: ['tituloDinamico'] },
+      //     { text: 'Cumple Parcialmente', style: ['tituloDinamico'] },
+      //     { text: 'Cumple', style: ['tituloDinamico'] }
+      //   ]);
+      //   pdfDefinition.content[5].table.body.push([
+      //    {text: obj.porcentajeC, style: ['tituloDinamico']},
+      //    {text: obj.numeroRequisitoNA, style: ['tituloDinamico']},
+      //    {text: obj.numeroRequisitoNC, style: ['tituloDinamico']},
+      //    {text: obj.numeroRequisitoCP, style: ['tituloDinamico']},
+      //    {text: obj.numeroRequisitoC, style: ['tituloDinamico']}
+      //   ]);
+      //   pdfDefinition.content[5].table.body.push([
+      //     { text: 'Requisito', style: ['tituloDinamico'] },
+      //     { text: 'Calificación', style: ['tituloDinamico'] },
+      //     { text: 'Observaciones', colSpan: 3, style: ['tituloDinamico'] },
+      //     {},              
+      //     {}
+      //    ]);       
+      //   obj.listacampos.forEach((i : any) => {
+      //   pdfDefinition.content[5].table.body.push([
+      //     { text: i.tituloRequisito, alignment: 'center' },
+      //     { text: i.calificado, alignment: 'center' },
+      //     { text: i.observacion, colSpan: 3, alignment: 'justify' },
+      //     {},
+      //     {}
+      //   ]);
+      //   });
+        
+      //   // const data = {
+      //   //   labels: ['C', 'CP', 'NC', 'NA'],
+      //   //   datasets: [{
+      //   //     data: [10, 20, 30, 40],
+      //   //     backgroundColor: ['#00986c', '#2ca880', '#57bd9e', '#7ad3be'],
+      //   //   }]
+      //   // };
+      //   // const canvas = <HTMLCanvasElement>document.getElementById('myChart');
+      //   // const ctx = canvas.getContext('2d');
+      //   // const myChart = new Chart(ctx, {
+      //   //   type: 'pie',
+      //   //   data: data
+      //   // });
+      //   // this.chartImage = this.captureChartImage();
+      //   pdfDefinition.content[5].table.body.push([
+      //     {image: this.chartImage, width: 300, height: 150, alignment: 'center', colSpan: 5 },
+      //     {},
+      //     {},
+      //     {},
+      //     {}
+      //   ]);
+      // });
+      const title = "Se descargó correctamente";
+      const message = "La descarga se ha realizado exitosamente"
+      this.Message.showModal(title,message);
+      // pdfMake.createPdf(pdfDefinition).download('Informe_de_diagnóstico.pdf');
+    });
+  }
+  
   generateListaChequeo(){
     if(!!!this.datosL.usuario){
       const title = "No hay datos";
@@ -416,7 +702,7 @@ export class AppDiagnosticoDocComponent implements OnInit {
                 'NTC de Turismo',
                 this.NTCL,
                 'Etapa del diagnóstico',
-                'Inicial'
+                this.etapa
               ],
               [
                 'Nombre del responsable de sostenibilidad',
@@ -445,7 +731,7 @@ export class AppDiagnosticoDocComponent implements OnInit {
               ],
               [
                 {
-                  text: 'Califique, acorde con la siguiente escala:\n\nC = Cumple: Se encuentra documentado, implementado, socializado y es adecuado para la organización.\nCP = Cumple parcialmente: Se encuentra parcialmente documentado o en su totalidad pero no está implementado o está en proceso de implementación o se ejecutan actividades pero no están documentadas.\nNC = No cumple: No se ha realizado ninguna acción respecto al requisito.\nNA = No aplica: No es aplicable el requisito a la organización.',
+                  text: 'Califique, acorde con la siguiente escala:\n\nC = Cumple: Se encuentra documentado, implementado, socializado y es adecuado para la organización.\nCP = Cumple parcialmente: Se encuentra parcialmente documentado o en su totalidad, pero no está implementado o está en proceso de implementación o se ejecutan actividades pero no están documentadas.\nNC = No cumple: No se ha realizado ninguna acción respecto al requisito.\nNA = No aplica: No es aplicable el requisito a la organización.',
                   colSpan: 2, fontSize: 10
                 },
                 {}
@@ -460,7 +746,7 @@ export class AppDiagnosticoDocComponent implements OnInit {
             body: [
               [
                 {text: 'Numeral', style: ['tituloDinamico']},
-                {text: 'Titulo del requisito', style: ['tituloDinamico']},
+                {text: 'Título del requisito', style: ['tituloDinamico']},
                 {text: 'Requisito', style: ['tituloDinamico']},
                 {text: 'Posible evidencia', style: ['tituloDinamico']},
                 {text: 'Calificación', style: ['tituloDinamico']},
@@ -560,7 +846,7 @@ export class AppDiagnosticoDocComponent implements OnInit {
                 'NTC de Turismo',
                 this.NTCP,
                 'Etapa del diagnóstico',
-                'Inicial'
+                this.etapaP
               ],
               [
                 'Nombre del responsable de sostenibilidad',
@@ -589,7 +875,7 @@ export class AppDiagnosticoDocComponent implements OnInit {
               ],
               [
                 {
-                  text: 'Califique, acorde con la siguiente escala:\n\nC = Cumple: Se encuentra documentado, implementado, socializado y es adecuado para la organización.\nCP = Cumple parcialmente: Se encuentra parcialmente documentado o en su totalidad pero no está implementado o está en proceso de implementación o se ejecutan actividades pero no están documentadas.\nNC = No cumple: No se ha realizado ninguna acción respecto al requisito.\nNA = No aplica: No es aplicable el requisito a la organización.',
+                  text: 'Califique, acorde con la siguiente escala:\n\nC = Cumple: Se encuentra documentado, implementado, socializado y es adecuado para la organización.\nCP = Cumple parcialmente: Se encuentra parcialmente documentado o en su totalidad, pero no está implementado o está en proceso de implementación o se ejecutan actividades pero no están documentadas.\nNC = No cumple: No se ha realizado ninguna acción respecto al requisito.\nNA = No aplica: No es aplicable el requisito a la organización.',
                   colSpan: 2
                 },
                 {}
@@ -657,3 +943,4 @@ export class AppDiagnosticoDocComponent implements OnInit {
     this.router.navigate(['/dashboard'])
   }
 }
+

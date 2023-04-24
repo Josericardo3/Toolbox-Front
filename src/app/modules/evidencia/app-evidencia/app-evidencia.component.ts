@@ -65,6 +65,9 @@ export class AppEvidenciaComponent implements OnInit{
   public file: File | any;
   public loading: boolean;
   public archivos: any = []
+
+  private selectedFile: File;
+  public fileName: string;
   
   constructor(
     private http: HttpClient,
@@ -74,10 +77,7 @@ export class AppEvidenciaComponent implements OnInit{
 
   ngOnInit(): void {}
 
-  capturarFile(){    
-    // this.file = event.target.files[0];
-    // this.archivos.push(this.file)
-
+  capturarFile(){
     const archivoSeleccionado = this.archivo.nativeElement.files[0];
     const nombreArchivo = document.querySelector('#nombre') as HTMLElement;
     if (archivoSeleccionado) {
@@ -87,67 +87,48 @@ export class AppEvidenciaComponent implements OnInit{
     }
   }
 
+  private serverUrl = 'http://localhost:4200/evidencia'; // Reemplaza con la URL de tu servidor
   uploadFile(): void {
-    // const reader = new FileReader();
-    // reader.onload = (event) => {
-    //   const content = event.target.result;
-    //   const fileName = this.file.name;
-    //   const fileType = this.file.type;
-    //   const newFile = new File([content], fileName, { type: fileType });
+    const archivo = (<HTMLInputElement>document.getElementById('archivo')).files[0];
+    const formData = new FormData();
+    formData.append('archivo', archivo);
   
-    //   Crea una solicitud para guardar el archivo en la carpeta "uploads"
-    //   const xhr = new XMLHttpRequest();
-    //   xhr.open('POST', 'src/uploads');
-    //   xhr.setRequestHeader('Content-Type', 'application/octet-stream');
-    //   xhr.setRequestHeader('Content-Disposition', `attachment; filename="${fileName}"`);
-    //   xhr.send(newFile);
-    // };
-    // reader.readAsArrayBuffer(this.file);
-
-
-
-    if (this.file && this.file.size <= 10485760) { // 10 MB en bytes
-      const reader = new FileReader();
-      reader.readAsDataURL(this.file);
-      reader.onload = (e: ProgressEvent) => {
-        const contents = (e.target as FileReader).result as string;
-        const fileName = this.file.name;
-        const fileData = reader.result.toString().split(',')[1];
-        const filePath = `uploads/${fileName}`;
-        // localStorage.setItem(filePath, fileData);
-        localStorage.setItem(filePath, contents);
-        // Copia el archivo del Local Storage a la carpeta local "uploads"
-      // fs.writeFileSync('./uploads/' + this.file.name, contents);
-      };
-    } else {
-      console.error('El archivo es demasiado grande. El tamaño máximo es de 10 MB.');
+    this.http.post(this.serverUrl, formData).subscribe(
+      (response) => console.log(response),
+      (error) => console.log(error)
+    );
+    console.log('entró')
+    // if (this.file && this.file.size <= 10485760) { // 10 MB en bytes
+    //   const reader = new FileReader();
+    //   reader.readAsDataURL(this.file);
+    //   reader.onload = (e: ProgressEvent) => {
+    //     const contents = (e.target as FileReader).result as string;
+    //     const fileName = this.file.name;
+    //     const fileData = reader.result.toString().split(',')[1];
+    //     const filePath = `uploads/${fileName}`;
+    //     // localStorage.setItem(filePath, fileData);
+    //     localStorage.setItem(filePath, contents);
+    //     // Copia el archivo del Local Storage a la carpeta local "uploads"
+    //   // fs.writeFileSync('./uploads/' + this.file.name, contents);
+    //   };
+    // } else {
+    //   console.error('El archivo es demasiado grande. El tamaño máximo es de 10 MB.');
     }
-
-
-
-
-    // try {
-    //   this.loading = true;
-    //   const formularioDeDatos = new FormData();
-    //   this.archivos.forEach(archivo => {
-    //     formularioDeDatos.append('files', archivo)
-    //   })
-    //   // formularioDeDatos.append('_id', 'MY_ID_123')
-    //   this.FileUploadService.post(`http://localhost:3001/src/uploads`, formularioDeDatos)
-    //     .subscribe(res => {
-    //       this.loading = false;
-    //       console.log('Respuesta del servidor', res);
-
-    //     }, () => {
-    //       this.loading = false;
-    //       alert('Error');
-    //     })
-    // } catch (e) {
-    //   this.loading = false;
-    //   console.log('ERROR', e);
-
-    // }
-  }
+  
+    private saveFileToAssetsFolder(file: File): void {
+      const apiUrl = 'http://localhost:4200/evidencia'; // URL de tu servidor API
+      const formData = new FormData();
+      formData.append('file', file, './uploads/' + file.name); // ruta de la subcarpeta de assets
+    
+      this.http.post(apiUrl, formData).subscribe(
+        response => {
+          console.log('File saved successfully');
+        },
+        error => {
+          console.error('Error saving file:', error);
+        }
+      );
+    }
 
   toggleSection(section) {
     if (section === 'contexts') {

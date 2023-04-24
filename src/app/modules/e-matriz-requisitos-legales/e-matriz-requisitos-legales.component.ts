@@ -9,8 +9,13 @@ import { Router } from '@angular/router';
 })
 
 export class EMatrizRequisitosLegalesComponent implements OnInit{
-  @ViewChild('nuevoDiv', {static: true}) nuevoDivRef!: TemplateRef<any>;
-  @ViewChild('container', {read: ViewContainerRef}) containerRef!: ViewContainerRef;
+  // @ViewChild('nuevoDiv', {static: true}) nuevoDivRef!: TemplateRef<any>;
+  // @ViewChild('container', {read: ViewContainerRef}) containerRef!: ViewContainerRef;
+
+  @ViewChild('containers', { read: ViewContainerRef }) containers: ViewContainerRef;
+  @ViewChild('inputTemplate') inputTemplate: TemplateRef<any>;
+  @ViewChild('divsContainer', { read: ViewContainerRef }) divsContainer: ViewContainerRef;
+  divsVisible = false;
 
   datos: any = [];
   leyesTurismo: any[] = [];
@@ -26,7 +31,7 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
   lastVisible: any;
 
   primeraLeyVisible = false;
-  divAddVisible = false;
+  divAddVisible: boolean[] = [];
   adicionarVisible = false;
 
   leyesVisibles: boolean[] = [];
@@ -36,7 +41,8 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
   numero: string;
   anio: string;
   selectedOption: string = '';
-  divs: any[] = [];
+  divs: any[] = [{}];
+  nuevoDiv: any;
   tabActual = 'tab1';
   busqueda: string = '';
 
@@ -138,14 +144,6 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
      });
   }
 
-  // getLeyesApi(){
-  //   this.ApiService.getLeyes()
-  //   .subscribe((data: any) => {
-  //     this.datos = data;
-  //     console.log(this.datos)
-  //   });
-  // }
-
   cambiarTab(tab: string) {
     this.tabActual = tab;
   }
@@ -164,19 +162,29 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
     this.lastVisible = { section, index };
   }
 
+  toggleSectionDivAdd(section, index) {
+    if (section === 'divAdd') {
+      this.divAddVisible[index] = !this.divAddVisible[index];
+    }
+
+    // Cierra el div abierto si se hace clic en otro div
+    if (this.lastVisible && this.lastVisible.section !== section) {
+        if (this.lastVisible.section === 'divAdd') {
+          this.divAddVisible[this.lastVisible.index] = false;
+      }
+    }
+    this.lastVisible = { section, index };
+  }
+
   toggleSection(section) {
   if (section === 'adicionar') {
       this.adicionarVisible = !this.adicionarVisible
-    } else if (section === 'divAdd') {
-      this.divAddVisible = !this.divAddVisible
     }
 
     // Cierra el div abierto si se hace clic en otro div
     if (this.lastVisible && this.lastVisible !== section) {
   if (section === 'adicionar') {
         this.adicionarVisible = false;
-      } else if (section === 'divAdd') {
-        this.divAddVisible = false;
       }
     }
 
@@ -185,6 +193,10 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
 
   isLeyVisible(index) {
     return this.leyesVisibles[index];
+  }
+
+  isDivAddVisible(index){
+    return this.divAddVisible[index]
   }
 
   onSelect(value: string) {
@@ -197,7 +209,7 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
       otroInput.style.display = 'none';
     }
   }
-
+  
   agregarDiv() {
     const anio = (document.querySelector('#anioInput') as HTMLInputElement).value;
     const numero = (document.querySelector('#numeroInput') as HTMLInputElement).value;
@@ -205,7 +217,7 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
     const secciones = (document.querySelector('#seccionesTextAreaAdd') as HTMLTextAreaElement).value;
     const tipoNormatividad = this.selectedOption === 'otro' ? (document.querySelector('#otroInput') as HTMLInputElement).value : this.selectedOption;
   
-    const nuevoDiv = {
+    this.nuevoDiv = {
       anio: anio,
       numero: numero,
       descripcion: descripcion,
@@ -213,21 +225,15 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
       tipoNormatividad: tipoNormatividad
     };
   
-    this.divs.push(nuevoDiv);
+    this.divs.push(this.nuevoDiv);
 
+    this.divsVisible = true;
       // Limpiar
-      this.selectedOption = "0";
+      (document.querySelector('#tipoNormatividadSelect') as HTMLSelectElement).value = "";
       (document.querySelector('#numeroInput') as HTMLInputElement).value = "";
       (document.querySelector('#anioInput') as HTMLInputElement).value = "";
       (document.querySelector('#descripcionTextAreaAdd') as HTMLTextAreaElement).value = "";
       (document.querySelector('#seccionesTextAreaAdd') as HTMLTextAreaElement).value = "";
-  }
-  
-  showDivAdd(){
-    const divAdd = document.getElementById('divAdd') as HTMLDivElement;
-    if (divAdd) {
-      divAdd.style.display = "block";
-    }
   }
 
   eliminarDivAdd() {
@@ -250,4 +256,8 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
   goBack() {
     this.router.navigate(['/dashboard'])
   }
+
+  // addDivPrueba() {
+  //   this.containers.createEmbeddedView(this.inputTemplate);
+  // }
 }

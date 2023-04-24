@@ -38,3 +38,71 @@ a{
     border: none;
     cursor: pointer;
 }
+.modal-background {
+    background-color: rgba(0, 0, 0, 0.5);
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .modal-content {
+    display: flex;
+    background-color: white;
+    padding: 30px;
+    border-radius: 15px;
+    width: 40vw;
+    position: initial;
+    height: 70vh;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .modal-borde{
+    border-radius: 15px;
+    border: 2px solid #ccc;
+    width: 32vw;
+    height: 60vh;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .modal-title{
+    display: flex;
+    justify-content: center;
+    border-radius: 5px;
+    margin: 2vh 0;
+    padding: 5px;
+    font-family: 'Work Sans', sans-serif;
+    font-size: 23px;
+    align-items: center;
+    width: 28vw;
+  }
+  #textAreaModal{
+    height: 50vh;
+    width: 28vw;
+    border: 1px solid #068460;
+  }
+  button{
+    margin: 3vh;
+    height: 40px;
+    width: 200px;
+    padding: 5px;
+    background-color: #068460;
+    border-radius: 100px;
+    color: #FFFFFF;
+    font-family: 'Work Sans', sans-serif;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+  } 
+  .text{
+    color: white;
+    font-size: 16px;
+    font-weight: 400;
+    font-family:'Work Sans', sans-serif;
+  }
