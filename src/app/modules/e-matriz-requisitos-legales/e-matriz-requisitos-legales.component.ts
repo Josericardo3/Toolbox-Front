@@ -1,17 +1,29 @@
 import { Component, OnInit, TemplateRef, ViewChild, ViewContainerRef} from '@angular/core';
-// import { MatTabsModule } from '@angular/material/tabs';
 import { ApiService } from 'src/app/servicios/api/api.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-e-matriz-requisitos-legales',
   templateUrl: './e-matriz-requisitos-legales.component.html',
   styleUrls: ['./e-matriz-requisitos-legales.component.css']
 })
+
 export class EMatrizRequisitosLegalesComponent implements OnInit{
-  @ViewChild('nuevoDiv', {static: true}) nuevoDivRef!: TemplateRef<any>;
-  @ViewChild('container', {read: ViewContainerRef}) containerRef!: ViewContainerRef;
+  // @ViewChild('nuevoDiv', {static: true}) nuevoDivRef!: TemplateRef<any>;
+  // @ViewChild('container', {read: ViewContainerRef}) containerRef!: ViewContainerRef;
+
+  @ViewChild('containers', { read: ViewContainerRef }) containers: ViewContainerRef;
+  @ViewChild('inputTemplate') inputTemplate: TemplateRef<any>;
+  @ViewChild('divsContainer', { read: ViewContainerRef }) divsContainer: ViewContainerRef;
+  divsVisible = false;
 
   datos: any = [];
+  leyesTurismo: any[] = [];
+  leyesAmbiental: any[] = [];
+  leyesLaboral: any[] = [];
+  leyesSocial: any[] = [];
+  leyesEconomico: any[] = [];
+  leyesParticular: any[] = [];
 
   detalles: any[] = [];
   showAdd = false;
@@ -19,69 +31,160 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
   lastVisible: any;
 
   primeraLeyVisible = false;
-  divAddVisible = false;
+  divAddVisible: boolean[] = [];
   adicionarVisible = false;
+
+  leyesVisibles: boolean[] = [];
 
   descripcion: string;
   secciones: string;
   numero: string;
   anio: string;
   selectedOption: string = '';
-  opcionSeleccionada: string = '';
-  divs: any[] = [];
+  divs: any[] = [{}];
+  nuevoDiv: any;
   tabActual = 'tab1';
   busqueda: string = '';
 
-  constructor(private ApiService: ApiService,) {}
+  opcionSeleccionada: string = '';
+  responsableSeleccionado: string = '';
+  evidenciaInput: string = '';
+  observacionInput: string = '';
+  accionesText: string = '';
+  responsablePlanSeleccionado: string = '';
+  fechaInput: string = '';
+  estadoSeleccionado: string = '';
+
+  constructor(
+    private ApiService: ApiService,
+    private router: Router
+    ) {}
+
   ngOnInit() {
     this.ApiService.getLeyes()
     .subscribe((data: any) => {
       this.datos = data;
-      console.log(this.datos)
-    });
-  }
+      const gruposTurismo = this.datos.filter((ley) => ley.categoria === 'Turismo')
+      .reduce((acumulador, ley) => {
+        const clave = ley.tipO_NORMATIVIDAD + ley.numero + ley.anio;
+        if (!acumulador[clave]) {
+          acumulador[clave] = {
+            ...ley,
+            docS_ESPECIFICOS: [ley.docS_ESPECIFICOS],
+          };
+        } else {
+          acumulador[clave].docS_ESPECIFICOS.push(ley.docS_ESPECIFICOS);
+        }
+        return acumulador;
+      }, {});
+      this.leyesTurismo = Object.values(gruposTurismo);
 
-  // getLeyesApi(){
-  //   this.ApiService.getLeyes()
-  //   .subscribe((data: any) => {
-  //     this.datos = data;
-  //     console.log(this.datos)
-  //   });
-  // }
+      const gruposAmbiental = this.datos.filter((ley) => ley.categoria === 'Ambiental')
+      .reduce((acumulador, ley) => {
+        const clave = ley.tipO_NORMATIVIDAD + ley.numero + ley.anio;
+        if (!acumulador[clave]) {
+          acumulador[clave] = {
+            ...ley,
+            docS_ESPECIFICOS: [ley.docS_ESPECIFICOS],
+          };
+        } else {
+          acumulador[clave].docS_ESPECIFICOS.push(ley.docS_ESPECIFICOS);
+        }
+        return acumulador;
+      }, {});
+      this.leyesAmbiental = Object.values(gruposAmbiental);
+
+      const gruposLaboral = this.datos.filter((ley) => ley.categoria === 'Laboral y SGSST')
+      .reduce((acumulador, ley) => {
+        const clave = ley.tipO_NORMATIVIDAD + ley.numero + ley.anio;
+        if (!acumulador[clave]) {
+          acumulador[clave] = {
+            ...ley,
+            docS_ESPECIFICOS: [ley.docS_ESPECIFICOS],
+          };
+        } else {
+          acumulador[clave].docS_ESPECIFICOS.push(ley.docS_ESPECIFICOS);
+        }
+        return acumulador;
+      }, {});
+      this.leyesLaboral = Object.values(gruposLaboral);
+
+      const gruposSocial = this.datos.filter((ley) => ley.categoria === 'Social')
+      .reduce((acumulador, ley) => {
+        const clave = ley.tipO_NORMATIVIDAD + ley.numero + ley.anio;
+        if (!acumulador[clave]) {
+          acumulador[clave] = {
+            ...ley,
+            docS_ESPECIFICOS: [ley.docS_ESPECIFICOS],
+          };
+        } else {
+          acumulador[clave].docS_ESPECIFICOS.push(ley.docS_ESPECIFICOS);
+        }
+        return acumulador;
+      }, {});
+      this.leyesSocial = Object.values(gruposSocial);
+
+      const gruposEconomico = this.datos.filter((ley) => ley.categoria === 'Economico')
+      .reduce((acumulador, ley) => {
+        const clave = ley.tipO_NORMATIVIDAD + ley.numero + ley.anio;
+        if (!acumulador[clave]) {
+          acumulador[clave] = {
+            ...ley,
+            docS_ESPECIFICOS: [ley.docS_ESPECIFICOS],
+          };
+        } else {
+          acumulador[clave].docS_ESPECIFICOS.push(ley.docS_ESPECIFICOS);
+        }
+        return acumulador;
+      }, {});
+      this.leyesEconomico = Object.values(gruposEconomico);
+
+      // this.leyesParticular = this.datos.filter((ley) => ley.categoria === 'Turismo'); // ¿cuál es la categoría?
+      
+     });
+  }
 
   cambiarTab(tab: string) {
     this.tabActual = tab;
   }
   
-
-leyesVisibles: boolean[] = [];
-toggleSectionLey(section, index) {
-  if (section === 'primeraLey') {
-    this.leyesVisibles[index] = !this.leyesVisibles[index];
-  }
-
-  // Cierra el div abierto si se hace clic en otro div
-  if (this.lastVisible && this.lastVisible.section !== section) {
-      if (this.lastVisible.section === 'primeraLey') {
-        this.leyesVisibles[this.lastVisible.index] = false;
+  toggleSectionLey(section, index) {
+    if (section === 'primeraLey') {
+      this.leyesVisibles[index] = !this.leyesVisibles[index];
     }
+
+    // Cierra el div abierto si se hace clic en otro div
+    if (this.lastVisible && this.lastVisible.section !== section) {
+        if (this.lastVisible.section === 'primeraLey') {
+          this.leyesVisibles[this.lastVisible.index] = false;
+      }
+    }
+    this.lastVisible = { section, index };
   }
-  this.lastVisible = { section, index };
-}
+
+  toggleSectionDivAdd(section, index) {
+    if (section === 'divAdd') {
+      this.divAddVisible[index] = !this.divAddVisible[index];
+    }
+
+    // Cierra el div abierto si se hace clic en otro div
+    if (this.lastVisible && this.lastVisible.section !== section) {
+        if (this.lastVisible.section === 'divAdd') {
+          this.divAddVisible[this.lastVisible.index] = false;
+      }
+    }
+    this.lastVisible = { section, index };
+  }
 
   toggleSection(section) {
   if (section === 'adicionar') {
       this.adicionarVisible = !this.adicionarVisible
-    } else if (section === 'divAdd') {
-      this.divAddVisible = !this.divAddVisible
     }
 
     // Cierra el div abierto si se hace clic en otro div
     if (this.lastVisible && this.lastVisible !== section) {
   if (section === 'adicionar') {
         this.adicionarVisible = false;
-      } else if (section === 'divAdd') {
-        this.divAddVisible = false;
       }
     }
 
@@ -90,6 +193,10 @@ toggleSectionLey(section, index) {
 
   isLeyVisible(index) {
     return this.leyesVisibles[index];
+  }
+
+  isDivAddVisible(index){
+    return this.divAddVisible[index]
   }
 
   onSelect(value: string) {
@@ -102,112 +209,7 @@ toggleSectionLey(section, index) {
       otroInput.style.display = 'none';
     }
   }
-
-  // agregarDiv() {  
-  //   this.anio = (document.querySelector('#anioInput') as HTMLInputElement).value;
-  //   this.numero = (document.querySelector('#numeroInput') as HTMLInputElement).value;
-  //   this.descripcion = (document.querySelector('#descripcionTextAreaAdd') as HTMLTextAreaElement).value;
-  //   this.secciones = (document.querySelector('#seccionesTextAreaAdd') as HTMLTextAreaElement).value;
-
-  //   // const divAdd = document.querySelector('#divAdd') as HTMLDivElement;
-  //     // if (divAdd) {
-  //       // const descripcionP = divAdd.querySelector('#descripcion') as HTMLParagraphElement;
-  //       // if (descripcionP) {
-  //       //   descripcionP.innerText = this.descripcion;
-  //       // }
-  //       // const seccionesP = divAdd.querySelector('#secciones') as HTMLParagraphElement;
-  //       // if (seccionesP) {
-  //       //   seccionesP.innerText = this.secciones;
-  //       // }
-
-  //       // const etiquetaTitulo = divAdd.querySelector('#tituloNormativa') as HTMLHeadElement;
-        
-  //       let tipoNormatividad = this.selectedOption;
-  //       if (tipoNormatividad === 'otro') {
-  //         const otroValue = (document.querySelector('#otroInput') as HTMLInputElement).value;
-  //         tipoNormatividad = otroValue;
-  //       }
-  //       // etiquetaTitulo.innerHTML = `${tipoNormatividad} ${numero} de ${anio}`
-
-  //       // Crear un nuevo elemento div
-  //       const nuevoDiv = document.createElement('div');
-  //       nuevoDiv.classList.add('div');
-  //       nuevoDiv.id = 'divAdd';
-
-  //       // Agregar la estructura HTML al nuevo div
-  //       nuevoDiv.innerHTML = `
-  //         <div class="titulo" (click)="toggleSection('divAdd')" [ngClass]="{'verde': divAddVisible}">
-  //           <h3 id="tituloNormativa">${this.selectedOption} ${this.numero} de ${this.anio}</h3>
-  //           <div class="iconos">
-  //             <i class="fa-solid" [class.fa-angle-up]="divAddVisible" [class.fa-angle-down]="!divAddVisible"></i>
-  //           </div>
-  //           <button (click)="eliminarDivAdd()" class="boton-eliminar">x</button>
-  //           </div>
-  //         <div class="detalle" id="detalleAdd" *ngIf="divAddVisible">     
-  //           <p id="descripcion">${this.descripcion}</p>
-  //           <p id="secciones">${this.secciones}</p>
-  //         </div>
-  //       `;
-
-  //       // Agregar el nuevo div al contenedor
-  //       const contenedor = document.querySelector('#ContainerdetalleAdicionar');
-  //       contenedor.insertBefore(nuevoDiv, contenedor.lastChild);
-
-
-
-  //       // Crear una instancia de la plantilla
-  //       // const nuevoDiv = this.nuevoDivRef.createEmbeddedView({
-  //       //   selectedOption: this.selectedOption,
-  //       //   numero: this.numero,
-  //       //   anio: this.anio,
-  //       //   descripcion: this.descripcion,
-  //       //   secciones: this.secciones,
-  //       //   toggleSection: this.toggleSection.bind(this),
-  //       //   divAddVisible: this.divAddVisible
-  //       // });
-    
-  //       // Agregar la instancia de la plantilla al contenedor
-  //       // this.containerRef.insert(nuevoDiv);
-
-
-
-
-  //       // Limpiar
-  //       // this.selectedOption = "0";
-  //       (document.querySelector('#numeroInput') as HTMLInputElement).value = "";
-  //       (document.querySelector('#anioInput') as HTMLInputElement).value = "";
-  //       (document.querySelector('#descripcionTextAreaAdd') as HTMLTextAreaElement).value = "";
-  //       (document.querySelector('#seccionesTextAreaAdd') as HTMLTextAreaElement).value = "";
-  //     // }
-  // }
-  // agregarDiv() {  
-  //   const anio = (document.querySelector('#anioInput') as HTMLInputElement).value;
-  //   const numero = (document.querySelector('#numeroInput') as HTMLInputElement).value;
-  //   this.descripcion = (document.querySelector('#descripcionTextAreaAdd') as HTMLTextAreaElement).value;
-  //   this.secciones = (document.querySelector('#seccionesTextAreaAdd') as HTMLTextAreaElement).value;
-  //   let tipoNormatividad = this.selectedOption;
-  //     if (tipoNormatividad === 'otro') {
-  //       const otroValue = (document.querySelector('#otroInput') as HTMLInputElement).value;
-  //       tipoNormatividad = otroValue;
-  //     }
-  //   const divAdd = {
-  //     descripcion: this.descripcion,
-  //     secciones: this.secciones,
-  //     titulo: `${tipoNormatividad} ${numero} de ${anio}`
-  //   };
-
-  //   this.detalles.push(divAdd);
-  //   this.showAdd = false;
-      
-  //       // Limpiar
-  //       // this.selectedOption = "0";
-  //       // (document.querySelector('#numeroInput') as HTMLInputElement).value = "";
-  //       // (document.querySelector('#anioInput') as HTMLInputElement).value = "";
-  //       // (document.querySelector('#descripcionTextAreaAdd') as HTMLTextAreaElement).value = "";
-  //       // (document.querySelector('#seccionesTextAreaAdd') as HTMLTextAreaElement).value = "";
-  //     // }
-  // }
-
+  
   agregarDiv() {
     const anio = (document.querySelector('#anioInput') as HTMLInputElement).value;
     const numero = (document.querySelector('#numeroInput') as HTMLInputElement).value;
@@ -215,7 +217,7 @@ toggleSectionLey(section, index) {
     const secciones = (document.querySelector('#seccionesTextAreaAdd') as HTMLTextAreaElement).value;
     const tipoNormatividad = this.selectedOption === 'otro' ? (document.querySelector('#otroInput') as HTMLInputElement).value : this.selectedOption;
   
-    const nuevoDiv = {
+    this.nuevoDiv = {
       anio: anio,
       numero: numero,
       descripcion: descripcion,
@@ -223,21 +225,15 @@ toggleSectionLey(section, index) {
       tipoNormatividad: tipoNormatividad
     };
   
-    this.divs.push(nuevoDiv);
+    this.divs.push(this.nuevoDiv);
 
+    this.divsVisible = true;
       // Limpiar
-      this.selectedOption = "0";
+      (document.querySelector('#tipoNormatividadSelect') as HTMLSelectElement).value = "";
       (document.querySelector('#numeroInput') as HTMLInputElement).value = "";
       (document.querySelector('#anioInput') as HTMLInputElement).value = "";
       (document.querySelector('#descripcionTextAreaAdd') as HTMLTextAreaElement).value = "";
       (document.querySelector('#seccionesTextAreaAdd') as HTMLTextAreaElement).value = "";
-  }
-  
-  showDivAdd(){
-    const divAdd = document.getElementById('divAdd') as HTMLDivElement;
-    if (divAdd) {
-      divAdd.style.display = "block";
-    }
   }
 
   eliminarDivAdd() {
@@ -256,4 +252,12 @@ toggleSectionLey(section, index) {
           }
       });
   }
+
+  goBack() {
+    this.router.navigate(['/dashboard'])
+  }
+
+  // addDivPrueba() {
+  //   this.containers.createEmbeddedView(this.inputTemplate);
+  // }
 }

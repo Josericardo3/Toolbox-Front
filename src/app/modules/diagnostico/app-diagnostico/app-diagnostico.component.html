@@ -45,7 +45,25 @@
     
 </form>
 
+<!-- <div class="modal-background" id="modal-success" *ngIf="showModal">
+  <div class="modal-content">
+    <div class="modal-borde">
+      <h2 class="modal-title">Título del modal</h2>
+      <textarea style="height: 200px; width: 450px" id="textAreaModal"></textarea>
+      <div class="modal-btn" >
+       <button (click)="showModal = false; showMessage(); saveModal()">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div> -->
+
 <app-app-footer></app-app-footer>
 <app-modal></app-modal>
-<ngx-spinner></ngx-spinner>
+<ngx-spinner
+  bdColor="rgba(0, 0, 0, 0.5)"
+  size="small"
+  template="<img src='https://www.superiorlawncareusa.com/wp-content/uploads/2020/05/loading-gif-png-5.gif' width='50' height='50'/>"
+>
+</ngx-spinner>
+
 </div>

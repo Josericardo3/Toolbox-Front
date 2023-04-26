@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from "@angular/core";
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; 
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
@@ -31,6 +31,7 @@ import { AppEvidenciaComponent } from './modules/evidencia/app-evidencia/app-evi
 import { RecoveryComponent } from './recovery/app-recovery/recovery.component';
 import { ModalComponent } from './messagemodal/messagemodal.component';
 import { EMatrizRequisitosLegalesComponent } from './modules/e-matriz-requisitos-legales/e-matriz-requisitos-legales.component';
+import { ChartComponent } from './modules/chart/chart.component';
 // import { MatTabsModule } from '@angular/material/tabs';
 
 @NgModule({
@@ -54,6 +55,7 @@ import { EMatrizRequisitosLegalesComponent } from './modules/e-matriz-requisitos
     RecoveryComponent,
     ModalComponent,
     EMatrizRequisitosLegalesComponent,
+    ChartComponent
   ],
   imports: [
     BrowserModule,
@@ -76,6 +78,7 @@ import { EMatrizRequisitosLegalesComponent } from './modules/e-matriz-requisitos
     [
     { provide: HTTP_INTERCEPTORS,  useClass: InterceptorService, multi: true },
   ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 
   bootstrap: [AppComponent],
  

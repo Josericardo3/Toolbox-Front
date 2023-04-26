@@ -1,4 +1,4 @@
-.containerTurismo{
+.containerTabActual{
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -54,17 +54,22 @@ i{
     cursor: pointer;
     position: absolute;
     right: 0;
-    margin: 0 9vw 1vh 0;
+    margin: 0 9vw 1vh 1vw;
     font-weight: 600;
 }
 .titulo{
     display: flex;
     align-items: center;
     border: 1px solid lightgray;
-    height: 10vh;
+    height: auto;
     width: 85vw;
-    padding: 10px;
     cursor: pointer;
+}
+.h3{
+    display: flex;
+    width: 75vw;
+    padding: 0 0 0 10px;
+    margin: 0.5vw 0.5vh;
 }
 .adicionar{
     display: flex;
@@ -94,7 +99,7 @@ i{
 }
 .btn,
 .btnAdd{
-    margin: 10vh 0 5vh 0;
+    margin: 10vh 3vw 5vh 3vw;
     height: 40px;
     width: 200px;
     padding: 5px;
@@ -109,6 +114,10 @@ i{
 .btnAdd{
     margin: 3vh 0 !important;
 }
+.divBtn{
+    display: flex;
+    justify-content: row;
+  }
 .adicionarBtn{
     color: #FFFFFF;
     font-family: 'Work Sans', sans-serif;

@@ -133,15 +133,6 @@ div.radio input[type=radio]:before {
   div.radio input[type=radio]:checked:before {
     background-color: #068460;
   }
-  /* div.radio input[type=radio]:checked:after {
-    content: "●";
-    font-size: 1px;
-    color: #068460;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  } */
 .inputContainer {
     background: #FFFFFF;
     border: 2px solid #068460;
@@ -170,6 +161,8 @@ textarea:disabled{
     font-size: 17px;
     margin: 10px 0 5px 0;
 }
+
+  
 @media (max-width: 900px) {
     .cont{
         flex-direction: column;

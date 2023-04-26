@@ -2,8 +2,7 @@ import { Component, OnInit, HostListener } from '@angular/core'
 import { Router } from '@angular/router'
 import { ApiService } from 'src/app/servicios/api/api.service'
 import { FiltroTableLista } from 'src/app/servicios/api/models/paginador'
-import { FormGroup, Validators, FormBuilder,FormControl } from '@angular/forms'
-import { log } from 'console'
+import { FormGroup, Validators, FormBuilder, FormControl } from '@angular/forms'
 import { ModalService } from 'src/app/messagemodal/messagemodal.component.service'
 
 @Component({
@@ -12,17 +11,21 @@ import { ModalService } from 'src/app/messagemodal/messagemodal.component.servic
   styleUrls: ['./app-gestion-de-usuarios.component.css'],
 })
 export class AppGestionDeUsuariosComponent {
- 
+
   arrListAsesor: any = []
   returnedArray: any = []
   showBoundaryLinks: boolean = true
-  
+
   showDirectionLinks: boolean = true
   rnt = []
   razonsocial = []
-  guardarEvent = ''
+  guardarEvent = '';
+  guardarEventRnt: any = '';
+  guardarEventEmpresa: any = '';
+  guardarEventAsesor: any = '';
   dataInitial = []
   paginador = [5, 10, 50, 100]
+  result: boolean = false;
   filtroTable: FiltroTableLista = {
     RNT: 1,
     Empresa: '',
@@ -33,26 +36,29 @@ export class AppGestionDeUsuariosComponent {
     TotalPaginas: 0,
     TotalRegistros: 0,
   }
-  arrEstado = ['En proceso', 'Finalizado', 'sin atencion']
+  arrEstado = ['En Proceso', 'Finalizado', 'Sin Atencion']
   public registerNewAsesor!: FormGroup
   private emailPattern: any = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-  constructor(public ApiService: ApiService, 
-              private router: Router,
-              private formBuilder: FormBuilder,
-              private Message: ModalService,
-              ) {
-           }
+  constructor(public ApiService: ApiService,
+    private router: Router,
+    private formBuilder: FormBuilder,
+    private Message: ModalService,
+  ) {
+  }
 
   idGrupo = localStorage.getItem('idGrupo')
   idEmpresa = localStorage.getItem('idEmpresa')
-  dataUser: any = []
+  dataUser: any = [];
+  pages = 1;
+  estadoatencionBtn: boolean = true;
+  contentArray: any = [];
+
   ngOnInit() {
     this.onLoadPst();
-  
-     document.getElementById('modalAsesor').style.display = 'none'
- 
-     //validacion registar un nuevo asesor
-     this.registerNewAsesor = this.formBuilder.group(
+    document.getElementById('modalAsesor').style.display = 'none';
+
+    //validacion registar un nuevo asesor
+    this.registerNewAsesor = this.formBuilder.group(
       {
         registroNacionalDeTurismo: ['', Validators.required],
         nombre: ['', Validators.required],
@@ -64,7 +70,7 @@ export class AppGestionDeUsuariosComponent {
           ]),
         ],
       })
-    
+
   }
 
   valoresPst: any = {}
@@ -73,154 +79,102 @@ export class AppGestionDeUsuariosComponent {
   }
 
   linkToDashboard(user: any) {
-    localStorage.setItem('rolPst',user.rnt)
+    localStorage.setItem('rolPst', user.rnt)
     return this.router.navigate(['/dashboard'])
-    
-  }
-  estadoatencionBtn: boolean = true; ;
-  onLoadPst() {
-    this.ApiService.assignAdvisor(0).subscribe((data) => {
-      this.dataUser = data
-      this.dataInitial = data
-      this.returnedArray = this.dataInitial.slice(0, 10)
-      console.log( this.returnedArray,'yesiiiii');
-      // for (let i = 0; i < this.returnedArray.length; i++) {
-      //   if (this.returnedArray[i].estadoatencion === "Finalizado") {
-      //     this.estadoatencionBtn = false;
-      //     console.log( this.returnedArray[i].estadoatencion,'entro' );
-      //   }
-      // }
-      this.filtroTable.TotalRegistros = data.length
 
+  }
+ 
+
+  onLoadPst() {
+
+    this.ApiService.assignAdvisor(0).subscribe((data) => {
+      this.dataUser = data;
+      this.dataInitial = data;
+      this.contentArray = data;
+      this.returnedArray = this.dataInitial.slice(0, 10)
+      this.filtroTable.TotalRegistros = data.length
       const totalPag = data.length
-      this.filtroTable.TotalPaginas = Math.trunc(totalPag / 10);
-      
+      this.filtroTable.TotalPaginas = Math.trunc(totalPag / 10) + 1;;
       return this.dataUser
     })
   }
-  result: boolean = false
-  filterRnt() {
-    
-    if (this.guardarEvent != '') {
-      let rnt = this.dataInitial.map((item) => {
-        return item.rnt.toUpperCase().includes(this.guardarEvent.toUpperCase())
-          ? item
-          : 'no hay resultado'
-      })
-      let rntFinal = rnt.filter((item) => item != 'no hay resultado')
-      this.returnedArray = rntFinal;
-      this.filtroTable.TotalPaginas = this.returnedArray.length;
-      console.log( this.returnedArray,111);
-      console.log( this.returnedArray.length,222);
-      return this.returnedArray.length>0? this.returnedArray: this.result= true;
-    } else {
-      this.onLoadPst()
-    }
+
+
+  capturarValorRnt(event: any) {
+    this.result = false;
+    this.guardarEventRnt = event.target.value.trim();
+
   }
 
   capturarValorE(event: any) {
-    this.result= false;
+    this.result = false;
     this.guardarEvent = event.target.value
   }
 
-  guardarEventEmpresa: any;
+
   capturarValorEmpresa(event: any) {
-    this.result= false;
-    this.guardarEventEmpresa = event.target.value
+    this.result = false;
+    this.guardarEventEmpresa = event.target.value.trim();
   }
 
-  filterEmpresa() {
-    if (this.guardarEventEmpresa != '') {
-      let razonsocial = this.dataInitial.map((item) => {
-        return item.razonsocial
-          .toUpperCase()
-          .includes(this.guardarEventEmpresa.toUpperCase())
-          ? item
-          : 'no hay resultado'
-      })
-      let razonsocialFinal = razonsocial.filter(
-        (item) => item != 'no hay resultado',
-      )
-      this.returnedArray = razonsocialFinal;
-      this.filtroTable.TotalPaginas = this.returnedArray.length;
-      console.log( this.returnedArray,333);
-      console.log( this.returnedArray.length,444);
-      
-      return this.returnedArray.length>0? this.returnedArray: this.result= true;
-      
-    } else {
-      this.onLoadPst()
-    }
-  }
-
-  guardarEventAsesor: any;
   capturarValorAsesor(event: any) {
-    this.result= false;
-    this.guardarEventAsesor = event.target.value
+    this.result = false;
+    this.guardarEventAsesor = event.target.value.trim();
   }
 
-  filterAsesor() {
-    if (this.guardarEventAsesor != '') {
-      let asesor = this.dataInitial.map((item) => {
-        return item.asesorasignado
-          .toUpperCase()
-          .includes(this.guardarEventAsesor.toUpperCase())
-          ? item
-          : 'no hay resultado'
-      })
-      let asesorFinal = asesor.filter((item) => item != 'no hay resultado')
-      this.returnedArray = asesorFinal
-      this.filtroTable.TotalPaginas = this.returnedArray.length;
-      console.log( this.returnedArray,555);
-      console.log( this.returnedArray.length,66);
-      return this.returnedArray.length>0? this.returnedArray: this.result= true;
-    } else {
-      this.onLoadPst()
-    }
-  }
+  filterResult() {
+    this.result = false;
+    this.contentArray = [];
+    
+    let arrayTemp = this.dataInitial.filter((item) => 
+      ( item.estadoatencion.toUpperCase().includes(this.guardarEvent.trim().toUpperCase())  || this.guardarEvent.trim().toUpperCase() =='')&&
+      ( item.rnt.toUpperCase().includes(this.guardarEventRnt.trim().toUpperCase())  || this.guardarEventRnt.trim().toUpperCase() =='')&&
+      (  item.razonsocial.toUpperCase().includes(this.guardarEventEmpresa.trim().toUpperCase() )  || this.guardarEventEmpresa.trim().toUpperCase() =='')&&
+      (  item.asesorasignado.toUpperCase().includes(this.guardarEventAsesor.trim().toUpperCase())  || this.guardarEventAsesor.trim().toUpperCase() =='')
+    )
+      this.returnedArray = arrayTemp;
 
- 
-  filterEstado(evnt?: any) {
-    this.estadoatencionBtn = true;
-    if (this.guardarEvent != '') {
-      let estado = this.dataInitial.map((item) => {
-        return item.estadoatencion
-          .toUpperCase()
-          .includes(this.guardarEvent.toUpperCase())
-          ? item
-          : 'no hay resultado'
-      })
-      let estadoFinal = estado.filter((item) => item != 'no hay resultado')
-      this.returnedArray = estadoFinal
-     
-      for (let i = 0; i < this.returnedArray.length; i++) {
-        if (this.returnedArray[i].estadoatencion === "Finalizado") {
-          this.estadoatencionBtn = false;
-        }
-      }
-      this.filtroTable.TotalPaginas = this.returnedArray.length;
+       // para el paginado
+      this.pages = 1;
+      const totalPag = this.returnedArray.length;
+      this.filtroTable.TotalPaginas = Math.trunc(totalPag / 10) + 1;
+      this.contentArray = this.returnedArray;
+      this.filtroTable.TotalRegistros = this.returnedArray.length;
+      this.returnedArray = this.returnedArray.slice(0, 10);
       return this.returnedArray.length > 0 ? this.returnedArray : this.result = true;
-    }
+   
   }
+
 
   fnRefrescar() {
     this.filtroTable.Pagina = 1
     this.onLoadPst()
   }
 
-  pages = 1;
   pageChanged(event: any): void {
+
     this.pages = event.page;
     const startItem = (event.page - 1) * event.itemsPerPage
     const endItem = event.page * event.itemsPerPage;
-    this.returnedArray = this.dataInitial.slice(startItem, endItem)
+
+    if (this.guardarEvent || this.guardarEventAsesor || this.guardarEventEmpresa !== '') {
+
+      this.returnedArray = this.contentArray.slice(startItem, endItem)
+
+
+    } else {
+      this.returnedArray = this.dataInitial.slice(startItem, endItem)
+    }
+
+    this.filtroTable.TotalRegistros = this.returnedArray.length;
+
   }
 
   contenidoAsignacion: any = {};
-   nuevoAsesor(evnt:any){
-    this.contenidoAsignacion=evnt;
+  nuevoAsesor(evnt: any) {
+    this.contenidoAsignacion = evnt;
     return this.openModalPst()
-   }
+  }
 
   openModalPst() {
     this.ApiService.addAsesor().subscribe((dataAsesor) => {
@@ -232,15 +186,15 @@ export class AppGestionDeUsuariosComponent {
       this.isOpen = !this.isOpen;
     })
   }
- 
+
   isOpen = false;
   cerrar() {
     this.isOpen = !this.isOpen;
-    
+
   }
-cerraModalNewAsesor(){
-  document.getElementById('modalAsesor').style.display = 'none'
-}
+  cerraModalNewAsesor() {
+    document.getElementById('modalAsesor').style.display = 'none'
+  }
   opcionSeleccionado: any = ''
   verSeleccion = {}
   guardarSeleccion: any = {}
@@ -252,16 +206,16 @@ cerraModalNewAsesor(){
   }
 
   //actualizar asesor
-  updateNewAsesor(){
-    const request = { "idusuariopst": this.contenidoAsignacion?.idusuariopst,"idUsuario": this.guardarSeleccion.idUsuario}
-    this.ApiService.updateAsesor(request).subscribe((data) =>{
+  updateNewAsesor() {
+    const request = { "idusuariopst": this.contenidoAsignacion?.idusuariopst, "idUsuario": this.guardarSeleccion.idUsuario }
+    this.ApiService.updateAsesor(request).subscribe((data) => {
       this.isOpen = !this.isOpen;
-       return this.onLoadPst();
+      return this.onLoadPst();
     })
   }
 
   //registras nuevo asesor
-  openModalNuevoAsesor(){
+  openModalNuevoAsesor() {
     //clear
     //console.log(this.correo,this.registroNacionalDeTurismo,this.nombre,"vacio esperado")
     this.correo = '';
@@ -272,43 +226,43 @@ cerraModalNewAsesor(){
   }
 
   nombre = '';
-  correo='';
-  registroNacionalDeTurismo= '';
+  correo = '';
+  registroNacionalDeTurismo = '';
 
-onChangeModalInput(evnt :any){
-  
-if(evnt.target.id === 'correo'){
-  this.correo = evnt.target.value;
-}
-if(evnt.target.id === 'nombre'){
-  this.nombre = evnt.target.value;
-}
-if(evnt.target.id === 'nuevo'){
-  this.registroNacionalDeTurismo = evnt.target.value;
-  //console.log(evnt.target.value,"rnt valor")
-}
-}
+  onChangeModalInput(evnt: any) {
 
-
-//datos del form
-saveNewAsesor(){
-  const request = {
-    rnt:this.registerNewAsesor.get("registroNacionalDeTurismo")?.value,
-    nombre:this.registerNewAsesor.get("nombre")?.value,
-    correo: this.registerNewAsesor.get("correo")?.value,
-
+    if (evnt.target.id === 'correo') {
+      this.correo = evnt.target.value;
+    }
+    if (evnt.target.id === 'nombre') {
+      this.nombre = evnt.target.value;
+    }
+    if (evnt.target.id === 'nuevo') {
+      this.registroNacionalDeTurismo = evnt.target.value;
+      //console.log(evnt.target.value,"rnt valor")
+    }
   }
- 
-  if(this.registerNewAsesor.status === 'VALID'){
 
-    const title = "Registro exitoso";
-    const message = "El registro se ha realizado exitosamente"
-    this.Message.showModal(title,message); 
-    this.ApiService.createNewAsesor(request)
-.subscribe((data) =>{
-  //console.log(data,"data nuevo asesor")
-   return this.cerraModalNewAsesor()
-})
-  }
+
+  //datos del form
+  saveNewAsesor() {
+    const request = {
+      rnt: this.registerNewAsesor.get("registroNacionalDeTurismo")?.value,
+      nombre: this.registerNewAsesor.get("nombre")?.value,
+      correo: this.registerNewAsesor.get("correo")?.value,
+
+    }
+
+    if (this.registerNewAsesor.status === 'VALID') {
+
+      const title = "Registro exitoso";
+      const message = "El registro se ha realizado exitosamente"
+      this.Message.showModal(title, message);
+      this.ApiService.createNewAsesor(request)
+        .subscribe((data) => {
+          //console.log(data,"data nuevo asesor")  
+          return this.cerraModalNewAsesor()
+        })
+    }
   }
 }

@@ -6,7 +6,7 @@ import { Store } from '@ngrx/store'
 import * as fromRoot from 'src/app/state/reducer/example.reducer'
 import { AppState } from 'src/app/state/selectors/app.state'
 import { ModalService } from 'src/app/messagemodal/messagemodal.component.service' 
-
+import { ApiService } from 'src/app/servicios/api/api.service';
 
 //@Injectable()
 
@@ -21,6 +21,9 @@ export class AppDashboardComponent implements OnInit {
   normaSelected = localStorage.getItem("normaSelected");
   userRol = localStorage.getItem('rol');
   newUser= localStorage.getItem("newUser");
+  idUser = localStorage.getItem("Id");
+  validateCaracterizacion = this.ApiService.validateCaracterizacion(this.idUser);
+  validateDiagnostico = this.ApiService.validateDiagnostico(this.idUser);
   rolList = [
     {
       // colaborador
@@ -36,6 +39,7 @@ export class AppDashboardComponent implements OnInit {
     //PG private store: Store<{ initialState:any }>,
     private router: Router,
     private Message: ModalService,
+    private ApiService: ApiService,
   ) {
  
     //PG this.counter$= store.select('initialState')
@@ -61,13 +65,47 @@ export class AppDashboardComponent implements OnInit {
     this.normaSelected = evt.target.value;
   }
   menuFilter(evt: any) { //redireccionar
+    debugger
       if (this.validateRol(evt)) {// condicional cuando sí tiene acceso
-        evt.target.src='../../../../assets/img-dashboard/'+evt.target.alt+'-3.svg';   
-        const title = "Error";
-        const message = "Sección aún no disponible"
-        //this.Message.showModal(title,message);
-        this.router.navigate(['/' + evt.target.alt])
-    }  
+        evt.target.src='../../../../assets/img-dashboard/'+evt.target.alt+'-3.svg';
+        switch(evt.target.alt){
+          case 'caracterizacion':
+            this.validateCaracterizacion.subscribe((data)=>{
+              if (data){
+                const title = "Aviso";
+                const message = "Usted ya ha realizado el proceso de caracterización, si desea modificarlo, por favor comuníquese con el administrador del sistema."
+                this.Message.showModal(title,message);
+                return
+              }else{
+                this.router.navigate(['/'+evt.target.alt]);
+              }
+            });
+            break;
+          case 'diagnostico':
+            this.validateCaracterizacion.subscribe((data)=>{
+              if (!data){
+                const title = "Aviso";
+                const message = "Debe realizar el proceso de caracterización antes de continuar con el proceso de diagnostico"
+                this.Message.showModal(title,message);
+                return
+              }else{
+                this.validateDiagnostico.subscribe((data)=>{
+                  if (data){
+                    this.router.navigate(['/diagnosticoDoc']);
+                    return
+                  }else{
+                    this.router.navigate(['/'+evt.target.alt]);
+                  }
+                });
+              }
+            });
+            
+            
+            break;
+          default: this.router.navigate(['/'+evt.target.alt]);
+          break;
+      }  
+    }
   }
 
   mouseOver(evt: any){

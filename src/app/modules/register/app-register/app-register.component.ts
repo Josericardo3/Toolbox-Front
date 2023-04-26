@@ -138,9 +138,10 @@ export class AppRegisterComponent implements OnInit {
       'selectDepartment',
     ) as HTMLSelectElement
     if (select.options.length === 0) {
-      fetch('https://www.datos.gov.co/resource/gdxc-w37w.json')
+      fetch('https://www.datos.gov.co/resource/gdxc-w37w.json?$limit=1121')
         .then((response) => response.json())
         .then((data) => {
+          debugger
           // esta linea llena el array
           if (select != null && departments.length === 0) {
             departments = Array.from(
@@ -179,7 +180,7 @@ export class AppRegisterComponent implements OnInit {
         select.remove(index)
       })
     }
-    fetch('https://www.datos.gov.co/resource/gdxc-w37w.json')
+    fetch('https://www.datos.gov.co/resource/gdxc-w37w.json?$limit=1121')
       .then((response) => response.json())
       .then((data) => {
         arrFilterMpio = data.filter(

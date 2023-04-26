@@ -10,6 +10,7 @@ export class SpinnerService {
         this.spinnerService.show();
     }
     public detenerSpinner() {
+        debugger
         this.spinnerService.hide();
     }
 }

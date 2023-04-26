@@ -183,3 +183,128 @@
     <p>{{ ley.descripcion }}</p>         
   </div>
 </div>
+
+
+
+<div *ngIf="divsVisible">
+  <div class="div" id="divAdd" *ngFor="let div of divs">
+      <div class="titulo">
+              <h3 id="tituloNormativa">{{div.tipoNormatividad}} {{div.numero}} de {{div.anio}}</h3> 
+        </div>
+        <div class="detalle" id="detalleAdd" *ngIf="divAddVisible">
+            <p class="parrafo">{{ div.descripcion }}</p>
+            <p class="parrafo">{{ div.secciones }}</p>
+        </div>   
+  </div>
+</div>
+<ng-template #inputTemplate>
+  <div>
+    <input type="text" [(ngModel)]="nuevoDiv.anio">
+    <input type="text" [(ngModel)]="nuevoDiv.numero">
+    <textarea [(ngModel)]="nuevoDiv.descripcion"></textarea>
+    <textarea [(ngModel)]="nuevoDiv.secciones"></textarea>
+    <input type="text" [(ngModel)]="nuevoDiv.tipoNormatividad">
+  </div>
+</ng-template>
+<div id="ContainerdetalleAdicionar">
+  <div class="adicionar">
+      <button>Adicionar requisito legal +</button>
+  </div>
+  <div class="detalleAdicionar" id="detalleAdicionarRequisito" *ngIf="adicionarVisible">
+      <label class="adicionarLabel">Tipo de normatividad</label>
+      <select id="tipoNormatividadSelect" #selectOption (change)="onSelect(selectOption.value)">
+          <option value="Ley">Ley</option>
+          <option value="Decreto">Decreto</option>
+          <option value="Decreto Ley">Decreto Ley</option>
+      </select>
+      <label class="adicionarLabel">Número</label>
+      <input type="number" id="numeroInput"> 
+      <label class="adicionarLabel">Año</label>
+      <input type="number" id="anioInput">
+      <label class="adicionarLabel">Descripción</label>
+      <textarea id="descripcionTextAreaAdd"></textarea>
+      <label class="adicionarLabel">Artículos / Secciones / Requisitos específicos que aplican</label>
+      <textarea id="seccionesTextAreaAdd"></textarea>
+      <button type="submit" class="btnAdd" (click)="agregarDiv()">Agregar</button>
+  </div>
+</div>
+
+<div class="div" style="display: none;" id="divAdd" *ngFor="let div of divs">
+                    <div class="titulo" (click)="toggleSection('divAdd')" [ngClass]="{'verde': divAddVisible}">
+                      <div class="h3">
+                          <h3 id="tituloNormativa">{{div.tipoNormatividad}} {{div.numero}} de {{div.anio}}</h3> 
+                      </div>
+                        <div class="iconos">
+                            <i class="fa-solid" [class.fa-angle-up]="divAddVisible" [class.fa-angle-down]="!divAddVisible"></i>
+                        </div>
+                        <button (click)="eliminarDivAdd()" class="boton-eliminar">x</button>
+                    </div>
+                    <div class="detalle" id="detalleAdd" *ngIf="divAddVisible">       
+                        <h2>Emitida por:</h2>
+                        <p class="parrafo">Por la cual se expide la Ley General de Turismo y se dictan otras disposiciones</p>
+                        <h4 style="font-weight: bolder;" class="parrafo">ARTÍCULOS / SECCIONES / REQUISITOS ESPECÍFICOS QUE APLICAN</h4>
+                        <p class="parrafo">{{ div.descripcion }}</p>
+                        <p class="parrafo">{{ div.secciones }}</p>
+            
+                        <div class="containerform">
+                            <div class="subContainerform">
+                                <label for="estadoCumplimiento" class="estado">Estado de cumplimiento</label>
+                                <select name="estadoCumplimiento" id="estadoCumplimiento" class="estadoForm" [(ngModel)]="div.opcionSeleccionada">
+                                    <option value="" disabled selected hidden>Seleccione una opción</option>
+                                    <option value="Si">Si</option>
+                                    <option value="No">No</option>
+                                    <option value="En proceso">En proceso</option>
+                                    <option value="No aplica">No aplica</option>
+                                </select>
+                            </div>
+                            <div class="subContainerform">
+                                <label for="" class="estado">Responsable de dar cumplimiento</label>
+                                <select name="" id="" class="estadoForm" [(ngModel)]="div.responsableSeleccionado">
+                                    <option value="" disabled selected hidden>Seleccione una opción</option>
+                                    <option value="a">Responsable de dar cumplimiento</option>
+                                    <option value="b">Responsable</option>
+                                </select>
+                            </div>
+                            <div class="subContainerformMain">
+                                <div class="subContainerform" *ngIf="div.opcionSeleccionada === 'Si'">
+                                    <label for="evidencia" class="estado">Evidencia del cumplimineto</label>
+                                    <input type="text" id="evidencia" class="estadoForm" [(ngModel)]="div.evidenciaInput">
+                                </div>
+                                <div class="subContainerform" *ngIf="div.opcionSeleccionada === 'No' || div.opcionSeleccionada === 'En proceso'">
+                                    <label for="observaciones" class="estado">Observaciones / Incumplimiento</label>
+                                    <input type="text" id="observaciones" class="estadoForm" [(ngModel)]="div.observacionInput">
+                                </div>
+                            </div>
+                        </div>  
+                        <div class="planIntervencion" *ngIf="div.opcionSeleccionada === 'No' || div.opcionSeleccionada === 'En proceso'">
+                            <h3 class="plan">PLAN DE INTERVENCIÓN</h3>
+                            <div class="containerformB" >
+                            
+                                <div class="subContainerformB">
+                                    <label for="" class="estado">Acciones a realizar</label>
+                                    <textarea name="" id="acciones" placeholder="Acciones" class="estadoFormB" [(ngModel)]="div.accionesText"></textarea>
+                                </div>
+                                <div class="subContainerformB">
+                                    <label for="" class="estado">Responsable de dar cumplimiento</label>
+                                    <select name="" id="" class="estadoFormB" [(ngModel)]="div.responsablePlanSeleccionado">
+                                        <option value="" disabled selected hidden>Seleccione una opción</option>
+                                        <option value="a">Responsable de dar cumplimiento</option>
+                                        <option value="b">Responsable</option>
+                                    </select>
+                                </div>
+                                <div class="subContainerformB">
+                                    <label for="" class="estado">Fecha para la ejecución</label>
+                                    <input type="date" class="estadoFormB" [(ngModel)]="div.fechaInput">
+                                </div>
+                                <div class="subContainerformB">
+                                    <label for="" class="estado">Estado</label>
+                                    <select name="" id="" class="estadoFormB" [(ngModel)]="div.estadoSeleccionado">
+                                        <option value="" disabled selected hidden>Seleccione una opción</option>
+                                        <option value="Abierto">Abierto</option>
+                                        <option value="Cerrado">Cerrado</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div> 
+                    </div>      
+                </div>

@@ -1,14 +1,37 @@
 <app-app-header></app-app-header>
 <form class="controllerDiagnosticoDoc" (ngSubmit)="saveForm()">
     <h1>Formatos de descarga del formulario de diagnóstico</h1>
-    <div>
-        <p>Descargar diagnóstico      | <a (click)="generateDiagnostico()"> Documento PDF</a></p>
+
+    <div id="listDocuments"> 
         <p>Descargar lista de chequeo | <a (click)="generateListaChequeo()">Documento PDF</a></p>
         <p>Descargar plan de mejora   | <a (click)="generatePlanMejora()">Documento PDF</a></p>
+        <p>Descargar diagnóstico      | <a (click)="generateDiagnostico()"> Documento PDF</a></p>
+        <!-- <div class="modal-background" id="modal-success" *ngIf="showModal">
+            <div class="modal-content">
+              <div class="modal-borde">
+                <div class="modal-title">
+                    <h4>Ya teniendo la información de la lista de chequeo, realice su análisis de la actividad diagnóstica.</h4>
+                </div>
+                    <textarea id="textAreaModal"></textarea>
+                <div class="modal-btn">
+                    <button (click)="showModal = false; saveModal()">Guardar</button>
+                </div>
+              </div>
+            </div>
+        </div> -->
     </div>
+    <button type="submit" class="btn">Atrás</button>
 
-    <button type="submit" class="btn" >Atrás</button>
+    <!-- <div id="chart-container">
+        <canvas id="myChart"></canvas>
+    </div> -->
+    
 </form>
 <app-app-footer></app-app-footer>
 <app-modal></app-modal>
-<ngx-spinner></ngx-spinner>
+<ngx-spinner
+  bdColor="rgba(0, 0, 0, 0.5)"
+  size="small"
+  template="<img src='https://www.superiorlawncareusa.com/wp-content/uploads/2020/05/loading-gif-png-5.gif' width='50' height='50'/>"
+>
+</ngx-spinner>  

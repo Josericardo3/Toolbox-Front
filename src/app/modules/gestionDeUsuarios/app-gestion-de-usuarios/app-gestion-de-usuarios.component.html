@@ -10,7 +10,7 @@
   </div>
   <div class="container-gestion">
     <div class="titulo">
-      Gestión de Usuarios
+      Gestión de Asesores
       <div class="container-btn">
       <div>
         <p class="p-close" (click)="openModalNuevoAsesor()">Registrar un nuevo asesor</p>
@@ -22,20 +22,18 @@
   </div>
     <div class="subtitulo">
       <label>RNT</label>
-      <input type="text" [value]="rnt" (change)="capturarValorE($event)"/>
-      <button (click)="filterRnt()" class="buscar">Buscar</button>
+      <input type="text" [value]="rnt" (change)="capturarValorRnt($event)"/>
       <label>Empresa</label>
       <input type="text" [value]="razonsocial" (change)="capturarValorEmpresa($event)" />
-      <button (click)="filterEmpresa()" class="buscar">Buscar</button>
       <label>Asesor</label>
-      <input type="text" (change)="capturarValorAsesor($event)" />
-      <button (click)="filterAsesor()" class="buscar">Buscar</button>
+      <input type="text" (change)="capturarValorAsesor($event)" />   
       <label class="padding-label">Estado</label>
-      <select class="estado" (click)="filterEstado($event) "(change)="capturarValorE($event)" >
-        <option  *ngFor="let element of arrEstado"  >
-          {{ element }}
-        </option>
+      <select class="estado" (click)="filterResult() "(change)="capturarValorE($event)" >
+        <option  *ngFor="let element of arrEstado">{{ element }}</option>
       </select>
+      <button (click)="filterResult()" class="buscar">
+        <i class="fa-solid fa-magnifying-glass" style="color: #f4f7fa;"></i>
+        Buscar</button>
     </div>  
     <div>
       <table class="table-gestion">
@@ -51,15 +49,15 @@
         <tbody>
           <tr *ngFor="let user of returnedArray">
             <th scope="row"> {{ user.rnt }}</th>
-            <td> {{ user.razonsocial }}</td>
-            <td>{{ user.asesorasignado }}</td>
-            <td>{{ user.estadoatencion }}</td>
+            <td> {{ user.razonsocial | uppercase }}</td>
+            <td>{{ user.asesorasignado  | titlecase }}</td>
+            <td>{{ user.estadoatencion  | titlecase }}</td>
             <td class="btn-container">
               
               <button type="button" class="btn btn-default btn-atencion" (click)="linkToDashboard(user)">
                 Iniciar atención
               </button>
-              <button *ngIf="estadoatencionBtn" type="button" class="btn btn-default btn-asignar"  (click)="nuevoAsesor(user)">Asignar asesor</button>
+              <button  type="button" class="btn btn-default btn-asignar"  (click)="nuevoAsesor(user)">Asignar asesor</button>
             </td>
           </tr>
         </tbody>
@@ -72,21 +70,21 @@
     <div class="page-style">
       <tr>
         <td colspan="7">
-            <div class="container-label"      style="float:left;">
+            <div class="container-label" style="float:left;">
                 <label class="paginas">
-                    Página: {{ pages}} / {{filtroTable.TotalPaginas}} Registros: {{filtroTable.TotalRegistros}}
+                    Página: {{ pages }} / {{ filtroTable.TotalPaginas }} Registros: {{ filtroTable.TotalRegistros }}
                 </label>
             <div class="ls-pagina ">
               <pagination  
               [ngClass]="{'page-item': true}" 
               [boundaryLinks]="true" 
-              [totalItems]="dataInitial.length" 
+              [totalItems]="contentArray.length"
+              [itemsPerPage]="10"
               [maxSize]="3"
              (pageChanged)="pageChanged($event)"  
               previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;"
               >
              </pagination>
-         
             </div>
             </div>
         </td>
@@ -124,20 +122,22 @@
             [formGroup]="registerNewAsesor"
             (ngSubmit)="saveNewAsesor()"
             >
-            <label class="label-titulo">Registro Nacional de Turismo</label>
-            <input style="width: 389px;font-size:14px;height: 28px;"
+            <label class="label-titulo">Usuario</label>
+            <input style="width: 389px;font-size:14px;height: 28px;padding-left: 10px;" 
             (change) = onChangeModalInput($event)
+            appLetras
+            placeholder="Escriba su usuario"
             class="input-asesor"
-            appNumeros
             [(ngModel)]="registroNacionalDeTurismo"
             type="text"
             id="registroNacionalDeTurismo"
             formControlName="registroNacionalDeTurismo"
             />
            <label class="label-titulo">Nombre</label>
-           <input style="width: 389px;font-size: 14px;height: 28px;"
+           <input style="width: 389px;font-size: 14px;height: 28px;padding-left: 10px;"
            (change) = onChangeModalInput($event)
            appLetras
+           placeholder="Escriba su nombre"
            class="input-asesor"
            [(ngModel)]="nombre"
            type="text"
@@ -146,8 +146,9 @@
           />
           <label class="label-titulo">Correo</label>
           <br>
-          <input style="width: 389px;font-size:14px;height: 28px;"
+          <input style="width: 389px;font-size:14px;height: 28px;padding-left: 10px;"
           (change) = onChangeModalInput($event)
+          placeholder="Correo@email.com"
           class="input-asesor"
           [(ngModel)]="correo"
           type="email"

@@ -111,7 +111,6 @@ export class AppLoginComponent implements OnInit {
               "idCategoria",
               JSON.stringify(this.arrNormas[0].idCategoriarnt));
         });
-
         if (data.Grupo[0].item === 1) {
           this.ApiService.validateCaracterizacion(data.IdUsuarioPst).subscribe(
             (response) => {

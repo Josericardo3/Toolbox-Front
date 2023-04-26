@@ -126,7 +126,6 @@ ordenarPreguntas() {
         idorden: orden.idorden
       };
     }).sort((a: any, b: any) => a.idorden - b.idorden);
-    console.log(this.preguntasOrdenadas)
   }
 }
 
@@ -267,6 +266,10 @@ public saveForm(){
         const title = "Se guardó correctamente";
         const message = "El formulario se ha guardado exitosamente"
         this.Message.showModal(title,message);
+        // borrar
+        
+        
+        //
         this.router.navigate(['/dashboard']);
       });
     }
@@ -276,11 +279,4 @@ goBack() {
   this.router.navigate(['/dashboard'])
 }
 
-// numberOnly(event): boolean {
-//   const charCode = (event.which) ? event.which : event.keyCode;
-//   if (charCode > 31 && (charCode < 48 || charCode > 57)) {
-//     return false;
-//   }
-//   return true;
-// }
 }

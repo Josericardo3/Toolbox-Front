@@ -52,7 +52,6 @@ export class AppDiagnosticoComponent implements OnInit {
     this.ApiService.getDiagnostico()
     .subscribe((data: any) => {
       this.datos = data;
-      console.log(this.datos)
       this.isDataLoaded = true;
       // this.datos.campos.forEach((campo:any) => {
       //   if(campo.values !== null){
@@ -79,56 +78,17 @@ export class AppDiagnosticoComponent implements OnInit {
       campo.listacampos.forEach((listacampo: any) => {
       this.numeralespecificoArray.push(String(listacampo.numeralespecifico));
       this.numeralespecificoString = this.numeralespecificoArray.join(',');
-          // listacampo.desplegable.forEach((desplegable: any) => {
-          //   this.itemArray.push(String(desplegable.item));
-          //   this.ObsArray.push(String(desplegable.observacion));
-          // });
         });
       });
     });
-
-    console.log(this.isFormValid());
-}
-
-// isFormValid(): boolean {
-//   if (!this.datos || !this.datos.campos) {
-//     // Si this.datos o this.datos.campos no están definidos, retornar falso
-//     return false;
-//   }
-
-//   return this.datos.campos.every((campo: any) => {
-//     if (!campo.listacampos) {
-//       // Si campo.listacampos no está definido, retornar falso
-//       return false;
-//     }
-
-//     return campo.listacampos.every((i: any) => {
-//       const control = this.formParent.get(`radio${campo.id}-${i}`);
-//       if (!control) {
-//         // Si control no está definido, retornar falso
-
-//         return false;
-//       }
-//       return control.value !== null;
-//     });
-//   });
-// }
-
-// isFormValid(): boolean {
-//   return this.datos.campos.every((campo, j) => {
-//     return campo.listacampos.every((subcampo, i) => {
-//       const control = this.formParent.get(`radio${j}-${i}`);
-//       return control.value !== null;
-//     });
-//   });
-// }
-
-public isFormValid(): boolean {
-  if (!this.isDataLoaded) {
-    return false;
   }
-  return Object.values(this.formParent.controls).every(control => control.value !== null);
-}
+
+  public isFormValid(): boolean {
+    if (!this.isDataLoaded) {
+      return false;
+    }
+    return Object.values(this.formParent.controls).every(control => control.value !== null);
+  }
 
   getControlType(campo: any) {
     switch (campo.tipodedato) {
@@ -188,21 +148,18 @@ public isFormValid(): boolean {
   }
 
   saveForm(){
-    if (this.isFormValid()) {
-      this.ApiService.saveDataDiagnostico(this.valoresForm).subscribe((data: any) => {
-        console.log(data);
-  
+    if (this.isFormValid()) {   
+      this.ApiService.saveDataDiagnostico(this.valoresForm)
+      .subscribe((data: any) => {     
+        const title = "Registro exitoso";
+        const message = "Se guardaron los campos correctamente";
+        this.Message.showModal(title, message);
+        this.router.navigate(['/diagnosticoDoc']) 
       });
-
-      const title = "Registro exitoso";
-      const message = "Se guardaron los campos correctamente"
-      this.Message.showModal(title,message);
     }
-    this.router.navigate(['/diagnosticoDoc'])
   }
 
   goBack() {
     this.router.navigate(['/dashboard'])
   }
-
 }
