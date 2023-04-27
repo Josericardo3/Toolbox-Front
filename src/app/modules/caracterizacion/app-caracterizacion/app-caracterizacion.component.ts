@@ -266,10 +266,10 @@ public saveForm(){
         const title = "Se guardó correctamente";
         const message = "El formulario se ha guardado exitosamente"
         this.Message.showModal(title,message);
-        // borrar
-        
-        
-        //
+        this.ApiService.getNorma(localStorage.getItem('Id')).subscribe((data: any) => {
+          localStorage.setItem("normaSelected", data[0].norma);
+          localStorage.setItem("idNormaSelected", data[0].id);
+        });
         this.router.navigate(['/dashboard']);
       });
     }
