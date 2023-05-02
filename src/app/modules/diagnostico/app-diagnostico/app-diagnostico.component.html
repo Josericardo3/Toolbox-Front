@@ -9,7 +9,7 @@
         <h3>{{campo.tituloprincipal}}</h3>
         <div *ngFor="let subcampo of campo.listacampos; let i = index" class="formDiagnostico">
           <h2>{{subcampo.titulo}}</h2>  
-          <!-- <label>Numero principal</label>
+          <label>Numero principal</label>
           <input type="text" [value]="subcampo.numeralprincipal" disabled="true" [id]="'requisito-' + i">
           <label>Numero específico</label>
           <input type="text" [value]="subcampo.numeralespecifico" disabled="true" [id]="'requisito-' + i">
@@ -18,7 +18,7 @@
            <label>*Requisito</label>
           <textarea type="text" [value]="subcampo.requisito" style="height: 200px" disabled="true" [id]="'requisito-' + i"></textarea>
           <label>*Posible evidencia</label>
-          <textarea type="text" [value]="subcampo.nombre_evidencia" style="height: 200px" disabled="true" [id]="'requisito-' + i"></textarea> -->
+          <textarea type="text" [value]="subcampo.nombre_evidencia" style="height: 200px" disabled="true" [id]="'requisito-' + i"></textarea>
           <label>Escoge una de las siguientes opciones<span style="color: red;">*</span></label>
           <div class="cont">
             <div *ngFor="let opcion of subcampo.desplegable" class="containerRadio">
@@ -30,9 +30,9 @@
               </div>
             </div>
           </div>
-          <!-- <label>Observacion</label>
+          <label>Observacion</label>
           <textarea type="text" style="height: 200px" [id]="'observacion-' + subcampo.numeralespecifico" 
-          (input)="capturarValorObs($event, subcampo.numeralprincipal ,subcampo.numeralespecifico)" class="obs"></textarea> -->
+          (input)="capturarValorObs($event, subcampo.numeralprincipal ,subcampo.numeralespecifico)" class="obs"></textarea>
           <div class="linea"></div>
         </div>
     </div>
@@ -45,7 +45,25 @@
     
 </form>
 
+<!-- <div class="modal-background" id="modal-success" *ngIf="showModal">
+  <div class="modal-content">
+    <div class="modal-borde">
+      <h2 class="modal-title">Título del modal</h2>
+      <textarea style="height: 200px; width: 450px" id="textAreaModal"></textarea>
+      <div class="modal-btn" >
+       <button (click)="showModal = false; showMessage(); saveModal()">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div> -->
+
 <app-app-footer></app-app-footer>
 <app-modal></app-modal>
-<ngx-spinner></ngx-spinner>
+<ngx-spinner
+  bdColor="rgba(0, 0, 0, 0.5)"
+  size="small"
+  template="<img src='https://www.superiorlawncareusa.com/wp-content/uploads/2020/05/loading-gif-png-5.gif' width='50' height='50'/>"
+>
+</ngx-spinner>
+
 </div>

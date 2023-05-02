@@ -23,16 +23,16 @@
             <div class="detalle" *ngIf="contextsVisible">
                 <p>4.1 Cumplimiento de la legislación | 
                     <a (click)="downloadPdf('MATRIZ REQUISITOS LEGALES-Aprobada V2.pdf'); downloadPdf('PROCEDIMIENTO REQUISITOS LEGALES-Aprobado.pdf')">Ver documento</a> | 
-                    <a routerLink="/evidencia" routerLinkActive="activebutton">Evidencia</a></p>
+                    <a [routerLink]="['/evidencia', 'contexts']">Evidencia</a></p>
                 <p>4.2 Comprensión de la organización y de su contexto | 
                     <a>Ver documento</a> | 
-                    <a routerLink="/evidencia" routerLinkActive="activebutton">Evidencia</a></p>
+                    <a [routerLink]="['/evidencia', 'contexts']">Evidencia</a></p>
                 <p>4.3 Comprensión de las necesidades y expectativas de las partes interesadas | 
                     <a (click)="downloadPdf('TALLER PARTES INTERESADAS - Aprobado.pdf'); downloadPdf('MATRIZ PARTES INTERESADAS.pdf')">Ver documento</a> | 
-                    <a routerLink="/evidencia" routerLinkActive="activebutton">Evidencia</a></p>
+                    <a [routerLink]="['/evidencia', 'contexts']">Evidencia</a></p>
                 <p>4.4 Determinación del alcance del sistema de gestión de la sostenibilidad | 
                     <a (click)="downloadPdf('ALCANCE DEL SGS - Aprobado.pdf')">Ver documento</a> | 
-                    <a routerLink="/evidencia" routerLinkActive="activebutton">Evidencia</a></p>
+                    <a [routerLink]="['/evidencia', 'contexts']">Evidencia</a></p>
                 <div class="subDetalle">
                     <div class="subtitulo" (click)="toggleSubContexts()" [ngClass]="{'verde': subContextsVisible}">
                         <p>4.5 Sistema de gestión de la sostenibilidad</p>
@@ -43,13 +43,12 @@
                     <div class="subDetalleContext" *ngIf="subContextsVisible">
                         <p>4.5.1 Sistema de gestión de la sostenibilidad | 
                             <a (click)="downloadPdf('Ejemplo de caracterizacion - Informativo.pdf'); downloadPdf('Formato caracterizacion proceso-Aprobado.pdf'); downloadPdf('Guia para construir mapa de procesos.pdf'); downloadPdf('TALLER CONSTRUIR MAPA DE PROCESOS-Aprobado.pdf')">Ver documento</a> | 
-                            <a routerLink="/evidencia" routerLinkActive="activebutton">Evidencia</a></p>
+                            <a [routerLink]="['/evidencia', 'contexts', 'subContexts']">Evidencia</a></p>
                         <p>4.5.2 Sistema de gestión de la sostenibilidad | 
                             <a>Ver documento</a> | 
-                            <a routerLink="/evidencia" routerLinkActive="activebutton">Evidencia</a></p>
+                            <a [routerLink]="['/evidencia', 'contexts', 'subContexts']">Evidencia</a></p>
                     </div>
                 </div>
-                
             </div>
         </div>
         <div class="div">
@@ -60,10 +59,10 @@
                 </div>
             </div>
             <div class="detalle" *ngIf="liderazgoVisible">
-                <p>5.1. Liderazgo y compromiso | <a>Ver documento</a> | <a routerLink="/evidencia" routerLinkActive="activebutton">Evidencia</a></p>
+                <p>5.1. Liderazgo y compromiso | <a>Ver documento</a> | <a [routerLink]="['/evidencia', 'liderazgo']">Evidencia</a></p>
                 <p>5.2. Política | <a (click)="downloadPdf('TALLER POLITICA DE DESARROLLO SOSTENIBLE-Aprobado con observ.pdf')">Ver documento</a> | 
-                    <a routerLink="/evidencia" routerLinkActive="activebutton">Evidencia</a></p>
-                <p>5.3 Roles, responsabilidades y autoridades | <a>Ver documento</a> | <a routerLink="/evidencia" routerLinkActive="activebutton">Evidencia</a></p>
+                    <a [routerLink]="['/evidencia', 'liderazgo']">Evidencia</a></p>
+                <p>5.3 Roles, responsabilidades y autoridades | <a>Ver documento</a> | <a [routerLink]="['/evidencia', 'liderazgo']">Evidencia</a></p>
             </div>
         </div>
         <div class="div">
@@ -82,8 +81,8 @@
                         </div>
                     </div>
                     <div class="subDetallePlanificacion" *ngIf="subPlanificacionA">
-                        <p>6.1.1 Generalidades | <a>Ver documento</a> | <a routerLink="/evidencia" routerLinkActive="activebutton">Evidencia</a></p>
-                        <p>6.1.2 Identificación y evaluación de las cuestiones | <a>Ver documento</a> | <a routerLink="/evidencia" routerLinkActive="activebutton">Evidencia</a></p>
+                        <p>6.1.1 Generalidades | <a>Ver documento</a> | <a [routerLink]="['/evidencia', 'planificacion', 'subPlanificacionA']">Evidencia</a></p>
+                        <p>6.1.2 Identificación y evaluación de las cuestiones | <a>Ver documento</a> | <a [routerLink]="['/evidencia', 'planificacion', 'subPlanificacionA']">Evidencia</a></p>
                     </div>
                 </div>
                 <div class="subDetalleB">
@@ -94,7 +93,7 @@
                         </div>
                     </div>
                     <div class="subDetallePlanificacion" *ngIf="subPlanificacionB">
-                        <p>6.2.1 Objetivos de sostenibilidad y planificación para lograrlos | <a>Ver documento</a> | <a routerLink="/evidencia" routerLinkActive="activebutton">Evidencia</a></p>
+                        <p>6.2.1 Objetivos de sostenibilidad y planificación para lograrlos | <a>Ver documento</a> | <a [routerLink]="['/evidencia', 'planificacion', 'subPlanificacionB']">Evidencia</a></p>
                     </div>
                 </div>
             </div>
@@ -109,16 +108,16 @@
             <div class="detalle" *ngIf="apoyoVisible">
                 <p>7.1 Recursos | 
                     <a (click)="downloadPdf('Opcion 1 Presupuesto solo SGS-Aprobado.pdf')">Ver documento</a> | 
-                    <a routerLink="/evidencia" routerLinkActive="activebutton">Evidencia</a></p>
+                    <a [routerLink]="['/evidencia', 'apoyo']">Evidencia</a></p>
                 <p>7.2 Competencia | 
                     <a>Ver documento</a> | 
-                    <a routerLink="/evidencia" routerLinkActive="activebutton">Evidencia</a></p>
+                    <a [routerLink]="['/evidencia', 'apoyo']">Evidencia</a></p>
                 <p>7.3 Toma de conciencia | 
                     <a>Ver documento</a> | 
-                    <a routerLink="/evidencia" routerLinkActive="activebutton">Evidencia</a></p>
+                    <a [routerLink]="['/evidencia', 'apoyo']">Evidencia</a></p>
                 <p>7.4 Comunicación | 
                     <a (click)="downloadPdf('MATRIZ DE COMUNICACION-Aprobada con observaciones.pdf')">Ver documento</a> | 
-                    <a routerLink="/evidencia" routerLinkActive="activebutton">Evidencia</a></p>
+                    <a [routerLink]="['/evidencia', 'apoyo']">Evidencia</a></p>
                 <div class="subDetalle">
                     <div class="subtituloApoyo" (click)="toggleSubApoyo()" [ngClass]="{'verde': subApoyoVisible}">
                         <p>7.5 Información documentada</p>
@@ -127,9 +126,9 @@
                         </div>
                     </div>
                     <div class="subDetalleApoyo" *ngIf="subApoyoVisible">
-                        <p>7.5.1 Generalidades | <a>Ver documento</a> | <a routerLink="/evidencia" routerLinkActive="activebutton">Evidencia</a></p>
-                        <p>7.5.2 Creación y actualización | <a>Ver documento</a> | <a routerLink="/evidencia" routerLinkActive="activebutton">Evidencia</a></p>
-                        <p>7.5.3 Control de la información documentada | <a>Ver documento</a> | <a routerLink="/evidencia" routerLinkActive="activebutton">Evidencia</a></p>
+                        <p>7.5.1 Generalidades | <a>Ver documento</a> | <a [routerLink]="['/evidencia', 'apoyo', 'subApoyo']">Evidencia</a></p>
+                        <p>7.5.2 Creación y actualización | <a>Ver documento</a> | <a [routerLink]="['/evidencia', 'apoyo', 'subApoyo']">Evidencia</a></p>
+                        <p>7.5.3 Control de la información documentada | <a>Ver documento</a> | <a [routerLink]="['/evidencia', 'apoyo', 'subApoyo']">Evidencia</a></p>
                     </div>
                 </div>
             </div>
@@ -142,9 +141,9 @@
                 </div>
             </div>
             <div class="detalle" *ngIf="operacionVisible">
-                <p>8.1 Planificación y control operacional | <a>Ver documento</a> | <a routerLink="/evidencia" routerLinkActive="activebutton">Evidencia</a></p>
-                <p>8.2 Tratamiento de actividades, productos o servicios modificados | <a>Ver documento</a> | <a routerLink="/evidencia" routerLinkActive="activebutton">Evidencia</a></p>
-                <p>8.3 Gestión de la cadena de suministro | <a>Ver documento</a> | <a routerLink="/evidencia" routerLinkActive="activebutton">Evidencia</a></p>
+                <p>8.1 Planificación y control operacional | <a>Ver documento</a> | <a [routerLink]="['/evidencia', 'operacion']">Evidencia</a></p>
+                <p>8.2 Tratamiento de actividades, productos o servicios modificados | <a>Ver documento</a> | <a [routerLink]="['/evidencia', 'operacion']">Evidencia</a></p>
+                <p>8.3 Gestión de la cadena de suministro | <a>Ver documento</a> | <a [routerLink]="['/evidencia', 'operacion']">Evidencia</a></p>
             </div>
         </div>
         <div class="div">
@@ -155,7 +154,7 @@
                 </div>
             </div>
             <div class="detalle" *ngIf="evaluacionVisible">
-                <p>9.1 Seguimiento, medición, análisis y evaluación | <a>Ver documento</a> | <a routerLink="/evidencia" routerLinkActive="activebutton">Evidencia</a></p>
+                <p>9.1 Seguimiento, medición, análisis y evaluación | <a>Ver documento</a> | <a [routerLink]="['/evidencia', 'evaluacion']">Evidencia</a></p>
                 <div class="subDetalle">
                     <div class="subtituloEvaluacion" (click)="toggleSubEvaluacion()" [ngClass]="{'verde': subEvaluacionVisible}">
                         <p>9.2 Auditoría interna</p>
@@ -164,10 +163,10 @@
                         </div>
                     </div>
                     <div class="subDetalleEvaluacion" *ngIf="subEvaluacionVisible">
-                        <p>9.2.2 Auditoría interna | <a>Ver documento</a> | <a routerLink="/evidencia" routerLinkActive="activebutton">Evidencia</a></p>
+                        <p>9.2.2 Auditoría interna | <a>Ver documento</a> | <a [routerLink]="['/evidencia', 'evaluacion', 'subEvaluacion']">Evidencia</a></p>
                     </div>
                 </div>
-                <p>9.3 Revisión por la dirección | <a>Ver documento</a> | <a routerLink="/evidencia" routerLinkActive="activebutton">Evidencia</a></p>
+                <p>9.3 Revisión por la dirección | <a>Ver documento</a> | <a [routerLink]="['/evidencia', 'evaluacion']">Evidencia</a></p>
             </div>
         </div>
         <div class="div">
@@ -178,8 +177,8 @@
                 </div>
             </div>
             <div class="detalle" *ngIf="mejoraVisible">
-                <p>10.1 No conformidad y acción correctiva | <a>Ver documento</a> | <a routerLink="/evidencia" routerLinkActive="activebutton">Evidencia</a></p>
-                <p>10.2 Mejora continua | <a>Ver documento</a> | <a routerLink="/evidencia" routerLinkActive="activebutton">Evidencia</a></p>
+                <p>10.1 No conformidad y acción correctiva | <a>Ver documento</a> | <a [routerLink]="['/evidencia', 'mejora']">Evidencia</a></p>
+                <p>10.2 Mejora continua | <a>Ver documento</a> | <a [routerLink]="['/evidencia', 'mejora']">Evidencia</a></p>
             </div>
         </div>
         <div class="div">
@@ -190,7 +189,7 @@
                 </div>
             </div>
             <div class="detalle" *ngIf="anexoAVisible">
-                <p>Contenido Anexo A | <a>Ver documento</a> | <a routerLink="/evidencia" routerLinkActive="activebutton">Evidencia</a></p>
+                <p>Contenido Anexo A | <a>Ver documento</a> | <a [routerLink]="['/evidencia', 'anexoA']">Evidencia</a></p>
             </div>
         </div>
         <div class="div">
@@ -201,7 +200,7 @@
                 </div>
             </div>
             <div class="detalle" *ngIf="anexoBVisible">
-                <p>Contenido Anexo B | <a>Ver documento</a> | <a routerLink="/evidencia" routerLinkActive="activebutton">Evidencia</a></p>
+                <p>Contenido Anexo B | <a>Ver documento</a> | <a [routerLink]="['/evidencia', 'anexoB']">Evidencia</a></p>
             </div>
         </div>
         <div class="div">
@@ -212,7 +211,7 @@
                 </div>
             </div>
             <div class="detalle" *ngIf="anexoCVisible">
-                <p>Contenido Anexo C | <a>Ver documento</a> | <a routerLink="/evidencia" routerLinkActive="activebutton">Evidencia</a></p>
+                <p>Contenido Anexo C | <a>Ver documento</a> | <a [routerLink]="['/evidencia', 'anexoC']">Evidencia</a></p>
             </div>
         </div>
     <button type="button" (click)="goBack()" class="btn">Atrás</button>

@@ -24,7 +24,8 @@ const routes: Routes = [
   {path: 'diagnosticoDoc', component: AppDiagnosticoDocComponent},
   {path: 'documentacion', component: AppDocumentacionComponent},
   {path: 'gestionUsuario', component: AppGestionDeUsuariosComponent},
-  {path: 'evidencia', component: AppEvidenciaComponent},
+  {path: 'evidencia/:section', component: AppEvidenciaComponent},
+  {path: 'evidencia/:section/:subSection', component: AppEvidenciaComponent },
   {path: 'recovery/:id', component: RecoveryComponent},
   {path: 'EMatrizRequisitosLegales', component: EMatrizRequisitosLegalesComponent},
   {path: 'recovery', component: RecoveryComponent}

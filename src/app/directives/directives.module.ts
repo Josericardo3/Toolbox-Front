@@ -25,7 +25,6 @@ import { LetrasDirective } from './letras.directive';
         TrueFalseValueDirective,
         LetrasDirective,
         NumerosDirective,
-       
     ]
 })
 

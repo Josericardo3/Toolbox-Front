@@ -308,3 +308,56 @@
                         </div> 
                     </div>      
                 </div>
+
+
+
+
+                  <h1>Documentación</h1>  
+                      <div class="div">
+                          <div class="titulo" (click)="toggleSection('norma')" [ngClass]="{'verde': normaVisible}" >
+                              <h3>Guía de la Norma</h3>
+                          </div>
+                      </div>
+                      <div class="div">
+                          <div class="titulo" (click)="toggleSection('liderazgo')" [ngClass]="{'verde': liderazgoVisible}">
+                              <h3>5. LIDERAZGO</h3>
+                          </div>
+                          <div class="detalle" *ngIf="liderazgoVisible">
+                              <p>5.1. Liderazgo y compromiso | <a>Ver documento</a> | <a routerLink="/evidencia" routerLinkActive="activebutton">Evidencia</a></p>
+                          </div>
+                      </div>
+                      <div class="div">
+                          <div class="titulo" (click)="toggleSection('apoyo')" [ngClass]="{'verde': apoyoVisible}">
+                              <h3>7. APOYO</h3>
+                          </div>
+                          <div class="detalle" *ngIf="apoyoVisible">
+                              <p>7.1 Recursos | 
+                                  <a (click)="downloadPdf('Opcion 1 Presupuesto solo SGS-Aprobado.pdf')">Ver documento</a> | 
+                                  <a routerLink="/evidencia" routerLinkActive="activebutton">Evidencia</a></p>
+                              <p>7.2 Competencia | 
+                                  <a>Ver documento</a> | <a routerLink="/evidencia" routerLinkActive="activebutton">Evidencia</a></p>
+                          </div>
+                      </div>     
+                      
+                      
+                      <h1>Evidencia e Implementación</h1>
+                      <div class="div">
+                        <div class="titulo" (click)="toggleSection('liderazgo')" [ngClass]="{'verde': liderazgoVisible}">
+                            <h3>5. LIDERAZGO</h3>
+                        </div>
+                        <div class="detalle" *ngIf="liderazgoVisible">
+                            <p>5.1. Liderazgo y compromiso | <a>Ver documento</a> | <a routerLink="/evidencia" routerLinkActive="activebutton">Evidencia</a></p>
+                        </div>
+                    </div>
+                    <div class="div">
+                        <div class="titulo" (click)="toggleSection('apoyo')" [ngClass]="{'verde': apoyoVisible}">
+                            <h3>7. APOYO</h3>
+                        </div>
+                        <div class="detalle" *ngIf="apoyoVisible">
+                            <p>7.1 Recursos | 
+                                <a (click)="downloadPdf('Opcion 1 Presupuesto solo SGS-Aprobado.pdf')">Ver documento</a> | 
+                                <a routerLink="/evidencia" routerLinkActive="activebutton">Evidencia</a></p>
+                            <p>7.2 Competencia | 
+                                <a>Ver documento</a> | <a routerLink="/evidencia" routerLinkActive="activebutton">Evidencia</a></p>
+                        </div>
+                    </div>  

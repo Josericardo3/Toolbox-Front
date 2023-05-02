@@ -113,6 +113,7 @@ i{
 }
 .btnAdd{
     margin: 3vh 0 !important;
+    cursor: pointer !important;
 }
 .divBtn{
     display: flex;

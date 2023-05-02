@@ -75,6 +75,12 @@ export class ApiService {
     return response;
   }
 
+  validateDiagnostico(idUsuario:any): Observable<string> {
+    let validate = `${this.apiURL}/api/Validaciones/UsuarioDiagnostico/${idUsuario}`
+    let response = this.http.get<string>(validate);
+    return response;
+  }
+
   //para obtener la data de caracterizacion
   getData(): Observable<any> {
     const id = localStorage.getItem('Id');

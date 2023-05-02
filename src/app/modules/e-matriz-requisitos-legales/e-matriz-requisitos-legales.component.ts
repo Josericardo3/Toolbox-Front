@@ -1,6 +1,7 @@
 import { Component, OnInit, TemplateRef, ViewChild, ViewContainerRef} from '@angular/core';
 import { ApiService } from 'src/app/servicios/api/api.service';
 import { Router } from '@angular/router';
+import { FormGroup, Validators, FormBuilder,FormControl } from '@angular/forms'
 
 @Component({
   selector: 'app-e-matriz-requisitos-legales',
@@ -32,7 +33,12 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
 
   primeraLeyVisible = false;
   divAddVisible: boolean[] = [];
-  adicionarVisible = false;
+  adicionarVisibleTurismo = false;
+  adicionarVisibleAmbiental = false;
+  adicionarVisibleLaboral = false;
+  adicionarVisibleSocial = false;
+  adicionarVisibleEconomico = false;
+  adicionarVisibleParticular = false;
 
   leyesVisibles: boolean[] = [];
 
@@ -41,10 +47,9 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
   numero: string;
   anio: string;
   selectedOption: string = '';
-  divs: any[] = [{}];
+  busqueda: string = '';
   nuevoDiv: any;
   tabActual = 'tab1';
-  busqueda: string = '';
 
   opcionSeleccionada: string = '';
   responsableSeleccionado: string = '';
@@ -55,12 +60,80 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
   fechaInput: string = '';
   estadoSeleccionado: string = '';
 
+  divs: any[] = [{}];
+  divsTab1 = [];
+  divsTab2 = [];
+  divsTab3 = [];
+  divsTab4 = [];
+  divsTab5 = [];
+  divsTab6 = [];
+
+  public tab1Form!: FormGroup
+  public tab2Form!: FormGroup
+  public tab3Form!: FormGroup
+  public tab4Form!: FormGroup
+  public tab5Form!: FormGroup
+  public tab6Form!: FormGroup
+
   constructor(
     private ApiService: ApiService,
-    private router: Router
+    private router: Router,
+    private formBuilder: FormBuilder
     ) {}
 
   ngOnInit() {
+    this.separarCategoria();
+
+    this.tab1Form = this.formBuilder.group({
+      tipoNormatividad: ['', Validators.required],
+      numero: ['', Validators.required],
+      anio: ['', Validators.required],
+      descripcion: ['', Validators.required],
+      secciones: ['', Validators.required],
+    });
+
+    this.tab2Form = this.formBuilder.group({
+      tipoNormatividad: ['', Validators.required],
+      numero: ['', Validators.required],
+      anio: ['', Validators.required],
+      descripcion: ['', Validators.required],
+      secciones: ['', Validators.required],
+    });
+
+    this.tab3Form = this.formBuilder.group({
+      tipoNormatividad: ['', Validators.required],
+      numero: ['', Validators.required],
+      anio: ['', Validators.required],
+      descripcion: ['', Validators.required],
+      secciones: ['', Validators.required],
+    });
+
+    this.tab4Form = this.formBuilder.group({
+      tipoNormatividad: ['', Validators.required],
+      numero: ['', Validators.required],
+      anio: ['', Validators.required],
+      descripcion: ['', Validators.required],
+      secciones: ['', Validators.required],
+    });
+
+    this.tab5Form = this.formBuilder.group({
+      tipoNormatividad: ['', Validators.required],
+      numero: ['', Validators.required],
+      anio: ['', Validators.required],
+      descripcion: ['', Validators.required],
+      secciones: ['', Validators.required],
+    });
+
+    this.tab6Form = this.formBuilder.group({
+      tipoNormatividad: ['', Validators.required],
+      numero: ['', Validators.required],
+      anio: ['', Validators.required],
+      descripcion: ['', Validators.required],
+      secciones: ['', Validators.required],
+    });
+  }
+
+  separarCategoria(){
     this.ApiService.getLeyes()
     .subscribe((data: any) => {
       this.datos = data;
@@ -79,7 +152,7 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
       }, {});
       this.leyesTurismo = Object.values(gruposTurismo);
 
-      const gruposAmbiental = this.datos.filter((ley) => ley.categoria === 'Ambiental')
+      const gruposAmbiental = this.datos.filter((ley) => ley.categoria === 'Ambiental' || ley.categoria === 'NTC 6496 Ambiental')
       .reduce((acumulador, ley) => {
         const clave = ley.tipO_NORMATIVIDAD + ley.numero + ley.anio;
         if (!acumulador[clave]) {
@@ -139,6 +212,20 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
       }, {});
       this.leyesEconomico = Object.values(gruposEconomico);
 
+      const gruposParticular = this.datos.filter((ley) => ley.categoria === 'NTC 6496 General')
+      .reduce((acumulador, ley) => {
+        const clave = ley.tipO_NORMATIVIDAD + ley.numero + ley.anio;
+        if (!acumulador[clave]) {
+          acumulador[clave] = {
+            ...ley,
+            docS_ESPECIFICOS: [ley.docS_ESPECIFICOS],
+          };
+        } else {
+          acumulador[clave].docS_ESPECIFICOS.push(ley.docS_ESPECIFICOS);
+        }
+        return acumulador;
+      }, {});
+      this.leyesParticular = Object.values(gruposParticular);
       // this.leyesParticular = this.datos.filter((ley) => ley.categoria === 'Turismo'); // ¿cuál es la categoría?
       
      });
@@ -146,6 +233,20 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
 
   cambiarTab(tab: string) {
     this.tabActual = tab;
+    // Actualiza divs para que muestre los divs específicos del tab seleccionado
+    if (tab === 'tab1') {
+      this.divs = this.divsTab1;
+    } else if (tab === 'tab2') {
+      this.divs = this.divsTab2;
+    } else if (tab === 'tab3') {
+      this.divs = this.divsTab3;
+    } else if (tab === 'tab4') {
+      this.divs = this.divsTab4;
+    } else if (tab === 'tab5') {
+      this.divs = this.divsTab5;
+    } else if (tab === 'tab6') {
+      this.divs = this.divsTab6;
+    }
   }
   
   toggleSectionLey(section, index) {
@@ -177,17 +278,36 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
   }
 
   toggleSection(section) {
-  if (section === 'adicionar') {
-      this.adicionarVisible = !this.adicionarVisible
+  if (section === 'adicionarTurismo') {
+      this.adicionarVisibleTurismo = !this.adicionarVisibleTurismo
+    } else if (section === 'adicionarAmbiental') {
+      this.adicionarVisibleAmbiental = !this.adicionarVisibleAmbiental
+    } else if (section === 'adicionarLaboral') {
+      this.adicionarVisibleLaboral = !this.adicionarVisibleLaboral
+    } else if (section === 'adicionarSocial') {
+      this.adicionarVisibleSocial = !this.adicionarVisibleSocial
+    } else if (section === 'adicionarEconomico') {
+      this.adicionarVisibleEconomico = !this.adicionarVisibleEconomico
+    } else if (section === 'adicionarParticular') {
+      this.adicionarVisibleParticular = !this.adicionarVisibleParticular
     }
 
     // Cierra el div abierto si se hace clic en otro div
     if (this.lastVisible && this.lastVisible !== section) {
-  if (section === 'adicionar') {
-        this.adicionarVisible = false;
-      }
+      if (section === 'adicionarTurismo') {
+            this.adicionarVisibleTurismo = !this.adicionarVisibleTurismo
+          } else if (section === 'adicionarAmbiental') {
+            this.adicionarVisibleAmbiental = !this.adicionarVisibleAmbiental
+          } else if (section === 'adicionarLaboral') {
+            this.adicionarVisibleLaboral = !this.adicionarVisibleLaboral
+          } else if (section === 'adicionarSocial') {
+            this.adicionarVisibleSocial = !this.adicionarVisibleSocial
+          } else if (section === 'adicionarEconomico') {
+            this.adicionarVisibleEconomico = !this.adicionarVisibleEconomico
+          } else if (section === 'adicionarParticular') {
+            this.adicionarVisibleParticular = !this.adicionarVisibleParticular
+          }
     }
-
     this.lastVisible = section;
   }
 
@@ -225,7 +345,19 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
       tipoNormatividad: tipoNormatividad
     };
   
-    this.divs.push(this.nuevoDiv);
+    const divA = this.tab1Form.value;
+    this.divsTab1.push(divA); // Agrega el div a la lista específica del tab1
+    const divB = this.tab2Form.value;
+    this.divsTab2.push(divB);
+    const divC = this.tab3Form.value;
+    this.divsTab3.push(divC);
+    const divD = this.tab4Form.value;
+    this.divsTab4.push(divD);
+    const divE = this.tab5Form.value;
+    this.divsTab5.push(divE);
+    const divF = this.tab6Form.value;
+    this.divsTab6.push(divF);
+    // this.divs.push(this.nuevoDiv);
 
     this.divsVisible = true;
       // Limpiar
@@ -256,8 +388,4 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
   goBack() {
     this.router.navigate(['/dashboard'])
   }
-
-  // addDivPrueba() {
-  //   this.containers.createEmbeddedView(this.inputTemplate);
-  // }
 }
