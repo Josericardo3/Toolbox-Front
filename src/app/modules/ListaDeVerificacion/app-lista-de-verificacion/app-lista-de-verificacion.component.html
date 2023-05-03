@@ -1,0 +1,146 @@
+<app-app-header></app-app-header>
+<div class="componente-global">
+    <div class="titulo">
+      <h1 class="titulo-nav">
+          Lista de verificación auditoría
+      </h1>
+  </div>
+  <div class="container-form-lista-verificacion">
+    <table class="dropdown">
+      <tbody>
+      <tr>
+      <td class="td-menu"><p class="p-menu">Consultar resultados de auditorias</p></td>
+      </tr>
+      <tr>
+      <td class="td-menu"><p class="p-menu" id="item-1" (click)="openComponent($event)">Plan de auditoria</p></td>
+      </tr>
+      <tr>
+      <td class="td-menu"><p class="p-menu" (click)="openComponentLista($event)" id="item-2" >Lista de Verificación auditoria interna</p></td>
+      </tr>
+      <tr>
+      <td class="td-menu"><p class="p-menu" (click)="openComponentInforme($event)">Informe de auditoria</p></td>
+      </tr>
+      <tr>
+      <td class="td-menu"><p class="p-menu">Programa de auditoria</p></td>
+      </tr>
+      <tr>
+      <td class="td-menu"><p class="p-menu">Realizar auditoria interna</p></td>
+      </tr>        
+      <tr>
+      <td class="td-menu"><p class="p-menu">Programar actividades de auditoria</p></td>
+      </tr>   
+      </tbody>
+      </table> 
+       <!-- formulario -->
+       <div class="container-form">
+        <table class="table"  style="text-align: center !important;" id="table_audit">
+          <thead>
+            <tr>
+              <th>CÓDIGO</th>
+              <th>FECHA DE AUDITORIA</th>
+              <th>PROCESOS</th>
+              <th>ACCIONES</th>             
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let audit of listaAuditoria">
+              <td>{{ audit.codigo }}</td>
+              <td>{{ audit.fechA_AUDITORIA }}</td>
+              <td>{{ audit.proceso }}</td>
+
+              <td><button (click)="seleccionarAuditoria(audit)" class="seleccionar">SELECCIONAR</button></td>
+            </tr>
+          </tbody>
+        </table>
+        <form id="formListaDeVerficacion"  
+            style="display: none;"
+            [formGroup]="formParent"
+            class="controller-auditoria"
+            (ngSubmit)="saveFormVerificacion()">  
+          <div class="plan-auditoria">
+                <label class="label-auditor">Fecha de auditoría : {{this.selectedAuditoria?.fechA_AUDITORIA}} </label>
+                <br>
+                <label class="label-auditor">Auditor lider :{{selectedAuditoria?.auditoR_LIDER}}</label>
+                <br>
+                <label for="leader" class="label-auditor">Seleccionar un líder:</label>
+                <select class="select-lider" (change)="selectLeader($event)" formControlName="team">
+                <option  selected>Seleccionar</option>
+                <option *ngFor="let leader of leaders" [value]="leader?.nombre" id="{{leader.leader}}">{{ leader.nombre }}</option>
+                </select>
+                <label class="label-auditor" for="cargo">Cargo:</label>
+                <label class="label-auditor" id="cargo" >{{ selectedLeaderCargo }}</label>
+                <br>
+                <label class="label-auditor">Nombre(s) de otra(s) persona(s) auditada(s): </label>
+                <input type="text" formControlName="personasAuditadas" style="margin-left: 22px;"/>
+                 <br>
+                <label class="label-auditor">Objetivos de auditoría: {{this.selectedAuditoria.objetivo}} </label>
+                <br>
+                <label class="label-auditor">Alcance de auditoría: {{this.selectedAuditoria.alcance}}</label>
+                <br>
+                <label class="label-auditor">Documentos de referencia: </label>
+                <input type="text" formControlName="documentos" style="margin-left: 22px;"/>
+                <br>
+                <label class="label-auditor">Norma(s) a auditar:{{this.normaSelected}}  </label>
+                <br>
+                <label class="label-auditor">Proceso(s) / Actividad / Requisito a auditar: {{this.selectedAuditoria.proceso}}</label>
+                <br>
+
+                <label class="label-auditor">Criterios de auditoría : {{this.selectedAuditoria.criterio}}</label>
+                <br>
+    
+                <!-- aqui empieza lo dinámico -->
+                <div *ngIf="requisitos?.length>0">
+                <div formArrayName="formRequisitos">
+                  <div *ngFor="let requisito of requisitos; let i=index" [formGroupName]="i">
+                    <label for="titulo" class="label-auditor">Requisito:</label>
+                    <input type="text" id="titulo" formControlName="requisito">
+                    <br>
+                    <label for="titulo" class="label-auditor">Posible evidencia:</label>
+                    <input type="text" id="titulo" formControlName="evidencia">
+                    <br>
+                    <div class="select-value ">
+                      <label class="label-auditor">Hallazgo(s)</label>
+                      <select 
+                      name="select"  
+                      class="select-titulo"   
+                      id="selectCategoria"  
+                      formControlName="hallazgo"
+                      (change)="getHallazgo($event)"
+                      >
+                        <option value="NC" >NC</option>  
+                        <option value="OBS" >OBS</option> 
+                        <option value="F" >F</option>  
+                        <option value="C" >C</option>        
+                      </select>
+                    </div>
+                    <label for="descripcion" class="label-auditor">Observaciones o comentarios o notas de auditor :</label>
+                    <textarea type="text" style="height: 61px" class="obs"
+                    formControlName="observacion"></textarea>
+                    <div formArrayName="formPreguntas" class="label-auditor">
+                      Pregunta:
+                      <div *ngFor="let pregunta of preguntasArr; let j = index" [formGroupName]="j">
+                     
+                          <label>Pregunta {{j+1}}:</label>
+                          <input type="text" formControlName="pregunta">
+                        
+                      </div>
+                      <button (click)="agregarPregunta($event,i,requisito)" class="button-mas">+</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+               <button 
+               type="button" 
+               class="agregar-req"
+                (click)="addRequest($event)">
+                Agregar requisito
+              </button>
+          </div>
+          <div class="div-guardar">
+            <button type="submit" class="btn-guardar"  [disabled]="formParent.invalid" >Guardar</button>
+             <!-- disabled="formParent.isValid" -->
+          </div>
+        </form>
+       </div>
+  </div>
+</div>

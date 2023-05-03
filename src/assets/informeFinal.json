@@ -1,0 +1,52 @@
+{
+    "proceso":[
+    
+        {
+            "cod_auditoria":"A001",
+            "proceso_actividad_auditados": "Corporación Gutmont",
+            "auditor_lider": "Carlos Montalbán",
+            "equipo_auditor": "Desarrollo",
+            "fecha_informe_auditoria": "15/05/2023",
+            "objetivo_auditoria": "Desarrollo",
+            "alcance_auditoria": "Desarrollo",
+            "criterios_auditoria": "Auditoría en general",
+            "reunion_cierre": "25/05/2023",
+            "conclusiones_auditoria":"",
+            "proceso_table":"001",
+            "requisitos":[{
+                "nro":"01",
+                "legales":"Desarrollo",
+                "requisito":"Desarrollo",
+                "posible_evidencia":"No encontrada",
+                "hallazgo":"F",
+                "observacion":"Sin observacion"
+            }     
+            ]
+            
+         },
+     {
+        "cod_auditoria":"A002",
+        "proceso_actividad_auditados": "Melissa Bohorquez",
+        "auditor_lider": "Mauricio Peralta",
+        "equipo_auditor": "Desarrollo",
+        "fecha_informe_auditoria": "15/05/2023",
+        "objetivo_auditoria": "Desarrollo",
+        "alcance_auditoria": "Desarrollo",
+        "criterios_auditoria": "Auditoría en general",
+        "reunion_cierre": "25/05/2023",
+        "conclusiones_auditoria":"",
+        "proceso_table":"002",
+        "requisitos":[{
+            "nro":"02",
+            "legales":"Desarrollo",
+            "requisito":"Desarrollo",
+            "posible_evidencia":"No encontrada",
+            "hallazgo":"F",
+            "observacion":"Sin observacion"
+        }
+             
+        ]
+        
+     }
+    ]
+ }  

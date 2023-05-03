@@ -5,7 +5,6 @@ import { environment } from 'src/environments/environment.prod'
 import { LoginI } from '../../models/loginInterface'
 import { ResponseI } from '../../models/responseInterface'
 import { mergeMap } from 'rxjs/operators';
-import { debug } from 'console'
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
 };
@@ -201,4 +200,43 @@ export class ApiService {
     return this.http.get<any>(lista)
   }
 
+  // obtener el listado de asesores
+
+  getAuditorListService(){
+    let endpointListAuditor = `${this.apiURL}/api/Auditoria/ListarAuditor/14141414` 
+    return this.http.get<any>(endpointListAuditor)
+  }
+
+  // para obtener el codigo de la auditoria a registrar
+
+  // getCodeAuditorService(request){
+  //   let endpointCode =`${this.apiURL}/api/Auditoria/InsertAuditoria` ;
+  //   return this.http.post<any>(endpointCode,request)
+  // }
+
+  //insertar Auditoria
+  // insertAuditoria(resquest){
+  //   let assign = `${this.apiURL}/api/Auditoria/InsertAuditoria`
+  //   return this.http.post<any>(assign,resquest)
+  // }
+   insertAuditoria(resquest){
+    let assign = `${this.apiURL}/api/Auditoria/InsertPlanAuditoria`
+    return this.http.post<any>(assign,resquest)
+  }
+  getListarAuditorias(id: any){
+    let endpointListAuditor = `${this.apiURL}/api/Auditoria/ListarAuditorias/${id}` 
+    return this.http.get<any>(endpointListAuditor,id)
+  }
+
+  //obtener el usuario 15; para segunda tabla y 3ra
+  getAuditorias(id: any){
+    let endpointListAuditor = `${this.apiURL}/api/Auditoria/Auditoria/${id}` 
+    return this.http.get<any>(endpointListAuditor,id)
+  }
+ 
+  updateAuditoria(resquest){
+    let assign = `${this.apiURL}/api/Auditoria/InsertVerificacionAuditoria`
+    return this.http.post<any>(assign,resquest)
+  }
+ 
 }

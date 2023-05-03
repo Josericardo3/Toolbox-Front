@@ -1,0 +1,59 @@
+.contenedor-global{
+    display: flex;
+    align-items: flex-start;
+}
+
+.dropdown{
+    margin-top: 62px;
+    margin-left: 60px;
+    margin-right: 60px;
+}
+.titulo-nav{
+    font-family: 'Montserrat', sans-serif;
+    font-weight: bolder;
+    font-size: 32px;
+    color: #068460;
+    margin: 15vh 0 2vh 83vh;
+    width: 60vw;
+}
+.td-menu{
+    border: 2px solid #068460; 
+    border-radius: 20px;
+    background: white;
+    color: #068460;
+    font-family:'Work Sans', sans-serif; 
+    font-size: 18px;
+}
+
+.p-menu{
+    height: 62px;
+    text-align: center;
+    padding: 14px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.grup-button{
+    border: solid 2px #068460 !important;
+    height: 80px;
+    width: 257px;
+    margin-left: 65px;
+    margin-top: 60px;
+}
+.button-nuevo-auditoria{
+    height: 28px;
+    border: solid 1px #068460 !important;
+    margin: 24px;
+    padding-right: 10px;
+    padding-left: 10px;
+    background:  #068460;
+    color: white;
+    border-radius: 5px;
+    font-size: 15px;
+    font-family:'Work Sans', sans-serif; 
+}
+.selected{
+    margin: 0px !important;
+    background: #068460;
+    color: white;
+}

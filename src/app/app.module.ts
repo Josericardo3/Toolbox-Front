@@ -20,9 +20,7 @@ import { AppModalInicialComponent } from './modules/modal/app-modal-inicial/app-
 import { AppModalSuccessComponent } from './modules/modal-success/app-modal-success/app-modal-success.component';
 import {AppGestionDeUsuariosComponent } from './modules/gestionDeUsuarios/app-gestion-de-usuarios/app-gestion-de-usuarios.component';
 import { AppModalPstComponent } from './modules/modalPst/app-modal-pst/app-modal-pst.component'; 
-import { ModalModule, BsModalService } from 'ngx-bootstrap/modal';
 import { CommonModule } from '@angular/common';
-import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { AppDiagnosticoDocComponent } from './modules/diagnosticoDoc/app-diagnostico-doc/app-diagnostico-doc.component';
 import { AppDocumentacionComponent } from './modules/documentacion/app-documentacion/app-documentacion.component';
 import { NgxSpinnerModule } from 'ngx-spinner';
@@ -31,9 +29,30 @@ import { AppEvidenciaComponent } from './modules/evidencia/app-evidencia/app-evi
 import { RecoveryComponent } from './recovery/app-recovery/recovery.component';
 import { ModalComponent } from './messagemodal/messagemodal.component';
 import { EMatrizRequisitosLegalesComponent } from './modules/e-matriz-requisitos-legales/e-matriz-requisitos-legales.component';
-// import { ChartComponent } from './modules/chart/chart.component';
+import { AppAuditoriaInternaComponent } from './modules/AuditoriaInterna/app-auditoria-interna/app-auditoria-interna.component';
+
+// ngx-bootstrap
+import { CollapseModule } from 'ngx-bootstrap/collapse';
+import { ModalModule, BsModalService } from 'ngx-bootstrap/modal';
+import { PaginationModule } from 'ngx-bootstrap/pagination';
+import { AccordionModule } from 'ngx-bootstrap/accordion';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { TimepickerModule } from 'ngx-bootstrap/timepicker';
+import { registerLocaleData } from '@angular/common';
+import localeEsPE from '@angular/common/locales/es-PE';
+import { ButtonsModule } from 'ngx-bootstrap/buttons';
+import { AppNuevoPlanDeAuditoriaComponent } from './modules/NuevoPlanDeAuditoria/app-nuevo-plan-de-auditoria/app-nuevo-plan-de-auditoria.component';
+import { AppListaDeVerificacionComponent } from './modules/ListaDeVerificacion/app-lista-de-verificacion/app-lista-de-verificacion.component';
+
+
+
+import { PipesModule } from './pipes/pipes.module';
+import { AppInformeDeAuditoriaComponent } from './modules/InformeDeAuditoria/app-informe-de-auditoria/app-informe-de-auditoria.component';
+import { AppMenuAuditoriaComponent } from './modules/MenuAuditoria/app-menu-auditoria/app-menu-auditoria.component';
 // import { MatTabsModule } from '@angular/material/tabs';
 
+registerLocaleData(localeEsPE, 'es-PE');
 @NgModule({
   declarations: [
     AppComponent,
@@ -55,28 +74,40 @@ import { EMatrizRequisitosLegalesComponent } from './modules/e-matriz-requisitos
     RecoveryComponent,
     ModalComponent,
     EMatrizRequisitosLegalesComponent,
-    // ChartComponent
+    AppAuditoriaInternaComponent,
+    AppNuevoPlanDeAuditoriaComponent,
+    AppListaDeVerificacionComponent,
+    AppInformeDeAuditoriaComponent,
+    AppMenuAuditoriaComponent,
   ],
   imports: [
+    PipesModule,
     BrowserModule,
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule, 
     StoreModule.forRoot({ data: stateReducer }),
-    //StoreModule.forRoot(reducer),
     ModalModule.forRoot(),
     HttpClientModule,
     DirectivesModule,
     ModalModule,
     CommonModule,
     NgxSpinnerModule,
+    BrowserModule, 
+    ButtonsModule,
     PaginationModule.forRoot(),
-    // MatTabsModule,
+    AccordionModule.forRoot(),
+    CollapseModule.forRoot(),
+    BsDatepickerModule.forRoot(),
+    NgMultiSelectDropDownModule.forRoot(),
+    PaginationModule.forRoot(),
+    TimepickerModule.forRoot(),
     BrowserAnimationsModule
   ],
   providers: 
     [
     { provide: HTTP_INTERCEPTORS,  useClass: InterceptorService, multi: true },
+   
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 

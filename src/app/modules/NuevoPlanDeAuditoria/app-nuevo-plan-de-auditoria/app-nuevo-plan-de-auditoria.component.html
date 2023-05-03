@@ -1,0 +1,42 @@
+<app-app-header></app-app-header> 
+<div class="titulo">
+    <h1 class="titulo-nav">
+        Auditoría Interna
+    </h1>
+</div>  
+<div class="contenedor-global">
+    <table class="dropdown">
+        <tbody>
+        <tr>
+        <td class="td-menu"><p class="p-menu">Consultar resultados de auditorias</p></td>
+        </tr>
+        <tr>
+        <td class="td-menu"><p class="p-menu" id="item-1">Plan de auditoria</p></td>
+        </tr>
+        <tr>
+        <td class="td-menu"><p class="p-menu" (click)="openComponentLista($event)">Lista de Verificación auditoria interna</p></td>
+        </tr>
+        <tr>
+        <td class="td-menu"><p class="p-menu">Informe de auditoria</p></td>
+        </tr>
+        <tr>
+        <td class="td-menu"><p class="p-menu">Programa de auditoria</p></td>
+        </tr>
+        <tr>
+        <td class="td-menu"><p class="p-menu">Realizar auditoria interna</p></td>
+        </tr>        
+        <tr>
+        <td class="td-menu"><p class="p-menu">Programar actividades de auditoria</p></td>
+        </tr>   
+        </tbody>
+        </table> 
+    <div class="grup-button">
+        <button class="button-nuevo-auditoria" (click)="openComponentPlan()"> Agregar nueva auditoria
+        </button>
+    </div>
+    <!-- <div class="grup-button">
+        <button class="button-nuevo-auditoria" (click)="generarPdf()"> Generar PDF
+        </button>
+    </div> -->
+</div>
+

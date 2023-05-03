@@ -28,7 +28,7 @@ export class AppDashboardComponent implements OnInit {
     {
       // colaborador
       rol: '1',
-      view: ['caracterizacion','diagnostico', 'documentacion'],
+      view: ['caracterizacion','diagnostico', 'documentacion','noticias'],
     },
     {
       rol: 'ADMIN',
@@ -131,4 +131,10 @@ export class AppDashboardComponent implements OnInit {
    const url = 'https://www.gov.co/home'
    window.location.href=url;
   }
+
+ 
+  //prueba para auditoria
+  redirigirAuditoria(){
+    window.location.href = '/auditoria';
+}
 }

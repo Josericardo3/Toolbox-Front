@@ -1,4 +1,3 @@
-import { ModalService } from 'src/app/messagemodal/messagemodal.component.service' 
 import {Component, OnInit, ComponentFactoryResolver} from '@angular/core'
 import { Router } from '@angular/router'
 import { FormGroup, Validators, FormBuilder,FormControl } from '@angular/forms'
@@ -7,7 +6,7 @@ import { ApiService } from '../../../servicios/api/api.service'
 import { Store } from '@ngrx/store'
 import 'jquery-ui/ui/widgets/dialog.js'
 import { Categoria } from '../../../utils/constants'
-
+import { ModalService } from '../../../messagemodal/messagemodal.component.service';
 
 
 @Component({
@@ -247,6 +246,7 @@ export class AppRegisterComponent implements OnInit {
   }
 
   saveUser() {
+    debugger;
     const request = {
       nit: this.registerForm.get("numeroDeIdentificacionTributaria")?.value,
       rnt: this.registerForm.get("registroNacionalDeTurismo")?.value,
@@ -284,6 +284,7 @@ export class AppRegisterComponent implements OnInit {
       const message = "El registro se ha realizado exitosamente"
       this.Message.showModal(title,message);
     return this.ApiService.createUser(request).subscribe((data: any) => {
+      debugger;
       if (data.statusCode === 201) {
         this.router.navigate(['/']); 
        

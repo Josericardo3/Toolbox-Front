@@ -1,0 +1,221 @@
+.componente-global{
+    margin-left: 60px;
+    margin-right: 60px;
+}
+
+.titulo{
+    margin-left: 32px;
+}
+
+.titulo-nav{
+    font-family: 'Montserrat', sans-serif;
+    font-weight: bolder;
+    font-size: 32px;
+    color: #068460;
+    margin: 13vh 0px 2vh 68vh;
+    width: 60vw;
+}
+
+.dropdown{
+    width: 30%;
+    margin-left: 55px;
+    margin-top: 55px;
+}
+
+.td-menu{
+    border: 2px solid #068460; 
+    border-radius: 20px;
+    background: white;
+    color: #068460;
+    font-family:'Work Sans', sans-serif; 
+    font-size: 18px;
+}
+.p-menu{
+    height: 60px;
+    text-align: center;
+    padding: 14px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* style formulario */
+.container-form{
+    width: 64%;
+    display: inline-block;
+    vertical-align: top;
+    margin-top: 36px;
+    margin-left: 68px;
+}
+
+.label-auditor{
+    font-weight: bold;
+    font-size: 16px;
+    font-family: 'Work Sans', sans-serif;
+    color: #474749;
+    margin: 2px 0 15px 0;
+}
+
+.label-opciones{
+    font-size: 12px;
+    font-weight: bold;
+    font-family: 'Work Sans', sans-serif;
+    margin: 1px 0 9px 0;
+}
+
+input[type=text]{
+    background: #FFFFFF;
+    border-radius: 6px;
+    height: 22px;
+    border: solid 1px #068460 !important;
+    margin: 2px;
+    font-family: 'Work Sans', sans-serif;
+    font-size: 14px;
+}
+
+.select-hallazgo{
+    height: 22px;
+    margin: 2px;
+    font-family: 'Work Sans', sans-serif;
+    font-size: 16px;  
+}
+
+.select-titulo{
+    background: #FFFFFF;
+    border-radius: 6px;
+    height: 20px;
+    width: 86px;
+    border: solid 1px #068460 !important;
+    margin: 6px;
+    font-family: 'Work Sans', sans-serif;
+}
+
+.container-textarea{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    
+}
+
+.obs-titulo{
+    font-weight: bold;
+    font-size: 16px;
+    font-family: 'Work Sans', sans-serif;
+    color: #474749;
+}
+
+.obs{
+    background: #FFFFFF;
+    border: 2px solid #068460;
+    border-radius: 10px;
+    height: 61px;
+    margin: 6px 4px 15px 0;
+    padding: 5px;
+    width: 544px;
+    font-family: 'Work Sans', sans-serif;
+    font-size: 14px;
+    color: #000000;
+}
+
+.div-guardar{
+    display: flex;
+    justify-content: center; 
+}
+
+.btn-guardar{
+    display: flex;
+    justify-content: space-around;
+    margin: 31px 0 3px 0;
+    height: 35px;
+    width: 165px;
+    padding: 5px;
+    background-color: #068460;
+    border-radius: 100px;
+    color: #FFFFFF;
+    font-family: 'Work Sans', sans-serif;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-guardar:disabled{
+    background-color: #999999;
+    color: #000000;
+}
+
+.agregar{
+    display: flex;
+    justify-content: space-around;
+    margin: 7px 0 3px 0;
+    height: 29px;
+    width: 135px;
+    padding: 5px;
+    background-color: #068460;
+    border-radius: 5px;
+    color: white;
+    font-family: 'Work Sans', sans-serif;
+    font-size: 14px;
+    border: none;
+    cursor: pointer;
+}
+
+.seleccionar{
+    display: flex;
+    justify-content: space-around;
+    /* margin: 5px -25px 2px 0px; */
+    height: 26px;
+    width: 111px;
+    padding: 5px;
+    background-color: #068460;
+    border-radius: 5px;
+    color: white;
+    font-family: 'Work Sans', sans-serif;
+    font-size: 13px;
+    border: none;
+    cursor: pointer;
+}  
+
+.container-form-lista-verificacion{
+    display: flex;
+    width: 100%;
+    overflow: hidden;
+    /* display: flex;
+    column-gap: 16rem; */
+}
+
+.agregar-req{
+    display: flex;
+    justify-content: space-around;
+    margin: 5px -25px 2px 0px;
+    height: 26px;
+    width: 132px;
+    padding: 4px;
+    background-color: #068460;
+    border-radius: 5px;
+    color: white;
+    font-family: 'Work Sans', sans-serif;
+    font-size: 13px;
+    border: none;
+    cursor: pointer;
+}
+
+.select-lider{
+    background: #FFFFFF;
+    border: 1px solid #068460;
+    border-radius: 10px;
+    height: 23px;
+    width: 110px;
+    margin: 10px;
+    font-family: 'Work Sans', sans-serif;
+    font-size: 14px;
+}
+
+.button-mas{
+    border: 2px solid #068460;
+    border-radius: 4px;
+    width: 23px;
+    height: 24px;
+    background: white;
+    color: #068460;
+}
+
+

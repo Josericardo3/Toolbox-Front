@@ -1,0 +1,21 @@
+.dropdown{
+    width: 30%;
+    margin-left: 55px;
+    margin-top: 55px;
+}
+
+.td-menu{
+    border: 2px solid #068460; 
+    border-radius: 20px;
+    background: white;
+    color: #068460;
+    font-family:'Work Sans', sans-serif; 
+    font-size: 18px;
+}
+.p-menu{
+    height: 60px;
+    text-align: center;
+    padding: 14px;
+    font-weight: bold;
+    cursor: pointer;
+}

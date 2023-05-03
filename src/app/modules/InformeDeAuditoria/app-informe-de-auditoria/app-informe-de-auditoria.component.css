@@ -1,0 +1,161 @@
+/* style de tabla inicial */
+.container-form{
+    justify-content:space-around;
+    margin-top: 0px;   
+}
+
+.seleccionar{
+    display: flex;
+    justify-content: space-around;
+    margin: -1px -16px 2px 0px;
+    height: 26px;
+    width: 111px;
+    padding: 5px;
+    background-color: #068460;
+    border-radius: 5px;
+    color: white;
+    font-family: 'Work Sans', sans-serif;
+    font-size: 13px;
+    border: none;
+    cursor: pointer;
+}
+
+
+.titulo{
+    text-align: center;
+    margin-top: 84px;
+    margin-left: -269px;
+}
+
+.titulo-nav{
+    font-family: 'Montserrat', sans-serif;
+    font-weight: bolder;
+    font-size: 32px;
+    color: #068460;
+    margin: 16vh 0px 2vh 84vh;
+    width: 60vw;
+}
+
+
+.td-menu{
+    border: 2px solid #068460; 
+    border-radius: 20px;
+    background: white;
+    color: #068460;
+    font-family:'Work Sans', sans-serif; 
+    font-size: 18px;
+}
+.p-menu{
+    height: 60px;
+    text-align: center;
+    padding: 14px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.container-form-informe-auditoria{
+    width: 100%;
+    overflow: hidden;
+    /* display: flex;
+    column-gap: 16rem; */
+}
+
+.dropdown, .container-form{
+    display: inline-block;
+    vertical-align: top;
+    box-sizing: border-box;   
+}
+.dropdown{
+    width: 30%;
+    margin-left: 55px;
+    margin-top: 55px;
+}
+.container-form{
+    width: 64%;
+}
+.informe-auditoria{
+    margin-top: 47px;
+    margin-left: 70px;
+}
+
+.label-auditor{
+    font-weight: bold;
+    font-size: 16px;
+    font-family: 'Work Sans', sans-serif;
+    color: #474749;
+    margin: 2px 0 15px 0;
+}
+
+.label-nota{
+    font-weight: bold;
+    font-size: 14px;
+    font-family: 'Work Sans', sans-serif;
+    color: #068460;
+    margin: 2px 0 15px 0; 
+}
+
+.obs{
+    background: #FFFFFF;
+    border: 2px solid #068460;
+    border-radius: 10px;
+    height: 61px;
+    margin: -6px 4px 15px 0;
+    padding: 5px;
+    width: 544px;
+    font-family: 'Work Sans', sans-serif;
+    font-size: 14px;
+    color: #000000;
+}
+
+.div-guardar{
+    display: flex;
+    justify-content: center; 
+}
+
+.btn-guardar{
+    display: flex;
+    justify-content: space-around;
+    margin: 31px 0 3px 0;
+    height: 35px;
+    width: 165px;
+    padding: 5px;
+    background-color: #068460;
+    border-radius: 100px;
+    color: #FFFFFF;
+    font-family: 'Work Sans', sans-serif;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+}
+.btn-guardar:disabled{
+    background-color: #999999;
+    color: #000000;
+}
+
+.label-conformidad{
+    font-size: 16px;
+    font-family: 'Work Sans', sans-serif;
+    color: #068460;
+    margin: 2px 0 15px 0;
+    font-weight: 900;
+}
+
+.text-th{
+    display: flex;
+    justify-content: space-between;
+}
+
+.input-check{
+    display: flex;
+    justify-content: space-between;  
+}
+
+.button-mas{
+    border: 2px solid #068460;
+    border-radius: 4px;
+    width: 22px;
+    height: 23px;
+    background: white; 
+}
+
+

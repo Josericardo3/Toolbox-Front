@@ -1,0 +1,205 @@
+
+<app-app-header></app-app-header>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.min.js"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/css/bootstrap-multiselect.css"></script>
+</head>
+
+<body>
+  <div class="componente-global">
+    <div class="titulo">
+      <h1 class="titulo-nav">
+          Auditoría Interna 
+      </h1>
+  </div>
+  <div class="container-form-informe-auditoria">
+    <table class="dropdown">
+      <tbody>
+      <tr>
+      <td class="td-menu"><p class="p-menu">Consultar resultados de auditorias</p></td>
+      </tr>
+      <tr>
+      <td class="td-menu"><p class="p-menu" (click)="openComponent($event)" id="item-1">Plan de auditoria</p></td>
+      </tr>
+      <tr>
+      <td class="td-menu"><p class="p-menu" (click)="openComponentLista($event)" id="item-2">Lista de Verificación auditoria interna</p></td>
+      </tr>
+      <tr>
+      <td class="td-menu"><p class="p-menu" (click)="openComponentInforme($event)">Informe de auditoria</p></td>
+      </tr>
+      <tr>
+      <td class="td-menu"><p class="p-menu">Programa de auditoria</p></td>
+      </tr>
+      <tr>
+      <td class="td-menu"><p class="p-menu">Realizar auditoria interna</p></td>
+      </tr>        
+      <tr>
+      <td class="td-menu"><p class="p-menu">Programar actividades de auditoria</p></td>
+      </tr>   
+      </tbody>
+      </table> 
+      
+      <!-- formulario -->
+      <div class="container-form">
+          <form id="formAuditoria" 
+          [formGroup]="formParent"
+          class="controller-auditoria"
+          (ngSubmit)="saveForm()"
+          >
+              <h1 class="sub-titulo">Plan de Auditoría</h1> 
+            
+                <div class="plan-auditoria">
+                      <label class="label-auditor">Fecha de elaboración : {{this.getActualDate()}}</label>
+                      <div class="container-select">
+                        <div class="select-botton">
+                          <label class="label-auditor">Auditor lider</label>
+                          <select id="chkveg1" class="select-auditor" 
+                            formControlName="liderAuthor">
+                            <option value="" selected>Seleccionar</option>
+                            <option
+                            *ngFor="let auditor of this.listAuditor"
+                            [value]="auditor.nombre">{{auditor.nombre}}</option>
+                          </select>
+                        </div>
+                      <div style="display: flex">
+                        <label class="label-equi">Equipo auditor </label>
+                        <ng-multiselect-dropdown class="container" 
+                          formControlName="auditorTeam"
+                          [placeholder]="'Seleccionar integrante'"
+                          [settings]="dropdownSettings"
+                          [data]="dropdownList"
+                          [ngModel]="selectedItems"
+                          (onSelect)="onItemSelect($event)"
+                          (onSelectAll)="onSelectAll($event)"
+                        >
+                      </ng-multiselect-dropdown>
+                      </div>
+                     
+                      </div>
+                      <label class="label-auditor">Objetivos de auditoría</label>
+                      <input type="text" value="" formControlName="objAuditoria" style="margin-left: 10px;">
+                      <br>
+                      <label class="label-auditor">Alcance de auditoría</label>
+                      <input type="text" value="" formControlName="alcanceAuditoria" style="margin-left: 19px;">
+                      <br>
+                      <label class="label-auditor">Criterio de auditoría</label>
+                      <input type="text" value="" formControlName="criterioAuditoria" style="margin-left: 22px;">
+                      <br>
+                      <div class="forma-campo">  
+                      <label class="label-auditor">Reunion de apertura</label>
+                      <label class="forma-label" style="margin: 7px;">Día</label>
+                        <input class="forma-input" 
+                        formControlName="dateInit"
+                        type="text"
+                        [required]="true" 
+                        placeholder="YYYY-MM-DD"
+                        maxlength="10"  
+                        placement="top" 
+                        tooltip="Campo Obligatorio"
+                        bsDatepicker #dp="bsDatepicker"
+                        [bsConfig]="{adaptivePosition: true, dateInputFormat: ' YYYY-MM-DD'}">
+                        <img class="btn calendar-picker" (click)="dp.show()" [attr.aria-expanded]="dp.isOpen"
+                            type="button" src="assets/imagenes/calendar.png"
+                            style="padding-top: 0px;">
+                         
+                        <label class="forma-hora" style="margin: 10px;">Hora</label>
+                        <timepicker formControlName="startTime"></timepicker> 
+                    </div>
+                    <br>
+                      <div class="forma-campo">  
+                        <label class="label-auditor">Reunion de Cierre</label>
+                        <label class="forma-dia" style="margin: 7px;">Día</label>
+                          <input class="forma-input"  type="text"
+                          formControlName="dateEnd"
+                               [required]="true" placeholder="YYYY-MM-DD"
+                              maxlength="10"  placement="top" tooltip="Campo Obligatorio"
+                              bsDatepicker #dp2="bsDatepicker"
+                              [bsConfig]="{adaptivePosition: true, dateInputFormat: 'YYYY-MM-DD'}">
+                          <img class="btn calendar-picker" (click)="dp2.show()" [attr.aria-expanded]="dp.isOpen"
+                              type="button" src="assets/imagenes/calendar.png"
+                              style="padding-top: 0px;">
+                            
+                              <label class="forma-hora"  style="margin: 7px;" >Hora</label>
+                              <timepicker formControlName="endTime"></timepicker> 
+                      </div>
+                      </div>
+                      <div>
+                       <div class="sub-titulo">Planificación de la Auditoria Interna</div>
+                       <label class="label-auditor">Fecha</label>
+                       <input class="forma-input-calendario"  
+                       formControlName="planAuditoria"
+                       type="text"
+                       style=" margin: 9px;"
+                       [required]="true" placeholder="YYYY-MM-DD"
+                      maxlength="10"  placement="top" tooltip="Campo Obligatorio"
+                      bsDatepicker #dp3="bsDatepicker"
+                      [bsConfig]="{adaptivePosition: true, dateInputFormat: 'YYYY-MM-DD'}">
+                      <img class="btn calendar-picker" (click)="dp3.show()" [attr.aria-expanded]="dp.isOpen"
+                      type="button" src="assets/imagenes/calendar.png"
+                      style="padding-top: 0px;">
+                      <br>
+                      <label class="forma-hora" style="margin: 2px;">Hora</label>
+                      <timepicker formControlName="planTime"></timepicker>     
+                     
+                      <div class="toggle-auditor">
+                        <label class="label-auditor">Proceso / Actividad</label>
+                        <div class="form-check form-switch">
+                          <input 
+                          formControlName="processOrActivity"
+                          class="form-check-input" 
+                          style="width: 4em;
+                          height: 2em;   margin-top: 7px;margin-left: 16px;" 
+                          type="checkbox" role="switch" id="flexSwitchCheckDefault">
+                        </div>
+                      </div>
+          
+                      <div  class="toggle-auditor">
+                        <label class="label-auditor">Norma y/o requisitos a auditar</label>
+                        <div class="form-check form-switch">
+                          <input class="form-check-input" 
+                          formControlName="normOrRequest"
+                          style="width: 4em;
+                          height: 2em;  margin-top: 7px; margin-left: 16px;" 
+                          type="checkbox" role="switch" id="flexSwitchCheckDefault">
+                        </div>
+                      </div>
+                      <label class="label-auditor">Auditor</label>  
+                      <input type="text" formControlName="auditor">
+                      <br>
+                      <label class="label-auditor"
+                      >Nombre y cargo del auditado (s)</label>
+                      <input type="text" formControlName="nameAuditor">
+                      <br>
+                      </div>
+                      <div class="container-textarea">
+                        <label class="obs-titulo">Observaciones de Auditoria</label>
+                        <textarea type="text" style="height: 61px" class="obs"
+                        formControlName="observacion"></textarea>
+                      </div>
+                      <div class="div-guardar">
+                        <button type="submit"  [disabled]="formParent.invalid" class="btn-guardar">Guardar</button> 
+                      </div>
+                    </form>
+                </div>
+                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script> 
+          </div>
+  </div>
+
+  
+</body>
+</html>
+ 
+
+
+         
+ 
+
+
+    
+    
+
