@@ -135,6 +135,7 @@ export class AppDashboardComponent implements OnInit {
  
   //prueba para auditoria
   redirigirAuditoria(){
-    window.location.href = '/auditoria';
+    this.router.navigate(['/auditoria']);
+    //window.location.href = '/auditoria';
 }
 }
