@@ -6,6 +6,7 @@
         <p>Descargar lista de chequeo | <a (click)="generateListaChequeo()">Documento PDF</a></p>
         <p>Descargar plan de mejora   | <a (click)="generatePlanMejora()">Documento PDF</a></p>
         <p>Descargar diagnóstico      | <a (click)="generateDiagnostico()"> Documento PDF</a></p>
+    <p>Descargar diagnóstico | <a (click)="captureChart()"> Documento PDF</a></p>
         <!-- <div class="modal-background" id="modal-success" *ngIf="showModal">
             <div class="modal-content">
               <div class="modal-borde">
@@ -21,7 +22,14 @@
         </div> -->
     </div>
     <button type="submit" class="btn">Atrás</button>
+    <!-- <canvas id="chart"></canvas> -->
 
+    <div>
+        <!-- <button (click)="captureChart()">Capturar gráfico</button> -->
+        <div #chartContainer id="chart-container" style="display:none;">
+          <canvas id="myChart" width="400" height="400"></canvas>
+        </div>
+      </div>
     <!-- <div id="chart-container">
         <canvas id="myChart"></canvas>
     </div> -->

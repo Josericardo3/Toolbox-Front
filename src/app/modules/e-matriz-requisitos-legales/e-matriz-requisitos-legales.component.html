@@ -2,23 +2,6 @@
 <div class="MainContainerMatrizRequisitosLegales">
 <h1>Matriz de requisitos legales</h1>
 <input type="text" [(ngModel)]="busqueda" (input)="buscarTitulos()" placeholder="Buscar..." class="buscador">
-  
-  <!-- <ul class="tabs">
-    <li [ngClass]="{ 'active': currentTab === 'tab1', 'current': currentTab === 'tab1' }" (click)="changeTab('tab1')">Turismo</li>
-    <li [ngClass]="{ 'active': currentTab === 'tab2', 'current': currentTab === 'tab2' }" (click)="changeTab('tab2')">Ambiental</li>
-    <li [ngClass]="{ 'active': currentTab === 'tab3', 'current': currentTab === 'tab3' }" (click)="changeTab('tab3')">Laboral SGSST</li>
-    <li [ngClass]="{ 'active': currentTab === 'tab4', 'current': currentTab === 'tab4' }" (click)="changeTab('tab4')">Social</li>
-    <li [ngClass]="{ 'active': currentTab === 'tab5', 'current': currentTab === 'tab5' }" (click)="changeTab('tab5')">Económico</li>
-    <li [ngClass]="{ 'active': currentTab === 'tab6', 'current': currentTab === 'tab6' }" (click)="changeTab('tab6')">Particular de Norma</li>
-  </ul>
-  <div class="tab-content">
-    <div [ngClass]="{ 'active': currentTab === 'tab1' }" class="tab-pane">Contenido de la pestaña 1</div>
-    <div [ngClass]="{ 'active': currentTab === 'tab2' }" class="tab-pane">Contenido de la pestaña 2</div>
-    <div [ngClass]="{ 'active': currentTab === 'tab3' }" class="tab-pane">Contenido de la pestaña 3</div>
-    <div [ngClass]="{ 'active': currentTab === 'tab4' }" class="tab-pane">Contenido de la pestaña 4</div>
-    <div [ngClass]="{ 'active': currentTab === 'tab5' }" class="tab-pane">Contenido de la pestaña 5</div>
-    <div [ngClass]="{ 'active': currentTab === 'tab6' }" class="tab-pane">Contenido de la pestaña 6</div>
-  </div> -->
   <div class="containerTabs">
     <div class="tabs">
         <div class="tab" (click)="cambiarTab('tab1')" [ngClass]="{ 'active': tabActual === 'tab1' }">Turismo</div>
@@ -111,14 +94,12 @@
                 
                 <div *ngIf="divsVisible">
                     <div class="div" id="divAdd" *ngFor="let div of divsTab1; let i = index">
-                        <div *ngIf = "div.descripcion || div.secciones || div.tipoNormatividad || div.numero || div.anio">
+                        <div *ngIf = "div.descripcion || div.secciones || div.numero || div.anio || div.tipoNormatividad">
                                 <div class="titulo" (click)="toggleSectionDivAdd('divAdd', i)" [ngClass]="{'verde': isDivAddVisible(i)}">
                                     <div class="h3">
-                                        <h3 id="tituloNormativa">{{div.tipoNormatividad}} {{div.numero}} de {{div.anio}}</h3> 
-                                    </div>
-                                    <div class="iconos">
-                                        <i class="fa-solid" [class.fa-angle-up]="isDivAddVisible(i)" [class.fa-angle-down]="!isDivAddVisible(i)"></i>
-                                    </div>
+                                        <h3 id="tituloNormativa">{{div.tipoNormatividad !== 'otro' ? div.tipoNormatividad : otroValor}} {{div.numero}} de {{div.anio}}</h3> 
+                                    </div> 
+                                    <i class="fa-solid" [class.fa-angle-up]="isDivAddVisible(i)" [class.fa-angle-down]="!isDivAddVisible(i)"></i>
                                     <button (click)="eliminarDivAdd()" class="boton-eliminar">x</button>
                                 </div>
                                 <div class="detalle" id="detalleAdd" *ngIf="isDivAddVisible(i)">       
@@ -195,47 +176,47 @@
                   
                 <ng-template #inputTemplate>
                     <div>
-                      <input type="text" [(ngModel)]="nuevoDiv.anio" placeholder="Año">
-                      <input type="text" [(ngModel)]="nuevoDiv.numero" placeholder="Número">
-                      <textarea [(ngModel)]="nuevoDiv.descripcion" placeholder="Descripción"></textarea>
-                      <textarea [(ngModel)]="nuevoDiv.secciones" placeholder="Secciones"></textarea>
-                      <input type="text" [(ngModel)]="nuevoDiv.tipoNormatividad" placeholder="Tipo de Normatividad">
+                      <input type="text" [(ngModel)]="nuevoDiv.anio">
+                      <input type="text" [(ngModel)]="nuevoDiv.numero">
+                      <textarea [(ngModel)]="nuevoDiv.descripcion"></textarea>
+                      <textarea [(ngModel)]="nuevoDiv.secciones"></textarea>
+                      <input type="text" [(ngModel)]="nuevoDiv.tipoNormatividad">
                     </div>
-                  </ng-template>
-                             
+                </ng-template>
+
                 <div id="ContainerdetalleAdicionar">
                     <div class="adicionar" (click)="toggleSection('adicionarTurismo')">
                         <button class="adicionarBtn" id="adicionarRequisitoTurismo">Adicionar requisito legal +</button>
                     </div>
                     <div class="detalleAdicionar" id="detalleAdicionarRequisito" *ngIf="adicionarVisibleTurismo">
                         <form [formGroup]="tab1Form">
-                                <label class="adicionarLabel">Tipo de normatividad</label>
-                                <select class="adicionarInput" id="tipoNormatividadSelect" #selectOption (change)="onSelect(selectOption.value)"
-                                formControlName="tipoNormatividad">
-                                    <option value="" disabled selected hidden>Seleccione una opción</option>
-                                    <option value="Ley">Ley</option>
-                                    <option value="Decreto">Decreto</option>
-                                    <option value="Decreto Ley">Decreto Ley</option>
-                                    <option value="otro">Otro</option>
-                                </select>
-                                <div *ngIf="selectedOption === 'otro'" class="changeOtro">
-                                    <label class="adicionarLabel">Otro ¿Cuál?</label>
-                                    <input type="text" class="adicionarInput" id="otroInput" appLetras>
-                                </div>
+                            <label class="adicionarLabel">Tipo de normatividad</label>
+                            <select class="adicionarInput" id="tipoNormatividadSelect" #selectOption (change)="onSelect(selectOption.value)"
+                            formControlName="tipoNormatividad">
+                                <option value="" disabled selected hidden>Seleccione una opción</option>
+                                <option value="Ley">Ley</option>
+                                <option value="Decreto">Decreto</option>
+                                <option value="Decreto Ley">Decreto Ley</option>
+                                <option value="otro">Otro</option>
+                            </select>
+                            <div *ngIf="selectedOption === 'otro'" class="changeOtro">
+                                <label class="adicionarLabel">Otro ¿Cuál?</label>
+                                <input type="text" class="adicionarInput" id="otroInput" (input)="onOtroInputChange($event)" appLetras>
+                            </div>
                                 
-                                <label class="adicionarLabel">Número</label>
-                                <input type="number" class="adicionarInput" id="numeroInput" formControlName="numero" appNumeros> 
+                            <label class="adicionarLabel">Número</label>
+                            <input type="number" class="adicionarInput" id="numeroInput" formControlName="numero" appNumeros> 
                                 
-                                <label class="adicionarLabel">Año</label>
-                                <input type="number" class="adicionarInput" id="anioInput" maxlength="4" formControlName="anio" appNumeros>
+                            <label class="adicionarLabel">Año</label>
+                            <input type="number" class="adicionarInput" id="anioInput" maxlength="4" formControlName="anio" appNumeros>
                                 
-                                <label class="adicionarLabel">Descripción</label>
-                                <textarea style="height: 100px" class="adicionarInput" id="descripcionTextAreaAdd" formControlName="descripcion"></textarea>
+                            <label class="adicionarLabel">Descripción</label>
+                            <textarea style="height: 100px" class="adicionarInput" id="descripcionTextAreaAdd" formControlName="descripcion"></textarea>
                                 
-                                <label class="adicionarLabel">Artículos / Secciones / Requisitos específicos que aplican</label>
-                                <textarea style="height: 100px" class="adicionarInput" id="seccionesTextAreaAdd" formControlName="secciones"></textarea>
+                            <label class="adicionarLabel">Artículos / Secciones / Requisitos específicos que aplican</label>
+                            <textarea style="height: 100px" class="adicionarInput" id="seccionesTextAreaAdd" formControlName="secciones"></textarea>
                                 
-                                <button type="submit" class="btnAdd" (click)="agregarDiv()" [disabled]="tab1Form.invalid">Agregar</button>
+                            <button type="submit" class="btnAdd" (click)="agregarDiv()" [disabled]="tab1Form.invalid">Agregar</button>
                         </form>
                     </div>
                 </div>
@@ -329,15 +310,13 @@
                 <div *ngIf="divsVisible">
                     <div class="div" id="divAdd" *ngFor="let div of divsTab2; let i = index">
                         <div *ngIf = "div.descripcion || div.secciones || div.tipoNormatividad || div.numero || div.anio">
-                            <div class="titulo" (click)="toggleSectionDivAdd('divAdd', i)" [ngClass]="{'verde': isDivAddVisible(i)}">
-                                <div class="h3">
-                                    <h3 id="tituloNormativa">{{div.tipoNormatividad}} {{div.numero}} de {{div.anio}}</h3> 
-                                </div>
-                                <div class="iconos">
-                                    <i class="fa-solid" [class.fa-angle-up]="isDivAddVisible(i)" [class.fa-angle-down]="!isDivAddVisible(i)"></i>
-                                </div>
+                                <div class="titulo" (click)="toggleSectionDivAdd('divAdd', i)" [ngClass]="{'verde': isDivAddVisible(i)}">
+                                    <div class="h3">
+                                        <h3 id="tituloNormativa">{{div.tipoNormatividad !== 'otro' ? div.tipoNormatividad : otroValor}} {{div.numero}} de {{div.anio}}</h3> 
+                                    </div> 
+                                <i class="fa-solid" [class.fa-angle-up]="isDivAddVisible(i)" [class.fa-angle-down]="!isDivAddVisible(i)"></i>
                                 <button (click)="eliminarDivAdd()" class="boton-eliminar">x</button>
-                            </div>
+                                </div>
                             <div class="detalle" id="detalleAdd" *ngIf="isDivAddVisible(i)">       
                                 <h2>Emitida por:</h2>
                                 <p class="parrafo">Por la cual se expide la Ley General de Turismo y se dictan otras disposiciones</p>
@@ -412,11 +391,11 @@
                   
                 <ng-template #inputTemplate>
                     <div>
-                      <input type="text" [(ngModel)]="nuevoDiv.anio" placeholder="Año">
-                      <input type="text" [(ngModel)]="nuevoDiv.numero" placeholder="Número">
-                      <textarea [(ngModel)]="nuevoDiv.descripcion" placeholder="Descripción"></textarea>
-                      <textarea [(ngModel)]="nuevoDiv.secciones" placeholder="Secciones"></textarea>
-                      <input type="text" [(ngModel)]="nuevoDiv.tipoNormatividad" placeholder="Tipo de Normatividad">
+                      <input type="text" [(ngModel)]="nuevoDiv.anio">
+                      <input type="text" [(ngModel)]="nuevoDiv.numero">
+                      <textarea [(ngModel)]="nuevoDiv.descripcion"></textarea>
+                      <textarea [(ngModel)]="nuevoDiv.secciones"></textarea>
+                      <input type="text" [(ngModel)]="nuevoDiv.tipoNormatividad">
                     </div>
                 </ng-template>
                              
@@ -437,7 +416,7 @@
                                 </select>
                                 <div *ngIf="selectedOption === 'otro'" class="changeOtro">
                                     <label class="adicionarLabel">Otro ¿Cuál?</label>
-                                    <input type="text" class="adicionarInput" id="otroInput" appLetras>
+                                    <input type="text" class="adicionarInput" id="otroInput" (input)="onOtroInputChange($event)" appLetras>
                                 </div>
                                 
                                 <label class="adicionarLabel">Número</label>
@@ -548,11 +527,9 @@
                         <div *ngIf = "div.descripcion || div.secciones || div.tipoNormatividad || div.numero || div.anio">
                             <div class="titulo" (click)="toggleSectionDivAdd('divAdd', i)" [ngClass]="{'verde': isDivAddVisible(i)}">
                                 <div class="h3">
-                                    <h3 id="tituloNormativa">{{div.tipoNormatividad}} {{div.numero}} de {{div.anio}}</h3> 
-                                </div>
-                                <div class="iconos">
-                                    <i class="fa-solid" [class.fa-angle-up]="isDivAddVisible(i)" [class.fa-angle-down]="!isDivAddVisible(i)"></i>
-                                </div>
+                                    <h3 id="tituloNormativa">{{div.tipoNormatividad !== 'otro' ? div.tipoNormatividad : otroValor}} {{div.numero}} de {{div.anio}}</h3> 
+                                </div> 
+                                <i class="fa-solid" [class.fa-angle-up]="isDivAddVisible(i)" [class.fa-angle-down]="!isDivAddVisible(i)"></i>
                                 <button (click)="eliminarDivAdd()" class="boton-eliminar">x</button>
                             </div>
                             <div class="detalle" id="detalleAdd" *ngIf="isDivAddVisible(i)">       
@@ -629,11 +606,11 @@
                   
                 <ng-template #inputTemplate>
                     <div>
-                      <input type="text" [(ngModel)]="nuevoDiv.anio" placeholder="Año">
-                      <input type="text" [(ngModel)]="nuevoDiv.numero" placeholder="Número">
-                      <textarea [(ngModel)]="nuevoDiv.descripcion" placeholder="Descripción"></textarea>
-                      <textarea [(ngModel)]="nuevoDiv.secciones" placeholder="Secciones"></textarea>
-                      <input type="text" [(ngModel)]="nuevoDiv.tipoNormatividad" placeholder="Tipo de Normatividad">
+                      <input type="text" [(ngModel)]="nuevoDiv.anio">
+                      <input type="text" [(ngModel)]="nuevoDiv.numero">
+                      <textarea [(ngModel)]="nuevoDiv.descripcion"></textarea>
+                      <textarea [(ngModel)]="nuevoDiv.secciones"></textarea>
+                      <input type="text" [(ngModel)]="nuevoDiv.tipoNormatividad">
                     </div>
                 </ng-template>
                              
@@ -654,7 +631,7 @@
                                 </select>
                                 <div *ngIf="selectedOption === 'otro'" class="changeOtro">
                                     <label class="adicionarLabel">Otro ¿Cuál?</label>
-                                    <input type="text" class="adicionarInput" id="otroInput" appLetras>
+                                    <input type="text" class="adicionarInput" id="otroInput" (input)="onOtroInputChange($event)" appLetras>
                                 </div>
                                 
                                 <label class="adicionarLabel">Número</label>
@@ -765,11 +742,9 @@
                         <div *ngIf = "div.descripcion || div.secciones || div.tipoNormatividad || div.numero || div.anio">
                             <div class="titulo" (click)="toggleSectionDivAdd('divAdd', i)" [ngClass]="{'verde': isDivAddVisible(i)}">
                                 <div class="h3">
-                                    <h3 id="tituloNormativa">{{div.tipoNormatividad}} {{div.numero}} de {{div.anio}}</h3> 
-                                </div>
-                                <div class="iconos">
-                                    <i class="fa-solid" [class.fa-angle-up]="isDivAddVisible(i)" [class.fa-angle-down]="!isDivAddVisible(i)"></i>
-                                </div>
+                                    <h3 id="tituloNormativa">{{div.tipoNormatividad !== 'otro' ? div.tipoNormatividad : otroValor}} {{div.numero}} de {{div.anio}}</h3> 
+                                </div> 
+                                <i class="fa-solid" [class.fa-angle-up]="isDivAddVisible(i)" [class.fa-angle-down]="!isDivAddVisible(i)"></i>
                                 <button (click)="eliminarDivAdd()" class="boton-eliminar">x</button>
                             </div>
                             <div class="detalle" id="detalleAdd" *ngIf="isDivAddVisible(i)">       
@@ -846,11 +821,11 @@
                   
                 <ng-template #inputTemplate>
                     <div>
-                      <input type="text" [(ngModel)]="nuevoDiv.anio" placeholder="Año">
-                      <input type="text" [(ngModel)]="nuevoDiv.numero" placeholder="Número">
-                      <textarea [(ngModel)]="nuevoDiv.descripcion" placeholder="Descripción"></textarea>
-                      <textarea [(ngModel)]="nuevoDiv.secciones" placeholder="Secciones"></textarea>
-                      <input type="text" [(ngModel)]="nuevoDiv.tipoNormatividad" placeholder="Tipo de Normatividad">
+                      <input type="text" [(ngModel)]="nuevoDiv.anio">
+                      <input type="text" [(ngModel)]="nuevoDiv.numero">
+                      <textarea [(ngModel)]="nuevoDiv.descripcion"></textarea>
+                      <textarea [(ngModel)]="nuevoDiv.secciones"></textarea>
+                      <input type="text" [(ngModel)]="nuevoDiv.tipoNormatividad">
                     </div>
                 </ng-template>
                              
@@ -871,7 +846,7 @@
                                 </select>
                                 <div *ngIf="selectedOption === 'otro'" class="changeOtro">
                                     <label class="adicionarLabel">Otro ¿Cuál?</label>
-                                    <input type="text" class="adicionarInput" id="otroInput" appLetras>
+                                    <input type="text" class="adicionarInput" id="otroInput" (input)="onOtroInputChange($event)" appLetras>
                                 </div>
                                 
                                 <label class="adicionarLabel">Número</label>
@@ -982,11 +957,9 @@
                         <div *ngIf = "div.descripcion || div.secciones || div.tipoNormatividad || div.numero || div.anio">
                             <div class="titulo" (click)="toggleSectionDivAdd('divAdd', i)" [ngClass]="{'verde': isDivAddVisible(i)}">
                                 <div class="h3">
-                                    <h3 id="tituloNormativa">{{div.tipoNormatividad}} {{div.numero}} de {{div.anio}}</h3> 
-                                </div>
-                                <div class="iconos">
-                                    <i class="fa-solid" [class.fa-angle-up]="isDivAddVisible(i)" [class.fa-angle-down]="!isDivAddVisible(i)"></i>
-                                </div>
+                                    <h3 id="tituloNormativa">{{div.tipoNormatividad !== 'otro' ? div.tipoNormatividad : otroValor}} {{div.numero}} de {{div.anio}}</h3> 
+                                </div> 
+                                <i class="fa-solid" [class.fa-angle-up]="isDivAddVisible(i)" [class.fa-angle-down]="!isDivAddVisible(i)"></i>
                                 <button (click)="eliminarDivAdd()" class="boton-eliminar">x</button>
                             </div>
                             <div class="detalle" id="detalleAdd" *ngIf="isDivAddVisible(i)">       
@@ -1063,11 +1036,11 @@
                   
                 <ng-template #inputTemplate>
                     <div>
-                      <input type="text" [(ngModel)]="nuevoDiv.anio" placeholder="Año">
-                      <input type="text" [(ngModel)]="nuevoDiv.numero" placeholder="Número">
-                      <textarea [(ngModel)]="nuevoDiv.descripcion" placeholder="Descripción"></textarea>
-                      <textarea [(ngModel)]="nuevoDiv.secciones" placeholder="Secciones"></textarea>
-                      <input type="text" [(ngModel)]="nuevoDiv.tipoNormatividad" placeholder="Tipo de Normatividad">
+                      <input type="text" [(ngModel)]="nuevoDiv.anio">
+                      <input type="text" [(ngModel)]="nuevoDiv.numero">
+                      <textarea [(ngModel)]="nuevoDiv.descripcion"></textarea>
+                      <textarea [(ngModel)]="nuevoDiv.secciones"></textarea>
+                      <input type="text" [(ngModel)]="nuevoDiv.tipoNormatividad">
                     </div>
                 </ng-template>
                              
@@ -1088,7 +1061,7 @@
                                 </select>
                                 <div *ngIf="selectedOption === 'otro'" class="changeOtro">
                                     <label class="adicionarLabel">Otro ¿Cuál?</label>
-                                    <input type="text" class="adicionarInput" id="otroInput" appLetras>
+                                    <input type="text" class="adicionarInput" id="otroInput" (input)="onOtroInputChange($event)" appLetras>
                                 </div>
                                 
                                 <label class="adicionarLabel">Número</label>
@@ -1199,11 +1172,9 @@
                         <div *ngIf = "div.descripcion || div.secciones || div.tipoNormatividad || div.numero || div.anio">
                             <div class="titulo" (click)="toggleSectionDivAdd('divAdd', i)" [ngClass]="{'verde': isDivAddVisible(i)}">
                                 <div class="h3">
-                                    <h3 id="tituloNormativa">{{div.tipoNormatividad}} {{div.numero}} de {{div.anio}}</h3> 
-                                </div>
-                                <div class="iconos">
-                                    <i class="fa-solid" [class.fa-angle-up]="isDivAddVisible(i)" [class.fa-angle-down]="!isDivAddVisible(i)"></i>
-                                </div>
+                                    <h3 id="tituloNormativa">{{div.tipoNormatividad !== 'otro' ? div.tipoNormatividad : otroValor}} {{div.numero}} de {{div.anio}}</h3> 
+                                </div> 
+                                <i class="fa-solid" [class.fa-angle-up]="isDivAddVisible(i)" [class.fa-angle-down]="!isDivAddVisible(i)"></i>
                                 <button (click)="eliminarDivAdd()" class="boton-eliminar">x</button>
                             </div>
                             <div class="detalle" id="detalleAdd" *ngIf="isDivAddVisible(i)">       
@@ -1280,11 +1251,11 @@
                   
                 <ng-template #inputTemplate>
                     <div>
-                      <input type="text" [(ngModel)]="nuevoDiv.anio" placeholder="Año">
-                      <input type="text" [(ngModel)]="nuevoDiv.numero" placeholder="Número">
-                      <textarea [(ngModel)]="nuevoDiv.descripcion" placeholder="Descripción"></textarea>
-                      <textarea [(ngModel)]="nuevoDiv.secciones" placeholder="Secciones"></textarea>
-                      <input type="text" [(ngModel)]="nuevoDiv.tipoNormatividad" placeholder="Tipo de Normatividad">
+                      <input type="text" [(ngModel)]="nuevoDiv.anio">
+                      <input type="text" [(ngModel)]="nuevoDiv.numero">
+                      <textarea [(ngModel)]="nuevoDiv.descripcion"></textarea>
+                      <textarea [(ngModel)]="nuevoDiv.secciones"></textarea>
+                      <input type="text" [(ngModel)]="nuevoDiv.tipoNormatividad">
                     </div>
                 </ng-template>
                              
@@ -1305,7 +1276,7 @@
                                 </select>
                                 <div *ngIf="selectedOption === 'otro'" class="changeOtro">
                                     <label class="adicionarLabel">Otro ¿Cuál?</label>
-                                    <input type="text" class="adicionarInput" id="otroInput" appLetras>
+                                    <input type="text" class="adicionarInput" id="otroInput" (input)="onOtroInputChange($event)" appLetras>
                                 </div>
                                 
                                 <label class="adicionarLabel">Número</label>

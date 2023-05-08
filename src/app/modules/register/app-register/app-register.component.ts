@@ -140,7 +140,6 @@ export class AppRegisterComponent implements OnInit {
       fetch('https://www.datos.gov.co/resource/gdxc-w37w.json?$limit=1121')
         .then((response) => response.json())
         .then((data) => {
-          debugger
           // esta linea llena el array
           if (select != null && departments.length === 0) {
             departments = Array.from(

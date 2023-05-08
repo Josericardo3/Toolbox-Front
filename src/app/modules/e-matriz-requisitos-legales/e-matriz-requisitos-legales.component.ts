@@ -10,12 +10,10 @@ import { FormGroup, Validators, FormBuilder,FormControl } from '@angular/forms'
 })
 
 export class EMatrizRequisitosLegalesComponent implements OnInit{
-  // @ViewChild('nuevoDiv', {static: true}) nuevoDivRef!: TemplateRef<any>;
-  // @ViewChild('container', {read: ViewContainerRef}) containerRef!: ViewContainerRef;
-
   @ViewChild('containers', { read: ViewContainerRef }) containers: ViewContainerRef;
   @ViewChild('inputTemplate') inputTemplate: TemplateRef<any>;
   @ViewChild('divsContainer', { read: ViewContainerRef }) divsContainer: ViewContainerRef;
+
   divsVisible = false;
 
   datos: any = [];
@@ -46,9 +44,7 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
   secciones: string;
   numero: string;
   anio: string;
-  selectedOption: string = '';
   busqueda: string = '';
-  nuevoDiv: any;
   tabActual = 'tab1';
 
   opcionSeleccionada: string = '';
@@ -59,6 +55,11 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
   responsablePlanSeleccionado: string = '';
   fechaInput: string = '';
   estadoSeleccionado: string = '';
+
+  selectedOption: string = '';
+  otroValor: string = '';
+  nuevoDiv: any;
+  tipoNormatividad: string;
 
   divs: any[] = [{}];
   divsTab1 = [];
@@ -79,7 +80,7 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
     private ApiService: ApiService,
     private router: Router,
     private formBuilder: FormBuilder
-    ) {}
+  ) {}
 
   ngOnInit() {
     this.separarCategoria();
@@ -89,7 +90,7 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
       numero: ['', Validators.required],
       anio: ['', Validators.required],
       descripcion: ['', Validators.required],
-      secciones: ['', Validators.required],
+      secciones: ['', Validators.required]
     });
 
     this.tab2Form = this.formBuilder.group({
@@ -212,7 +213,9 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
       }, {});
       this.leyesEconomico = Object.values(gruposEconomico);
 
-      const gruposParticular = this.datos.filter((ley) => ley.categoria === 'NTC 6496 General')
+      const gruposParticular = this.datos.filter((ley) => ley.categoria === 'NTC 6496 General' || ley.categoria === 'NTC 6487' || 
+      ley.categoria === 'NTC 6503' || ley.categoria === 'NTC 6503 Economico' || ley.categoria === 'NTC 6504' || ley.categoria === 'NTC 6505'
+      || ley.categoria === 'NTC 6505 Ambiental' || ley.categoria === 'NTC 6502' || ley.categoria === 'NTC 6506' || ley.categoria === 'NTC 6507' || ley.categoria === 'NTC 6523')
       .reduce((acumulador, ley) => {
         const clave = ley.tipO_NORMATIVIDAD + ley.numero + ley.anio;
         if (!acumulador[clave]) {
@@ -329,24 +332,36 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
       otroInput.style.display = 'none';
     }
   }
-  
+
+  onOtroInputChange(event: Event) {
+    const inputElement = event.target as HTMLInputElement;
+    this.otroValor = inputElement.value;
+  }
+
   agregarDiv() {
     const anio = (document.querySelector('#anioInput') as HTMLInputElement).value;
     const numero = (document.querySelector('#numeroInput') as HTMLInputElement).value;
     const descripcion = (document.querySelector('#descripcionTextAreaAdd') as HTMLTextAreaElement).value;
     const secciones = (document.querySelector('#seccionesTextAreaAdd') as HTMLTextAreaElement).value;
-    const tipoNormatividad = this.selectedOption === 'otro' ? (document.querySelector('#otroInput') as HTMLInputElement).value : this.selectedOption;
+    // const tipoNormatividad = this.selectedOption === 'otro' ? (document.querySelector('#otroInput') as HTMLInputElement).value : this.selectedOption;
+    // this.tipoNormatividad = this.selectedOption === 'otro' ? this.otroValor : this.selectedOption;
+    this.tipoNormatividad = this.selectedOption === 'otro' ? this.otroValor : this.selectedOption;
   
+    if (this.tipoNormatividad === 'otro') {
+      this.tipoNormatividad = this.otroValor;
+    }
+    
     this.nuevoDiv = {
       anio: anio,
       numero: numero,
       descripcion: descripcion,
       secciones: secciones,
-      tipoNormatividad: tipoNormatividad
+      tipoNormatividad: this.tipoNormatividad
     };
-  
+
+    // Agrega el div a la lista específica del tabs
     const divA = this.tab1Form.value;
-    this.divsTab1.push(divA); // Agrega el div a la lista específica del tab1
+    this.divsTab1.push(divA);
     const divB = this.tab2Form.value;
     this.divsTab2.push(divB);
     const divC = this.tab3Form.value;
@@ -357,16 +372,16 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
     this.divsTab5.push(divE);
     const divF = this.tab6Form.value;
     this.divsTab6.push(divF);
-    // this.divs.push(this.nuevoDiv);
 
     this.divsVisible = true;
-      // Limpiar
-      (document.querySelector('#tipoNormatividadSelect') as HTMLSelectElement).value = "";
-      (document.querySelector('#numeroInput') as HTMLInputElement).value = "";
-      (document.querySelector('#anioInput') as HTMLInputElement).value = "";
-      (document.querySelector('#descripcionTextAreaAdd') as HTMLTextAreaElement).value = "";
-      (document.querySelector('#seccionesTextAreaAdd') as HTMLTextAreaElement).value = "";
-  }
+    
+    this.tab1Form.reset();
+    this.tab2Form.reset();
+    this.tab3Form.reset();
+    this.tab4Form.reset();
+    this.tab5Form.reset();
+    this.tab6Form.reset();
+  }  
 
   eliminarDivAdd() {
     const divAdd = document.getElementById('divAdd');
