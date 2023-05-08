@@ -5,7 +5,8 @@ import { environment } from 'src/environments/environment.prod'
 import { LoginI } from '../../models/loginInterface'
 import { ResponseI } from '../../models/responseInterface'
 import { mergeMap } from 'rxjs/operators';
-import { debug } from 'console'
+import { log } from 'console'
+
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
 };
@@ -28,6 +29,7 @@ export class ApiService {
   //   return this.http.post<any>(direccion, {})
 
   apiURL = environment.apiURL
+  apiCHART = environment.apiChart
   constructor(private http: HttpClient) {}
 
   login(form: LoginI): Observable<ResponseI> {
@@ -156,7 +158,33 @@ export class ApiService {
     let assign = `${this.apiURL}/api/Asesor/Asesor`
     return this.http.post<any>(assign,request)
   }
-
+  getGrafico(request) {
+    const apiUrl = `${this.apiCHART}`;
+    console.log(apiUrl)
+    return this.http.post(apiUrl, {
+      backgroundColor: "#fff",
+      width: 600,
+      height: 300,
+      devicePixelRatio: 2.0,
+      chart: request
+    }, {
+      responseType: 'blob'
+    });
+  }
+  getGraficoBarras(request) {
+    const apiUrl = `${this.apiCHART}`;
+    console.log(apiUrl)
+    return this.http.post(apiUrl, {
+      backgroundColor: "#fff",
+      width: 2000,
+      height: 700,
+      devicePixelRatio: 2.0,
+      chart: request
+    }, {
+      responseType: 'blob'
+    });
+  }
+  
   getListaChequeoApi(){
     const normaValue = window.localStorage.getItem('idNormaSelected');
     const idUsuario = window.localStorage.getItem('Id');
@@ -201,4 +229,41 @@ export class ApiService {
     return this.http.get<any>(lista)
   }
 
+  ///ACTIVIDADES (VISTA DE PLANIFICACIÓN)
+  getActivities(){
+    const id = localStorage.getItem("Id");
+    let lista = `${this.apiURL}/api/Actividad/actividades?idUsuarioPst=${id}`
+    return this.http.get<any>(lista)
+  }
+  getListResponsible(){
+    const rnt = localStorage.getItem('rnt');
+    let lista = `${this.apiURL}/api/Actividad/ListarResponsables/${rnt}`
+    return this.http.get<any>(lista)
+  }
+  getTypeList(idtabla :any){
+    let lista = `${this.apiURL}/api/General/ListarMaestros/${idtabla}`
+    return this.http.get<any>(lista)
+  }
+  postNewRecord(request: any){
+    let assign = `${this.apiURL}/api/Actividad/actividades`
+    return this.http.post<any>(assign,request)
+  }
+ 
+  deleteActivities(id: any){
+    let assign = `${this.apiURL}/api/Actividad/actividades?id=${id}`
+    return this.http.delete<any>(assign)
+  }
+  putActivities(request: any){
+    let assign = `${this.apiURL}/api/Actividad/actividades`
+    return this.http.put<any>(assign,request)
+  }
+  getUsersRoles(request: any){
+    let assign = `${this.apiURL}/api/Usuario/usuarioRoles`
+    return this.http.post<any>(assign,request)
+  }
+  putAvatar(request: any){
+    const idUsuarioPst = window.localStorage.getItem('Id');
+    let lista = `${this.apiURL}/api/Actividad/Avatar?idusuariopst=${idUsuarioPst}&idavatar=${request}`
+    return this.http.put<any>(lista,request)
+  }
 }

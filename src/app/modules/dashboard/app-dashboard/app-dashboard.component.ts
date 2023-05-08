@@ -65,7 +65,6 @@ export class AppDashboardComponent implements OnInit {
     this.normaSelected = evt.target.value;
   }
   menuFilter(evt: any) { //redireccionar
-    debugger
       if (this.validateRol(evt)) {// condicional cuando sí tiene acceso
         evt.target.src='../../../../assets/img-dashboard/'+evt.target.alt+'-3.svg';
         switch(evt.target.alt){
