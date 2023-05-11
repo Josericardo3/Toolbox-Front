@@ -281,8 +281,12 @@ export class ApiService {
     return this.http.put<any>(lista,request)
   }
   putLogo(request: any){
-    const idUsuarioPst = window.localStorage.getItem('Id');                         
-    let lista = `${this.apiURL}/api/Actividad/Logo?idusuariopst=${idUsuarioPst}&logo=${request}`
+    const send = {
+      idUsuarioPst: window.localStorage.getItem('Id'),
+      logo: request
+    }
+    debugger                       
+    let lista = `${this.apiURL}/api/Actividad/Logo`
     return this.http.put<any>(lista,request)
   }
 }

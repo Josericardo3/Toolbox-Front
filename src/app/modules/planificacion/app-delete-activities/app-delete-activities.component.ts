@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { ApiService } from 'src/app/servicios/api/api.service';
-
+import {AppPlanificacionComponent} from '../app-planificacion/app-planificacion.component'
 @Component({
   selector: 'app-app-delete-activities',
   templateUrl: './app-delete-activities.component.html',
@@ -13,6 +13,7 @@ export class AppDeleteActivitiesComponent {
 
   constructor(
     public ApiService: ApiService,
+    public AppPlanificacionComponent: AppPlanificacionComponent
   ) { }
   ngOnInit() {
   this.fnConsultActivities() 
@@ -32,7 +33,7 @@ export class AppDeleteActivitiesComponent {
     debugger
     const request = this.rolesArraytemp[this.indice].id;
     this.ApiService.deleteActivities(request).subscribe((data) => {
-      this.fnConsultActivities();
+      this.AppPlanificacionComponent.fnConsultActivities();
    })
 
   }

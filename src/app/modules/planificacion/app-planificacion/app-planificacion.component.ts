@@ -1,7 +1,7 @@
 import { Component, TemplateRef } from '@angular/core';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { ApiService } from 'src/app/servicios/api/api.service'
-import { AppDeleteActivitiesComponent } from '../app-delete-activities/app-delete-activities.component';
+// import { AppDeleteActivitiesComponent } from '../app-delete-activities/app-delete-activities.component';
 import { ModalService } from 'src/app/messagemodal/messagemodal.component.service';
 import { HttpClient } from '@angular/common/http';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
@@ -40,7 +40,7 @@ export class AppPlanificacionComponent {
   constructor(
     public ApiService: ApiService,
     private modalService: BsModalService,
-    private AppDeleteActivitiesComponent: AppDeleteActivitiesComponent,
+    // private AppDeleteActivitiesComponent: AppDeleteActivitiesComponent,
     private Message: ModalService,
   ) { }
 
@@ -81,10 +81,9 @@ export class AppPlanificacionComponent {
       // leer el archivo y convertirlo a base64
       reader.onloadend = () => {
         const base64Data = reader.result as string;
-  
         // enviar el archivo a través del servicio
         this.ApiService.putLogo(base64Data).subscribe((data) => {
-          console.log(data, 'yesiiii');
+
         });
       };
       reader.readAsDataURL(file); // leer el archivo como base64
@@ -153,7 +152,7 @@ export class AppPlanificacionComponent {
 
   onResponsibleSelectionChange() {
     const selectedResponsible = this.arrayListResponsible.find(responsible => responsible.idUsuario === this.idUsuario);
-    this.nameResponsible = selectedResponsible?.nombre;
+    this.nameResponsible = selectedResponsible?.nombrePst;
   }
 
   onResponsibleSelectionChangeEditar(event: any) {
@@ -191,7 +190,7 @@ export class AppPlanificacionComponent {
         nombreresponsable: this.nameResponsible
       }
       this.ApiService.postNewRecord(request).subscribe((data) => {
-        this.fnConsultActivities();
+        ///this.fnConsultActivities();
         this.fnNuevoRegistroCancelar();
         this.caracteristicaIndiceEliminar = -1
         this.idUsuario = '';
@@ -205,6 +204,8 @@ export class AppPlanificacionComponent {
         const message = "El registro se ha realizado exitosamente"
         this.Message.showModal(title, message);
 
+        this.pages = 1
+        
       })
     }
     else {
@@ -334,7 +335,7 @@ export class AppPlanificacionComponent {
     // })
   }
   fnSchedulingUpdate(indice: number) {
-
+debugger
     if (typeof (this.editarCaracteristica.fecha_inicio) == 'object') {
       this.editarCaracteristica.fecha_inicio = this.editarCaracteristica.fecha_inicio?.getUTCDate() + "-" + (this.editarCaracteristica.fecha_inicio.getUTCMonth() + 1) + "-" + this.editarCaracteristica.fecha_inicio.getUTCFullYear()
     }
@@ -352,32 +353,53 @@ export class AppPlanificacionComponent {
     }
 
     this.ApiService.putActivities(this.editarCaracteristica).subscribe((data) => {
+      debugger
       const title = "Actualizacion exitosa.";
       const message = "El registro se ha realizado exitosamente";
       this.Message.showModal(title, message);
-      const selectedResponsible = this.arrayListResponsible.find(responsible => responsible.idUsuario === this.editarCaracteristica.idUsuario);
-      this.rolesArray[indice].nombreresponsable = selectedResponsible?.nombre;
+      const selectedResponsible = this.arrayListResponsible.find(responsible => responsible.idUsuarioPst === this.editarCaracteristica.idUsuario);
+      this.rolesArray[indice].nombreresponsable = selectedResponsible?.nombrePst;
       this.rolesArray[indice].idResponsable = this.editarCaracteristica.idResponsable;
       this.rolesArray[indice].descripcion = this.editarCaracteristica.descripcion;
       this.rolesArray[indice].tipoActividad = this.editarCaracteristica.tipoActividad;
       this.rolesArray[indice].fecha_inicio = this.editarCaracteristica.fecha_inicio;
       this.rolesArray[indice].fecha_fin = this.editarCaracteristica.fecha_fin;
       this.rolesArray[indice].estadoplanificacion = this.editarCaracteristica.estadoplanificacion;
+
+        if (this.rolesArray[indice].estadoplanificacion.toLowerCase() == "programado") {
+          this.rolesArray[indice].statecolor = '#f5970a';
+        }
+        if (this.rolesArray[indice].estadoplanificacion.toLowerCase() == "en proceso") {
+          this.rolesArray[indice].statecolor = '#f4f80b';
+        }
+        if (this.rolesArray[indice].estadoplanificacion.toLowerCase() == "demorado") {
+         this.rolesArray[indice].statecolor = '#ff2a00';
+        }
+        if (this.rolesArray[indice].estadoplanificacion.toLowerCase() == "finalizado") {
+         this.rolesArray[indice].statecolor = '#068460';
+        }
+  
+      
+
+
+
+
+
       this.fnPlanifiacacionEditarCancelar();
     })
   }
 
-  openConfirmModal() {
+  // openConfirmModal() {
  
-    const modalRef: BsModalRef = this.modalService.show(AppDeleteActivitiesComponent);
+  //   const modalRef: BsModalRef = this.modalService.show(AppDeleteActivitiesComponent);
 
-    modalRef.content.action.subscribe((result: boolean) => {
-      if (result) {
-        // Lógica para eliminar el elemento
-        alert('hola')
-      }
-    });
-  }
+  //   modalRef.content.action.subscribe((result: boolean) => {
+  //     if (result) {
+  //       // Lógica para eliminar el elemento
+  //       alert('hola')
+  //     }
+  //   });
+  // }
 
   pageChanged(event: any): void {
     this.pages = event.page;
