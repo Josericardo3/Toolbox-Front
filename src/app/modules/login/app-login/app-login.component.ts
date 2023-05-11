@@ -103,7 +103,7 @@ export class AppLoginComponent implements OnInit {
         localStorage.setItem("refresh", data.TokenRefresco);
         localStorage.setItem("idGrupo", data.Grupo[0].item);
         localStorage.setItem("Id", data.IdUsuarioPst);
-        
+        localStorage.setItem("rnt",this.usuario.registroNacionalDeTurismo);
         this.ApiService.getNorma(data.IdUsuarioPst).subscribe(
           (categ: any) => {
             this.arrNormas = categ;

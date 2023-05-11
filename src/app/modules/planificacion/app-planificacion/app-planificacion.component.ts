@@ -126,6 +126,7 @@ export class AppPlanificacionComponent {
   }
 
   fnListResponsible() {
+    debugger
     this.ApiService.getListResponsible().subscribe((data) => {
       this.arrayListResponsible = data;
 

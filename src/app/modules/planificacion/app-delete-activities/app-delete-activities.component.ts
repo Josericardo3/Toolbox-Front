@@ -29,6 +29,7 @@ export class AppDeleteActivitiesComponent {
     })}
 
   confirmDelete(): void {
+    debugger
     const request = this.rolesArraytemp[this.indice].id;
     this.ApiService.deleteActivities(request).subscribe((data) => {
       this.fnConsultActivities();

@@ -246,6 +246,7 @@ export class ApiService {
   }
   getListResponsible(){
     const rnt = localStorage.getItem('rnt');
+    debugger
     let lista = `${this.apiURL}/api/Actividad/ListarResponsables/${rnt}`
     return this.http.get<any>(lista)
   }
