@@ -281,12 +281,13 @@ export class ApiService {
     return this.http.put<any>(lista,request)
   }
   putLogo(request: any){
+    debugger
     const send = {
       idUsuarioPst: window.localStorage.getItem('Id'),
       logo: request
     }
     debugger                       
     let lista = `${this.apiURL}/api/Actividad/Logo`
-    return this.http.put<any>(lista,request)
+    return this.http.put<any>(lista,send)
   }
 }

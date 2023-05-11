@@ -83,7 +83,9 @@ export class AppPlanificacionComponent {
         const base64Data = reader.result as string;
         // enviar el archivo a través del servicio
         this.ApiService.putLogo(base64Data).subscribe((data) => {
-
+          const title = "Registro exitoso";
+          const message = "Se ha subido el logo correctamente"
+          this.Message.showModal(title, message);
         });
       };
       reader.readAsDataURL(file); // leer el archivo como base64
