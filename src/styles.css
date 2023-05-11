@@ -10,3 +10,15 @@
 a {
     cursor: pointer;
 }
+/* Estilos para la página actual activa */
+.pagination > .active > a,
+.pagination > .active > span {
+    background-color: #068460 !important;
+    color: #fff !important;
+}
+
+/* Estilos para los números de página y los puntos suspensivos */
+.pagination > li > a,
+.pagination > li > span {
+    color: #068460 !important;
+}

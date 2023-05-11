@@ -18,7 +18,7 @@ import { AppNuevoPlanDeAuditoriaComponent } from './modules/NuevoPlanDeAuditoria
 import { AppListaDeVerificacionComponent } from './modules/ListaDeVerificacion/app-lista-de-verificacion/app-lista-de-verificacion.component';
 import { AppInformeDeAuditoriaComponent } from './modules/InformeDeAuditoria/app-informe-de-auditoria/app-informe-de-auditoria.component';
 import { AppMenuAuditoriaComponent } from './modules/MenuAuditoria/app-menu-auditoria/app-menu-auditoria.component';
-
+import { AppPlanificacionComponent } from './modules/planificacion/app-planificacion/app-planificacion.component';
 const routes: Routes = [
   {path: '', component: AppLoginComponent},
   {path: 'register', component: AppRegisterComponent},
@@ -39,7 +39,7 @@ const routes: Routes = [
   {path: 'listaDeVerificacion', component: AppListaDeVerificacionComponent},
   {path: 'informeAuditoria', component: AppInformeDeAuditoriaComponent},
   {path: 'menuAuditoria', component: AppMenuAuditoriaComponent},
-  
+  {path: 'planificacion', component: AppPlanificacionComponent}
   //{path: '', component: AppMyExampleComponent},
 ];
 

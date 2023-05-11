@@ -30,23 +30,26 @@ import { RecoveryComponent } from './recovery/app-recovery/recovery.component';
 import { ModalComponent } from './messagemodal/messagemodal.component';
 import { EMatrizRequisitosLegalesComponent } from './modules/e-matriz-requisitos-legales/e-matriz-requisitos-legales.component';
 import { AppAuditoriaInternaComponent } from './modules/AuditoriaInterna/app-auditoria-interna/app-auditoria-interna.component';
-
+import { AppPlanificacionComponent } from './modules/planificacion/app-planificacion/app-planificacion.component';
+import { CarouselModule } from 'ngx-bootstrap/carousel';
 // ngx-bootstrap
 import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { ModalModule, BsModalService } from 'ngx-bootstrap/modal';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
-import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { BsDatepickerModule, BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { TimepickerModule } from 'ngx-bootstrap/timepicker';
 import { registerLocaleData } from '@angular/common';
 import localeEsPE from '@angular/common/locales/es-PE';
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
+
 import { AppNuevoPlanDeAuditoriaComponent } from './modules/NuevoPlanDeAuditoria/app-nuevo-plan-de-auditoria/app-nuevo-plan-de-auditoria.component';
 import { AppListaDeVerificacionComponent } from './modules/ListaDeVerificacion/app-lista-de-verificacion/app-lista-de-verificacion.component';
-
-
-
+import { AppAvatarComponent } from './modules/avatar/app-avatar/app-avatar.component';
+import { AppColaboradorComponent } from './modules/colaborador/app-colaborador.component';
+import { AppDeleteActivitiesComponent } from './modules/planificacion/app-delete-activities/app-delete-activities.component';
+import { AppHeaderArrowLeftComponent } from './modules/header/app-header-arrow-left/app-header-arrow-left.component';
 import { PipesModule } from './pipes/pipes.module';
 import { AppInformeDeAuditoriaComponent } from './modules/InformeDeAuditoria/app-informe-de-auditoria/app-informe-de-auditoria.component';
 import { AppMenuAuditoriaComponent } from './modules/MenuAuditoria/app-menu-auditoria/app-menu-auditoria.component';
@@ -79,6 +82,11 @@ registerLocaleData(localeEsPE, 'es-PE');
     AppListaDeVerificacionComponent,
     AppInformeDeAuditoriaComponent,
     AppMenuAuditoriaComponent,
+    AppPlanificacionComponent,
+    AppColaboradorComponent,	
+    AppAvatarComponent,
+    AppDeleteActivitiesComponent,
+    AppHeaderArrowLeftComponent,
   ],
   imports: [
     PipesModule,
@@ -93,7 +101,6 @@ registerLocaleData(localeEsPE, 'es-PE');
     ModalModule,
     CommonModule,
     NgxSpinnerModule,
-    BrowserModule, 
     ButtonsModule,
     PaginationModule.forRoot(),
     AccordionModule.forRoot(),
@@ -102,12 +109,18 @@ registerLocaleData(localeEsPE, 'es-PE');
     NgMultiSelectDropDownModule.forRoot(),
     PaginationModule.forRoot(),
     TimepickerModule.forRoot(),
+    CarouselModule,
     BrowserAnimationsModule
   ],
   providers: 
     [
     { provide: HTTP_INTERCEPTORS,  useClass: InterceptorService, multi: true },
-   
+    BsDatepickerConfig,
+    BsModalService,
+    AppDeleteActivitiesComponent
+  ],
+  entryComponents: [
+    AppDeleteActivitiesComponent
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 

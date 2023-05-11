@@ -1,0 +1,63 @@
+<!-- Button trigger modal -->
+<button id = "openModalButton"class="btn" data-toggle="modal" data-target="#myModal">
+  <i class="fa-solid fa-plus" style="color: #fff;"></i>
+  Registro
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button id = "closeModal" type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title" id="myModalLabel">Nuevo Colaborador</h4>
+      </div>
+      <div class="modal-body">
+        <form class="form-horizontal" [formGroup]="registerNewColaborador">
+          <div class="form-group">
+            <label for="correo" class="control-label col-sm-3">Correo:</label>
+            <div class="col-sm-9">
+              <input required appMayusculas type="email" id="correo" class="form-control" formControlName="correo" placeholder="Correo electrónico">
+              <div class="error-message" *ngIf="registerNewColaborador.controls['correo'].hasError('pattern')">
+                Debe contener un correo válido
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="responsable" class="control-label col-sm-3">Responsable:</label>
+            <div class="col-sm-9">
+              <input required appLetras type="text" id="responsable" class="form-control" formControlName="responsable" placeholder="Nombre y Apellido">
+              <div class="error-message" *ngIf="registerNewColaborador.controls['responsable'].hasError('required') && registerNewColaborador.controls['responsable'].touched">
+                Por favor ingrese su nombre y apellido
+              </div>
+            </div>
+          </div>
+          <div class="form-group" [class.has-error]="registerNewColaborador.controls['roles'].invalid && registerNewColaborador.controls['roles'].touched">
+            <label for="roles" class="control-label col-sm-3">Roles:</label>
+            <div class="col-sm-9">
+              <select required id="roles" class="form-control" formControlName="roles">
+                <option value="">Selecciona una opción</option>
+                <option *ngFor="let status of arrayStatus" [value]="status.valor">{{status.descripcion}}</option>
+              </select>
+              <span class="help-block" *ngIf="registerNewColaborador.controls['roles'].hasError('required') && registerNewColaborador.controls['roles'].touched">
+                Por favor seleccione una opción
+              </span>
+            </div>
+          </div>          
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+            <button class="btn btn-primary" [disabled]="registerNewColaborador.invalid" (click)= "saveNewColaborador()" >Aceptar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<ngx-spinner
+  bdColor="rgba(0, 0, 0, 0.5)"
+  size="small"
+  template="<img src='https://www.superiorlawncareusa.com/wp-content/uploads/2020/05/loading-gif-png-5.gif' width='50' height='50'/>"
+>
+</ngx-spinner>

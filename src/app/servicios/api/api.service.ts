@@ -238,5 +238,50 @@ export class ApiService {
     let assign = `${this.apiURL}/api/Auditoria/InsertVerificacionAuditoria`
     return this.http.post<any>(assign,resquest)
   }
+   ///ACTIVIDADES (VISTA DE PLANIFICACIÓN)
+   getActivities(){
+    const id = localStorage.getItem("Id");
+    let lista = `${this.apiURL}/api/Actividad/actividades?idUsuarioPst=${id}`
+    return this.http.get<any>(lista)
+  }
+  getListResponsible(){
+    const rnt = localStorage.getItem('rnt');
+    let lista = `${this.apiURL}/api/Actividad/ListarResponsables/${rnt}`
+    return this.http.get<any>(lista)
+  }
+  getTypeList(idtabla :any){
+    let lista = `${this.apiURL}/api/General/ListarMaestros/${idtabla}`
+    return this.http.get<any>(lista)
+  }
+  postNewRecord(request: any){
+    let assign = `${this.apiURL}/api/Actividad/actividades`
+    return this.http.post<any>(assign,request)
+  }
  
+  deleteActivities(id: any){
+    let assign = `${this.apiURL}/api/Actividad/actividades?id=${id}`
+    return this.http.delete<any>(assign)
+  }
+  putActivities(request: any){
+    let assign = `${this.apiURL}/api/Actividad/actividades`
+    return this.http.put<any>(assign,request)
+  }
+  getUsersRoles(request: any){
+    let assign = `${this.apiURL}/api/Usuario/usuarioRoles`
+    return this.http.post<any>(assign,request)
+  }
+  postRegisterColaborador(request: any){
+    let assign = `${this.apiURL}/api/Usuario/registrarEmpleadoPst?id=${request.idUsuario}&nombre=${request.nombre}&cargo=${request.cargo}&correo=${request.correo}`
+    return this.http.post<any>(assign,null)
+  }
+  putAvatar(request: any){
+    const idUsuarioPst = window.localStorage.getItem('Id');
+    let lista = `${this.apiURL}/api/Actividad/Avatar?idusuariopst=${idUsuarioPst}&idavatar=${request}`
+    return this.http.put<any>(lista,request)
+  }
+  putLogo(request: any){
+    const idUsuarioPst = window.localStorage.getItem('Id');                         
+    let lista = `${this.apiURL}/api/Actividad/Logo?idusuariopst=${idUsuarioPst}&logo=${request}`
+    return this.http.put<any>(lista,request)
+  }
 }

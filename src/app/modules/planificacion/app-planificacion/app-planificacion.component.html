@@ -1,0 +1,461 @@
+<header>
+<app-app-header></app-app-header>
+</header>
+<div style="margin-top: 61px;">
+  <app-app-header-arrow-left routerLink="/dashboard"></app-app-header-arrow-left>
+</div>
+<div class="container-planficación">
+  <div>
+    <h1> Planificación </h1>
+  </div>
+  <article>
+    <div style="display: flex;justify-content: flex-end;">
+      <label type="button" class="btn" title="Subir Foto">
+        <span style="padding: 5px;"> <i class="fa-solid fa-camera" style="color: #fff;margin: 6px;"></i>Cargar Logo</span>
+        <input type="file" onclick="this.value = null"ngf-max-size="500KB"  (change)="fnSubirFoto($event)" style="display: none;" multiple>
+    </label>  
+      <app-app-avatar (click)="crearNuevoRegistro=false; filter=false; crearNuevoRegistro= false" ></app-app-avatar>
+      <app-app-colaborador ></app-app-colaborador>
+      <button class="btn" (click)="fnNuevoRegistro()">
+        <i class="fa-solid fa-plus" style="color: #fff;"></i>
+        Actividad
+      </button>
+      <button class="btn" (click)="fnConsultActivities()">
+        <i class="fa-solid fa-arrows-rotate" style="color: #fff;"></i>
+        Consultar
+      </button>
+    </div>
+  </article>
+
+   <!--*** NUEVO REGISTRO DE ACTIVIDAD *** -->
+  <section *ngIf="crearNuevoRegistro" style="padding-bottom: 10px;padding-top: 13px;">
+    <div class="container-new-register">
+   <table class="body-new-register">
+    <caption style="text-align:left;padding: 12px;color:#333">Nuevo registro</caption>
+    <tr >
+     <thead>
+      <tr>
+        <th scope="col">Responsable</th>
+        <th scope="col">Tipo de actividad</th>
+        <th scope="col">Descripción de actividad</th>
+        <th scope="col">Inicio de actividad</th>
+        <th scope="col">Fin de actividad</th>    
+        <th scope="col">Estado</th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td width="30%" style="padding: 8px" > 
+          <select 
+            class="selectedRoles"
+            [(ngModel)]="idUsuario"
+            (change)="onResponsibleSelectionChange()">
+          <option value="" disabled>Selecciona una opción</option>
+          <option *ngFor="let responsible of arrayListResponsible" [ngValue]="responsible.idUsuarioPst">{{ responsible.nombrePst | titlecase }}</option>
+        </select>
+        <td width="30%" style="padding: 8px">
+        <select 
+            [(ngModel)]="activity"
+             class="selectedRoles">
+            <option value="" disabled>Selecciona una opción</option>
+            <option *ngFor="let activity of arrayActivity" [ngValue]="activity.valor">{{ activity.descripcion | titlecase }}</option>
+          </select>
+        <td width="20%" style="padding: 8px"> 
+            <textarea 
+             [(ngModel)]="description"
+              rows="4" 
+              cols="20" 
+              maxlength="300"
+              title="Hasta 300 caracteres"
+              placeholder="Descipción de actividad"
+              style="border: 1px solid #068460;border-radius: 10px; padding: 3px;">
+          </textarea>
+        </td>       
+        <td width="30%">  
+          <div style="display: flex;flex-wrap: nowrap; align-items: center; margin-bottom: 8px;">
+           <input
+           bsDatepicker 
+           appFwCalendario 
+           appDateInputMask 
+            type="text"  
+            maxlength="10"
+            placement="bottom" 
+            class="forma-input" 
+            #dp2="bsDatepicker"  
+            placeholder="D-M-YYYY" 
+            title="Inicio de actividad"
+            style="width:100px;margin-right: 5px;border: 1px solid #068460;border-radius: 10px; padding: 3px;"
+            [(ngModel)]="startActivityDate"
+            [bsConfig]="{ dateInputFormat: 'D-M-YYYY'}" />
+           <i 
+            (click)="dp2.show()" 
+            class="fa-solid fa-calendar-days" 
+            style="color: #06543c;font-size: 25px;padding-bottom: 4px;" 
+            [attr.aria-expanded]="dp2.isOpen">
+          </i>
+        </div>
+         </td>
+        <td width="30%" style="padding: 8px;margin: 5px;" title="Fin de actividad"> 
+          <div style="display: flex;flex-wrap: nowrap; align-items: center; margin-bottom: 8px;">
+            <input 
+            bsDatepicker
+            appFwCalendario
+            appDateInputMask 
+            type="text"  
+            maxlength="10"
+            placement="bottom" 
+            class="forma-input" 
+            #dp3="bsDatepicker" 
+            placeholder="D-M-YYYY" 
+            style="width:100px;margin-right: 5px;border: 1px solid #068460;border-radius: 10px; padding: 3px;"
+            [(ngModel)]="endtActivityDate"
+            [bsConfig]="{ dateInputFormat: 'D-M-YYYY'}"  />
+            <i 
+              class="fa-solid fa-calendar-days"
+              (click)="dp3.show()" 
+              style="color: #06543c;font-size: 25px;padding-bottom: 4px;" 
+              [attr.aria-expanded]="dp3.isOpen">
+            </i>
+          </div>
+        </td>
+        <td width="30%" style="padding: 8px"  title="Estado">
+          <select 
+          selected
+          [(ngModel)]="selectedState" 
+           class="selectedRoles">
+          <option value="" disabled>Selecciona una opción</option>
+          <option *ngFor="let status of arrayStatus" [value]="status.descripcion">{{status.descripcion | titlecase }}</option>
+        </select>
+        </td>
+        <td width="10%" style="text-align:center; padding: 5px">
+          <a title="Guardar"(click)="fnNewRecord()"><i class="fa-regular fa-floppy-disk" style="color: #06543c;font-size: 25px;"></i></a>
+          <a (click)="fnNuevoRegistroCancelar()" title="Cancelar">
+            <i class="fa-solid fa-circle-xmark" style="color: #06543c;font-size: 25px;"></i>
+          </a> 
+      </td>
+        <th scope="col"></th>      
+      </tr>
+    </tbody> 
+  </tr>
+   </table>
+  </div>
+  </section>
+
+  <!--*** BLOQUE DE BUSQUEDA  ***-->
+ <section *ngIf="filter" style="padding-bottom: 10px;margin-top: 12px;">
+    <div class="container-new-register">
+      <div style="display: flex; justify-content: flex-end; margin: 16px;">
+        <button class="btn" style="margin-right: 12px !important;" (click)="filterResult()">
+          <i class="fa-solid fa-magnifying-glass" style="color: #fff;padding-right: 4px;" ></i>
+          Buscar
+        </button>
+        <a title="Cancelar"  data-dismiss="modal" aria-label="Close" >
+          <i class="fa-solid fa-circle-xmark"  (click)="fnFiltro()"style="color: #06543c;font-size: 25px;"></i>
+        </a> 
+      </div>
+   <table class="body-new-register">   
+    <tr >
+     <thead>
+      <tr>
+        <th scope="col">Responsable</th>
+        <th scope="col">Tipo Actividad</th>
+        <th scope="col">Actividad</th>
+        <th scope="col" style="padding:10px">Roles</th>
+        <th scope="col">Inicio de actividad</th>
+        <th scope="col">Fin de actividad</th>    
+        <th scope="col">Estado</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr style="text-align: center;">
+        <td width="10%" style="padding: 0px 8px 7px 8px" > 
+          <input 
+          type="text" 
+          title="Responsable" 
+          placeholder="Responsable" 
+          [(ngModel)] ="responsibleValue"
+          (ngModelChange)="captureResponsibleValue($event)"
+          style="border: 1px solid #068460;border-radius: 10px; padding: 3px;">
+        </td>
+        <td width="10%" style="padding: 8px"> 
+          <select  
+          class="selectedRoles" 
+          (change)="captureTypeActivityValue($event)"
+          style="border: 1px solid #068460;border-radius: 10px; padding: 3px;margin-left:0;height: 28px;">
+            <option value="" disabled>Selecciona una opción</option>
+            <option *ngFor="let act of arrayActivity" [value]="act.descripcion">{{ act.descripcion }}</option>
+          </select>
+        </td>   
+        <td width="10%" style="padding: 0px 8px 7px 8px" >
+          <input 
+          type="text" 
+          title="Tipo de actividad" 
+          placeholder="Actividad"
+          (change)="captureValueActivity($event)"
+          style="border: 1px solid #068460;border-radius: 10px; padding: 3px;"> 
+        </td>
+        <td width="10%" style="padding: 8px"> 
+          <select  
+          style="margin-left:0"
+          class="selectedRoles" 
+          (change)="captureValueRoles($event)"
+          style="border: 1px solid #068460;border-radius: 10px; padding: 3px;">
+            <option value="" disabled>Selecciona una opción</option>
+            <option *ngFor="let status of arrayStatusRol" [value]="status.valor">{{ status.descripcion }}</option>
+          </select>
+        </td>       
+        <td width="10%">  
+          <div style="display: flex;flex-wrap: nowrap; align-items: center; margin-bottom: 8px;">
+           <input
+           bsDatepicker 
+           appFwCalendario 
+           appDateInputMask 
+            type="text"  
+            maxlength="10"
+            placement="bottom" 
+            class="forma-input" 
+            #dp2="bsDatepicker"  
+            placeholder="D-M-YYYY" 
+            title="Inicio de actividad"
+            [(ngModel)]="startDateValue"
+            (change)="captureValueStartDate($event)"
+            style="width:100px;margin-right: 5px;border: 1px solid #068460;border-radius: 10px; padding: 3px;"
+           [bsConfig]="{ dateInputFormat: 'D-M-YYYY'}" />
+           <i 
+            (click)="dp2.show()" 
+            class="fa-solid fa-calendar-days" 
+            style="color: #06543c;font-size: 25px;padding-bottom: 4px;" 
+            [attr.aria-expanded]="dp2.isOpen">
+          </i>
+        </div>
+         </td>
+        <td width="10%" style="padding: 8px;margin: 5px;" title="Fin de actividad"> 
+          <div style="display: flex;flex-wrap: nowrap; align-items: center; margin-bottom: 8px;">
+            <input 
+            bsDatepicker
+            appFwCalendario
+            appDateInputMask 
+            type="text"  
+            maxlength="10"
+            placement="bottom" 
+            class="forma-input" 
+            #dp3="bsDatepicker" 
+            placeholder="D-M-YYYY" 
+            [(ngModel)]="endDateValue"
+            (change)="captureValueEndDate($event)"
+            style="width:100px;margin-right: 5px;border: 1px solid #068460;border-radius: 10px; padding: 3px;"
+            [bsConfig]="{ dateInputFormat:'D-M-YYYY'}"  />
+            <i 
+              class="fa-solid fa-calendar-days"
+              (click)="dp3.show()" 
+              style="color: #06543c;font-size: 25px;padding-bottom: 4px;" 
+              [attr.aria-expanded]="dp3.isOpen">
+            </i>
+          </div>
+        </td>
+        <td width="10%"  title="Estado">
+          <select 
+          style="margin-left:0"
+          (change)="capturestateSelected($event)"
+          [(ngModel)]="selectedState" 
+           class="selectedRoles">
+          <option value="" disabled>Selecciona una opción</option>
+          <option *ngFor="let status of arrayStatus" [value]="status.descripcion">{{status.descripcion | titlecase }}</option>
+        </select>
+        <th scope="col"></th>      
+      </tr>
+    </tbody> 
+  </tr>
+   </table>
+  </div> 
+</section> 
+
+<!-- *** SECCIÓN DE LA TABLA DE CONTENIDO DE LAS ACTIVIDADES ***-->
+  <section>    
+    <table class="table-gestion" style="margin-top: 8px;">
+      <thead>
+        <tr>
+          <th scope="col">Responsable</th>
+          <th scope="col">Tipo de actividad</th>
+          <th scope="col">Descripción de actividad</th>
+          <th scope="col">Inicio de actividad</th>
+          <th scope="col">Fin de actividad</th>
+          <th scope="col">Estado</th>    
+          <th scope="col"></th>
+          <th scope="col" style="text-align: center;"><i class="fa-solid fa-magnifying-glass" title="Buscar" (click)="fnFiltro()"></i></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of rolesArray; let i = index;">
+          <td *ngIf="caracteristicaIndice!=i"> {{ user?.nombreresponsable | titlecase}} </td>
+          <td *ngIf="caracteristicaIndice==i" width="30%" >
+            <select 
+              style="margin-left: 0 !important"
+              class="selectedRoles"
+              title="Responsable" 
+              (change)="onResponsibleSelectionChangeEditar($event)"
+              [(ngModel)]="editarCaracteristica.idUsuario">
+             <option value="" disabled>Selecciona una opción</option>
+             <option *ngFor="let responsible of arrayListResponsible" [ngValue]="responsible.idUsuarioPst">{{responsible.nombrePst | titlecase }}</option>
+           </select>
+         </td>
+          <td *ngIf="caracteristicaIndice!=i"> {{ user.tipoActividad | titlecase  }}
+          <td *ngIf="caracteristicaIndice==i"  width="30%" >
+            <select 
+            title="Responsable" 
+            style="margin-left: 0 !important"
+            *ngIf="caracteristicaIndice==i" 
+            [(ngModel)]="editarCaracteristica.tipoActividad"
+             class="selectedRoles">
+            <option value="" disabled>Selecciona una opción</option>
+            <option *ngFor="let activity of arrayActivity" [ngValue]="activity.valor">{{ activity.descripcion | titlecase}}</option>
+          </select>
+          </td>
+          <td *ngIf="caracteristicaIndice!=i" (click)="fnShowModal(i)" title="Dale click para leer la tarea" > {{ user.descripcion.slice(0,30) | titlecase }} </td>
+          <td *ngIf="caracteristicaIndice==i"  width="30%" >
+            <textarea 
+              rows="4" 
+              cols="20" 
+              maxlength="300"
+              title="Hasta 300 caracteres" 
+              [(ngModel)]="editarCaracteristica.descripcion"
+              style="border: 1px solid #068460;border-radius: 10px; padding: 3px;text-overflow: ellipsis;">
+            </textarea>
+          </td>
+          <td class="btn-container" *ngIf="caracteristicaIndice!=i">{{ user.fecha_inicio }}</td>
+          <td *ngIf="caracteristicaIndice==i"  width="30%" >
+            <div style="display: flex;align-items: center;">
+            <input
+            bsDatepicker 
+            appFwCalendario 
+            appDateInputMask 
+             type="text"  
+             maxlength="10"
+             placement="bottom" 
+             class="forma-input" 
+             #dp4="bsDatepicker"  
+             placeholder="D-M-YYYY" 
+             title="Inicio de actividad"
+             style="width:95px;margin-right: 5px;border: 1px solid #068460;border-radius: 10px; padding: 3px;"
+             [(ngModel)]="editarCaracteristica.fecha_inicio"
+            [bsConfig]="{ dateInputFormat: 'D-M-YYYY'}" />
+            <i 
+             (click)="dp4.show()" 
+             class="fa-solid fa-calendar-days" 
+             style="color: #06543c;font-size: 25px;padding-bottom: 4px;" 
+             [attr.aria-expanded]="dp4.isOpen">
+           </i>
+          </div>
+          </td>
+          <td *ngIf="caracteristicaIndice!=i"> {{ user.fecha_fin }} </td>
+          <td *ngIf="caracteristicaIndice==i">
+            <div style="display: flex;align-items: center;">
+              <input
+              bsDatepicker 
+              appFwCalendario 
+              appDateInputMask 
+              type="text"  
+              maxlength="10"
+              placement="bottom" 
+              class="forma-input" 
+              #dp5="bsDatepicker"  
+              placeholder="D-M-YYYY" 
+              title="Inicio de actividad"
+              style="width:80px;margin-right: 5px;border: 1px solid #068460;border-radius: 10px; padding: 3px;"
+              [(ngModel)]="editarCaracteristica.fecha_fin"
+              [bsConfig]="{ dateInputFormat: 'D-M-YYYY'}" />
+              <i 
+                (click)="dp5.show()" 
+                class="fa-solid fa-calendar-days" 
+                style="color: #06543c;font-size: 25px;padding-bottom: 4px;" 
+                [attr.aria-expanded]="dp5.isOpen">
+             </i>
+            </div>
+          </td>
+          <td *ngIf="caracteristicaIndice!=i"> {{ user.estadoplanificacion | titlecase }} </td>
+          <td *ngIf="caracteristicaIndice==i">
+            <select 
+            [(ngModel)]="editarCaracteristica.estadoplanificacion" 
+             class="selectedRoles">
+            <option value="" disabled>Selecciona una opción</option>
+            <option *ngFor="let status of arrayStatus" [value]="status.descripcion">{{status.descripcion | titlecase }}</option>
+          </select>
+          </td>
+          <td><i class="fa fa-circle" [ngStyle]="{'color': user.statecolor}"></i></td>
+          <td>
+            <a (click)="fnPlanningEdit(i)" title="Editar" *ngIf="caracteristicaIndice!=i">
+              <i class="fa-solid fa-pen" style="color: #06543c;"></i>
+            </a>
+            <app-app-delete-activities 
+              *ngIf="caracteristicaIndiceEliminar!=i"
+              [indice]="indiceAEliminar" 
+              (click)="fnPlanificacionEliminar(i);caracteristicaIndiceEliminar=-1"
+              (valorEnviado)="recibirValor($event)">
+            </app-app-delete-activities> 
+            <a (click)="fnSchedulingUpdate(i)" title="Grabar" *ngIf="caracteristicaIndice==i">
+              <i class="fa-regular fa-floppy-disk" style="color: #06543c;font-size: 25px;"></i>
+            </a>
+           <a (click)="fnPlanifiacacionEditarCancelar()" title="Cancelar" *ngIf="caracteristicaIndice==i">
+              <i class="fa-solid fa-circle-xmark" style="color: #06543c;font-size: 25px;"></i>
+            </a> 
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p *ngIf="result"  style="text-align: center;margin-top: 10px; font-size: 19px; font-family: 'Work Sans', sans-serif;" >
+      No hay resultado para la búsqueda
+    </p>
+  </section>
+
+  <!-- paginacion -->
+  <footer class="page-style">
+    <div class="container-label">
+      <label class="paginas">  Página: {{ pages }} / {{ totalPaginas }} Registros: {{ totalRegistros }} </label>
+      <div class="ls-pagina ">
+      <pagination 
+          lastText="&raquo;"
+          nextText="&rsaquo;" 
+          firstText="&laquo;" 
+          previousText="&lsaquo;" 
+          [maxSize]="3" 
+          [totalItems]="contentArray.length"
+          [itemsPerPage]="6"
+          [boundaryLinks]="true" 
+          (pageChanged)="pageChanged($event)"
+          [ngClass]="{'page-item': true}">
+        </pagination> 
+    </div>
+    </div>
+  </footer>
+</div>
+
+<app-modal></app-modal>
+
+<!-- Modal -->
+<div class="modal modal-dialog-centered" tabindex="-1" role="dialog" *ngIf="showModal" [ngClass]="{'show': showModal}" style="display: block;">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content modal-contedor">
+      <div >
+        <a title="Cancelar"  style="display: flex;justify-content: flex-end;padding-right: 30px;padding-top: 18px;" data-dismiss="modal" aria-label="Close">
+          <i class="fa-solid fa-circle-xmark" style="color: #06543c;font-size: 25px;" (click)="showModal = false;"></i>
+        </a> 
+        <h1 class="modal-title" style="font-size:20px !important;">Descripción de actividad</h1>
+      </div>
+      <div class="modal-body" style="text-align: center;">
+        <p>
+          {{  descripcion | titlecase }}
+        </p>
+      </div>
+      <div style="padding: 15px;text-align: center;">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="showModal = false;">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+<ngx-spinner
+  bdColor="rgba(0, 0, 0, 0.5)"
+  size="small"
+  template="<img src='https://www.superiorlawncareusa.com/wp-content/uploads/2020/05/loading-gif-png-5.gif' width='50' height='50'/>"
+>
+</ngx-spinner>
