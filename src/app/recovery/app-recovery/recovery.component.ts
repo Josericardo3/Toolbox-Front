@@ -76,7 +76,7 @@ export class RecoveryComponent implements OnInit {
 
     return;
     }
-    this.http.post(`https://www.toolbox.somee.com/api/Validaciones/CambioContraseña?password=${password}&id=${userCode}`, { id: this.id })
+    this.http.post(`https://ec2-18-206-91-231.compute-1.amazonaws.com:8051/api/Validaciones/CambioContraseña?password=${password}&id=${userCode}`, { id: this.id })
       .subscribe(
         (response: any) => {
           if(response.valor == "Contraseña cambiada satisfactoriamente"){

@@ -6,6 +6,6 @@ export const environment = {
   apiChart: 'https://quickchart.io/chart',
 
   // apiURL:'http://10.4.3.140:8050',
-  apiURL: 'https://www.toolbox.somee.com'
-
+  //apiURL: 'https://www.toolbox.somee.com'
+  apiURL: 'https://ec2-18-206-91-231.compute-1.amazonaws.com:8051'
 };
