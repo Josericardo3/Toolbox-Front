@@ -7,26 +7,32 @@
 <!-- Modal -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button id = "closeModal" type="button" class="close" data-dismiss="modal" aria-label="Close">
+    <div class="modal-contedor">
+      <div >
+        <button  id = "closeModal" style="display: none;" type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
+        <a  title="Cancelar"  class="cancelar" data-dismiss="modal" aria-label="Close">
+          <i class="fa-solid fa-circle-xmark" style="color: #06543c;font-size: 25px;margin-top: 13px;"></i>
+        </a>
         <h4 class="modal-title" id="myModalLabel">Nuevo Colaborador</h4>
       </div>
       <div class="modal-body">
         <form class="form-horizontal" [formGroup]="registerNewColaborador">
           <div class="form-group">
-            <label for="correo" class="control-label col-sm-3">Correo:</label>
+            <label for="correo" class="control-label col-sm-3">
+              Correo  <i class="fa-solid fa-envelope" style="font-size: 17px;" style="font-size: 18px;color: #068460;" ></i>
+            </label>
             <div class="col-sm-9">
-              <input required appMayusculas type="email" id="correo" class="form-control" formControlName="correo" placeholder="Correo electrónico">
+              <input required appMayusculas  type="email" id="correo" class="form-control" formControlName="correo" placeholder="Correo electrónico">
               <div class="error-message" *ngIf="registerNewColaborador.controls['correo'].hasError('pattern')">
                 Debe contener un correo válido
               </div>
             </div>
           </div>
           <div class="form-group">
-            <label for="responsable" class="control-label col-sm-3">Responsable:</label>
+            <label for="responsable" class="control-label col-sm-3">Responsable 
+              <i class="fa-solid fa-user" style="font-size: 18px;color: #068460;"></i></label>
             <div class="col-sm-9">
               <input required appLetras type="text" id="responsable" class="form-control" formControlName="responsable" placeholder="Nombre y Apellido">
               <div class="error-message" *ngIf="registerNewColaborador.controls['responsable'].hasError('required') && registerNewColaborador.controls['responsable'].touched">
@@ -35,9 +41,11 @@
             </div>
           </div>
           <div class="form-group" [class.has-error]="registerNewColaborador.controls['roles'].invalid && registerNewColaborador.controls['roles'].touched">
-            <label for="roles" class="control-label col-sm-3">Roles:</label>
+            <label for="roles" class="control-label col-sm-3">Roles
+              <i class="fa-solid fa-person" style="font-size: 22px;color: #068460;"></i>
+            </label>
             <div class="col-sm-9">
-              <select required id="roles" class="form-control" formControlName="roles">
+              <select required id="roles"  class="form-control" formControlName="roles">
                 <option value="">Selecciona una opción</option>
                 <option *ngFor="let status of arrayStatus" [value]="status.valor">{{status.descripcion}}</option>
               </select>
@@ -46,7 +54,7 @@
               </span>
             </div>
           </div>          
-          <div class="modal-footer">
+          <div style="margin-left: 149px;margin-bottom: 14px;">
             <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
             <button class="btn btn-primary" [disabled]="registerNewColaborador.invalid" (click)= "saveNewColaborador()" >Aceptar</button>
           </div>

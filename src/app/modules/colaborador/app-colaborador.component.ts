@@ -1,4 +1,4 @@
-import { Component, ViewChild, ElementRef } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { ModalService } from 'src/app/messagemodal/messagemodal.component.service';
@@ -19,6 +19,7 @@ export class AppColaboradorComponent {
   arrayListResponsible: any =[];
   arrayStatus: any = [];
   registerNewColaboradorResponsable: boolean = false;
+  @Output() valorEnviadoColaborador = new EventEmitter<boolean>();
 
   constructor(
     private modalService: BsModalService,
@@ -54,7 +55,6 @@ export class AppColaboradorComponent {
   }
 
   saveNewColaborador(){
-    debugger
     const closeModalButton = document.getElementById("closeModal");
     closeModalButton.click();
     const request = {
@@ -68,11 +68,11 @@ export class AppColaboradorComponent {
       (data) => {
           if(data.statusCode == 201){
             this.registerNewColaborador.reset();
-            this.fnListResponsible();
-            
             const title = "Registro exitoso";
             const message = data.valor;
             this.Message.showModal(title, message);
+            this.fnListResponsible();
+            this.valorEnviadoColaborador.emit(true);
           }else{
             const openModalButton = document.getElementById("openModalButton");
             openModalButton.click();

@@ -5,6 +5,7 @@ import { ApiService } from 'src/app/servicios/api/api.service'
 import { ModalService } from 'src/app/messagemodal/messagemodal.component.service';
 import { HttpClient } from '@angular/common/http';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-app-planificacion',
@@ -27,10 +28,10 @@ export class AppPlanificacionComponent {
   arrayStatusRol: any = [];
   idResponsible!: number;
   activity: any = [];
-  description!: string;
-  startActivityDate!: string | Date;
-  endtActivityDate!: string | Date;
-  nameResponsible!: string;
+  description: string = '';
+  startActivityDate: any = '';
+  endtActivityDate: any ='';
+  nameResponsible: string;
   showModalCampos: boolean = false;
   idUsuario: any = [];
   idResponsable!: number;
@@ -42,6 +43,7 @@ export class AppPlanificacionComponent {
     private modalService: BsModalService,
     // private AppDeleteActivitiesComponent: AppDeleteActivitiesComponent,
     private Message: ModalService,
+    private cd: ChangeDetectorRef
   ) { }
 
   ngOnInit() {
@@ -57,7 +59,8 @@ export class AppPlanificacionComponent {
 
   dataInitial: any = [];
   totalPaginas: number = 0;
-  totalRegistros: number = 0; 
+  totalRegistros: number = 0;
+  datatotal: number = 0; 
   contentArray: any = [];
   result: boolean = false;
   responsibleValue: any = '';
@@ -69,9 +72,10 @@ export class AppPlanificacionComponent {
   startDateValue: any = '';
   endDateValue: any = '';
   StatusRolValue: any = '';
-  indiceAEliminar!: number;
-  caracteristicaIndiceEliminar!: number;
+  indiceAEliminar: number = -1;
+  caracteristicaIndiceEliminar: number =-1;
   editarCaracteristica: any = {};
+  currentPage: number= 1
 
   fnSubirFoto(e?: any) {
     if (e.target.files.length > 0) {
@@ -91,10 +95,11 @@ export class AppPlanificacionComponent {
       reader.readAsDataURL(file); // leer el archivo como base64
     }
   }
-  
+ 
   recibirValor(valor: number) {  
     this.valorRecibido = valor;
     this.caracteristicaIndiceEliminar = this.valorRecibido;
+    this.fnConsultActivities()
   }
 
   fnConsultActivities() {
@@ -119,15 +124,18 @@ export class AppPlanificacionComponent {
 
         //paginado
         const totalPag = data.length;
-        this.totalPaginas = Math.trunc(totalPag / 6) + 1;
-        this.totalRegistros = data.length;
-        this.rolesArray = this.dataInitial.slice(0, 6);
+        this.totalPaginas = Math.ceil(totalPag / 8) ;
+        if(this.totalPaginas== 0) this.totalPaginas = 1;
+        this.totalRegistros = 7;
+        this.datatotal = this.dataInitial.length;
+        this.rolesArray = this.dataInitial.slice(0, 8);
         this.contentArray = data;
+       this.currentPage = 1
     })
   }
 
   fnListResponsible() {
-    debugger
+
     this.ApiService.getListResponsible().subscribe((data) => {
       this.arrayListResponsible = data;
 
@@ -160,63 +168,64 @@ export class AppPlanificacionComponent {
   onResponsibleSelectionChangeEditar(event: any) {
     this.idResponsable = this.editarCaracteristica.idUsuario
   }
+  startActivityDateTemp: any;
+  endtActivityDateTemp: any;
 
   fnNewRecord() {
 
-    if (typeof (this.startActivityDate) == 'object') {
-    
-      this.startActivityDate = this.startActivityDate?.getUTCDate() + "-" + (this.startActivityDate.getUTCMonth() + 1) + "-" + this.startActivityDate.getUTCFullYear();
-    }
-    if (typeof (this.endtActivityDate) == 'object') {
-    
-      this.endtActivityDate = this.endtActivityDate?.getUTCDate() + "-" + (this.endtActivityDate.getUTCMonth() + 1) + "-" + this.endtActivityDate.getUTCFullYear();
-    }
-     if (this.endtActivityDate < this.startActivityDate) {
-      const title = "Registro no exitoso";
-      const message = "Por favor verifique la fecha"
-      this.Message.showModal(title, message);
-    return;
-  }
-
-    if (this.endtActivityDate?.length && this.startActivityDate?.length && this.activity?.length && this.description?.length && this.selectedState?.length > 0) {
-      const request =
-      {
-        id: 0,
-        idUsuarioPst: parseInt(localStorage.getItem("Id")),
-        idResponsable: this.idUsuario,
-        tipoActividad: this.activity,
-        descripcion: this.description,
-        fecha_inicio: this.startActivityDate,
-        fecha_fin: this.endtActivityDate,
-        estadoplanificacion: this.selectedState,
-        nombreresponsable: this.nameResponsible
-      }
-      this.ApiService.postNewRecord(request).subscribe((data) => {
-        ///this.fnConsultActivities();
-        this.fnNuevoRegistroCancelar();
-        this.caracteristicaIndiceEliminar = -1
-        this.idUsuario = '';
-        this.activity = '';
-        this.description = '';
-        this.startActivityDate = '';
-        this.endtActivityDate = '';
-        this.selectedState = ''
-        this.nameResponsible = ''
-        const title = "Registro exitoso";
-        const message = "El registro se ha realizado exitosamente"
+    if (typeof(this.startActivityDate) == 'object' && typeof(this.endtActivityDate) == 'object') {
+      const inicioValue = new Date(this.startActivityDate);
+      const finValue = new Date(this.endtActivityDate);
+      if (finValue < inicioValue) {
+        const title = "Registro no exitoso";
+        const message = "Por favor verifique la fecha";
         this.Message.showModal(title, message);
-
-        this.pages = 1
-        
-      })
-    }
-    else {
-      const title = "Registro no exitoso";
-      const message = "Por favor complete todo los campos"
-      this.Message.showModal(title, message);
+        return;
+      } else {
+        this.startActivityDate = this.startActivityDate.getDate().toString().padStart(2, '0') + "-" + (this.startActivityDate.getUTCMonth() + 1).toString().padStart(2, '0') + "-" + this.startActivityDate.getUTCFullYear();
+        this.endtActivityDate = this.endtActivityDate.getDate().toString().padStart(2, '0') + "-" + (this.endtActivityDate.getUTCMonth() + 1).toString().padStart(2, '0') + "-" + this.endtActivityDate.getUTCFullYear();
+      }
     }
 
+    if (this.endtActivityDate.length && this.startActivityDate.length && this.activity.length  && this.selectedState.length > 0 && this.description != '' && this.description.length !=0) {
+
+        const request = {
+          id: 0,
+          idUsuarioPst: parseInt(localStorage.getItem("Id")),
+          idResponsable: this.idUsuario,
+          tipoActividad: this.activity,
+          descripcion: this.description,
+          fecha_inicio: this.startActivityDate,
+          fecha_fin: this.endtActivityDate,
+          estadoplanificacion: this.selectedState,
+          nombreresponsable: this.nameResponsible
+        };
+        this.ApiService.postNewRecord(request).subscribe((data) => {
+          this.fnConsultActivities();
+          this.fnNuevoRegistroCancelar();
+          this.caracteristicaIndiceEliminar = -1;
+          this.idUsuario = '';
+          this.activity = '';
+          this.description = '';
+          this.startActivityDate = '';
+          this.endtActivityDate = '';
+          this.selectedState = '';
+          this.nameResponsible = '';
+          const title = "Registro exitoso";
+          const message = "El registro se ha realizado exitosamente";
+          this.Message.showModal(title, message);
+          this.pages = 1;
+          this.currentPage = 1
+        });
+
+    } 
+      else {
+            const title = "Registro no exitoso";
+            const message = "Por favor verifique la fecha y complete todo los campos"
+            this.Message.showModal(title, message);
+          }
   }
+  
 
   fnModalAvatar() {
     this.modal = true
@@ -231,10 +240,19 @@ export class AppPlanificacionComponent {
   fnNuevoRegistro() {
     this.crearNuevoRegistro = true;
     this.filter = false
+    this.fnListResponsible();
   }
 
   fnNuevoRegistroCancelar() {
     this.crearNuevoRegistro = false;
+    this.caracteristicaIndiceEliminar = -1;
+    this.idUsuario = '';
+    this.activity = '';
+    this.description = '';
+    this.startActivityDate = '';
+    this.endtActivityDate = '';
+    this.selectedState = '';
+    this.nameResponsible = '';
   }
 
   fnFiltro() {
@@ -286,10 +304,10 @@ export class AppPlanificacionComponent {
     this.result = false;
     this.contentArray = [];
     if (typeof (this.startDateValue) == 'object') {
-      this.startDateValue = this.startDateValue?.getUTCDate() + "-" + (this.startDateValue.getUTCMonth() + 1) + "-" + this.startDateValue.getUTCFullYear();
+      this.startDateValue = this.startDateValue?.getDate().toString().padStart(2, '0') + "-" + (this.startDateValue.getUTCMonth() + 1).toString().padStart(2, '0') + "-" + this.startDateValue.getUTCFullYear();
     }
     if (typeof (this.endDateValue) == 'object') {
-      this.endDateValue = this.endDateValue?.getUTCDate() + "-" + (this.endDateValue.getUTCMonth() + 1) + "-" + this.endDateValue.getUTCFullYear();
+      this.endDateValue = this.endDateValue?.getDate().toString().padStart(2, '0') + "-" + (this.endDateValue.getUTCMonth() + 1).toString().padStart(2, '0') + "-" + this.endDateValue.getUTCFullYear();
     }
 
     let arrayTemp = this.dataInitial.filter((item) =>
@@ -307,10 +325,13 @@ export class AppPlanificacionComponent {
     ///para el paginado
     this.pages = 1;
     const totalPag = this.rolesArray.length;
-    this.totalPaginas = Math.trunc(totalPag / 6) + 1;
+    this.totalPaginas = Math.ceil(totalPag / 7);
+    if(this.totalPaginas== 0) this.totalPaginas = 1;
     this.contentArray = this.rolesArray;
     this.totalRegistros = this.rolesArray.length;
-    this.rolesArray = this.rolesArray.slice(0, 6);
+    this.datatotal = this.rolesArray.length;
+    if(this.totalRegistros == this.datatotal && this.totalRegistros>=7 ) this.totalRegistros=7;
+    this.rolesArray = this.rolesArray.slice(0, 7);
     return this.rolesArray.length > 0 ? this.rolesArray : this.result = true;
   }
 
@@ -327,22 +348,19 @@ export class AppPlanificacionComponent {
     this.editarCaracteristica.idUsuario = this.editarCaracteristica.idResponsable;
   }
 
-  fnPlanificacionEliminar(indice: number) {
+  fnPlanificacionEliminar(indice: any) {
+    this.filter = false
     this.caracteristicaIndiceEliminar = indice;
-    this.indiceAEliminar = indice;
-    // const request = this.rolesArraytemp[indice].id;
-    // this.ApiService.deleteActivities(request).subscribe((data) => {
-    //   this.fnConsultActivities();
-
-    // })
+    this.indiceAEliminar = this.rolesArray[indice].id ;
+    this.pages = 1;
   }
   fnSchedulingUpdate(indice: number) {
-debugger
+
     if (typeof (this.editarCaracteristica.fecha_inicio) == 'object') {
-      this.editarCaracteristica.fecha_inicio = this.editarCaracteristica.fecha_inicio?.getUTCDate() + "-" + (this.editarCaracteristica.fecha_inicio.getUTCMonth() + 1) + "-" + this.editarCaracteristica.fecha_inicio.getUTCFullYear()
+      this.editarCaracteristica.fecha_inicio = this.editarCaracteristica.fecha_inicio?.getDate().toString().padStart(2, '0') + "-" + (this.editarCaracteristica.fecha_inicio.getUTCMonth() + 1).toString().padStart(2, '0') + "-" + this.editarCaracteristica.fecha_inicio.getUTCFullYear();
     }
     if (typeof (this.editarCaracteristica.fecha_fin) == 'object') {
-      this.editarCaracteristica.fecha_fin = this.editarCaracteristica.fecha_fin?.getUTCDate() + "-" + (this.editarCaracteristica.fecha_fin.getUTCMonth() + 1) + "-" + this.editarCaracteristica.fecha_fin.getUTCFullYear()
+      this.editarCaracteristica.fecha_fin = this.editarCaracteristica.fecha_fin?.getDate().toString().padStart(2, '0') + "-" + (this.editarCaracteristica.fecha_fin.getUTCMonth() + 1).toString().padStart(2, '0') + "-" + this.editarCaracteristica.fecha_fin.getUTCFullYear();
     }
     if (this.editarCaracteristica.fecha_fin < this.editarCaracteristica.fecha_inicio) {
       const title = "Registro no exitoso";
@@ -353,9 +371,9 @@ debugger
     if (this.idResponsable != undefined) {
       this.editarCaracteristica.idResponsable = this.idResponsable;
     }
-
+    
     this.ApiService.putActivities(this.editarCaracteristica).subscribe((data) => {
-      debugger
+      
       const title = "Actualizacion exitosa.";
       const message = "El registro se ha realizado exitosamente";
       this.Message.showModal(title, message);
@@ -381,43 +399,30 @@ debugger
          this.rolesArray[indice].statecolor = '#068460';
         }
   
-      
-
-
-
-
-
       this.fnPlanifiacacionEditarCancelar();
     })
+  
   }
 
-  // openConfirmModal() {
- 
-  //   const modalRef: BsModalRef = this.modalService.show(AppDeleteActivitiesComponent);
-
-  //   modalRef.content.action.subscribe((result: boolean) => {
-  //     if (result) {
-  //       // Lógica para eliminar el elemento
-  //       alert('hola')
-  //     }
-  //   });
-  // }
-
+  pruebaDelete: any=[];
   pageChanged(event: any): void {
     this.pages = event.page;
-  
     const startItem = (event.page - 1) * event.itemsPerPage
     const endItem = event.page * event.itemsPerPage;
+   
 
 
     if (this.responsibleValue || this.typeActivityValue || this.activityValue || this.startDateValue || this.endDateValue || this.stateSelected !== '') {
-
+     this.datatotal = this.contentArray.length;
      this.rolesArray = this.contentArray.slice(startItem, endItem)
 
    } else {
+     this.datatotal = this.dataInitial.length;
      this.rolesArray = this.dataInitial.slice(startItem, endItem)
    }
    this.totalRegistros = this.rolesArray.length;
+   
+   this.cd.detectChanges();
 
   }
 

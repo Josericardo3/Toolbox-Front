@@ -14,7 +14,8 @@ export class LetrasDirective {
     const e = <KeyboardEvent>event;
     const charCode = (e.which) ? e.which : e.keyCode;
     if (!(charCode >= 65 && charCode <= 90) && // letras mayúsculas
-        !(charCode >= 97 && charCode <= 122) // letras minúsculas
+        !(charCode >= 97 && charCode <= 122)&& // letras minúsculas
+        charCode !== 32 // espacio
         ) { // números
       e.preventDefault();
     }

@@ -8,6 +8,7 @@
   <div class="header">
   <app-app-header></app-app-header>
   </div>
+  
   <div class="container-gestion">
     <div class="titulo">
       Gestión de Asesores
@@ -72,14 +73,14 @@
         <td colspan="7">
             <div class="container-label" style="float:left;">
                 <label class="paginas">
-                    Página: {{ pages }} / {{ filtroTable.TotalPaginas }} Registros: {{ filtroTable.TotalRegistros }}
+                    Página: {{ pages }} / {{ filtroTable.TotalPaginas }} Mostrando: {{ filtroTable.TotalRegistros }} Registros: {{ dataTotal }}
                 </label>
             <div class="ls-pagina ">
               <pagination  
               [ngClass]="{'page-item': true}" 
               [boundaryLinks]="true" 
               [totalItems]="contentArray.length"
-              [itemsPerPage]="10"
+              [itemsPerPage]="7"
               [maxSize]="3"
              (pageChanged)="pageChanged($event)"  
               previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;"

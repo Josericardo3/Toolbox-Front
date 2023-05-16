@@ -1,12 +1,11 @@
 <header>
 <app-app-header></app-app-header>
 </header>
-<div style="margin-top: 61px;">
-  <app-app-header-arrow-left routerLink="/dashboard"></app-app-header-arrow-left>
-</div>
+<div style="margin-top: 61px;"></div>
 <div class="container-planficación">
-  <div>
+  <div style="display: flex;flex-direction: row-reverse;">
     <h1> Planificación </h1>
+    <app-app-header-arrow-left routerLink="/dashboard"></app-app-header-arrow-left>
   </div>
   <article>
     <div style="display: flex;justify-content: flex-end;">
@@ -15,7 +14,7 @@
         <input type="file" onclick="this.value = null"ngf-max-size="500KB"  (change)="fnSubirFoto($event)" style="display: none;" multiple>
     </label>  
       <app-app-avatar (click)="crearNuevoRegistro=false; filter=false; crearNuevoRegistro= false" ></app-app-avatar>
-      <app-app-colaborador ></app-app-colaborador>
+      <app-app-colaborador (click)="fnNuevoRegistroCancelar()"></app-app-colaborador>
       <button class="btn" (click)="fnNuevoRegistro()">
         <i class="fa-solid fa-plus" style="color: #fff;"></i>
         Actividad
@@ -68,7 +67,7 @@
               cols="20" 
               maxlength="300"
               title="Hasta 300 caracteres"
-              placeholder="Descipción de actividad"
+              placeholder="Descripción de actividad"
               style="border: 1px solid #068460;border-radius: 10px; padding: 3px;">
           </textarea>
         </td>       
@@ -83,11 +82,11 @@
             placement="bottom" 
             class="forma-input" 
             #dp2="bsDatepicker"  
-            placeholder="D-M-YYYY" 
+            placeholder="DD-MM-YYYY" 
             title="Inicio de actividad"
             style="width:100px;margin-right: 5px;border: 1px solid #068460;border-radius: 10px; padding: 3px;"
             [(ngModel)]="startActivityDate"
-            [bsConfig]="{ dateInputFormat: 'D-M-YYYY'}" />
+            [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY'}" />
            <i 
             (click)="dp2.show()" 
             class="fa-solid fa-calendar-days" 
@@ -107,10 +106,10 @@
             placement="bottom" 
             class="forma-input" 
             #dp3="bsDatepicker" 
-            placeholder="D-M-YYYY" 
+            placeholder="DD-MM-YYYY" 
             style="width:100px;margin-right: 5px;border: 1px solid #068460;border-radius: 10px; padding: 3px;"
             [(ngModel)]="endtActivityDate"
-            [bsConfig]="{ dateInputFormat: 'D-M-YYYY'}"  />
+            [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY'}"  />
             <i 
               class="fa-solid fa-calendar-days"
               (click)="dp3.show()" 
@@ -216,12 +215,12 @@
             placement="bottom" 
             class="forma-input" 
             #dp2="bsDatepicker"  
-            placeholder="D-M-YYYY" 
+            placeholder="DD-MM-YYYY" 
             title="Inicio de actividad"
             [(ngModel)]="startDateValue"
             (change)="captureValueStartDate($event)"
             style="width:100px;margin-right: 5px;border: 1px solid #068460;border-radius: 10px; padding: 3px;"
-           [bsConfig]="{ dateInputFormat: 'D-M-YYYY'}" />
+           [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY'}" />
            <i 
             (click)="dp2.show()" 
             class="fa-solid fa-calendar-days" 
@@ -241,11 +240,11 @@
             placement="bottom" 
             class="forma-input" 
             #dp3="bsDatepicker" 
-            placeholder="D-M-YYYY" 
+            placeholder="DD-MM-YYYY" 
             [(ngModel)]="endDateValue"
             (change)="captureValueEndDate($event)"
             style="width:100px;margin-right: 5px;border: 1px solid #068460;border-radius: 10px; padding: 3px;"
-            [bsConfig]="{ dateInputFormat:'D-M-YYYY'}"  />
+            [bsConfig]="{ dateInputFormat:'DD-MM-YYYY'}"  />
             <i 
               class="fa-solid fa-calendar-days"
               (click)="dp3.show()" 
@@ -335,11 +334,11 @@
              placement="bottom" 
              class="forma-input" 
              #dp4="bsDatepicker"  
-             placeholder="D-M-YYYY" 
+             placeholder="DD-MM-YYYY" 
              title="Inicio de actividad"
              style="width:95px;margin-right: 5px;border: 1px solid #068460;border-radius: 10px; padding: 3px;"
              [(ngModel)]="editarCaracteristica.fecha_inicio"
-            [bsConfig]="{ dateInputFormat: 'D-M-YYYY'}" />
+            [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY'}" />
             <i 
              (click)="dp4.show()" 
              class="fa-solid fa-calendar-days" 
@@ -360,11 +359,11 @@
               placement="bottom" 
               class="forma-input" 
               #dp5="bsDatepicker"  
-              placeholder="D-M-YYYY" 
+              placeholder="DD-MM-YYYY" 
               title="Inicio de actividad"
               style="width:80px;margin-right: 5px;border: 1px solid #068460;border-radius: 10px; padding: 3px;"
               [(ngModel)]="editarCaracteristica.fecha_fin"
-              [bsConfig]="{ dateInputFormat: 'D-M-YYYY'}" />
+              [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY'}" />
               <i 
                 (click)="dp5.show()" 
                 class="fa-solid fa-calendar-days" 
@@ -388,9 +387,10 @@
               <i class="fa-solid fa-pen" style="color: #06543c;"></i>
             </a>
             <app-app-delete-activities 
-              *ngIf="caracteristicaIndiceEliminar!=i"
               [indice]="indiceAEliminar" 
-              (click)="fnPlanificacionEliminar(i);caracteristicaIndiceEliminar=-1"
+              *ngIf="caracteristicaIndice!=i"
+              [class.my-class]="caracteristicaIndiceEliminar ? -1 : i"
+              (click)="fnPlanificacionEliminar(i);"
               (valorEnviado)="recibirValor($event)">
             </app-app-delete-activities> 
             <a (click)="fnSchedulingUpdate(i)" title="Grabar" *ngIf="caracteristicaIndice==i">
@@ -411,7 +411,7 @@
   <!-- paginacion -->
   <footer class="page-style">
     <div class="container-label">
-      <label class="paginas">  Página: {{ pages }} / {{ totalPaginas }} Registros: {{ totalRegistros }} </label>
+      <label class="paginas">  Página: {{ pages }} / {{ totalPaginas }} Mostrando: {{ totalRegistros }}  Registros: {{ datatotal }} </label>
       <div class="ls-pagina ">
       <pagination 
           lastText="&raquo;"
@@ -420,7 +420,8 @@
           previousText="&lsaquo;" 
           [maxSize]="3" 
           [totalItems]="contentArray.length"
-          [itemsPerPage]="6"
+          [itemsPerPage]="8"
+          [(ngModel)]="currentPage"
           [boundaryLinks]="true" 
           (pageChanged)="pageChanged($event)"
           [ngClass]="{'page-item': true}">

@@ -84,17 +84,18 @@ export class AppGestionDeUsuariosComponent {
 
   }
  
-
+  dataTotal = 0
   onLoadPst() {
 
     this.ApiService.assignAdvisor(0).subscribe((data) => {
       this.dataUser = data;
       this.dataInitial = data;
       this.contentArray = data;
-      this.returnedArray = this.dataInitial.slice(0, 10)
-      this.filtroTable.TotalRegistros = data.length
+      this.returnedArray = this.dataInitial.slice(0, 7)
+      this.filtroTable.TotalRegistros = data.length;
+      this.dataTotal = data.length;
       const totalPag = data.length
-      this.filtroTable.TotalPaginas = Math.trunc(totalPag / 10) + 1;;
+      this.filtroTable.TotalPaginas = Math.ceil(totalPag / 7) ;;
       return this.dataUser
     })
   }
@@ -137,10 +138,12 @@ export class AppGestionDeUsuariosComponent {
        // para el paginado
       this.pages = 1;
       const totalPag = this.returnedArray.length;
-      this.filtroTable.TotalPaginas = Math.trunc(totalPag / 10) + 1;
+      this.filtroTable.TotalPaginas = Math.ceil(totalPag / 7) ;
       this.contentArray = this.returnedArray;
       this.filtroTable.TotalRegistros = this.returnedArray.length;
-      this.returnedArray = this.returnedArray.slice(0, 10);
+      this.dataTotal = this.returnedArray.length;
+      if(this.filtroTable.TotalRegistros == this.dataTotal && this.filtroTable.TotalRegistros>=7 ) this.filtroTable.TotalRegistros=7;
+      this.returnedArray = this.returnedArray.slice(0, 7);
       return this.returnedArray.length > 0 ? this.returnedArray : this.result = true;
    
   }
@@ -158,11 +161,12 @@ export class AppGestionDeUsuariosComponent {
     const endItem = event.page * event.itemsPerPage;
 
     if (this.guardarEvent || this.guardarEventAsesor || this.guardarEventEmpresa !== '') {
-
+      this.dataTotal = this.contentArray.length;
       this.returnedArray = this.contentArray.slice(startItem, endItem)
 
 
     } else {
+      this.dataTotal = this.dataInitial.length;
       this.returnedArray = this.dataInitial.slice(startItem, endItem)
     }
 
