@@ -33,13 +33,13 @@ export class AppDeleteActivitiesComponent {
     })}
 
   confirmDelete(): void {
-    // let request = this.rolesArraytemp.filter((item) => (item.id.toString().includes(this.indice.toString())))
-    // request = request[0].id;
+    const valor = -2 ;
     this.ApiService.deleteActivities(this.indice).subscribe((data) => {
       const title = "Eliminación exitosa";
       const message = "El registro se ha eliminado exitosamente"
       this.Message.showModal(title, message);
       this.AppPlanificacionComponent.fnConsultActivities();
+        this.valorEnviado.emit(valor);
    })
 
   }

@@ -99,7 +99,8 @@ export class AppPlanificacionComponent {
   recibirValor(valor: number) {  
     this.valorRecibido = valor;
     this.caracteristicaIndiceEliminar = this.valorRecibido;
-    this.fnConsultActivities()
+    if(valor == -2) this.fnConsultActivities();
+   
   }
 
   fnConsultActivities() {
@@ -124,13 +125,19 @@ export class AppPlanificacionComponent {
 
         //paginado
         const totalPag = data.length;
-        this.totalPaginas = Math.ceil(totalPag / 8) ;
+        this.totalPaginas = Math.ceil(totalPag / 7) ;
         if(this.totalPaginas== 0) this.totalPaginas = 1;
-        this.totalRegistros = 7;
+       
         this.datatotal = this.dataInitial.length;
-        this.rolesArray = this.dataInitial.slice(0, 8);
+        this.rolesArray = this.dataInitial.slice(0, 7);
         this.contentArray = data;
        this.currentPage = 1
+        if(this.datatotal>=7){
+          this.totalRegistros = 7;
+        }else{
+          this.totalRegistros = this.dataInitial.length;
+        }
+      
     })
   }
 
@@ -346,13 +353,14 @@ export class AppPlanificacionComponent {
     this.editarCaracteristica = {};
     Object.assign(this.editarCaracteristica, this.rolesArray[indice]);
     this.editarCaracteristica.idUsuario = this.editarCaracteristica.idResponsable;
+    this.fnListResponsible();
   }
 
   fnPlanificacionEliminar(indice: any) {
     this.filter = false
     this.caracteristicaIndiceEliminar = indice;
     this.indiceAEliminar = this.rolesArray[indice].id ;
-    this.pages = 1;
+
   }
   fnSchedulingUpdate(indice: number) {
 
