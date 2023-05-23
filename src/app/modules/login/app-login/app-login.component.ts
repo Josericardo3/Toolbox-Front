@@ -16,6 +16,7 @@ import { Store } from "@ngrx/store";
 import { saveDataLogin } from "src/app/state/action/example.action";
 import { HttpErrorResponse, HttpResponse } from "@angular/common/http";
 import { ModalService } from "src/app/messagemodal/messagemodal.component.service";
+import { log } from "console";
 //PG import { TokenStorageService } from '../../../servicios/token/token-storage.service';
 
 @Component({
@@ -141,7 +142,13 @@ export class AppLoginComponent implements OnInit {
                       );
                       localStorage.setItem("normaSelected", data[0].norma);
                       localStorage.setItem("idNormaSelected", data[0].id);
+                      //modified by mel
+                      if( data[0].id === 1){
                       this.router.navigate(["/dashboard"]);
+                      }else{
+                        this.router.navigate(["/dashboard"]);
+                      }
+                     
                     }
                   }
                 );

@@ -9,15 +9,18 @@ import { HttpClient } from '@angular/common/http';
 // import * as d3 from 'd3';
 (pdfMake as any).vfs = pdfFonts.pdfMake.vfs;
 import { ModalService } from 'src/app/messagemodal/messagemodal.component.service'
-import { Chart } from 'chart.js/auto'
+//import { Chart } from 'chart.js/auto'
 import { ChartJSNodeCanvas } from 'chartjs-node-canvas';
 import { createCanvas } from 'canvas';
 const chartJSNodeCanvas = require('chartjs-node-canvas');
 import html2canvas from 'html2canvas';
 // import * as canvasToBuffer from 'canvas-to-buffer';
 // import * as puppeteer from 'puppeteer';
-import * as htmlToImage from 'html-to-image';
-import domtoimage from 'dom-to-image';
+//import * as htmlToImage from 'html-to-image';
+//import domtoimage from 'dom-to-image';
+
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+
 
 @Component({
   selector: 'app-app-diagnostico-doc',
@@ -48,6 +51,7 @@ export class AppDiagnosticoDocComponent implements OnInit {
   nombreAsesor: any;
   fechaInforme: any
 
+  graficoimg: any;
   //Lista Pla de Mejora
   datosP: any = [];
   NTCP: string;
@@ -106,6 +110,8 @@ export class AppDiagnosticoDocComponent implements OnInit {
     private ApiService: ApiService,
     private http: HttpClient,
     private Message: ModalService,
+    private sanitizer: DomSanitizer
+
   ) { }
 
   ngOnInit(): void {
@@ -121,9 +127,6 @@ export class AppDiagnosticoDocComponent implements OnInit {
   }
 
   getListaChequeo() {
-    // var normaValue = window.localStorage.getItem('idNormaSelected');
-    // var idUsuario = window.localStorage.getItem('Id');
-    // this.http.get(`https://www.toolbox.somee.com/api/ListaChequeo/ListaChequeo?idnorma=${normaValue}&idusuariopst=${idUsuario}`)
     this.ApiService.getListaChequeoApi()
       .subscribe((data: any) => {
         this.datosL = data;
@@ -156,9 +159,6 @@ export class AppDiagnosticoDocComponent implements OnInit {
   }
 
   getListaDiagnostico() {
-    // var normaValue = window.localStorage.getItem('idNormaSelected');
-    // var idUsuario = window.localStorage.getItem('Id');
-    // this.http.get(`https://www.toolbox.somee.com/api/ListaChequeo/ListaDiagnostico?idnorma=${normaValue}&idusuariopst=${idUsuario}`)
     this.ApiService.getListaDiagnosticoApi()
       .subscribe((data: any) => {
         this.datosD = data;
@@ -196,9 +196,6 @@ export class AppDiagnosticoDocComponent implements OnInit {
   }
 
   getListaPlanMejora() {
-    // var normaValue = window.localStorage.getItem('idNormaSelected');
-    // var idUsuario = window.localStorage.getItem('Id');
-    // this.http.get(`https://www.toolbox.somee.com/api/PlanMejora/PlanMejora?idnorma=${normaValue}&idusuariopst=${idUsuario}`)
     this.ApiService.getPlanMejoraApi()
       .subscribe((data: any) => {
         this.datosP = data;
@@ -239,10 +236,10 @@ export class AppDiagnosticoDocComponent implements OnInit {
   
       const canvas = document.getElementById('myChart') as HTMLCanvasElement;
       const ctx = canvas.getContext('2d');
-      const myChart = new Chart(ctx, {
-        type: 'pie',
-        data,
-      });
+      // const myChart = new Chart(ctx, {
+      //   type: 'pie',
+      //   data,
+      // });
   
       // Convertir el gráfico a base64
       const base64Image = canvas.toDataURL('image/png');

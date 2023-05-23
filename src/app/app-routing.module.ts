@@ -35,7 +35,6 @@ const routes: Routes = [
   {path: 'auditoria', component: AppAuditoriaInternaComponent},
   {path: 'EMatrizRequisitosLegales', component: EMatrizRequisitosLegalesComponent},
   {path: 'nuevoPlanDeAuditoria', component: AppNuevoPlanDeAuditoriaComponent},
-  {path: 'recovery', component: RecoveryComponent},
   {path: 'listaDeVerificacion', component: AppListaDeVerificacionComponent},
   {path: 'informeAuditoria', component: AppInformeDeAuditoriaComponent},
   {path: 'menuAuditoria', component: AppMenuAuditoriaComponent},

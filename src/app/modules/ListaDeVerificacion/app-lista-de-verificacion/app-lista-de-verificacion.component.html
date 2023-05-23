@@ -1,57 +1,67 @@
 <app-app-header></app-app-header>
-<div class="componente-global">
+
     <div class="titulo">
       <h1 class="titulo-nav">
           Lista de verificación auditoría
       </h1>
   </div>
-  <div class="container-form-lista-verificacion">
-    <table class="dropdown">
-      <tbody>
-      <tr>
-      <td class="td-menu"><p class="p-menu">Consultar resultados de auditorias</p></td>
-      </tr>
-      <tr>
-      <td class="td-menu"><p class="p-menu" id="item-1" (click)="openComponent($event)">Plan de auditoria</p></td>
-      </tr>
-      <tr>
-      <td class="td-menu"><p class="p-menu" (click)="openComponentLista($event)" id="item-2" >Lista de Verificación auditoria interna</p></td>
-      </tr>
-      <tr>
-      <td class="td-menu"><p class="p-menu" (click)="openComponentInforme($event)">Informe de auditoria</p></td>
-      </tr>
-      <tr>
-      <td class="td-menu"><p class="p-menu">Programa de auditoria</p></td>
-      </tr>
-      <tr>
-      <td class="td-menu"><p class="p-menu">Realizar auditoria interna</p></td>
-      </tr>        
-      <tr>
-      <td class="td-menu"><p class="p-menu">Programar actividades de auditoria</p></td>
-      </tr>   
-      </tbody>
-      </table> 
-       <!-- formulario -->
+  <div class="componente-global">
        <div class="container-form">
-        <table class="table"  style="text-align: center !important;" id="table_audit">
-          <thead>
-            <tr>
-              <th>CÓDIGO</th>
-              <th>FECHA DE AUDITORIA</th>
-              <th>PROCESOS</th>
-              <th>ACCIONES</th>             
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let audit of listaAuditoria">
-              <td>{{ audit.codigo }}</td>
-              <td>{{ audit.fechA_AUDITORIA }}</td>
-              <td>{{ audit.proceso }}</td>
+        <div class="grup-table-global" id="table_audit">
+          <div class="grup-btn-plan">
+            <button class="btn-nueva-auditoria" (click)="redirigirAVista()">Nuevo plan de Auditoría
+              <i class="fa-solid fa-plus" style="color: #fff;"></i>
+            </button>
+          </div>
+          <table class="table"  style="text-align: center !important;">
+            <thead class="tr-table">
+              <tr>
+                <th style="text-align: center;">AUDITOR LIDER</th>
+                <th style="text-align: center;">FECHA DE AUDITORIA</th>
+                <th style="text-align: center;">ACTIVIDADES</th>
+                <th style="text-align: center;">ACCIONES</th>             
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let audit of listaAuditoria">
+                <td>{{ audit.auditoR_LIDER }}</td>
+                <td>{{ audit.fechA_AUDITORIA }}</td>
+                <td>{{ audit.proceso }}</td>
+                <td>
+                  <a (click)="seleccionarAuditoria(audit)"  title="Seleccionar">
+                    <i class="fa-solid fa-file-circle-check" style="color: #06543c;font-size: 19px;margin: 4px;"></i>
+                  </a>
+                  <!-- <a (click)="seleccionarAuditoria(audit)"  title="Eliminar">
+                    <i class="fa-solid fa-trash" style="color: #06543c;font-size: 19px;margin: 4px;"></i>
+                  </a> -->
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="page-style">
+            <div class="container-label">
+              <label class="paginas">  Página: {{ pages }} / {{ totalPaginas }} Registros: {{ totalRegistros }} </label>
+              <div class="ls-pagina ">
+              <pagination 
+                  lastText="&raquo;"
+                  nextText="&rsaquo;" 
+                  firstText="&laquo;" 
+                  previousText="&lsaquo;" 
+                  [maxSize]="3" 
+                  [totalItems]="contentArray.length"
+                  [itemsPerPage]="6"
+                  [boundaryLinks]="true" 
+                  (pageChanged)="pageChanged($event)"
+                  [ngClass]="{'page-item': true}">
+                </pagination> 
+            </div>
+            </div>
+          </div>  
+        </div>
+       
+       
 
-              <td><button (click)="seleccionarAuditoria(audit)" class="seleccionar">SELECCIONAR</button></td>
-            </tr>
-          </tbody>
-        </table>
+
         <form id="formListaDeVerficacion"  
             style="display: none;"
             [formGroup]="formParent"
@@ -107,10 +117,11 @@
                       formControlName="hallazgo"
                       (change)="getHallazgo($event)"
                       >
-                        <option value="NC" >NC</option>  
-                        <option value="OBS" >OBS</option> 
-                        <option value="F" >F</option>  
-                        <option value="C" >C</option>        
+                        <option value="NC" >No Conformidad</option>  
+                        <option value="OBS" >Observacion</option> 
+                        <option value="OM" >Oportunidad de mejora</option>  
+                        <option value="F" >Fortaleza</option>  
+                        <option value="C" >Conforme</option>        
                       </select>
                     </div>
                     <label for="descripcion" class="label-auditor">Observaciones o comentarios o notas de auditor :</label>
@@ -142,5 +153,11 @@
           </div>
         </form>
        </div>
-  </div>
+ 
 </div>
+<ngx-spinner
+  bdColor="rgba(0, 0, 0, 0.5)"
+  size="small"
+  template="<img src='https://www.superiorlawncareusa.com/wp-content/uploads/2020/05/loading-gif-png-5.gif' width='50' height='50'/>"
+>
+</ngx-spinner>

@@ -30,14 +30,13 @@ import { RecoveryComponent } from './recovery/app-recovery/recovery.component';
 import { ModalComponent } from './messagemodal/messagemodal.component';
 import { EMatrizRequisitosLegalesComponent } from './modules/e-matriz-requisitos-legales/e-matriz-requisitos-legales.component';
 import { AppAuditoriaInternaComponent } from './modules/AuditoriaInterna/app-auditoria-interna/app-auditoria-interna.component';
-import { AppPlanificacionComponent } from './modules/planificacion/app-planificacion/app-planificacion.component';
-import { CarouselModule } from 'ngx-bootstrap/carousel';
 // ngx-bootstrap
 import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { ModalModule, BsModalService } from 'ngx-bootstrap/modal';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
-import { BsDatepickerModule, BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
+import { BsDatepickerModule, BsDatepickerConfig, BsDatepickerInlineConfig } from 'ngx-bootstrap/datepicker';
+
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { TimepickerModule } from 'ngx-bootstrap/timepicker';
 import { registerLocaleData } from '@angular/common';
@@ -46,16 +45,28 @@ import { ButtonsModule } from 'ngx-bootstrap/buttons';
 
 import { AppNuevoPlanDeAuditoriaComponent } from './modules/NuevoPlanDeAuditoria/app-nuevo-plan-de-auditoria/app-nuevo-plan-de-auditoria.component';
 import { AppListaDeVerificacionComponent } from './modules/ListaDeVerificacion/app-lista-de-verificacion/app-lista-de-verificacion.component';
-import { AppAvatarComponent } from './modules/avatar/app-avatar/app-avatar.component';
-import { AppColaboradorComponent } from './modules/colaborador/app-colaborador.component';
-import { AppDeleteActivitiesComponent } from './modules/planificacion/app-delete-activities/app-delete-activities.component';
-import { AppHeaderArrowLeftComponent } from './modules/header/app-header-arrow-left/app-header-arrow-left.component';
+
 import { PipesModule } from './pipes/pipes.module';
 import { AppInformeDeAuditoriaComponent } from './modules/InformeDeAuditoria/app-informe-de-auditoria/app-informe-de-auditoria.component';
 import { AppMenuAuditoriaComponent } from './modules/MenuAuditoria/app-menu-auditoria/app-menu-auditoria.component';
 // import { MatTabsModule } from '@angular/material/tabs';
 
 registerLocaleData(localeEsPE, 'es-PE');
+
+import { AppPlanificacionComponent } from './modules/planificacion/app-planificacion/app-planificacion.component';
+// ***ngx-bootstrap****
+import { CarouselModule } from "ngx-bootstrap/carousel"; 
+import { TabsModule, TabsetConfig } from 'ngx-bootstrap/tabs';
+// import { NgxPaginationModule } from 'ngx-pagination';
+
+import { AppAvatarComponent } from './modules/avatar/app-avatar/app-avatar.component';
+import { AppColaboradorComponent } from './modules/colaborador/app-colaborador.component';
+import { AppDeleteActivitiesComponent } from './modules/planificacion/app-delete-activities/app-delete-activities.component';
+import { AppHeaderArrowLeftComponent } from './modules/header/app-header-arrow-left/app-header-arrow-left.component';
+import { AppMenuComponent } from './modules/Menu/app-menu/app-menu.component';
+import { AppAuditoriaPlanificacionComponent } from './modules/AuditoriaInterna/app-auditoria-planificacion/app-auditoria-planificacion.component';
+// import { MatTabsModule } from '@angular/material/tabs';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -83,10 +94,12 @@ registerLocaleData(localeEsPE, 'es-PE');
     AppInformeDeAuditoriaComponent,
     AppMenuAuditoriaComponent,
     AppPlanificacionComponent,
-    AppColaboradorComponent,	
+    AppColaboradorComponent,
     AppAvatarComponent,
     AppDeleteActivitiesComponent,
     AppHeaderArrowLeftComponent,
+    AppMenuComponent,
+    AppAuditoriaPlanificacionComponent,
   ],
   imports: [
     PipesModule,
@@ -110,21 +123,27 @@ registerLocaleData(localeEsPE, 'es-PE');
     PaginationModule.forRoot(),
     TimepickerModule.forRoot(),
     CarouselModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    TabsModule,
   ],
+
   providers: 
     [
-    { provide: HTTP_INTERCEPTORS,  useClass: InterceptorService, multi: true },
-    BsDatepickerConfig,
+    { provide: HTTP_INTERCEPTORS,  useClass: InterceptorService, multi: true  },
+    BsDatepickerInlineConfig,
+    BrowserAnimationsModule,
+    BsDatepickerConfig, 
+    //NgbCarouselModule,
     BsModalService,
-    AppDeleteActivitiesComponent
+    TabsetConfig,
+    AppPlanificacionComponent,
   ],
   entryComponents: [
-    AppDeleteActivitiesComponent
+    AppDeleteActivitiesComponent,
+    
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 
   bootstrap: [AppComponent],
- 
 })
 export class AppModule { }

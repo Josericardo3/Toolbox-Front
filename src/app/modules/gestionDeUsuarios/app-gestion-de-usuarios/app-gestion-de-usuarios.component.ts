@@ -86,7 +86,7 @@ export class AppGestionDeUsuariosComponent {
  
   dataTotal = 0
   onLoadPst() {
-
+   
     this.ApiService.assignAdvisor(0).subscribe((data) => {
       this.dataUser = data;
       this.dataInitial = data;
@@ -145,8 +145,24 @@ export class AppGestionDeUsuariosComponent {
       if(this.filtroTable.TotalRegistros == this.dataTotal && this.filtroTable.TotalRegistros>=7 ) this.filtroTable.TotalRegistros=7;
       this.returnedArray = this.returnedArray.slice(0, 7);
       return this.returnedArray.length > 0 ? this.returnedArray : this.result = true;
-   
   }
+  // filterEstado(evnt: any) {
+  //   if (this.guardarEvent != '') {
+  //     let estado = this.dataInitial.map((item) => {
+  //       return item.estadoatencion
+  //         .toUpperCase()
+  //         .includes(this.guardarEvent.toUpperCase())
+  //         ? item
+  //         : 'no hay resultado'
+  //     })
+  //     let estadoFinal = estado.filter((item) => item != 'no hay resultado')
+      
+  //     this.returnedArray = estadoFinal
+
+  //     console.log(this.returnedArray,"aqui es el estado")
+  //     return this.returnedArray
+  //   }
+  // }
 
 
   fnRefrescar() {

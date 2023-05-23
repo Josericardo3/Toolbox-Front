@@ -27,6 +27,7 @@ export class ApiService {
   //   return this.http.post<any>(direccion, {})
 
   apiURL = environment.apiURL
+  apiCHART = environment.apiChart
   constructor(private http: HttpClient) {}
 
   login(form: LoginI): Observable<ResponseI> {
@@ -155,7 +156,20 @@ export class ApiService {
     let assign = `${this.apiURL}/api/Asesor/Asesor`
     return this.http.post<any>(assign,request)
   }
-
+  getGrafico(request) {
+    const apiUrl = `${this.apiCHART}`;
+    console.log(apiUrl)
+    return this.http.post(apiUrl, {
+      backgroundColor: "#fff",
+      width: 500,
+      height: 300,
+      devicePixelRatio: 1.0,
+      chart: request
+    }, {
+      responseType: 'blob'
+    });
+  }
+  
   getListaChequeoApi(){
     const normaValue = window.localStorage.getItem('idNormaSelected');
     const idUsuario = window.localStorage.getItem('Id');

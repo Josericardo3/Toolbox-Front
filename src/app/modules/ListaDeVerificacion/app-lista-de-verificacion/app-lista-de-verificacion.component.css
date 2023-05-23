@@ -1,6 +1,7 @@
 .componente-global{
-    margin-left: 60px;
-    margin-right: 60px;
+    display: flex;
+    justify-content: center;
+    margin: 45px 30px 10px 30px;
 }
 
 .titulo{
@@ -16,35 +17,12 @@
     width: 60vw;
 }
 
-.dropdown{
-    width: 30%;
-    margin-left: 55px;
-    margin-top: 55px;
-}
-
-.td-menu{
-    border: 2px solid #068460; 
-    border-radius: 20px;
-    background: white;
-    color: #068460;
-    font-family:'Work Sans', sans-serif; 
-    font-size: 18px;
-}
-.p-menu{
-    height: 60px;
-    text-align: center;
-    padding: 14px;
-    font-weight: bold;
-    cursor: pointer;
-}
 
 /* style formulario */
 .container-form{
-    width: 64%;
+    width: 100%;
     display: inline-block;
     vertical-align: top;
-    margin-top: 36px;
-    margin-left: 68px;
 }
 
 .label-auditor{
@@ -218,4 +196,60 @@ input[type=text]{
     color: #068460;
 }
 
+input.ng-invalid.ng-touched {
+    border: solid 2px tomato !important;
+    border-radius: 10px;
+  }
+  textarea.ng-invalid.ng-touched {
+    border: solid 2px tomato !important;
+    border-radius: 10px;
+  }
+
+  input.ng-valid,select.ng-valid{
+    border: solid 2px #068460 !important;
+    border-radius: 10px;
+  }
+
+  /* paginado */
+  .page-style{
+    display: flex;
+    justify-content: flex-end;
+    
+}
+
+.paginas{
+    display: inline-block;
+    max-width: 100%;
+    margin: 10px;
+    font-weight: 700;
+    font-size: 14px;
+    font-family:'Work Sans', sans-serif;
+  }
+  .container-label{
+    display: flex;
+    align-items: center;
+  }
+
+  .grup-btn-plan{
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 15px;
+  }
+  .btn-nueva-auditoria{
+    height: 30px;
+    width: 206px;
+    background-color: #068460;
+    border-radius: 5px;
+    color: white;
+    font-family: 'Work Sans', sans-serif;
+    font-size: 14px;
+    border: none;
+    cursor: pointer;
+  }
+
+  .tr-table{
+    background: #068460;
+    color: white;
+    font-family: 'Work Sans', sans-serif;
+}
 

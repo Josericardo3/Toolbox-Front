@@ -3,9 +3,6 @@ import { Router } from '@angular/router';
 import * as pdfMake from 'pdfmake/build/pdfmake';
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';
 (pdfMake as any).vfs = pdfFonts.pdfMake.vfs;
-// import pdfMake from 'pdfmake/build/pdfmake';
-// import pdfFonts from 'pdfmake/build/vfs_fonts';
-// pdfMake.vfs = pdfFonts.pdfMake.vfs;
 import { HttpClient } from '@angular/common/http';
 import { FormBuilder, FormGroup,Validators } from '@angular/forms';
 import { ApiService } from '../../../servicios/api/api.service';
@@ -36,7 +33,7 @@ export class AppInformeDeAuditoriaComponent {
   ) { 
     this.formParent = this.formBuilder.group({
       conclusiones:["",Validators.required],
-      totalConformidades:["",Validators.required],
+      totalConformidades:[""],
       formRequisitos: this.formBuilder.array([
       ])
     })
@@ -66,12 +63,23 @@ export class AppInformeDeAuditoriaComponent {
       this.fortalezas,
       this.conformidades]
 
-    console.log(event.target.value,"evento")
-    console.log(this.noConformidades,"evento")
-    console.log(this.oportunidades,"evento")
-    console.log(this.fortalezas,"evento")
-    console.log(this.conformidades,"evento")
-    console.log(this.observaciones,"evento")
+    this.totalConformidades = [ this.noConformidades,
+      this.observaciones,
+      this.oportunidades,
+      this.fortalezas,
+      this.conformidades]
+
+    // console.log(event.target.value,"evento")
+    // console.log(this.noConformidades,"evento")
+    // console.log(this.oportunidades,"evento")
+    // console.log(this.fortalezas,"evento")
+    // console.log(this.conformidades,"evento")
+    // console.log(this.observaciones,"evento")
+    // console.log(this.noConformidades,"evento")
+    // console.log(this.oportunidades,"evento")
+    // console.log(this.fortalezas,"evento")
+    // console.log(this.conformidades,"evento")
+    // console.log(this.observaciones,"evento")
   }
 
   ngOnInit(): void {
@@ -79,6 +87,8 @@ export class AppInformeDeAuditoriaComponent {
    //this.seleccionarAuditoria()
    
   }
+
+  
 
   
   openComponent(evt:any){
@@ -166,6 +176,7 @@ selectAudit(audit){
     console.log(this.formParent.get("conclusiones")?.value,"aqui")
     console.log(this.noConformidades,'CONFIRMO');
     console.log(this.selectedProceso,"requisitos ahora")
+    console.log(this.selectedProceso,"requisitos ahora")
   if (this.formParent) {
   const request ={
      proceso : this.selectedProceso.proceso, 
@@ -179,6 +190,7 @@ selectAudit(audit){
      fK_ID_PROCESO: this.idProceso,
      conclusiones : this.formParent.get("conclusiones")?.value,
      conformidades: this.totalConformidades
+
 
   }
   console.log(request);
@@ -213,11 +225,42 @@ selectAudit(audit){
 
    this.ApiService.updateAuditoria(serviceRequet).subscribe((data:any) =>{
      console.log(request,"requestFinal")
+  const conf = this.totalConformidades.map((e,index)=>{
+    return {
+      "iD_CONFORMIDAD_AUDITORIA": 0,
+      "fK_ID_PROCESO": 0,
+      "descripcion": "string",
+      "ntc": e==='Si',
+      "legales": e==='Si',
+      "estado": true
+    }
+  })
+  const serviceRequet = {
+    "iD_PROCESO_AUDITORIA": this.idProceso,
+    "fK_ID_AUDITORIA": this.idProceso,
+    "fecha": this.selectedProceso.fechA_AUDITORIA,
+    "hora": "string",
+    "procesO_DESCRIPCION": "string",
+    "lideR_PROCESO": "string",
+    "cargO_LIDER": "string",
+    "normaS_AUDITAR": "string",
+    "auditor": "string",
+    "auditados": "string",
+    "documentoS_REFERENCIA": "string",
+    "conclusioN_CONFORMIDAD": "string",
+    "estado": true,
+    "requisitos": this.arrRequisito,
+    "conformidades":conf
+  }
+
+
+   this.ApiService.updateAuditoria(serviceRequet).subscribe((data:any) =>{
+     console.log(request,"requestFinal")
     })
   return this.generateInformeDeAuditoria(request);
-  }
-}
+   })}}
 
+  
 
   generateInformeDeAuditoria(request) {
     console.log(request,'resuqest',this.arrRequisito,"requisito querido")
@@ -229,6 +272,8 @@ selectAudit(audit){
       requisito:req.requisito
      }
     })
+    console.log(request,'resuqest',this.arrRequisito,"requisito querido")
+   
     const docDefinition:any = {
       // pageSize: {
       //   width: 794,
@@ -363,23 +408,23 @@ selectAudit(audit){
             ],
             [
               {text: 'Total de OPORTUNIDADES DE MEJORA detectadas en esta auditoría ', style: ['tituloDinamico']},
-              {text:'',colSpan:2,},
+              {text:request.conformidades[2]!= 'Si'? request.conformidades[0]:'No',colSpan:2,},
               {text:''},
-              {text:'',colSpan:2,},
+              {text:request.conformidades[2]!= 'Si'? request.conformidades[0]:'No',colSpan:2,},
               {text:''},
             ],
             [
               {text: 'Total de FORTALEZAS detectadas en esta auditoría ', style: ['tituloDinamico']},
-              {text:'',colSpan:2,},
+              {text:request.conformidades[3]!= 'Si'? request.conformidades[0]:'No',colSpan:2,},
               {text:''},
-              {text:'',colSpan:2,},
+              {text:request.conformidades[3]!= 'Si'? request.conformidades[0]:'No',colSpan:2,},
               {text:''},
             ],
             [
               {text: 'Total de CONFORMIDADES detectadas en esta auditoría ', style: ['tituloDinamico']},
-              {text:'',colSpan:2,},
+              {text:request.conformidades[4]!= 'Si'? request.conformidades[0]:'No',colSpan:2,},
               {text:''},
-              {text:'',colSpan:2,},
+              {text:request.conformidades[4]!= 'Si'? request.conformidades[0]:'No',colSpan:2,},
               {text:''},
               
             ],
@@ -423,11 +468,11 @@ selectAudit(audit){
             { text: requisitos.hallazgo, style: [ 'columna' ]},
             { text: requisitos.observacion, style: [ 'columna' ]},
             
-          ])
-
-          
+          ]
+          ),
         ],
     },
+
 
     fontSize: 10,
   },    
@@ -463,6 +508,7 @@ selectAudit(audit){
           fontSize: 10,
           alignment: 'center',
           // margin: [10, 10, 10, 10,10,10],
+          // margin: [10, 10, 10, 10,10,10],
         },
         filaTex:{
           heights: [ 60,20,20 ],
@@ -490,3 +536,4 @@ selectAudit(audit){
   
 
 }
+

@@ -65,7 +65,6 @@ export class AppDashboardComponent implements OnInit {
     this.normaSelected = evt.target.value;
   }
   menuFilter(evt: any) { //redireccionar
-
       if (this.validateRol(evt)) {// condicional cuando sí tiene acceso
         evt.target.src='../../../../assets/img-dashboard/'+evt.target.alt+'-3.svg';
         switch(evt.target.alt){
@@ -135,7 +134,7 @@ export class AppDashboardComponent implements OnInit {
  
   //prueba para auditoria
   redirigirAuditoria(){
-    this.router.navigate(['/auditoria']);
+    this.router.navigate(['/listaDeVerificacion']);
     //window.location.href = '/auditoria';
 }
 }

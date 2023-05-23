@@ -1,0 +1,81 @@
+/* .dropdown{
+  width: 30%;
+  margin-left: 55px;
+  margin-top: 55px;
+}
+
+.td-menu{
+  border: 2px solid #068460; 
+  border-radius: 20px;
+  background: white;
+  color: #068460;
+  font-family:'Work Sans', sans-serif; 
+  font-size: 18px;
+}
+.p-menu{
+  height: 60px;
+  text-align: center;
+  padding: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  border: none !important;
+} */
+
+/* Estilos por defecto */
+.table-auditoria {
+  display: block;
+  /* border-right: 2px solid #068460; */
+  height: 100%;
+  position: absolute;
+}
+
+.td-menu {
+  padding: 10px;
+}
+
+.p-menu {
+  margin: 0;
+  padding: 0.25rem 0;
+  color: #068460;
+  border-radius: 6px;
+  width: 16.5rem;
+  text-align: center;
+  font-family: 'Work Sans', sans-serif;
+  cursor: pointer;
+ 
+}
+
+/* Estilos para pantallas pequeñas */
+@media screen and (max-width: 768px) {
+  .table-auditoria {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .td-menu {
+    flex-basis: 50%;
+    padding: 5px;
+  }
+}
+
+/* Estilos para pantallas medianas */
+@media screen and (min-width: 769px) and (max-width: 1024px) {
+  .table-auditoria {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    /* grid-gap: 10px; */
+  }
+}
+
+/* Estilos para pantallas grandes */
+@media screen and (min-width: 1025px) {
+  .table-auditoria {
+    /* display: table;
+    width: 100%; */
+    /* table-layout: fixed; */
+  }
+
+  .td-menu {
+    padding: 10px;
+  }
+}

@@ -19,9 +19,15 @@ import { ApiService } from 'src/app/servicios/api/api.service';
 
 
 export class AppListaDeVerificacionComponent {
+  pages = 1;
+  returnedArray: any = []
+  totalPaginas: number = 0;
+  totalRegistros: number = 0; 
+  contentArray: any = [];
+  dataInitial = []
 
+  listaAuditoria:any[] = [];
   formParent!: FormGroup;
-  listaAuditoria:any[];
   selectedAuditoria:any={};
   idProceso:any;
   idRequisito:any;
@@ -31,9 +37,11 @@ export class AppListaDeVerificacionComponent {
   requisitos:any[];
   dropdownList = [];
   selectedItems = [];
-
-
-
+  leaders:any=[];
+  selectedLeader: '' | any;
+  selectedLeaderCargo: string = '';
+  idAuditoria: any;
+  requisitoIndex:any;
   dropdownSettings:IDropdownSettings;
   constructor(
     private router: Router,
@@ -53,55 +61,65 @@ export class AppListaDeVerificacionComponent {
 
    }
 
-  idAuditoria: any;
-  ngOnInit(): void {
+  
+ngOnInit(): void {
     this.searchLeader();
     this.consultarAuditoria();
     if(window.location.search.includes('form=show')){
       document.getElementById('formListaDeVerficacion').style.display = 'block'
     }
     
-  }
+}
 
-  consultarAuditoria(){
+//redirige
+redirigirAVista() {
+  this.router.navigate(['/auditoria']);
+}
+consultarAuditoria(){
     const idPst = localStorage.getItem('Id')
     this.ApiService.getListarAuditorias(Number(idPst))
     .subscribe((data:any)=> {
-      console.log(data,"data")
+      console.log(data,"data-now")
       this.listaAuditoria = data;
+      this.dataInitial = data;
+     
+      
+      //paginado
+      this.listaAuditoria= this.dataInitial.slice(0, 6);
+      const totalPag = data.length;
+      this.totalPaginas = Math.trunc(totalPag / 6) + 1;
+      this.totalRegistros = data.length;
+      this.contentArray = data;
+
       for (let i = 0; i < this.listaAuditoria.length; i++) {
         this.idAuditoria =  this.listaAuditoria[i].iD_AUDITORIA;
-        console.log(this.idAuditoria,"este es el id ")
+        //console.log(this.idAuditoria,"este es el id ")
         }
       this.normaSelected = localStorage.getItem('normaSelected');
       return this.listaAuditoria;
     })
   
-  }
+}
 
-  openComponentLista(evt:any){
+openComponentLista(evt:any){
     this.router.navigate(['/listaDeVerificacion'], { queryParams: { item: evt.target?.i
      } 
     }
     );
-  }
+}
 
-  openComponent(evt:any){
+openComponent(evt:any){
     console.log(evt.target?.id,"el evento")
     this.router.navigate(['/nuevoPlanDeAuditoria'], { queryParams: { item: evt.target?.id } });
-  }
+}
  
-  openComponentInforme(evt:any){
+openComponentInforme(evt:any){
     this.router.navigate(['/informeAuditoria'], { queryParams: { item: evt.target?.i
      } 
     }
     );
-  }
+}
 
-  
-  leaders:any=[];
-  selectedLeader: '' | any;
-  selectedLeaderCargo: string = '';
 searchLeader(){
   // this.http.get('assets/cargo.json')
   this.ApiService.getAuditorListService()
@@ -131,7 +149,7 @@ selectLeader(leader:any){
 }
 
 getHallazgo(evt:any){
-  console.log(evt.target.value,'jsadkjasd')
+  console.log(evt.target.value,'hallazgo')
 }
 
 
@@ -142,7 +160,7 @@ getHallazgo(evt:any){
     let year = date.getFullYear();
     let formattedDate = `${day}/${month}/${year}`;
   return formattedDate;
-  }
+}
 
   saveFormVerificacion(){
     if (this.formParent) {
@@ -194,9 +212,7 @@ getHallazgo(evt:any){
     //   console.log("formListaAuditoria is undefined or null");
     }
    
-  }
-  
-
+}
 
 generateListaDeAuditoria(request) {
   //console.log(request,'request')
@@ -373,7 +389,7 @@ seleccionarAuditoria(audit){
   // console.log(audit,"ahoraMismo5")
   this.ApiService.getAuditorias(audit.iD_AUDITORIA)
   .subscribe((data:any)=> {
-    //console.log(data,"ahoraMismo")
+    console.log(data,"ahoraMismo")
 
   const tableAudit =  document.querySelector('#table_audit') as HTMLInputElement;
   const tableListaDeVerificacion =  document.querySelector('#formListaDeVerficacion') as HTMLInputElement;
@@ -394,7 +410,7 @@ seleccionarAuditoria(audit){
 
 }
 
-requisitoIndex:any;
+
 agregarPregunta(evt:any,requisitoIndex: number,requisito:any) {
   evt.preventDefault();
   const requisitoFormGroup = this.formParent.get('formRequisitos').get(`${requisitoIndex}`) as FormGroup;
@@ -406,6 +422,17 @@ agregarPregunta(evt:any,requisitoIndex: number,requisito:any) {
   this.preguntasArr = requisitoFormGroup.get('formPreguntas').value as FormArray;
   return this.preguntasArr;
 }
+
+//pagination
+pageChanged(event: any): void {
+  this.pages = event.page;
+  const startItem = (event.page - 1) * event.itemsPerPage
+  const endItem = event.page * event.itemsPerPage;
+  
+  this.listaAuditoria = this.dataInitial.slice(startItem, endItem)
+ 
+}
+
 }
 
 

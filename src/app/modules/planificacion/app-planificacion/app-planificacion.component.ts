@@ -142,7 +142,6 @@ export class AppPlanificacionComponent {
   }
 
   fnListResponsible() {
-
     this.ApiService.getListResponsible().subscribe((data) => {
       this.arrayListResponsible = data;
 

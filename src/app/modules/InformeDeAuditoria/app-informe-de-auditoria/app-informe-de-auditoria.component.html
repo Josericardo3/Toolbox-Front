@@ -5,53 +5,7 @@
   </div>
 
   <div class="container-form-informe-auditoria">
-    <table class="dropdown">
-      <tbody>
-        <tr>
-          <td class="td-menu">
-            <p class="p-menu">Consultar resultados de auditorias</p>
-          </td>
-        </tr>
-        <tr>
-          <td class="td-menu">
-            <p class="p-menu" (click)="openComponent($event)" id="item-1">
-              Plan de auditoria
-            </p>
-          </td>
-        </tr>
-        <tr>
-          <td class="td-menu">
-            <p class="p-menu" (click)="openComponentLista($event)" id="item-2">
-              Lista de Verificación auditoria interna
-            </p>
-          </td>
-        </tr>
-        <tr>
-          <td class="td-menu">
-            <p
-              class="p-menu"
-              (click)="openComponentInforme($event)"
-              id="item-3"
-            >
-              Informe de auditoria
-            </p>
-          </td>
-        </tr>
-        <tr>
-          <td class="td-menu"><p class="p-menu">Programa de auditoria</p></td>
-        </tr>
-        <tr>
-          <td class="td-menu">
-            <p class="p-menu">Realizar auditoria interna</p>
-          </td>
-        </tr>
-        <tr>
-          <td class="td-menu">
-            <p class="p-menu">Programar actividades de auditoria</p>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+   <app-app-menu></app-app-menu>
 
     <!-- formulario -->
     <div class="container-form">

@@ -158,4 +158,16 @@
     background: white; 
 }
 
+input.ng-invalid.ng-touched {
+    border: solid 2px tomato !important;
+    border-radius: 10px;
+  }
+  textarea.ng-invalid.ng-touched {
+    border: solid 2px tomato !important;
+    border-radius: 10px;
+  }
 
+  input.ng-valid,select.ng-valid{
+    border: solid 2px #068460 !important;
+    border-radius: 10px;
+  }

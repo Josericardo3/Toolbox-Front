@@ -25,11 +25,11 @@
       <label>RNT</label>
       <input type="text" [value]="rnt" (change)="capturarValorRnt($event)"/>
       <label>Empresa</label>
-      <input type="text" [value]="razonsocial" (change)="capturarValorEmpresa($event)" />
+      <input type="text" [value]="razonsocial" (change)="capturarValorEmpresa($event)"/>
       <label>Asesor</label>
       <input type="text" (change)="capturarValorAsesor($event)" />   
       <label class="padding-label">Estado</label>
-      <select class="estado" (click)="filterResult() "(change)="capturarValorE($event)" >
+      <select class="estado" (click)="filterResult() "(change)="capturarValorE($event)">
         <option  *ngFor="let element of arrEstado">{{ element }}</option>
       </select>
       <button (click)="filterResult()" class="buscar">
@@ -158,8 +158,7 @@
           />
           <label
           class="control-error textDanger"
-          *ngIf="registerNewAsesor.controls['correo'].hasError('pattern')"
-          >
+          *ngIf="registerNewAsesor.controls['correo'].hasError('pattern')">
           Debe contener un correo válido
           </label>
           <br>
