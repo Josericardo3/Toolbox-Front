@@ -1,5 +1,5 @@
 <!-- Button trigger modal -->
-<button id="openModalButton" class="btn-agregar" data-toggle="modal" data-target="#myModal">
+<button id="openModalButton" class="btn-agregar" (click)="cancelEvent($event)" data-toggle="modal" data-target="#myModal">
   Agregar actividad
   <i class="fa-solid fa-plus" style="color: #fff;"></i>
 </button>
@@ -25,11 +25,11 @@
             <section class="container-date">
               <div>
                 <label class="label-auditor">Fecha</label>
-                <input bsDatepicker appFwCalendario appDateInputMask type="text" maxlength="10" placement="bottom"
+                <input bsDatepicker appFwCalendario  type="text" maxlength="10" placement="bottom"
                   class="forma-input" #dp2="bsDatepicker" placeholder="DD-MM-YYYY" title="Inicio de actividad"
-                  formControlName="planAuditoria"
-                  style="width:100px;margin-right: 0px; margin-left: 7px;border: 1px solid #068460;border-radius:5px; padding: 3px;height: 22px;"
-                  [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY'}" />
+                  formControlName="fecha" fw_calendario ui-date-mask
+                  style="width:100px;margin-right: 0px; margin-left: 7px;border: 1px solid #068460;border-radius:3px; padding: 3px;height: 22px;"
+                  [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY',adaptivePosition: true, isAnimated: true, containerClass: 'theme-green'}" />
                 <i (click)="dp2.show()" class="fa-solid fa-calendar-days"
                   style="color: #06543c;font-size: 22px;padding: 8px;" [attr.aria-expanded]="dp2.isOpen">
                 </i>
@@ -52,16 +52,16 @@
               <div  style="display: flex;margin-top: 6px;align-items: baseline;border-radius:5px">
                 <label class="label-auditor-cargo">Nombre y cargo del auditado (s)</label>
                 <div>
-                  <select class="select-auditor" formControlName="nameAuditor">
+                  <select class="select-auditor" formControlName="auditados">
                     <option value="" disabled selected>Seleccionar</option>
-                    <option *ngFor="let auditor of arrayListResponsible" [value]="auditor.nombrePst">{{auditor.nombrePst}} - {{auditor?.cargo}}
+                    <option *ngFor="let auditor of arrayListResponsible" [value]="auditor.nombrePst" >{{auditor.nombrePst}} - {{auditor?.cargo}}
                     </option>
                   </select>
                 </div>
               </div>
               <div style="display: flex; align-items: baseline;margin-top: 5px;border-radius:5px">
                 <label class="forma-hora">Hora</label>
-                <input type="time" value="" class="input-hora" style="margin: 8px;" formControlName="planTime">
+                <input type="time" value="" class="input-hora" style="margin: 8px;" formControlName="hora">
               </div>
             </section>
             <br>

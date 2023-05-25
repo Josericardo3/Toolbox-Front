@@ -158,6 +158,29 @@
     color: #474749;
 }
 
+.obs-final{
+    background: #FFFFFF;
+    border: 2px solid #068460;
+    border-radius: 10px;
+    height: 40px;
+    padding: 5px;
+    width: 337px;
+    font-family: 'Work Sans', sans-serif;
+    font-size: 14px;
+    color: #000000;
+}
+
+.obs-titulo-final{
+    font-weight: bold;
+    font-size: 16px;
+    font-family: 'Work Sans', sans-serif;
+    color: #474749;
+    margin-top: 26px;
+}
+.container-final{
+    display: flex;
+    flex-direction: column;
+}
 label{
     margin-bottom: 12px;
 }

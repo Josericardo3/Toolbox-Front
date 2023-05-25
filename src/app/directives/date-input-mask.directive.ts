@@ -7,20 +7,33 @@ export class DateInputMaskDirective {
 
   constructor() { }
 
-  @HostListener('keypress', ['$event'])
-
-  onKeyPress(event: any) {
+  @HostListener('keydown', ['$event'])
+  onKeyDown(event: any) {
     const e = <KeyboardEvent>event;
-    let len = event.target.value.length;
+    const key = e.key;
 
-    if(e.keyCode < 47 || e.keyCode > 57) e.preventDefault()
+    // Permitir solo los siguientes caracteres especiales
+    const allowedSpecialCharacters = ['-'];
 
-    // Caso 1: El usuario escribe el guión "-"
-    if(len !== 1 || len !== 3) if(e.keyCode == 47) e.preventDefault();
+    // Permitir solo las teclas de navegación y los caracteres especiales
+    const allowedKeys = [
+      'Backspace', 'Tab', 'End', 'Home', 'ArrowLeft', 'ArrowRight', 'Delete',
+      ...allowedSpecialCharacters
+    ];
 
-    // Caso 2: El usuario no escribe el guión "-"
-    if(len === 4) event.target.value += '-';
-    if(len === 7) event.target.value += '-';
+    // Permitir solo los caracteres especiales si ya se han ingresado
+    const value = event.target.value;
+    const hasSpecialCharacter = value.includes('-');
+    const allowedKeysWhenSpecialCharacterPresent = [
+      ...allowedSpecialCharacters,
+      'Backspace', 'End', 'Home', 'ArrowLeft', 'ArrowRight', 'Delete'
+    ];
+
+    if (
+      !allowedKeys.includes(key) ||
+      (hasSpecialCharacter && !allowedKeysWhenSpecialCharacterPresent.includes(key))
+    ) {
+      e.preventDefault();
+    }
   }
-
 }

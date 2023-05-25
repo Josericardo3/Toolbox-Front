@@ -16,6 +16,7 @@ import { Injectable } from '@angular/core';
 import { registerLocaleData } from '@angular/common';
 import localeEsPE from '@angular/common/locales/es-PE';
 import { ModalService } from 'src/app/messagemodal/messagemodal.component.service';
+import { log } from 'console';
 registerLocaleData(localeEsPE, 'es-PE');
 
 @Injectable({
@@ -47,20 +48,6 @@ export class AppAuditoriaInternaComponent {
   ) { }
 
   ngOnInit(): void {
-
-    //this.router.navigate(['/listaDeVerificacion']);
-    //console.log(this.toggleValue,"toglee")
-    // if(window.location.search.includes('form=show')){
-    //   document.getElementById('formAuditoria').style.display = 'block'
-    // }else{
-    //   document.getElementById('formAuditoria').style.display = 'none' 
-    // }
-    // if(window.location.search.includes('form=show')){
-    //   document.getElementById('formAuditoria').style.display = 'block'
-    // }else{
-    //   document.getElementById('formAuditoria').style.display = 'none' 
-    // }
-
     this.formParent = this.formBuilder.group({
       liderAuthor: ["", Validators.required],
       auditorTeam: ["", Validators.required],
@@ -71,22 +58,22 @@ export class AppAuditoriaInternaComponent {
       mytime: [""],
       dateEnd: [""],
       hourEnd: [""],
-      planAuditoria: [""],
+      fecha: [""],
       planAuditoriaDate: [""],
       // processOrActivity:["",Validators.required],
       //normOrRequest:["",Validators.required],
       auditor: [""],
-      nameAuditor: [""],
-      observacion:[""],
+      auditados: [""],
+      observacion: [""],
       fechaActual: [""],
       obsText: [""],
       startTime: ["", Validators.required],
       endTime: ["", Validators.required],
-      planTime: [""],
+      hora: [""],
       //prueba
       //    toggleValue:[false],
-       proceso: [""],
-      //actividad: [""],
+      proceso: [""],
+      actividad: [""],
       //pruena norma
       // toggleValueNorma:[false],
       //norma: ["",Validators.required],
@@ -97,6 +84,14 @@ export class AppAuditoriaInternaComponent {
     this.fnListResponsible();
   }
 
+  onDateChange(date: Date) {
+    // Acceder al valor del campo de fecha a través del formulario
+    const dateEndValue = this.formParent.get('dateEnd')?.value;
+    console.log(dateEndValue);
+  }
+
+
+
   /* nicio */
   onItemSelect(item: any) {
     console.log(item);
@@ -106,44 +101,7 @@ export class AppAuditoriaInternaComponent {
   }
   /* Fin */
 
-  onTogglee() {
-    // Suscribirse a los cambios del toggleValue
-    this.formParent.get('toggleValue').valueChanges.subscribe((value) => {
-      console.log(value, "value actual")
-      if (value) {
-        // Habilitar la validación en el campo 'actividad'
-        this.formParent.get('actividad').setValidators(Validators.required);
-      } else {
-        // Deshabilitar la validación en el campo 'actividad'
-
-        this.formParent.get('actividad').clearValidators();
-      }
-
-      // Actualizar la validación en el campo 'actividad'
-      this.formParent.get('actividad').updateValueAndValidity();
-    });
-
-  }
-
-  onTogleNorma() {
-    this.formParent.get('toggleValue').valueChanges.subscribe((value) => {
-      console.log(value, "value actual")
-      if (value) {
-        // Habilitar la validación en el campo 'actividad'
-        this.formParent.get('requisito').setValidators(Validators.required);
-      } else {
-        // Deshabilitar la validación en el campo 'actividad'
-
-        this.formParent.get('requisito').clearValidators();
-      }
-
-      // Actualizar la validación en el campo 'actividad'
-      this.formParent.get('requisito').updateValueAndValidity();
-    });
-
-  }
-
-
+ 
   getAuditorList() {
     this.ApiService.getAuditorListService()
       .subscribe((data: any) => {
@@ -229,30 +187,21 @@ export class AppAuditoriaInternaComponent {
   startTime: string;
   endTime: string;
   saveForm() {
-   // const toggleValue = this.formParent.get("toggleValue")?.value;
-    //const procesoValue = this.formParent.get("proceso")?.value;
 
-    //let actividadValue: string | null = null;
-    // if (toggleValue) {
-    //   actividadValue = this.formParent.get("actividad")?.value;
-    // }
-
-    // const toggleValueNorma = this.formParent.get("toggleValueNorma")?.value;
-    // const ValueRequ = this.formParent.get("norma")?.value;
-
-   // let actividadValueNorReq: string | null = null;
-    // if (toggleValue) {
-    //   actividadValueNorReq = this.formParent.get("requisito")?.value;
-    // }
-
+       for (let i = 0; i < this.valueAuditoria.length; i++) {
+        if (  this.valueAuditoria[i].fecha) {
+          this.valueAuditoria[i].fecha = this.formantDate(new Date(this.valueAuditoria[i].fecha))
+        }
+      }
     const idPst = localStorage.getItem('Id')
+    
     const request = {
 
       iD_AUDITORIA: 0,
       fK_ID_PST: Number(idPst),
-      codigo: "string",
+      //codigo: "string",
       auditoR_LIDER: this.formParent.get("liderAuthor")?.value,
-      equipO_AUDITOR: this.formParent.get("auditorTeam")?.value.flatMap(e => e.item_text).toString(),
+      equipO_AUDITOR: this.formParent.get("auditorTeam")?.value?.flatMap(e => e.item_text).toString(),
       objetivo: this.formParent.get("objAuditoria")?.value,
       alcance: this.formParent.get("alcanceAuditoria")?.value,
       criterio: this.formParent.get("criterioAuditoria")?.value,
@@ -266,36 +215,51 @@ export class AppAuditoriaInternaComponent {
       conformidades: [
 
       ],
-      procesos: [
-        {
+      
+      procesos: this.valueAuditoria
+      // [
+      //   {
+      //     // iD_PROCESO_AUDITORIA: 0,
+      //     // fK_ID_AUDITORIA: 0,
+      //     procesos: this.valueAuditoria,
+      //     fecha:  this.formantDate(new Date(this.valueAuditoria[0]?.fecha)),
+      //     hora: this.valueAuditoria[0]?.hora,
+      //     tipO_PROCESO:this.valueAuditoria[0]?.proceso,
+      //     procesO_DESCRIPCION:this.valueAuditoria[0]?.actividad,
+      //     lideR_PROCESO: this.valueAuditoria[0]?.auditor,
+      //     tipO_NORMA: this.valueAuditoria[0]?.norma,
+      //     auditor: this.valueAuditoria[0]?.auditor,
+      //     auditados: this.valueAuditoria[0]?.auditados,
+      //     //estado: true
+      //     //fecha: this.formantDate(new Date(this.formParent.get("planAuditoria")?.value)),
+      //     // hora: this.formParent.get("planTime")?.value,
+      //    // procesO_DESCRIPCION: toggleValue ? actividadValue : procesoValue,
+      //     //procesO_DESCRIPCION:this.formParent.get("actividad")?.value,
 
-          iD_PROCESO_AUDITORIA: 0,
-          fK_ID_AUDITORIA: 0,
-          procesos: this.valueAuditoria
-          // fecha: this.formantDate(new Date(this.formParent.get("planAuditoria")?.value)),
-          // hora: this.formParent.get("planTime")?.value,
+      //     //procesO_DESCRIPCION: this.formParent.get("processOrActivity")?.value ?'proceso':'auditoria',
+      // //     lideR_PROCESO: this.formParent.get("nameAuditor")?.value,
 
-         // procesO_DESCRIPCION: toggleValue ? actividadValue : procesoValue,
-          //procesO_DESCRIPCION:this.formParent.get("actividad")?.value,
-          //procesO_DESCRIPCION: this.formParent.get("processOrActivity")?.value ?'proceso':'auditoria',
-      //     lideR_PROCESO: this.formParent.get("nameAuditor")?.value,
-      //     cargO_LIDER: "string",
-      //     //normaS_AUDITAR: this.formParent.get("normOrRequest")?.value ?'norma':'requisitos auditar',
-      //  //   normaS_AUDITAR: toggleValueNorma ? actividadValueNorReq : ValueRequ,
-      //     auditor: this.formParent.get("auditor")?.value,
-      //     auditados: this.formParent.get("nameAuditor")?.value,
-      //     documentoS_REFERENCIA: "string",
-      //     estado: true
-        }
-      ],
-      "requisitos": [
+      // //     cargO_LIDER: "string",
+      // //     //normaS_AUDITAR: this.formParent.get("normOrRequest")?.value ?'norma':'requisitos auditar',
+      // //  //   normaS_AUDITAR: toggleValueNorma ? actividadValueNorReq : ValueRequ,
+      // //     auditor: this.formParent.get("auditor")?.value,
+      // //     auditados: this.formParent.get("nameAuditor")?.value,
+      // //     documentoS_REFERENCIA: "string",
+      // //     estado: true
+      //   }
+      // ],
+      // "requisitos": [
 
-      ]
+      // ]
     }
+    console.log(request);
 
     this.ApiService.insertAuditoria(request)
-      .subscribe((data: any) =>
-        console.log(data, "data new"))
+      .subscribe((data: any) => {
+
+
+        console.log(data, "data new")
+      })
     //   const request = {
     //     fechaActual:this.getActualDate(),
     //     liderAuditor : this.formParent.get("liderAuthor")?.value,
@@ -316,8 +280,8 @@ export class AppAuditoriaInternaComponent {
     //     nameAuditor: this.formParent.get("nameAuditor")?.value,
     //     observacion: this.formParent.get("observacion")?.value,
     //   }
-    this.clearForm();
-    //return this.generatePlanDeAuditoria(request);
+    //  this.clearForm();
+  return this.generatePlanDeAuditoria(request);
     // }
 
   }
@@ -442,21 +406,17 @@ export class AppAuditoriaInternaComponent {
                 { text: 'Auditor', style: ['columna'] },
                 { text: 'Nombre y cargo del auditado(s)', style: ['columna'] }
               ],
-              ...this.valueAuditoria.map(requisito => [      
-                { text: requisito.requisito, style: [ 'columna' ]},
-                { text: requisito.formPreguntas.flatMap(e=>e.pregunta).toString(), style: [ 'columna' ]},
-                { text: requisito.evidencia, style: [ 'columna' ]},
-                { text: requisito.hallazgo, style: [ 'columna' ]},
-                { text: requisito.observacion, style: [ 'columna' ]}
-              ])
-              // [
-              //   { text: request.procesos[0].fecha, style: [''] },
-              //   { text: request.procesos[0].hora, style: [''] },
-              //   { text: request.procesos[0].procesO_DESCRIPCION, style: [''] },
-              //   { text: request.procesos[0].normaS_AUDITAR, style: [''] },
-              //   { text: request.procesos[0].auditor, style: [''] },
-              //   { text: request.procesos[0].auditados, style: [''] },
-              // ],
+              ...this.valueAuditoria.map(requisito =>
+                [
+                  { text: requisito.fecha, style: ['columna'] },
+                  { text: requisito.hora, style: ['columna'] },
+                  { text: requisito.procesO_DESCRIPCION, style: ['columna'] },
+                  { text: requisito.normaS_DESCRIPCION, style: ['columna'] },
+                  { text: requisito.auditor, style: ['columna'] },
+                  { text: requisito.auditados, style: ['columna'] }
+                ]
+              )
+
             ]
           },
 
@@ -510,8 +470,6 @@ export class AppAuditoriaInternaComponent {
           marginTop: 30
         }
       }
-
-
     }
     pdfMake.createPdf(docDefinition).download('Plan_de_auditoria.pdf');
   }
@@ -527,14 +485,15 @@ export class AppAuditoriaInternaComponent {
   //   if(this.valueAuditoria.proceso != "") this.procesoNone =true;
   //   if(this.valueAuditoria.actividad != "") this.actividadNone =true;
   // }
- 
-  
+
+
   recibirValorModal(valor: any) {
     this.showTable = true; // mostrar tabla
-    this.valueAuditoria.push(valor);
-
+    this.valueAuditoria = valor;
+    console.log(valor, 'valor1111');
   }
 
+  
 
   arrayListResponsible: any = [];
   fnListResponsible() {
@@ -543,50 +502,49 @@ export class AppAuditoriaInternaComponent {
       this.listAuditor = this.arrayListResponsible.filter((e: any) =>
         e.cargo === "Líder de Proceso"
       )
-
     })
   }
+
   editarCaracteristica: any = {};
   activiti: boolean = true;
   process: boolean = true;
   fnPlanningEdit(indice: number) {
+    debugger
     this.activiti = true;
-    this.process = true; 
-debugger
+    this.process = true;
     this.caracteristicaIndice = indice;
     this.editarCaracteristica = {};
-    if (this.valueAuditoria[indice].actividad === undefined){
+    if (this.valueAuditoria[indice].actividad === undefined) {
       this.activiti = false;
-      this.process = true; 
-    } 
-    else if(this.valueAuditoria[indice].actividad != '') {
+      this.process = true;
+    }
+    else if (this.valueAuditoria[indice].actividad != '') {
       this.activiti = true;
-      this.process = false; 
+      this.process = false;
     }
-    else if(this.valueAuditoria[indice].proceso === undefined){
+    else if (this.valueAuditoria[indice].proceso === undefined) {
       this.activiti = false;
-      this.process = true; 
+      this.process = true;
     }
-
     Object.assign(this.editarCaracteristica, this.valueAuditoria[indice]);
-    console.log(this.editarCaracteristica, 'Editar');
-
   }
   fnSchedulingUpdate(indice: number) {
     this.caracteristicaIndice = -1;
+    Object.assign(this.valueAuditoria[indice], this.editarCaracteristica);
     const title = "Actualizacion exitosa.";
     const message = "El registro se ha realizado exitosamente";
     this.Message.showModal(title, message);
   }
+
   fnPlanifiacacionEditarCancelar() {
     this.caracteristicaIndice = -1;
-
   }
+
   indiceAEliminarAuditoria: any;
   fnPlanificacionEliminar(indice: any) {
     this.indiceAEliminarAuditoria = this.valueAuditoria[indice];
-
   }
+
   newArray: any = [];
   recibirValor(valor: number) {
     if (valor == - 1) {

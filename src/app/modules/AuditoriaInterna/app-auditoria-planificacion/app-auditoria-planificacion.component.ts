@@ -11,7 +11,7 @@ import { ApiService } from 'src/app/servicios/api/api.service';
 export class AppAuditoriaPlanificacionComponent {
   modalRef: BsModalRef;
   activeTab: string = 'proceso';
-  valueFormParent: any = {};
+  valueFormParent: any = [];
   formParent!: FormGroup;
   @Output() valorEnviadoModal = new EventEmitter<object>();
 
@@ -26,13 +26,18 @@ export class AppAuditoriaPlanificacionComponent {
     this.modalRef = this.modalService.show(template);
   }
 
+   cancelEvent(event:any){
+    event.preventDefault();
+  }
+
+
   ngOnInit(): void {
     this.formParent = this.formBuilder.group({
-      planAuditoria: ["", Validators.required],
+      fecha: ["", Validators.required],
       auditor: ["", Validators.required],
-      nameAuditor: ["", Validators.required],
-      observacion: ["", Validators.required],
-      planTime: ["", Validators.required],
+      auditados: ["", Validators.required],
+      observacion: [""],
+      hora: ["", Validators.required],
       //tabs 1
       proceso: ["", Validators.required],
       actividad: ["", Validators.required],
@@ -45,7 +50,6 @@ export class AppAuditoriaPlanificacionComponent {
   listAuditor: any = [];
   equipoAuditor: any = [];
   arrayListResponsible: any = [];
-
   
   fnListResponsible() {
     this.ApiService.getListResponsible().subscribe((data) => {
@@ -56,27 +60,58 @@ export class AppAuditoriaPlanificacionComponent {
 
     })
   }
-
+  tipoProceso: string ='';
+  tipoNorma: string = '';
   tabOption(value: string) {
     if (value === 'proceso') {
       this.formParent.get('proceso').enable();
       this.formParent.get('actividad').disable();
+      this.tipoProceso = 'Proceso';
     } else if (value === 'actividad') {
       this.formParent.get('actividad').enable();
       this.formParent.get('proceso').disable();
+      this.tipoProceso = 'Actividad';
     } else if (value === 'norma') {
       this.formParent.get('norma').enable();
       this.formParent.get('requisito').disable();
+      this.tipoNorma='Norma';
     } else if (value === 'requisito') {
       this.formParent.get('requisito').enable();
       this.formParent.get('norma').disable();
+      this.tipoNorma='requisito';
     }
   }
-
+  auditeeCharge:any = ''; 
+ 
   saveForm() {
-    this.valueFormParent = this.formParent.value
+  
+    this.valueFormParent.push(this.formParent.value)
+   
+      for (let i = 0; i < this.valueFormParent.length; i++) {
+      if(this.valueFormParent[i].proceso!='' && this.valueFormParent[i].proceso != undefined ){
+          this.valueFormParent[i].tipO_PROCESO = this.tipoProceso;
+            this.valueFormParent[i].procesO_DESCRIPCION =this.valueFormParent[i].proceso;
+        }
+        else{
+          this.valueFormParent[i].procesO_DESCRIPCION = this.valueFormParent[i].actividad;
+        }
+        if(this.valueFormParent[i].norma!='' && this.valueFormParent[i].norma != undefined ){
+          this.valueFormParent[i].tipO_NORMA = this.tipoNorma;
+          this.valueFormParent[i].normaS_DESCRIPCION = this.valueFormParent[i].norma;
+         
+        } else{
+          this.valueFormParent[i].normaS_DESCRIPCION = this.valueFormParent[i].requisito;
+        }
+        if(this.valueFormParent[i].observacion){
+          this.valueFormParent[i].observacioN_PROCESO = this.valueFormParent[i].observacion;
+        } else {
+           this.valueFormParent[i].observacioN_PROCESO = ''
+        }
+       
+      }
+      console.log( this.valueFormParent,1111111111);
     //para enviar valor al padre 
-    this.valorEnviadoModal.emit(this.formParent.value);
+    this.valorEnviadoModal.emit(this.valueFormParent);
     //para cerrar el modal 
     const openModalButton = document.getElementById("closeModal");
     openModalButton.click();

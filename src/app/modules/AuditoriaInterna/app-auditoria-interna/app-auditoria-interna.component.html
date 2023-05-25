@@ -35,8 +35,8 @@
                   <label class="label-color">Auditor lider</label>
                   <select id="chkveg1" class="select-auditor" formControlName="liderAuthor">
                     <option value="" disabled selected>Seleccionar</option>
-                    <option *ngFor="let auditor of this.listAuditor" [value]="auditor.nombre">
-                      {{ auditor.nombre }}
+                    <option *ngFor="let auditor of this.listAuditor" [value]="auditor.nombrePst">
+                      {{ auditor.nombrePst }}
                     </option>
                   </select>
                 </div>
@@ -69,10 +69,17 @@
                 <input  class="input-alcance" type="text" value="" style="margin-left: 10px;width: 176px;" formControlName="alcanceAuditoria" />
                 <br/>
                 <label class="label-color">Equipo auditor</label>
-                <ng-multiselect-dropdown  formControlName="auditorTeam"
-                [placeholder]="'Seleccionar integrante'" [settings]="dropdownSettings" [data]="dropdownList"
-                [ngModel]="selectedItems" (onSelect)="onItemSelect($event)" (onSelectAll)="onSelectAll($event)">
-              </ng-multiselect-dropdown>
+                <div>
+                  <ng-multiselect-dropdown  formControlName="auditorTeam"
+                  [placeholder]="'Seleccionar integrante'" 
+                  [settings]="dropdownSettings" 
+                  [data]="dropdownList"
+                  [ngModel]="selectedItems"
+                   (onSelect)="onItemSelect($event)" 
+                   (onSelectAll)="onSelectAll($event)">
+                </ng-multiselect-dropdown>
+                </div>
+               
               <br>
                 <div class="container-textarea-2">
                   <label class="obs-titulo">Criterios de auditoría</label>
@@ -84,9 +91,9 @@
                   <input class="forma-input-cierre" type="text" formControlName="dateEnd" appDateInputMask [required]="true"
                     placeholder="DD-MM-YYYY" maxlength="10" placement="top" tooltip="Campo Obligatorio" bsDatepicker
                     #dp2="bsDatepicker" [bsConfig]="{
-                        adaptivePosition: true,
-                        dateInputFormat: 'DD-MM-YYYY'
-                      }" />
+                      adaptivePosition: true,
+                      dateInputFormat: 'YYYY-MM-DD'
+                    }"/>
                   <img class="calendar-picker" (click)="dp2.show()" [attr.aria-expanded]="dp.isOpen" type="button"
                     src="assets/imagenes/calendar.png" style="margin-left: 4px;" />
                 </div>
@@ -118,9 +125,9 @@
               </thead>
               <tbody>
                 <tr *ngFor="let auditoria of valueAuditoria,let i= index">
-                  <td  *ngIf="caracteristicaIndice!=i">{{auditoria?.nameAuditor}}</td>
+                  <td  *ngIf="caracteristicaIndice!=i">{{auditoria?.auditados}}</td>
                   <td  *ngIf="caracteristicaIndice==i">
-                    <select class="select-auditor-acti" formControlName="nameAuditor" [(ngModel)]="editarCaracteristica.nameAuditor">
+                    <select class="select-auditor-acti" formControlName="auditados" [(ngModel)]="editarCaracteristica.auditados">
                       <option *ngFor="let auditor of arrayListResponsible" [ngValue]="auditor.nombrePst" selected="auditor.nombrePst==auditoria?.nameAuditor">
                         {{auditor.nombrePst}} - {{auditor?.cargo}}
                       </option>
@@ -134,17 +141,17 @@
                       </option>
                     </select>
                   </td>
-                  <td  *ngIf="caracteristicaIndice!=i">{{auditoria?.planAuditoria | date: 'dd/MM/yyyy' }} {{auditoria?.planTime}}</td>
+                  <td  *ngIf="caracteristicaIndice!=i">{{auditoria?.fecha | date: 'dd/MM/yyyy' }} {{auditoria?.hora}}</td>
                   <td  *ngIf="caracteristicaIndice==i">
                     <input bsDatepicker appFwCalendario appDateInputMask type="text" maxlength="10" placement="bottom" class="forma-input-acti"
-                    #dp2="bsDatepicker" placeholder="DD-MM-YYYY" title="Inicio de actividad" formControlName="planAuditoria" [(ngModel)]="editarCaracteristica.planAuditoria"
+                    #dp2="bsDatepicker" placeholder="DD-MM-YYYY" title="Inicio de actividad" formControlName="fecha" [(ngModel)]="editarCaracteristica.fecha"
                     style="width:100px;margin-right: 0px; margin-left: 7px;border: 1px solid #068460;border-radius:3px; padding: 3px;height: 22px;"
                     [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY'}" />
                   <i (click)="dp2.show()" class="fa-solid fa-calendar-days" style="color: #06543c;font-size: 22px;padding: 8px;"
                     [attr.aria-expanded]="dp2.isOpen">
                   </i>
                  <br>
-                      <input type="time" value="" class="input-hora" style="margin: 8px;" formControlName="planTime" [(ngModel)]="editarCaracteristica.planTime">
+                      <input type="time" value="" class="input-hora" style="margin: 8px;" formControlName="hora" [(ngModel)]="editarCaracteristica.hora">
                   </td>
 
                   <td  *ngIf="caracteristicaIndice!=i ">{{auditoria?.observacion}}</td>
@@ -154,7 +161,7 @@
                   </td>
                   <td  *ngIf="caracteristicaIndice!=i ">{{auditoria?.proceso? auditoria?.proceso: '--'}}</td>
                   <td  *ngIf="caracteristicaIndice==i"> 
-                    <select *ngIf="process && caracteristicaIndice==i"  class="select-process" id="selectProcess" formControlName="proceso">
+                    <select *ngIf="process && caracteristicaIndice==i"  class="select-process" id="selectProcess" formControlName="proceso" [(ngModel)]="editarCaracteristica.proceso">
                       <option value="" disabled selected>Seleccionar</option>
                       <option value="Proceso 1">Proceso 1</option>
                       <option value="Proceso 2">Proceso 2</option>
@@ -163,7 +170,7 @@
                   </td>
                   <td  *ngIf="caracteristicaIndice!=i">{{auditoria?.actividad? auditoria?.actividad : '--'}}</td> 
                   <td  *ngIf="caracteristicaIndice==i">
-                    <input *ngIf="activiti && caracteristicaIndice==i" type="text" value="" class="actividad" placeholder="Actividad" formControlName="actividad" >
+                    <input *ngIf="activiti && caracteristicaIndice==i" type="text" value="" class="actividad" placeholder="Actividad" formControlName="actividad" [(ngModel)]="editarCaracteristica.actividad" >
                   </td>
                   <td>
                       <a title="Editar" (click)="fnPlanningEdit(i)" *ngIf="caracteristicaIndice!=i">
@@ -181,10 +188,6 @@
                           (click)="fnPlanificacionEliminar(i);"
                           (valorEnviado)="recibirValor($event)">
                       </app-app-delete-activities>
-                      <!-- [class.my-class]="caracteristicaIndiceEliminar ? -1 : i" -->
-                      <!-- <a title="Eliminar" data-toggle="modal" data-target="#deleteModal"  *ngIf="caracteristicaIndice!=i">
-                        <i class="fa-solid fa-trash" style="color: #06543c;font-size: 19px;margin: 4px;"></i>
-                      </a> -->
                   </td>
                 </tr>
               </tbody>
@@ -192,6 +195,11 @@
             </table>
           </div>
           <app-app-auditoria-planificacion  (valorEnviadoModal)="recibirValorModal($event)"></app-app-auditoria-planificacion>
+          <div class="container-final">
+            <label class="obs-titulo-final">Observaciones de auditoría</label>
+            <textarea type="text" style="height: 61px;margin-top: 3px;" class="obs-final" 
+            formControlName="observacion"></textarea>
+          </div>
           <div class="div-guardar">
             <button type="submit" [disabled]="formParent.invalid" class="btn-guardar">
               Guardar
