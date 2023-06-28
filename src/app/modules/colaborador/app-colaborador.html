@@ -46,8 +46,8 @@
             </label>
             <div class="col-sm-9">
               <select required id="roles"  class="form-control" formControlName="roles">
-                <option value="">Selecciona una opción</option>
-                <option *ngFor="let status of arrayStatus" [value]="status.valor">{{status.descripcion}}</option>
+                <option value="" disabled>Selecciona una opción</option>
+                <option *ngFor="let status of arrayStatus" [ngValue]="status.ITEM">{{status.VALOR}}</option>
               </select>
               <span class="help-block" *ngIf="registerNewColaborador.controls['roles'].hasError('required') && registerNewColaborador.controls['roles'].touched">
                 Por favor seleccione una opción

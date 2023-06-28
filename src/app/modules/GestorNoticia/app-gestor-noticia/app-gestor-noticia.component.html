@@ -1,0 +1,218 @@
+<app-app-header></app-app-header>
+<div class="containerGestorNoticia">
+    <div class="titulo">
+        <h1> Gestor de noticias </h1>
+        <app-app-header-arrow-left routerLink="/dashboard"></app-app-header-arrow-left>
+    </div>
+    <div class="divTop">
+        <input type="text" placeholder="Buscar..." class="buscador" [(ngModel)]="busqueda" *ngIf="mostrarBuscador" (input)="filtrarDatos()" >
+        <button class="btn" (click)="showModal = true">
+            <i class="fa-solid fa-plus" style="color: #fff;"></i> Agregar noticia
+        </button>
+    </div>
+    
+    <!--CONTENIDO DE LA TABLA-->
+    <section>
+        <table class="table-gestion" style="margin-top: 8px;">
+            <thead>
+                <tr>
+                    <th scope="col">Usuario</th>
+                    <th scope="col">Información de destino</th>
+                    <th scope="col">Título de la noticia</th>
+                    <th scope="col">Descripción de la noticia</th>
+                    <th scope="col">Imagen</th>
+                    <th scope="col" style="text-align: center;" (click)="mostrarBuscador = !mostrarBuscador">
+                        <i class="fa-solid fa-magnifying-glass" title="Buscar"></i>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let campo of filterArray;let i = index">
+                    <td>{{campo.NOMBRE}}</td>
+                    <td>
+                        <a title="Ver lista" (click)="showModalLista = true">
+                            <i class="fa-solid fa-list-ul" style="color: #06543c; font-size: 18px;"></i>
+                        </a>
+                    </td>
+                    <td>{{campo.TITULO}}</td>
+                    <td (click)="fnShowModal(i)" title="Dale click para leer la Noticia">
+                        {{ getInnerText(campo.DESCRIPCION) | slice:0:97 }}{{ campo.DESCRIPCION.length > 97 ? '...' : '' }}
+                    </td>
+                    <td>
+                        <a title="Ver imagen" (click)="verImagen(i)">
+                            <img [src]="imagenNoticia" style="display: none;">
+                            <i class="fa-solid fa-eye" style="color: #06543c;"></i>
+                        </a>
+                    </td>
+                    <td>
+                        <ng-container *ngIf="!edicionIndices.includes(i)">
+                            <a title="Editar" (click)="showModalEditar = true; fnEditar(i)">
+                                <i class="fa-solid fa-pen" style="color: #06543c;"></i>
+                            </a>
+                            <app-app-eliminar-noticia [indice]="indiceAEliminar"
+                                (click)="eliminarNoticia(campo.ID_NOTICIA)" (valorEnviado)="recibirValor($event)">
+                            </app-app-eliminar-noticia>
+                        </ng-container>
+                        <ng-container *ngIf="edicionIndices.includes(i)">
+                            <a title="Cancelar" (click)="fnCancelar(i)">
+                                <i class="fa-solid fa-circle-xmark" style="color: #06543c;font-size: 25px;"></i>
+                            </a>
+                        </ng-container>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <p *ngIf="result" style="text-align: center;margin-top: 3vh; font-size: 19px; font-family: 'Work Sans', sans-serif;" >
+            No hay resultado para la búsqueda
+        </p>
+    </section>
+    <!-- Paginacion -->
+    <footer class="page-style">
+        <div class="container-label">
+            <label class="paginas">
+                Página: {{ pages }} / {{ totalPaginas }} Mostrando: {{ totalRegistros }} Registros: {{ datatotal }}
+            </label>
+            <div class="ls-pagina ">
+                <pagination 
+                lastText="&raquo;"
+                nextText="&rsaquo;" 
+                firstText="&laquo;" 
+                previousText="&lsaquo;"
+                [maxSize]="3" 
+                [itemsPerPage]="7" 
+                [boundaryLinks]="true" 
+                [(ngModel)]="currentPage"
+                [ngClass]="{'page-item': true}"
+                [totalItems]="contentArray.length" 
+                (pageChanged)="pageChanged($event)">
+                </pagination>
+            </div>
+        </div>
+    </footer>
+    <!-- Modal Agregar Noticia -->
+    <div class="modal-background" id="modal-success" *ngIf="showModal">
+        <div class="modal-content">
+            <div class="modal-title">
+                <a title="Cerrar" data-dismiss="modal" aria-label="Close" class="x">
+                    <i class="fa-solid fa-circle-xmark" style="color: #06543c;font-size: 25px;"
+                    (click)="showModal = false;"></i>
+                </a>
+                <h2>Agregar noticia</h2>
+                <div class="linea"></div>
+            </div>
+            <form [formGroup]="saveForm" class="form" (ngSubmit)="saveModal()">
+                <ng-multiselect-dropdown *ngIf="getRolValue() === 1" formControlName="selectMultipleAdmin"
+                [placeholder]="'Seleccione un prestador de servicios'" [settings]="dropdownSettings" [data]="dropdownList"
+                [ngModel]="selectedItems" (onSelect)="onItemSelect($event, 'admin')"
+                (onSelectAll)="onSelectAll($event, 'admin')" (onDeSelect)="onDeSelect($event, 'admin')" 
+                (onDeSelectAll)="onDeSelectAll($event, 'admin')"></ng-multiselect-dropdown>
+                <ng-multiselect-dropdown *ngIf="getRolValue() === 1" formControlName="selectMultipleNorma"
+                [placeholder]="'Seleccione una norma'" [settings]="dropdownSettingsNorma" [data]="dropdownListNorma"
+                [ngModel]="selectedItemsNorma" (onSelect)="onItemSelect($event, 'norma')"
+                (onSelectAll)="onSelectAll($event, 'norma')" (onDeSelect)="onDeSelect($event, 'norma')" 
+                (onDeSelectAll)="onDeSelectAll($event, 'norma')" style="margin-top:2vh;"></ng-multiselect-dropdown>
+                <ng-multiselect-dropdown *ngIf="getRolValue() === 1" formControlName="selectMultipleCategoria"
+                [placeholder]="'Seleccione una categoría'" [settings]="dropdownSettingsCategoria"
+                [data]="dropdownListCategoria" [ngModel]="selectedItemsCategoria" (onSelect)="onItemSelect($event, 'categoria')"
+                (onSelectAll)="onSelectAll($event, 'categoria')" (onDeSelect)="onDeSelect($event, 'categoria')" 
+                (onDeSelectAll)="onDeSelectAll($event, 'categoria')" style="margin-top:2vh;"></ng-multiselect-dropdown>
+                <ng-multiselect-dropdown *ngIf="getRolValue() === 1" formControlName="selectMultipleSubCategoria"
+                [placeholder]="'Seleccione una sub categoría'" [settings]="dropdownSettingsSubCategoria"
+                [data]="dropdownListSubCategoria" [ngModel]="selectedItemsSubCategoria" (onSelect)="onItemSelect($event, 'subcategoria')"
+                (onSelectAll)="onSelectAll($event, 'subcategoria')" (onDeSelect)="onDeSelect($event, 'subcategoria')" 
+                (onDeSelectAll)="onDeSelectAll($event, 'subcategoria')" style="margin-top:2vh;"></ng-multiselect-dropdown>
+                <ng-multiselect-dropdown *ngIf="getRolValue() === 0" formControlName="selectMultiplePST"
+                [placeholder]="'Seleccione un colaborador'" [settings]="dropdownSettings" [data]="dropdownList"
+                [ngModel]="selectedItems" (onSelect)="onItemSelect($event, 'pst')"
+                (onSelectAll)="onSelectAll($event, 'pst')" (onDeSelect)="onDeSelect($event, 'pst')" 
+                (onDeSelectAll)="onDeSelectAll($event, 'pst')" style="margin-top:2vh;"></ng-multiselect-dropdown>
+                <input type="text" placeholder="Agregar un título" formControlName="tituloNoticia" id="tituloNoticia" style="margin-top:2vh;">
+                <angular-editor placeholder="Agregar una descripción" formControlName="descripcionNoticia" 
+                id="descripcionNoticia" style="margin-top:2vh;"></angular-editor>
+                <div class="containerFile" style="margin-top:2vh;">
+                    <input type="file" accept="image/*" (change)="captureImage($event)" class="file" id="archivo" formControlName="imagenNoticia" #archivo>
+                    <label for="archivo" class="fileBtn">Seleccionar imagen</label>
+                    <label id="nombre" class="fileName">Ningún archivo seleccionado</label>
+                </div>
+                <button type="submit" class="botonG" 
+                [disabled]="!saveForm.controls.selectMultipleAdmin.valid || !saveForm.controls.tituloNoticia.value || !saveForm.controls.descripcionNoticia.value">
+                <i class="fa-regular fa-floppy-disk" style="color: #fff;"></i>
+                Guardar noticia</button>
+            </form>
+        </div>
+    </div>
+    <!-- Modal Editar Noticia -->
+    <div class="modal-background" id="modal-success" *ngIf="showModalEditar">
+        <div class="modal-content">
+            <div class="modal-title-editar">
+                <a title="Cerrar" data-dismiss="modal" aria-label="Close" class="x">
+                    <i class="fa-solid fa-circle-xmark" style="color: #06543c;font-size: 25px;"
+                        (click)="showModalEditar = false;fnCancelar(caracteristicaIndice)"></i>
+                </a>
+                <h2>Editar noticia</h2>
+                <div class="linea"></div>
+            </div>
+            <form [formGroup]="editarNoticiaForm" (ngSubmit)="saveModalEditar()" class="form">
+                <label for="">Usuario</label>
+                <input type="text" id="usuario" formControlName="usuario"  [(ngModel)]="editarCaracteristica.NOMBRE" [disabled]="true"><br>
+                <label for="">Título de la noticia</label>
+                <input type="text" id="titulo" formControlName="titulo" [(ngModel)]="editarCaracteristica.TITULO"><br>
+                <label for="">Descripción de la noticia</label>
+                <angular-editor placeholder="Agregar una descripción" formControlName="descripcion" 
+                 style="margin-top:2vh;" id="descripcion" [(ngModel)]="editarCaracteristica.DESCRIPCION"></angular-editor>
+                <div class="containerFile" style="margin-top:2vh;">
+                    <input type="file" (change)="captureImage($event)" class="file" id="archivo" #archivo>
+                    <label for="archivo" class="fileBtn">Seleccionar imagen</label>
+                    <label id="nombre" class="fileName">Ningún archivo seleccionado</label>
+                </div><br>
+                <button class="botonG" type="submit" [disabled]="editarNoticiaForm.invalid" >
+                    <i class="fa-regular fa-floppy-disk" style="color: #fff;"></i>
+                    Editar noticia
+                </button>
+            </form>
+        </div>
+    </div>
+    <!-- Modal Lista de destinatarios -->
+    <div class="modal-background" id="modal-success" *ngIf="showModalLista">
+        <div class="modal-content">
+            <div class="modal-title-editar">
+                <a title="Cerrar" data-dismiss="modal" aria-label="Close" class="x">
+                    <i class="fa-solid fa-circle-xmark" style="color: #06543c;font-size: 25px;"
+                        (click)="showModalLista = false;"></i>
+                </a>
+                <h2>Lista de destinatarios</h2>
+                <div class="linea"></div>
+            </div>
+            <div class="form" *ngFor="let campo of datos">
+                <li *ngIf="campo.NOMBRE_DESTINATARIO">{{campo.NOMBRE_DESTINATARIO}}</li>
+                <li *ngIf="campo.NORMAS">{{campo.NORMAS}}</li>
+                <li *ngIf="campo.CATEGORIAS">{{campo.CATEGORIAS}}</li>
+                <li *ngIf="campo.SUB_CATEGORIAS">{{campo.SUB_CATEGORIAS}}</li>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal detalle de la descripción  -->
+  <div class="modal modal-dialog-centered" tabindex="-1" role="dialog" *ngIf="showModalNoticia" [ngClass]="{'show': showModalNoticia}" style="display: block;">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content modal-contedor" style="height: auto;">
+        <div >
+          <a title="Cancelar"  style="display: flex;justify-content: flex-end;padding-right: 30px;padding-top: 18px;" data-dismiss="modal" aria-label="Close">
+            <i class="fa-solid fa-circle-xmark" style="color: #06543c;font-size: 25px;" (click)="showModalNoticia = false;"></i>
+          </a> 
+          <h1 class="modal-title" style="font-size:20px !important;margin: 0 !important;">Descripción de la Noticia</h1>
+        </div>
+        <div class="modal-body" style="text-align: center;">
+          <p [innerHTML]="sanitizer.bypassSecurityTrustHtml(descripcion)"></p>
+        </div>
+        <div style="padding: 15px;text-align: center;">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="showModalNoticia = false;">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+<app-app-footer></app-app-footer>
+<app-modal></app-modal>
+<ngx-spinner bdColor="rgba(0, 0, 0, 0.5)" size="small"
+    template="<img src='https://www.superiorlawncareusa.com/wp-content/uploads/2020/05/loading-gif-png-5.gif' width='50' height='50'/>">
+</ngx-spinner>

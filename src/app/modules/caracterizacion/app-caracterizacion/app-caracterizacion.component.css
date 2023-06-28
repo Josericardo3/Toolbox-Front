@@ -157,15 +157,6 @@ div.radio{
   div.radio input[type=radio]:checked:before {
     background-color: #068460;
   }
-  /* div.radio input[type=radio]:checked:after {
-    content: "●";
-    font-size: 1px;
-    color: #068460;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  } */
 .btn{
   margin: 6vh 3vw;
   height: 35px;

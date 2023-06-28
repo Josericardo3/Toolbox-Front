@@ -9,18 +9,20 @@ import { HttpClient } from '@angular/common/http';
 // import * as d3 from 'd3';
 (pdfMake as any).vfs = pdfFonts.pdfMake.vfs;
 import { ModalService } from 'src/app/messagemodal/messagemodal.component.service'
-//import { Chart } from 'chart.js/auto'
+// import { Chart } from 'chart.js/auto'
 import { ChartJSNodeCanvas } from 'chartjs-node-canvas';
 import { createCanvas } from 'canvas';
 const chartJSNodeCanvas = require('chartjs-node-canvas');
 import html2canvas from 'html2canvas';
 // import * as canvasToBuffer from 'canvas-to-buffer';
 // import * as puppeteer from 'puppeteer';
+// import * as htmlToImage from 'html-to-image';
+// import domtoimage from 'dom-to-image';
+import { headerLogo, footerLogo } from './logoBase64';
 //import * as htmlToImage from 'html-to-image';
 //import domtoimage from 'dom-to-image';
-
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-
+import { debug } from 'console';
 
 @Component({
   selector: 'app-app-diagnostico-doc',
@@ -104,6 +106,8 @@ export class AppDiagnosticoDocComponent implements OnInit {
   pdfImage: string;
   dataUrlMain = '';
 
+  currentPage = 1;
+  pageCount = 0;
 
   constructor(
     private router: Router,
@@ -111,16 +115,9 @@ export class AppDiagnosticoDocComponent implements OnInit {
     private http: HttpClient,
     private Message: ModalService,
     private sanitizer: DomSanitizer
-
   ) { }
 
   ngOnInit(): void {
-  //     // Llamamos a la función captureChart() y luego a generatePDF() en la promesa
-  // this.captureChart().then(() => {
-  //   this.generatePDF();
-  // }).catch((error) => {
-  //   console.error('Error al convertir el gráfico en una imagen:', error);
-  // });
     this.getListaChequeo();
     this.getListaDiagnostico();
     this.getListaPlanMejora();
@@ -130,170 +127,100 @@ export class AppDiagnosticoDocComponent implements OnInit {
     this.ApiService.getListaChequeoApi()
       .subscribe((data: any) => {
         this.datosL = data;
-        this.nombrePst = this.datosL.usuario?.nombrePst;
-        this.nit = this.datosL.usuario?.nit;
-        this.rnt = this.datosL.usuario?.rnt;
+        this.nombrePst = this.datosL.RESPONSE_USUARIO?.NOMBRE_PST;
+        this.nit = this.datosL.RESPONSE_USUARIO?.NIT;
+        this.rnt = this.datosL.RESPONSE_USUARIO?.RNT;
         const normaValue = JSON.parse(window.localStorage.getItem('norma'));
-        const idn = normaValue[0].norma;
+        const idn = normaValue[0].NORMA;
         const a = idn.split(" ")[0];
         const b = idn.split(" ")[1];
         this.NTCL = a + ' ' + b
-        this.nombreResponsableSostenibilidad = this.datosL.usuario?.nombreResponsableSostenibilidad;
-        this.telefonoResponsableSostenibilidad = this.datosL.usuario?.telefonoResponsableSostenibilidad;
-        this.correoResponsableSostenibilidad = this.datosL.usuario?.correoResponsableSostenibilidad;
-        this.categoriarnt = this.datosL.usuario?.categoriarnt;
-        this.subcategoriarnt = this.datosL.usuario?.subcategoriarnt;
-        this.municipio = this.datosL.usuario?.municipio;
-        this.departamento = this.datosL.usuario?.departamento;
-        this.etapa = this.datosL.usuario?.etapaDiagnostico;
-        this.numeroRequisitoNA = this.datosL.numeroRequisitoNA;
-        this.numeroRequisitoNC = this.datosL.numeroRequisitoNC;
-        this.numeroRequisitoCP = this.datosL.numeroRequisitoCP;
-        this.numeroRequisitoC = this.datosL.numeroRequisitoC;
-        this.totalNumeroRequisito = this.datosL.totalNumeroRequisito;
-        this.porcentajeNA = this.datosL.porcentajeNA;
-        this.porcentajeNC = this.datosL.porcentajeNC;
-        this.porcentajeCP = this.datosL.porcentajeCP;
-        this.porcentajeC = this.datosL.porcentajeC;
+        this.nombreResponsableSostenibilidad = this.datosL.RESPONSE_USUARIO?.NOMBRE_RESPONSABLE_SOSTENIBILIDAD;
+        this.telefonoResponsableSostenibilidad = this.datosL.RESPONSE_USUARIO?.TELEFONO_RESPONSABLE_SOSTENIBILIDAD;
+        this.correoResponsableSostenibilidad = this.datosL.RESPONSE_USUARIO?.CORREO_RESPONSABLE_SOSTENIBILIDAD;
+        this.categoriarnt = this.datosL.RESPONSE_USUARIO?.CATEGORIA_RNT;
+        this.subcategoriarnt = this.datosL.RESPONSE_USUARIO?.SUB_CATEGORIA_RNT;
+        this.municipio = this.datosL.RESPONSE_USUARIO?.MUNICIPIO;
+        this.departamento = this.datosL.RESPONSE_USUARIO?.DEPARTAMENTO;
+        this.etapa = this.datosL.RESPONSE_USUARIO?.ETAPA_DIAGNOSTICO;
+        this.numeroRequisitoNA = this.datosL.N_REQUISITO_NA;
+        this.numeroRequisitoNC = this.datosL.N_REQUISITO_NC;
+        this.numeroRequisitoCP = this.datosL.N_REQUISITO_CP;
+        this.numeroRequisitoC = this.datosL.N_REQUISITO_C;
+        this.totalNumeroRequisito = this.datosL.TOTAL_N_REQUISITO;
+        this.porcentajeNA = this.datosL.PORCENTAJE_NA;
+        this.porcentajeNC = this.datosL.PORCENTAJE_NC;
+        this.porcentajeCP = this.datosL.PORCENTAJE_CP;
+        this.porcentajeC = this.datosL.PORCENTAJE_C;
       });
   }
 
   getListaDiagnostico() {
     this.ApiService.getListaDiagnosticoApi()
       .subscribe((data: any) => {
+
         this.datosD = data;
-        this.nombrePstD = this.datosD.usuario?.nombrePst;
-        this.nitD = this.datosD.usuario?.nit;
-        this.rntD = this.datosD.usuario?.rnt;
+        this.nombrePstD = this.datosD.DATA_USUARIO?.NOMBRE_PST;
+        this.nitD = this.datosD.DATA_USUARIO?.NIT;
+        this.rntD = this.datosD.DATA_USUARIO?.RNT;
         const normaValue = JSON.parse(window.localStorage.getItem('norma'));
-        const idn = normaValue[0].norma;
+        const idn = normaValue[0].NORMA;
         const a = idn.split(" ")[0];
         const b = idn.split(" ")[1];
         this.NTC = a + ' ' + b
-        this.nombreResponsableSostenibilidadD = this.datosD.usuario?.nombreResponsableSostenibilidad;
-        this.telefonoResponsableSostenibilidadD = this.datosD.usuario?.telefonoResponsableSostenibilidad;
-        this.correoResponsableSostenibilidadD = this.datosD.usuario?.correoResponsableSostenibilidad;
-        this.categoriarntD = this.datosD.usuario?.categoriarnt;
-        this.subcategoriarntD = this.datosD.usuario?.subcategoriarnt;
-        this.municipioD = this.datosD.usuario?.municipio,
-          this.departamentoD = this.datosD.usuario?.departamento
-        this.etapaD = this.datosD.usuario?.etapaDiagnostico;
-        this.analisis = this.datosD.analisis;
-        this.etapaInicial = this.datosD.etapaInicial;
-        this.etapaIntermedia = this.datosD.etapaIntermedia;
-        this.etapaFinal = this.datosD.etapaFinal;
-        this.nombreAsesor = this.datosD.nombreAsesor;
-        this.fechaInforme = this.datosD.fechaInforme;
+        this.nombreResponsableSostenibilidadD = this.datosD.DATA_USUARIO?.NOMBRE_RESPONSABLE_SOSTENIBILIDAD;
+        this.telefonoResponsableSostenibilidadD = this.datosD.DATA_USUARIO?.TELEFONO_RESPONSABLE_SOSTENIBILIDAD;
+        this.correoResponsableSostenibilidadD = this.datosD.DATA_USUARIO?.CORREO_RESPONSABLE_SOSTENIBILIDAD;
+        this.categoriarntD = this.datosD.DATA_USUARIO?.CATEGORIA_RNT;
+        this.subcategoriarntD = this.datosD.DATA_USUARIO?.SUB_CATEGORIA_RNT;
+        this.municipioD = this.datosD.DATA_USUARIO?.MUNICIPIO,
+          this.departamentoD = this.datosD.DATA_USUARIO?.DEPARTAMENTO
+        this.etapaD = this.datosD.DATA_USUARIO?.ETAPA_DIAGNOSTICO;
+        this.analisis = this.datosD.ANALISIS;
+        this.etapaInicial = this.datosD.ETAPA_INICIAL;
+        this.etapaIntermedia = this.datosD.ETAPA_INTERMEDIA;
+        this.etapaFinal = this.datosD.ETAPA_FINAL;
+        this.nombreAsesor = this.datosD.NOMBRE_ASESOR;
+        this.fechaInforme = this.datosD.FECHA_INFORME;
         // Calcular totales
-        this.totales = this.datosD.consolidado.reduce((acc: any, val: any) => {
-          acc.noAplica += parseFloat(val.noAplica);
-          acc.noCumple += parseFloat(val.noCumple);
-          acc.cumpleParcial += parseFloat(val.cumpleParcial);
-          acc.cumple += parseFloat(val.cumple);
+        this.totales = this.datosD.DATA_CONSOLIDADO.reduce((acc: any, val: any) => {
+          acc.NO_APLICA += parseFloat(val.NO_APLICA);
+          acc.NO_CUMPLE += parseFloat(val.NO_CUMPLE);
+          acc.CUMPLE_PARCIAL += parseFloat(val.CUMPLE_PARCIAL);
+          acc.CUMPLE += parseFloat(val.CUMPLE);
           return acc;
-        }, { noAplica: 0, noCumple: 0, cumpleParcial: 0, cumple: 0 });
+        }, { NO_APLICA: 0, NO_CUMPLE: 0, CUMPLE_PARCIAL: 0, CUMPLE: 0 });
       })
+
   }
 
   getListaPlanMejora() {
+    // var normaValue = window.localStorage.getItem('idNormaSelected');
+    // var idUsuario = window.localStorage.getItem('Id');
+    // this.http.get(`https://www.toolbox.somee.com/api/PlanMejora/PlanMejora?idnorma=${normaValue}&idusuariopst=${idUsuario}`)
     this.ApiService.getPlanMejoraApi()
       .subscribe((data: any) => {
         this.datosP = data;
-        this.nombrePstP = this.datosP.usuario?.nombrePst;
-        this.nitP = this.datosP.usuario?.nit;
-        this.rntP = this.datosP.usuario?.rnt;
+        this.nombrePstP = this.datosP.USUARIO?.NOMBRE_PST;
+        this.nitP = this.datosP.USUARIO?.NIT;
+        this.rntP = this.datosP.USUARIO?.RNT;
         const normaValue = JSON.parse(window.localStorage.getItem('norma'));
-        const idn = normaValue[0].norma;
+        const idn = normaValue[0].NORMA;
         const a = idn.split(" ")[0];
         const b = idn.split(" ")[1];
         this.NTCP = a + ' ' + b
-        this.nombreResponsableSostenibilidadP = this.datosP.usuario?.nombreResponsableSostenibilidad;
-        this.telefonoResponsableSostenibilidadP = this.datosP.usuario?.telefonoResponsableSostenibilidad;
-        this.correoResponsableSostenibilidadP = this.datosP.usuario?.correoResponsableSostenibilidad;
-        this.categoriarntP = this.datosP.usuario?.categoriarnt;
-        this.subcategoriarntP = this.datosP.usuario?.subcategoriarnt;
-        this.municipioP = this.datosP.usuario?.municipio;
-        this.departamentoP = this.datosP.usuario?.departamento;
-        this.etapaP = this.datosP.usuario?.etapaDiagnostico;
-        this.nombreAsesorP = this.datosP.nombreAsesor;
-        this.fechaInformeP = this.datosP.fechaInforme;
+        this.nombreResponsableSostenibilidadP = this.datosP.USUARIO?.NOMBRE_RESPONSABLE_SOSTENIBILIDAD;
+        this.telefonoResponsableSostenibilidadP = this.datosP.USUARIO?.TELEFONO_RESPONSABLE_SOSTENIBILIDAD;
+        this.correoResponsableSostenibilidadP = this.datosP.USUARIO?.CORREO_RESPONSABLE_SOSTENIBILIDAD;
+        this.categoriarntP = this.datosP.USUARIO?.CATEGORIA_RNT;
+        this.subcategoriarntP = this.datosP.USUARIO?.SUB_CATEGORIA_RNT;
+        this.municipioP = this.datosP.USUARIO?.MUNICIPIO;
+        this.departamentoP = this.datosP.USUARIO?.DEPARTAMENTO;
+        this.etapaP = this.datosP.USUARIO?.ETAPA_DIAGNOSTICO;
+        this.nombreAsesorP = this.datosP.NOMBRE_ASESOR;
+        this.fechaInformeP = this.datosP.FECHA_INFORME;
       });
   }
-
-  base64Image: string = "";
-  captureChart() {
-      this.chartContainer.nativeElement.style.display = 'block';
-  
-      const data = {
-        labels: ['C', 'CP', 'NC', 'NA'],
-        datasets: [
-          {
-            data: [10, 20, 30, 40],
-            backgroundColor: ['#00986c', '#2ca880', '#57bd9e', '#7ad3be'],
-          },
-        ],
-      };
-  
-      const canvas = document.getElementById('myChart') as HTMLCanvasElement;
-      const ctx = canvas.getContext('2d');
-      // const myChart = new Chart(ctx, {
-      //   type: 'pie',
-      //   data,
-      // });
-  
-      // Convertir el gráfico a base64
-      const base64Image = canvas.toDataURL('image/png');
-      console.log(base64Image)
-  
-      // Crear el objeto pdfMake y agregar la imagen al documento
-      const docDefinition = {
-        content: [
-          {
-            image: base64Image,
-            width: 400,
-          },
-        ],
-      };
-      pdfMake.createPdf(docDefinition).open();
-    
-    // this.generatePDF(this.base64Image);
-  
-    // return new Promise((resolve, reject) => {
-    //   if (this.base64Image) {
-    //     resolve(this.base64Image);
-    //   } else {
-    //     reject("Error al convertir el gráfico en una imagen.");
-    //   }
-    // });
-  }
-
-  // generatePDF(base64Image: string) {
-  //   const docDefinition: any = {
-  //     content: [
-  //       { image: base64Image }
-  //     ]
-  //   };
-  //   pdfMake.createPdf(docDefinition).download('chart.pdf');
-  // }
-  
-
-  // public chart: HTMLCanvasElement;
-
-  // public generatePDF() {
-  //   const node = document.querySelector('#chart');
-
-  //   domtoimage.toPng(node).then((dataUrl) => {
-  //     const docDefinition = {
-  //       content: [{
-  //         image: dataUrl,
-  //         width: 500
-  //       }]
-  //     };
-
-  //     pdfMake.createPdf(docDefinition).open();
-  //   });
-  // }
-
 
   generateDiagnostico() {
     if (!!!this.datosD) {
@@ -301,19 +228,40 @@ export class AppDiagnosticoDocComponent implements OnInit {
       const message = "No se encontró información para generar el informe de diagnóstico"
       this.Message.showModal(title, message);
     } else {
-      // Mostrar temporalmente el contenedor de gráficos
-
-      this.captureChart();
+      // this.captureChart();
       const pdfDefinition: any = {
+        header: {
+          columns: [
+            { image: headerLogo, fit: [150, 150], style: ['headerLogo']}
+          ]
+        },
+        footer: function(currentPage: number, pageCount: number) {
+          return {
+            columns: [
+              {
+                text: [
+                  { text: 'Página ', style: ['footer'], alignment: 'left' },
+                  { text: currentPage.toString(), style: ['footerPage'], alignment: 'left' },
+                  { text: ' de ', style: ['footer'], alignment: 'left' },
+                  { text: pageCount.toString(), style: ['footerPage'], alignment: 'left' }
+                ],
+                alignment: 'left',
+                margin: [30, 20, 20, 20]
+              },
+              { image: footerLogo, fit: [200, 200], style: ['footerLogo'], alignment: 'right' }
+            ]
+          }
+        },
         pageSize: {
           width: 794,
           height: 1123
         },
-        pageMargins: [30, 30, 30, 30],
+        
+        pageMargins: [ 40, 60, 40, 60 ],
         content: [
           {
             toc: {
-              title: { text: 'Informe de diagnóstico', style: ['header'] }
+              title: { text: 'INFORME DE DIAGNÓSTICO', style: ['header'] }
             }
           },
           {
@@ -422,6 +370,22 @@ export class AppDiagnosticoDocComponent implements OnInit {
             bold: true,
             fontSize: 10,
           },
+          headerLogo: {
+            margin: [30, 30, 30, 30],
+            alignment: 'left'
+          },
+          footerLogo: {
+            margin: [0, 10, 10, 0],
+            alignment: 'right'
+          },
+          footer: {
+            fontSize: 10,
+            margin: [0, 0, 0, 10],
+          },
+          footerPage: {
+            fontSize: 10,
+            bold: true
+          }
         }
       }
       pdfDefinition.content.push(
@@ -445,21 +409,21 @@ export class AppDiagnosticoDocComponent implements OnInit {
                 { text: 'Cumple', alignment: 'center' },
                 { text: '% Cumplimiento', alignment: 'center' },
               ],
-              ...this.datosD.consolidado.map((item: any) => [
-                { text: item.requisito },
-                { text: item.noAplica, alignment: 'center' },
-                { text: item.noCumple, alignment: 'center' },
-                { text: item.cumpleParcial, alignment: 'center' },
-                { text: item.cumple, alignment: 'center' },
-                { text: item.porcCumple, alignment: 'center' }
+              ...this.datosD.DATA_CONSOLIDADO.map((item: any) => [
+                { text: item.REQUISITO },
+                { text: item.NO_APLICA, alignment: 'center' },
+                { text: item.NO_CUMPLE, alignment: 'center' },
+                { text: item.CUMPLE_PARCIAL, alignment: 'center' },
+                { text: item.CUMPLE, alignment: 'center' },
+                { text: item.PORC_CUMPLE, alignment: 'center' }
               ]),
               [
                 { text: 'TOTAL', style: ['tituloDinamico'] },
-                { text: this.totales.noAplica.toFixed(0), alignment: 'center' },
-                { text: this.totales.noCumple.toFixed(0), alignment: 'center' },
-                { text: this.totales.cumpleParcial.toFixed(0), alignment: 'center' },
-                { text: this.totales.cumple.toFixed(0), alignment: 'center' },
-                { text: ((this.totales.cumple + this.totales.cumpleParcial) / (this.totales.noAplica + this.totales.noCumple + this.totales.cumple + this.totales.cumpleParcial)).toFixed(0) + '%', alignment: 'center' }
+                { text: this.totales.NO_APLICA.toFixed(0), alignment: 'center' },
+                { text: this.totales.NO_CUMPLE.toFixed(0), alignment: 'center' },
+                { text: this.totales.CUMPLE_PARCIAL.toFixed(0), alignment: 'center' },
+                { text: this.totales.CUMPLE.toFixed(0), alignment: 'center' },
+                { text: ((this.totales.CUMPLE + this.totales.CUMPLE_PARCIAL) / (this.totales.NO_APLICA + this.totales.NO_CUMPLE + this.totales.CUMPLE + this.totales.CUMPLE_PARCIAL)).toFixed(0) + '%', alignment: 'center' }
               ]
             ],
           },
@@ -478,7 +442,7 @@ export class AppDiagnosticoDocComponent implements OnInit {
                 {}
               ],
               [
-                { image: 'this.imgCircular', colSpan: 5 },
+                { text: 'this.imgCircular', colSpan: 5 },
                 {},
                 {},
                 {},
@@ -501,7 +465,7 @@ export class AppDiagnosticoDocComponent implements OnInit {
                 {}
               ],
               [
-                { image: 'this.imgLineal', colSpan: 5 },
+                { text: 'this.imgLineal', colSpan: 5 },
                 {},
                 {},
                 {},
@@ -578,9 +542,9 @@ export class AppDiagnosticoDocComponent implements OnInit {
           fontSize: 10,
         }
       );
-      this.datosD.agrupacion.forEach((obj: any) => {
+      this.datosD.DATA_AGRUPACION.forEach((obj: any) => {
         pdfDefinition.content[5].table.body.push([
-          { text: obj.tituloprincipal, colSpan: 5, style: ['tituloDinamico'] },
+          { text: obj.TITULO_PRINCIPAL, colSpan: 5, style: ['tituloDinamico'] },
           {},
           {},
           {},
@@ -594,11 +558,11 @@ export class AppDiagnosticoDocComponent implements OnInit {
           { text: 'Cumple', style: ['tituloDinamico'] }
         ]);
         pdfDefinition.content[5].table.body.push([
-          { text: obj.porcentajeC, style: ['tituloDinamico'] },
-          { text: obj.numeroRequisitoNA, style: ['tituloDinamico'] },
-          { text: obj.numeroRequisitoNC, style: ['tituloDinamico'] },
-          { text: obj.numeroRequisitoCP, style: ['tituloDinamico'] },
-          { text: obj.numeroRequisitoC, style: ['tituloDinamico'] }
+          { text: obj.PORCENTAJE_C, style: ['tituloDinamico'] },
+          { text: obj.N_REQUISITO_NA, style: ['tituloDinamico'] },
+          { text: obj.N_REQUISITO_NC, style: ['tituloDinamico'] },
+          { text: obj.N_REQUISITO_CP, style: ['tituloDinamico'] },
+          { text: obj.N_REQUISITO_C, style: ['tituloDinamico'] }
         ]);
         pdfDefinition.content[5].table.body.push([
           { text: 'Requisito', style: ['tituloDinamico'] },
@@ -607,11 +571,11 @@ export class AppDiagnosticoDocComponent implements OnInit {
           {},
           {}
         ]);
-        obj.listacampos.forEach((i: any) => {
+        obj.LISTA_CAMPOS.forEach((i: any) => {
           pdfDefinition.content[5].table.body.push([
-            { text: i.tituloRequisito, alignment: 'center' },
-            { text: i.calificado, alignment: 'center' },
-            { text: i.observacion, colSpan: 3, alignment: 'justify' },
+            { text: i.TITULO_REQUISITO, alignment: 'center' },
+            { text: i.CALIFICADO, alignment: 'center' },
+            { text: i.OBSERVACION, colSpan: 3, alignment: 'justify' },
             {},
             {}
           ]);
@@ -630,24 +594,46 @@ export class AppDiagnosticoDocComponent implements OnInit {
       pdfMake.createPdf(pdfDefinition).download('Informe_de_diagnóstico.pdf');
     }
   }
-
+ 
   generateListaChequeo() {
-    if (!!!this.datosL.usuario) {
+    if (!!!this.datosL.RESPONSE_USUARIO) {
       const title = "No hay datos";
       const message = "No hay datos para generar el informe"
       this.Message.showModal(title, message);
       return;
     }
     const pdfDefinition: any = {
+      header: {
+        columns: [
+          { image: headerLogo, fit: [150, 150], style: ['headerLogo']}
+        ]
+      },
+      footer: function(currentPage: number, pageCount: number) {
+        return {
+          columns: [
+            {
+              text: [
+                { text: 'Página ', style: ['footer'], alignment: 'left' },
+                { text: currentPage.toString(), style: ['footerPage'], alignment: 'left' },
+                { text: ' de ', style: ['footer'], alignment: 'left' },
+                { text: pageCount.toString(), style: ['footerPage'], alignment: 'left' }
+              ],
+              alignment: 'left',
+              margin: [30, 20, 20, 20]
+            },
+            { image: footerLogo, fit: [200, 200], style: ['footerLogo'], alignment: 'right' }
+          ]
+        }
+      },
       pageSize: {
         width: 794,
         height: 1123,
       },
-      pageMargins: [30, 30, 30, 30],
+      pageMargins: [ 40, 60, 40, 60 ],
       content: [
         {
           toc: {
-            title: { text: 'Informe de lista de chequeo', style: ['header'] }
+            title: { text: 'LISTA DE CHEQUEO', style: ['header'] }
           }
         },
         {
@@ -739,13 +725,13 @@ export class AppDiagnosticoDocComponent implements OnInit {
                 { text: 'Observaciones', style: ['tituloDinamico'] },
               ],
               // Aquí va el título NUMERAL
-              ...this.datosL.calificacion.map((item: any) => [
-                { text: item.numeral, style: ['dinamicTable'] },
-                { text: item.tituloRequisito, style: ['dinamicTable'] },
-                { text: item.requisito, fontSize: 10 },
-                { text: item.evidencia, fontSize: 10 },
-                { text: item.calificado, style: ['dinamicTable'] },
-                { text: item.observacion, style: ['dinamicTable'] }
+              ...this.datosL.RESPONSE_CALIFICACION.map((item: any) => [
+                { text: item.NUMERAL, style: ['dinamicTable'] },
+                { text: item.TITULO_REQUISITO, style: ['dinamicTable'] },
+                { text: item.REQUISITO, fontSize: 10 },
+                { text: item.EVIDENCIA, fontSize: 10 },
+                { text: item.CALIFICADO, style: ['dinamicTable'] },
+                { text: item.OBSERVACION, style: ['dinamicTable'] }
               ])
             ],
           }
@@ -800,7 +786,7 @@ export class AppDiagnosticoDocComponent implements OnInit {
         header: {
           fontSize: 16,
           bold: true,
-          margin: [0, 10, 0, 10],
+          margin: [20, 20, 20, 20],
           alignment: 'center',
         },
         tituloDinamico: {
@@ -811,6 +797,22 @@ export class AppDiagnosticoDocComponent implements OnInit {
         dinamicTable: {
           fontSize: 10,
           alignment: 'center'
+        },
+        headerLogo: {
+          margin: [30, 20, 20, 20],
+          alignment: 'left'
+        },
+        footerLogo: {
+          margin: [0, 10, 10, 0],
+          alignment: 'right'
+        },
+        footer: {
+          fontSize: 10,
+          margin: [0, 0, 0, 10],
+        },
+        footerPage: {
+          fontSize: 10,
+          bold: true
         }
       }
     }
@@ -821,22 +823,44 @@ export class AppDiagnosticoDocComponent implements OnInit {
   }
 
   generatePlanMejora() {
-    if (!!!this.datosP.usuario) {
+    if (!!!this.datosP.USUARIO) {
       const title = "No hay datos";
       const message = "No hay datos para generar el informe"
       this.Message.showModal(title, message);
       return;
     }
     const pdfDefinition: any = {
+      header: {
+        columns: [
+          { image: headerLogo, fit: [150, 150], style: ['headerLogo']}
+        ]
+      },
+      footer: function(currentPage: number, pageCount: number) {
+        return {
+          columns: [
+            {
+              text: [
+                { text: 'Página ', style: ['footer'], alignment: 'left' },
+                { text: currentPage.toString(), style: ['footerPage'], alignment: 'left' },
+                { text: ' de ', style: ['footer'], alignment: 'left' },
+                { text: pageCount.toString(), style: ['footerPage'], alignment: 'left' }
+              ],
+              alignment: 'left',
+              margin: [30, 20, 20, 20]
+            },
+            { image: footerLogo, fit: [200, 200], style: ['footerLogo'], alignment: 'right' }
+          ]
+        }
+      },
       pageSize: {
         width: 794,
         height: 1123,
       },
-      pageMargins: [30, 30, 30, 30],
+      pageMargins: [ 40, 60, 40, 60 ],
       content: [
         {
           toc: {
-            title: { text: 'Informe de plan de mejora', style: ['header'] }
+            title: { text: 'PLAN DE MEJORA', style: ['header'] }
           }
         },
         {
@@ -929,13 +953,13 @@ export class AppDiagnosticoDocComponent implements OnInit {
                 { text: 'Duración', style: ['tituloDinamico'] },
               ],
               // Aquí va el título NUMERAL
-              ...this.datosP.calificacion.map((item: any) => [
-                { text: item.numeral, style: ['dinamicTable'] },
-                { text: item.tituloRequisito, style: ['dinamicTable'] },
-                { text: item.evidencia, fontSize: 10 },
-                { text: item.calificado, style: ['dinamicTable'] },
-                { text: item.observacion, fontSize: 10 },
-                { text: item.duracion, style: ['dinamicTable'] }
+              ...this.datosP.DATA_CALIFICACION.map((item: any) => [
+                { text: item.NUMERAL, style: ['dinamicTable'] },
+                { text: item.TITULO_REQUISITO, style: ['dinamicTable'] },
+                { text: item.EVIDENCIA, fontSize: 10 },
+                { text: item.CALIFICADO, style: ['dinamicTable'] },
+                { text: item.OBSERVACION, fontSize: 10 },
+                { text: item.DURACION, style: ['dinamicTable'] }
               ]),
             ]
           }
@@ -986,6 +1010,22 @@ export class AppDiagnosticoDocComponent implements OnInit {
         dinamicTable: {
           fontSize: 10,
           alignment: 'center'
+        },
+        headerLogo: {
+          margin: [30, 30, 30, 30],
+          alignment: 'left'
+        },
+        footerLogo: {
+          margin: [0, 10, 10, 0],
+          alignment: 'right'
+        },
+        footer: {
+          fontSize: 10,
+          margin: [0, 0, 0, 10],
+        },
+        footerPage: {
+          fontSize: 10,
+          bold: true
         }
       }
     }

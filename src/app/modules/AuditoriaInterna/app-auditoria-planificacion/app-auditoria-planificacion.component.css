@@ -10,18 +10,19 @@
   align-items: baseline;
   flex-wrap: nowrap;
 }
-  .btn-agregar {
-    background: #068460;
+  .btn{
+    background-color: #068460;
     color: white;
-    border-radius: 3px;
-    width: 189px;
-    height: 30px;
-    border: 1px solid white;
     cursor: pointer;
     padding: 0;
-    margin-top: 36px;
     font-family: 'Work Sans', sans-serif;
-  
+    border-radius: 10px;
+    height:40px;
+    width: 195px;
+    border: none;
+    cursor: pointer;
+    /* margin: 2vh 0 4vh 0; m*/
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
   }
   .error-message {
     color: #a94442;
@@ -37,7 +38,8 @@
   .cancelar {
     display: flex;
     justify-content: flex-end;
-    padding-right: 20px;
+    /* padding-right: 20px; */
+    margin: 0px -78px 5px 5px;
     /* padding-top: 13px; */
   }
   .input-colaborador {
@@ -105,6 +107,16 @@
     font-size: 14px;
     font-family: 'Work Sans', sans-serif;
 }
+.select-cargo{
+  border-radius: 3px;
+  margin-left: 14px;
+  height: 4vh;
+  width: 165px;
+  border: 1px solid#068460; 
+  font-size: 14px;
+  font-family: 'Work Sans', sans-serif;
+}
+
 .input-hora{
   background: #FFFFFF;
   border-radius: 3px;
@@ -159,4 +171,27 @@
   width: 400px;
   justify-content: center;
   align-items: center;
+}
+
+@media(max-width: 480px) {
+  .cancelar{
+    margin: 0px -11px 5px 5px
+  }
+  .select-auditor{
+    margin-left: 0px;
+    width: 33vw;
+  }
+  .label-auditor-cargo{
+    margin-left: 0px;
+    font-size: 14px;
+  }
+  .forma-hora{
+    font-size: 14px;
+  }
+  .label-auditor{
+    font-size: 14px;
+  }
+  .label-auditor-selec{
+    font-size: 14px;
+  }
 }

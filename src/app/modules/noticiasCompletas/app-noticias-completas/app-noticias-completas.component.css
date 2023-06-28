@@ -1,0 +1,77 @@
+.containerHistorial{
+    display: flex;
+    flex-direction: column;
+    margin: 2vh 2vw;
+}
+.containerTarjetas{
+    display: flex;
+    align-items: flex-start;
+    justify-content: center; 
+    flex-wrap: wrap;
+}
+.tarjetas{
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; 
+    flex-direction: column;
+    margin: 1vh 1vw;
+    padding: 1vh 1vw;
+    width: 60vw;
+    height: 77vh;
+    flex-basis: 28%;
+    cursor: pointer;
+    box-shadow: 1px 2px 2px 1px rgba(32,32,32,0.3);
+}
+.titulo{
+    display: flex;
+    flex-direction: row-reverse;
+    margin: 2vh 0;
+}
+h1{
+    width: 100%;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: bolder;
+    color: #068460;
+    text-align: center;
+}
+.img1{
+    max-width: 25vw;
+    max-height: 40vh;
+    padding: 5px;
+}
+.img2{
+    min-width: 20vw;
+    max-height: vh;
+    padding: 5px;
+}
+p{
+    font-family: 'Work Sans', sans-serif;
+    font-size: 13px;
+    margin: 0 0 0.5vh 0;
+    align-self: flex-start;
+}
+a{
+    font-family: 'Work Sans', sans-serif;
+    font-size: 15px;
+    font-weight: bold;
+    margin: 0 0 0.5vh 0;
+    align-self: flex-start;
+}
+/* Paginado */
+.page-style {
+    display: flex;
+    justify-content: flex-end;
+    margin: 2vh 0 0 0;
+}
+.container-label {
+    display: flex;
+    align-items: center;
+}
+.paginas {
+    display: inline-block;
+    max-width: 100%;
+    margin: 10px;
+    font-weight: 700;
+    font-size: 14px;
+    font-family: 'Work Sans', sans-serif;
+}

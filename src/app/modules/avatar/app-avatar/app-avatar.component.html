@@ -9,7 +9,7 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-contedor">
         <div>
-          <a  title="Cancelar" class="cancelar" data-dismiss="modal" aria-label="Close">
+          <a  title="Cancelar" class="cancelar" data-dismiss="modal" aria-label="Close" (click)="reloadModule()">
             <i class="fa-solid fa-circle-xmark" style="color: #06543c;font-size: 25px;"></i>
           </a> 
           <h4 class="modal-title" id="myModalLabel">Seleccione un avatar</h4> 
@@ -18,33 +18,34 @@
  
           <div id="myCarousel" class="carousel slide" data-ride="carousel">
             <!-- Indicators -->
+         
             <ol class="carousel-indicators">
-              <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-              <li data-target="#myCarousel" data-slide-to="1"></li>
-              <li data-target="#myCarousel" data-slide-to="2"></li>
-              <li data-target="#myCarousel" data-slide-to="3" ></li>
-              <li data-target="#myCarousel" data-slide-to="4"></li>
-              <li data-target="#myCarousel" data-slide-to="5"></li>
+              <li data-target="#myCarousel" data-slide-to="0"  [ngClass]="{'active': userAvatar==1}"></li>
+              <li data-target="#myCarousel" data-slide-to="1" [ngClass]="{'active': userAvatar==2}"></li>
+              <li data-target="#myCarousel" data-slide-to="2" [ngClass]="{'active': userAvatar==3}"></li>
+              <li data-target="#myCarousel" data-slide-to="3" [ngClass]="{'active': userAvatar==4}"></li>
+              <li data-target="#myCarousel" data-slide-to="4"  [ngClass]="{'active': userAvatar==5}"></li>
+              <li data-target="#myCarousel" data-slide-to="5" [ngClass]="{'active': userAvatar==6}"></li>
             </ol>
           
             <!-- Wrapper for slides -->
             <div class="carousel-inner">
-              <div class="item active">
+              <div [ngClass]="userAvatar==1 ? 'item active' : 'item'">
                 <img src="../../../../assets/avatares/avatar1.svg" alt="Slide 1" data-value="1" >
               </div>
-              <div class="item">
+              <div  [ngClass]="userAvatar==2 ? 'item active' : 'item'">
                 <img src="../../../../assets/avatares/avatar2.svg" alt="Slide 2" data-value="2" >
               </div>
-              <div class="item">
+              <div  [ngClass]="userAvatar==3 ? 'item active' : 'item'">
                 <img src="../../../../assets/avatares/avatar3.svg" alt="Slide 2" data-value="3" >
               </div>
-              <div class="item">
+              <div  [ngClass]="userAvatar==4 ? 'item active' : 'item'">
                 <img src="../../../../assets/avatares/avatar4.svg" alt="Slide 3" data-value="4" >
               </div>
-              <div class="item">
+              <div  [ngClass]="userAvatar==5 ? 'item active' : 'item'">
                 <img src="../../../../assets/avatares/avatar5.svg" alt="Slide 3" data-value="5" >
               </div>
-              <div class="item">
+              <div  [ngClass]="userAvatar==6 ? 'item active' : 'item'">
                 <img src="../../../../assets/avatares/avatar6.svg" alt="Slide 3" data-value="6" >
               </div>
             </div>

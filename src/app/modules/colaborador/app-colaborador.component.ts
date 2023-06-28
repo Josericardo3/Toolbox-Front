@@ -1,6 +1,7 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { parse } from 'path';
 import { ModalService } from 'src/app/messagemodal/messagemodal.component.service';
 import { ApiService } from 'src/app/servicios/api/api.service';
 
@@ -58,22 +59,35 @@ export class AppColaboradorComponent {
     const closeModalButton = document.getElementById("closeModal");
     closeModalButton.click();
     const request = {
-      idUsuario: localStorage.getItem('Id'),
+      idUsuario: parseInt(localStorage.getItem('Id')),
       nombre: this.registerNewColaborador.get("responsable")?.value,
-      cargo: this.registerNewColaborador.get("roles")?.value,
+      idcargo: parseInt(this.registerNewColaborador.get("roles")?.value),
       correo: this.registerNewColaborador.get("correo")?.value
     }
+    console.log(request);
 
     this.ApiService.postRegisterColaborador(request).subscribe(
       (data) => {
-          if(data.statusCode == 201){
+          if(data.StatusCode == 201){
             this.registerNewColaborador.reset();
             const title = "Registro exitoso";
             const message = data.valor;
             this.Message.showModal(title, message);
             this.fnListResponsible();
             this.valorEnviadoColaborador.emit(true);
-          }else{
+          }
+          else if(data.StatusCode == 200){
+            this.registerNewColaborador.reset();
+            const title = "Registro no exitoso";
+            const message = data.valor;
+            this.Message.showModal(title, message);
+            this.fnListResponsible();
+            this.valorEnviadoColaborador.emit(true);
+            const openModalButton = document.getElementById("openModalButton");
+            openModalButton.click();
+       
+          }
+          else{
             const openModalButton = document.getElementById("openModalButton");
             openModalButton.click();
           }
@@ -97,8 +111,8 @@ export class AppColaboradorComponent {
   }
 
   fnStatusList(){
-    this.ApiService.getTypeList(17).subscribe((data) => {
-      this.arrayStatus = data.filter((e:any) => e.item!=0);
+    this.ApiService.getTypeList(1).subscribe((data) => {
+      this.arrayStatus = data.filter((e:any) => e.ITEM!=0 && e.DESCRIPCION == 'SubPerfil');
     })
   }
   

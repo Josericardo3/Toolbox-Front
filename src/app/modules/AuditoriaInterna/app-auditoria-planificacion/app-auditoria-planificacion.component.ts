@@ -54,8 +54,10 @@ export class AppAuditoriaPlanificacionComponent {
   fnListResponsible() {
     this.ApiService.getListResponsible().subscribe((data) => {
       this.arrayListResponsible = data;
+      console.log(this.arrayListResponsible,"este es el responsable")
+      console.log(this.listAuditor,"lider")
       this.listAuditor = this.arrayListResponsible.filter((e: any) =>
-        e.cargo === "Líder de Proceso"
+        e.CARGO === "Líder de Proceso"
       )
 
     })
@@ -89,27 +91,27 @@ export class AppAuditoriaPlanificacionComponent {
    
       for (let i = 0; i < this.valueFormParent.length; i++) {
       if(this.valueFormParent[i].proceso!='' && this.valueFormParent[i].proceso != undefined ){
-          this.valueFormParent[i].tipO_PROCESO = this.tipoProceso;
-            this.valueFormParent[i].procesO_DESCRIPCION =this.valueFormParent[i].proceso;
+          this.valueFormParent[i].TIPO_PROCESO = this.tipoProceso;
+            this.valueFormParent[i].PROCESO_DESCRIPCION =this.valueFormParent[i].proceso;
         }
         else{
-          this.valueFormParent[i].procesO_DESCRIPCION = this.valueFormParent[i].actividad;
+          this.valueFormParent[i].PROCESO_DESCRIPCION = this.valueFormParent[i].actividad;
         }
         if(this.valueFormParent[i].norma!='' && this.valueFormParent[i].norma != undefined ){
-          this.valueFormParent[i].tipO_NORMA = this.tipoNorma;
-          this.valueFormParent[i].normaS_DESCRIPCION = this.valueFormParent[i].norma;
+          this.valueFormParent[i].TIPO_NORMA = this.tipoNorma;
+          this.valueFormParent[i].NORMAS_DESCRIPCION = this.valueFormParent[i].norma;
          
         } else{
-          this.valueFormParent[i].normaS_DESCRIPCION = this.valueFormParent[i].requisito;
+          this.valueFormParent[i].NORMAS_DESCRIPCION = this.valueFormParent[i].requisito;
         }
         if(this.valueFormParent[i].observacion){
-          this.valueFormParent[i].observacioN_PROCESO = this.valueFormParent[i].observacion;
+          this.valueFormParent[i].OBSERVACION_PROCESO = this.valueFormParent[i].observacion;
         } else {
-           this.valueFormParent[i].observacioN_PROCESO = ''
+           this.valueFormParent[i].OBSERVACION_PROCESO = ''
         }
        
       }
-      console.log( this.valueFormParent,1111111111);
+ 
     //para enviar valor al padre 
     this.valorEnviadoModal.emit(this.valueFormParent);
     //para cerrar el modal 
@@ -117,54 +119,5 @@ export class AppAuditoriaPlanificacionComponent {
     openModalButton.click();
     this.formParent.reset();
   }
-  
-  // getAuditorList() {
-  //   this.ApiService.getAuditorListService()
-  //     .subscribe((data: any) => {
-  //       console.log(data, "databuscada")
-  //       this.listAuditor = data;
-  //       this.equipoAuditor = data;
-
-  //       return this.listAuditor;
-  //     })
-  // }
-
- 
-
-  // onTogglee() {
-  //   // Suscribirse a los cambios del toggleValue
-  //   this.formParent.get('toggleValue').valueChanges.subscribe((value) => {
-  //     console.log(value, "value actual")
-  //     if (value) {
-  //       // Habilitar la validación en el campo 'actividad'
-  //       this.formParent.get('actividad').setValidators(Validators.required);
-  //     } else {
-  //       // Deshabilitar la validación en el campo 'actividad'
-
-  //       this.formParent.get('actividad').clearValidators();
-  //     }
-
-  //     // Actualizar la validación en el campo 'actividad'
-  //     this.formParent.get('actividad').updateValueAndValidity();
-  //   });
-
-  // }
-  // onTogleNorma() {
-  //   this.formParent.get('toggleValue').valueChanges.subscribe((value) => {
-  //     console.log(value, "value actual")
-  //     if (value) {
-  //       // Habilitar la validación en el campo 'actividad'
-  //       this.formParent.get('requisito').setValidators(Validators.required);
-  //     } else {
-  //       // Deshabilitar la validación en el campo 'actividad'
-
-  //       this.formParent.get('requisito').clearValidators();
-  //     }
-
-  //     // Actualizar la validación en el campo 'actividad'
-  //     this.formParent.get('requisito').updateValueAndValidity();
-  //   });
-
-  // }
   
 }

@@ -195,17 +195,22 @@
   
   /* modal asignar asesor*/
  
-  .titulo-modal{
+  /* .titulo-modal{
     text-align: center;
-    /* font-weight: bold;*/
     font-size: 24px; 
     font-family:'Montserrat', sans-serif;
-    /* font-family:'Work Sans', sans-serif; */
     font-weight: 600;
     margin-top: 12px;
     margin-bottom: 15px;
+  } */
+  .titulo-modal{
+     width: 100%;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: bolder;
+  font-size: 20px;
+  color: #068460;
+  text-align: center;
   }
-  
   input.ng-invalid.ng-touched {
     border: solid 2px tomato !important;
     border-radius: 10px;

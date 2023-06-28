@@ -1,217 +1,241 @@
 <app-app-header></app-app-header>
-<html lang="en">
-
+<!-- <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous"> -->
-  <script
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous"> -->
+  <!-- <script
     src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.min.js"></script>
   <script
     src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/css/bootstrap-multiselect.css"></script>
-</head>
-
-<body>
-
+</head> 
+<body> -->
   <div class="componente-global">
     <div class="titulo">
       <h1 class="titulo-nav">Auditoría Interna</h1>
+      <div class="contenedor-arrow">
+        <app-app-header-arrow-left routerLink="/dashboard"></app-app-header-arrow-left>
+      </div>
     </div>
     <div class="container-form-informe-auditoria">
-      <app-app-menu></app-app-menu>
-
       <!-- formulario no dinamico -->
       <div class="container-form">
-        <form id="formAuditoria" [formGroup]="formParent" class="controller-auditoria" (ngSubmit)="saveForm()">
-          <h1 class="sub-titulo">Plan de Auditoría</h1>
-
-          <div class="plan-auditoria">
-            <div class="contenedor-1form">
-              <div class="sub-menu-form1">
-                <label class="label-color">Fecha de elaboración : {{ this.getActualDate() }}</label>
-                <br>
-                <div>
+        <form id="formAuditoria" [formGroup]="formParent" 
+        class="controller-auditoria" 
+        (ngSubmit)="saveForm()">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-3 col-sm-12" style="margin-top: -15px;">
+            <app-app-menu></app-app-menu> 
+            </div>
+            <div class="col-md-9 col-sm-12">
+            <div class="containerForm">
+             <div class="contenido">
+              <div class="col-md-6 col-sm-6">
+                <h1 class="sub-titulo">Plan de Auditoría</h1>
+                <div class="forma-campo">
+                  <label class="label-color">Fecha de elaboración:</label> <p>{{ this.getActualDate() }}</p>
+                </div>
+                <div class="forma-campo">
                   <label class="label-color">Auditor lider</label>
                   <select id="chkveg1" class="select-auditor" formControlName="liderAuthor">
                     <option value="" disabled selected>Seleccionar</option>
-                    <option *ngFor="let auditor of this.listAuditor" [value]="auditor.nombrePst">
-                      {{ auditor.nombrePst }}
+                    <option *ngFor="let auditor of this.listAuditor" [value]="auditor.NOMBRE">
+                      {{ auditor.NOMBRE}}
                     </option>
                   </select>
                 </div>
-                <br>
-              <div class="container-textarea">
-                <label class="obs-titulo">Objetivos de auditoría</label>
-                <textarea type="text" value="" style="height: 61px; width: 337px;" class="obs"
-                formControlName="objAuditoria"></textarea>
-              </div>
-              <br />
-              <div class="forma-campo">
-                <label class="label-auditor">Reunion de apertura</label>
-                <input class="forma-input" formControlName="dateInit" type="text" [required]="true"
-                  placeholder="DD-MM-YYYY" maxlength="10" appDateInputMask placement="top" tooltip="Campo Obligatorio"
-                  bsDatepicker #dp="bsDatepicker" [bsConfig]="{
-                      adaptivePosition: true,
-                      dateInputFormat: ' DD-MM-YYYY'
-                    }" />
-                <img class=" calendar-picker" (click)="dp.show()" [attr.aria-expanded]="dp.isOpen" type="button"
-                  src="assets/imagenes/calendar.png" style="margin-left:5px ;" />
-              </div>
-              <br>
-              <label class="forma-hora">Hora</label>
-                <input type="time" value="" class="input-hora" formControlName="startTime" />
-              <br/>
-            </div>
-
-               <div class="contenedor-form2">
-                <label class="label-color">Alcance de auditoría</label>
-                <input  class="input-alcance" type="text" value="" style="margin-left: 10px;width: 176px;" formControlName="alcanceAuditoria" />
-                <br/>
-                <label class="label-color">Equipo auditor</label>
-                <div>
-                  <ng-multiselect-dropdown  formControlName="auditorTeam"
-                  [placeholder]="'Seleccionar integrante'" 
-                  [settings]="dropdownSettings" 
-                  [data]="dropdownList"
-                  [ngModel]="selectedItems"
-                   (onSelect)="onItemSelect($event)" 
-                   (onSelectAll)="onSelectAll($event)">
-                </ng-multiselect-dropdown>
-                </div>
-               
-              <br>
-                <div class="container-textarea-2">
-                  <label class="obs-titulo">Criterios de auditoría</label>
-                  <textarea type="text" style="height: 61px;margin-top: 3px;" class="obs" formControlName="criterioAuditoria"></textarea>
-                </div>
-                <br/>
                 <div class="forma-campo">
-                  <label class="label-auditor">Reunion de Cierre</label>
-                  <input class="forma-input-cierre" type="text" formControlName="dateEnd" appDateInputMask [required]="true"
+                  <label class="obs-titulo" style="margin-top: 7px;" >Objetivos de auditoría</label>
+                  <textarea type="text" value="" class="obs"
+                  formControlName="objAuditoria"></textarea>
+                </div>
+                <div class="forma-campo">
+                  <label class="obs-titulo">Reunion de apertura</label>
+                  <div class="divHora">
+                    <input formControlName="dateInit" type="text" [required]="true"
+                    placeholder="DD-MM-YYYY" maxlength="10" appDateInputMask placement="top" tooltip="Campo Obligatorio"
+                    bsDatepicker #dp="bsDatepicker" [bsConfig]="{
+                        adaptivePosition: true,
+                        dateInputFormat: ' DD-MM-YYYY'
+                      }" />
+                    <img class=" calendar-picker rp-calendar" (click)="dp.show()" [attr.aria-expanded]="dp.isOpen" type="button"
+                    src="assets/imagenes/calendar.png" />
+                  </div>
+                </div>
+                <div class="forma-campo">
+                  <label class="forma-hora">Hora</label>
+                  <input type="time" value="" formControlName="startTime" />
+                </div>
+              </div>
+              <div class="col-md-6 col-sm-6" style="margin-top: 41px;">
+                <div class="forma-campo">
+                  <label class="label-color">Alcance de auditoría</label>
+                  <input type="text" value="" formControlName="alcanceAuditoria" />
+                </div>
+                <div class="forma-campo">
+                  <label class="label-color">Equipo auditor</label><br><br>
+                  <ng-multiselect-dropdown formControlName="auditorTeam" class="selectMultiple"
+                    [placeholder]="'Seleccionar integrante'" 
+                    [settings]="dropdownSettings" 
+                    [data]="dropdownList"
+                    [ngModel]="selectedItems"
+                    (onSelect)="onItemSelect($event)" 
+                    (onSelectAll)="onSelectAll($event)">
+                  </ng-multiselect-dropdown>
+                </div>
+                <div class="forma-campo">
+                  <label class="obs-titulo">Criterios de auditoría</label>
+                  <textarea type="text" class="obs" formControlName="criterioAuditoria"></textarea>
+                </div>
+                <div class="forma-campo">
+                  <label class="obs-titulo">Reunion de Cierre</label>
+                  <div class="divHora">
+                    <input type="text" formControlName="dateEnd" appDateInputMask [required]="true"
                     placeholder="DD-MM-YYYY" maxlength="10" placement="top" tooltip="Campo Obligatorio" bsDatepicker
                     #dp2="bsDatepicker" [bsConfig]="{
                       adaptivePosition: true,
-                      dateInputFormat: 'YYYY-MM-DD'
+                      dateInputFormat: 'DD-MM-YYYY'
                     }"/>
-                  <img class="calendar-picker" (click)="dp2.show()" [attr.aria-expanded]="dp.isOpen" type="button"
-                    src="assets/imagenes/calendar.png" style="margin-left: 4px;" />
+                    <img class="calendar-picker rp-calendar" (click)="dp2.show()" [attr.aria-expanded]="dp.isOpen" type="button"
+                    src="assets/imagenes/calendar.png"/>
+                  </div>
                 </div>
-                <br>
-                <label class="forma-hora">Hora</label>
-                  <input type="time" value="" class="input-hora" formControlName="endTime" />
+                <div class="forma-campo">
+                  <label class="forma-hora">Hora</label>
+                  <input type="time" value="" formControlName="endTime" />
+                </div>
               </div>
-          </div>
-          </div>
-          <!-- comienza lo dinamico planificación -->
-          <div>
-            <div class="sub-titulo">
-              Planificación de la Auditoria Interna
+             </div>
+             <div class="row">
+              <div class="planificacion">
+                <div class="linea"></div>
+                <div class="sub-titulo-plan">
+                  <h1 class="sub-titulo" style="align-self: flex-start;">Planificación de la Auditoria Interna</h1>
+                </div>
+                  <div class="rp-btn">
+                  <app-app-auditoria-planificacion  (valorEnviadoModal)="recibirValorModal($event)"></app-app-auditoria-planificacion>
+                 </div>
+                
+                <!-- tabla dinamica -->
+                <table class="table"   id="table_actividad" *ngIf="showTable"
+                style="text-align: center !important;margin-top: 33px;
+                max-width: 97% !important;">
+                  <thead class="tr-table">
+                    <tr>
+                      <th style="text-align: center;">NOMBRE DEL AUDITADO</th>
+                      <th style="text-align: center;">AUDITOR</th>
+                      <th style="text-align: center;">FECHA DE AUDITORIA/HORA</th>
+                      <th style="text-align: center;" >PROCESO</th>
+                      <th style="text-align: center;" >ACTIVIDAD</th>
+                      <th style="text-align: center;">ACCIONES</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let auditoria of valueAuditoria,let i= index">
+                      <td  *ngIf="caracteristicaIndice!=i">{{auditoria?.auditados}}</td>
+                      <td  *ngIf="caracteristicaIndice==i">
+                        <select class="select-auditor-acti" formControlName="auditados" [(ngModel)]="editarCaracteristica.auditados">
+                          <option *ngFor="let auditor of arrayListResponsible" [value]="auditor.NOMBRE+ ' - ' + (auditor?.CARGO || '')"  >
+                            {{auditor.NOMBRE}} - {{auditor?.CARGO}}
+                          </option>
+                        </select>
+                      </td>
+                      <td  *ngIf="caracteristicaIndice!=i">{{auditoria?.auditor}}</td>
+                      <td  *ngIf="caracteristicaIndice==i">
+                        <select class="select-auditor-acti" style="margin-top: 6px;height: 26px;" formControlName="auditor" [(ngModel)]="editarCaracteristica.auditor">
+                          <option value="" disabled selected>Seleccionar</option>
+                          <option *ngFor="let auditor of listAuditor" [value]="auditor.NOMBRE">{{auditor.NOMBRE}}
+                          </option>
+                        </select>
+                      </td>
+                      <td  *ngIf="caracteristicaIndice!=i">{{auditoria?.fecha | date: 'dd/MM/yyyy' }} {{auditoria?.hora}}</td>
+                      <td  *ngIf="caracteristicaIndice==i">
+                        <input bsDatepicker appFwCalendario appDateInputMask type="text" maxlength="10" placement="bottom" class="forma-input-acti"
+                        #dp2="bsDatepicker" placeholder="DD-MM-YYYY" title="Inicio de actividad" formControlName="fecha" [(ngModel)]="editarCaracteristica.fecha"
+                        style="width:100px;margin-right: 0px; margin-left: 7px;border: 1px solid #068460;border-radius:3px; padding: 3px;height: 22px;"
+                        [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY'}" />
+                      <i (click)="dp2.show()" class="fa-solid fa-calendar-days" style="color: #06543c;font-size: 22px;padding: 8px;"
+                        [attr.aria-expanded]="dp2.isOpen">
+                      </i>
+                     <br>
+                          <input type="time" value="" class="input-hora" style="margin: 8px;" formControlName="hora" [(ngModel)]="editarCaracteristica.hora">
+                      </td>
+                      <td  *ngIf="caracteristicaIndice!=i ">{{auditoria?.proceso? auditoria?.proceso: '--'}}</td>
+                      <td  *ngIf="caracteristicaIndice==i"> 
+                        <select *ngIf="process && caracteristicaIndice==i"  class="select-process" id="selectProcess" formControlName="proceso" [(ngModel)]="editarCaracteristica.proceso">
+                          <option value="" disabled selected>Seleccionar</option>
+                          <option value="Proceso 1">Proceso 1</option>
+                          <option value="Proceso 2">Proceso 2</option>
+                          <option value="Proceso 3">Proceso 3</option>
+                        </select>
+                      </td>
+                      <td  *ngIf="caracteristicaIndice!=i">{{auditoria?.actividad? auditoria?.actividad : '--'}}</td> 
+                      <td  *ngIf="caracteristicaIndice==i">
+                        <input *ngIf="activiti && caracteristicaIndice==i" type="text" value="" class="actividad" placeholder="Actividad" formControlName="actividad" [(ngModel)]="editarCaracteristica.actividad" >
+                      </td>
+                      <td>
+                          <a title="Editar" (click)="fnPlanningEdit(i)" *ngIf="caracteristicaIndice!=i">
+                            <i class="fa-solid fa-pen" style="color: #06543c;"></i>
+                          </a>
+                          <a title="Guardar" *ngIf="caracteristicaIndice==i" (click)="fnSchedulingUpdate(i)">
+                            <i class="fa-regular fa-floppy-disk" style="color: #06543c;font-size: 25px;"></i>
+                          </a>
+                          <a title="Cancelar" *ngIf="caracteristicaIndice==i" (click)="fnPlanifiacacionEditarCancelar()">
+                            <i class="fa-solid fa-circle-xmark" style="color: #06543c;font-size: 25px;"></i>
+                          </a>
+                          <app-app-delete-activities
+                              [objAuditoria]="indiceAEliminarAuditoria"
+                              *ngIf="caracteristicaIndice!=i"
+                              (click)="fnPlanificacionEliminar(i);"
+                              (valorEnviado)="recibirValor($event)">
+                          </app-app-delete-activities>
+                      </td>
+                    </tr>
+                  </tbody>
+    
+                </table>
+                  <!-- paginacion -->
+              <footer class="page-style" *ngIf="showTable">
+                <div class="container-label">
+                  <label class="paginas"> Página: {{pagesAuditoria}} / {{totalPaginasAuditoria }} Mostrando:
+                    {{totalRegistrosAuditoria}} Registros: {{datatotalAuditoria}} </label>
+                  <div class="ls-pagina ">
+                    <pagination lastText="&raquo;" nextText="&rsaquo;" firstText="&laquo;" previousText="&lsaquo;" [maxSize]="3"
+                      [totalItems]="contentArrayAuditoria.length" [itemsPerPage]="6" [(ngModel)]="currentPage" [boundaryLinks]="true"
+                      (pageChanged)="pageChangedAuditoria($event)" [ngClass]="{'page-item': true}">
+                    </pagination>
+                  </div>
+                </div>
+              </footer>
+              </div>
+           
+              <div class="container-final">
+                <label class="obs-titulo-final">Observaciones de auditoría</label>
+                <textarea type="text" class="obs-final" 
+                formControlName="observacion"></textarea>
+              </div>
+    
+              <div class="div-guardar">
+                <button type="submit" [disabled]="formParent.invalid" class="btn-guardar">
+                  Guardar
+                </button>
+              </div>
+             </div>
             </div>
-            <!-- tabla dinamica -->
-            <table class="table"   id="table_actividad" *ngIf="showTable"
-            style="text-align: center !important;margin-top: 33px;
-            max-width: 97% !important;">
-              <thead class="tr-table">
-                <tr>
-                  <th style="text-align: center;">NOMBRE DEL AUDITADO</th>
-                  <th style="text-align: center;">AUDITOR</th>
-                  <th style="text-align: center;">FECHA DE AUDITORIA/HORA</th>
-                  <th style="text-align: center;">OBSERVACIÓN</th>
-                  <th style="text-align: center;" >PROCESO</th>
-                  <th style="text-align: center;" >ACTIVIDAD</th>
-                  <th style="text-align: center;">ACCIONES</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let auditoria of valueAuditoria,let i= index">
-                  <td  *ngIf="caracteristicaIndice!=i">{{auditoria?.auditados}}</td>
-                  <td  *ngIf="caracteristicaIndice==i">
-                    <select class="select-auditor-acti" formControlName="auditados" [(ngModel)]="editarCaracteristica.auditados">
-                      <option *ngFor="let auditor of arrayListResponsible" [ngValue]="auditor.nombrePst" selected="auditor.nombrePst==auditoria?.nameAuditor">
-                        {{auditor.nombrePst}} - {{auditor?.cargo}}
-                      </option>
-                    </select>
-                  </td>
-                  <td  *ngIf="caracteristicaIndice!=i">{{auditoria?.auditor}}</td>
-                  <td  *ngIf="caracteristicaIndice==i">
-                    <select class="select-auditor-acti" style="margin-top: 6px;height: 26px;" formControlName="auditor" [(ngModel)]="editarCaracteristica.auditor">
-                      <option value="" disabled selected>Seleccionar</option>
-                      <option *ngFor="let auditor of listAuditor" [value]="auditor.nombrePst">{{auditor.nombrePst}}
-                      </option>
-                    </select>
-                  </td>
-                  <td  *ngIf="caracteristicaIndice!=i">{{auditoria?.fecha | date: 'dd/MM/yyyy' }} {{auditoria?.hora}}</td>
-                  <td  *ngIf="caracteristicaIndice==i">
-                    <input bsDatepicker appFwCalendario appDateInputMask type="text" maxlength="10" placement="bottom" class="forma-input-acti"
-                    #dp2="bsDatepicker" placeholder="DD-MM-YYYY" title="Inicio de actividad" formControlName="fecha" [(ngModel)]="editarCaracteristica.fecha"
-                    style="width:100px;margin-right: 0px; margin-left: 7px;border: 1px solid #068460;border-radius:3px; padding: 3px;height: 22px;"
-                    [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY'}" />
-                  <i (click)="dp2.show()" class="fa-solid fa-calendar-days" style="color: #06543c;font-size: 22px;padding: 8px;"
-                    [attr.aria-expanded]="dp2.isOpen">
-                  </i>
-                 <br>
-                      <input type="time" value="" class="input-hora" style="margin: 8px;" formControlName="hora" [(ngModel)]="editarCaracteristica.hora">
-                  </td>
-
-                  <td  *ngIf="caracteristicaIndice!=i ">{{auditoria?.observacion}}</td>
-                  <td  *ngIf="caracteristicaIndice==i">
-                    <textarea type="text" style="height: 61px;border-radius: 3px;" class="obs-acti-editar"
-                    formControlName="observacion" [(ngModel)]="editarCaracteristica.observacion"></textarea>
-                  </td>
-                  <td  *ngIf="caracteristicaIndice!=i ">{{auditoria?.proceso? auditoria?.proceso: '--'}}</td>
-                  <td  *ngIf="caracteristicaIndice==i"> 
-                    <select *ngIf="process && caracteristicaIndice==i"  class="select-process" id="selectProcess" formControlName="proceso" [(ngModel)]="editarCaracteristica.proceso">
-                      <option value="" disabled selected>Seleccionar</option>
-                      <option value="Proceso 1">Proceso 1</option>
-                      <option value="Proceso 2">Proceso 2</option>
-                      <option value="Proceso 3">Proceso 3</option>
-                    </select>
-                  </td>
-                  <td  *ngIf="caracteristicaIndice!=i">{{auditoria?.actividad? auditoria?.actividad : '--'}}</td> 
-                  <td  *ngIf="caracteristicaIndice==i">
-                    <input *ngIf="activiti && caracteristicaIndice==i" type="text" value="" class="actividad" placeholder="Actividad" formControlName="actividad" [(ngModel)]="editarCaracteristica.actividad" >
-                  </td>
-                  <td>
-                      <a title="Editar" (click)="fnPlanningEdit(i)" *ngIf="caracteristicaIndice!=i">
-                        <i class="fa-solid fa-pen" style="color: #06543c;"></i>
-                      </a>
-                      <a title="Guardar" *ngIf="caracteristicaIndice==i" (click)="fnSchedulingUpdate(i)">
-                        <i class="fa-regular fa-floppy-disk" style="color: #06543c;font-size: 25px;"></i>
-                      </a>
-                      <a title="Cancelar" *ngIf="caracteristicaIndice==i" (click)="fnPlanifiacacionEditarCancelar()">
-                        <i class="fa-solid fa-circle-xmark" style="color: #06543c;font-size: 25px;"></i>
-                      </a>
-                      <app-app-delete-activities
-                          [objAuditoria]="indiceAEliminarAuditoria"
-                          *ngIf="caracteristicaIndice!=i"
-                          (click)="fnPlanificacionEliminar(i);"
-                          (valorEnviado)="recibirValor($event)">
-                      </app-app-delete-activities>
-                  </td>
-                </tr>
-              </tbody>
-
-            </table>
+            </div>
           </div>
-          <app-app-auditoria-planificacion  (valorEnviadoModal)="recibirValorModal($event)"></app-app-auditoria-planificacion>
-          <div class="container-final">
-            <label class="obs-titulo-final">Observaciones de auditoría</label>
-            <textarea type="text" style="height: 61px;margin-top: 3px;" class="obs-final" 
-            formControlName="observacion"></textarea>
-          </div>
-          <div class="div-guardar">
-            <button type="submit" [disabled]="formParent.invalid" class="btn-guardar">
-              Guardar
-            </button>
-          </div>
+        </div>
         </form>
-      </div>
+     
       <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
-    </div>
+      </div>
+      </div>
   </div>
-</body>
+  <ngx-spinner bdColor="rgba(0, 0, 0, 0.5)" size="small"
+  template="<img src='https://www.superiorlawncareusa.com/wp-content/uploads/2020/05/loading-gif-png-5.gif' width='50' height='50'/>">
+  </ngx-spinner>
 <app-modal></app-modal>
-</html>

@@ -1,163 +1,219 @@
 <app-app-header></app-app-header>
 
-    <div class="titulo">
-      <h1 class="titulo-nav">
-          Lista de verificación auditoría
-      </h1>
+<div class="componente-global">
+  <div class="titulo">
+    <h1 class="titulo-nav">Lista de verificación auditoría</h1>
+    <div class="contenedor-arrow">
+      <app-app-header-arrow-left routerLink="/dashboard"></app-app-header-arrow-left>
+    </div>
   </div>
-  <div class="componente-global">
-       <div class="container-form">
-        <div class="grup-table-global" id="table_audit">
-          <div class="grup-btn-plan">
-            <button class="btn-nueva-auditoria" (click)="redirigirAVista()">Nuevo plan de Auditoría
-              <i class="fa-solid fa-plus" style="color: #fff;"></i>
-            </button>
-          </div>
-          <table class="table"  style="text-align: center !important;">
+  <div class="container-form-lista-verificacion">
+    <!-- tabla -->
+    <div class="container-form">
+      <div class="grup-table-global" id="table_audit">
+        <div class="grup-btn-plan">
+          <button class="btn-nueva-auditoria" (click)="redirigirAVista()">Nuevo plan de Auditoría
+            <i class="fa-solid fa-plus" style="color: #fff;"></i>
+          </button>
+        </div>
+        <div class="rp-table">
+          <table class="table fs" style="text-align: center !important;">
             <thead class="tr-table">
               <tr>
                 <th style="text-align: center;">AUDITOR LIDER</th>
                 <th style="text-align: center;">FECHA DE AUDITORIA</th>
                 <th style="text-align: center;">ACTIVIDADES</th>
-                <th style="text-align: center;">ACCIONES</th>             
+                <th style="text-align: center;">ACCIONES</th>
               </tr>
             </thead>
             <tbody>
               <tr *ngFor="let audit of listaAuditoria">
-                <td>{{ audit.auditoR_LIDER }}</td>
-                <td>{{ audit.fechA_AUDITORIA }}</td>
-                <td>{{ audit.proceso }}</td>
+                <td>{{ audit.AUDITOR_LIDER }}</td>
+                <td>{{ audit.FECHA_AUDITORIA }}</td>
+                <td>{{ audit.PROCESO }}</td>
                 <td>
-                  <a (click)="seleccionarAuditoria(audit)"  title="Seleccionar">
-                    <i class="fa-solid fa-file-circle-check" style="color: #06543c;font-size: 19px;margin: 4px;"></i>
-                  </a>
-                  <!-- <a (click)="seleccionarAuditoria(audit)"  title="Eliminar">
-                    <i class="fa-solid fa-trash" style="color: #06543c;font-size: 19px;margin: 4px;"></i>
-                  </a> -->
+                  <app-modal-detalle [idAuditoria]="audit.ID_AUDITORIA" (valorEnviado)="recibirValorDetalle($event)"></app-modal-detalle>
                 </td>
               </tr>
             </tbody>
           </table>
-          <div class="page-style">
-            <div class="container-label">
-              <label class="paginas">  Página: {{ pages }} / {{ totalPaginas }} Registros: {{ totalRegistros }} </label>
-              <div class="ls-pagina ">
-              <pagination 
-                  lastText="&raquo;"
-                  nextText="&rsaquo;" 
-                  firstText="&laquo;" 
-                  previousText="&lsaquo;" 
-                  [maxSize]="3" 
-                  [totalItems]="contentArray.length"
-                  [itemsPerPage]="6"
-                  [boundaryLinks]="true" 
-                  (pageChanged)="pageChanged($event)"
-                  [ngClass]="{'page-item': true}">
-                </pagination> 
-            </div>
-            </div>
-          </div>  
         </div>
-       
-       
-
-
-        <form id="formListaDeVerficacion"  
-            style="display: none;"
-            [formGroup]="formParent"
-            class="controller-auditoria"
-            (ngSubmit)="saveFormVerificacion()">  
-          <div class="plan-auditoria">
-                <label class="label-auditor">Fecha de auditoría : {{this.selectedAuditoria?.fechA_AUDITORIA}} </label>
-                <br>
-                <label class="label-auditor">Auditor lider :{{selectedAuditoria?.auditoR_LIDER}}</label>
-                <br>
-                <label for="leader" class="label-auditor">Seleccionar un líder:</label>
-                <select class="select-lider" (change)="selectLeader($event)" formControlName="team">
-                <option  selected>Seleccionar</option>
-                <option *ngFor="let leader of leaders" [value]="leader?.nombre" id="{{leader.leader}}">{{ leader.nombre }}</option>
-                </select>
-                <label class="label-auditor" for="cargo">Cargo:</label>
-                <label class="label-auditor" id="cargo" >{{ selectedLeaderCargo }}</label>
-                <br>
-                <label class="label-auditor">Nombre(s) de otra(s) persona(s) auditada(s): </label>
-                <input type="text" formControlName="personasAuditadas" style="margin-left: 22px;"/>
-                 <br>
-                <label class="label-auditor">Objetivos de auditoría: {{this.selectedAuditoria.objetivo}} </label>
-                <br>
-                <label class="label-auditor">Alcance de auditoría: {{this.selectedAuditoria.alcance}}</label>
-                <br>
-                <label class="label-auditor">Documentos de referencia: </label>
-                <input type="text" formControlName="documentos" style="margin-left: 22px;"/>
-                <br>
-                <label class="label-auditor">Norma(s) a auditar:{{this.normaSelected}}  </label>
-                <br>
-                <label class="label-auditor">Proceso(s) / Actividad / Requisito a auditar: {{this.selectedAuditoria.proceso}}</label>
-                <br>
-
-                <label class="label-auditor">Criterios de auditoría : {{this.selectedAuditoria.criterio}}</label>
-                <br>
-    
-                <!-- aqui empieza lo dinámico -->
-                <div *ngIf="requisitos?.length>0">
-                <div formArrayName="formRequisitos">
-                  <div *ngFor="let requisito of requisitos; let i=index" [formGroupName]="i">
-                    <label for="titulo" class="label-auditor">Requisito:</label>
-                    <input type="text" id="titulo" formControlName="requisito">
-                    <br>
-                    <label for="titulo" class="label-auditor">Posible evidencia:</label>
-                    <input type="text" id="titulo" formControlName="evidencia">
-                    <br>
-                    <div class="select-value ">
-                      <label class="label-auditor">Hallazgo(s)</label>
-                      <select 
-                      name="select"  
-                      class="select-titulo"   
-                      id="selectCategoria"  
-                      formControlName="hallazgo"
-                      (change)="getHallazgo($event)"
-                      >
-                        <option value="NC" >No Conformidad</option>  
-                        <option value="OBS" >Observacion</option> 
-                        <option value="OM" >Oportunidad de mejora</option>  
-                        <option value="F" >Fortaleza</option>  
-                        <option value="C" >Conforme</option>        
-                      </select>
-                    </div>
-                    <label for="descripcion" class="label-auditor">Observaciones o comentarios o notas de auditor :</label>
-                    <textarea type="text" style="height: 61px" class="obs"
-                    formControlName="observacion"></textarea>
-                    <div formArrayName="formPreguntas" class="label-auditor">
-                      Pregunta:
-                      <div *ngFor="let pregunta of preguntasArr; let j = index" [formGroupName]="j">
-                     
-                          <label>Pregunta {{j+1}}:</label>
-                          <input type="text" formControlName="pregunta">
-                        
-                      </div>
-                      <button (click)="agregarPregunta($event,i,requisito)" class="button-mas">+</button>
-                    </div>
+        <div class="page-style">
+          <div class="container-label">
+            <label class="paginas"> Página: {{ pages }} / {{ totalPaginas }} Registros: {{ totalRegistros }} </label>
+            <div class="ls-pagina ">
+              <pagination lastText="&raquo;" nextText="&rsaquo;" firstText="&laquo;" previousText="&lsaquo;" [maxSize]="3"
+                [totalItems]="contentArray.length" [itemsPerPage]="6" [boundaryLinks]="true"
+                (pageChanged)="pageChanged($event)" [ngClass]="{'page-item': true}">
+              </pagination>
+            </div>
+          </div>
+        </div>
+        <app-app-footer></app-app-footer>
+      </div>
+  
+        <form id="formListaDeVerficacion" style="display: none;" [formGroup]="formParent" class="controller-auditoria"
+          (ngSubmit)="saveFormVerificacion()"> 
+          <div class="container">
+            <div class="row">
+              <div class="col-md-3 col-sm-12 order-sm-2 order-md-1 d-flex justify-content-center" 
+              style="margin-top: -37px;">
+            <app-app-menu *ngIf="!mostrarMenu"></app-app-menu>
+              </div>
+            <div class="col-md-9 col-sm-12 order-sm-1 order-md-2"> 
+              <div class="containerForm">
+               <div class="contenido">  
+                <div class="col-md-6 col-sm-6" class="container-section">
+                  <label class="label-auditor">Fecha de auditoría:</label> <p>{{selectedAuditoria?.FECHA_AUDITORIA}}</p>
+                  <div class="linea"></div>
+                  <label class="label-auditor">Auditor líder: </label> <p>{{selectedAuditoria?.AUDITOR_LIDER}}</p> 
+                  <div class="linea"></div>
+                  <label class="label-auditor">Norma(s) a auditar:</label> <p>{{this.nuevoNorma}}</p> 
+                  <div class="linea"></div>
+                  <label class="label-auditor">Criterios de auditoría:</label> <p>{{selectedAuditoria.CRITERIO}}</p>
+                  <div class="linea"></div>
+                  <label class="label-auditor">Proceso(s) / Actividad / Requisito a auditar:</label> <p>{{this.nuevoProceso}}</p>
+                  <div class="linea"></div>
+                  <label class="label-auditor">Nombre(s) de otra(s) persona(s) auditada(s):</label> <p *ngIf="showLeader">{{showAudited}}</p>
+                  <input type="text" *ngIf="!showLeader" formControlName="personasAuditadas" class="inp"/>
+                </div>
+                <div class="col-md-6 col-sm-6" class="container-section">
+                  <div class="container-div">
+                    <label class="label-auditor" for="leader">Seleccionar un líder:</label><p *ngIf="showLeader">{{showProcessLeader}}</p>
+                    <div *ngIf="!showLeader">
+                    <select class="select-lider" (change)="selectLeader($event)" formControlName="team">
+                      <option selected disabled>Seleccionar</option>
+                      <option *ngFor="let leader of leaders" [value]="leader?.NOMBRE" >{{
+                        leader.NOMBRE }}
+                      </option>
+                    </select>
+                    <div class="linea"></div>
                   </div>
+                  </div>
+                  <label class="label-auditor" for="cargo">Cargo:</label> <p *ngIf="showLeader">{{showLeaderCargo}}</p>
+                  <p *ngIf="!showLeader">{{ selectedLeaderCargo }}</p>
+                  <div class="linea"></div>
+                  <label class="label-auditor">Objetivos de auditoría:</label> <p>{{selectedAuditoria.OBJETIVO}}</p>
+                  <div class="linea"></div>
+                  <label class="label-auditor">Alcance de auditoría:</label> <p>{{selectedAuditoria.ALCANCE}}</p>
+                  <div class="linea"></div>
+                  <label class="label-auditor">Documentos de referencia:</label> <p *ngIf="showLeader">{{showDocuments}}</p>
+                  <input *ngIf="!showLeader" type="text" formControlName="documentos" class="inp"/>
+                </div>
+               </div>
+            <div class="row">
+              <div class="btn">
+                <div>
+                  <app-app-agregar-requisito (valorEnviadoModal)="recibirValorModal($event)"
+                    (click)="fnRequirementEditarCancelar()"></app-app-agregar-requisito>
                 </div>
               </div>
-               <button 
-               type="button" 
-               class="agregar-req"
-                (click)="addRequest($event)">
-                Agregar requisito
-              </button>
+              <div class="tablaDinamica">
+              <table class="table-gestion" id="table_actividad" *ngIf="showTable">
+                <thead class="tr-table">
+                  <tr>
+                    <th class="tr-table-dinamic">REQUISITO</th>
+                    <th class="tr-table-dinamic">POSIBLE EVIDENCIA</th>
+                    <th class="tr-table-dinamic">HALLAZGO(S)</th>
+                    <th class="tr-table-dinamic">OBSERVACIONES/NOTAS DE AUDITOR</th>
+                    <th class="tr-table-dinamic">PREGUNTA(S)</th>
+                    <th class="tr-table-dinamic">ACCIONES</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let addRequired of valueRequired,let i= index">
+                    <td *ngIf="caracteristicaIndice!=i">{{addRequired.REQUISITO}}</td>
+                    <td *ngIf="caracteristicaIndice==i"><input  type="text" id="titulo" formControlName="requisito"
+                        [(ngModel)]="editarCaracteristica.REQUISITO"></td>
+                    <td *ngIf="caracteristicaIndice!=i">{{addRequired.EVIDENCIA}}</td>
+                    <td *ngIf="caracteristicaIndice==i"> <input style="width: 76px;" type="text" id="titulo" formControlName="evidencia"
+                        [(ngModel)]="editarCaracteristica.EVIDENCIA"> </td>
+                    <td *ngIf="caracteristicaIndice!=i">{{addRequired.HALLAZGO}}</td>
+                    <td *ngIf="caracteristicaIndice==i"> 
+                      <select name="select" class="select-titulo" id="selectCategoria"
+                        formControlName="hallazgo" [(ngModel)]="editarCaracteristica.HALLAZGO">
+                    
+                        <option value="NC">No Conformidad</option>
+                        <option value="OBS">Observación</option>
+                        <option value="OM">Oportunidad de mejora</option>
+                        <option value="F">Fortaleza</option>
+                        <option value="C">Conforme</option>
+                      </select></td>
+                    <td *ngIf="caracteristicaIndice!=i">{{addRequired?.OBSERVACION? addRequired?.OBSERVACION: '--'}}</td>
+                    <td *ngIf="caracteristicaIndice==i"><textarea type="text" style="height: 61px;width:150px" class="obs"
+                        formControlName="observacion" [(ngModel)]="editarCaracteristica.OBSERVACION"></textarea></td>
+                    <td *ngIf="caracteristicaIndice != i">
+                      <span *ngFor="let question of addRequired?.formPreguntas,let i= index">{{ i+1 }}:{{ question? question:
+                        '--' }}
+                        {{ i !== addRequired.formPreguntas.length - 1 ? '' : '' }}
+                      <br></span>
+                    </td>
+                    <td *ngIf="caracteristicaIndice==i">
+                      <select name="select" class="select-titulo" (change)="formIndexSelect($event)"
+                        formControlName="formPreguntas" [(ngModel)]="editarCaracteristica.formPreguntas">
+                        <option *ngFor="let question of addRequired?.formPreguntas" [value]="question" >{{question}}</option>
+                      </select>
+                       <input type="text" formControlName="preguntas" [(ngModel)]="editarCaracteristica.formPreguntasSelect"> 
+                    </td>
+                    <td>
+                      <a title="Editar" (click)="fnPlanningEdit(i)" *ngIf="caracteristicaIndice!=i">
+                        <i class="fa-solid fa-pen" style="color: #06543c;"></i>
+                      </a>
+                      <a title="Guardar" *ngIf="caracteristicaIndice==i" (click)="fnRequirementUpdate(i)">
+                        <i class="fa-regular fa-floppy-disk" style="color: #06543c;font-size: 25px;"></i>
+                      </a>
+                      <a title="Cancelar" *ngIf="caracteristicaIndice==i" (click)="fnRequirementEditarCancelar()">
+                        <i class="fa-solid fa-circle-xmark" style="color: #06543c;font-size: 25px;"></i>
+                      </a>
+                      <app-app-delete-activities *ngIf="caracteristicaIndice!=i" (valorEnviado)="recibirValor($event)"
+                        (click)="fnPlanificacionEliminar(i);">
+                      </app-app-delete-activities>
+                    </td>
+                  </tr>
+                </tbody>  
+              </table>
+              </div>
+
+              <footer class="page-style" style="    
+              margin-left: -81px;
+              margin-top: 20px;
+              margin-bottom: 20px;
+              " *ngIf="showTable">
+                <div class="container-label">
+                <label class="paginas">  Página:  {{pagesRequired}}  /  {{totalPaginasRequired }} Mostrando:  {{totalRegistrosRequired}}   Registros: {{datatotalRequired}}  </label> 
+                  <div class="ls-pagina ">
+                  <pagination 
+                      lastText="&raquo;"
+                      nextText="&rsaquo;" 
+                      firstText="&laquo;" 
+                      previousText="&lsaquo;" 
+                      [maxSize]="3" 
+                      [totalItems]="contentArrayRequired.length"
+                      [itemsPerPage]="6"
+                      [(ngModel)]="currentPage"
+                      [boundaryLinks]="true" 
+                      (pageChanged)="pageChangedRequired($event)"
+                      [ngClass]="{'page-item': true}">
+                    </pagination> 
+                </div>
+                </div>
+              </footer>
+             
+              <div class="div-guardar">
+                <button type="submit" class="btn-guardar" [disabled]="formParent.invalid" >Guardar</button>
+              </div>
+            </div>
+            </div>
+            </div>
+            </div>
           </div>
-          <div class="div-guardar">
-            <button type="submit" class="btn-guardar"  [disabled]="formParent.invalid" >Guardar</button>
-             <!-- disabled="formParent.isValid" -->
-          </div>
+            <app-app-footer></app-app-footer>
         </form>
-       </div>
- 
+    </div>
+  </div>
 </div>
-<ngx-spinner
-  bdColor="rgba(0, 0, 0, 0.5)"
-  size="small"
-  template="<img src='https://www.superiorlawncareusa.com/wp-content/uploads/2020/05/loading-gif-png-5.gif' width='50' height='50'/>"
->
+<ngx-spinner bdColor="rgba(0, 0, 0, 0.5)" size="small"
+  template="<img src='https://www.superiorlawncareusa.com/wp-content/uploads/2020/05/loading-gif-png-5.gif' width='50' height='50'/>">
 </ngx-spinner>
+<app-modal></app-modal>
+

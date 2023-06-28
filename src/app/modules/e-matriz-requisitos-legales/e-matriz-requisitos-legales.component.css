@@ -12,18 +12,16 @@ h1{
     color: #068460;
     margin: 15vh 0 5vh 5vw;
 }
-h3, h2, .parrafo, .estado{
+h3, h2, .parrafo{
     font-family: 'Work Sans', sans-serif;
     font-size: 19px;
     font-weight: lighter;
 }
-h2,
-.plan{
+h2{
     font-weight: bolder;
     margin: 1vh;
 }
-.parrafo,
-.estado{
+.parrafo{
     font-size: 16px !important;
     margin: 1vh;
 }
@@ -40,7 +38,7 @@ h2,
 i{
     cursor: pointer;
     position: absolute;
-    top: 50%; /* Define la posición superior en relación con el contenedor principal */
+    top: 50%;
     right: 0;
     transform: translateY(-50%);
     margin: 0.2vh 5vw;
@@ -57,7 +55,7 @@ i{
     margin: 0 9vw 1vh 1vw;
     font-weight: 600;
     position: absolute;
-    top: 50%; /* Define la posición superior en relación con el contenedor principal */
+    top: 50%;
     transform: translateY(-50%);
 }
 .titulo{
@@ -102,7 +100,8 @@ i{
     margin: 1vh 0;
 }
 .btn,
-.btnAdd{
+.btnAdd,
+.btnReporte{
     margin: 10vh 3vw 5vh 3vw;
     height: 40px;
     width: 200px;
@@ -119,10 +118,17 @@ i{
     margin: 3vh 0 !important;
     cursor: pointer !important;
 }
-.divBtn{
+/* .btnGuardar{
+    margin: 3vh 0 !important;
+} */
+.btnReporte{
+    margin: 2vh 0 3vh 0 !important;
+}
+.reporte{
     display: flex;
-    justify-content: row;
-  }
+    justify-content: flex-end;
+    width: 83vw;
+}
 .adicionarBtn{
     color: #FFFFFF;
     font-family: 'Work Sans', sans-serif;
@@ -163,13 +169,13 @@ input[type=number] {
     display: flex;
     flex-direction: column;
 }
-.containerform,
+/* .containerform,
 .containerformB{
     display: flex;
     flex-direction: row;
     width: 80vw;
-}
-.subContainerformMain,
+} */
+/* .subContainerformMain,
 .subContainerformMainB{
     display: flex;
     flex-direction: column;
@@ -177,18 +183,18 @@ input[type=number] {
 }
 .subContainerformMainB{
     margin: 0 27vw 0 0;
-}
-.subContainerform,
+} */
+/* .subContainerform,
 .subContainerformB{
     display: flex;
     flex-direction: column;
     margin: 1vh;
     width: 25vw;
-}
-.subContainerformB{
+} */
+/* .subContainerformB{
     width: 20vw !important;
-}
-.estadoForm,
+} */
+/* .estadoForm,
 .estadoFormB{ 
     background: #FFFFFF;
     border: 2px solid #068460;
@@ -197,10 +203,10 @@ input[type=number] {
     margin: 5px 0 15px 0;
     padding: 5px;
     width: 23vw;
-}
-.estadoFormB{
+} */
+/* .estadoFormB{
     width: 18vw !important;
-}
+} */
 #acciones{
     height: 80px; 
     width: 200px;

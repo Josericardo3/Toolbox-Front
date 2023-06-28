@@ -52,10 +52,17 @@ export class AppGestionDeUsuariosComponent {
   pages = 1;
   estadoatencionBtn: boolean = true;
   contentArray: any = [];
+  TIPO_USUARIO: any; 
+  showAddAsesor: boolean = true; 
 
   ngOnInit() {
     this.onLoadPst();
     document.getElementById('modalAsesor').style.display = 'none';
+    this.TIPO_USUARIO = window.localStorage.getItem('TIPO_USUARIO');
+    this.TIPO_USUARIO = Number(this.TIPO_USUARIO); 
+    if(this.TIPO_USUARIO == 8 ){
+      this.showAddAsesor= false; 
+    }
 
     //validacion registar un nuevo asesor
     this.registerNewAsesor = this.formBuilder.group(
@@ -126,12 +133,11 @@ export class AppGestionDeUsuariosComponent {
   filterResult() {
     this.result = false;
     this.contentArray = [];
-    
     let arrayTemp = this.dataInitial.filter((item) => 
-      ( item.estadoatencion.toUpperCase().includes(this.guardarEvent.trim().toUpperCase())  || this.guardarEvent.trim().toUpperCase() =='')&&
-      ( item.rnt.toUpperCase().includes(this.guardarEventRnt.trim().toUpperCase())  || this.guardarEventRnt.trim().toUpperCase() =='')&&
-      (  item.razonsocial.toUpperCase().includes(this.guardarEventEmpresa.trim().toUpperCase() )  || this.guardarEventEmpresa.trim().toUpperCase() =='')&&
-      (  item.asesorasignado.toUpperCase().includes(this.guardarEventAsesor.trim().toUpperCase())  || this.guardarEventAsesor.trim().toUpperCase() =='')
+      ( item.ESTADO_ATENCION.toUpperCase().includes(this.guardarEvent.trim().toUpperCase())  || this.guardarEvent.trim().toUpperCase() =='')&&
+      ( item.RNT.toUpperCase().includes(this.guardarEventRnt.trim().toUpperCase())  || this.guardarEventRnt.trim().toUpperCase() =='')&&
+      (  item.RAZON_SOCIAL_PST.toUpperCase().includes(this.guardarEventEmpresa.trim().toUpperCase() )  || this.guardarEventEmpresa.trim().toUpperCase() =='')&&
+      (  item.ASESOR_ASIGNADO.toUpperCase().includes(this.guardarEventAsesor.trim().toUpperCase())  || this.guardarEventAsesor.trim().toUpperCase() =='')
     )
       this.returnedArray = arrayTemp;
 
@@ -227,7 +233,7 @@ export class AppGestionDeUsuariosComponent {
 
   //actualizar asesor
   updateNewAsesor() {
-    const request = { "idusuariopst": this.contenidoAsignacion?.idusuariopst, "idUsuario": this.guardarSeleccion.idUsuario }
+    const request = { "ID_PST": this.contenidoAsignacion?.ID_PST, "ID_ASESOR": this.guardarSeleccion.ID_ASESOR }
     this.ApiService.updateAsesor(request).subscribe((data) => {
       this.isOpen = !this.isOpen;
       return this.onLoadPst();
@@ -267,9 +273,9 @@ export class AppGestionDeUsuariosComponent {
   //datos del form
   saveNewAsesor() {
     const request = {
-      rnt: this.registerNewAsesor.get("registroNacionalDeTurismo")?.value,
-      nombre: this.registerNewAsesor.get("nombre")?.value,
-      correo: this.registerNewAsesor.get("correo")?.value,
+      RNT: this.registerNewAsesor.get("registroNacionalDeTurismo")?.value,
+      NOMBRE: this.registerNewAsesor.get("nombre")?.value,
+      CORREO: this.registerNewAsesor.get("correo")?.value,
 
     }
 

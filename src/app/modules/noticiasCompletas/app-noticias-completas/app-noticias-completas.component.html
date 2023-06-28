@@ -1,0 +1,51 @@
+<app-app-header></app-app-header>
+<div class="containerHistorial">
+    <div class="titulo">
+        <h1>Noticias</h1>
+        <app-app-header-arrow-left routerLink="/dashboard"></app-app-header-arrow-left>
+    </div>
+    <div class="containerTarjetas">
+        <div class="tarjetas" *ngFor="let campo of datos" (click)="indexCard(campo.Notificacion.FK_ID_NOTICIA,campo.Notificacion.TIPO)">
+            <ng-container *ngIf="campo.Notificacion.TIPO === 'Noticia'">
+                <div *ngIf="campo.Notificacion.COD_IMAGEN !== null; else elseBlock">
+                    <img [src]="'data:image/png;base64,' + campo.Notificacion.COD_IMAGEN" class="img1">
+                </div>
+                <ng-template #elseBlock>
+                    <img src="../../../../assets/img-dashboard/icons8-noticias-100.png" class="img2">
+                </ng-template>
+                <a><u>{{ campo.Notificacion.TITULO_NOTICIA }}</u></a>    
+                <p style="font-weight: bold;">{{ campo.Notificacion.FECHA_ACT_NOTICIA }}</p>          
+                <p>{{ campo.Notificacion.DESCRIPCION_NOTICIA.slice(0,200) }}</p> 
+            </ng-container>
+        </div>
+    </div>
+    <footer class="page-style">
+        <div class="container-label">
+            <label class="paginas">
+                Página:  {{pages}}  /  {{totalPaginas}}  Mostrando:  {{totalRegistros}}  Registros:  {{datatotal}}
+            </label>
+            <div class="ls-pagina">
+                <pagination 
+                lastText="&raquo;"
+                nextText="&rsaquo;" 
+                firstText="&laquo;" 
+                previousText="&lsaquo;"
+                [maxSize]="3" 
+                [itemsPerPage]="6" 
+                [boundaryLinks]="true" 
+                [(ngModel)]="currentPage"
+                [ngClass]="{'page-item': true}"
+                [totalItems]="contentArray.length" 
+                (pageChanged)="pageChanged($event)">
+                </pagination>
+            </div>
+        </div>
+    </footer>
+</div>
+<app-app-footer></app-app-footer>
+<ngx-spinner
+  bdColor="rgba(0, 0, 0, 0.5)"
+  size="small"
+  template="<img src='https://www.superiorlawncareusa.com/wp-content/uploads/2020/05/loading-gif-png-5.gif' width='50' height='50'/>"
+>
+</ngx-spinner>

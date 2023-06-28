@@ -48,7 +48,7 @@ import { AppListaDeVerificacionComponent } from './modules/ListaDeVerificacion/a
 
 import { PipesModule } from './pipes/pipes.module';
 import { AppInformeDeAuditoriaComponent } from './modules/InformeDeAuditoria/app-informe-de-auditoria/app-informe-de-auditoria.component';
-import { AppMenuAuditoriaComponent } from './modules/MenuAuditoria/app-menu-auditoria/app-menu-auditoria.component';
+import { AppFormularioComponent } from './modules/formulario/app-formulario/app-formulario.component';
 // import { MatTabsModule } from '@angular/material/tabs';
 
 registerLocaleData(localeEsPE, 'es-PE');
@@ -65,7 +65,18 @@ import { AppDeleteActivitiesComponent } from './modules/planificacion/app-delete
 import { AppHeaderArrowLeftComponent } from './modules/header/app-header-arrow-left/app-header-arrow-left.component';
 import { AppMenuComponent } from './modules/Menu/app-menu/app-menu.component';
 import { AppAuditoriaPlanificacionComponent } from './modules/AuditoriaInterna/app-auditoria-planificacion/app-auditoria-planificacion.component';
+import { AppNoticiaComponent } from "./modules/noticia/app-noticia/app-noticia.component";
+import { AppGestorNoticiaComponent } from './modules/GestorNoticia/app-gestor-noticia/app-gestor-noticia.component';
+import { AppEliminarNoticiaComponent } from './modules/GestorNoticia/app-eliminar-noticia/app-eliminar-noticia.component';
+import { AppAgregarRequisitoComponent } from './modules/ListaDeVerificacion/app-agregar-requisito/app-agregar-requisito.component';
+// import { SelectMultipleComponent } from './select-multiple/select-multiple.component';
+// import { NgSelectModule } from '@ng-select/ng-select';
 // import { MatTabsModule } from '@angular/material/tabs';
+import { NgxSelectModule } from 'ngx-select-ex';
+import { AppHistorialNoticiasComponent } from './modules/historialNoticias/app-historial-noticias/app-historial-noticias.component';
+import { AngularEditorModule } from '@kolkov/angular-editor';
+import { AppNoticiasCompletasComponent } from './modules/noticiasCompletas/app-noticias-completas/app-noticias-completas.component';
+import { ModalDetalleComponent } from './modules/ListaDeVerificacion/modal-detalle/modal-detalle.component';
 
 @NgModule({
   declarations: [
@@ -92,7 +103,7 @@ import { AppAuditoriaPlanificacionComponent } from './modules/AuditoriaInterna/a
     AppNuevoPlanDeAuditoriaComponent,
     AppListaDeVerificacionComponent,
     AppInformeDeAuditoriaComponent,
-    AppMenuAuditoriaComponent,
+    AppFormularioComponent,
     AppPlanificacionComponent,
     AppColaboradorComponent,
     AppAvatarComponent,
@@ -100,11 +111,21 @@ import { AppAuditoriaPlanificacionComponent } from './modules/AuditoriaInterna/a
     AppHeaderArrowLeftComponent,
     AppMenuComponent,
     AppAuditoriaPlanificacionComponent,
+    AppNoticiaComponent,
+    AppGestorNoticiaComponent,
+    AppEliminarNoticiaComponent,
+    AppAgregarRequisitoComponent,
+    AppHistorialNoticiasComponent,
+    AppNoticiasCompletasComponent,
+    ModalDetalleComponent,
+    // SelectMultipleComponent,
+    
   ],
   imports: [
     PipesModule,
     BrowserModule,
     AppRoutingModule,
+    NgxSelectModule,
     FormsModule,
     ReactiveFormsModule, 
     StoreModule.forRoot({ data: stateReducer }),
@@ -125,6 +146,7 @@ import { AppAuditoriaPlanificacionComponent } from './modules/AuditoriaInterna/a
     CarouselModule,
     BrowserAnimationsModule,
     TabsModule,
+    AngularEditorModule
   ],
 
   providers: 
@@ -140,10 +162,8 @@ import { AppAuditoriaPlanificacionComponent } from './modules/AuditoriaInterna/a
   ],
   entryComponents: [
     AppDeleteActivitiesComponent,
-    
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-
   bootstrap: [AppComponent],
 })
 export class AppModule { }

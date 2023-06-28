@@ -1,0 +1,61 @@
+.containerHistorial{
+    display: flex;
+    flex-direction: column;
+    margin: 2vh 5vw;
+}
+.titulo{
+    display: flex;
+    flex-direction: row-reverse;
+    margin: 2vh 0;
+}
+h1{
+    width: 100%;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: bolder;
+    color: #068460;
+    text-align: center;
+}
+.containerTarjetas{
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+}
+.tarjetas{
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(235, 235, 235);
+    border-radius: 20px;
+    width: 90vw;
+    height: auto;
+    padding: 10px 15px;
+    margin-top: 2vh;
+}
+.fecha{
+    font-family: 'Work Sans', sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    margin: 0 0 0.5vh 0;
+}
+.contenido{
+    font-family: 'Work Sans', sans-serif;
+    font-size: 13px;
+    margin: 0 0 0.5vh 0;
+}
+/* Paginado */
+.page-style {
+    display: flex;
+    justify-content: flex-end;
+    margin: 2vh 0 0 0;
+}
+.container-label {
+    display: flex;
+    align-items: center;
+}
+.paginas {
+    display: inline-block;
+    max-width: 100%;
+    margin: 10px;
+    font-weight: 700;
+    font-size: 14px;
+    font-family: 'Work Sans', sans-serif;
+}

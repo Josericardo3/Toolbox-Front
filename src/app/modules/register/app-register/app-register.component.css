@@ -409,3 +409,106 @@ input.ng-invalid.ng-touched {
 margin: 13px;
 }
 }
+/* obj  */
+
+.email-div {
+    display: flex;
+    flex-direction: column;
+}
+
+.email-icon {
+    position: relative;
+    display: inline-block;
+}
+
+.iconcheck {
+    color: #068460;
+    cursor: pointer;
+    position: absolute;
+    right: 0;
+    margin: 2.5vh 1vw 0 0;
+}
+.iconFaXmark{
+    color: #e60a1c;
+    cursor: pointer;
+    position: absolute;
+    right: 0;
+    margin: 2.5vh 1vw 0 0;
+}
+input.invalid-input {
+    border: 1px solid red;
+  }
+
+
+  
+.phone-div {
+    display: flex;
+    flex-direction: column;
+}
+
+.phone-icon {
+    position: relative;
+    display: inline-block;
+}
+
+.iconCheckPhone {
+    color: #068460;
+    cursor: pointer;
+    position: absolute;
+    right: 0;
+    margin: 2.5vh 1vw 0 0;
+}
+.iconFaXmarkPhone{
+    color: #e60a1c;
+    cursor: pointer;
+    position: absolute;
+    right: 0;
+    margin: 2.5vh 1vw 0 0;
+}
+
+/*Rnt*/
+.rnt-div {
+    display: flex;
+    flex-direction: column;
+}
+
+.rnt-icon {
+    position: relative;
+    display: inline-block;
+}
+
+.iconCheckRnt {
+    color: #068460;
+    cursor: pointer;
+    position: absolute;
+    right: 0;
+    margin: 2.5vh 1vw 0 0;
+}
+.iconFaXmarkRnt{
+    color: #e60a1c;
+    cursor: pointer;
+    position: absolute;
+    right: 0;
+    margin: 2.5vh 1vw 0 0;
+}
+input.invalid-input {
+    border: 1px solid red;
+  }
+  /* modal de Política de tratamiento de datos */
+  .x{
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 24px;
+  }
+
+#modalTerminos.active>.content-terminos{
+    /* background-color: chocolate; */
+    /* border: 1px solid orange; */
+    /* width: 723px; */
+    height: 406px;
+    display: flex;
+    margin: 5% auto;
+    justify-content: center;
+    border-radius: 15px;
+
+}

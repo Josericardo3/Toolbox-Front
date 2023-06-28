@@ -3,7 +3,10 @@
     <img class="logo-escudo"
       src="../../../../assets/img-dashboard/logo.svg"
       alt=""
-      (click)="Logo()"
-    />
+      (click)="Logo()"/>
+  </div>
+  <div class="container-pst" *ngIf="nombre && nombre.length > 0">
+    <p>{{nombre}}</p>
   </div>
 </div>
+

@@ -1,196 +1,227 @@
 <app-app-header></app-app-header>
+
 <div class="componente-global">
   <div class="titulo">
     <h1 class="titulo-nav">Informe de Auditoría</h1>
+    <div class="contenedor-arrow">
+      <app-app-header-arrow-left routerLink="/dashboard"></app-app-header-arrow-left>
+    </div>
   </div>
-
+  <img [src]="" alt="">
   <div class="container-form-informe-auditoria">
-   <app-app-menu></app-app-menu>
-
-    <!-- formulario -->
+    <!-- tabla -->
     <div class="container-form">
-      <table
-        class="table"
-        style="margin-left: 64px; margin-top: 36px; max-width: 70%"
-        id="table_proceso"
-       
-      >
-        <thead>
-          <tr>
-            <th>CÓDIGO</th>
-            <th>FECHA DE INFORME DE AUDITORÍA</th>
-            <th>AUDITOR</th>
-            <th>ACCIONES</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let audit of procesoFinal">
-            <td>{{ audit.codigo }}</td>
-            <td>{{ audit.fechA_AUDITORIA }}</td>
-            <td>{{ audit.proceso }}</td>
-            <td>
-              <button (click)="selectAudit(audit)"  class="seleccionar">
-                SELECCIONAR
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      <div class="container-form">
-        <form id="formAuditoria" 
-        [formGroup]="formParent" 
-        style="display: none"
-        (ngSubmit)="saveForm()"
-        >
-          <div class="informe-auditoria">
-            <label class="label-auditor"
-              >Proceso / Actividad auditados :
-              {{ this.selectedProceso?.proceso }}</label
-            >
-            <br />
-            <label class="label-auditor"
-              >Auditor lider : {{ this.selectedProceso?.auditoR_LIDER }}
-            </label>
-            <br />
-            <label class="label-auditor"
-              >Equipo auditor : {{ this.selectedProceso?.equipO_AUDITOR }}</label
-            >
-            <br />
-            <label class="label-auditor"
-              >Fecha de informe de auditoría :
-              {{ this.selectedProceso?.fechA_AUDITORIA }}</label
-            >
-            <br />
-            <label class="label-auditor"
-              >Objetivo de la auditoria :
-              {{ this.selectedProceso?.objetivo}}
-            </label>
-            <br />
-            <label class="label-auditor"
-              >Alcance de la auditoría :
-              {{ this.selectedProceso?.alcance}}
-            </label>
-            <br />
-            <label class="label-auditor"
-              >Criterios de auditoría :
-              {{ this.selectedProceso?.criterio}}
-            </label>
-            <br />
-            <label class="label-auditor"
-              >Reunión de cierre : {{ this.selectedProceso?.fechA_REUNION_CIERRE }}
-            </label>
-            <br />
-            <label class="label-conformidad"
-              >Conformidad del sistema de gestion de sostenibilidad
-            </label>
-            <br />
-            <table class="table" id="table_audit">
-              <thead>
-                <tr>
-                  <div class="text-th">
-                    <th>Descripción</th>
-                    <th style="margin-left: 376px">NTC</th>
-                    <th style="margin-left: 54px">Legales</th>
-                  </div>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>Total de <b>NO CONFORMIDADES</b> detectadas en esta auditoría</td>
-                  <td>
-                    <div class="input-check">
-                      <input type="radio" style="margin-left: -128px" name="no_conformidades" value="si" (change)="capturarValor($event)">
-                      <input type="radio" style="margin-right: 23px;" name="no_conformidades" value="no" (change)="capturarValor($event)">
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>Total de <b>OBSERVACIONES</b> detectadas en esta auditoría</td>
-                  <td>
-                    <div class="input-check">
-                      <input type="radio" style="margin-left: -128px" name="observaciones" value="si" (change)="capturarValor($event)">
-                      <input type="radio" style="margin-right: 23px;" name="observaciones" value="no" (change)="capturarValor($event)">
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>Total de <b>OPORTUNIDADES DE MEJORA</b> detectadas en esta auditoría</td>
-                  <td>
-                    <div class="input-check">
-                      <input type="radio" style="margin-left: -128px" name="oportunidades" value="si" (change)="capturarValor($event)">
-                      <input type="radio" style="margin-right: 23px;" name="oportunidades" value="no" (change)="capturarValor($event)">
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>Total de <b>FORTALEZAS</b> detectadas en esta auditoría</td>
-                  <td>
-                    <div class="input-check">
-                      <input type="radio" style="margin-left: -128px" name="fortalezas" value="si" (change)="capturarValor($event)">
-                      <input type="radio" style="margin-right: 23px;" name="fortalezas" value="no" (change)="capturarValor($event)">
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>Total de <b>CONFORMIDADES</b> detectadas en esta auditoría  </td>
-                  <td>
-                    <div class="input-check">
-                      <input type="radio" style="margin-left: -128px" name="conformidades" value="si" (change)="capturarValor($event)">
-                      <input type="radio" style="margin-right: 23px;" name="conformidades" value="no" (change)="capturarValor($event)">
-                    </div>
-                  </td>
-                </tr>
-              </tbody>
-              
-            </table>
-            <label class="label-conformidad">Proceso / Actividad : </label>
-            <br />
-            <table class="table" id="table_audit">
-              <thead>
-                <tr>
-                  <th>Requisito</th>
-                  <th>Hallazgo</th>
-                  <th>Observación</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let requisito of arrRequisito">
-                  <td>{{ requisito?.requisito }}</td>
-                  <td>{{ requisito?.hallazgo }}</td>
-                  <td>{{ requisito?.observacion }}</td>
-                  
-                </tr>
-              </tbody>
-            </table>
-            <label class="label-nota"
-              ><b>Nota:</b> Agregar los campos necesarios para registrar los
-              resultados por Proceso/ Actividad y números de requisitos
-              evaluados.</label
-            >
-            <br />
-
-            <div class="container-textarea">
-              <label class="label-auditor">Conclusiones de la auditoría</label>
-              <textarea
-                type="text"
-                class="obs"
-                formControlName="conclusiones"
-              ></textarea>
-            </div>
-            <div class="div-guardar">
-              <button type="submit"  [disabled]="formParent.invalid"  class="btn-guardar">
-                
-                Guardar
-              </button>
+      <div class="grup-table-global" id="table_proceso">
+        <div class="rp-table">
+          <table class="table fs">
+            <thead class="tr-table">
+              <tr>
+                <th style="text-align: center;">FECHA DE REGISTRO</th>
+                <th style="text-align: center;">AUDITOR LIDER</th>
+                <th style="text-align: center;">FECHA</th>
+                <th style="text-align: center;">ACCIONES</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="text-align: center;" *ngFor="let audit of procesoFinal">
+                <td>{{ audit.FECHA_REG}}</td>
+                <td>{{ audit.AUDITOR_LIDER}}</td>
+                <td>{{ audit.FECHA_AUDITORIA }}</td>
+                <td>
+                  <a (click)="selectAudit(audit)" title="Seleccionar" class="seleccionar">
+                    <i class="fa-solid fa-file-circle-check fsh" style="color: #06543c;margin: 4px;"></i>
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="page-style">
+          <div class="container-label">
+            <label class="paginas"> Página: {{ pages }} / {{ totalPaginas }} Registros: {{ totalRegistros }} </label>
+            <div class="ls-pagina">
+              <pagination lastText="&raquo;" nextText="&rsaquo;" firstText="&laquo;" previousText="&lsaquo;"
+                [maxSize]="3" [totalItems]="contentArray.length" [itemsPerPage]="6" [boundaryLinks]="true"
+                (pageChanged)="pageChanged($event)" [ngClass]="{'page-item': true}">
+              </pagination>
             </div>
           </div>
-        </form>
+        </div>
+        <app-app-footer></app-app-footer>
       </div>
-      <script
-        src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      
+      <form id="formAuditoria" style="display: none" [formGroup]="formParent" class="controller-infoAuditoria"
+        (ngSubmit)="saveForm()">
+        <div class="container">
+          <div class="row"> 
+            <div class="col-md-3 col-sm-12 order-sm-2 order-md-1 d-flex justify-content-center"
+            style="margin-top: -37px;">
+              <app-app-menu *ngIf="!mostrarMenu"></app-app-menu>
+            </div>
+            <div class="col-md-9 col-sm-12 order-sm-1 order-md-2"> 
+            <div class="containerForm">
+              <div class="contenido">
+                <div class="col-md-6 col-sm-6" class="container-section">
+                  <label class="label-auditor">Proceso / Actividad auditados:</label> <p>{{ this.nuevoProceso }}</p>
+                  <div class="linea"></div>
+                  <label class="label-auditor">Auditor lider:</label> <p>{{ this.selectedProceso?.AUDITOR_LIDER}}</p>
+                  <div class="linea"></div>               
+                  <label class="label-auditor">Equipo auditor:</label> <p>{{ this.selectedProceso?.EQUIPO_AUDITOR}}</p>  
+                  <div class="linea"></div>              
+                  <label class="label-auditor">Fecha de informe de auditoría:</label> <p>{{ this.selectedProceso?.FECHA_AUDITORIA }}</p> 
+                  <div class="linea"></div>                
+                </div>
+                <div class="col-md-6 col-sm-6" class="container-section">
+                  <label class="label-auditor">Objetivo de la auditoria:</label> <p>{{ this.selectedProceso?.OBJETIVO}}</p>      
+                  <div class="linea"></div>      
+                  <label class="label-auditor">Alcance de la auditoría:</label> <p>{{ this.selectedProceso?.ALCANCE}}</p>    
+                  <div class="linea"></div>            
+                  <label class="label-auditor">Criterios de auditoría:</label> <p>{{ this.selectedProceso?.CRITERIO}}</p>    
+                  <div class="linea"></div>            
+                  <label class="label-auditor">Reunión de cierre:</label> <p>{{ this.selectedProceso?.FECHA_REUNION_CIERRE }}</p>   
+                  <div class="linea"></div>             
+                </div>
+              </div>
+
+              <div class="row">
+                <label class="label-conformidad">
+                  Conformidad del sistema de gestion de sostenibilidad
+                </label>
+                <br />
+                <table class="table" id="table_audit" 
+                 style="max-width: 100%; height: 25px;margin-bottom: 20px; width: 64.6vw;">
+                  <thead style="background: #068460; color: white;">
+                    <tr>
+                      <div class="text-th">
+                        <th style="padding: 5px;">DESCRIPCIÓN</th>
+                        <th style="margin-left: 376px;padding: 5px;">NTC</th>
+                        <th style="margin-left: 54px;padding: 5px;">LEGALES</th>
+                      </div>
+                    </tr>
+                  </thead>
+                  <tbody *ngFor="let proceso of arrProceso">
+                    <tr>
+                      <div style="display: flex;justify-content: space-between;">
+                        <td class="td-conformidad">Total de <span style="color: black;">NO CONFORMIDADES</span>
+                          detectadas en esta auditoría</td>
+                        <td style="margin-left: 24px;margin-top: 5px;">{{proceso?.CANT_NC}}</td>
+                        <td style="margin-right: 68px;margin-top: 5px;">--</td>
+                      </div>
+                    </tr>
+                    <tr>
+                      <div style="display: flex;justify-content: space-between;">
+                        <td class="td-conformidad">Total de <span style="color: black;">OBSERVACIONES</span> detectadas
+                          en esta auditoría</td>
+                        <td style="margin-left: 52px;">{{proceso?.CANT_OBS}}</td>
+                        <td style="margin-right: 67px;">--</td>
+                      </div>
+                    </tr>
+                    <tr>
+                      <div style="display: flex;justify-content: space-between;">
+                        <td class="td-conformidad">Total de <span style="color: black;">OPORTUNIDADES DE MEJORA</span>
+                          detectadas en esta auditoría</td>
+                        <td style="margin-right: 34px;">{{proceso?.CANT_OM}}</td>
+                        <td style="margin-right: 67px;">--</td>
+                      </div>
+                    </tr>
+                    <tr>
+                      <div style="display: flex;justify-content: space-between;">
+                        <td class="td-conformidad">Total de <span style="color: black;">FORTALEZAS</span> detectadas en
+                          esta auditoría</td>
+                        <td style="margin-left: 79px;">{{proceso?.CANT_F}}</td>
+                        <td style="margin-right: 67px;">--</td>
+                      </div>
+                    </tr>
+                    <tr>
+                      <div style="display: flex;justify-content: space-between;">
+                        <td class="td-conformidad">Total de <span style="color: black;">CONFORMIDADES</span> detectadas
+                          en esta auditoría</td>
+                        <td style="margin-left: 49px;">{{proceso?.CANT_C}}</td>
+                        <td style="margin-right: 67px;">--</td>
+                      </div>
+                    </tr>
+                  </tbody>
+                </table>
+                <div class="label-proc-acty">
+                  <label class="label-proceso-actividad">Proceso / Actividad :</label>
+                  <p class="p-proceso-actividad">{{this.nuevoProceso}}</p>
+                  <!-- <input type="text" class="input-proceso-actividad" formControlName="procesoOrActividad"> -->
+                </div>
+                <br>
+               
+                <table class="table" 
+                style="max-width: 100%;margin-bottom: 20px;width: 64.6vw;" 
+                  id="table_audit">
+                  <thead style="background: #068460;color: white;">
+                    <tr>
+                      <th style="text-align: center;">N°</th>
+                      <th style="text-align: center;">REQUISITO</th>
+                      <th style="text-align: center;">NC</th>
+                      <th style="text-align: center;">OBS</th>
+                      <th style="text-align: center;">OM</th>
+                      <th style="text-align: center;">F</th>
+                      <th style="text-align: center;">C</th>
+                      <th style="text-align: center;">DESCRIPCIÓN</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr style="text-align: center;" *ngFor="let requisito of arrRequisito">
+                      <td>{{ requisito.NUMERACION }}</td>
+                      <td>{{ requisito.REQUISITO }}</td>
+                      <td>{{ requisito?.HALLAZGO == 'NC' ? 'NC' : ' --' }}</td>
+                      <td>{{ requisito?.HALLAZGO == 'OBS' ? 'OBS' : ' --' }}</td>
+                      <td>{{ requisito?.HALLAZGO == 'OM' ? 'OM' : ' --'}}</td>
+                      <td>{{ requisito?.HALLAZGO == 'F' ? 'F' : ' --'}}</td>
+                      <td>{{ requisito?.HALLAZGO == 'C' ? 'C' : ' --'}}</td>
+                      <td>{{ requisito.OBSERVACION }}</td>
+
+                    </tr>
+                  </tbody>
+                </table>
+                
+                <div class="page-style" style=" margin-right: 77px;">
+                  <div class="container-label">
+                    <label class="paginas"> Página: {{ pagesRequired }} / {{ totalPaginas }} Registros: {{
+                      totalRegistros }} </label>
+                    <div class="ls-pagina">
+                      <pagination lastText="&raquo;" nextText="&rsaquo;" firstText="&laquo;" previousText="&lsaquo;"
+                        [maxSize]="3" [totalItems]="contentArrayReq.length" [itemsPerPage]="6" [boundaryLinks]="true"
+                        (pageChanged)="pageChangedReq($event)" [ngClass]="{'page-item': true}">
+                      </pagination>
+                    </div>
+                  </div>
+                </div>
+
+                <label class="label-nota"><b>Nota:</b> Agregar los campos necesarios para registrar los
+                  resultados por Proceso/ Actividad y números de requisitos evaluados.</label>
+                <br />
+
+                <div class="container-textarea">
+                  <label class="label-auditor">Conclusiones de la auditoría</label>
+                  <textarea type="text" class="obs" formControlName="conclusiones"></textarea>
+                </div>
+
+                <div class="div-guardar">
+                  <button type="submit" [disabled]="formParent.invalid" class="btn-guardar">
+                    Guardar
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div> 
+        
+          </div>
+        </div>
+        <app-app-footer></app-app-footer>
+      </form>
+
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-        crossorigin="anonymous"
-      ></script>
+        crossorigin="anonymous"></script>
     </div>
   </div>
 </div>
+<ngx-spinner bdColor="rgba(0, 0, 0, 0.5)" size="small"
+template="<img src='https://www.superiorlawncareusa.com/wp-content/uploads/2020/05/loading-gif-png-5.gif' width='50' height='50'/>">
+</ngx-spinner>
+<app-modal></app-modal>

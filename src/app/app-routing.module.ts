@@ -17,8 +17,13 @@ import { EMatrizRequisitosLegalesComponent } from './modules/e-matriz-requisitos
 import { AppNuevoPlanDeAuditoriaComponent } from './modules/NuevoPlanDeAuditoria/app-nuevo-plan-de-auditoria/app-nuevo-plan-de-auditoria.component';
 import { AppListaDeVerificacionComponent } from './modules/ListaDeVerificacion/app-lista-de-verificacion/app-lista-de-verificacion.component';
 import { AppInformeDeAuditoriaComponent } from './modules/InformeDeAuditoria/app-informe-de-auditoria/app-informe-de-auditoria.component';
-import { AppMenuAuditoriaComponent } from './modules/MenuAuditoria/app-menu-auditoria/app-menu-auditoria.component';
 import { AppPlanificacionComponent } from './modules/planificacion/app-planificacion/app-planificacion.component';
+import { AppNoticiaComponent } from './modules/noticia/app-noticia/app-noticia.component';
+import { AppGestorNoticiaComponent } from './modules/GestorNoticia/app-gestor-noticia/app-gestor-noticia.component';
+import { AppHistorialNoticiasComponent } from './modules/historialNoticias/app-historial-noticias/app-historial-noticias.component';
+import { AppNoticiasCompletasComponent } from './modules/noticiasCompletas/app-noticias-completas/app-noticias-completas.component';
+import { AppMenuComponent } from './modules/Menu/app-menu/app-menu.component';
+
 const routes: Routes = [
   {path: '', component: AppLoginComponent},
   {path: 'register', component: AppRegisterComponent},
@@ -31,15 +36,18 @@ const routes: Routes = [
   {path: 'gestionUsuario', component: AppGestionDeUsuariosComponent},
   {path: 'evidencia/:section', component: AppEvidenciaComponent},
   {path: 'evidencia/:section/:subSection', component: AppEvidenciaComponent },
-  {path: 'recovery/:id', component: RecoveryComponent},
+  {path: 'recovery', component: RecoveryComponent},
   {path: 'auditoria', component: AppAuditoriaInternaComponent},
   {path: 'EMatrizRequisitosLegales', component: EMatrizRequisitosLegalesComponent},
   {path: 'nuevoPlanDeAuditoria', component: AppNuevoPlanDeAuditoriaComponent},
   {path: 'listaDeVerificacion', component: AppListaDeVerificacionComponent},
   {path: 'informeAuditoria', component: AppInformeDeAuditoriaComponent},
-  {path: 'menuAuditoria', component: AppMenuAuditoriaComponent},
-  {path: 'planificacion', component: AppPlanificacionComponent}
-  //{path: '', component: AppMyExampleComponent},
+  {path: 'planificacion', component: AppPlanificacionComponent},
+  {path: 'noticia', component: AppNoticiaComponent},
+  {path: 'gestorNoticia', component: AppGestorNoticiaComponent},
+  {path: 'historial', component: AppHistorialNoticiasComponent},
+  {path: 'noticiaCompleta', component: AppNoticiasCompletasComponent},
+  {path: 'menu', component: AppMenuComponent},
 ];
 
 @NgModule({

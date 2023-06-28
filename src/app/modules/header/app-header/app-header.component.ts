@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ApiService } from 'src/app/servicios/api/api.service';
 
 @Component({
   selector: 'app-app-header',
@@ -6,15 +7,25 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./app-header.component.css']
 })
 export class AppHeaderComponent implements OnInit {
+  datos: any = [];
+  nombre: any;
 
-  constructor() { }
+  constructor(private ApiService: ApiService,) { }
 
-  ngOnInit(): void {
+  ngOnInit() {
+    this.getNombreUsuario();
   }
-
 
   Logo(){
     const url = 'https://www.gov.co/home'
     window.location.href=url;
    }
+
+   getNombreUsuario(){
+    this.ApiService.getUsuario()
+    .subscribe(data =>{
+      this.datos = data
+      this.nombre = this.datos.NOMBRE_PST
+    })
+  }
 }

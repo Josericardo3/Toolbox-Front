@@ -34,7 +34,6 @@ export class AppDeleteActivitiesComponent {
     })}
 
   confirmDelete(): void {
-
     if(this.indice != undefined){
       const valor = -2 ;
       this.ApiService.deleteActivities(this.indice).subscribe((data) => {

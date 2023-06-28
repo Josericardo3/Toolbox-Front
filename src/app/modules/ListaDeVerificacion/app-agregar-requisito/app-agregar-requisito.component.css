@@ -1,0 +1,129 @@
+.fade {
+    opacity: 1 !important;
+  }
+.btn-agregar {
+  background: #068460;
+  color: white;
+  width: 177px;
+  cursor: pointer;
+  padding: 0;
+  font-family: 'Work Sans', sans-serif;
+  border-radius: 10px;
+  height: 33px;
+  border: none;
+  cursor: pointer;
+  margin-right: 77px;
+  margin: 0.5vh 0 3vh 0;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+  }
+  h4 {
+    width: 100%;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: bolder;
+    font-size: 20px;
+    color: #068460;
+    text-align: center;
+  }
+  
+.contenedor-modal {
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 2px 10px #00000026;
+  padding: 10px;
+  max-width: 600px;
+  text-align: center;
+  position: relative;
+}
+.btn-register:disabled{
+  background-color: #999999;
+  color: #000000;
+}
+.modal-contedor {
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 2px 10px #00000026;
+  padding: 10px;
+  max-width: 470px;
+  text-align: inherit;
+  position: relative;
+}
+.cancelar {
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 20px;
+  /* padding-top: 13px; */
+}
+.label-auditor{
+  font-weight: bold;
+  font-size: 16px;
+  font-family: 'Work Sans', sans-serif;
+  color: #474749;
+  margin: 2px 0 15px 0;
+}
+.select-titulo{
+  background: #FFFFFF;
+
+  height: 20px;
+  width: 86px;
+
+  margin: 6px;
+  font-family: 'Work Sans', sans-serif;
+  border: solid 2px #068460 !important;
+  border-radius: 10px;
+}
+.label-auditor{
+  font-weight: bold;
+  font-size: 16px;
+  font-family: 'Work Sans', sans-serif;
+  color: #474749;
+  margin: 14px 0 6px 0;
+}
+.button-mas{
+  border: 2px solid #068460;
+  border-radius: 4px;
+  width: 23px;
+  height: 24px;
+  background: white;
+  color: #068460;
+}
+.div-guardar{
+  display: flex;
+  justify-content: center; 
+}
+.btn-guardar{
+  display: flex;
+  justify-content: space-around;
+  margin: 31px 0 3px 0;
+  height: 35px;
+  width: 165px;
+  padding: 5px;
+  background-color: #068460;
+  border-radius: 100px;
+  color: #FFFFFF;
+  font-family: 'Work Sans', sans-serif;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-guardar:disabled{
+  background-color: #999999;
+  color: #000000;
+}
+input.ng-invalid.ng-touched {
+  border: solid 2px tomato !important;
+  border-radius: 10px;
+}
+textarea.ng-invalid.ng-touched {
+  border: solid 2px tomato !important;
+  border-radius: 10px;
+}
+
+input.ng-valid,select.ng-valid{
+  border: solid 2px #068460 !important;
+  border-radius: 10px;
+}
+
+::ng-deep .custom-tab .nav-link h4 {
+  color: #068460;
+}
