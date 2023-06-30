@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./app-documentacion.component.css']
 })
 export class AppDocumentacionComponent implements OnInit {
+  @Output() navigateToSection = new EventEmitter<string>();
 
   lastVisible: any;
 
@@ -31,7 +32,10 @@ export class AppDocumentacionComponent implements OnInit {
   ntc: string;
   pdfUrl: string;
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router
+  ) {}
+
   ngOnInit(): void {
     this.normaSelected = localStorage.getItem('normaSelected');
     this.ntc = this.normaSelected.substring(0, 8);
@@ -144,10 +148,10 @@ export class AppDocumentacionComponent implements OnInit {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
-}
+  }
 
-goBack() {
-  this.router.navigate(['/dashboard'])
-}
+  goBack() {
+    this.router.navigate(['/dashboard'])
+  }
 
 }

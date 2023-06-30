@@ -1,4 +1,3 @@
-
 .password-toggle {
   position: absolute;
   right: 0;
@@ -7,94 +6,259 @@
   padding: 0.5rem;
   cursor: pointer;
 }
-
 .password-toggle i {
   font-size: 1.25rem;
 }
-  
-  .item-1:active{
-    background-color: green;
-  }
-
-  .grid-img{
-    justify-items: center;
-    margin: 72px 110px 60px 110px;
-    display: grid;
-    grid-template-rows: repeat(3, 1fr);
-    grid-template-columns: repeat(3, 1fr);
-    grid-gap: 24px;
-    gap: 12px;
-    justify-content: center;
-    align-content: center;
-    cursor: pointer;
-  }
-
+/* .item-1:active{
+  background-color: green;
+} */
+.grid-img{
+  justify-items: center;
+  margin: 1vh 0;
+  display: grid;
+  grid-template-rows: repeat(4, 1fr);
+  grid-template-columns: repeat(4, 1fr);
+  /*grid-gap: 40px;
+   gap: 1vw; */
+  justify-content: center;
+  align-content: center;
+  cursor: pointer;
+  height: 91vh;
+  width: 75vw;
+  column-gap: 20px;
+  row-gap: 20px;
+}
 .item-1{
   cursor: pointer;
 }
-  .button-cerrar{
-    font-family:'Work Sans', sans-serif;
-    font-size: 14px;
-    display: flex;
-    justify-content: end;
-    margin: 104px 50px 6px 26px !important;
-    cursor: pointer;
-    flex-direction: row;
-    justify-content: flex-end;
-  }
-
-  .button-cerrar:hover{
-    color: #068460;
-  }
-
-  .logo-escudo{
-    width: 136px;
-    height: 24px;
-    margin: -3px 17px 0px 86px !important;
-  }
-
-  .sub-titulo{
-    font-family:'Work Sans', sans-serif;
-    color: #999999;
-    margin: 15px 5px 7px 0px !important;
-  }
-
-  .item-img{
-    display: flex;
-    align-items: center;
-    flex-direction: column;
+.item-img{
+  height: 15vh;
+}
+.item-img i {
+  font-size: 4.5vw;
+}
+.item-img-sinHover i{
+  font-size: 4.5vw;
+}
+.item-img:hover i {
+  font-size: 6vw;
+}
+.sub-titulo:hover {
+  font-family:'Work Sans', sans-serif;
+  color: #068460;
+  font-weight: bold;
+}
+.sub-titulo-sinHover{
+  color: #9999 !important;
+}
+.sub-titulo,
+.sub-titulo-sinHover{
+  font-family:'Work Sans', sans-serif;
+  font-size: 13px;
+  color: #068460;
+  margin: 10px 0 0 20px !important;
+  text-align: center;
+}
+.button-cerrar{
+  font-family:'Work Sans', sans-serif;
+  font-size: 14px;
+  margin: 6vh 6vw 6vh 0 !important;
+  cursor: pointer;
+  align-self: flex-end;
+}
+.button-cerrar:hover{
+  font-weight: bold;
+}
+.logo-escudo{
+  width: 136px;
+  height: 24px;
+  margin: -3px 17px 0px 86px !important;
+}
+.item-img,
+.item-img-sinHover{
+  display: flex;
+  align-items: center;
+  flex-direction: column;
 }
 .container{
   display: flex;
-  flex-direction: row-reverse;
-}
-.container-norma{
-  margin: 15px;
-  z-index: 999;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
   position: absolute;
 }
-
+.container-norma{
+  display: flex;
+  flex-direction: column;
+  margin: -9vh 10vw 0 0;
+  position: absolute;
+}
 .select-norma{
   color: #068460;
   height: 27px;
   border-radius: 5px;
-  margin: 1px -81px 10px 10px;
 }
-
-@media (max-width:480px) {
-  .select-norma{
-    width: 20px;
-    margin: 1px 17px 10px 10px;
-  }
-
-  .grid-img{
-    margin: 61px 10px 60px 10px;
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .sub-titulo{
-     font-size: 14px;
-  }
-  
-
+.fa-clock{
+  font-size: 20px;
+  margin: -6vh 1vw 0 -4vw;
+  position: absolute;
+  cursor: pointer;
+}
+.containerDashboard{
+  display: flex;
+  height: 91vh;
+  width: 100vw;
+}
+.mainContainer{
+  display: flex;
+  width: 100vw;
+  height: 91vh;
+}
+.dashboard{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 80vw;
+  height: 91vh;
+}
+.notificaciones{
+  display: flex;
+  width: 20vw;
+  height: 91vh;
+  align-items: flex-start;
+  background-color: #068460;
+  font-family:'Work Sans', sans-serif;
+  justify-content: center;
+  flex-direction: column;
+}
+h3{
+  color: white;
+  font-weight: bold;
+  font-size: 22px;
+  margin: 1vh 0 0.5vh 0
+}
+.tituloNot,
+.tituloRec{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* overflow-y: scroll;
+  scroll-behavior: smooth; */
+  margin: 0 2vw 0 0;
+}
+/* .tituloNot::-webkit-scrollbar {
+  width: 3px;
+}
+.tituloNot::-webkit-scrollbar-track {
+  background-color: #dddddd;
+}
+.tituloNot::-webkit-scrollbar-thumb {
+  background-color: #888888;
+}
+.tituloRec::-webkit-scrollbar {
+  width: 3px;
+}
+.tituloRec::-webkit-scrollbar-track {
+  background-color: #dddddd;
+}
+.tituloRec::-webkit-scrollbar-thumb {
+  background-color: #888888;
+} */
+.not1,
+.not22{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 50vh;
+  width: 100%;
+}
+.not2{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+.verMas{ 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0.5vh 0;
+  margin-top: auto;
+}
+.a{
+  color: white;
+  font-size: 16px;
+  text-decoration: none;
+}
+.linea{
+  border-top: 2px solid white;
+  width: 15vw;
+}
+.lineaTarjeta{
+  border-top: 1px solid rgb(197, 197, 197);
+  height: 2px;
+  width: 10vw;
+  padding: 0;
+  margin: 0 0.2vw 0 0.2vw;
+}
+.containerTarjeta,
+.containerTarjetaRec{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  height: auto;
+  margin: 1vh 0 0 2vw;
+}
+.containerTarjetaRec{
+  margin-left: 2.3vw !important;
+}
+.titulo{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  /* margin-top: 1vh; */
+}
+.imagenTarjeta,
+.imagenTarjetaRec{
+  display: flex;
+  align-items: center;
+  justify-content: center; 
+  width: 4vw;
+  height: 9vh;
+  background-color: white;
+}
+.imagenTarjetaRec,
+.contRec{
+  height: 5vh !important;
+}
+.contRec{
+  width: 15vw !important;
+}
+.cont,
+.contRec{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 14vw;
+  height: 9vh;
+  background-color: white;
+  padding: 3px;
+  cursor: pointer;
+}
+.imagenTarjeta img,
+.imagenTarjetaRec img {
+  max-width: 100%;
+  max-height: 100%;
+}
+.pTarjeta,
+.pTitulo{
+  margin: 0;
+  font-size: 10px;
+}
+.pTitulo{
+  text-align: center;
 }

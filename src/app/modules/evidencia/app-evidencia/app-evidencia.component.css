@@ -91,14 +91,11 @@ p, a{
     margin: 10px 0;
     font-family: 'Work Sans', sans-serif;
     font-size: 17px;
-    color: #068460;
+    color: #474749;
     margin: 5px;
 }
-p{
-    color: #474749 !important;
-}
 a{
-    text-decoration: none;
+    color: rgb(14, 14, 232) !important;
 }
 .btn{
     margin: 10vh 0 5vh 0;

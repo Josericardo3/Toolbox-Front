@@ -1,0 +1,127 @@
+<!-- Button trigger modal -->
+  <button id="openModalButton" class="btn-agregar" (click)="cancelEvent($event)" data-toggle="modal" data-target="#myModal">
+    Agregar requisito
+    <i class="fa-solid fa-plus" style="color: #fff;"></i>
+  </button>
+  
+  <!-- Modal -->
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-contedor">
+        <div >
+          <button  id = "closeModal" style="display: none;" type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <a  title="Cancelar"  class="cancelar" data-dismiss="modal" aria-label="Close">
+            <i class="fa-solid fa-circle-xmark" style="color: #06543c;font-size: 25px;margin-top: 13px;"></i>
+          </a>
+          <h4 class="modal-title" id="myModalLabel">Agregar Requisito</h4>
+        </div>
+        <div class="modal-body">
+           <form class="form-horizontal" [formGroup]="formParent" >
+            <div >
+                <!-- *ngIf="requisitos?.length>0" -->
+                <div >
+                    <!-- formArrayName="formRequisitos" -->
+                  <div >
+                    <!-- *ngFor="let requisito of requisitos; let i=index" [formGroupName]="i" -->
+                    <label for="titulo" class="label-auditor">Requisito *:</label>
+                    <input required appLetras type="text" id="responsable" class="form-control"  style="font-family:Arial,FontAwesome" formControlName="REQUISITO" placeholder="&#xf06e; Evidencia">
+               
+                    <label for="titulo" class="label-auditor">Posible evidencia *:</label>
+                    <input required appLetras type="text" id="responsable" class="form-control" formControlName="EVIDENCIA"  style="font-family:Arial,FontAwesome" placeholder="&#xf303; Posible evidencia">
+     
+                    <label class="label-auditor">Hallazgo(s) *:</label>
+                    <select required name="select" class="form-control" id="selectCategoria" formControlName="HALLAZGO" style="width: 60%;">
+                      <option value="" selected disabled>Selecciona una opción</option>
+                      <option value="NC">No Conformidad</option>
+                      <option value="OBS">Observación</option>
+                      <option value="OM">Oportunidad de mejora</option>
+                      <option value="F">Fortaleza</option>
+                      <option value="C">Conforme</option>
+                    </select>
+                    <label for="descripcion" class="label-auditor">Observaciones/Comentarios/Notas de auditor :</label>
+                    <textarea type="text" style="height: 61px" class="form-control"  style="font-family:Arial,FontAwesome" placeholder="&#xf328; Escriba su observación"
+                    formControlName="OBSERVACION"></textarea>
+                  </div >
+                </div >
+                <div class="select-value">
+                
+                </div>
+                
+                <!-- <div class="select-value ">
+                  <label class="label-auditor">Hallazgo(s)</label>
+                  <select 
+                  required
+                  name="select"  
+                  class="form-control"   
+                  id="selectCategoria"  
+                  formControlName="hallazgo"
+                  style="width: 60%;">
+                   (change)="getHallazgo($event)" 
+                  <option value="">Selecciona una opción</option>
+                  <option value="NC">No Conformidad</option>
+                  <option value="OBS">Observacion</option>
+                  <option value="OM">Oportunidad de mejora</option>
+                  <option value="F">Fortaleza</option>
+                  <option value="C">Conforme</option>
+                  </select>
+                </div> -->
+                <div>
+                  <label for="descripcion" class="label-auditor">Pregunta: </label>
+                  <button class="button-mas" style="margin-left: 5px;" (click)="mostrarInput()" title="Presiona para agregar otra pregunta"> +</button>
+                  <input type="text" class="form-control" *ngIf="mostrarInputPregunta"
+                    (change)="guardarPregunta()" formControlName="PREGUNTA" style="font-family:Arial,FontAwesome"
+                    placeholder="&#xf059; Escribe tu pregunta">
+
+                    <div class="card">
+                      <tabset class="bg-purple text-white custom-tab">
+                        <tab *ngFor="let tab of arrayTemp; let i = index" [heading]="'Pregunta ' + (i + 1)">
+                          <p> {{ tab }}</p>
+                        </tab>
+                      </tabset>
+                    </div>
+                    
+                    
+                    
+
+                    <!-- <div class="card">
+                      <tab *ngFor="let tab of tabs" [heading]="tab.heading">
+                      <tabset class="bg-purple text-white">
+                        <tab heading="One"> hola</tab>
+                        <tab heading="Two"></tab>
+                        <tab heading="Three"></tab>
+                      </tabset>
+                    </div> -->
+                  <!-- <input *ngIf="mostrarInput" [(ngModel)]="nuevaPregunta" (keyup.enter)="guardarPregunta()"
+                                        placeholder="Escribe tu pregunta" /> -->
+                
+                
+                  <!-- <div *ngFor="let pregunta of preguntasArr; let j = index" [formGroupName]="j"> -->
+                  <!-- *ngFor="let pregunta of preguntasArr; let j = index" [formGroupName]="j" -->
+                  <!--                      
+                                          <label>Pregunta {{j+1}}:</label>
+                                          <input type="text" formControlName="pregunta" style="font-family:Arial,FontAwesome" placeholder="&#xf059; Posible evidencia" >
+                                        
+                                      </div>
+                                      <button class="button-mas" (click)="agregarPregunta($event)">+</button> -->
+                  <!-- (click)="agregarPregunta($event,i,requisito)"  -->
+                    </div>
+                    <div class="div-guardar">
+                      <button type="submit"  class="btn-guardar" [disabled]="formParent.invalid" (click)="saveForm()" >
+                        Guardar
+                      </button>
+                    </div>
+            </div >
+          </form> 
+        </div>
+      </div>
+    </div>
+  </div>
+  <ngx-spinner
+    bdColor="rgba(0, 0, 0, 0.5)"
+    size="small"
+    template="<img src='https://www.superiorlawncareusa.com/wp-content/uploads/2020/05/loading-gif-png-5.gif' width='50' height='50'/>"
+  >
+  </ngx-spinner>
+  

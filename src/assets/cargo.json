@@ -1,0 +1,14 @@
+
+{ 
+"leaders" : [
+    { "leader": "Juan Carpio", 
+      "cargo": "Gerente" 
+    },
+    { "leader": "Melissa Gutmont", 
+    "cargo": "Supervisor"
+    },
+    { "leader": "Pedro Suarez", 
+    "cargo": "Jefe de equipo" 
+    }
+  ]
+}

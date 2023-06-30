@@ -1,0 +1,74 @@
+
+/* Estilos por defecto */
+.table-auditoria {
+  display: block;
+  height: 100%;
+}
+.dropdown{
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  /* margin: 0 2vw 0 0; k*/
+}
+.td-menu{
+  padding: 2vh 0 2vh 1vw;
+}
+.td-menu:hover{
+  background-color: rgb(242, 242, 242);
+}
+.td-menu:hover .p-menu{
+  color: #068460;
+  font-weight: bold;
+}
+.p-menu {
+  margin: 0.6vh 0;
+  color: black;
+  border-radius: 6px;
+  /* width: 16.5rem;  cambiar en los demas form*/
+  font-family: 'Work Sans', sans-serif;
+  font-size: 16px;
+  cursor: pointer;
+}
+h3{
+  margin-left: 12px;
+  font-family: 'Work Sans', sans-serif;
+  font-weight: bold;
+}
+.linea{
+  border-top: 2px solid  rgb(168, 168, 168);;
+  width: 22vw;
+  padding: 0;
+  margin-bottom: 2vh;
+}
+/* Estilos para pantallas pequeñas */
+/* @media screen and (max-width: 768px) {
+  .table-auditoria {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .td-menu {
+    flex-basis: 50%;
+    padding: 5px;
+  }
+} */
+
+/* Estilos para pantallas medianas */
+/* @media screen and (min-width: 769px) and (max-width: 1024px) {
+  .table-auditoria {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+   
+  }
+} */
+
+/* Estilos para pantallas grandes */
+/* @media screen and (min-width: 1025px) {
+  .table-auditoria {
+ 
+  }
+
+  .td-menu {
+    padding: 10px;
+  }
+} */

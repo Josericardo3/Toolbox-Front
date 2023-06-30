@@ -1,0 +1,73 @@
+<a title="Ver Detalle" data-toggle="modal" data-target="#showModal" (click)="showModal = true; getDetalleAuditor()">
+  <i class="fa-solid fa-list-ul" style="color: #06543c; font-size: 19px; margin: 0 0.5vw"></i>
+</a>
+
+<div class="modal-background" *ngIf="showModal">
+  <div class="modal-background">
+    <div class="modal-content">
+        <div class="modal-title-editar">
+          <a title="Cerrar" data-dismiss="modal" aria-label="Close" class="x" (click)="showModal = false;">
+            <i class="fa-solid fa-circle-xmark" style="color: #06543c;font-size: 25px"></i>
+          </a>
+          <h1>Detalle</h1>
+          <div class="linea"></div>
+        </div>
+        <div class="contenido">
+          <div class="container-section">
+            <p class="key">Código:</p> <p class="value">{{ CODIGO }}</p>
+          </div>
+          <div class="container-section">
+            <p class="key">Equipo auditor:</p> <p class="value">{{ EQUIPO_AUDITOR }}</p>
+          </div>
+          <div class="container-section">
+            <p class="key">Alcance:</p> <p class="value">{{ ALCANCE }}</p>
+          </div>
+          <div class="container-section">
+            <p class="key">Fecha de reunión de apertura:</p> <p class="value">{{ FECHA_REUNION_APERTURA }}</p>
+          </div>
+          <div class="container-section">
+            <p class="key">Hora de reunión de apertura:</p> <p class="value">{{ HORA_REUNION_APERTURA }}</p>
+          </div>
+          <div class="container-section">
+            <p class="key">Fecha de reunión de cierre:</p> <p class="value">{{ FECHA_REUNION_CIERRE }}</p>
+          </div>
+          <div class="container-section">
+            <p class="key">Hora de reunión de cierre:</p> <p class="value">{{ HORA_REUNION_CIERRE }}</p> 
+          </div>
+          <h4>PROCESOS:</h4>
+            <table class="table-gestion">
+              <thead>
+                  <tr>
+                      <th scope="col">Auditados</th>
+                      <th scope="col">Auditor</th>
+                      <th scope="col">Cargo del líder</th>
+                      <th scope="col">Líder del proceso</th>
+                      <th scope="col">Normas de descripción</th>
+                      <th scope="col">Otros auditados</th>
+                      <th scope="col">Tipo de norma</th>
+                      <th scope="col">Tipo de proceso</th>
+                      <th scope="col">Acciones</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <tr *ngFor="let proceso of PROCESOS,let index= index">
+                      <td>{{ proceso.AUDITADOS }}</td>
+                      <td>{{ proceso.AUDITOR }}</td>
+                      <td>{{ proceso.CARGO_LIDER }}</td>
+                      <td>{{ proceso.LIDER_PROCESO}}</td>
+                      <td>{{ proceso.NORMAS_DESCRIPCION }}</td>
+                      <td>{{ proceso.OTROS_AUDITADOS }}</td>
+                      <td>{{ proceso.TIPO_NORMA }}</td>
+                      <td>{{ proceso.TIPO_PROCESO}}</td>
+                      <td> 
+                        <a (click)="enviarValor(proceso.ID_PROCESO_AUDITORIA, index);showModal = false;" title="Seleccionar">
+                          <i class="fa-solid fa-file-circle-check fsh" style="color: #06543c;margin: 4px;"></i>
+                        </a>
+                      </td>
+                  </tr>
+              </tbody>
+            </table>
+        </div>
+    </div>
+  </div>
+</div>

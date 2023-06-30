@@ -3,36 +3,36 @@
 <a href="../../../../assets//Politica-de-datos/POLITICA DE TRATAMIENTO DE DATOS  ISOLUCIONES.pdf"></a>
 <app-app-header></app-app-header>
 <form [formGroup]="formParent" class="controllerDiagnostico" (ngSubmit)="saveForm()">
-  <h1>{{datos.tituloPrincipal}}</h1> 
+  <h1>{{datos.TITULO_PRINCIPAL}}</h1> 
   <p>Todos los campos con el asterisco (*) son obligatorios</p>
     <div *ngFor="let campo of datos.campos; let j = index" class="diagnostico">
-        <h3>{{campo.tituloprincipal}}</h3>
+        <h3>{{campo.TITULO_PRINCIPAL}}</h3>
         <div *ngFor="let subcampo of campo.listacampos; let i = index" class="formDiagnostico">
-          <h2>{{subcampo.titulo}}</h2>  
+          <h2>{{subcampo.TITULO}}</h2>  
           <label>Numero principal</label>
-          <input type="text" [value]="subcampo.numeralprincipal" disabled="true" [id]="'requisito-' + i">
+          <input type="text" [value]="subcampo.NUMERAL_PRINCIPAL" disabled="true" [id]="'requisito-' + i">
           <label>Numero específico</label>
-          <input type="text" [value]="subcampo.numeralespecifico" disabled="true" [id]="'requisito-' + i">
+          <input type="text" [value]="subcampo.NUMERAL_ESPECIFICO" disabled="true" [id]="'requisito-' + i">
           <label>Titulo del requisito</label>
-          <input type="text" [value]="subcampo.titulo" disabled="true" [id]="'requisito-' + i">
+          <input type="text" [value]="subcampo.TITULO" disabled="true" [id]="'requisito-' + i">
            <label>*Requisito</label>
-          <textarea type="text" [value]="subcampo.requisito" style="height: 200px" disabled="true" [id]="'requisito-' + i"></textarea>
+          <textarea type="text" [value]="subcampo.REQUISITO" style="height: 200px" disabled="true" [id]="'requisito-' + i"></textarea>
           <label>*Posible evidencia</label>
-          <textarea type="text" [value]="subcampo.nombre_evidencia" style="height: 200px" disabled="true" [id]="'requisito-' + i"></textarea>
+          <textarea type="text" [value]="subcampo.NOMBRE_EVIDENCIA" style="height: 200px" disabled="true" [id]="'requisito-' + i"></textarea>
           <label>Escoge una de las siguientes opciones<span style="color: red;">*</span></label>
           <div class="cont">
             <div *ngFor="let opcion of subcampo.desplegable" class="containerRadio">
               <label>{{opcion.descripcion}}</label>
               <div class="radio">
-                <input type="radio" [value]="opcion.item" [name]="'radio' + j + '-' + i" (change)="capturarValor($event, opcion.item, subcampo.numeralprincipal , subcampo.numeralespecifico)" 
-                (click)="valorSeleccionado = opcion.item" [id]="subcampo.numeralespecifico" (change)="opcionSeleccionada = true"
-                [formControlName]="'radio' + j + '-' + i"> {{opcion.valor}}
+                <input type="radio" [value]="opcion.ITEM" [name]="'radio' + j + '-' + i" (change)="capturarValor($event, opcion.ITEM, subcampo.NUMERAL_PRINCIPAL , subcampo.NUMERAL_ESPECIFICO)" 
+                (click)="valorSeleccionado = opcion.ITEM" [id]="subcampo.NUMERAL_ESPECIFICO" (change)="opcionSeleccionada = true"
+                [formControlName]="'radio' + j + '-' + i"> {{opcion.VALOR}}
               </div>
             </div>
           </div>
           <label>Observacion</label>
-          <textarea type="text" style="height: 200px" [id]="'observacion-' + subcampo.numeralespecifico" 
-          (input)="capturarValorObs($event, subcampo.numeralprincipal ,subcampo.numeralespecifico)" class="obs"></textarea>
+          <textarea type="text" style="height: 200px" [id]="'observacion-' + subcampo.NUMERAL_ESPECIFICO" 
+          (input)="capturarValorObs($event, subcampo.NUMERAL_PRINCIPAL ,subcampo.NUMERAL_ESPECIFICO)" class="obs"></textarea>
           <div class="linea"></div>
         </div>
     </div>
@@ -44,19 +44,6 @@
     </div>
     
 </form>
-
-<!-- <div class="modal-background" id="modal-success" *ngIf="showModal">
-  <div class="modal-content">
-    <div class="modal-borde">
-      <h2 class="modal-title">Título del modal</h2>
-      <textarea style="height: 200px; width: 450px" id="textAreaModal"></textarea>
-      <div class="modal-btn" >
-       <button (click)="showModal = false; showMessage(); saveModal()">Guardar</button>
-      </div>
-    </div>
-  </div>
-</div> -->
-
 <app-app-footer></app-app-footer>
 <app-modal></app-modal>
 <ngx-spinner

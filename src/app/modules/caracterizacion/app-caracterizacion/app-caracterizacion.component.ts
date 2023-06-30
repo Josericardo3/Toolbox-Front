@@ -79,21 +79,21 @@ getCaracterizacion(){
   // this.http.get('assets/datos.json')
   .subscribe((data: any) => {
     this.datos = data;
-    this.preguntasDesordenadas = data.campos;
+    this.preguntasDesordenadas = data.CAMPOS;
 
     // Obtiene el valor de "Categoría RNT" para el título
-    const campoCategoriaRNT = this.datos.campos.find(campo => campo.nombre === 'Categoría RNT');
-    this.categoriaRNTValues = campoCategoriaRNT.values;
+    const campoCategoriaRNT = this.datos.CAMPOS.find(campo => campo.NOMBRE === 'Categoría RNT');
+    this.categoriaRNTValues = campoCategoriaRNT.VALUES;
     
     //Bloquear campos con valor
-    this.datos.campos.forEach((campo:any) => {
+    this.datos.CAMPOS.forEach((campo:any) => {
       // campo.nombre !== 'Nombre del líder de sostenibilidad (opcional si es diferente al representante legal)' &&
       // campo.nombre !== 'Correo electrónico líder (Contacto opcional)' && campo.nombre !== 'Teléfono líder (Contacto opcional)'
-      if(campo.values !== null && campo.idcaracterizaciondinamica !== '29'){
-        this.formParent.addControl(campo.nombre, new FormControl({value: campo.values, disabled: true}))
+      if(campo.VALUES !== null && campo.ID_CARACTERIZACION_DINAMICA !== '29'){
+        this.formParent.addControl(campo.NOMBRE, new FormControl({value: campo.VALUES, disabled: true}))
       }
       else{
-        this.formParent.addControl(campo.nombre, new FormControl(null))          
+        this.formParent.addControl(campo.NOMBRE, new FormControl(null))          
       }
     });
 
@@ -105,6 +105,7 @@ getCaracterizacion(){
 
     this.createFormControls();
     this.ordenarPreguntas();
+
   });
 }
 
@@ -112,20 +113,22 @@ getPreguntasOrdenadas(){
   // this.http.get('assets/datos.json')
   this.ApiService.getOrdenCaracterizacion()
   .subscribe((data: any) => {
-    this.preguntasOrdenadas = data.campos;
+    this.preguntasOrdenadas = data.CAMPOS;
     this.ordenarPreguntas();
+
   });
 }
 
 ordenarPreguntas() {
   if (this.preguntasDesordenadas.length && this.preguntasOrdenadas.length) {
     this.preguntasOrdenadas = this.preguntasOrdenadas.map((orden: any) => {
-      const pregunta = this.preguntasDesordenadas.find((pregunta: any) => pregunta.idcaracterizaciondinamica === orden.idcaracterizaciondinamica);
+
+      const pregunta = this.preguntasDesordenadas.find((pregunta: any) => pregunta.ID_CARACTERIZACION_DINAMICA === orden.FK_ID_CARACTERIZACION_DINAMICA);
       return {
         ...pregunta,
-        idorden: orden.idorden
+        ID_ORDEN: orden.ID_ORDEN
       };
-    }).sort((a: any, b: any) => a.idorden - b.idorden);
+    }).sort((a: any, b: any) => a.ID_ORDEN - b.ID_ORDEN);
   }
 }
 
@@ -159,28 +162,28 @@ allFieldsFilled(): boolean {
 }
 
 createFormControls() {
-  for (let campo of this.datos.campos) {
+  for (let campo of this.datos.CAMPOS) {
     let control = this.getControlType(campo);
     // this.formParent.addControl(control.nombre, new FormControl(control.value));
-    if(campo.tipodedato === "referencia_id"){
-      this.dataSelect = this.datos.campos
-      .filter((campo: { relations: string; }) => campo.relations !== '{}' && campo.relations !== '')
-      .flatMap((campo: { relations: any; }) => this.getTable(campo.relations))
+    if(campo.TIPO_DE_DATO === "referencia_id"){
+      this.dataSelect = this.datos.CAMPOS
+      .filter((campo: { RELATIONS: string; }) => campo.RELATIONS !== '{}' && campo.RELATIONS !== '')
+      .flatMap((campo: { RELATIONS: any; }) => this.getTable(campo.RELATIONS))
       .reduce((prev: any, next: any) => prev.concat(next), []);
     }
-    if(campo.tipodedato === "option"){
-      this.dataOption = campo.desplegable
-      .filter((campo: { desplegable: string; }) => campo.desplegable !== '{}' && campo.desplegable !== '')
-      .flatMap((campo: { desplegable: any; }) => this.getOption(campo.desplegable))
+    if(campo.TIPO_DE_DATO === "option"){
+      this.dataOption = campo.DESPLEGABLE
+      .filter((campo: { DESPLEGABLE: string; }) => campo.DESPLEGABLE !== '{}' && campo.DESPLEGABLE !== '')
+      .flatMap((campo: { DESPLEGABLE: any; }) => this.getOption(campo.DESPLEGABLE))
       .reduce((prev: any, next: any) => prev.concat(next), []);
     }
-    if(campo.tipodedato === "norma"){
-      this.dataNorma = this.datos.campos
-      .filter((campo: { relations: string; }) => campo.relations !== '{}' && campo.relations !== '')
-      .flatMap((campo: { relations: any; }) => this.getNorma(campo.relations))
+    if(campo.TIPO_DE_DATO === "norma"){
+      this.dataNorma = this.datos.CAMPOS
+      .filter((campo: { RELATIONS: string; }) => campo.RELATIONS !== '{}' && campo.RELATIONS !== '')
+      .flatMap((campo: { RELATIONS: any; }) => this.getNorma(campo.RELATIONS))
       .reduce((prev: any, next: any) => prev.concat(next), []);
     }
-    this.formParent.addControl(campo.campo_local, control);
+    this.formParent.addControl(campo.CAMPO_LOCAL, control);
   }
 }
 
@@ -266,10 +269,10 @@ public saveForm(){
         const title = "Se guardó correctamente";
         const message = "El formulario se ha guardado exitosamente"
         this.Message.showModal(title,message);
-        this.ApiService.getNorma(localStorage.getItem('Id')).subscribe((data: any) => {
-          localStorage.setItem("normaSelected", data[0].norma);
-          localStorage.setItem("idNormaSelected", data[0].id);
-        });
+        // borrar
+        
+        
+        //
         this.router.navigate(['/dashboard']);
       });
     }

@@ -1,9 +1,10 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 // const fs = require('fs-extra')
 // import { readFile, writeFile } from 'fs/promises';
 import { HttpClient } from '@angular/common/http';
 import { FileUploadService } from 'src/app/servicios/file-upload/file-upload.service';
 import { Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-app-evidencia',
@@ -72,10 +73,50 @@ export class AppEvidenciaComponent implements OnInit{
   constructor(
     private http: HttpClient,
     private FileUploadService: FileUploadService,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void { 
+        // Detectar el parámetro en la URL y, si es "liderazgo", desplegar la sección correspondiente
+        this.route.paramMap.subscribe(params => {
+          if (params.get('section') === 'contexts') {
+            this.contextsVisible = true;
+            if (params.get('subSection') === 'subContexts') {
+              this.subContextsVisible = true;
+            }
+          } else if (params.get('section') === 'liderazgo') {
+            this.liderazgoVisible = true;
+          } else if (params.get('section') === 'planificacion') {
+            this.planificacionVisible = true;
+            if (params.get('subSection') === 'subPlanificacionA') {
+              this.subPlanificacionA = true;
+            } else if (params.get('subSection') === 'subPlanificacionB') {
+              this.subPlanificacionB = true;
+            }
+          }  else if (params.get('section') === 'apoyo') {
+            this.apoyoVisible = true;
+            if (params.get('subSection') === 'subApoyo') {
+              this.subApoyoVisible = true;
+            }
+          } else if (params.get('section') === 'operacion') {
+            this.operacionVisible = true;
+          } else if (params.get('section') === 'evaluacion') {
+            this.evaluacionVisible = true;
+            if (params.get('subSection') === 'subEvaluacion') {
+              this.subEvaluacionVisible = true;
+            }
+          } else if(params.get('section') === 'mejora') {
+            this.mejoraVisible = true;
+          } else if(params.get('section') === 'anexoA') {
+            this.anexoAVisible = true;
+          } else if(params.get('section') === 'anexoB') {
+            this.anexoBVisible = true;
+          } else if(params.get('section') === 'anexoC') {
+            this.anexoCVisible = true;
+          }
+        });
+  }
 
   capturarFile(){
     const archivoSeleccionado = this.archivo.nativeElement.files[0];
@@ -113,9 +154,9 @@ export class AppEvidenciaComponent implements OnInit{
     //   };
     // } else {
     //   console.error('El archivo es demasiado grande. El tamaño máximo es de 10 MB.');
-    }
+  }
   
-    private saveFileToAssetsFolder(file: File): void {
+  private saveFileToAssetsFolder(file: File): void {
       const apiUrl = 'http://localhost:4200/evidencia'; // URL de tu servidor API
       const formData = new FormData();
       formData.append('file', file, './uploads/' + file.name); // ruta de la subcarpeta de assets
@@ -128,7 +169,7 @@ export class AppEvidenciaComponent implements OnInit{
           console.error('Error saving file:', error);
         }
       );
-    }
+  }
 
   toggleSection(section) {
     if (section === 'contexts') {

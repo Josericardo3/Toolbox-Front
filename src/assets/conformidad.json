@@ -1,0 +1,30 @@
+{
+    "items": [
+      {
+        "descripcion": "Total de NO CONFORMIDADES detectadas en esta auditoría",
+        "ntc": false,
+        "legales": false
+      },
+      {
+        "descripcion": "Total de OBSERVACIONES detectadas en esta auditoría",
+        "ntc": false,
+        "legales": false
+      },
+      {
+        "descripcion": "Total de OPORTUNIDADES DE MEJORA detectadas en esta auditoría",
+        "ntc": false,
+        "legales": false
+      },
+      {
+        "descripcion": "Total de FORTALEZAS detectadas en esta auditoría",
+        "ntc": false,
+        "legales": false
+      },
+      {
+        "descripcion": "Total de CONFORMIDADES detectadas en esta auditoría",
+        "ntc": false,
+        "legales": false
+      }
+    ]
+  }
+  

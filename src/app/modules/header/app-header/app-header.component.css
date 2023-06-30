@@ -1,16 +1,27 @@
 
 .container{
-  width: 100%;
+  display: flex;
+  width: 100vw;
   background-color: #068460;
-  position: fixed;
+  /* position: fixed; */
+  /* margin-bottom: 0.1vh; */
   top: 0;
-  z-index: 999;
+  /* z-index: 100; */
   }
 .logo{
   padding: 12px 10px;
   cursor: pointer;
 }
-  .logo-escudo{
-    height: 32px;
-    
+.logo-escudo{
+  height: 32px;
+}
+.container-pst{
+  display: flex;
+  flex-direction: column;
+  margin: 2vh 0 0 73vw;
+  align-self: center;
+}
+p{
+  font-size: 16px;
+  color: white;
 }

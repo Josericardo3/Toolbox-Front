@@ -1,0 +1,75 @@
+    <form [formGroup]="form" (ngSubmit)="onSubmit(selectedMatrizId)">
+        <div class="containerform">
+            <div class="subContainerform">
+                <label for="estadoCumplimiento" class="estado">Estado de cumplimiento</label>
+                <select name="estadoCumplimiento" id="estadoCumplimiento" formControlName="estadoCumplimiento" class="estadoForm"
+                [attr.disabled]="isDisabled ? 'disabled' : null" [ngClass]="{'campo-desactivado': isDisabled}">
+                    <option value="" disabled [selected]="true">Seleccione una opción</option>
+                    <option value="Si" [selected]="form.get('estadoCumplimiento').value === 'Si'">Si</option>
+                    <option value="No" [selected]="form.get('estadoCumplimiento').value === 'No'">No</option>
+                    <option value="En proceso" [selected]="form.get('estadoCumplimiento').value === 'En proceso'">En proceso</option>
+                    <option value="No aplica" [selected]="form.get('estadoCumplimiento').value === 'No aplica'">No aplica</option>
+                </select>
+            </div>
+            <div class="subContainerform">
+                <label for="responsable" class="estado">Responsable de dar cumplimiento</label>
+                <select name="responsable" id="responsable" formControlName="responsable" class="estadoForm" 
+                [attr.disabled]="isDisabled ? 'disabled' : null" [ngClass]="{'campo-desactivado': isDisabled}">
+                    <option value="" disabled [selected]="true">Seleccione una opción</option>
+                    <option value="ResponsableA" [selected]="form.get('responsable').value === 'ResponsableA'">Responsable de dar cumplimiento</option>
+                    <option value="ResponsableB" [selected]="form.get('responsable').value === 'ResponsableB'">Responsable</option>
+                </select>
+            </div>
+            <div class="subContainerformMain">        
+                    <div class="subContainerform" *ngIf="form.get('estadoCumplimiento').value === 'Si'">
+                        <label for="evidencia" class="estado">Evidencia del cumplimineto</label>
+                        <input type="text" id="evidencia" formControlName="evidencia" class="estadoForm" 
+                        [attr.disabled]="isDisabled ? 'disabled' : null" [ngClass]="{'campo-desactivado': isDisabled}">
+                    </div>
+                    <div class="subContainerform" *ngIf="form.get('estadoCumplimiento').value === 'No' || form.get('estadoCumplimiento').value === 'En proceso'">
+                        <label for="observaciones" class="estado">Observaciones / Incumplimiento</label>
+                        <input type="text" id="observaciones" formControlName="observaciones" class="estadoForm" 
+                        [attr.disabled]="isDisabled ? 'disabled' : null" [ngClass]="{'campo-desactivado': isDisabled}">
+                    </div>
+            </div>  
+        </div>
+        <div class="planIntervencion" *ngIf="form.get('estadoCumplimiento').value === 'No' || form.get('estadoCumplimiento').value === 'En proceso'">
+            <h3 class="plan">PLAN DE INTERVENCIÓN</h3>
+            <div class="containerformB" >
+                <div class="subContainerformB">
+                    <label for="acciones" class="estado">Acciones a realizar</label>
+                    <textarea name="acciones" id="acciones" formControlName="acciones" placeholder="Acciones" class="estadoFormB" 
+                    [attr.disabled]="isDisabled ? 'disabled' : null" [ngClass]="{'campo-desactivado': isDisabled}"></textarea>
+                </div>
+                <div class="subContainerformB">
+                    <label for="responsableCumplimiento" class="estado">Responsable de dar cumplimiento</label>
+                    <select name="responsableCumplimiento" id="responsableCumplimiento" formControlName="responsableCumplimiento" class="estadoFormB" 
+                    [attr.disabled]="isDisabled ? 'disabled' : null" [ngClass]="{'campo-desactivado': isDisabled}">
+                        <option value="" disabled [selected]="true">Seleccione una opción</option>
+                        <option value="ResponsableC" [selected]="form.get('responsableCumplimiento').value === 'ResponsableC'">Responsable de dar cumplimiento</option>
+                        <option value="ResponsableD" [selected]="form.get('responsableCumplimiento').value === 'ResponsableD'">Responsable</option>
+                    </select>
+                </div>
+                <div class="subContainerformB">
+                    <label class="estado">Fecha para la ejecución</label>
+                    <input type="date" id="fecha" formControlName="fecha" class="estadoFormB" [attr.disabled]="isDisabled ? 'disabled' : null"
+                    [ngClass]="{'campo-desactivado': isDisabled}">
+                </div>
+                <div class="subContainerformB">
+                    <label class="estado">Estado</label>
+                    <select name="estado" id="estado" formControlName="estado" class="estadoFormB" [attr.disabled]="isDisabled ? 'disabled' : null"
+                    [ngClass]="{'campo-desactivado': isDisabled}">
+                        <option value="" disabled [selected]="true">Seleccione una opción</option>
+                        <option value="Abierto" [selected]="form.get('estado').value === 'Abierto'">Abierto</option>
+                        <option value="Cerrado" [selected]="form.get('estado').value === 'Cerrado'">Cerrado</option>
+                    </select>
+                </div>
+            </div>
+        </div>          
+        <div class="containerBtn">
+            <button type="submit" class="btnGuardar" [disabled]="isDisabled">
+                <i class="fa-solid fa-floppy-disk" style="color: white; margin: 0 0.5vw;"></i>Guardar</button>
+            <button type="button" class="btnGuardar" (click)="activarCampos(true)"> 
+                <i class="fa-solid fa-pen" style="color: white; margin: 0 0.4vw;"></i> Editar</button>
+        </div>
+    </form>

@@ -8,11 +8,12 @@
   <div class="header">
   <app-app-header></app-app-header>
   </div>
+  
   <div class="container-gestion">
     <div class="titulo">
       Gestión de Asesores
       <div class="container-btn">
-      <div>
+      <div *ngIf="showAddAsesor">
         <p class="p-close" (click)="openModalNuevoAsesor()">Registrar un nuevo asesor</p>
       </div>
       <div>
@@ -24,11 +25,11 @@
       <label>RNT</label>
       <input type="text" [value]="rnt" (change)="capturarValorRnt($event)"/>
       <label>Empresa</label>
-      <input type="text" [value]="razonsocial" (change)="capturarValorEmpresa($event)" />
+      <input type="text" [value]="razonsocial" (change)="capturarValorEmpresa($event)"/>
       <label>Asesor</label>
       <input type="text" (change)="capturarValorAsesor($event)" />   
       <label class="padding-label">Estado</label>
-      <select class="estado" (click)="filterResult() "(change)="capturarValorE($event)" >
+      <select class="estado" (click)="filterResult() "(change)="capturarValorE($event)">
         <option  *ngFor="let element of arrEstado">{{ element }}</option>
       </select>
       <button (click)="filterResult()" class="buscar">
@@ -48,16 +49,18 @@
         </thead>
         <tbody>
           <tr *ngFor="let user of returnedArray">
-            <th scope="row"> {{ user.rnt }}</th>
-            <td> {{ user.razonsocial | uppercase }}</td>
-            <td>{{ user.asesorasignado  | titlecase }}</td>
-            <td>{{ user.estadoatencion  | titlecase }}</td>
+            <th scope="row"> {{ user.RNT }}</th>
+            <td> {{ user.RAZON_SOCIAL_PST | uppercase }}</td>
+            <td>{{ user.ASESOR_ASIGNADO  | titlecase }}</td>
+            <td>{{ user.ESTADO_ATENCION  | titlecase }}</td>
             <td class="btn-container">
               
               <button type="button" class="btn btn-default btn-atencion" (click)="linkToDashboard(user)">
                 Iniciar atención
               </button>
+              <div *ngIf="showAddAsesor">
               <button  type="button" class="btn btn-default btn-asignar"  (click)="nuevoAsesor(user)">Asignar asesor</button>
+              </div>
             </td>
           </tr>
         </tbody>
@@ -72,14 +75,14 @@
         <td colspan="7">
             <div class="container-label" style="float:left;">
                 <label class="paginas">
-                    Página: {{ pages }} / {{ filtroTable.TotalPaginas }} Registros: {{ filtroTable.TotalRegistros }}
+                    Página: {{ pages }} / {{ filtroTable.TotalPaginas }} Mostrando: {{ filtroTable.TotalRegistros }} Registros: {{ dataTotal }}
                 </label>
             <div class="ls-pagina ">
               <pagination  
               [ngClass]="{'page-item': true}" 
               [boundaryLinks]="true" 
               [totalItems]="contentArray.length"
-              [itemsPerPage]="10"
+              [itemsPerPage]="7"
               [maxSize]="3"
              (pageChanged)="pageChanged($event)"  
               previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;"
@@ -99,7 +102,7 @@
           <div class="modal-title">
             <select name="select" id="select-pst" [(ngModel)]="opcionSeleccionado" (change)="capturarValueSelect($event)" >
                 <option value=""  selected>Selecciona un Asesor</option>
-                <option class="po" *ngFor="let element of arrListAsesor"  [ngValue]="element" selected>{{element.nombre}}</option>
+                <option class="po" *ngFor="let element of arrListAsesor"  [ngValue]="element" selected>{{element.NOMBRE}}</option>
               </select>
               
             </div>
@@ -157,8 +160,7 @@
           />
           <label
           class="control-error textDanger"
-          *ngIf="registerNewAsesor.controls['correo'].hasError('pattern')"
-          >
+          *ngIf="registerNewAsesor.controls['correo'].hasError('pattern')">
           Debe contener un correo válido
           </label>
           <br>

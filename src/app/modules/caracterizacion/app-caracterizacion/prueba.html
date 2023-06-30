@@ -1,310 +1,48 @@
-<form [formGroup]="formParent" class="controllerDiagnostico" (ngSubmit)="saveForm()">
-  <div formArrayName="campos">
-    <div *ngFor="let campo of datos.campos" class="diagnostico">
-      <div *ngFor="let subcampo of campo.listacampos; let i = index" class="formDiagnostico">
-        <label>Titulo del requisito</label>
-        <input type="text" [value]="subcampo.titulo" disabled="true" [id]="'requisito-' + i">
-        <label>*Requisito</label>
-        <textarea type="text" [value]="subcampo.requisito" style="height: 200px" disabled="true" [id]="'requisito-' + i"></textarea>
-        <label>*Posible evidencia</label>
-        <textarea type="text" [value]="subcampo.nombre_evidencia" style="height: 200px" disabled="true" [id]="'requisito-' + i"></textarea>
-        <div class="cont">
-          <div *ngFor="let opcion of subcampo.desplegable" class="containerRadio">
-            <label>{{opcion.descripcion}}<span style="color: red;">*</span></label>
-            <div class="radio">
-              <input type="radio" [value]="opcion.item" [name]="i" [id]="subcampo.numeralespecifico" formControlName="opcionSeleccionada"> {{opcion.valor}}
-            </div>
-          </div>
+
+  <div class="containerDashboard">
+     <div class="mainContainer">
+      <div class="dashboard">
+        <div class="button-cerrar">
+          <p routerLink="">Cerrar Sesión</p>
         </div>
-        <label>Observacion</label>
-        <textarea type="text" style="height: 200px" [id]="'observacion-' + subcampo.numeralespecifico" class="obs"></textarea>
-        <div class="linea"></div>
-      </div>
-    </div>
-  </div>
-  <button type="submit" class="btn" [disabled]="!allRadioSelected" [class.btn-disabled]="!allRadioSelected">Guardar</button>
-</form>
-
-
-
-<div class = "cointainer">
-  <app-app-header></app-app-header>
-<form [formGroup]="formParent" class="controllerCaracterizacion" (ngSubmit)="saveForm()">
-  <h1>FORMULARIO DE CARACTERIZACIÓN DE {{ categoriaRNTValues }}</h1>
-  <p>Todos los campos con el asterisco (*) son obligatorios</p>
-    <!-- <div *ngFor="let campo of preguntasOrdenadas; let i = index" class="caracterizacion"> -->
-      <div *ngFor="let campo of datos.campos; let i = index" class="caracterizacion">
-        <div *ngIf="campo.mensaje != 'dependencia'">
-          <label class="labelAll">{{ campo.nombre }} 
-            <span *ngIf="campo.requerido == true && campo.values == null" style="color: red;">*</span>
-          </label>
-        </div>       
-        <div [ngSwitch]="campo.tipodedato">
-          <!-- {{campo.nombre | json}} --> <!-- {{campo.ffcontext | json}} -->
-          <div *ngIf="campo.mensaje != 'dependencia'">
-             <input *ngSwitchCase="'int'" type="number" [formControlName]="campo.nombre" class="campo-nombre"
-              [id]="i" (ngModelChange)="capturarValor(i, $event, campo.idcaracterizaciondinamica)" appNumeros>
-
-                <input *ngSwitchCase="'local_reference_id'" type="text" [formControlName]="campo.nombre" 
-              [id]="i" (ngModelChange)="capturarValor(i, $event, campo.idcaracterizaciondinamica)">
-
-              <input *ngSwitchCase="'string'" type="text" [formControlName]="campo.nombre" 
-              [id]="i" (ngModelChange)="capturarValor(i, $event, campo.idcaracterizaciondinamica)">
+        <div class="grid-img">
+          <div class="item-img" (click)="menuFilter($event)" (mouseover)="mouseOver($event)" (mouseout)="mouseOut($event)">
+            <img src="../../../../assets/img-dashboard/caracterizacion.svg" alt="caracterizacion">
+             <p class="sub-titulo">CARACTERIZACIÓN</p>
           </div>
-         
-          <div *ngSwitchCase="'option'">
-            <div *ngIf="campo.mensaje === 'municipios'; else elseBlock"> 
-              <select [formControlName]="campo.nombre" [id]="i" (ngModelChange)="capturarValor(i, $event, campo.idcaracterizaciondinamica)"
-              [(ngModel)]="selectedOption" (change)="printSelectedOption()">
-                <option *ngFor="let municipio of municipios" [value]="municipio.nom_mpio">{{municipio.nom_mpio}}</option>
-              </select>
-              <div class="selectedOption">
-                <label class="labelAll" *ngFor="let option of selectedOptions; let i = index" class="labelX">{{ option }} 
-                  <span><button class="x" (click)="selectedOptions.splice(i, 1)">X</button></span>
-                </label>
-              </div>
+          <div class="item-img"  (click)="menuFilter($event)" (mouseover)="mouseOver($event)" (mouseout)="mouseOut($event)">    
+            <img src="../../../../assets/img-dashboard/diagnostico.svg" alt="diagnostico" >
+             <p class="sub-titulo">DIAGNÓSTICO</p>
+          </div>
+            <div class="item-img" (click)="menuFilter($event)" (mouseover)="mouseOver($event)" (mouseout)="mouseOut($event)">
+              <img src="../../../../assets/img-dashboard/planificacion.svg" alt="planificacion" >
+               <p class="sub-titulo">PLANIFICACIÓN</p>
+            </div>
+            <div class="item-img" (click)="menuFilter($event)" (mouseover)="mouseOver($event)" (mouseout)="mouseOut($event)">
+              <img src="../../../../assets/img-dashboard/documentacion.svg" alt="documentacion" >
+               <p class="sub-titulo">DOCUMENTACIÓN</p>
+            </div>
+            <div class="item-img"  (click)="menuFilter($event)" (mouseover)="mouseOver($event)" (mouseout)="mouseOut($event)">
+              <img src="../../../../assets/img-dashboard/cronograma.svg" alt="cronograma" >
+               <p class="sub-titulo">CRONOGRAMA</p>
+            </div>
+            <div class="item-img" (click)="menuFilter($event)" (mouseover)="mouseOver($event)" (mouseout)="mouseOut($event)">
+              <img src="../../../../assets/img-dashboard/formacion.svg" alt="formacion" >
+               <p class="sub-titulo">FORMACIÓN</p>
+            </div>
+            <div class="item-img" (click)="menuFilter($event)" (mouseover)="mouseOver($event)" (mouseout)="mouseOut($event)">
+              <img src="../../../../assets/img-dashboard/medicion.svg" alt="medicion" >
+               <p class="sub-titulo">MEDICIÓN</p>
+            </div>
+            <div class="item-img" (click)="redirigirAuditoria()" (mouseover)="mouseOver($event)" (mouseout)="mouseOut($event)">
+              <img src="../../../../assets/img-dashboard/noticias.svg" alt="noticias" id="noticias" >
+               <P class="sub-titulo">AUDITORÍAS</P>
+            </div>
+            <div class="item-img" (click)="menuFilter($event)" (mouseover)="mouseOver($event)" (mouseout)="mouseOut($event)">
+              <img src="../../../../assets/img-dashboard/gerencia.svg" alt="gerencia" >
+               <p class="sub-titulo">GERENCIA</p>
             </div> 
-            <ng-template #elseBlock>
-              <select [formControlName]="campo.nombre" id="id-del-select" 
-            [id]="i" (ngModelChange)="capturarValor(i, $event, campo.idcaracterizaciondinamica)">
-                <option *ngFor="let opcion of campo.desplegable" [value]="opcion.id">{{opcion.nombre}}</option>
-            </select>
-            </ng-template>
-          </div> 
-
-          <select *ngSwitchCase="'norma'" [formControlName]="campo.nombre" 
-          [id]="i" (ngModelChange)="capturarValor(i, $event, campo.idcaracterizaciondinamica)">
-            <option *ngFor="let opcion of dataNorma" [value]="opcion.id" 
-            [hidden]="!opcionesNorma.includes(opcion.id)" [hidden]="!aventura">{{ opcion.norma }}</option>
-          </select>
-
-          <div *ngIf="campo.mensaje != 'dependencia' && campo.nombre != '¿Cuáles servicios de aventura presta?'">
-            <div *ngSwitchCase="'checkbox'" class="containerCheck">
-              <div *ngFor="let opcion of campo.desplegable" class="check"> 
-                <input type="checkbox" [formControlName]="campo.nombre" [value]="opcion.id" 
-                class="checkbox" (change)="opcion.mostrarInput = opcion.nombre === 'OTROS'? !opcion.mostrarInput : false"
-                [id]="i" (ngModelChange)="capturarValor(i, $event, campo.idcaracterizaciondinamica)">           
-                {{opcion.nombre}}
-                <div>
-                  <input type="text" *ngIf="opcion.mostrarInput && opcion.nombre === 'OTROS'" class="inputContainer" 
-                  placeholder="Especifica otro" [id]="i" (ngModelChange)="capturarValor(i, $event, campo.idcaracterizaciondinamica)">
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div *ngSwitchCase="'radio'" class="containerRadio">
-            <div *ngFor="let opcion of campo.desplegable" class="radio">
-              <input type="radio" [formControlName]="campo.nombre" [value]="opcion.id" 
-              (change)="showDependency = opcion.nombre === 'SI'"
-              (change)="onChangeAventuraSeleccionada(opcion.nombre === 'SI')"
-              (change)="showSostenibilidad = opcion.nombre === 'SI'"
-              (change)="aventura = true"
-              (change)="showPrestaServiciosAventura = opcion.nombre === 'SI'"
-              [id]="i" (ngModelChange)="capturarValor(i, $event, campo.idcaracterizaciondinamica)">    
-              {{opcion.nombre}}
-            </div>
-          </div>
-
-           <div *ngIf="showDependency && campo.mensaje === 'dependencia' && hasDepency(campo.dependiente)">
-            <div *ngFor="let item of campo.desplegable">
-              <input *ngSwitchCase="'string'" type="text" [formControlName]="campo.nombre" [value]="item.nombre"
-               [id]="i" (ngModelChange)="capturarValor(i, $event, campo.idcaracterizaciondinamica)">
-            </div>
-            <div *ngSwitchCase="'checkbox'" class="containerCheck">
-              <label class="labelDependency">{{ campo.nombre }} 
-                <span *ngIf="campo.requerido == true && campo.values == null" style="color: red;">*</span>
-              </label>
-              <div *ngFor="let opcion of campo.desplegable" class="check"> 
-                <input type="checkbox" [value]="opcion.id" class="checkbox" 
-                (change)="opcion.mostrarInput = opcion.nombre === 'OTROS'? !opcion.mostrarInput : false" 
-                [id]="i" (ngModelChange)="capturarValor(i, $event, campo.idcaracterizaciondinamica)">           
-                {{opcion.nombre}}
-                <div>
-                  <input type="text" *ngIf="opcion.mostrarInput && opcion.nombre === 'OTROS'" class="inputContainer" 
-                  placeholder="Especifica otro" [id]="i" (ngModelChange)="capturarValor(i, $event, campo.idcaracterizaciondinamica)">
-                </div>
-              </div>
-            </div>
-          </div>   
-          <div *ngIf="showSostenibilidad && campo.mensaje === 'dependencia'">
-              <label class="labelDependency">{{ campo.nombre }} </label>
-              <input *ngSwitchCase="'string'" type="text" [formControlName]="campo.nombre"
-              [id]="i" (ngModelChange)="capturarValor(i, $event, campo.idcaracterizaciondinamica)">
-              
-              <input *ngSwitchCase="'int'" type="number" [formControlName]="campo.nombre" class="campo-nombre"
-              [id]="i" (ngModelChange)="capturarValor(i, $event, campo.idcaracterizaciondinamica)">
-
-              <input *ngSwitchCase="'local_reference_id'" type="text" [formControlName]="campo.nombre" 
-              [id]="i" (ngModelChange)="capturarValor(i, $event, campo.idcaracterizaciondinamica)">
-          </div>
-          <!-- <div *ngIf="showPrestaServiciosAventura && campo.mensaje === 'dependencia'">
-            <label class="labelDependency">{{ campo.nombre }} </label>
-            <div *ngSwitchCase="'checkbox'" class="containerCheck">
-              
-              <div *ngFor="let opcion of campo.desplegable" class="check"> 
-                
-                <input type="checkbox" [formControlName]="campo.nombre" [value]="opcion.id" 
-                class="checkbox" (change)="opcion.mostrarInput = opcion.nombre === 'OTROS'? !opcion.mostrarInput : false"
-                [id]="i" (ngModelChange)="capturarValor(i, $event, campo.idcaracterizaciondinamica)">           
-                {{opcion.nombre}}
-                <div>
-                  <input type="text" *ngIf="opcion.mostrarInput && opcion.nombre === 'OTROS'" class="inputContainer" 
-                  placeholder="Especifica otro" [id]="i" (ngModelChange)="capturarValor(i, $event, campo.idcaracterizaciondinamica)">
-                </div>
-              </div>
-            </div>
-          </div> -->
         </div>
-                
-    </div>
-    <div class="divBtn">
-      <button type="submit" class="btn" [disabled]="formParent.invalid" >Guardar</button>
-      <button type="button" (click)="goBack()" class="btn">Atrás</button>
-    </div>
-  
-</form>
-<app-app-footer></app-app-footer>
-<ngx-spinner></ngx-spinner>
-</div>
-
-
-
-<div *ngFor="let ley of datos" class="div">
-  <div class="titulo" (click)="toggleSection('primeraLey')" [ngClass]="{'verde': primeraLeyVisible}">
-    <h3>{{ ley.tipO_NORMATIVIDAD }} {{ ley.numero }} {{ ley.anio.slice(-4) }}</h3>
+      </div>
+     </div>
   </div>
-  <div class="detalle" *ngIf="primeraLeyVisible">
-    <h2>Emitida por:</h2>
-    <p>{{ ley.emisor }}</p>
-    <h4>ARTÍCULOS</h4>
-    <p>{{ ley.docS_ESPECIFICOS }}</p>
-    <h4>TÍTULO</h4>
-    <p>{{ ley.descripcion }}</p>         
-  </div>
-</div>
-
-
-
-<div *ngIf="divsVisible">
-  <div class="div" id="divAdd" *ngFor="let div of divs">
-      <div class="titulo">
-              <h3 id="tituloNormativa">{{div.tipoNormatividad}} {{div.numero}} de {{div.anio}}</h3> 
-        </div>
-        <div class="detalle" id="detalleAdd" *ngIf="divAddVisible">
-            <p class="parrafo">{{ div.descripcion }}</p>
-            <p class="parrafo">{{ div.secciones }}</p>
-        </div>   
-  </div>
-</div>
-<ng-template #inputTemplate>
-  <div>
-    <input type="text" [(ngModel)]="nuevoDiv.anio">
-    <input type="text" [(ngModel)]="nuevoDiv.numero">
-    <textarea [(ngModel)]="nuevoDiv.descripcion"></textarea>
-    <textarea [(ngModel)]="nuevoDiv.secciones"></textarea>
-    <input type="text" [(ngModel)]="nuevoDiv.tipoNormatividad">
-  </div>
-</ng-template>
-<div id="ContainerdetalleAdicionar">
-  <div class="adicionar">
-      <button>Adicionar requisito legal +</button>
-  </div>
-  <div class="detalleAdicionar" id="detalleAdicionarRequisito" *ngIf="adicionarVisible">
-      <label class="adicionarLabel">Tipo de normatividad</label>
-      <select id="tipoNormatividadSelect" #selectOption (change)="onSelect(selectOption.value)">
-          <option value="Ley">Ley</option>
-          <option value="Decreto">Decreto</option>
-          <option value="Decreto Ley">Decreto Ley</option>
-      </select>
-      <label class="adicionarLabel">Número</label>
-      <input type="number" id="numeroInput"> 
-      <label class="adicionarLabel">Año</label>
-      <input type="number" id="anioInput">
-      <label class="adicionarLabel">Descripción</label>
-      <textarea id="descripcionTextAreaAdd"></textarea>
-      <label class="adicionarLabel">Artículos / Secciones / Requisitos específicos que aplican</label>
-      <textarea id="seccionesTextAreaAdd"></textarea>
-      <button type="submit" class="btnAdd" (click)="agregarDiv()">Agregar</button>
-  </div>
-</div>
-
-<div class="div" style="display: none;" id="divAdd" *ngFor="let div of divs">
-                    <div class="titulo" (click)="toggleSection('divAdd')" [ngClass]="{'verde': divAddVisible}">
-                      <div class="h3">
-                          <h3 id="tituloNormativa">{{div.tipoNormatividad}} {{div.numero}} de {{div.anio}}</h3> 
-                      </div>
-                        <div class="iconos">
-                            <i class="fa-solid" [class.fa-angle-up]="divAddVisible" [class.fa-angle-down]="!divAddVisible"></i>
-                        </div>
-                        <button (click)="eliminarDivAdd()" class="boton-eliminar">x</button>
-                    </div>
-                    <div class="detalle" id="detalleAdd" *ngIf="divAddVisible">       
-                        <h2>Emitida por:</h2>
-                        <p class="parrafo">Por la cual se expide la Ley General de Turismo y se dictan otras disposiciones</p>
-                        <h4 style="font-weight: bolder;" class="parrafo">ARTÍCULOS / SECCIONES / REQUISITOS ESPECÍFICOS QUE APLICAN</h4>
-                        <p class="parrafo">{{ div.descripcion }}</p>
-                        <p class="parrafo">{{ div.secciones }}</p>
-            
-                        <div class="containerform">
-                            <div class="subContainerform">
-                                <label for="estadoCumplimiento" class="estado">Estado de cumplimiento</label>
-                                <select name="estadoCumplimiento" id="estadoCumplimiento" class="estadoForm" [(ngModel)]="div.opcionSeleccionada">
-                                    <option value="" disabled selected hidden>Seleccione una opción</option>
-                                    <option value="Si">Si</option>
-                                    <option value="No">No</option>
-                                    <option value="En proceso">En proceso</option>
-                                    <option value="No aplica">No aplica</option>
-                                </select>
-                            </div>
-                            <div class="subContainerform">
-                                <label for="" class="estado">Responsable de dar cumplimiento</label>
-                                <select name="" id="" class="estadoForm" [(ngModel)]="div.responsableSeleccionado">
-                                    <option value="" disabled selected hidden>Seleccione una opción</option>
-                                    <option value="a">Responsable de dar cumplimiento</option>
-                                    <option value="b">Responsable</option>
-                                </select>
-                            </div>
-                            <div class="subContainerformMain">
-                                <div class="subContainerform" *ngIf="div.opcionSeleccionada === 'Si'">
-                                    <label for="evidencia" class="estado">Evidencia del cumplimineto</label>
-                                    <input type="text" id="evidencia" class="estadoForm" [(ngModel)]="div.evidenciaInput">
-                                </div>
-                                <div class="subContainerform" *ngIf="div.opcionSeleccionada === 'No' || div.opcionSeleccionada === 'En proceso'">
-                                    <label for="observaciones" class="estado">Observaciones / Incumplimiento</label>
-                                    <input type="text" id="observaciones" class="estadoForm" [(ngModel)]="div.observacionInput">
-                                </div>
-                            </div>
-                        </div>  
-                        <div class="planIntervencion" *ngIf="div.opcionSeleccionada === 'No' || div.opcionSeleccionada === 'En proceso'">
-                            <h3 class="plan">PLAN DE INTERVENCIÓN</h3>
-                            <div class="containerformB" >
-                            
-                                <div class="subContainerformB">
-                                    <label for="" class="estado">Acciones a realizar</label>
-                                    <textarea name="" id="acciones" placeholder="Acciones" class="estadoFormB" [(ngModel)]="div.accionesText"></textarea>
-                                </div>
-                                <div class="subContainerformB">
-                                    <label for="" class="estado">Responsable de dar cumplimiento</label>
-                                    <select name="" id="" class="estadoFormB" [(ngModel)]="div.responsablePlanSeleccionado">
-                                        <option value="" disabled selected hidden>Seleccione una opción</option>
-                                        <option value="a">Responsable de dar cumplimiento</option>
-                                        <option value="b">Responsable</option>
-                                    </select>
-                                </div>
-                                <div class="subContainerformB">
-                                    <label for="" class="estado">Fecha para la ejecución</label>
-                                    <input type="date" class="estadoFormB" [(ngModel)]="div.fechaInput">
-                                </div>
-                                <div class="subContainerformB">
-                                    <label for="" class="estado">Estado</label>
-                                    <select name="" id="" class="estadoFormB" [(ngModel)]="div.estadoSeleccionado">
-                                        <option value="" disabled selected hidden>Seleccione una opción</option>
-                                        <option value="Abierto">Abierto</option>
-                                        <option value="Cerrado">Cerrado</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div> 
-                    </div>      
-                </div>

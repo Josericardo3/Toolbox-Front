@@ -1,0 +1,20 @@
+{
+    "listAuditor":[
+     {
+         "id":0,
+         "desc":"auditor 1"
+     },
+     {
+         "id":1,
+         "desc":"auditor 2"
+     }
+    ],
+  
+    "equipoAuditor":[
+     {  "item_id": 0, "item_text": "Melissa Gutmont" },
+     {  "item_id": 1, "item_text": "Carlancas Venec" },
+     {  "item_id": 2, "item_text": "Oscar Sandoval" }
+    ]
+ 
+ 
+ }  

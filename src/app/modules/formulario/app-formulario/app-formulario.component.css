@@ -1,0 +1,78 @@
+.containerform,
+.containerformB{
+    display: flex;
+    flex-direction: row;
+    width: 80vw;
+}
+.subContainerform,
+.subContainerformB{
+    display: flex;
+    flex-direction: column;
+    margin: 1vh;
+    width: 25vw;
+}
+.subContainerformB{
+    width: 20vw !important;
+}
+h3, h2, .parrafo, .estado{
+    font-family: 'Work Sans', sans-serif;
+    font-size: 19px;
+    font-weight: lighter;
+}
+.plan{
+    font-weight: bolder;
+    margin: 1vh;
+}
+.parrafo,
+.estado{
+    font-size: 16px !important;
+    margin: 1vh;
+}
+.estadoForm,
+.estadoFormB{ 
+    background: #FFFFFF;
+    border: 2px solid #068460;
+    border-radius: 10px;
+    height: 40px;
+    margin: 5px 0 15px 0;
+    padding: 5px;
+    width: 23vw;
+}
+.estadoFormB{
+    width: 18vw !important;
+}
+.subContainerformMain,
+.subContainerformMainB{
+    display: flex;
+    flex-direction: column;
+    width: 25vw;
+}
+.subContainerformMainB{
+    margin: 0 27vw 0 0;
+}
+.btnGuardar{
+    margin: 10vh 3vw 5vh 3vw;
+    height: 40px;
+    width: 200px;
+    padding: 5px;
+    background-color: #068460;
+    border-radius: 100px;
+    color: #FFFFFF;
+    font-family: 'Work Sans', sans-serif;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+}
+.btnGuardar{
+    margin: 3vh 3vw !important;
+}
+.containerBtn{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.campo-desactivado {
+    background-color: #f5f5f5 !important;
+    color: #999999 !important;
+  }
+  

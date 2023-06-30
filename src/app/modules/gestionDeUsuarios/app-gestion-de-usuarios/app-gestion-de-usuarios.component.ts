@@ -52,10 +52,17 @@ export class AppGestionDeUsuariosComponent {
   pages = 1;
   estadoatencionBtn: boolean = true;
   contentArray: any = [];
+  TIPO_USUARIO: any; 
+  showAddAsesor: boolean = true; 
 
   ngOnInit() {
     this.onLoadPst();
     document.getElementById('modalAsesor').style.display = 'none';
+    this.TIPO_USUARIO = window.localStorage.getItem('TIPO_USUARIO');
+    this.TIPO_USUARIO = Number(this.TIPO_USUARIO); 
+    if(this.TIPO_USUARIO == 8 ){
+      this.showAddAsesor= false; 
+    }
 
     //validacion registar un nuevo asesor
     this.registerNewAsesor = this.formBuilder.group(
@@ -84,17 +91,18 @@ export class AppGestionDeUsuariosComponent {
 
   }
  
-
+  dataTotal = 0
   onLoadPst() {
-
+   
     this.ApiService.assignAdvisor(0).subscribe((data) => {
       this.dataUser = data;
       this.dataInitial = data;
       this.contentArray = data;
-      this.returnedArray = this.dataInitial.slice(0, 10)
-      this.filtroTable.TotalRegistros = data.length
+      this.returnedArray = this.dataInitial.slice(0, 7)
+      this.filtroTable.TotalRegistros = data.length;
+      this.dataTotal = data.length;
       const totalPag = data.length
-      this.filtroTable.TotalPaginas = Math.trunc(totalPag / 10) + 1;;
+      this.filtroTable.TotalPaginas = Math.ceil(totalPag / 7) ;;
       return this.dataUser
     })
   }
@@ -125,25 +133,42 @@ export class AppGestionDeUsuariosComponent {
   filterResult() {
     this.result = false;
     this.contentArray = [];
-    
     let arrayTemp = this.dataInitial.filter((item) => 
-      ( item.estadoatencion.toUpperCase().includes(this.guardarEvent.trim().toUpperCase())  || this.guardarEvent.trim().toUpperCase() =='')&&
-      ( item.rnt.toUpperCase().includes(this.guardarEventRnt.trim().toUpperCase())  || this.guardarEventRnt.trim().toUpperCase() =='')&&
-      (  item.razonsocial.toUpperCase().includes(this.guardarEventEmpresa.trim().toUpperCase() )  || this.guardarEventEmpresa.trim().toUpperCase() =='')&&
-      (  item.asesorasignado.toUpperCase().includes(this.guardarEventAsesor.trim().toUpperCase())  || this.guardarEventAsesor.trim().toUpperCase() =='')
+      ( item.ESTADO_ATENCION.toUpperCase().includes(this.guardarEvent.trim().toUpperCase())  || this.guardarEvent.trim().toUpperCase() =='')&&
+      ( item.RNT.toUpperCase().includes(this.guardarEventRnt.trim().toUpperCase())  || this.guardarEventRnt.trim().toUpperCase() =='')&&
+      (  item.RAZON_SOCIAL_PST.toUpperCase().includes(this.guardarEventEmpresa.trim().toUpperCase() )  || this.guardarEventEmpresa.trim().toUpperCase() =='')&&
+      (  item.ASESOR_ASIGNADO.toUpperCase().includes(this.guardarEventAsesor.trim().toUpperCase())  || this.guardarEventAsesor.trim().toUpperCase() =='')
     )
       this.returnedArray = arrayTemp;
 
        // para el paginado
       this.pages = 1;
       const totalPag = this.returnedArray.length;
-      this.filtroTable.TotalPaginas = Math.trunc(totalPag / 10) + 1;
+      this.filtroTable.TotalPaginas = Math.ceil(totalPag / 7) ;
       this.contentArray = this.returnedArray;
       this.filtroTable.TotalRegistros = this.returnedArray.length;
-      this.returnedArray = this.returnedArray.slice(0, 10);
+      this.dataTotal = this.returnedArray.length;
+      if(this.filtroTable.TotalRegistros == this.dataTotal && this.filtroTable.TotalRegistros>=7 ) this.filtroTable.TotalRegistros=7;
+      this.returnedArray = this.returnedArray.slice(0, 7);
       return this.returnedArray.length > 0 ? this.returnedArray : this.result = true;
-   
   }
+  // filterEstado(evnt: any) {
+  //   if (this.guardarEvent != '') {
+  //     let estado = this.dataInitial.map((item) => {
+  //       return item.estadoatencion
+  //         .toUpperCase()
+  //         .includes(this.guardarEvent.toUpperCase())
+  //         ? item
+  //         : 'no hay resultado'
+  //     })
+  //     let estadoFinal = estado.filter((item) => item != 'no hay resultado')
+      
+  //     this.returnedArray = estadoFinal
+
+  //     console.log(this.returnedArray,"aqui es el estado")
+  //     return this.returnedArray
+  //   }
+  // }
 
 
   fnRefrescar() {
@@ -158,11 +183,12 @@ export class AppGestionDeUsuariosComponent {
     const endItem = event.page * event.itemsPerPage;
 
     if (this.guardarEvent || this.guardarEventAsesor || this.guardarEventEmpresa !== '') {
-
+      this.dataTotal = this.contentArray.length;
       this.returnedArray = this.contentArray.slice(startItem, endItem)
 
 
     } else {
+      this.dataTotal = this.dataInitial.length;
       this.returnedArray = this.dataInitial.slice(startItem, endItem)
     }
 
@@ -207,7 +233,7 @@ export class AppGestionDeUsuariosComponent {
 
   //actualizar asesor
   updateNewAsesor() {
-    const request = { "idusuariopst": this.contenidoAsignacion?.idusuariopst, "idUsuario": this.guardarSeleccion.idUsuario }
+    const request = { "ID_PST": this.contenidoAsignacion?.ID_PST, "ID_ASESOR": this.guardarSeleccion.ID_ASESOR }
     this.ApiService.updateAsesor(request).subscribe((data) => {
       this.isOpen = !this.isOpen;
       return this.onLoadPst();
@@ -247,9 +273,9 @@ export class AppGestionDeUsuariosComponent {
   //datos del form
   saveNewAsesor() {
     const request = {
-      rnt: this.registerNewAsesor.get("registroNacionalDeTurismo")?.value,
-      nombre: this.registerNewAsesor.get("nombre")?.value,
-      correo: this.registerNewAsesor.get("correo")?.value,
+      RNT: this.registerNewAsesor.get("registroNacionalDeTurismo")?.value,
+      NOMBRE: this.registerNewAsesor.get("nombre")?.value,
+      CORREO: this.registerNewAsesor.get("correo")?.value,
 
     }
 

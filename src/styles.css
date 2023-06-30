@@ -10,3 +10,32 @@
 a {
     cursor: pointer;
 }
+/* Estilos para la página actual activa */
+.pagination > .active > a,
+.pagination > .active > span {
+    background-color: #068460 !important;
+    color: #fff !important;
+}
+
+/* Estilos para los números de página y los puntos suspensivos */
+.pagination > li > a,
+.pagination > li > span {
+    color: #068460 !important;
+}
+/* En tu archivo de estilos personalizado */
+.custom-tab .nav-link,
+.custom-tab .nav-link,
+.custom-tab .nav-link.active:hover {
+  color: #068460 !important;
+  cursor: default;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-bottom-color: transparent;
+}
+.custom-tab .nav-link.active .custom-tab .nav-link.active:focus{
+    color: #17473a !important;
+}
+.angular-editor-textarea {
+    height: auto !important;
+    min-height: 100px !important;
+  }

@@ -1,0 +1,22 @@
+<app-app-header></app-app-header>
+<div class="containerNoticia">
+  <div class="titulo">
+    <h1>Noticia</h1>
+    <app-app-header-arrow-left routerLink="/dashboard"></app-app-header-arrow-left>
+  </div>
+  <div *ngIf="datosNoticia" class="datosNoticia">
+    <p class="fecha"><span><i class="fas fa-light fa-clock"></i></span>
+      {{datosNoticia.NOMBRE }} | {{datosNoticia.FECHA_ACT | date: 'dd/MM/yyyy' }}
+     </p>
+    <h2>{{datosNoticia.TITULO | uppercase }}</h2>
+    <img *ngIf="imagen" [src]="imagen">
+    <p class="descripcion" [innerHTML]="sanitizer.bypassSecurityTrustHtml(datosNoticia.DESCRIPCION)"></p>
+  </div>
+</div>
+<app-app-footer></app-app-footer>
+<ngx-spinner
+  bdColor="rgba(0, 0, 0, 0.5)"
+  size="small"
+  template="<img src='https://www.superiorlawncareusa.com/wp-content/uploads/2020/05/loading-gif-png-5.gif' width='50' height='50'/>"
+>
+</ngx-spinner>

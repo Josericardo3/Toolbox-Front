@@ -1,13 +1,12 @@
-import { ModalService } from 'src/app/messagemodal/messagemodal.component.service' 
-import {Component, OnInit, ComponentFactoryResolver} from '@angular/core'
+import { Component, OnInit, ComponentFactoryResolver } from '@angular/core'
 import { Router } from '@angular/router'
-import { FormGroup, Validators, FormBuilder,FormControl } from '@angular/forms'
+import { FormGroup, Validators, FormBuilder, FormControl } from '@angular/forms'
 import { CustomValidators } from '../../../models/customeValidator'
 import { ApiService } from '../../../servicios/api/api.service'
 import { Store } from '@ngrx/store'
 import 'jquery-ui/ui/widgets/dialog.js'
 import { Categoria } from '../../../utils/constants'
-
+import { ModalService } from '../../../messagemodal/messagemodal.component.service';
 
 
 @Component({
@@ -20,8 +19,9 @@ export class AppRegisterComponent implements OnInit {
   repeatPassword: string = '';
   showPassword: boolean = false;
   showRepeatPassword: boolean = false;
-  showModalSuccess:any
+  showModalSuccess: any
   data: any
+  mostrarErrorCorreo: any
   arrAgency: any
   public registerForm!: FormGroup
   private emailPattern: any = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
@@ -33,7 +33,7 @@ export class AppRegisterComponent implements OnInit {
     private categoria: Categoria,
     private Message: ModalService,
     private store: Store<{ dataLogin: any }>,
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     localStorage.removeItem("newUser")
@@ -41,21 +41,21 @@ export class AppRegisterComponent implements OnInit {
     this.setDepartments('')
     this.registerForm = this.formBuilder.group(
       {
-        telefono:[
+        telefono: [
           '',
-          Validators.compose([ 
+          Validators.compose([
             Validators.required,
             Validators.pattern(/^\d{10}$/)]),
         ],
-        telefonoDelRepresentanteLegal :['', 
-          Validators.compose([ 
-          Validators.required,
-          Validators.pattern(/^\d{10}$/)]),
+        telefonoDelRepresentanteLegal: ['',
+          Validators.compose([
+            Validators.required,
+            Validators.pattern(/^\d{10}$/)]),
         ],
-        telefonoDelResponsableDeSostenibilidad:['', 
-        Validators.compose([ 
-        Validators.required,
-        Validators.pattern(/^\d{10}$/)]),
+        telefonoDelResponsableDeSostenibilidad: ['',
+          Validators.compose([
+            Validators.required,
+            Validators.pattern(/^\d{10}$/)]),
         ],
         numeroDeIdentificacionTributaria: ['', Validators.required],
         registroNacionalDeTurismo: ['', Validators.required],
@@ -91,7 +91,7 @@ export class AppRegisterComponent implements OnInit {
             Validators.required,
           ]),
         ],
-  
+
         nombreDelResponsableDeSostenibilidad: ['', Validators.required],
         password1: [
           '',
@@ -111,6 +111,7 @@ export class AppRegisterComponent implements OnInit {
         ],
         confirmPassword: ['', Validators.compose([Validators.required])],
         checkbox: ['', Validators.required],
+
       },
       {
         // check whether our password and confirm password match
@@ -125,9 +126,9 @@ export class AppRegisterComponent implements OnInit {
       (agency: { id_categoria: number; name: string }) =>
         agency.id_categoria === evt.target.options.selectedIndex
     )
- 
+
     this.arrAgency = filterCategory.sort();
-   
+
     return this.arrAgency;
   }
 
@@ -154,14 +155,14 @@ export class AppRegisterComponent implements OnInit {
               })),
             )
             select.add(new Option('Seleccione un departamento', '0'))
-            departments.forEach((item: any,index) => {
+            departments.forEach((item: any, index) => {
               let option = document.createElement('option')
               option.id = departmentsCode[index]
               option.text = item
               select.add(option)
 
             })
-           
+
           }
         })
     }
@@ -232,74 +233,184 @@ export class AppRegisterComponent implements OnInit {
   }
 
   openModal() {
+
     const modal = document.querySelector('#modalTerminos') as HTMLInputElement
     modal.classList.add('active')
+    if( this.checkboxSave === false ) {
+      this.registerForm.controls['checkbox'].setValue(false);
+    }
   }
-
+  checkboxSave: boolean = false; 
   closeModal(evt: any) {
     evt.defaultPrevented
     const modal = document.querySelector('#modalTerminos') as HTMLInputElement
     modal.classList.remove('active');
     this.registerForm.controls['checkbox'].setValue(true);
+    this.checkboxSave= true; 
+
     //this.VendedorForm.controls['identidad'].setValue(response.body.data.identidad);
-    
+
+  }
+
+  close() {
+    this.registerForm.controls['checkbox'].setValue(false);
+    const modal = document.querySelector('#modalTerminos') as HTMLInputElement
+    modal.classList.remove('active');
+    this.registerForm.get('checkbox').setErrors({ valido: true });
+    //this.VendedorForm.controls['identidad'].setValue(response.body.data.identidad);
+
   }
 
   saveUser() {
     const request = {
-      nit: this.registerForm.get("numeroDeIdentificacionTributaria")?.value,
-      rnt: this.registerForm.get("registroNacionalDeTurismo")?.value,
-      idCategoriaRnt: this.registerForm.get("categoriaRnt")?.value.id,
-      idSubCategoriaRnt: this.registerForm.get("subcategoriaRnt")?.value.id,
-      nombrePst: this.registerForm.get("nombreDelPst")?.value,
-      razonSocialPst: this.registerForm.get("razonSocialDelPst")?.value,
-      correoPst: this.registerForm.get("correo")?.value,
-      telefonoPst: this.registerForm.get("telefono")?.value,
-      nombreRepresentanteLegal: this.registerForm.get(
+      NIT: this.registerForm.get("numeroDeIdentificacionTributaria")?.value,
+      RNT: this.registerForm.get("registroNacionalDeTurismo")?.value,
+      FK_ID_CATEGORIA_RNT: this.registerForm.get("categoriaRnt")?.value.id,
+      FK_ID_SUB_CATEGORIA_RNT: this.registerForm.get("subcategoriaRnt")?.value.id,
+      NOMBRE_PST: this.registerForm.get("nombreDelPst")?.value,
+      RAZON_SOCIAL_PST: this.registerForm.get("razonSocialDelPst")?.value,
+      CORREO_PST: this.registerForm.get("correo")?.value,
+      TELEFONO_PST: this.registerForm.get("telefono")?.value,
+      NOMBRE_REPRESENTANTE_LEGAL: this.registerForm.get(
         "nombreDelRepresenteLegal",
       )?.value,
-      correoRepresentanteLegal: this.registerForm.get(
+      CORREO_REPRESENTANTE_LEGAL: this.registerForm.get(
         "correoRepresentanteLegal",
       )?.value,
-      telefonoRepresentanteLegal: this.registerForm.get("telefonoDelRepresentanteLegal")?.value,
-      idTipoIdentificacion: 1,//modificado
-      identificacionRepresentanteLegal: this.registerForm.get(
+      TELEFONO_REPRESENTANTE_LEGAL: this.registerForm.get("telefonoDelRepresentanteLegal")?.value,
+      FK_ID_TIPO_IDENTIFICACION: 1,//modificado
+      IDENTIFICACION_REPRESENTANTE_LEGAL: this.registerForm.get(
         "identificacionDelRepresentanteLegal",
       )?.value,
-      departamento:this.registerForm.get("departamento")?.value,
-      municipio:this.registerForm.get("municipio")?.value,
-      nombreResponsableSostenibilidad: this.registerForm.get(
+      DEPARTAMENTO:this.registerForm.get("departamento")?.value,
+      MUNICIPIO:this.registerForm.get("municipio")?.value,
+      NOMBRE_RESPONSABLE_SOSTENIBILIDAD: this.registerForm.get(
         "nombreDelResponsableDeSostenibilidad",
       )?.value,
-      correoResponsableSostenibilidad: this.registerForm.get(
+      CORREO_RESPONSABLE_SOSTENIBILIDAD: this.registerForm.get(
         "correoDelResponsableDeSostenibilidad",
       )?.value,
-      telefonoResponsableSostenibilidad: this.registerForm.get("telefonoDelResponsableDeSostenibilidad")?.value,
-      password: this.registerForm.get("password1")?.value,
-      idTipoAvatar: 1,
+      TELEFONO_RESPONSABLE_SOSTENIBILIDAD: this.registerForm.get("telefonoDelResponsableDeSostenibilidad")?.value,
+      PASSWORD: this.registerForm.get("password1")?.value,
+      FK_ID_TIPO_AVATAR: 1,
     }
-        localStorage.setItem("newUser",'yes')
-      const title = "Registro exitoso";
-      const message = "El registro se ha realizado exitosamente"
-      this.Message.showModal(title,message);
+    localStorage.setItem("newUser", 'yes')
+    const title = "Registro exitoso";
+    const message = "El registro se ha realizado exitosamente"
+    this.Message.showModal(title, message);
     return this.ApiService.createUser(request).subscribe((data: any) => {
       if (data.statusCode === 201) {
-        this.router.navigate(['/']); 
-       
+        this.router.navigate(['/']);      
       }
     })
   }
-
-  change(evt:any){
-    const btnAceptar = document.querySelector('#btnAceptar') as HTMLInputElement
-    if(btnAceptar.getAttribute('disabled')===null){
-      return btnAceptar.setAttribute("disabled",'');
-    }else{
-      return btnAceptar.removeAttribute("disabled");
-    }
+  isChecked: boolean = false;
+  change(event: Event): void {
+    const checkbox = event.target as HTMLInputElement;
+    this.isChecked = checkbox.checked;
+    // const btnAceptar = document.querySelector('#btnAceptar') as HTMLInputElement
+    // if(btnAceptar.getAttribute('disabled')===null){
+    //   return btnAceptar.setAttribute("disabled",'');
+    // }else{
+    //   return btnAceptar.removeAttribute("disabled");
+    // }
   }
 
   //prueba limpiar(){
   // this.registerForm.reset();
   // }
+
+  //Obj 
+
+  msjRnt: string = '';
+  showCheckRnt: boolean = false;
+  showFaXmarkRnt: boolean = false;
+
+  verificarRnt(rnt: any): void {
+    this.showFaXmarkRnt = false;
+    this.showCheckRnt = false;
+    this.msjRnt = '';
+    rnt = rnt.target.value
+    this.ApiService.validateRnt(rnt).subscribe((data: any) => {
+      if (data == false) {
+        this.showCheckRnt = true;
+        this.showFaXmarkRnt = false;
+        this.msjRnt = '';
+      }
+      if (data == true) {
+        this.registerForm.get('registroNacionalDeTurismo').setErrors({ valido: true });
+        this.msjRnt = 'El Registro Nacional de Turismo ya se encuentra registrado';
+        this.showFaXmarkRnt = true;
+        this.showCheckRnt = false;
+      }
+      
+    })
+  }
+
+
+
+
+  msjEmail: string;
+  showCheck: boolean = false;
+  showFaXmark: boolean = false;
+  bordeInpunt: boolean = false;
+  verificarCorreo(correo: any): void {
+    correo = correo.target.value;
+    this.ApiService.validateEmail(correo).subscribe((data: any) => {
+
+      if (data == false) {
+        this.showCheck = true;
+        this.showFaXmark = false;
+        this.bordeInpunt = false;
+        this.msjEmail = '';
+      }
+      if (data == true) {
+        this.registerForm.get('correo').setErrors({ valido: true });
+        this.msjEmail = 'El correo ya se encuentra registrado';
+        this.showFaXmark = true;
+        this.showCheck = false;
+      
+      }
+      if (this.registerForm.controls['correo'].hasError('pattern')) {
+        this.msjEmail = '';
+        this.showCheck = false;
+      }
+    })
+  }
+  msjPhone: string;
+  showCheckPhone: boolean = false;
+  showFaXmarkPhone: boolean = false;
+  // bordeInpunt: boolean = false;
+  verificarPhone(phone: any): void {
+    phone = phone.target.value;
+    this.ApiService.validatePhone(phone).subscribe((data: any) => {
+
+      if (data == false) {
+        this.showCheckPhone = true;
+        this.showFaXmarkPhone = false;
+        this.msjPhone = '';
+      }
+      if (data == true) {
+        this.registerForm.get('telefono').setErrors({ valido: true });
+        this.msjPhone = 'El teléfono ya se encuentra registrado';
+        this.showFaXmarkPhone = true;
+        this.showCheckPhone = false;
+      }
+      if(this.registerForm.controls['telefono'].hasError('pattern')){
+        this.showCheckPhone = false;
+        this.msjPhone = '';
+      }
+    })
+  }
+  // this.http.get('tu-api.com/verificar-correo?correo=' + correo)
+  //   .subscribe((response: any) => {
+  //     // Aquí puedes manejar la respuesta de la API y realizar las acciones correspondientes
+  //     if (response.valido) {
+  //       console.log('Correo válido');
+  //       // Realiza las acciones cuando el correo es válido
+  //     } else {
+  //       console.log('Correo inválido');
+  //       // Realiza las acciones cuando el correo es inválido
+  //     }
+  //   });
 }

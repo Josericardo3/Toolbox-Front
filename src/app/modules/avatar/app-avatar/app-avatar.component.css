@@ -1,0 +1,70 @@
+.btn {
+  background: #068460;
+  color: white;
+  border-radius: 3px;
+  width: 120px;
+  height: 30px;
+  border: 1px solid white;
+  cursor: pointer;
+  margin-left: 5px;
+  padding: 0;
+}
+
+h4 {
+  width: 100%;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: bolder;
+  font-size: 20px;
+  color: #068460;
+  text-align: center;
+}
+
+.modal-body img {
+  width: 591px;
+  height: 332px;
+  /* width: 500px;
+  height: 300px;
+  max-width: 100%;
+  max-height: 100%; */
+}
+
+.modal-contedor {
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 2px 10px #00000026;
+  padding: 10px;
+  max-width: 600px;
+  text-align: center;
+  position: relative;
+}
+
+.cancelar {
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 20px;
+  /* padding-top: 13px; */
+}
+.btn-default {
+  background-color: #068460;
+  color: #fff;
+  background-color: #068460;
+  font-family: Work Sans, sans-serif;
+  font-weight: 600;
+  color: #fff;
+  padding: 12px 24px;
+  border-radius: 5px;
+  cursor: pointer;
+  border: none;
+  transition: all .2s ease-in-out;
+}
+
+.carousel-control.right{
+     background-image:none !important;
+}
+.carousel-control.left{
+  background-image:none !important;
+}
+.carousel-indicators .active {
+     background-color: #068460 !important;
+}
+

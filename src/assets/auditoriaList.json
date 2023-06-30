@@ -1,0 +1,32 @@
+{
+    "auditoria":[
+     {
+        "cod_auditoria":"A001",
+        "fecha_de_auditoria" : "10/04/2023",
+        "lider_auditor":"Proceso 1",
+        "auditor_proceso_lider":"Auditor Lider",
+        "person_auditable":"persona 1 ,  persona 2, persona 3",
+        "obj_audit":"objetivo 1",
+        "alcance_auditoria":"alcance",
+        "docs_referencia":"documentos de referencia",
+        "norma_auditar":"norma prueba 1",
+        "proceso":"proceso de cambio",
+        "cargo":"Cordinador",
+        "criterio_auditoria":"Criterio de auditoria"
+     },
+     {
+        "cod_auditoria":"A002",
+        "fecha_de_auditoria" : "10/04/2023",
+        "lider_auditor":"Proceso 2",
+        "auditor_proceso_lider":"Auditor lider 2",
+        "person_auditable":"persona 1 ,  persona 2",
+        "obj_audit":"auditor 1",
+        "alcance_auditoria":"alcance",
+        "docs_referencia":"documentos de referencia",
+        "norma_auditar":"norma prueba2",
+        "proceso":"prueba2",
+        "cargo":"Desarrollador",
+        "criterio_auditoria":"criterio de auditoria"
+     }
+    ]
+ }  

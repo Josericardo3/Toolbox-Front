@@ -267,189 +267,189 @@
 //   }
   
 
-generateListaChequeo(){
-    const pdfDefinition: any = {
-      pageSize: {
-        width: 794,
-        height: 1123,
-      },
-      pageMargins: [ 30, 30, 30, 30 ],
-      content: [
-        {
-          table: {
-            widths: [ 80, 85, 'auto', 'auto','auto', 'auto' ],
-            body: [
-              [
-                {text: 'Numeral', style: ['tituloDinamico']},
-                {text: 'Titulo del requisito', style: ['tituloDinamico']},
-                {text: 'Requisito', style: ['tituloDinamico']},
-                {text: 'Posible evidencia', style: ['tituloDinamico']},
-                {text: 'Calificación', style: ['tituloDinamico']},
-                {text: 'Observaciones', style: ['tituloDinamico']},
-              ],
-              // Aquí va el título NUMERAL
-              ...this.datos.calificacion.map((item: any) => [
-                {text: item.numeral, style: [ 'dinamicTable' ]},
-                {text: item.tituloRequisito, style: [ 'dinamicTable' ]},
-                {text: item.requisito, fontSize: 10},
-                {text: item.evidencia, fontSize: 10},
-                {text: item.calificado, style: [ 'dinamicTable' ]},
-                {text: item.observacion, style: [ 'dinamicTable' ]}
-              ]),
-            ]
-          }
-        }
-      ],
-      styles: { 
-      tituloDinamico: {
-        alignment: 'center', 
-        bold: true,
-        fontSize: 10,
-      },
-      dinamicTable: {
-        fontSize: 10,
-        alignment: 'center'
-      }
-      }
-    }
-  }
+// generateListaChequeo(){
+//     const pdfDefinition: any = {
+//       pageSize: {
+//         width: 794,
+//         height: 1123,
+//       },
+//       pageMargins: [ 30, 30, 30, 30 ],
+//       content: [
+//         {
+//           table: {
+//             widths: [ 80, 85, 'auto', 'auto','auto', 'auto' ],
+//             body: [
+//               [
+//                 {text: 'Numeral', style: ['tituloDinamico']},
+//                 {text: 'Titulo del requisito', style: ['tituloDinamico']},
+//                 {text: 'Requisito', style: ['tituloDinamico']},
+//                 {text: 'Posible evidencia', style: ['tituloDinamico']},
+//                 {text: 'Calificación', style: ['tituloDinamico']},
+//                 {text: 'Observaciones', style: ['tituloDinamico']},
+//               ],
+//               // Aquí va el título NUMERAL
+//               ...this.datos.calificacion.map((item: any) => [
+//                 {text: item.numeral, style: [ 'dinamicTable' ]},
+//                 {text: item.tituloRequisito, style: [ 'dinamicTable' ]},
+//                 {text: item.requisito, fontSize: 10},
+//                 {text: item.evidencia, fontSize: 10},
+//                 {text: item.calificado, style: [ 'dinamicTable' ]},
+//                 {text: item.observacion, style: [ 'dinamicTable' ]}
+//               ]),
+//             ]
+//           }
+//         }
+//       ],
+//       styles: { 
+//       tituloDinamico: {
+//         alignment: 'center', 
+//         bold: true,
+//         fontSize: 10,
+//       },
+//       dinamicTable: {
+//         fontSize: 10,
+//         alignment: 'center'
+//       }
+//       }
+//     }
+//   }
 
-  generatePlanMejora(){
-    const pdfDefinition: any = {
-      pageSize: {
-        width: 794,
-        height: 1123,
-      },
-      pageMargins: [ 30, 30, 30, 30 ],
-      content: [
-        {
-          toc: {
-            title: {text: 'Informe de plan de mejora', style: [ 'header' ]}
-          }
-        },
-        {
-          table: {
-            widths: [ '*', '*', '*', '*' ],
-            body: [
-              [
-                { text: '1. Información general del Prestador de Servicios Turísticos - PST', colSpan: 4, alignment: 'center', bold: true},
-                {},
-                {},
-                {}
-              ],
-              [
-                'Nombre del prestador de servicios turísticos PST',
-                {text: this.nombrePst, colSpan:3, alignment: 'center'},
-                {},
-                {}
-              ],
-              [
-                'Número de identificación tributaria NIT',
-                this.nit,
-                'Registro Nacional de Turismo RNT',
-                this.rnt
-              ],
-              [
-                'Categoría en el RNT',
-                '',
-                'Subcategoría en el RNT	',
-                ''
-              ],
-              [
-                'Municipio',
-                '',
-                'Departamento',
-                ''
-              ],
-              [
-                'NTC de Turismo',
-                this.idn,
-                'Etapa del diagnóstico',
-                ''
-              ],
-              [
-                'Nombre del responsable de sostenibilidad',
-                this.nombreResponsableSostenibilidad,
-                'Teléfono de contacto del responsable de sostenibilidad',
-                this.telefonoResponsableSostenibilidad
-              ],
-              [
-                'Correo del responsable de sostenibilidad',
-                {text: this.correoResponsableSostenibilidad, colSpan:2, alignment: 'center'},
-                {},
-                ''
-              ]
-            ]
-          },
-          fontSize: 10,
-        },
-        '\n',
-        {
-          table: {
-            widths: [ '*', '*', '*' ],
-            body: [
-              [
-                { text: '2. Metodología de calificación diagnóstico', alignment: 'center', bold: true, colSpan: 2},
-                {}
-              ],
-              [
-                {
-                  text: 'Califique, acorde con la siguiente escala:\n\nC = Cumple: Se encuentra documentado, implementado, socializado y es adecuado para la organización.\nCP = Cumple parcialmente: Se encuentra parcialmente documentado o en su totalidad pero no está implementado o está en proceso de implementación o se ejecutan actividades pero no están documentadas.\nNC = No cumple: No se ha realizado ninguna acción respecto al requisito.\nNA = No aplica: No es aplicable el requisito a la organización.',
-                  colSpan: 2
-                },
-                {}
-              ]
-            ]
-          }
-        },
-        '\n',
-        {
-          table: {
-            widths: [ 80, 85, 'auto', 'auto','auto', 'auto' ],
-            body: [
-              [
-                {text: 'Numeral', style: ['tituloDinamico']},
-                {text: 'Titulo del requisito', style: ['tituloDinamico']},
-                {text: 'Posible evidencia', style: ['tituloDinamico']},
-                {text: 'Estado', style: ['tituloDinamico']},
-                {text: 'Actividad general o fase a realizar', style: ['tituloDinamico']},
-                {text: 'Duración', style: ['tituloDinamico']},
-              ],
-              // Aquí va el título NUMERAL
-              ...this.datos.calificacion.map((item: any) => [
-                {text: item.numeral, style: [ 'dinamicTable' ]},
-                {text: item.tituloRequisito, style: [ 'dinamicTable' ]},
-                {text: item.evidencia, fontSize: 10},
-                {text: item.calificado, fontSize: 10},
-                {text: item.observacion, style: [ 'dinamicTable' ]},
-                {text: item.duracion, style: [ 'dinamicTable' ]}
-              ]),
-            ]
-          }
-        }
-      ],
-      styles: {
-        header: {
-          fontSize: 16,
-          bold: true,
-          margin: [0, 10, 0, 10],
-          alignment: 'center',
-        },
-        planMejora: {
-          alignment: 'center', 
-          bold: true, 
-          fontSize: 10
-        },
-        tituloDinamico: {
-          alignment: 'center', 
-          bold: true,
-          fontSize: 10,
-        },
-        dinamicTable: {
-          fontSize: 10,
-          alignment: 'center'
-        }
-      }
-    }
-    pdfMake.createPdf(pdfDefinition).download('Informe_de_plan_de_mejora.pdf');
-  }
+  // generatePlanMejora(){
+  //   const pdfDefinition: any = {
+  //     pageSize: {
+  //       width: 794,
+  //       height: 1123,
+  //     },
+  //     pageMargins: [ 30, 30, 30, 30 ],
+  //     content: [
+  //       {
+  //         toc: {
+  //           title: {text: 'Informe de plan de mejora', style: [ 'header' ]}
+  //         }
+  //       },
+  //       {
+  //         table: {
+  //           widths: [ '*', '*', '*', '*' ],
+  //           body: [
+  //             [
+  //               { text: '1. Información general del Prestador de Servicios Turísticos - PST', colSpan: 4, alignment: 'center', bold: true},
+  //               {},
+  //               {},
+  //               {}
+  //             ],
+  //             [
+  //               'Nombre del prestador de servicios turísticos PST',
+  //               {text: this.nombrePst, colSpan:3, alignment: 'center'},
+  //               {},
+  //               {}
+  //             ],
+  //             [
+  //               'Número de identificación tributaria NIT',
+  //               this.nit,
+  //               'Registro Nacional de Turismo RNT',
+  //               this.rnt
+  //             ],
+  //             [
+  //               'Categoría en el RNT',
+  //               '',
+  //               'Subcategoría en el RNT	',
+  //               ''
+  //             ],
+  //             [
+  //               'Municipio',
+  //               '',
+  //               'Departamento',
+  //               ''
+  //             ],
+  //             [
+  //               'NTC de Turismo',
+  //               this.idn,
+  //               'Etapa del diagnóstico',
+  //               ''
+  //             ],
+  //             [
+  //               'Nombre del responsable de sostenibilidad',
+  //               this.nombreResponsableSostenibilidad,
+  //               'Teléfono de contacto del responsable de sostenibilidad',
+  //               this.telefonoResponsableSostenibilidad
+  //             ],
+  //             [
+  //               'Correo del responsable de sostenibilidad',
+  //               {text: this.correoResponsableSostenibilidad, colSpan:2, alignment: 'center'},
+  //               {},
+  //               ''
+  //             ]
+  //           ]
+  //         },
+  //         fontSize: 10,
+  //       },
+  //       '\n',
+  //       {
+  //         table: {
+  //           widths: [ '*', '*', '*' ],
+  //           body: [
+  //             [
+  //               { text: '2. Metodología de calificación diagnóstico', alignment: 'center', bold: true, colSpan: 2},
+  //               {}
+  //             ],
+  //             [
+  //               {
+  //                 text: 'Califique, acorde con la siguiente escala:\n\nC = Cumple: Se encuentra documentado, implementado, socializado y es adecuado para la organización.\nCP = Cumple parcialmente: Se encuentra parcialmente documentado o en su totalidad pero no está implementado o está en proceso de implementación o se ejecutan actividades pero no están documentadas.\nNC = No cumple: No se ha realizado ninguna acción respecto al requisito.\nNA = No aplica: No es aplicable el requisito a la organización.',
+  //                 colSpan: 2
+  //               },
+  //               {}
+  //             ]
+  //           ]
+  //         }
+  //       },
+  //       '\n',
+  //       {
+  //         table: {
+  //           widths: [ 80, 85, 'auto', 'auto','auto', 'auto' ],
+  //           body: [
+  //             [
+  //               {text: 'Numeral', style: ['tituloDinamico']},
+  //               {text: 'Titulo del requisito', style: ['tituloDinamico']},
+  //               {text: 'Posible evidencia', style: ['tituloDinamico']},
+  //               {text: 'Estado', style: ['tituloDinamico']},
+  //               {text: 'Actividad general o fase a realizar', style: ['tituloDinamico']},
+  //               {text: 'Duración', style: ['tituloDinamico']},
+  //             ],
+  //             // Aquí va el título NUMERAL
+  //             ...this.datos.calificacion.map((item: any) => [
+  //               {text: item.numeral, style: [ 'dinamicTable' ]},
+  //               {text: item.tituloRequisito, style: [ 'dinamicTable' ]},
+  //               {text: item.evidencia, fontSize: 10},
+  //               {text: item.calificado, fontSize: 10},
+  //               {text: item.observacion, style: [ 'dinamicTable' ]},
+  //               {text: item.duracion, style: [ 'dinamicTable' ]}
+  //             ]),
+  //           ]
+  //         }
+  //       }
+  //     ],
+  //     styles: {
+  //       header: {
+  //         fontSize: 16,
+  //         bold: true,
+  //         margin: [0, 10, 0, 10],
+  //         alignment: 'center',
+  //       },
+  //       planMejora: {
+  //         alignment: 'center', 
+  //         bold: true, 
+  //         fontSize: 10
+  //       },
+  //       tituloDinamico: {
+  //         alignment: 'center', 
+  //         bold: true,
+  //         fontSize: 10,
+  //       },
+  //       dinamicTable: {
+  //         fontSize: 10,
+  //         alignment: 'center'
+  //       }
+  //     }
+  //   }
+  //   pdfMake.createPdf(pdfDefinition).download('Informe_de_plan_de_mejora.pdf');
+  // }

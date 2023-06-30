@@ -1,0 +1,116 @@
+<!-- Button trigger modal -->
+<button id="openModalButton" class="btn" (click)="cancelEvent($event)" data-toggle="modal" data-target="#myModal">
+  Agregar actividad <i class="fa-solid fa-plus" style="color: #fff;"></i>
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-contedor">
+      <form  [formGroup]="formParent" class="controller-auditoria" (ngSubmit)="saveForm()">
+        <div>
+          <button id="closeModal" style="display: none;" type="button" class="close" data-dismiss="modal"
+            aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <a title="Cancelar" class="cancelar" data-dismiss="modal" aria-label="Close">
+            <i class="fa-solid fa-circle-xmark" style="color: #06543c;font-size: 25px;margin-top: 13px;"></i>
+          </a>
+          <h4 class="modal-title" id="myModalLabel">Planificación de la Auditoria Interna</h4>
+        </div>
+        <div class="modal-body" >
+          <!-- comienza lo dinamico planificación -->
+          <div>
+            <section class="container-date">
+              <div>
+                <label class="label-auditor">Fecha</label>
+                <input bsDatepicker appFwCalendario  type="text" maxlength="10" placement="bottom"
+                  class="forma-input" #dp2="bsDatepicker" placeholder="DD-MM-YYYY" title="Inicio de actividad"
+                  formControlName="fecha" fw_calendario ui-date-mask
+                  style="width:100px;margin-right: 0px; margin-left: 7px;border: 1px solid #068460;border-radius:3px; padding: 3px;height: 22px;"
+                  [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY',adaptivePosition: true, isAnimated: true, containerClass: 'theme-green'}" />
+                <i (click)="dp2.show()" class="fa-solid fa-calendar-days"
+                  style="color: #06543c;font-size: 22px;padding: 8px;" [attr.aria-expanded]="dp2.isOpen">
+                </i>
+              </div>
+              <br>
+              <div class="select-botton-grup" >
+                <label class="label-auditor-selec">Auditor</label>
+                <div>
+                  <select class="select-auditor"  formControlName="auditor">
+                    <option value="" disabled selected>Seleccionar</option>
+                    <option *ngFor="let auditor of arrayListResponsible" [value]="auditor.NOMBRE">{{auditor.NOMBRE}}
+                    </option>
+                  </select>
+                </div>
+              </div>
+
+
+            </section>
+            <section>
+              <div  style="display: flex;margin-top: 6px;align-items: baseline;border-radius:5px">
+                <label class="label-auditor-cargo">Nombre y cargo del auditado (s)</label>
+                <div>
+                  <select class="select-cargo" formControlName="auditados">
+                    <option value="" disabled selected>Seleccionar</option>
+                    <option *ngFor="let auditor of arrayListResponsible" [value]="auditor.NOMBRE+ ' - ' + (auditor?.CARGO || '')" >{{auditor.NOMBRE}} - {{auditor?.CARGO}}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div style="display: flex; align-items: baseline;margin-top: 5px;border-radius:5px">
+                <label class="forma-hora">Hora</label>
+                <input type="time" value="" class="input-hora" style="margin: 8px;" formControlName="hora">
+              </div>
+            </section>
+            <br>
+          </div>
+          <tabset>
+            <tab (click)="tabOption('proceso')">
+              <ng-template tabHeading>
+                <span class="mi-encabezado-tab">Proceso</span>
+              </ng-template> 
+              <select class="select-process"  *ngIf="activeTab === 'proceso' " id="selectProcess" formControlName="proceso">
+                <option value="" disabled selected>Seleccionar</option>
+                <option value="Proceso 1">Proceso 1</option>
+                <option value="Proceso 2">Proceso 2</option>
+                <option value="Proceso 3">Proceso 3</option>
+              </select>
+            </tab>
+            <tab  (click)="tabOption('actividad')">
+              <ng-template tabHeading>
+                <span class="mi-encabezado-tab">Actividad</span>
+              </ng-template>
+              <input type="text" value="" class="actividad" placeholder="Actividad" formControlName="actividad">
+            </tab>
+          </tabset>
+          <div style="height: 20px;"></div>
+          <tabset>
+          <tab (click)="tabOption('norma')">
+            <ng-template tabHeading>
+              <span class="mi-encabezado-tab">Norma</span>
+            </ng-template>
+            <input type="text" value="" class="actividad" placeholder="Norma" formControlName="norma">
+          </tab>
+          <tab (click)="tabOption('requisito')">
+            <ng-template tabHeading>
+              <span class="mi-encabezado-tab">Requisito a auditar</span>
+            </ng-template>
+            <select class="select-process" id="selectNorma" formControlName="requisito">
+              <option value="" disabled selected>Seleccionar</option>
+              <option value="Requisito 1">Requisito 1</option>
+              <option value="Requisito 2">Requisito 2</option>
+              <option value="Requisito 3">Requisito 3</option>
+            </select>
+          </tab>
+        </tabset>
+          <div class="div-guardar">
+            <button type="submit" [disabled]="formParent.invalid" class="btn-guardar">
+              Guardar
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

@@ -70,16 +70,20 @@ export class RecoveryComponent implements OnInit {
       this.error = "Las contraseñas no coinciden";
       return;
     }
-    const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])([A-Za-z\d$@$!%*?&]|[^ ]){8,8}$/; // 8 caracteres, 1 mayuscula, 1 numero, 1 caracter especial, no espacios
+    //const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])([A-Za-z\d$@$!%*?&]|[^ ]){8,}$/; // 8 caracteres, 1 mayuscula, 1 numero, 1 caracter especial, no espacios
+    const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()\-_=+{};:,<.>]).{8,}$/; // 8 caracteres, 1 mayuscula, 1 numero, 1 caracter especial, no espacios
     if (!password.match(passwordRegex)) {
     this.error = "La contraseña debe tener al menos 8 caracteres, 1 mayúscula, 1 número y 1 caracter especial.";
 
     return;
     }
-    this.http.post(`https://ec2-18-206-91-231.compute-1.amazonaws.com:8051/api/Validaciones/CambioContraseña?password=${password}&id=${userCode}`, { id: this.id })
+
+    this.http.post(`https://10.4.3.140:8055/api/Validaciones/CambioContraseña?password=${password}&id=${userCode}`, { id: this.id })
+
       .subscribe(
+       
         (response: any) => {
-          if(response.valor == "Contraseña cambiada satisfactoriamente"){
+          if(response.Valor == "Contraseña cambiada satisfactoriamente"){
             const title = "Exito";
             const message = "Contraseña cambiada con exito"
             this.Message.showModal(title,message);

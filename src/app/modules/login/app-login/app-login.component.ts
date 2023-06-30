@@ -63,7 +63,8 @@ export class AppLoginComponent implements OnInit {
           CustomValidators.patternValidator(/\d/, { hasNumber: true }),
           CustomValidators.patternValidator(/[A-Z]/, { hasCapitalCase: true }),
           CustomValidators.patternValidator(/[a-z]/, { hasSmallCase: true }),
-          CustomValidators.patternValidator(/(?=.*?[#?!@$%^&*-])/, {
+          //CustomValidators.patternValidator(/(?=.*?[#?!@$%^&*-])/, {
+          CustomValidators.patternValidator(/(?=.*[!@#$%^&*()\-_=+{};:,<.>])/, {
             hasSpecialCharacters: true,
           }),
           Validators.minLength(8),
@@ -97,29 +98,37 @@ export class AppLoginComponent implements OnInit {
     //jalar el valor del correo
     this.ApiService.login(this.usuario).subscribe(
       (data: any) => {
+
+       //PARA TOMAR TIPO_USUARIO
+        localStorage.setItem("TIPO_USUARIO", data.Grupo[0].TIPO_USUARIO);
+        if (data.Grupo[0].TIPO_USUARIO === 2 || data.Grupo[0].TIPO_USUARIO === 8) {
+          this.router.navigate(["/gestionUsuario"]);
+        } 
+
         this.store.dispatch(saveDataLogin({ request: data }));
         localStorage.setItem("rol", data.permisoUsuario[0]?.item || 1);
         localStorage.setItem("access", data.TokenAcceso);
         localStorage.setItem("refresh", data.TokenRefresco);
-        localStorage.setItem("idGrupo", data.Grupo[0].item);
-        localStorage.setItem("Id", data.IdUsuarioPst);
-        
-        this.ApiService.getNorma(data.IdUsuarioPst).subscribe(
+        localStorage.setItem("idGrupo", data.Grupo[0].ITEM);
+        localStorage.setItem("Id", data.ID_USUARIO);
+        localStorage.setItem("rnt",this.usuario.registroNacionalDeTurismo);
+        this.ApiService.getNorma(data.ID_USUARIO).subscribe(
           (categ: any) => {
             this.arrNormas = categ;
             localStorage.setItem(
               "idCategoria",
-              JSON.stringify(this.arrNormas[0].idCategoriarnt));
+              JSON.stringify(this.arrNormas[0].FK_ID_CATEGORIA_RNT));
         });
-        if (data.Grupo[0].item === 1) {
-          this.ApiService.validateCaracterizacion(data.IdUsuarioPst).subscribe(
+        if (data.Grupo[0].ITEM === 1 || data.Grupo[0].ITEM === 6 || data.Grupo[0].ITEM === 7) {
+          this.ApiService.validateCaracterizacion(data.ID_USUARIO).subscribe(
             (response) => {
               if (response) {
-                this.ApiService.getNorma(data.IdUsuarioPst).subscribe(
+                this.ApiService.getNorma(data.ID_USUARIO).subscribe(
                   (data: any) => {
+
                     if (
-                      data[0].idCategoriarnt === 5 ||
-                      data[0].idCategoriarnt === 2
+                      data[0].FK_ID_CATEGORIA_RNT === 5 ||
+                      data[0].FK_ID_CATEGORIA_RNT === 2
                     ) {
                       this.arrResult = data;
 
@@ -139,9 +148,15 @@ export class AppLoginComponent implements OnInit {
                         "norma",
                         JSON.stringify(this.arrResult)
                       );
-                      localStorage.setItem("normaSelected", data[0].norma);
-                      localStorage.setItem("idNormaSelected", data[0].id);
+                      localStorage.setItem("normaSelected", data[0].NORMA);
+                      localStorage.setItem("idNormaSelected", data[0].ID_NORMA);
+                      //modified by mel
+                      if( data[0].ID_NORMA === 1){
                       this.router.navigate(["/dashboard"]);
+                      }else{
+                        this.router.navigate(["/dashboard"]);
+                      }
+                     
                     }
                   }
                 );

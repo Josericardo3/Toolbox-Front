@@ -1,0 +1,42 @@
+.containerNoticia{
+    display: flex;
+    flex-direction: column;
+    margin: 2vh 5vw;
+}
+.datosNoticia{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+.titulo{
+    display: flex;
+    flex-direction: row-reverse;
+    margin: 2vh 0;
+}
+h1, h2, .fecha{
+    width: 100%;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: bolder;
+    color: #068460;
+    text-align: center;
+}
+h2, .fecha, .descripcion{
+    text-align: justify;
+}
+.fecha{
+    color: rgb(168, 168, 168);
+    font-size: 17px;
+}
+.fecha span {
+    color: #a8a8a8;
+    font-size: 19px;
+    margin: 0 0.5vw 0 0;
+}
+.descripcion{
+    font-size: 17px;
+    align-self: flex-start;
+}
+img{
+    margin: 2vh 0 4vh 0;
+}

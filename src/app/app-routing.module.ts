@@ -12,7 +12,17 @@ import { AppDocumentacionComponent } from './modules/documentacion/app-documenta
 import { AppGestionDeUsuariosComponent } from './modules/gestionDeUsuarios/app-gestion-de-usuarios/app-gestion-de-usuarios.component';
 import { AppEvidenciaComponent } from './modules/evidencia/app-evidencia/app-evidencia.component';
 import { RecoveryComponent } from './recovery/app-recovery/recovery.component';
+import { AppAuditoriaInternaComponent } from './modules/AuditoriaInterna/app-auditoria-interna/app-auditoria-interna.component';
 import { EMatrizRequisitosLegalesComponent } from './modules/e-matriz-requisitos-legales/e-matriz-requisitos-legales.component';
+import { AppNuevoPlanDeAuditoriaComponent } from './modules/NuevoPlanDeAuditoria/app-nuevo-plan-de-auditoria/app-nuevo-plan-de-auditoria.component';
+import { AppListaDeVerificacionComponent } from './modules/ListaDeVerificacion/app-lista-de-verificacion/app-lista-de-verificacion.component';
+import { AppInformeDeAuditoriaComponent } from './modules/InformeDeAuditoria/app-informe-de-auditoria/app-informe-de-auditoria.component';
+import { AppPlanificacionComponent } from './modules/planificacion/app-planificacion/app-planificacion.component';
+import { AppNoticiaComponent } from './modules/noticia/app-noticia/app-noticia.component';
+import { AppGestorNoticiaComponent } from './modules/GestorNoticia/app-gestor-noticia/app-gestor-noticia.component';
+import { AppHistorialNoticiasComponent } from './modules/historialNoticias/app-historial-noticias/app-historial-noticias.component';
+import { AppNoticiasCompletasComponent } from './modules/noticiasCompletas/app-noticias-completas/app-noticias-completas.component';
+import { AppMenuComponent } from './modules/Menu/app-menu/app-menu.component';
 
 const routes: Routes = [
   {path: '', component: AppLoginComponent},
@@ -24,11 +34,20 @@ const routes: Routes = [
   {path: 'diagnosticoDoc', component: AppDiagnosticoDocComponent},
   {path: 'documentacion', component: AppDocumentacionComponent},
   {path: 'gestionUsuario', component: AppGestionDeUsuariosComponent},
-  {path: 'evidencia', component: AppEvidenciaComponent},
-  {path: 'recovery/:id', component: RecoveryComponent},
+  {path: 'evidencia/:section', component: AppEvidenciaComponent},
+  {path: 'evidencia/:section/:subSection', component: AppEvidenciaComponent },
+  {path: 'recovery', component: RecoveryComponent},
+  {path: 'auditoria', component: AppAuditoriaInternaComponent},
   {path: 'EMatrizRequisitosLegales', component: EMatrizRequisitosLegalesComponent},
-  {path: 'recovery', component: RecoveryComponent}
-  //{path: '', component: AppMyExampleComponent},
+  {path: 'nuevoPlanDeAuditoria', component: AppNuevoPlanDeAuditoriaComponent},
+  {path: 'listaDeVerificacion', component: AppListaDeVerificacionComponent},
+  {path: 'informeAuditoria', component: AppInformeDeAuditoriaComponent},
+  {path: 'planificacion', component: AppPlanificacionComponent},
+  {path: 'noticia', component: AppNoticiaComponent},
+  {path: 'gestorNoticia', component: AppGestorNoticiaComponent},
+  {path: 'historial', component: AppHistorialNoticiasComponent},
+  {path: 'noticiaCompleta', component: AppNoticiasCompletasComponent},
+  {path: 'menu', component: AppMenuComponent},
 ];
 
 @NgModule({

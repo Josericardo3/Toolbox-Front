@@ -1,0 +1,478 @@
+.container-form-informe-auditoria{
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+    /* justify-content: space-between; m*/
+}
+ /* stylos del titulo vista general*/
+ 
+ .titulo{
+    display: flex;
+    flex-direction: row-reverse;
+    margin: 2vh 0 2vh 0;
+}
+.titulo-nav{
+    width: 100%;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: bolder;
+    color: #068460;
+    text-align: center;
+}
+.componente-global{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    /* margin: 2vh 2vw; k*/
+}
+.row{
+    /* display: flex;
+    flex-direction: column;k */
+    margin: 0;
+    /* padding: 10px;k */
+    width: 100%;
+}
+.container{
+    align-items: center;
+    width: 100%;
+}
+.contenedor-arrow{
+    margin-top: 10px;
+    margin-left: 31px;   
+}
+/* stylos de el titulo del formulario */
+ .sub-titulo{
+    font-family: 'Montserrat', sans-serif;
+    font-size: 25px;
+    color: #068460;
+    align-self: flex-start;
+    /* margin: 1vh 0 2vh 0; k*/
+}
+.sub-titulo-plan{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: flex-end;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 25px;
+    color: #068460;
+    /* margin: 1vh 0 0 0; k*/
+}
+/* stylos del formulario cabecera */
+.container-form{
+    width: 100%;
+    display: inline-block;
+    vertical-align: top;
+}
+.controller-auditoria{
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: column;
+    width: 100%;
+}
+/* stylos de los label */
+.select-auditor{
+    border-radius: 8px;
+    height: 5vh;
+    width: 25vw;
+    padding: 3px;
+    border: 1px solid #068460; 
+    font-size: 14px;
+    font-family: 'Work Sans', sans-serif;
+}
+.label-color{
+    font-size: 16px;
+    font-family: 'Work Sans', sans-serif;
+    text-align: left;
+    align-self: flex-start;
+}
+.plan-auditoria{
+    display: flex;
+    width: 100%;
+}
+.rp-btn{
+    margin: 0 0 0 50vw; 
+}
+/* stylos del select multiple */
+ .multiselect-dropdown .dropdown-btn {
+    display: flex!important;
+    width: 25vw!important;
+    padding: 5px!important;
+    margin-bottom: 0!important;
+    font-family: 'Work Sans', sans-serif !important;
+    /* font-size: 12px !important;
+    font-weight: 400!important;
+    line-height: 1.1 !important; */
+    border: 1px solid #068460 !important;
+    /* text-align: left!important;
+    vertical-align: middle!important; */
+    cursor: pointer!important;
+    background-image: none!important;
+    border-radius: 8px!important;
+    height: 5vh!important;
+    margin-top: -6vh;
+}
+
+.multiselect-dropdown .dropdown-btn .dropdown-multiselect__caret {
+    top: -2px !important;
+    left: 302px;
+}
+
+.dropdown-list{
+    position: absolute;
+    padding-top: 6px;
+    width: 100% !important;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    background: #fff;
+    box-shadow: 0 1px 5px #959595;
+    font-family: 'Work Sans', sans-serif !important;
+}
+
+/* stylos del textarea */
+.forma-campo input{
+    border-radius: 8px;
+    height: 5vh;
+    width: 25vw;
+    padding: 3px;
+    border: 1px solid #068460; 
+    font-size: 14px;
+    font-family: 'Work Sans', sans-serif;
+}
+.obs{
+    border-radius: 8px;
+    height: 11vh;
+    width: 25vw;
+    padding: 3px;
+    border: 1px solid #068460; 
+    font-size: 14px;
+    font-family: 'Work Sans', sans-serif;
+}
+.container-textarea{
+    margin-top: -9px; 
+}
+
+/* stylos de input calendario */
+.selectMultiple{
+    width: 25vw;
+}
+.forma-campo{
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+    height: auto;
+    margin: 1vh 0;
+}
+.forma-campo p{
+    font-size: 16px;
+    font-family: 'Work Sans', sans-serif;
+    margin-bottom: 10px;
+}
+.container-section{
+    padding: 5px;
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-direction: column;
+}
+.obs-titulo{
+    font-weight: bold;
+    font-size: 16px;
+    font-family: 'Work Sans', sans-serif;
+    color: #474749;
+}
+.divHora{
+    display: flex;
+}
+.obs-final{
+    background: #FFFFFF;
+    border: 2px solid #068460;
+    border-radius: 10px;
+    padding: 5px;
+    font-family: 'Work Sans', sans-serif;
+    font-size: 14px;
+    color: #000000;
+    width: 64.6vw;
+    height: 15vh;
+    margin-top: 3px;
+}
+.obs-titulo-final{
+    font-weight: bold;
+    font-size: 16px;
+    font-family: 'Work Sans', sans-serif;
+}
+.container-final{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    width: 100%;
+}
+label{
+    margin-bottom: 12px;
+}
+
+.input-alcance{
+    background: #FFFFFF;
+    border-radius: 6px;
+    height: 4vh;
+    border: solid 1px #068460 !important;
+    margin: 6px 10px 10px 30px;
+    font-family: 'Work Sans', sans-serif;
+    font-size: 14px;
+}
+.forma-input-cierre{
+    background: #FFFFFF;
+    border-radius: 6px;
+    height: 20px;
+    width: 127px;
+    padding: 16px;
+    border: solid 1px #068460 !important;
+    margin-left: 59px;
+    font-family: 'Work Sans', sans-serif;
+    font-size: 14px;
+    margin-top: 0px;
+}
+.forma-input-calendario{
+    background: #FFFFFF;
+    border-radius: 6px;
+    height: 22px;
+    width: 100px;
+    padding: 4px;
+    border: solid 1px #068460 !important;
+    margin: 5px;
+    font-family: 'Work Sans', sans-serif;
+    font-size: 14px;
+    margin-left: 10px;
+}
+.label-auditor {
+    font-weight: bold;
+    font-size: 16px;
+    font-family: 'Work Sans', sans-serif;
+    color: #474749;  
+}
+.label-auditor-selec{
+    font-weight: bold;
+    margin: 5px;
+    font-size: 16px;
+    font-family: 'Work Sans', sans-serif;
+    color: #474749;     
+}
+.forma-hora{
+    margin-left: 3px;
+    font-weight: bold;
+    font-size: 16px;
+    font-family: 'Work Sans', sans-serif;
+    color: #474749;
+}
+.label-auditor-cargo{
+    margin-left: 3px;
+    font-weight: bold;
+    font-size: 16px;
+    font-family: 'Work Sans', sans-serif;
+    color: #474749; 
+}
+.div-guardar{
+    display: flex;
+    justify-content: center; 
+    margin-bottom: 2vh;
+}
+
+.btn-guardar{
+    display: flex;
+    justify-content: space-around;
+    margin: 31px 0 3px 0;
+    height: 35px;
+    width: 165px;
+    padding: 5px;
+    background-color: #068460;
+    border-radius: 100px;
+    color: #FFFFFF;
+    font-family: 'Work Sans', sans-serif;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+}
+.btn-guardar:disabled{
+    background-color: #999999;
+    color: #000000;
+}
+
+
+/* stylos de validaciones */
+input.ng-invalid.ng-touched {
+    border: solid 2px tomato !important;
+    border-radius: 10px;
+  }
+  textarea.ng-invalid.ng-touched {
+    border: solid 2px tomato !important;
+    border-radius: 10px;
+  }
+
+  input.ng-valid,select.ng-valid{
+    border: solid 2px #068460 !important;
+    border-radius: 10px;
+  }
+
+  /* stylos del input hora  */
+  .input-hora{
+    background: #FFFFFF;
+    border-radius: 6px;
+    height: 4vh;
+    border: solid 1px #068460 !important;
+    margin-left: 20px;
+    font-family: 'Work Sans', sans-serif;
+    font-size: 14px;
+    padding: 5px;
+  }
+  
+  .select-process{
+    border-radius: 5px;
+    margin-left: 6px;
+    height: 27px;
+    margin: 0px;
+    border: 1px solid#068460; 
+    font-size: 14px;
+    font-family: 'Work Sans', sans-serif;
+}
+
+
+/* stylos del primer formulario */
+.contenedor-1form{
+    display: flex; 
+    width: 100%;
+}
+.sub-menu-form1{
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: flex-start;
+    background-color: #fafafa;
+    border-radius: 10px;
+    padding: 2vh 3vw;
+}
+
+/* stylos de tabla de actividades */
+.tr-table{
+    background: #068460;
+    color: white;
+    font-family: 'Work Sans', sans-serif;
+    font-size: 12px;
+}
+
+.table>thead>tr>th {
+    vertical-align: inherit !important;
+    border-bottom: 2px solid #ddd;
+}
+
+.obs-acti-editar{
+    background: #FFFFFF;
+    border: 2px solid #068460;
+    border-radius: 10px;
+    height: 40px;
+    padding: 5px;
+    width: 248px;
+    font-family: 'Work Sans', sans-serif;
+    font-size: 14px;
+    color: #000000;
+}
+
+.select-auditor-acti{
+    border-radius: 5px;
+    height: 4vh;
+    width: 122px;
+    border: 1px solid#068460;
+    font-size: 14px;
+    font-family: 'Work Sans', sans-serif;
+}
+
+.forma-input-acti{
+    width: 100px;
+    border: 1px solid #068460;
+    border-radius: 3px;
+    padding: 3px;
+    height: 22px;
+}
+  /* paginado */
+.page-style{
+    display: flex;
+    justify-content: flex-end;
+}
+.container-label{
+    display: flex;
+    align-items: center;
+}
+.paginas{
+    display: inline-block;
+    max-width: 100%;
+    margin: 10px;
+    font-weight: 700;
+    font-size: 14px;
+    font-family:'Work Sans', sans-serif;
+}
+.planificacion{
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-direction: column;
+    margin: 2vh 0 0 0;
+    width: 100%;
+}
+.linea{
+    border-top: 2px solid  rgb(168, 168, 168);;
+    width: 65vw;
+    padding: 0;
+    margin: 1vh 0;
+}
+.rp-calendar{
+    width: 1.4vw;
+    height: 3.5vh;
+    margin: 0.5vh 0 0 0.3vw;
+}
+/* responsive */
+@media(max-width: 480px) {
+    .select-auditor{
+       width: 79vw;
+    }
+    .obs{
+        width: 79vw;   
+    }
+    .forma-campo input{
+        width: 79vw;   
+    }
+    .rp-calendar{
+        width: 3.4vw;
+        height: 3.5vh;
+        margin: 1vw 0 0 1.3vw;
+    }
+    .linea{
+        width: 79vw;
+    }
+    .planificacion{
+        margin: 2vh 0 0 14px;
+    }
+    .rp-btn{
+        margin: 5px 4px 5px 95px;
+    }
+    .obs-titulo-final{
+        margin-left: 16px;
+        margin-top: 25px;
+    }
+    .obs-final{
+        width: 79.2vw;
+        margin-left: 15px;
+    }
+    .multiselect-dropdown .dropdown-btn{
+        width: 79vw!important;
+    }
+
+    .multiselect-dropdown .dropdown-btn .dropdown-multiselect__caret{
+        left: 323px !important; 
+    }
+
+    .dropdown-list{
+        width: 317% !important;
+    }
+   
+}
