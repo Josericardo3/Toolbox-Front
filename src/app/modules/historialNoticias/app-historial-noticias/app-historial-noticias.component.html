@@ -5,22 +5,24 @@
         <app-app-header-arrow-left routerLink="/dashboard"></app-app-header-arrow-left>
     </div>
     <div class="containerTarjetas">
-        <div *ngFor="let campo of datos,let index = index" (click)="indexCard(index)">
-            <div class="tarjetas" *ngIf="campo.TIPO == 'Noticia' && campo.FECHA_ACT_NOTICIA && campo.DESCRIPCION_NOTICIA">
-                <p class="fecha">{{campo.FECHA_ACT_NOTICIA}}</p>
-                <p class="contenido">{{campo.TIPO}}</p>
-                <p class="contenido">{{campo.DESCRIPCION_NOTICIA.slice(0,170)}}</p>
+        <div *ngIf="datos && datos.length > 0">
+            <div *ngFor="let campo of datos,let index = index" (click)="indexCard(index)">
+                <div class="tarjetas" *ngIf="campo.TIPO == 'Noticia' && campo.FECHA_ACT_NOTICIA && campo.DESCRIPCION_NOTICIA">
+                    <p class="fecha">{{campo.FECHA_ACT_NOTICIA}}</p>
+                    <p class="contenido">{{campo.TIPO}}</p>
+                    <p class="contenido">{{campo.DESCRIPCION_NOTICIA.slice(0,170)}}</p>
+                </div>
+                <div class="tarjetas" *ngIf="campo.TIPO == 'Actividad' && campo.FECHA_FIN_ACTIVIDAD && campo.DESCRIPCION_ACTIVIDAD">
+                    <p class="fecha">{{campo.FECHA_FIN_ACTIVIDAD}}</p>
+                    <p class="contenido">{{campo.TIPO}}</p>
+                    <p class="contenido">{{campo.DESCRIPCION_ACTIVIDAD.slice(0,170)}}</p>
+                </div>
             </div>
-            <div class="tarjetas" *ngIf="campo.TIPO == 'Actividad' && campo.FECHA_FIN_ACTIVIDAD && campo.DESCRIPCION_ACTIVIDAD">
-                <p class="fecha">{{campo.FECHA_FIN_ACTIVIDAD}}</p>
-                <p class="contenido">{{campo.TIPO}}</p>
-                <p class="contenido">{{campo.DESCRIPCION_ACTIVIDAD.slice(0,170)}}</p>
-            </div>
-            <div *ngIf="campo.TIPO == null && campo.FECHA_FIN_ACTIVIDAD == null && campo.DESCRIPCION_ACTIVIDAD == null">
-                <p style="text-align: center;margin-top: 3vh; font-size: 19px; font-family: 'Work Sans', sans-serif;" >
-                    No hay notificaciones para mostrar.
-                </p>
-            </div>
+        </div>
+        <div *ngIf="!datos || datos.length === 0">
+            <p style="text-align: center;margin-top: 3vh; font-size: 19px; font-family: 'Work Sans', sans-serif;">
+              No hay notificaciones para mostrar.
+            </p>
         </div>
     </div>
     <footer class="page-style">

@@ -10,14 +10,14 @@
     <form [formGroup]="formRequisitosLegales" class="form" (ngSubmit)="saveForm()">
         <h3>Responda las siguientes preguntas:</h3>
         <p class="texto" id="preg1">¿Cuál es la frecuencia de actualización de matriz de requisitos legales?</p>
-        <select name="actualizacion" id="actualizacion" formControlName="actualizacion" (change)="capturarValor($event)">
+        <select name="actualizacion" id="{{ datos[0]?.ID_RESPUESTA_FORMULARIOS }}" formControlName="actualizacion" (change)="capturarValor($event)">
             <option value="" disabled selected>Frecuencia de actualización</option>
             <option value="semestral">Semestral</option>
             <option value="anual">Anual</option>
         </select>
         <p class="info">Responda según desee implementar</p>
         <p class="texto" id="preg2">¿Cuál es la frecuencia de evaluación de matriz de requisitos legales?</p>
-        <select name="evaluacion" id="evaluacion" formControlName="evaluacion" (change)="capturarValor($event)">
+        <select name="evaluacion" id="{{ datos[1]?.ID_RESPUESTA_FORMULARIOS }}" formControlName="evaluacion" (change)="capturarValor($event)">
             <option value="" disabled selected>Frecuencia de evaluación</option>
             <option value="semestral">Semestral</option>
             <option value="anual">Anual</option>

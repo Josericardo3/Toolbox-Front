@@ -243,6 +243,9 @@ export class AppProcRequisitosLegalesComponent implements OnInit{
   }
 
   capturarValor(event: Event) {
+    //idSelect: para que al volver a guardar se actualice el valor nuevo que se editó
+    const idSelect = (event.target as HTMLSelectElement).id;
+    console.log(idSelect)
     const valorSeleccionado = (event.target as HTMLSelectElement).value;
     console.log(valorSeleccionado)
     const textoPreg = (event.target as HTMLSelectElement).previousElementSibling?.textContent;
@@ -253,7 +256,7 @@ export class AppProcRequisitosLegalesComponent implements OnInit{
         result.RESPUESTA = valorSeleccionado;
       } else {
         this.valoresForm.push({
-          ID_RESPUESTA_FORMULARIOS: 0,
+          ID_RESPUESTA_FORMULARIOS: idSelect,
           FK_MAE_FORMULARIOS: 1,
           PREGUNTA: textoPreg,
           RESPUESTA: valorSeleccionado,
@@ -264,7 +267,6 @@ export class AppProcRequisitosLegalesComponent implements OnInit{
   }
 
   saveForm(){  
-    // this.formRequisitosLegales.reset();
     this.api.saveForms(this.valoresForm)
     .subscribe( data => {
       console.log('Carga exitosa', data);
@@ -285,43 +287,27 @@ export class AppProcRequisitosLegalesComponent implements OnInit{
     this.api.getForms()
     .subscribe((data: any) => {
       this.datos = data;
-      console.log(data, this.datos)
+      data.forEach((respuesta: any) => {
+        const pregunta = respuesta.PREGUNTA;
+        const valorRespuesta = respuesta.ID_RESPUESTA_FORMULARIOS;
+        this.formRequisitosLegales.get(pregunta)?.patchValue(valorRespuesta);
+        console.log(valorRespuesta)
+      });
       if (data && data.length > 0) {
         this.datos = data;
         // Verificar si las respuestas existen y asignar los valores al formulario
         const respuestaActualizacion = this.datos.find(respuesta => respuesta.PREGUNTA === '¿Cuál es la frecuencia de actualización de matriz de requisitos legales?');
-        const respuestaEvaluacion = this.datos.find(respuesta => respuesta.PREGUNTA === '¿Cuál es la frecuencia de evaluación de matriz de requisitos legales?');
-  
+        const respuestaEvaluacion = this.datos.find(respuesta => respuesta.PREGUNTA === '¿Cuál es la frecuencia de evaluación de matriz de requisitos legales?'); 
         if (respuestaActualizacion) {
           this.formRequisitosLegales.get('actualizacion').setValue(respuestaActualizacion.RESPUESTA);
-        }
-  
+        }  
         if (respuestaEvaluacion) {
           this.formRequisitosLegales.get('evaluacion').setValue(respuestaEvaluacion.RESPUESTA);
-        }
-      
-
+        }    
         // Deshabilitar los campos después de guardar
         this.formRequisitosLegales.get('actualizacion')?.disable();
         this.formRequisitosLegales.get('evaluacion')?.disable();
       }
     })
-    // Verificar si se obtuvieron datos válidos
-    // if (data && data.length > 0) {
-    //   const pregunta1 = data.find((item: any) => item.PREGUNTA === '¿Cuál es la frecuencia de actualización de matriz de requisitos legales?');
-    //   const pregunta2 = data.find((item: any) => item.PREGUNTA === '¿Cuál es la frecuencia de evaluación de matriz de requisitos legales?');
-  
-    //   if (pregunta1) {
-    //     this.formRequisitosLegales.get('actualizacion')?.setValue(pregunta1.RESPUESTA);
-    //   }
-    //   if (pregunta2) {
-    //     this.formRequisitosLegales.get('evaluacion')?.setValue(pregunta2.RESPUESTA);
-    //   }
-    // }
-
-        // Habilitar los campos después de guardar
-        // this.formRequisitosLegales.get('actualizacion')?.value.toString();
-        // this.formRequisitosLegales.get('evaluacion')?.value.toString();
-        
   }
 }
