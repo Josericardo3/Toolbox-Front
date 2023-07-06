@@ -1,3 +1,6 @@
+.govco-footer{
+    width: 100vw;
+}
 /* agregados */
 .govco-portales-contenedor {
     display: grid !important;

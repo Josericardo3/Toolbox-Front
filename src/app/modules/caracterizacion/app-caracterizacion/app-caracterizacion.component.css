@@ -56,7 +56,7 @@ h1{
     font-weight: bolder;
     font-size: 32px;
     color: #068460;
-    margin: 15vh 0 2vh 0;
+    margin: 5vh 0 2vh 0;
     width: 60vw;
     text-align: center;
 }
@@ -209,6 +209,26 @@ input[type=number] {
   font-size: 17px;
   margin: 10px 0 5px 0;
 }
+
+input.ng-invalid.ng-touched,
+select.ng-invalid.ng-touched,
+input[type="checkbox"].ng-invalid.ng-touched {
+  border: solid 2px tomato !important;
+  border-radius: 10px;
+}
+input[type="checkbox"].ng-invalid.ng-touched {
+  border-radius: 5px !important;
+}
+
+.error-message{
+  margin: 0 0 1vh 0;
+}
+
+/* .invalid-touched{
+  border: solid 2px tomato !important;
+  border-radius: 10px;
+} */
+
 @media (max-width: 900px) {
   .containerRadio {
     width: 26vw;

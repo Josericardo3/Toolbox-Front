@@ -77,6 +77,8 @@ import { AppHistorialNoticiasComponent } from './modules/historialNoticias/app-h
 import { AngularEditorModule } from '@kolkov/angular-editor';
 import { AppNoticiasCompletasComponent } from './modules/noticiasCompletas/app-noticias-completas/app-noticias-completas.component';
 import { ModalDetalleComponent } from './modules/ListaDeVerificacion/modal-detalle/modal-detalle.component';
+import { AppProcRequisitosLegalesComponent } from './modules/proc-requisitos-legales/app-proc-requisitos-legales/app-proc-requisitos-legales.component';
+import { AppMatrizPartesInteresadasComponent } from './modules/matrizPartesInteresadas/app-matriz-partes-interesadas/app-matriz-partes-interesadas.component';
 
 @NgModule({
   declarations: [
@@ -118,6 +120,8 @@ import { ModalDetalleComponent } from './modules/ListaDeVerificacion/modal-detal
     AppHistorialNoticiasComponent,
     AppNoticiasCompletasComponent,
     ModalDetalleComponent,
+    AppProcRequisitosLegalesComponent,
+    AppMatrizPartesInteresadasComponent,
     // SelectMultipleComponent,
     
   ],

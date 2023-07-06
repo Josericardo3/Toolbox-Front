@@ -105,13 +105,6 @@ export class AppDiagnosticoComponent implements OnInit {
 
   capturarValor(event: any, value: any ,numeralprincipal: any , numeralEspecifico: any) {
     const normaValue = localStorage.getItem('idNormaSelected');
-
-      // const capturarObservacion = () => {
-      //   const idObs = `observacion-${iddiagnosticodinamico}`;
-      //   const valorObs = document.querySelector('#idObs') as HTMLInputElement;
-      //   const val = valorObs.value
-      // };
-
     const result = this.valoresForm.find((o: any) => o.numeralespecifico === numeralEspecifico);
     if (result) {
       result.valor = value;
@@ -124,7 +117,6 @@ export class AppDiagnosticoComponent implements OnInit {
         "numeralespecifico": numeralEspecifico,
         "observacion": "",
       });
-      // capturarObservacion();
     }
   }
 

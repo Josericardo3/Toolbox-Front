@@ -856,7 +856,7 @@ export class AppDiagnosticoDocComponent implements OnInit {
         width: 794,
         height: 1123,
       },
-      pageMargins: [ 40, 60, 40, 60 ],
+      pageMargins: [ 40, 120, 40, 120 ],
       content: [
         {
           toc: {

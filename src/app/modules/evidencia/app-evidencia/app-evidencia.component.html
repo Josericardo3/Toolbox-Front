@@ -10,8 +10,9 @@
             </div>
             <div class="detalle" *ngIf="contextsVisible">
                 <div>
-                    <p>4.1 Cumplimiento de la legislación 
-                        <a routerLink="/EMatrizRequisitosLegales" routerLinkActive="activebutton"> | Matriz de requisitos legales</a> |
+                    <p>4.1 Cumplimiento de la legislación |
+                        <a routerLink="/EMatrizRequisitosLegales" routerLinkActive="activebutton">Matriz de requisitos legales</a> |
+                        <a routerLink="/requisitosLegales" routerLinkActive="activebutton"> Procedimiento de requisitos legales</a> |
                         <a>Cargar documento</a> 
                     </p> 
                     <div *ngIf="subirVisible41" class="subDetalleSubirVisible">
@@ -37,7 +38,9 @@
                     </div>
                 </div>
                 <div>
-                    <p>4.3 Comprensión de las necesidades y expectativas de las partes interesadas <a> | Generar documento</a> | 
+                    <p>4.3 Comprensión de las necesidades y expectativas de las partes interesadas |
+                        <a routerLink="" routerLinkActive="activebutton">Taller de partes interesadas</a> |
+                        <a routerLink="/partesInteresadas" routerLinkActive="activebutton"> Matriz de partes interesadas</a> | 
                         <a (click)="toggleSubir('item43')">Cargar documento</a>
                     </p>
                     <div *ngIf="subirVisible43" class="subDetalleSubirVisible">

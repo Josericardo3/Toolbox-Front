@@ -1,0 +1,61 @@
+.containerMatrizPartesInteresadas{
+    display: flex;
+    flex-direction: column;
+    margin: 2vh 1vw;
+}
+.titulo{
+    display: flex;
+    flex-direction: row-reverse;
+    margin: 2vh 0;
+}
+h1{
+    width: 100%;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: bolder;
+    color: #068460;
+    text-align: center;
+    margin: 2vh 0;
+}
+h3{
+    font-family: 'Montserrat', sans-serif;
+    font-weight: bolder;
+    margin: 0 0 2vh 0;
+}
+.form{
+    display: flex;
+    flex-direction: column;
+    margin: 0 1vw;
+}
+.botonG,
+.btnReporte,
+.boton{
+    margin: 4vh 0 2vh 2vw;
+    height: 40px;
+    width: 200px;
+    padding: 5px;
+    background-color: #068460;
+    border-radius: 100px;
+    color: #FFFFFF;
+    font-family: 'Work Sans', sans-serif;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    align-self: flex-start;
+}
+.btnReporte{
+    margin: 0 0 3vh 0 !important;
+    align-self: flex-end !important;
+}
+.boton{
+    width: 253px !important;
+    margin: 2vh 0 2vh 0 !important;
+}
+:disabled{
+    background-color: #737373;
+}
+.containerBtn{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+}

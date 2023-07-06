@@ -107,7 +107,7 @@ export class AppDashboardComponent implements OnInit {
         }
       }
 
-      if(this.datosTarjetaActividad.length == 0 ||this.datosTarjetaActividad.length <= 0){
+      if(this.datosTarjetaNoticia.length == 0 ||this.datosTarjetaNoticia.length <= 0){
         this.resultNoticia= true; 
       }
       if(this.datosTarjetaActividad.length == 0 ||this.datosTarjetaActividad.length <= 0){

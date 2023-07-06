@@ -402,4 +402,16 @@ export class ApiService {
     let lista = `${this.apiURLNuevo}/api/Actividad/Logo`
     return this.http.put<any>(lista,send)
   }
+
+  //FORMULARIOS DE EVIDENCIA
+  saveForms(request: any){
+    const form = `${this.apiURLNuevo}/api/Formulario`;
+    return this.http.post<any>(form, request)
+  }
+
+  getForms(){
+    const rnt = localStorage.getItem('rnt');
+    let direccion = `${this.apiURLNuevo}/api/Formulario?ID_FORMULARIO=1&RNT=${rnt}`
+    return this.http.get<any>(direccion)
+  }
 }

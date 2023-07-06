@@ -23,6 +23,8 @@ import { AppGestorNoticiaComponent } from './modules/GestorNoticia/app-gestor-no
 import { AppHistorialNoticiasComponent } from './modules/historialNoticias/app-historial-noticias/app-historial-noticias.component';
 import { AppNoticiasCompletasComponent } from './modules/noticiasCompletas/app-noticias-completas/app-noticias-completas.component';
 import { AppMenuComponent } from './modules/Menu/app-menu/app-menu.component';
+import { AppProcRequisitosLegalesComponent } from './modules/proc-requisitos-legales/app-proc-requisitos-legales/app-proc-requisitos-legales.component';
+import { AppMatrizPartesInteresadasComponent } from './modules/matrizPartesInteresadas/app-matriz-partes-interesadas/app-matriz-partes-interesadas.component';
 
 const routes: Routes = [
   {path: '', component: AppLoginComponent},
@@ -47,7 +49,8 @@ const routes: Routes = [
   {path: 'gestorNoticia', component: AppGestorNoticiaComponent},
   {path: 'historial', component: AppHistorialNoticiasComponent},
   {path: 'noticiaCompleta', component: AppNoticiasCompletasComponent},
-  {path: 'menu', component: AppMenuComponent},
+  {path: 'requisitosLegales', component: AppProcRequisitosLegalesComponent},
+  {path: 'partesInteresadas', component: AppMatrizPartesInteresadasComponent}
 ];
 
 @NgModule({

@@ -1,0 +1,42 @@
+<app-app-header></app-app-header>
+<div class="containerProcRequisitosLegales">
+    <div class="titulo">
+        <h1>Procedimiento de requisitos legales</h1>
+        <app-app-header-arrow-left routerLink="/dashboard"></app-app-header-arrow-left>
+    </div>
+    <button type="button" class="btnReporte" (click)="generatePDF()">
+        <i class="fa-solid fa-download" style="color: #ffffff; margin-right: 0.5vw;"></i>Descargar reporte
+    </button>
+    <form [formGroup]="formRequisitosLegales" class="form" (ngSubmit)="saveForm()">
+        <h3>Responda las siguientes preguntas:</h3>
+        <p class="texto" id="preg1">¿Cuál es la frecuencia de actualización de matriz de requisitos legales?</p>
+        <select name="actualizacion" id="actualizacion" formControlName="actualizacion" (change)="capturarValor($event)">
+            <option value="" disabled selected>Frecuencia de actualización</option>
+            <option value="semestral">Semestral</option>
+            <option value="anual">Anual</option>
+        </select>
+        <p class="info">Responda según desee implementar</p>
+        <p class="texto" id="preg2">¿Cuál es la frecuencia de evaluación de matriz de requisitos legales?</p>
+        <select name="evaluacion" id="evaluacion" formControlName="evaluacion" (change)="capturarValor($event)">
+            <option value="" disabled selected>Frecuencia de evaluación</option>
+            <option value="semestral">Semestral</option>
+            <option value="anual">Anual</option>
+        </select>
+        <p class="info">Responda según desee implementar</p>
+        <div class="containerBtn">
+            <button type="submit" class="botonG" [disabled]="formRequisitosLegales.invalid">
+                <i class="fa-regular fa-floppy-disk" style="color: #fff;"></i> Guardar
+            </button>
+            <button type="button" class="botonG" (click)="activarCampos()"> 
+                <i class="fa-solid fa-pen" style="color: white; margin: 0 0.4vw;"></i> Editar
+            </button>
+        </div>
+    </form>
+</div>
+<app-app-footer></app-app-footer>
+<ngx-spinner
+  bdColor="rgba(0, 0, 0, 0.5)"
+  size="small"
+  template="<img src='https://www.superiorlawncareusa.com/wp-content/uploads/2020/05/loading-gif-png-5.gif' width='50' height='50'/>"
+>
+</ngx-spinner>

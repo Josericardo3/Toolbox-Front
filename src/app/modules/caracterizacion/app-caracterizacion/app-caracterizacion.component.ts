@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, CUSTOM_ELEMENTS_SCHEMA, NgModule, OnInit } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, ElementRef, NgModule, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { ApiService } from 'src/app/servicios/api/api.service';
 // import 'core-js/es/object';
@@ -18,6 +18,9 @@ import { ModalService } from 'src/app/messagemodal/messagemodal.component.servic
 
 export class AppCaracterizacionComponent implements OnInit {
   formParent!: FormGroup;
+  otroControlA: FormControl;
+  otroControlB: FormControl;
+  otroControlC: FormControl;
 
   datos: any = [];
   preguntasDesordenadas: any = [];
@@ -72,8 +75,34 @@ ngOnInit(): void {
   .subscribe((data: any[]) => {
     this.municipios = data;
   });  
+  //validar input-otro
+  this.otroControlA = new FormControl('', [Validators.required]);
+  this.otroControlB = new FormControl('', [Validators.required]);
+  this.otroControlC = new FormControl('', [Validators.required]);
 }
 
+validarCampoOtroA() {
+  return this.otroControlA.invalid && this.otroControlA.touched;
+}
+
+validarCampoOtroB() {
+  return this.otroControlB.invalid && this.otroControlB.touched;
+}
+
+validarCampoOtroC() {
+  return this.otroControlC.invalid && this.otroControlC.touched;
+}
+// validarCampoOtroA(index: number) {
+//   return this.otroControlA[index].invalid && this.otroControlA[index].touched;
+// }
+
+// validarCampoOtroB(index: number) {
+//   return this.otroControlB[index].invalid && this.otroControlB[index].touched;
+// }
+
+// validarCampoOtroC(index: number) {
+//   return this.otroControlC[index].invalid && this.otroControlC[index].touched;
+// }
 getCaracterizacion(){
   this.ApiService.getData()
   // this.http.get('assets/datos.json')
@@ -240,7 +269,6 @@ getControlType(campo: any) {
 }
 
 capturarValor(id: string | number, valor: any, idcaracterizaciondinamica: any) {
- 
   const result = this.valoresForm.find((o: any) => o.id === id);
   if (result) {
     result.valor = valor;

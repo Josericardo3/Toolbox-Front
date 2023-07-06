@@ -66,6 +66,8 @@ export class AppGestorNoticiaComponent implements OnInit {
   selectedCategorias: number[] = [];
   selectedSubCategorias: number[] = [];
   selectedPst: number[] = [];
+  result: boolean = false;
+  filterArray: any = [];
 
   //SELECTOR MÚLTIPLE
   dropdownList: any[] = [];
@@ -196,8 +198,6 @@ export class AppGestorNoticiaComponent implements OnInit {
     }
   }
 
-  result: boolean = false;
-  filterArray: any = [];
   filtrarDatos(){
     this.result = false;
     if (!this.busqueda) {
