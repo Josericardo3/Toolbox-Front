@@ -98,7 +98,6 @@ export class AppLoginComponent implements OnInit {
     //jalar el valor del correo
     this.ApiService.login(this.usuario).subscribe(
       (data: any) => {
-
        //PARA TOMAR TIPO_USUARIO
         localStorage.setItem("TIPO_USUARIO", data.Grupo[0].TIPO_USUARIO);
         if (data.Grupo[0].TIPO_USUARIO === 2 || data.Grupo[0].TIPO_USUARIO === 8) {
@@ -106,7 +105,7 @@ export class AppLoginComponent implements OnInit {
         } 
 
         this.store.dispatch(saveDataLogin({ request: data }));
-        localStorage.setItem("rol", data.permisoUsuario[0]?.item || 1);
+        localStorage.setItem("rol", data.Grupo[0].TIPO_USUARIO);
         localStorage.setItem("access", data.TokenAcceso);
         localStorage.setItem("refresh", data.TokenRefresco);
         localStorage.setItem("idGrupo", data.Grupo[0].ITEM);
@@ -119,7 +118,7 @@ export class AppLoginComponent implements OnInit {
               "idCategoria",
               JSON.stringify(this.arrNormas[0].FK_ID_CATEGORIA_RNT));
         });
-        if (data.Grupo[0].ITEM === 1 || data.Grupo[0].ITEM === 6 || data.Grupo[0].ITEM === 7) {
+        if (data.Grupo[0].ITEM === 1 || data.Grupo[0].ITEM === 6 || data.Grupo[0].ITEM === 7 || data.Grupo[0].ITEM === 3 || data.Grupo[0].ITEM === 4 ) {
           this.ApiService.validateCaracterizacion(data.ID_USUARIO).subscribe(
             (response) => {
               if (response) {

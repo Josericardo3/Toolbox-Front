@@ -1,0 +1,46 @@
+<app-app-header></app-app-header>
+<div class="containerMejoraContinua">
+    <div class="titulo">
+        <h1>Mejora contínua</h1>
+        <app-app-header-arrow-left routerLink="/dashboard"></app-app-header-arrow-left>
+    </div>
+    <div class="mejora">
+        <app-menu-corto></app-menu-corto>
+        <div class="form">
+            <div class="filtros">
+                <div class="section">
+                    <label>Selecciona la fecha de inicio</label>
+                    <input type="date" class="date">
+                </div>
+                <div class="section">
+                    <label>Selecciona la fecha de fin</label>
+                    <input type="date" class="date">
+                </div>
+            </div>
+            <input type="text" placeholder="Buscar..." class="buscador">
+            <table class="table-gestion" style="margin-top: 8px;">
+                <thead>
+                    <tr>
+                        <th scope="col">Descripción</th>
+                        <th scope="col">NTC</th>
+                        <th scope="col">Legales</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>2</td>
+                        <td>3</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<app-app-footer></app-app-footer>
+<ngx-spinner
+  bdColor="rgba(0, 0, 0, 0.5)"
+  size="small"
+  template="<img src='https://www.superiorlawncareusa.com/wp-content/uploads/2020/05/loading-gif-png-5.gif' width='50' height='50'/>"
+>
+</ngx-spinner>

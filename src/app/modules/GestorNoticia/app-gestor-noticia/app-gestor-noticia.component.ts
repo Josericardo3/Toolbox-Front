@@ -75,6 +75,11 @@ export class AppGestorNoticiaComponent implements OnInit {
   dropdownSettings: IDropdownSettings;
   searchText: string = '';
 
+
+  dropdownListPst: any[] = [];
+  selectedItemsPst: any[] = [];
+  dropdownSettingsPst: IDropdownSettings;
+
   dropdownListNorma: any[] = [];
   selectedItemsNorma: any[] = [];
   dropdownSettingsNorma: IDropdownSettings;
@@ -100,6 +105,7 @@ export class AppGestorNoticiaComponent implements OnInit {
 
     this.getTableData();
     this.getSelectMultiplePST();
+    this.getSelectMultipleColaboradores();
     this.getSelectMultipleNorma();
     this.getSelectMultipleCategoria();
     this.getSelectMultipleSubCategoria();
@@ -243,6 +249,7 @@ export class AppGestorNoticiaComponent implements OnInit {
     this.filterArray = this.datos.slice(startItem, endItem)
     this.totalRegistros = this.filterArray.length;
   }
+  
 
   saveModal() {
     try {
@@ -469,6 +476,29 @@ export class AppGestorNoticiaComponent implements OnInit {
   getSelectMultiplePST() {
     this.api.getPSTSelect()
       .subscribe(data => {
+        this.dropdownListPst = data;
+        this.dropdownListPst = data.map(item => {
+          return {
+            id: item.ID_USUARIO,
+            idpst: item.ID_PST,
+            nombre: item.NOMBRE_PST
+          };
+        });
+      });
+    this.dropdownSettings = {
+      singleSelection: false,
+      idField: 'id',
+      textField: 'nombre',
+      selectAllText: 'Seleccionar todo',
+      unSelectAllText: 'Deseleccionar todo',
+      searchPlaceholderText: 'Buscar',
+      itemsShowLimit: 100,
+      allowSearchFilter: true
+    };
+  }
+  getSelectMultipleColaboradores() {
+    this.api.getListResponsible()
+      .subscribe(data => {
         this.dropdownList = data;
         this.dropdownList = data.map(item => {
           return {
@@ -488,7 +518,6 @@ export class AppGestorNoticiaComponent implements OnInit {
       allowSearchFilter: true
     };
   }
-
   getSelectMultipleNorma() {
     this.api.getNormaSelect()
       .subscribe(data => {
@@ -582,4 +611,5 @@ export class AppGestorNoticiaComponent implements OnInit {
     tempElement.innerHTML = html;
     return tempElement.innerText;
   }
+
 }

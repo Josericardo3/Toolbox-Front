@@ -39,7 +39,7 @@
                 </div>
                 <div>
                     <p>4.3 Comprensión de las necesidades y expectativas de las partes interesadas |
-                        <a routerLink="" routerLinkActive="activebutton">Taller de partes interesadas</a> |
+                        <a>Taller de partes interesadas</a> |
                         <a routerLink="/partesInteresadas" routerLinkActive="activebutton"> Matriz de partes interesadas</a> | 
                         <a (click)="toggleSubir('item43')">Cargar documento</a>
                     </p>
@@ -53,7 +53,7 @@
                     </div>
                 </div>
                 <div>
-                    <p>4.4 Determinación del alcance del sistema de gestión de la sostenibilidad <a> | Generar documento</a> | 
+                    <p>4.4 Determinación del alcance del sistema de gestión de la sostenibilidad <a  [routerLink]="['/politicaDesarrolloSostenible']"> | Generar Taller de Política de Desarrollo Sostenible</a> | 
                         <a (click)="toggleSubir('item44')">Cargar documento</a>
                     </p>
                     <div *ngIf="subirVisible44" class="subDetalleSubirVisible">

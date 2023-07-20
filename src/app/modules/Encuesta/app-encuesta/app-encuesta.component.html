@@ -1,0 +1,43 @@
+<app-app-header></app-app-header>
+<div class="containerEncuesta">
+    <div class="titulo">
+        <h1>Crear encuesta</h1>
+        <app-app-header-arrow-left routerLink="/dashboard"></app-app-header-arrow-left>
+    </div>
+    <div class="encuesta">
+        <app-menu-corto></app-menu-corto>
+        <div class="form">
+            <p class="p">Ingresar los datos para crear una encuesta nueva</p>
+            <div class="encabezado">
+                <input type="text" class="tituloInput" placeholder="Título de la encuesta">
+                <input type="text" class="descripcion" placeholder="Descripción de la encuesta">
+            </div>
+            <div class="containerTarjetas">
+                <app-app-tarjetas></app-app-tarjetas>
+                <div class="botones">
+                    <button class="agregar" (click)="agregarTarjeta()">
+                        <i class="fa-solid fa-plus" style="color: #000000;"></i> Agregar pregunta
+                    </button>
+                </div>
+            </div>
+            <div class="containerTarjetas" *ngFor="let pregunta of tarjetas; let i = index">
+                <app-app-tarjetas [pregunta]="pregunta"></app-app-tarjetas>
+                <div class="botones">
+                    <button class="agregar" (click)="agregarTarjeta()">
+                        <i class="fa-solid fa-plus" style="color: #000000;"></i> Agregar pregunta
+                    </button>
+                    <button *ngIf="i > 0" class="eliminarBoton" (click)="eliminarTarjeta(i)">
+                        <i class="fa-solid fa-xmark" style="color: #000000;"></i> Eliminar pregunta
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<app-app-footer></app-app-footer>
+<ngx-spinner
+  bdColor="rgba(0, 0, 0, 0.5)"
+  size="small"
+  template="<img src='https://www.superiorlawncareusa.com/wp-content/uploads/2020/05/loading-gif-png-5.gif' width='50' height='50'/>"
+>
+</ngx-spinner>

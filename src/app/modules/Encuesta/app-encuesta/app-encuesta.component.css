@@ -1,0 +1,80 @@
+.containerEncuesta{
+    display: flex;
+    flex-direction: column;
+    margin: 2vh 1vw 0 2vw;
+}
+.titulo{
+    display: flex;
+    flex-direction: row-reverse;
+    margin: 2vh 0;
+}
+h1{
+    width: 100%;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: bolder;
+    color: #068460;
+    text-align: center;
+    margin: 2vh 0;
+}
+.encuesta{
+    display: flex;
+}
+.p{
+    text-align:left;
+    color: black;
+    margin: 1vh 2vw;
+    font-size: 16px;
+}
+.form{
+    display: flex;
+    flex-direction: column;
+}
+.encabezado{
+    display: flex;
+    flex-direction: column;
+    margin: 1vh 2vw;
+    border-top: 10px solid #068460;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.15);
+    border-radius: 15px;
+    width: 70vw;
+    height: auto;
+    padding: 20px;
+}
+.tituloInput,
+.descripcion{
+    background: #FFFFFF;
+    border-radius: 10px;
+    height: 6vh;
+    padding: 5px;
+    width: 67vw;
+    font-family: 'Work Sans', sans-serif;
+    font-size: 15px;
+    border: 1px solid #000000;
+    margin: 1vh 0;
+}
+.tituloInput::placeholder{
+    font-size: 20px;
+}
+.containerTarjetas{
+    display: flex;
+    flex-direction: column;
+}
+.botones{
+    display: flex;
+    align-self: flex-end;
+}
+.agregar,
+.eliminarBoton{
+    border: none;
+    background-color: #FFFFFF;
+    font-family: 'Work Sans', sans-serif;
+    font-size: 15px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.15);
+    width: 13vw;
+    height: 6vh;
+    border-radius: 10px;
+    margin: 1vh 2vw 4vh 1vw;
+}
+.eliminarBoton{
+    margin: 1vh 2vw 4vh 0 !important;
+}

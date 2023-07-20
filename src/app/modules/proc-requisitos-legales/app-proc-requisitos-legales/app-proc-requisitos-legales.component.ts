@@ -18,6 +18,9 @@ export class AppProcRequisitosLegalesComponent implements OnInit{
   pst: any;
   logo: any;
   valoresForm: any = [];
+  isEditarActivo: boolean = true;
+  actualizacion: any;
+  evaluacion: any;
 
   constructor(
     private api: ApiService,  
@@ -28,7 +31,6 @@ export class AppProcRequisitosLegalesComponent implements OnInit{
       actualizacion: new FormControl('', [Validators.required]),
       evaluacion: new FormControl('', [Validators.required]),
     });
-
     this.usuario();
     this.updateForm();
   }
@@ -205,7 +207,7 @@ export class AppProcRequisitosLegalesComponent implements OnInit{
           'La Alta dirección garantiza la disponibilidad de los recursos necesarios para cumplir con las exigencias contempladas en los requisitos de sostenibilidad y otros requisitos identificados en la Matriz de Requisitos Legales.',
           '\n',
           { text: '5.4. ACTUALIZACIÓN DE LA MATRIZ LEGAL', style: ['subtitulo'] },
-          '​​El Responsable de Sostenibilidad ​​Líder de sostenibilidad, en conjunto con los líderes de proceso, deben actualizar la matriz de requisitos legales cada vez que se identifique un cambio en la normatividad legal aplicable, nuevas disposiciones que se deban cumplir, o como mínimo cada seis meses (SI DESEA PUEDE MODIFICAR LA FRECUENCIA DE LA ACTUALIZACIÓN, SEMESTRAL O TRIMESTRAL, ETC).',
+          { text:'​​El Responsable de Sostenibilidad ​​Líder de sostenibilidad, en conjunto con los líderes de proceso, deben actualizar la matriz de requisitos legales cada vez que se identifique un cambio en la normatividad legal aplicable, nuevas disposiciones que se deban cumplir, o como mínimo cada ' + this.actualizacion}, 
           '\n',
           '​​Los responsables, evalúan si los nuevos requisitos o las modificaciones en materia​ de​ sostenibilidad',
           '\n',
@@ -223,7 +225,7 @@ export class AppProcRequisitosLegalesComponent implements OnInit{
           'El Responsable de Sostenibilidad ​de​be​​ comunicar ​los requisitos legales​ a las personas responsables de su cumplimiento, de manera oportuna.​',
           '\n',
           { text: '5.6. EVALUACIÓN DEL CUMPLIMIENTO DE LOS REQUISITOS LEGALES', style: ['subtitulo'] },
-          'El ​(Cargo del responsable o líder de sostenibilidad) ​​es el responsable de planificar y gestionar la evaluación del cumplimiento de los requisitos legales aplicables ​en la empresa​. M​ínimo una vez al año (SI DESEA PUEDE ​MODIFICAR LA FRECUENCIA DE LA EVALUACIÓN, ​​SEMESTRAL O TRIME​S​TRAL, ETC) ​se, ​verifica​ el cumplimiento de ​​la normatividad legal  ​​en ​la matriz de requisitos legales​,​ donde se define ​si los requisitos se cumplen, están en proceso o no se cumplen​. Esta evaluación puede realizarse por componente: ambiental, sociocultural, económico u otro, registrando su fecha de evaluación por componente, sin que esta exceda el plazo establecido. Si se presentan hallazgos de cumplimiento parcial o no cumplimiento en la evaluación, se debe establecer el plan de intervención.',
+          { text: 'El Responsable de Sostenibilidad es el responsable de planificar y gestionar la evaluación del cumplimiento de los requisitos legales aplicables ​en la empresa​. M​ínimo ' + this.evaluacion + ' ​se, ​verifica​ el cumplimiento de ​​la normatividad legal ​​en ​la matriz de requisitos legales​,​ donde se define ​si los requisitos se cumplen, están en proceso o no se cumplen​. Esta evaluación puede realizarse por componente: ambiental, sociocultural, económico u otro, registrando su fecha de evaluación por componente, sin que esta exceda el plazo establecido. Si se presentan hallazgos de cumplimiento parcial o no cumplimiento en la evaluación, se debe establecer el plan de intervención.' },
           '\n',
           { text: '5.7. ELABORACIÓN, EJECUCIÓN Y SEGUIMIENTO DEL PLAN DE INTERVENCIÓN', style: ['subtitulo'] },
           'De acuerdo con los resultados de la evaluación, cuando no se cumple con los requisitos legales se requiere elaborar un plan de intervención que establezca las acciones a realizar, fecha para la ejecución y responsable de la ejecución.  Debe realizarse el respectivo seguimiento y registrar su estado, hasta el cierre del hallazgo.',
@@ -241,7 +243,7 @@ export class AppProcRequisitosLegalesComponent implements OnInit{
     }
     pdfMake.createPdf(pdfDefinition).download('Procedimiento_requisitos_legales.pdf');
   }
-
+  
   capturarValor(event: Event) {
     //idSelect: para que al volver a guardar se actualice el valor nuevo que se editó
     const idSelect = (event.target as HTMLSelectElement).id;
@@ -256,9 +258,10 @@ export class AppProcRequisitosLegalesComponent implements OnInit{
         result.RESPUESTA = valorSeleccionado;
       } else {
         this.valoresForm.push({
-          ID_RESPUESTA_FORMULARIOS: idSelect,
+          ID_RESPUESTA_FORMULARIOS: idSelect ? parseInt(idSelect) : 0,
           FK_MAE_FORMULARIOS: 1,
           PREGUNTA: textoPreg,
+          ORDEN: 0,//mel
           RESPUESTA: valorSeleccionado,
           FK_USUARIO: localStorage.getItem('Id')
         });
@@ -274,35 +277,52 @@ export class AppProcRequisitosLegalesComponent implements OnInit{
       // Deshabilitar los campos después de guardar
       this.formRequisitosLegales.get('actualizacion')?.disable();
       this.formRequisitosLegales.get('evaluacion')?.disable();
+      // Recargar la ventana
+      window.location.reload();
     });
   }
 
   activarCampos(){
-    // Habilitar los campos después de guardar
-    this.formRequisitosLegales.get('actualizacion')?.enable();
-    this.formRequisitosLegales.get('evaluacion')?.enable();
+      // Habilitar los campos después de guardar
+      this.formRequisitosLegales.get('actualizacion')?.enable();
+      this.formRequisitosLegales.get('evaluacion')?.enable();
   }
 
   updateForm() {
     this.api.getForms()
+   
     .subscribe((data: any) => {
       this.datos = data;
-      data.forEach((respuesta: any) => {
+      console.log(data);
+      data.RESPUESTAS.forEach((respuesta: any) => {
         const pregunta = respuesta.PREGUNTA;
         const valorRespuesta = respuesta.ID_RESPUESTA_FORMULARIOS;
         this.formRequisitosLegales.get(pregunta)?.patchValue(valorRespuesta);
         console.log(valorRespuesta)
       });
-      if (data && data.length > 0) {
+      if (data.RESPUESTAS && data.RESPUESTAS.length > 0) {
+        // Activar boton de editar
+        this.isEditarActivo = false
         this.datos = data;
+
         // Verificar si las respuestas existen y asignar los valores al formulario
-        const respuestaActualizacion = this.datos.find(respuesta => respuesta.PREGUNTA === '¿Cuál es la frecuencia de actualización de matriz de requisitos legales?');
-        const respuestaEvaluacion = this.datos.find(respuesta => respuesta.PREGUNTA === '¿Cuál es la frecuencia de evaluación de matriz de requisitos legales?'); 
+        const respuestaActualizacion = this.datos.RESPUESTAS.find(RESPUESTAS => RESPUESTAS.PREGUNTA === '¿Cuál es la frecuencia de actualización de matriz de requisitos legales?');
+        const respuestaEvaluacion = this.datos.RESPUESTAS.find(RESPUESTAS => RESPUESTAS.PREGUNTA === '¿Cuál es la frecuencia de evaluación de matriz de requisitos legales?'); 
         if (respuestaActualizacion) {
           this.formRequisitosLegales.get('actualizacion').setValue(respuestaActualizacion.RESPUESTA);
+          if (respuestaActualizacion.RESPUESTA === 'semestral') {
+            this.actualizacion = 'seis meses';
+          } else if (respuestaActualizacion.RESPUESTA === 'anual') {
+            this.actualizacion = 'una vez al año';
+          }
         }  
         if (respuestaEvaluacion) {
           this.formRequisitosLegales.get('evaluacion').setValue(respuestaEvaluacion.RESPUESTA);
+          if (respuestaEvaluacion.RESPUESTA === 'semestral') {
+            this.evaluacion = 'seis meses';
+          } else if (respuestaEvaluacion.RESPUESTA === 'anual') {
+            this.evaluacion = 'una vez al año';
+          }
         }    
         // Deshabilitar los campos después de guardar
         this.formRequisitosLegales.get('actualizacion')?.disable();
@@ -311,3 +331,4 @@ export class AppProcRequisitosLegalesComponent implements OnInit{
     })
   }
 }
+

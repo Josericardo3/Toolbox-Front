@@ -4,82 +4,99 @@
         <h1>Matriz de partes interesadas</h1>
         <app-app-header-arrow-left routerLink="/dashboard"></app-app-header-arrow-left>
     </div>
-    <button type="button" class="btnReporte" (click)="generatePDF()">
+    <button type="button" class="btnReporte" (click)="generatePDF()" [disabled]="!generarPDFActivo">
         <i class="fa-solid fa-download" style="color: #ffffff; margin-right: 0.5vw;"></i>Descargar reporte
     </button>
     <div class="form">
-        <h3>Agregue las partes interesadas:</h3>
-        <button type="button" class="boton"> 
+      <!--   <h3>Agregue las partes interesadas:</h3> -->
+       <!--  <button type="button" class="boton" (click)="mostrarForm()"> 
             <i class="fa-solid fa-plus" style="color: #ffffff;"></i> Agregar parte interesada
-        </button>
-        <form class="form" (ngSubmit)="saveForm()">
-            <div class="section1">
-                <label class="adicionarLabel">Seleccione parte interesada</label>
-                <select class="adicionarInput">
-                    <option value="" disabled selected hidden>Parte interesada</option>
-                    <option value="proveedores">Proveedores</option>
-                    <option value="gubernamentales">Organizaciones gubernamentales</option>
-                    <option value="nogubernamentales">Organizaciones no gubernamentales</option>
-                    <option value="otro">Otro ¿Cuál?</option>
-                </select>
-                <div class="changeOtro">
-                    <label class="adicionarLabel">Otro ¿Cuál?</label>
-                    <input type="text" class="adicionarInput" appLetras>
+        </button> -->
+        <form [formGroup]="form" class="form" (ngSubmit)="saveForm()">
+            <div class="section">
+                <div class="section1">
+                    <label class="adicionarLabel"  for="interesada">Seleccione parte interesada</label>
+                    <select class="adicionarInputSection"  formControlName="interesada" #selectOption (change)="
+                        capturarValor($event);
+                    onSelect(selectOption.value);
+                        
+                    ">
+                        <option value="initial" disabled selected hidden>Parte interesada</option>
+                        <option id=0 value="proveedores">Proveedores</option>
+                        <option id=1 value="gubernamentales">Organizaciones gubernamentales</option>
+                        <option id=2 value="nogubernamentales">Organizaciones no gubernamentales</option>
+                        <option id=3 value="otro">Otro</option>
+                    </select>
+                    <div class="changeOtro" *ngIf="selectedOption === 'otro'">
+                        <label class="adicionarLabel" for="otro">Otro ¿Cuál?</label>
+                        <input type="text" id="4" formControlName="otro" value="" class="adicionarInputSection" appLetras  (input)="capturarValor($event)" >
+                    </div>
+                </div>
+                <div class="section2">
+                    <label class="adicionarLabel" for="necesidades">Necesidades de la parte interesada</label>
+                    <input type="text" value=""  formControlName="necesidades" class="adicionarInputSection" (input)="capturarValor($event)"> 
+                    <label class="adicionarLabel" for="expectativas">Expectativas de la parte interesada</label>
+                    <input type="text"  value="" formControlName="expectativas" class="adicionarInputSection" (input)="capturarValor($event)"> 
                 </div>
             </div>
-            <div class="section2">
-                <label class="adicionarLabel">Necesidades de la parte interesada</label>
-                <input type="text" class="adicionarInput"> 
-                <label class="adicionarLabel">Expectativas de la parte interesada</label>
-                <input type="text" class="adicionarInput"> 
+            <p class="adicionarP">¿La organización cumple con los requisitos de las partes interesadas?</p>
+            <div class="containerFormulario">
+                <div class="subContainerform">
+                    <label for="estadoCumplimiento" class="adicionarLabel">Estado de cumplimiento</label>
+                    <select name="estadoCumplimiento" formControlName="estadoCumplimiento" class="adicionarInput"
+                    #select (change)="
+                    capturarValor($event);
+                    optionSelected(select.value)">
+                        <option value="" selected disabled>Seleccione una opción</option>
+                        <option value="cumple">Cumple</option>
+                        <option value="noCumple">No cumple</option>
+                        <option value="cumpleParcialmente">Cumple parcialmente</option>
+                    </select>
+                </div>   
+                <div class="subForm" *ngIf="option === 'noCumple' || option === 'cumpleParcialmente'">
+                    <div class="subContainerform">
+                        <label for="observaciones" class="adicionarLabel">Observaciones</label>
+                        <input type="text" class="adicionarInput" formControlName="observaciones" (input)="capturarValor($event)">
+                    </div> 
+                    <div class="subContainerform">
+                        <label for="evidencia" class="adicionarLabel">Acciones a realizar</label>
+                        <input type="text" class="adicionarInput" formControlName="acciones" (input)="capturarValor($event)">
+                    </div>
+                </div>   
+                <div class="subForm" *ngIf="option === 'noCumple' || option === 'cumpleParcialmente'">
+                    <div class="subContainerform">
+                        <label class="adicionarLabel">Fecha para la ejecución</label>
+                        <input type="date" class="adicionarInput" formControlName="fecha" (input)="capturarValor($event)">
+                    </div>
+                    <div class="subContainerform">
+                        <label for="responsable" class="adicionarLabel">Responsable de ejecución</label>
+                        <select name="responsable" class="adicionarInput" formControlName="responsable" (change)="
+                        capturarValor($event)">
+                            <option value="" selected disabled>Seleccione de cumplimiento</option>
+                            <option value="ResponsableC">Responsable de dar cumplimiento</option>
+                            <option value="ResponsableD">Responsable</option>
+                        </select>
+                    </div>
+                    <div class="subContainerform">
+                        <label for="estado" class="adicionarLabel">Estado</label>
+                        <select name="estado" class="adicionarInput" formControlName="estado" (change)="
+                        capturarValor($event)">
+                            <option value="" selected disabled>Seleccione una opción</option>
+                            <option value="Abierto">Abierto</option>
+                            <option value="Cerrado">Cerrado</option>
+                        </select>
+                    </div>
+                </div>
             </div>
-            <p>¿La organización cumple con los requisitos de las partes interesadas</p>
-            <div class="subContainerform">
-                <label for="estadoCumplimiento" class="estado">Estado de cumplimiento</label>
-                <select name="estadoCumplimiento" class="estadoForm">
-                    <option value="" disabled [selected]="true">Seleccione una opción</option>
-                    <option value="cumple">Cumple</option>
-                    <option value="noCumple">No cumple</option>
-                    <option value="cumpleParcialmente">Cumple parcialmente</option>
-                </select>
-            </div>      
-                <div class="subContainerform">
-                    <label for="observaciones" class="estado">Observaciones</label>
-                    <input type="text" class="estadoForm">
-                </div> 
-                <div class="subContainerform">
-                    <label for="evidencia" class="estado">Acciones a realizar</label>
-                    <input type="text" class="estadoForm">
-                </div>
-                <div class="subContainerformB">
-                    <label class="estado">Fecha para la ejecución</label>
-                    <input type="date" class="estadoFormB">
-                </div>
-                <div class="subContainerformB">
-                    <label for="responsableCumplimiento" class="estado">Responsable de ejecución</label>
-                    <select name="responsableCumplimiento" class="estadoFormB">
-                        <option value="" disabled [selected]="true">Seleccione de cumplimiento</option>
-                        <option value="ResponsableC">Responsable de dar cumplimiento</option>
-                        <option value="ResponsableD">Responsable</option>
-                    </select>
-                </div>
-                <div class="subContainerformB">
-                    <label class="estado">Estado</label>
-                    <select name="estado" class="estadoFormB">
-                        <option value="" disabled [selected]="true">Seleccione una opción</option>
-                        <option value="Abierto">Abierto</option>
-                        <option value="Cerrado">Cerrado</option>
-                    </select>
-                </div>
+            <div class="containerBtn">
+                <button type="submit" class="botonG" [disabled]="form.invalid">
+                    <i class="fa-regular fa-floppy-disk" style="color: #fff;"></i> Guardar
+                </button>
+                <button type="button" class="botonG" [disabled]="isEditarActivo"  (click)=activarCampos()> 
+                    <i class="fa-solid fa-pen" style="color: white; margin: 0 0.4vw;"></i> Editar
+                </button>
+            </div>
         </form>
-        <div class="containerBtn">
-            <button type="submit" class="botonG">
-                <i class="fa-regular fa-floppy-disk" style="color: #fff;"></i> Guardar
-            </button>
-            <button type="button" class="botonG"> 
-                <i class="fa-solid fa-pen" style="color: white; margin: 0 0.4vw;"></i> Editar
-            </button>
-        </div>
     </div>
 </div>
 <app-app-footer></app-app-footer>

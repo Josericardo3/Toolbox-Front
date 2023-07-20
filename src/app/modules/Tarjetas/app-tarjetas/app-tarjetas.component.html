@@ -1,0 +1,73 @@
+<div class="tarjetas">
+    <div class="section">
+        <input type="text" class="pregunta" placeholder="Ingrese su pregunta">
+        <div class="select-wrapper">
+            <div class="select-header" (click)="toggleOptions()">
+              <span id="selectedOption">
+                <i [ngClass]="selectedOption.icon"></i>
+                {{ selectedOption.label }}
+              </span>
+              <i class="fa-solid fa-angle-down"></i>
+            </div>
+            <ul id="optionsContainer" class="options-container" [ngStyle]="{'display': showOptions ? 'block' : 'none'}">
+              <li *ngFor="let option of options" (click)="selectOption(option)">
+                <i [ngClass]="option.icon"></i>
+                {{ option.label }}
+              </li>
+            </ul>
+        </div>  
+        <input *ngIf="selectedOption.value === 'respuestaCorta'" type="text" class="respuesta" placeholder="Texto de respuesta corta">
+        <textarea *ngIf="selectedOption.value === 'respuestaLarga'" style="height: 50px;" class="respuestaTextarea" placeholder="Texto de respuesta larga"></textarea>
+        <div *ngIf="selectedOption.value === 'radioButton'" class="radioButton">
+            <input type="text" class="respuesta" placeholder="Opción 1">
+            <span>
+              <span type="text" class="respuestaSpan" (click)="agregarInput()">Añadir opción</span> o 
+              <span class="spanOtro" (click)="agregarOtro()">Añadir respuesta 'Otro'</span>
+            </span>
+            <input type="text" class="respuesta" placeholder="Otro" *ngIf="showOtro">
+            <ng-container *ngFor="let input of inputs; let i = index">
+                <div class="eliminar">
+                    <input type="text" class="respuesta" [placeholder]="'Opción ' + (i + 2)" *ngIf="input">
+                    <span (click)="inputs.splice(i, 1)" class="x">
+                        <i class="fa-solid fa-xmark" style="color: #8c8c8c;"></i>
+                    </span>
+                </div>
+            </ng-container>
+        </div>
+        <div *ngIf="selectedOption.value === 'checkbox'" class="radioButton">
+            <input type="text" class="respuesta" placeholder="Opción 1">
+            <span>
+                <span type="text" class="respuestaSpan" (click)="agregarInput()">Añadir opción</span> o 
+                <span class="spanOtro" (click)="agregarOtro()">Añadir respuesta "Otro"</span>
+            </span>
+            <input type="text" class="respuesta" placeholder="Otro" *ngIf="showOtro">
+            <ng-container *ngFor="let input of inputs; let i = index">
+                <div class="eliminar">
+                    <input type="text" class="respuesta" [placeholder]="'Opción ' + (i + 2)" *ngIf="input">
+                    <span (click)="inputs.splice(i, 1)" class="x">
+                        <i class="fa-solid fa-xmark" style="color: #8c8c8c;"></i>
+                    </span>
+                </div>
+            </ng-container>
+        </div>
+        <div *ngIf="selectedOption.value === 'desplegable'" class="radioButton">
+            <input type="text" class="respuesta" placeholder="1. Opción 1">
+            <span type="text" class="respuestaSpan2" (click)="agregarInput()">Añadir opción</span>
+            <ng-container *ngFor="let input of inputs; let i = index">
+                <div class="eliminar">
+                    <input type="text" class="respuesta" [placeholder]="(i + 2) + '. Opción ' + (i + 2)" *ngIf="input">
+                    <span (click)="inputs.splice(i, 1)" class="x">
+                        <i class="fa-solid fa-xmark" style="color: #8c8c8c;"></i>
+                    </span>
+                </div>
+            </ng-container>
+        </div>
+    </div>
+    <div class="linea"></div>
+    <div class="footer">
+        <i class="fa-solid fa-trash" style="color: #068460; margin: 0 1vw; cursor: pointer;font-size: 16px;"></i>
+        <p class="obligatorio">Obligatorio</p>
+        <input type="checkbox" id="toggleButton" class="toggle-input" [(ngModel)]="isOn">
+        <label for="toggleButton" class="toggle-label"></label>                         
+    </div>
+</div>

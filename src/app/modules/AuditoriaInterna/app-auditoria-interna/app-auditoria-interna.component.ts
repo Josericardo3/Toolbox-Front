@@ -212,7 +212,6 @@ export class AppAuditoriaInternaComponent {
     const idPst = localStorage.getItem('Id')
 
     const request = {
-
       iD_AUDITORIA: 0,
       fK_ID_PST: Number(idPst),
       auditoR_LIDER: this.formParent.get("liderAuthor")?.value,

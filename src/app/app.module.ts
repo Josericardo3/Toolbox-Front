@@ -77,8 +77,23 @@ import { AppHistorialNoticiasComponent } from './modules/historialNoticias/app-h
 import { AngularEditorModule } from '@kolkov/angular-editor';
 import { AppNoticiasCompletasComponent } from './modules/noticiasCompletas/app-noticias-completas/app-noticias-completas.component';
 import { ModalDetalleComponent } from './modules/ListaDeVerificacion/modal-detalle/modal-detalle.component';
+// import { AppMejoraContinuaComponent } from './modules/MejoraContinua/app-mejora-continua/app-mejora-continua.component';
 import { AppProcRequisitosLegalesComponent } from './modules/proc-requisitos-legales/app-proc-requisitos-legales/app-proc-requisitos-legales.component';
+import { AppPoliticaDesarrolloSostenibleComponent } from './modules/e-matriz-requisitos-legales/app-politica-desarrollo-sostenible/app-politica-desarrollo-sostenible.component';
 import { AppMatrizPartesInteresadasComponent } from './modules/matrizPartesInteresadas/app-matriz-partes-interesadas/app-matriz-partes-interesadas.component';
+import { AppAlcanceSGSComponent } from './modules/AlcanceSistemaGestiónSostenibilidad/app-alcance-sgs/app-alcance-sgs.component';
+
+
+import { MenuCortoComponent } from './modules/menuCorto/menu-corto/menu-corto.component';
+// import { AppMejoraContinuaComponent } from './modules/mejoraContinua/app-mejora-continua/app-mejora-continua.component';
+import { AppActividadesComponent } from './modules/Actividades/app-actividades/app-actividades.component';
+import { AppEncuestaComponent } from './modules/Encuesta/app-encuesta/app-encuesta.component';
+import { AppTarjetasComponent } from './modules/Tarjetas/app-tarjetas/app-tarjetas.component';
+import { AppMapaColombiaComponent } from './modules/mapaColombia/app-mapa-colombia/app-mapa-colombia.component';
+import { HeatmapComponent } from './heatmap/heatmap.component';
+import { MejoraaContinuaComponent } from "./modules/mejoraa-continua/mejoraa-continua.component";
+//import { AppMejoraContinuaComponent } from "./modules/mejoraContinua/app-mejora-continua/app-mejora-continua.component";
+// import {GoogleMapsModule} from '@angular/google-maps'; 
 
 @NgModule({
   declarations: [
@@ -120,10 +135,20 @@ import { AppMatrizPartesInteresadasComponent } from './modules/matrizPartesInter
     AppHistorialNoticiasComponent,
     AppNoticiasCompletasComponent,
     ModalDetalleComponent,
+    // AppMejoraContinuaComponent,
     AppProcRequisitosLegalesComponent,
+    AppPoliticaDesarrolloSostenibleComponent,
     AppMatrizPartesInteresadasComponent,
+    AppAlcanceSGSComponent,
+    MenuCortoComponent,
+    // AppMejoraContinuaComponent,
+    AppActividadesComponent,
+    AppEncuestaComponent,
+    AppTarjetasComponent,
+    AppMapaColombiaComponent,
+    HeatmapComponent,
     // SelectMultipleComponent,
-    
+    MejoraaContinuaComponent
   ],
   imports: [
     PipesModule,
@@ -150,7 +175,8 @@ import { AppMatrizPartesInteresadasComponent } from './modules/matrizPartesInter
     CarouselModule,
     BrowserAnimationsModule,
     TabsModule,
-    AngularEditorModule
+    AngularEditorModule,
+    // GoogleMapsModule,
   ],
 
   providers: 

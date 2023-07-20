@@ -1,0 +1,76 @@
+<app-app-header></app-app-header>
+<div class="containerActividades">
+    <div class="titulo">
+        <h1>Actividades</h1>
+        <app-app-header-arrow-left routerLink="/dashboard"></app-app-header-arrow-left>
+    </div>
+    <div class="actividades">
+        <app-menu-corto></app-menu-corto>
+        <div class="form">
+            <div class="bodyNuevoregistro">
+                <p>Nuevo registro</p>
+                <div class="items">
+                    <div class="section">
+                        <label>Responsable</label>
+                        <select class="input">
+                            <option value="" disabled>Selecciona una opción</option>
+                            <option>Responsable</option>
+                        </select>
+                    </div>
+                    <div class="section">
+                        <label>Descripción de actividad</label>
+                        <textarea class="input" style="height: 80px;" placeholder="Descripción de actividad"></textarea>
+                    </div>
+                    <div class="section">
+                        <label>Inicio de actividad</label>
+                        <input type="date" class="input"/>
+                    </div>
+                    <div class="section">
+                        <label>Fin de actividad</label>
+                        <input type="date" class="input"/>
+                    </div>
+                    <div class="section">
+                        <label>Estado</label>
+                        <select class="input">
+                            <option value="" disabled>Selecciona una opción</option>
+                            <option>estado</option>
+                        </select>
+                    </div>
+                    <div class="sectionIcon">
+                        <a title="Guardar"><i class="fa-regular fa-floppy-disk" style="color: #06543c;font-size: 25px;"></i></a>
+                        <a title="Cancelar"><i class="fa-solid fa-circle-xmark" style="color: #06543c;font-size: 25px;"></i></a>
+                    </div>
+                </div>
+            </div>
+           <table class="table-gestion" style="margin-top: 8px;">
+            <thead>
+                <tr>
+                    <th scope="col">Responsable</th>
+                    <th scope="col">Descripción de actividad</th>
+                    <th scope="col">Inicio de actividad</th>
+                    <th scope="col">Fin de actividad</th>
+                    <th scope="col">Estado</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>2</td>
+                    <td>3</td>
+                    <td>2</td>
+                    <td>3</td>
+                    <td></td>
+                </tr>
+            </tbody>
+           </table>
+        </div>
+    </div>
+</div>
+<app-app-footer></app-app-footer>
+<ngx-spinner
+  bdColor="rgba(0, 0, 0, 0.5)"
+  size="small"
+  template="<img src='https://www.superiorlawncareusa.com/wp-content/uploads/2020/05/loading-gif-png-5.gif' width='50' height='50'/>"
+>
+</ngx-spinner>

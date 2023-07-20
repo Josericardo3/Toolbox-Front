@@ -86,12 +86,12 @@ export class ApiService {
     return response;
   }
   validateEmail(correo: string): Observable<string> {
-    let validate = `${this.apiURL}/api/Validaciones/Correo/${correo}`
+    let validate = `${this.apiURLNuevo}/api/Validaciones/Correo/${correo}`
     let response = this.http.get<string>(validate);
     return response;
   }
   validatePhone(phone: string): Observable<string> {
-    let validate = `${this.apiURL}/api/Validaciones/Telefono/${phone}`
+    let validate = `${this.apiURLNuevo}/api/Validaciones/Telefono/${phone}`
     let response = this.http.get<string>(validate);
     return response;
   }
@@ -265,8 +265,7 @@ export class ApiService {
   }
 
   getPSTSelect(){
-    const rnt = localStorage.getItem('rnt');
-    let direccion = `${this.apiURLNuevo}/api/General/ListarResponsables/${rnt}`
+    let direccion = `${this.apiURLNuevo}/api/General/ListarPst`
     return this.http.get<any>(direccion)
   }
 
@@ -408,10 +407,32 @@ export class ApiService {
     const form = `${this.apiURLNuevo}/api/Formulario`;
     return this.http.post<any>(form, request)
   }
-
-  getForms(){
+  getDataForm(){
     const rnt = localStorage.getItem('rnt');
-    let direccion = `${this.apiURLNuevo}/api/Formulario?ID_FORMULARIO=1&RNT=${rnt}`
+    const idFormulario = 3
+    const idUsuarioPst = window.localStorage.getItem('Id');
+    let direccion = `${this.apiURLNuevo}/api/Formulario?ID_FORMULARIO=${idFormulario}&RNT=${rnt}&ID_USUARIO=${idUsuarioPst}`
     return this.http.get<any>(direccion)
   }
+  
+  getForms(){
+    const rnt = localStorage.getItem('rnt');
+    const idUsuarioPst = window.localStorage.getItem('Id');
+    let direccion = `${this.apiURLNuevo}/api/Formulario?ID_FORMULARIO=1&RNT=${rnt}&ID_USUARIO=${idUsuarioPst}`
+    return this.http.get<any>(direccion)
+  }
+  deleteForm(resquest){ 
+      let assign = `${this.apiURLNuevo}/api/Formulario`
+      return this.http.delete<any>(assign,resquest)
+  }
+  
+  //actualizar formulario
+  getFormsParteInteresada(){
+    // debugger;
+    const rnt = localStorage.getItem('rnt');
+    const idUsuarioPst = window.localStorage.getItem('Id');
+    let direccion = `${this.apiURLNuevo}/api/Formulario?ID_FORMULARIO=2&RNT=${rnt}&ID_USUARIO=${idUsuarioPst}`
+    return this.http.get<any>(direccion)
+  }
+
 }

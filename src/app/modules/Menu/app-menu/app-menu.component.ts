@@ -13,9 +13,7 @@ export class AppMenuComponent {
     private router: Router,
   ) {}
 
-  ngOnInit(): void {
-
-  }
+  ngOnInit(): void {}
 
   openComponent(event: any) {
     this.router.navigate(['/auditoria']); 

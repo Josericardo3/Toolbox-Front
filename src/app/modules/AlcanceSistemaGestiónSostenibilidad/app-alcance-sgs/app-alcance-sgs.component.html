@@ -1,0 +1,27 @@
+<app-app-header></app-app-header>
+<div  class="containerAlcance">
+    <header>
+        <app-app-header-arrow-left routerLink="/dashboard"></app-app-header-arrow-left>
+        <h1>Alcance Sistema de Gestión de Sostenibilidad</h1>
+      </header>
+      <button type="button" class="btnReporte" >
+        <i class="fa-solid fa-download" style="color: #ffffff; margin-right: 0.5vw;"></i>Descargar reporte
+      </button> <!-- (click)="generatePDF()" [disabled]="disablePDF" -->
+      <div class="form">
+        <h3>Responda las siguientes preguntas:</h3>
+        <p class="texto" id="preg1">
+          ¿Cuales son los principales servicios de su organización?
+        </p>
+        <input type="text">
+        <p class="info">Agregue los servicios que presta en su organización.</p>
+        <button type="button" class="botonAgregar"> 
+          <i class="fa-solid fa-plus" style="color: white; margin: 0 0.4vw;"></i>Agregar servicio
+        </button><!-- (click)="agregarAdicional()" [disabled]="accionActivo!='guardar'" -->
+
+
+
+
+      </div>
+
+
+</div>

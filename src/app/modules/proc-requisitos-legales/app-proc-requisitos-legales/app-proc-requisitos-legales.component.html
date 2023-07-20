@@ -4,20 +4,20 @@
         <h1>Procedimiento de requisitos legales</h1>
         <app-app-header-arrow-left routerLink="/dashboard"></app-app-header-arrow-left>
     </div>
-    <button type="button" class="btnReporte" (click)="generatePDF()">
+    <button type="button" class="btnReporte" [disabled]="isEditarActivo" (click)="generatePDF()">
         <i class="fa-solid fa-download" style="color: #ffffff; margin-right: 0.5vw;"></i>Descargar reporte
     </button>
     <form [formGroup]="formRequisitosLegales" class="form" (ngSubmit)="saveForm()">
         <h3>Responda las siguientes preguntas:</h3>
         <p class="texto" id="preg1">¿Cuál es la frecuencia de actualización de matriz de requisitos legales?</p>
-        <select name="actualizacion" id="{{ datos[0]?.ID_RESPUESTA_FORMULARIOS }}" formControlName="actualizacion" (change)="capturarValor($event)">
+        <select name="actualizacion" id="{{ datos.RESPUESTAS[0]?.ID_RESPUESTA_FORMULARIOS }}" formControlName="actualizacion" (change)="capturarValor($event)">
             <option value="" disabled selected>Frecuencia de actualización</option>
             <option value="semestral">Semestral</option>
             <option value="anual">Anual</option>
         </select>
         <p class="info">Responda según desee implementar</p>
         <p class="texto" id="preg2">¿Cuál es la frecuencia de evaluación de matriz de requisitos legales?</p>
-        <select name="evaluacion" id="{{ datos[1]?.ID_RESPUESTA_FORMULARIOS }}" formControlName="evaluacion" (change)="capturarValor($event)">
+        <select name="evaluacion" id="{{ datos.RESPUESTAS[1]?.ID_RESPUESTA_FORMULARIOS }}" formControlName="evaluacion" (change)="capturarValor($event)">
             <option value="" disabled selected>Frecuencia de evaluación</option>
             <option value="semestral">Semestral</option>
             <option value="anual">Anual</option>
@@ -27,7 +27,7 @@
             <button type="submit" class="botonG" [disabled]="formRequisitosLegales.invalid">
                 <i class="fa-regular fa-floppy-disk" style="color: #fff;"></i> Guardar
             </button>
-            <button type="button" class="botonG" (click)="activarCampos()"> 
+            <button type="button" class="botonG" [disabled]="isEditarActivo" (click)="activarCampos()"> 
                 <i class="fa-solid fa-pen" style="color: white; margin: 0 0.4vw;"></i> Editar
             </button>
         </div>

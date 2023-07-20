@@ -415,13 +415,6 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
 
   onSelect(value: string) {
     this.selectedOption = value;
-    if (value === 'otro') {
-      const otroInput = document.querySelector('#otroInput') as HTMLInputElement;
-      otroInput.style.display = 'block';
-    } else {
-      const otroInput = document.querySelector('#otroInput') as HTMLInputElement;
-      otroInput.style.display = 'none';
-    }
   }
 
   onOtroInputChange(event: Event) {

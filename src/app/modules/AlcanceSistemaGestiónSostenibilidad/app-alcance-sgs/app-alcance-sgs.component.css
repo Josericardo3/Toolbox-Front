@@ -1,0 +1,87 @@
+.containerAlcance{
+    display: flex;
+    flex-direction: column;
+    margin: 2vh 1vw;
+}
+
+header {
+    margin: 16px;
+}
+
+h1 {
+    width: 100%;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: bolder;
+    color: #068460;
+    text-align: center;
+}
+
+.botonG,
+.btnReporte{
+    margin: 4vh 0 2vh 2vw;
+    height: 40px;
+    width: 200px;
+    padding: 5px;
+    background-color: #068460;
+    border-radius: 100px;
+    color: #FFFFFF;
+    font-family: 'Work Sans', sans-serif;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    align-self: flex-start;
+}
+
+.btnReporte{
+    margin: 0 0 3vh 0 !important;
+    align-self: flex-end !important;
+}
+
+:disabled{
+    background-color: #e1e1e1;
+}
+
+.form{
+    display: flex;
+    flex-direction: column;
+    margin: 0 1vw;
+}
+
+.texto,
+.info{
+    font-family: 'Work Sans', sans-serif;
+    font-size: 17px;
+    margin: 0;
+    color: black;
+}
+
+.texto{
+    margin-top: 1vh !important;
+}
+.info{
+    color: #888888;
+    font-size: 15px !important;
+}
+input{
+    background: #FFFFFF;
+    border: 1px solid black;
+    border-radius: 8px;
+    height: 35px;
+    padding: 3px;
+    width: 100%;
+    margin: 1vh 0 0.5vh 0;
+}
+.botonAgregar{
+    margin: 1vh 0 0.5vh 0;
+    height: 40px;
+    width: 200px;
+    padding: 5px;
+    background-color: #068460;
+    border-radius: 100px;
+    color: #FFFFFF;
+    font-family: 'Work Sans', sans-serif;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    align-self: flex-start;
+}

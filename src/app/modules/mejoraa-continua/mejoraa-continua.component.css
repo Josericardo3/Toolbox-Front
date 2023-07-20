@@ -1,0 +1,84 @@
+.containerMejoraContinua{
+    display: flex;
+    flex-direction: column;
+    margin: 2vh 1vw 0 2vw;
+}
+.titulo{
+    display: flex;
+    flex-direction: row-reverse;
+    margin: 2vh 0;
+}
+h1{
+    width: 100%;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: bolder;
+    color: #068460;
+    text-align: center;
+    margin: 2vh 0;
+}
+.mejora{
+    display: flex;
+}
+.form{
+    display: flex;
+    flex-direction: column;
+}
+.filtros{
+    margin: 0 0 0 2vw;
+    display: flex;
+    width: 100%;
+}
+.section{
+    display: flex;
+    flex-direction: column;
+    margin: 0 1vw;
+}
+label{
+    font-family: 'Work Sans', sans-serif;
+    font-size: 15px;
+    margin: 1vh 0;
+    font-weight: 500;
+}
+.date,
+.buscador{
+    background: #FFFFFF;
+    border-radius: 10px;
+    height: 6vh;
+    padding: 5px;
+    width: 33vw;
+    font-family: 'Work Sans', sans-serif;
+    font-size: 15px;
+    border: 1px solid #000000;
+    margin: 0.5vh 0;
+}
+.buscador{
+    margin: 2vh 3vw !important;
+}
+tr th {
+    text-align: center !important;
+}
+.table-gestion {
+    width: 100%;
+    font-size: 16px;
+    font-family: 'Work Sans', sans-serif;
+    min-width: 450px;
+    border: 2px solid #068460; 
+    border-left: none;
+    border-right: none;
+    border-bottom: none;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+    text-align: center;
+    margin: 2vh 0 4vh 3vw;
+}
+.table-gestion thead tr {
+    background-color: #068460;
+    color: #ffffff;
+    font-family: 'Work Sans', sans-serif;
+}
+.table-gestion th,
+.table-gestion tbody td {
+    padding: 15px;
+}
+.table-gestion tbody tr {
+    border-bottom: 1px solid white;
+}

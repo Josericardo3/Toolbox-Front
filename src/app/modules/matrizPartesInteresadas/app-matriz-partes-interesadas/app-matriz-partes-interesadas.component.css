@@ -43,7 +43,7 @@ h3{
     align-self: flex-start;
 }
 .btnReporte{
-    margin: 0 0 3vh 0 !important;
+    margin: 0 0 2vh 0 !important;
     align-self: flex-end !important;
 }
 .boton{
@@ -53,9 +53,70 @@ h3{
 :disabled{
     background-color: #737373;
 }
+
+select:disabled{
+    background-color: #e1e1e1;
+}
+input:disabled{
+    background-color: #e1e1e1;
+}
 .containerBtn{
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: row;
+    margin: 2vh 0 3vh 0;
 }
+.adicionarLabel,
+.adicionarP{
+    font-family: 'Work Sans', sans-serif;
+    font-size: 15px;
+    margin: 1vh 0;
+    font-weight: 500;
+}
+.adicionarP{
+    font-size: 16px !important;
+    margin: 3vh 0 1vh 0 !important;
+    font-weight: bold;
+}
+.adicionarInput,
+.adicionarInputSection{
+    background: #FFFFFF;
+    border-radius: 10px;
+    height: 6vh;
+    padding: 5px;
+    width: 45vw;
+    font-family: 'Work Sans', sans-serif;
+    font-size: 15px;
+    border: 1px solid #000000;
+    margin: 0.5vh 0;
+}
+.containerFormulario{
+    display: flex;
+}
+.section{
+    display: flex;
+}
+.section1,
+.section2,
+.changeOtro,
+.subContainerform,
+.subForm{
+    display: flex;
+    flex-direction: column;
+}
+.subForm{
+    margin: 0 0 0 2vw !important;
+}
+.section1{
+    margin: 0 4vw 0 0 !important;
+}
+.subContainerform .adicionarInput,
+.subContainerform .adicionarInputSection{
+    width: 30vw !important;
+}
+input.ng-invalid.ng-touched,
+select.ng-invalid.ng-touched {
+    border: solid 2px tomato !important;
+    border-radius: 10px;
+  }

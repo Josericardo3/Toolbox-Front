@@ -1,0 +1,166 @@
+.tarjetas{
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.15);
+    border-radius: 15px;
+    width: 70vw;
+    height: auto;
+    padding: 20px;
+    border-top: none !important;
+    border-left: 10px solid #068460;
+    margin: 3vh 2vw !important;
+}
+.tituloInput,
+.descripcion,
+.pregunta,
+.select-header{
+    background: #FFFFFF;
+    border-radius: 10px;
+    height: 6vh;
+    padding: 5px;
+    width: 67vw;
+    font-family: 'Work Sans', sans-serif;
+    font-size: 15px;
+    border: 1px solid #000000;
+    margin: 1vh 0;
+}
+.tituloInput::placeholder{
+    font-size: 20px;
+}
+.select-header{
+    width: 27vw !important;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px !important;
+}
+.pregunta{
+    margin: 1vh 2vw 1vh 0 !important;
+    width: 36vw !important;
+}
+.section{
+    display: flexs;
+}
+.linea{
+    border-top: 1.5px solid rgb(131, 131, 131);
+    width: 65vw;
+    padding: 0;
+    margin: 3vh 0 ;
+}
+.footer{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin: 0 2vw;
+}
+.obligatorio{
+    margin: 0 0.1vw !important;
+    font-family: 'Work Sans', sans-serif;
+    font-size: 16px;
+}
+.select-wrapper {
+    position: relative;
+    display: inline-block;
+    width: 27vw;
+}
+.options-container {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 27vw;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    border-radius: 10px;
+    font-family: 'Work Sans', sans-serif;
+    font-size: 15px;
+    display: none;
+}
+.options-container li {
+    padding: 10px;
+    cursor: pointer;
+}
+.options-container li:hover {
+    background-color: #f2f2f2;
+}
+.fa-angle-down{
+    color: #000000;
+    cursor: pointer;
+    font-size: 15px;
+}
+.respuesta,
+.respuestaTextarea,
+.respuestaSpan,
+.respuestaSpan2{
+    background: #FFFFFF;
+    height: 6vh;
+    padding: 5px;
+    width: 36vw;
+    font-family: 'Work Sans', sans-serif;
+    font-size: 15px;
+    border: none;
+    border-bottom: 1px solid #a4a4a4;
+    margin: 1vh 0;
+}
+.respuestaSpan,
+.respuestaSpan2{
+    width: 8vw !important;
+    cursor: pointer;
+    color: #878787;
+}
+.respuestaSpan2{
+    width: 10vw !important;
+}
+.spanOtro{
+    color: blue;
+    font-family: 'Work Sans', sans-serif;
+    font-size: 15px;
+    cursor: pointer;
+}
+.radioButton{
+    display: flex;
+    flex-direction: column;
+}
+.eliminar{
+    display: flex;
+}
+.x{
+    align-self: flex-end;
+    margin: 0 0 1vh 1vw;
+    cursor: pointer;
+}
+
+/*personalizar el checkbox*/
+.toggle-input {
+    display: none;
+}
+.toggle-label {
+    display: inline-block;
+    width: 3vw;
+    height: 2.65vh;
+    background-color: #ccc;
+    border-radius: 10px;
+    position: relative;
+    cursor: pointer;
+    margin: 0 0 0 0.5vw;
+} 
+.toggle-label::before {
+    content: "";
+    display: block;
+    width: 1vw;
+    height: 2.2vh;
+    background-color: #fff;
+    border-radius: 50%;
+    position: absolute;
+    top: 1px;
+    left: 1px;
+    transition: transform 0.3s;
+}
+.toggle-input:checked + .toggle-label {
+    background-color: #068460;
+}
+.toggle-input:checked + .toggle-label::before {
+    transform: translateX(20px);
+}
