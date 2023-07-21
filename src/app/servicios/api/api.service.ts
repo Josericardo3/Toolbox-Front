@@ -407,9 +407,8 @@ export class ApiService {
     const form = `${this.apiURLNuevo}/api/Formulario`;
     return this.http.post<any>(form, request)
   }
-  getDataForm(){
+  getDataForm(idFormulario: number){
     const rnt = localStorage.getItem('rnt');
-    const idFormulario = 3
     const idUsuarioPst = window.localStorage.getItem('Id');
     let direccion = `${this.apiURLNuevo}/api/Formulario?ID_FORMULARIO=${idFormulario}&RNT=${rnt}&ID_USUARIO=${idUsuarioPst}`
     return this.http.get<any>(direccion)

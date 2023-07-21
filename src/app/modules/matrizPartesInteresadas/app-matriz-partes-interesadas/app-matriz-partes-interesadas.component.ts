@@ -457,7 +457,7 @@ export class AppMatrizPartesInteresadasComponent implements OnInit{
     //debugger;
     this.api.getFormsParteInteresada()
       .subscribe((data: any) => {
-        this.datos = data.RESPUESTA_GRILLA;
+        this.datos = data.RESPUESTAS ;
         console.log(data, "data")
         const ordenVariables = {
           0: this.PI,

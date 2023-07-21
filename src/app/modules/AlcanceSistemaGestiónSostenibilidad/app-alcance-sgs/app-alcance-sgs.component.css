@@ -85,3 +85,43 @@ input{
     cursor: pointer;
     align-self: flex-start;
 }
+.container-check{
+    display: flex;
+    align-items: baseline;
+}
+.input-check{
+    width: 31px;
+    height: 17px;
+    border-radius: 5px;
+}
+textarea{
+  background: #FFFFFF;
+  border: 1px solid black;
+  border-radius: 8px;
+  height: 100px;
+  padding: 3px;
+  width: 100%;
+  margin: 1vh 0 0.5vh 0;
+}
+.containerBtn{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+}
+
+.botonCancelar{
+  margin: 4vh 0 2vh 2vw;
+  height: 40px;
+  width: 200px;
+  padding: 5px;
+  background-color: #d9534f;
+  border-color: #d43f3a;
+  border-radius: 100px;
+  color: #FFFFFF;
+  font-family: 'Work Sans', sans-serif;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+  align-self: flex-start;
+}

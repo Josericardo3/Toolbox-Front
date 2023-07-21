@@ -4,24 +4,58 @@
         <app-app-header-arrow-left routerLink="/dashboard"></app-app-header-arrow-left>
         <h1>Alcance Sistema de Gestión de Sostenibilidad</h1>
       </header>
-      <button type="button" class="btnReporte" >
+      <button type="button" class="btnReporte" (click)="generatePDF()" [disabled]="disablePDF">
         <i class="fa-solid fa-download" style="color: #ffffff; margin-right: 0.5vw;"></i>Descargar reporte
-      </button> <!-- (click)="generatePDF()" [disabled]="disablePDF" -->
+      </button> 
       <div class="form">
         <h3>Responda las siguientes preguntas:</h3>
         <p class="texto" id="preg1">
-          ¿Cuales son los principales servicios de su organización?
+          ¿Cuáles son los principales servicios de su organización?
         </p>
-        <input type="text">
+        <input type="text" [(ngModel)]="estructura.servicios.RESPUESTA" [disabled]="accionActivo!='guardar'">
+        <div *ngFor="let adicional of arrayAdicionalesServicio" >
+          <input [(ngModel)]="adicional.RESPUESTA" placeholder="Ingrese servicio adicional" [disabled]="accionActivo!='guardar'">
+        </div>
         <p class="info">Agregue los servicios que presta en su organización.</p>
-        <button type="button" class="botonAgregar"> 
+
+        <button type="button" class="botonAgregar" (click)="agregarAdicional()" [disabled]="accionActivo!='guardar'"> 
           <i class="fa-solid fa-plus" style="color: white; margin: 0 0.4vw;"></i>Agregar servicio
-        </button><!-- (click)="agregarAdicional()" [disabled]="accionActivo!='guardar'" -->
-
-
-
-
+        </button>
+        <p class="texto" id="preg2">
+          ¿Requisitos de la norma que no aplican?
+        </p>
+        <div class="container-check">
+          <!-- <input type="checkbox" class="input-check"  [(ngModel)]="selectedCheckboxes.checkbox1" (change)="checkboxChange('checkbox1')"> -->
+          <input type="checkbox" class="input-check"  [checked]="selectedCheckboxes.checkbox1=== '4.1;true'"  (change)="checkboxChange($event, '4.1')"  [disabled]="accionActivo!='guardar'">
+          <p>4.1</p>
+          <!-- 
+            [disabled]="accionActivo!='guardar'" -->
+        </div>
+        <div class="container-check">
+          <input type="checkbox" class="input-check" [checked]="selectedCheckboxes.checkbox2=== '4.2;true'" (change)="checkboxChange($event, '4.2')"  [disabled]="accionActivo!='guardar'">
+          <p>4.2</p>
+          <!-- 
+            [disabled]="accionActivo!='guardar'" -->
+        </div>
+        <p class="info">Seleccione aquellos que no aplican para su organización.</p>
+        <!-- -->
+        <textarea name="" id="" cols="30" rows="10" [(ngModel)]="estructura.justificacion.RESPUESTA" [disabled]="accionActivo!='guardar'"></textarea>
+        <p class="info">Justifique por qué no aplican.</p>
+      </div>
+      <div class="containerBtn">
+        <button type="submit" class="botonG"  (click)="saveForm()" [disabled]="accionActivo!='guardar'|| llenadoIncorrecto()">
+          <i class="fa-regular fa-floppy-disk" style="color: #fff;"></i> Guardar
+        </button>
+        <button  type="button" class="botonG"  *ngIf="botonOcultar"  [disabled]="accionActivo !='editar'" (click)="activarCampos()" >
+          <i class="fa-solid fa-pen" style="color: white; margin: 0 0.4vw;"></i> Editar
+        </button>
+        <button type="button" class="botonCancelar"  *ngIf="botonCancelar" (click)="cancelarEdit()">
+          <i class="fa-sharp fa-solid fa-x" style="color: white; margin: 0 0.4vw;"></i> Cancelar
+        </button>
       </div>
 
-
 </div>
+<ngx-spinner bdColor="rgba(0, 0, 0, 0.5)" size="small"
+  template="<img src='https://www.superiorlawncareusa.com/wp-content/uploads/2020/05/loading-gif-png-5.gif' width='50' height='50'/>">
+</ngx-spinner>
+<app-modal></app-modal>

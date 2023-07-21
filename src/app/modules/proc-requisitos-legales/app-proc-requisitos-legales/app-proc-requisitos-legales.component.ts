@@ -207,7 +207,7 @@ export class AppProcRequisitosLegalesComponent implements OnInit{
           'La Alta dirección garantiza la disponibilidad de los recursos necesarios para cumplir con las exigencias contempladas en los requisitos de sostenibilidad y otros requisitos identificados en la Matriz de Requisitos Legales.',
           '\n',
           { text: '5.4. ACTUALIZACIÓN DE LA MATRIZ LEGAL', style: ['subtitulo'] },
-          { text:'​​El Responsable de Sostenibilidad ​​Líder de sostenibilidad, en conjunto con los líderes de proceso, deben actualizar la matriz de requisitos legales cada vez que se identifique un cambio en la normatividad legal aplicable, nuevas disposiciones que se deban cumplir, o como mínimo cada ' + this.actualizacion}, 
+          { text:'​​El Responsable de Sostenibilidad ​​Líder de sostenibilidad, en conjunto con los líderes de proceso, deben actualizar la matriz de requisitos legales cada vez que se identifique un cambio en la normatividad legal aplicable, nuevas disposiciones que se deban cumplir, o como mínimo cada ' + this.actualizacion }, 
           '\n',
           '​​Los responsables, evalúan si los nuevos requisitos o las modificaciones en materia​ de​ sostenibilidad',
           '\n',

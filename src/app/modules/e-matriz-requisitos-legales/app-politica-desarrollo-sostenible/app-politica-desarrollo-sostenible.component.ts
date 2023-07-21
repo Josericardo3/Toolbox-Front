@@ -54,6 +54,7 @@ export class AppPoliticaDesarrolloSostenibleComponent implements OnInit {
   datosUsuario: any = [];
   datos: any = [];
   pst!: string;
+  categoria!: string;
   logo: any;
   valoresForm: any = [];
   razonSocial: any;
@@ -63,6 +64,7 @@ export class AppPoliticaDesarrolloSostenibleComponent implements OnInit {
       .subscribe((data: any) => {
         this.datosUsuario = data;
         this.pst = data.NOMBRE_PST;
+        this.categoria = data.CATEGORIA_RNT;
         this.logo = data.LOGO
         this.razonSocial = data.RAZON_SOCIAL_PST;
       })
@@ -84,11 +86,12 @@ export class AppPoliticaDesarrolloSostenibleComponent implements OnInit {
   dondeEstaraDisponible: any;
   disablePDF: boolean = false;
   ubicación: string = '';
+  idFormulario: number = 3;
   getDataFor() {
-    this.api.getDataForm()
+    this.api.getDataForm(this.idFormulario)
       .subscribe((response: any) => {
         let data = response.RESPUESTAS;
-        this.ubicación = response.DEPARTAMENTO + ', ' + response.MUNICIPIO
+        this.ubicación = response.DEPARTAMENTO + ', ' + response.MUNICIPIO;
         if (data.length > 0) { //ya hubo registro previo "ESTO ES EDICION"
           this.accionActivo = "editar";
           this.edicion = true;
@@ -144,10 +147,10 @@ export class AppPoliticaDesarrolloSostenibleComponent implements OnInit {
               }
             });
             tab.preguntas = preguntasOrdenado;
-            tab.preguntas = tab.preguntas.map((valor:any)=>{
-               valor.OTRO_VALOR= ""
-               if(valor.RESPUESTA !== 'Página web' && valor.RESPUESTA !== 'Redes sociales') valor.OTRO_VALOR= valor.RESPUESTA;
-               return valor; 
+            tab.preguntas = tab.preguntas.map((valor: any) => {
+              valor.OTRO_VALOR = ""
+              if (valor.RESPUESTA !== 'Página web' && valor.RESPUESTA !== 'Redes sociales') valor.OTRO_VALOR = valor.RESPUESTA;
+              return valor;
             })
           });
         }
@@ -192,6 +195,7 @@ export class AppPoliticaDesarrolloSostenibleComponent implements OnInit {
   }
 
   saveForm() {
+
     let id = localStorage.getItem('Id');
     let preguntasRequest = [];
 
@@ -251,41 +255,32 @@ export class AppPoliticaDesarrolloSostenibleComponent implements OnInit {
     this.disableDelete = false;
   }
   llenadoIncorrecto(): boolean {
-    let incorrecto = true;
-    if (this.estructura.establecimiento.RESPUESTA.trim() == "" ||
-      this.estructura.sostenibilidad.RESPUESTA.trim() == "" ||
-      this.estructura.compromisoEmpresa.RESPUESTA.trim() == "") {
+    let incorrecto = false;
+    if (this.estructura.establecimiento.RESPUESTA?.trim() == "" ||
+      this.estructura.sostenibilidad.RESPUESTA?.trim() == "" ||
+      this.estructura.compromisoEmpresa.RESPUESTA?.trim() == "") {
       incorrecto = true;
     }
     else incorrecto = false;
-    
+
     this.estructura.adicionales.forEach(tab => {
 
       tab.preguntas.forEach(item => {
-
-        if( item.PREGUNTA == "¿Cuándo?" ){
-
+        if (item.PREGUNTA == "¿Cuándo?") {
           if (typeof item.RESPUESTA == "string") {
             if (item.RESPUESTA.trim() == "") incorrecto = true;
           }
-          else if (item.RESPUESTA === undefined)incorrecto = true;
+          else if (item.RESPUESTA === undefined) incorrecto = true;
         }
-       else if (item.RESPUESTA.trim() == "") {
+        else if (item.PREGUNTA == "¿Dónde estará disponible?" 
+                &&item.RESPUESTA!= "Página web" 
+                && item.RESPUESTA!= "Redes sociales" 
+                &&  item.OTRO_VALOR.trim() == "") {
           incorrecto = true;
         }
-
-       else if (item.RESPUESTA.trim() == "") {
-
+        else if (item.RESPUESTA.trim() == "" ) {
           incorrecto = true;
-
         }
-
-        if (item.RESPUESTA == "Otro" && item.OTRO_VALOR.trim() == "") {
-
-          incorrecto = true;
-
-        }
-
       });
 
     });
@@ -554,7 +549,7 @@ export class AppPoliticaDesarrolloSostenibleComponent implements OnInit {
                 { text: 'RESPUESTA', style: 'encabezado' },
               ], // Encabezado de la tabla
               ['Nombre del establecimiento', this.pst],
-              ['¿Cuáles son los servicios que presta su organización?', 'Celda 2, Fila 2'],
+              ['¿Cuáles son los servicios que presta su organización?', this.categoria],
               ['¿Dónde está ubicado el establecimiento?', this.ubicación],
               ['¿Cuáles son los principales componentes o los tópicos o diferenciadores que resalta en la misión de su establecimiento?', this.diferenciadores],
               ['Cuáles son los principales pilares o componentes del plan estratégico que desea promover y priorizar? (Ver plan estratégico)', this.pilaresEstrategicos],
@@ -659,7 +654,7 @@ export class AppPoliticaDesarrolloSostenibleComponent implements OnInit {
                 return [
                   { text: tab.preguntas[0].RESPUESTA, style: ['columna'] },
                   { text: tab.preguntas[1].RESPUESTA, style: ['columna'] },
-                  { text: this.datePipe.transform(tab.preguntas[2].RESPUESTA, 'dd-MM-yyyy'), style: ['columna'] }, 
+                  { text: this.datePipe.transform(tab.preguntas[2].RESPUESTA, 'dd-MM-yyyy'), style: ['columna'] },
                   { text: tab.preguntas[3].RESPUESTA, style: ['columna'] },
                 ];
               })
