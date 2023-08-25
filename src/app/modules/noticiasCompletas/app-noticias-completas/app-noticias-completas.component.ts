@@ -35,7 +35,6 @@ export class AppNoticiasCompletasComponent implements OnInit{
     .subscribe(data => {
       this.datos = data;
       this.dataInitial= data;
-      console.log(this.datos)
              //paginado
              const totalPag = data.length;
              this.totalPaginas = Math.ceil(totalPag / 6) ;
@@ -54,6 +53,12 @@ export class AppNoticiasCompletasComponent implements OnInit{
   }
 
   indexCard(index: any, dato: string){
+    const request = {
+      FK_ID_USUARIO: parseInt(localStorage.getItem("Id")),
+      TIPO: "Modulo",
+      MODULO: "noticia"
+    };
+    this.api.postMonitorizacionUsuario(request).subscribe(); 
     this.idNoticia = index;
     this.dato= dato;
     this.router.navigate(['/noticia'],{ state: { idNoticia: this.idNoticia, dato: dato} });

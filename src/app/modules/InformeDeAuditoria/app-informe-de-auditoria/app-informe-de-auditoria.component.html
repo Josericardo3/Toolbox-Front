@@ -4,7 +4,7 @@
   <div class="titulo">
     <h1 class="titulo-nav">Informe de Auditoría</h1>
     <div class="contenedor-arrow">
-      <app-app-header-arrow-left routerLink="/dashboard"></app-app-header-arrow-left>
+      <app-app-header-arrow-left></app-app-header-arrow-left>
     </div>
   </div>
   <img [src]="" alt="">
@@ -66,7 +66,7 @@
                   <div class="linea"></div>
                   <label class="label-auditor">Auditor lider:</label> <p>{{ this.selectedProceso?.AUDITOR_LIDER}}</p>
                   <div class="linea"></div>               
-                  <label class="label-auditor">Equipo auditor:</label> <p>{{ this.selectedProceso?.EQUIPO_AUDITOR}}</p>  
+                  <label class="label-auditor">Equipo auditor:</label> <p class="equipo-auditor">{{ this.selectedProceso?.EQUIPO_AUDITOR }}</p>  
                   <div class="linea"></div>              
                   <label class="label-auditor">Fecha de informe de auditoría:</label> <p>{{ this.selectedProceso?.FECHA_AUDITORIA }}</p> 
                   <div class="linea"></div>                

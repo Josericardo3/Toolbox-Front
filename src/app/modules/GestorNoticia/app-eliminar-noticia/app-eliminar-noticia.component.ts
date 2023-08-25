@@ -26,7 +26,6 @@ export class AppEliminarNoticiaComponent implements OnInit{
 
   ngOnInit() { 
     this.getTableData()
-    console.log(this.indice)
   }
 
   getTableData(){
@@ -46,7 +45,6 @@ export class AppEliminarNoticiaComponent implements OnInit{
       const valor = -2 ;
       this.apiService.deleteNoticia(this.indice)
       .subscribe(data => {
-        console.log('se eliminó', data)
         const title = "Eliminación exitosa";
         const message = "El registro se ha eliminado exitosamente"
         this.Message.showModal(title, message);

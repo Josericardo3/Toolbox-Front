@@ -31,7 +31,6 @@ export class AppFormularioComponent implements OnInit{
 
   ngOnInit() {
     this.estadoFormulario = this.formService.obtenerEstadoFormulario(this.selectedMatrizId);  
-    debugger;
     this.ApiService.getLeyes()
     .subscribe((data: any) => {
       this.datos = data;
@@ -49,15 +48,12 @@ export class AppFormularioComponent implements OnInit{
     });  
     
     this.setSelectedValues();
-    debugger;
     //this.isDisabled = this.estadoFormulario ? true : false
     this.setFormDisabledState();
     this.restaurarForm();
   }
   
   restaurarForm(){
-    debugger;
-
     this.form = this.formBuilder.group({
       estadoCumplimiento: [{ value: this.data?.ESTADO_CUMPLIMIENTO || this.estadoFormulario?.ESTADO_CUMPLIMIENTO || '', disabled: this.data?.ESTADO_CUMPLIMIENTO !== null }],
       responsable: [{ value: this.data?.RESPONSABLE_CUMPLIMIENTO || this.estadoFormulario?.RESPONSABLE || '', disabled: this.data?.RESPONSABLE_CUMPLIMIENTO !== null }],
@@ -72,7 +68,6 @@ export class AppFormularioComponent implements OnInit{
 
   onSubmit(idMatriz: number) {  
     // Guarda el estado del formulario en el servicio
-    debugger;
     this.formService.guardarEstadoFormulario(idMatriz, this.form.value);
     this.setSelectedValues();
     this.isDisabled = true;
@@ -84,7 +79,6 @@ export class AppFormularioComponent implements OnInit{
     const responsablePlanCumplimiento = this.form.get('responsableCumplimiento')?.value.toString();
     const fechaEjecucion = this.form.get('fecha')?.value.toString();
     const estado = this.form.get('estado')?.value.toString();
-    debugger;
     console.log(
       estadoCumplimiento,
       responsableCumplimiento,
@@ -125,17 +119,6 @@ export class AppFormularioComponent implements OnInit{
     });
   }
 
-  // onSubmit(idMatriz: number) {
-  //   const data = this.form.value;
-  
-  //   this.ApiService.saveLey(data).subscribe((data: any) => {
-  //     console.log('se guardó');
-  //     this.formService.guardarEstadoFormulario(idMatriz, data);
-  //   });
-  //   this.setSelectedValues();
-  //   this.isDisabled = true;
-  // }
-  
   setSelectedValues() {
     const estadoCumplimiento = this.form.get('estadoCumplimiento').value;
     const responsable = this.form.get('responsable').value;

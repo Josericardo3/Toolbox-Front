@@ -70,7 +70,8 @@ export class RecoveryComponent implements OnInit {
       this.error = "Las contraseñas no coinciden";
       return;
     }
-    const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])([A-Za-z\d$@$!%*?&]|[^ ]){8,}$/; // 8 caracteres, 1 mayuscula, 1 numero, 1 caracter especial, no espacios
+    //const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])([A-Za-z\d$@$!%*?&]|[^ ]){8,}$/; // 8 caracteres, 1 mayuscula, 1 numero, 1 caracter especial, no espacios
+    const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()\-_=+{};:,<.>]).{8,}$/; // 8 caracteres, 1 mayuscula, 1 numero, 1 caracter especial, no espacios
     if (!password.match(passwordRegex)) {
     this.error = "La contraseña debe tener al menos 8 caracteres, 1 mayúscula, 1 número y 1 caracter especial.";
 

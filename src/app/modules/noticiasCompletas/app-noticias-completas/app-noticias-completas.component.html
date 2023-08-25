@@ -2,7 +2,7 @@
 <div class="containerHistorial">
     <div class="titulo">
         <h1>Noticias</h1>
-        <app-app-header-arrow-left routerLink="/dashboard"></app-app-header-arrow-left>
+        <app-app-header-arrow-left></app-app-header-arrow-left>
     </div>
     <div class="containerTarjetas">
         <div class="tarjetas" *ngFor="let campo of datos" (click)="indexCard(campo.Notificacion.FK_ID_NOTICIA,campo.Notificacion.TIPO)">

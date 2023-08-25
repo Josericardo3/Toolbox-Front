@@ -86,20 +86,24 @@ export class ApiService {
     return response;
   }
   validateEmail(correo: string): Observable<string> {
-    let validate = `${this.apiURL}/api/Validaciones/Correo/${correo}`
+    let validate = `${this.apiURLNuevo}/api/Validaciones/Correo/${correo}`
     let response = this.http.get<string>(validate);
     return response;
   }
   validatePhone(phone: string): Observable<string> {
-    let validate = `${this.apiURL}/api/Validaciones/Telefono/${phone}`
+    let validate = `${this.apiURLNuevo}/api/Validaciones/Telefono/${phone}`
     let response = this.http.get<string>(validate);
     return response;
   }
-  validateDiagnostico(idUsuario:any): Observable<string> {
-    let validate = `${this.apiURLNuevo}/api/Validaciones/UsuarioDiagnostico/${idUsuario}`
+
+  validateDiagnostico(idNorma:any): Observable<string> {
+    const idUsuario = localStorage.getItem("Id");
+    let validate = `${this.apiURLNuevo}/api/Validaciones/UsuarioDiagnostico?idUsuario=${idUsuario}&idNorma=${idNorma}`
     let response = this.http.get<string>(validate);
     return response;
   }
+
+
   //para obtener la data de caracterizacion
   getData(): Observable<any> {
     const id = localStorage.getItem('Id');
@@ -184,24 +188,30 @@ export class ApiService {
   getListaChequeoApi(){
     const normaValue = window.localStorage.getItem('idNormaSelected');
     const idUsuario = window.localStorage.getItem('Id');
-    let lista = `${this.apiURLNuevo}/api/ListaChequeo/ListaChequeo?idnorma=${normaValue}&idusuariopst=${idUsuario}` 
+    const etapa = Number(window.localStorage.getItem('etapa'));
+ 
+    let lista = `${this.apiURLNuevo}/api/ListaChequeo/ListaChequeo?idnorma=${normaValue}&idusuariopst=${idUsuario}&etapa=${etapa}` 
     return this.http.get<any>(lista)
   }
 
   getListaDiagnosticoApi(){
-    const normaValue = window.localStorage.getItem('idNormaSelected');
-    const idUsuario = window.localStorage.getItem('Id');
-    let lista = `${this.apiURLNuevo}/api/ListaChequeo/ListaDiagnostico?idnorma=${normaValue}&idusuariopst=${idUsuario}` 
+  
+    const normaValue = Number(window.localStorage.getItem('idNormaSelected'));
+    const idUsuario = Number(window.localStorage.getItem('Id'));
+    const etapa = Number(window.localStorage.getItem('etapa'));
+  
+    let lista = `${this.apiURLNuevo}/api/ListaChequeo/ListaDiagnostico?idnorma=${normaValue}&idusuariopst=${idUsuario}&etapa=${etapa}`
     return this.http.get<any>(lista)
   }
 
   getPlanMejoraApi(){
     var normaValue = window.localStorage.getItem('idNormaSelected');
     var idUsuario = window.localStorage.getItem('Id');
+    const etapa = Number(window.localStorage.getItem('etapa'));
     // const id = localStorage.getItem('Id');
     // const normaValue = JSON.parse(window.localStorage.getItem('norma'));
     // const idn = normaValue[0].id;
-    let lista = `${this.apiURLNuevo}/api/PlanMejora/PlanMejora?idnorma=${normaValue}&idusuariopst=${idUsuario}` 
+    let lista = `${this.apiURLNuevo}/api/PlanMejora/PlanMejora?idnorma=${normaValue}&idusuariopst=${idUsuario}&etapa=${etapa}` 
     return this.http.get<any>(lista)
   }
 
@@ -265,8 +275,7 @@ export class ApiService {
   }
 
   getPSTSelect(){
-    const rnt = localStorage.getItem('rnt');
-    let direccion = `${this.apiURLNuevo}/api/General/ListarResponsables/${rnt}`
+    let direccion = `${this.apiURLNuevo}/api/General/ListarPst`
     return this.http.get<any>(direccion)
   }
 
@@ -401,5 +410,57 @@ export class ApiService {
     }
     let lista = `${this.apiURLNuevo}/api/Actividad/Logo`
     return this.http.put<any>(lista,send)
+  }
+
+  //FORMULARIOS DE EVIDENCIA
+  saveForms(request: any){
+    const form = `${this.apiURLNuevo}/api/Formulario`;
+    return this.http.post<any>(form, request)
+  }
+  getDataForm(idFormulario: number){
+    const rnt = localStorage.getItem('rnt');
+    const idUsuarioPst = window.localStorage.getItem('Id');
+    let direccion = `${this.apiURLNuevo}/api/Formulario?ID_FORMULARIO=${idFormulario}&RNT=${rnt}&ID_USUARIO=${idUsuarioPst}`
+    return this.http.get<any>(direccion)
+  }
+  
+  getForms(){
+    const rnt = localStorage.getItem('rnt');
+    const idUsuarioPst = window.localStorage.getItem('Id');
+    let direccion = `${this.apiURLNuevo}/api/Formulario?ID_FORMULARIO=1&RNT=${rnt}&ID_USUARIO=${idUsuarioPst}`
+    return this.http.get<any>(direccion)
+  }
+  deleteForm(idRespuestaformulario){ 
+      let assign = `${this.apiURLNuevo}/api/Formulario?idRespuestaformulario=${idRespuestaformulario}`
+      return this.http.delete<any>(assign)
+  }
+  
+  //actualizar formulario
+  getFormsParteInteresada(){
+    const rnt = localStorage.getItem('rnt');
+    const idUsuarioPst = window.localStorage.getItem('Id');
+    let direccion = `${this.apiURLNuevo}/api/Formulario?ID_FORMULARIO=2&RNT=${rnt}&ID_USUARIO=${idUsuarioPst}`
+    return this.http.get<any>(direccion)
+  }
+  postMonitorizacionUsuario(request: any){
+    const direccion = `${this.apiURLNuevo}/api/General/MonitorizacionUsuario`;
+    return this.http.post<any>(direccion, request)
+  }
+
+  //MONITORIZACIÓN
+
+  getMonitorizacion( ){
+    let lista = `${this.apiURLNuevo}/api/Monitorizacion/MonitorizacionIndicador`
+    return this.http.get<any>(lista)
+  }
+
+    UpdateAuditoriaEstadoTerminado(id: any){
+    let assign = `${this.apiURLNuevo}/api/Auditoria/UpdateEstadoTerminadoAuditoria?idAuditoria=${id}`
+    return this.http.put<any>(assign,id)
+  }
+  ValidateRntMincit(rnt:any): Observable<string> {
+    let validate = `${this.apiURLNuevo}/api/Validaciones/ObtenerDataMincit?RNT=${rnt}`
+    let response = this.http.get<string>(validate);
+    return response;
   }
 }

@@ -13,15 +13,24 @@
   align-items: flex-start;
   justify-content: flex-start;
 }
-h1{
+.titulo{
+    display: flex;
+    justify-content: center;
+    flex-direction: row-reverse;
+    margin: 2vh 0;
+  }
+  h1{
+    width: 80vw;
     font-family: 'Montserrat', sans-serif;
     font-weight: bolder;
-    font-size: 32px;
     color: #068460;
-    margin: 15vh 0 2vh 0;
-    width: 60vw;
     text-align: center;
-}
+    margin: 2vh 2vw;
+  }
+  .arrow{
+    align-self: flex-start;
+    margin: 0 4vw 0 -7vw;
+  }
 h3{
     font-family: 'Montserrat';
     font-weight: bolder;

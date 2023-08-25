@@ -1,0 +1,103 @@
+<app-app-header></app-app-header>
+<div class="containerPartesInteresadas">
+    <div class="titulo">
+        <h1>Matriz de partes interesadas</h1>
+        <app-app-header-arrow-left [redirectToDashboard]="true"></app-app-header-arrow-left>
+    </div>
+    <div class="resultados">
+        <app-app-menu-alta-gerencia></app-app-menu-alta-gerencia>
+        <div class="form">
+            <button type="button" class="btnReporte" routerLink="/partesInteresadas" routerLinkActive="activebutton">
+                <i class="fa-solid fa-pen" style="color: #ffffff; margin-right: 10px;"></i>Editar matriz
+            </button>
+            <!--*** SECCIÓN DE LA TABLA ***-->
+            <table class="table-gestion" style="margin-top: 8px;">
+                <thead>
+                    <tr>
+                        <th scope="col">PARTE INTERESADA PERTENECIENTE AL SGS</th>
+                        <th scope="col">NECESIDAD(ES) DE LA PARTE INTERESADA</th>
+                        <th scope="col">EXPECTATIVA(S) DE LA PARTE INTERESADA</th>
+                        <th scope="col">LA ORGANIZACIÓN CUMPLE CON LOS REQUISITOS DE LAS PARTES INTERESADAS (C/NC/CP)</th>
+                        <th scope="col">OBSERVACIONES</th>
+                        <th scope="col">ACCIONES A REALIZAR</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th>PROVEEDOR(ES)</th>
+                        <td id="proveedores-necesidades"></td>
+                        <td id="proveedores-expectativas"></td>
+                        <td id="proveedores-requisitos"></td>
+                        <td id="proveedores-observaciones"></td>
+                        <td id="proveedores-acciones"></td>
+                    </tr>
+                    <tr>
+                        <th>ORGANIZACIONES GUBERNAMENTALES</th>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <th>ORGANIZACIONES NO GUBERNAMENTALES</th>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <th>CLIENTE(S)</th>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <th>HUÉSPEDES</th>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <th>COLABORADORES (Personal directo y/o indirecto)</th>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <th>ACCIONISTAS O PROPIETARIOS</th>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <th>COMUNIDAD</th>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <th>COMUNIDAD VULNERABLE </th>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <th>ATRACTIVOS TURÍSTICOS</th>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <th>OTRA, ¿CUÁL?</th>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<app-app-footer></app-app-footer>
+
+<ngx-spinner bdColor="rgba(0, 0, 0, 0.5)" size="small"
+    template="<img src='https://www.superiorlawncareusa.com/wp-content/uploads/2020/05/loading-gif-png-5.gif' width='50' height='50'/>">
+</ngx-spinner>

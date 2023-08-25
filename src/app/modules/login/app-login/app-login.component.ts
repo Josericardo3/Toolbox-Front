@@ -63,7 +63,8 @@ export class AppLoginComponent implements OnInit {
           CustomValidators.patternValidator(/\d/, { hasNumber: true }),
           CustomValidators.patternValidator(/[A-Z]/, { hasCapitalCase: true }),
           CustomValidators.patternValidator(/[a-z]/, { hasSmallCase: true }),
-          CustomValidators.patternValidator(/(?=.*?[#?!@$%^&*-])/, {
+          //CustomValidators.patternValidator(/(?=.*?[#?!@$%^&*-])/, {
+          CustomValidators.patternValidator(/(?=.*[!@#$%^&*()\-_=+{};:,<.>])/, {
             hasSpecialCharacters: true,
           }),
           Validators.minLength(8),
@@ -96,16 +97,28 @@ export class AppLoginComponent implements OnInit {
     this.usuario.pass = reemplazarCaracteresEspeciales(this.usuario.pass);
     //jalar el valor del correo
     this.ApiService.login(this.usuario).subscribe(
+      
       (data: any) => {
-
+        const request = {
+          FK_ID_USUARIO: data.ID_USUARIO,
+          TIPO: "Login",
+          MODULO: "login"
+         };
+        this.ApiService.postMonitorizacionUsuario(request).subscribe();
        //PARA TOMAR TIPO_USUARIO
         localStorage.setItem("TIPO_USUARIO", data.Grupo[0].TIPO_USUARIO);
         if (data.Grupo[0].TIPO_USUARIO === 2 || data.Grupo[0].TIPO_USUARIO === 8) {
+          const request = {
+            FK_ID_USUARIO: data.ID_USUARIO,
+            TIPO: "Modulo",
+            MODULO: "gestionUsuario"
+           };
+          this.ApiService.postMonitorizacionUsuario(request).subscribe();
           this.router.navigate(["/gestionUsuario"]);
         } 
 
         this.store.dispatch(saveDataLogin({ request: data }));
-        localStorage.setItem("rol", data.permisoUsuario[0]?.item || 1);
+        localStorage.setItem("rol", data.Grupo[0].TIPO_USUARIO);
         localStorage.setItem("access", data.TokenAcceso);
         localStorage.setItem("refresh", data.TokenRefresco);
         localStorage.setItem("idGrupo", data.Grupo[0].ITEM);
@@ -118,7 +131,7 @@ export class AppLoginComponent implements OnInit {
               "idCategoria",
               JSON.stringify(this.arrNormas[0].FK_ID_CATEGORIA_RNT));
         });
-        if (data.Grupo[0].ITEM === 1 || data.Grupo[0].ITEM === 6 || data.Grupo[0].ITEM === 7) {
+        if (data.Grupo[0].ITEM === 1 || data.Grupo[0].ITEM === 6 || data.Grupo[0].ITEM === 7 || data.Grupo[0].ITEM === 3 || data.Grupo[0].ITEM === 4 ) {
           this.ApiService.validateCaracterizacion(data.ID_USUARIO).subscribe(
             (response) => {
               if (response) {
@@ -166,6 +179,12 @@ export class AppLoginComponent implements OnInit {
           );
         } else {
           // cuando el item es != de 1 es un asesor
+          const request = {
+            FK_ID_USUARIO: data.ID_USUARIO,
+            TIPO: "Modulo",
+            MODULO: "gestionUsuario"
+           };
+          this.ApiService.postMonitorizacionUsuario(request).subscribe();
           this.router.navigate(["/gestionUsuario"]);
         }
       },

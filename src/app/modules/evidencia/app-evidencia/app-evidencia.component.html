@@ -1,6 +1,9 @@
 <app-app-header></app-app-header>
-<div class="controllerEvidencia">
-    <h1>Evidencia e Implementación</h1>  
+<div class="controllerEvidencia">  
+    <div class="tituloP">
+        <h1>Evidencia e Implementación</h1>
+        <app-app-header-arrow-left class="arrow"></app-app-header-arrow-left>
+    </div>
         <div class="div">
             <div class="titulo" (click)="toggleSection('contexts')" [ngClass]="{'verde': contextsVisible}">
                 <h3>4. CONTEXTO DE LA ORGANIZACIÓN</h3>
@@ -10,8 +13,9 @@
             </div>
             <div class="detalle" *ngIf="contextsVisible">
                 <div>
-                    <p>4.1 Cumplimiento de la legislación 
-                        <a routerLink="/EMatrizRequisitosLegales" routerLinkActive="activebutton"> | Matriz de requisitos legales</a> |
+                    <p>4.1 Cumplimiento de la legislación |
+                        <a routerLink="/EMatrizRequisitosLegales" routerLinkActive="activebutton">Matriz de requisitos legales</a> |
+                        <a routerLink="/requisitosLegales" routerLinkActive="activebutton"> Procedimiento de requisitos legales</a> |
                         <a>Cargar documento</a> 
                     </p> 
                     <div *ngIf="subirVisible41" class="subDetalleSubirVisible">
@@ -37,7 +41,9 @@
                     </div>
                 </div>
                 <div>
-                    <p>4.3 Comprensión de las necesidades y expectativas de las partes interesadas <a> | Generar documento</a> | 
+                    <p>4.3 Comprensión de las necesidades y expectativas de las partes interesadas |
+                        <a>Taller de partes interesadas</a> |
+                        <a routerLink="/partesInteresadas" routerLinkActive="activebutton"> Matriz de partes interesadas</a> | 
                         <a (click)="toggleSubir('item43')">Cargar documento</a>
                     </p>
                     <div *ngIf="subirVisible43" class="subDetalleSubirVisible">
@@ -50,7 +56,8 @@
                     </div>
                 </div>
                 <div>
-                    <p>4.4 Determinación del alcance del sistema de gestión de la sostenibilidad <a> | Generar documento</a> | 
+                    <p>4.4 Determinación del alcance del sistema de gestión de la sostenibilidad <a  [routerLink]="['/politicaDesarrolloSostenible']"> | Generar Taller de Política de Desarrollo Sostenible</a>
+                        <a  [routerLink]="['/alcancedelSGS']"> | Generar Alcance Sistema de Gestión de Sostenibilidad </a> | 
                         <a (click)="toggleSubir('item44')">Cargar documento</a>
                     </p>
                     <div *ngIf="subirVisible44" class="subDetalleSubirVisible">
@@ -534,7 +541,6 @@
                 </div>
             </div>
         </div>
-    <button type="button" (click)="goBack()" class="btn">Atrás</button>
 </div>
 <app-app-footer></app-app-footer>
 <ngx-spinner

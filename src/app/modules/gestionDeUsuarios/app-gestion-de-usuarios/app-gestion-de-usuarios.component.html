@@ -125,33 +125,41 @@
             [formGroup]="registerNewAsesor"
             (ngSubmit)="saveNewAsesor()"
             >
+            <div class="container-asesor"  style="margin-bottom: 14px !important;">
             <label class="label-titulo">Usuario</label>
-            <input style="width: 389px;font-size:14px;height: 28px;padding-left: 10px;" 
+            <input 
             (change) = onChangeModalInput($event)
             appLetras
-            placeholder="Escriba su usuario"
-            class="input-asesor"
+            style="font-family:Arial,FontAwesome" 
+            placeholder="&#xf007; Escriba su usuario"
+            class="input-user"
             [(ngModel)]="registroNacionalDeTurismo"
             type="text"
             id="registroNacionalDeTurismo"
             formControlName="registroNacionalDeTurismo"
             />
+          </div>
+          <div class="container-asesor" style="margin-bottom: 14px !important;">
            <label class="label-titulo">Nombre</label>
-           <input style="width: 389px;font-size: 14px;height: 28px;padding-left: 10px;"
+           <input 
            (change) = onChangeModalInput($event)
            appLetras
-           placeholder="Escriba su nombre"
+           style="font-family:Arial,FontAwesome" 
+           placeholder="&#xf303; Escriba su nombre"
            class="input-asesor"
            [(ngModel)]="nombre"
            type="text"
            id="nombre"
            formControlName="nombre"
           />
-          <label class="label-titulo">Correo</label>
+        </div>
+        <div class="container-asesor" style="display: flex;">
+          <label class="label-titulo" style="margin-right: 26px;">Correo</label>
           <br>
-          <input style="width: 389px;font-size:14px;height: 28px;padding-left: 10px;"
+          <input 
           (change) = onChangeModalInput($event)
-          placeholder="Correo@email.com"
+          style="font-family:Arial,FontAwesome" 
+          placeholder="&#xf0e0; Correo@email.com"
           class="input-asesor"
           [(ngModel)]="correo"
           type="email"
@@ -164,6 +172,7 @@
           Debe contener un correo válido
           </label>
           <br>
+        </div>
         </form>
           </div>
               <div class="btn-grup-asesor">

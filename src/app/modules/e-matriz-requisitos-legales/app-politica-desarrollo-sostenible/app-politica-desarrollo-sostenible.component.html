@@ -1,0 +1,128 @@
+<app-app-header></app-app-header>
+<div class="containerPolitica">
+  <header>
+    <app-app-header-arrow-left></app-app-header-arrow-left>
+    <h1>Taller de Política de Desarrollo Sostenible</h1>
+  </header>
+  <button type="button" class="btnReporte" (click)="generatePDF()" [disabled]="disablePDF">
+    <i class="fa-solid fa-download" style="color: #ffffff; margin-right: 0.5vw;"></i>Descargar reporte
+  </button>
+  <div class="form">
+    <h3>Responda las siguientes preguntas:</h3>
+    <p class="texto" id="preg1">
+      ¿Cuáles son los principales componentes o los tópicos o diferenciadores que resalta en la misión de su
+      establecimiento?
+    </p>
+    <textarea name="" id="" cols="30" rows="10" [(ngModel)]="estructura.establecimiento.RESPUESTA" [disabled]="accionActivo!='guardar'"></textarea>
+    <p class="info">Responda de acuerdo con la misión de su organización.</p>
+
+  
+    <p class="texto" id="preg2">
+      ¿Cuáles son los principales pilares o componentes del plan estratégico que desea promover y priorizar?
+    </p>
+    <textarea name="" id="" cols="30" rows="10" [(ngModel)]="estructura.sostenibilidad.RESPUESTA" [disabled]="accionActivo!='guardar'"></textarea>
+    <p class="info">Responda según el plan estratégico.</p>
+
+    <p class="texto" id="preg3">
+      ¿Cuál es el compromiso de la empresa con el sistema de gestión de sostenibilidad?
+    </p>
+    <textarea name="" id="" cols="30" rows="10" [(ngModel)]="estructura.compromisoEmpresa.RESPUESTA" [disabled]="accionActivo!='guardar'"> </textarea>
+    <p class="info">Responda con su compromiso para el sistema.</p>
+
+    <div>
+      <label for="descripcion" class="label-auditor">Política de Desarrollo Sostenible: </label>
+      <button type="button" class="botonAgregar" (click)="agregarAdicional()" [disabled]="accionActivo!='guardar'">
+        <i class="fa-solid fa-plus" style="color: white; margin: 0 0.4vw;"></i>Agregar
+      </button>
+    </div>
+
+    <div class="card">
+      <tabset class="bg-purple text-white custom-tab">
+        <ng-container *ngFor="let tab of estructura.adicionales, let index= index">
+          <tab [heading]="'Politica ' + tab.orden">
+            <div class="tabAggregarMas">
+              <ng-container *ngFor="let pregunta of tab.preguntas">
+                <div *ngIf="pregunta.PREGUNTA==='¿Cómo se comunica la política?' " class="divTabPregunta">
+                  <p class="texto">{{ pregunta.PREGUNTA }}</p>
+                  <textarea class="textarea-agg" [(ngModel)]="pregunta.RESPUESTA" [disabled]="accionActivo!='guardar'"></textarea>
+                  <p class="info">Responda con su compromiso para el sistema.</p>
+                </div>
+                <div *ngIf="pregunta.PREGUNTA==='¿Quién comunica?'" class="divTabPregunta">
+                  <p class="texto">
+                    ¿Quién comunica?
+                  </p>
+                  <select name="comunicacion" id="comunicacion" [(ngModel)]="pregunta.RESPUESTA" [disabled]="accionActivo!='guardar'">
+                    <option value="" disabled>Seleccione una opción</option>
+                    <option value="Responsable">Responsable</option>
+                  </select>
+                  <p class="info">Responda según desee implementar.</p>
+                </div>
+    
+                <div *ngIf="pregunta.PREGUNTA==='¿Cuándo?'" class="divTabPregunta">
+                  <p class="texto">
+                    ¿Cuándo?
+                  </p>
+                  <input bsDatepicker appFwCalendario type="text" maxlength="10" placement="bottom" class=" date-conte"
+                    #dp3="bsDatepicker" placeholder="DD-MM-YYYY" title="Inicio de actividad"
+                    fw_calendario ui-date-mask
+                    [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY',adaptivePosition: true, isAnimated: true, containerClass: 'theme-green'}"
+                    [(ngModel)]="pregunta.RESPUESTA" (ngModelChange)="dateInputChange(pregunta, $event)"  [disabled]="accionActivo!='guardar'"/>
+                  <i (click)="dp3.show()" class="fa-solid fa-calendar-days"
+                    style="color: #06543c;font-size: 22px;padding: 8px;" [attr.aria-expanded]="dp3.isOpen" >
+                  </i>
+                  <p class="info">Responda según desee implementar.</p>
+                </div>
+    
+                <div *ngIf="pregunta.PREGUNTA==='¿Dónde estará disponible?'" class="divTabPregunta">
+                  <p class="texto">
+                    ¿Dónde estará disponible?
+                  </p>
+                  <div class="container-check">
+                    <input type="checkbox" class="input-check" [checked]="pregunta.RESPUESTA === 'Página web'"
+                      (change)="checkboxChange(pregunta, 'Página web')" [disabled]="accionActivo!='guardar'">
+                    <p>Página web</p>
+                  </div>
+                  <div class="container-check">
+                    <input type="checkbox" class="input-check" [checked]="pregunta.RESPUESTA === 'Redes sociales'"
+                      (change)="checkboxChange(pregunta, 'Redes sociales')" [disabled]="accionActivo!='guardar'">
+                    <p>Redes sociales</p>
+                  </div>
+                  <div class="container-check">
+                    <input type="checkbox" class="input-check" [checked]="pregunta.RESPUESTA!='' && pregunta.RESPUESTA !== 'Página web' && pregunta.RESPUESTA !== 'Redes sociales'"
+                      (change)="checkboxChange(pregunta, 'Otro')" [disabled]="accionActivo!='guardar'">
+                    <p>Otro ¿Cuál?</p>
+                  </div>
+                  <input type="text" style="width: 45% !important;" [(ngModel)]="pregunta.OTRO_VALOR"
+                    [disabled]="accionActivo!='guardar' || pregunta.RESPUESTA === 'Página web' || pregunta.RESPUESTA === 'Redes sociales'">
+                  <p class="info">Responda según desee implementar.</p>
+                </div>
+              </ng-container>
+              <!-- <div class="btn-delete">
+                <button class="botonEliminar" (click)="eliminarTab(tab.orden)" [disabled]="disableDelete">
+                  <i class="fa-solid fa-trash" style="color: white; margin: 0 0.4vw;"></i>Eliminar
+                </button>
+              </div> -->
+            </div>
+           
+          </tab>
+        </ng-container>
+      </tabset>
+    </div>
+    
+    <div class="containerBtn">
+      <button type="submit" class="botonG" (click)="saveForm()" [disabled]="accionActivo!='guardar' || (llenadoIncorrecto() &&  accionActivo=='guardar')">
+        <i class="fa-regular fa-floppy-disk" style="color: #fff;"></i> Guardar
+      </button>
+      <button *ngIf="botonOcultar" type="button" class="botonG" [disabled]="accionActivo !='editar'" (click)="activarCampos()">
+        <i class="fa-solid fa-pen" style="color: white; margin: 0 0.4vw;"></i> Editar
+      </button>
+      <button type="button" class="botonCancelar" *ngIf="botonCancelar" (click)="cancelarEdit()">
+        <i class="fa-sharp fa-solid fa-x" style="color: white; margin: 0 0.4vw;"></i> Cancelar
+      </button>
+    </div>
+  </div>
+</div>
+<ngx-spinner bdColor="rgba(0, 0, 0, 0.5)" size="small"
+  template="<img src='https://www.superiorlawncareusa.com/wp-content/uploads/2020/05/loading-gif-png-5.gif' width='50' height='50'/>">
+</ngx-spinner>
+<app-modal></app-modal>

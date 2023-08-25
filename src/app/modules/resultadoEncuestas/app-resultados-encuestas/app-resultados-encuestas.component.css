@@ -1,0 +1,124 @@
+.containerResultadosEncuestas{
+    display: flex;
+    flex-direction: column;
+    margin: 2vh 0 0 1.5vw;
+}
+.titulo{
+    display: flex;
+    flex-direction: row-reverse;
+    margin: 2vh 0;
+}
+h1{
+    width: 100%;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: bolder;
+    color: #068460;
+    text-align: center;
+    margin: 2vh 0;
+}
+.resultados{
+    display: flex;
+}
+.form{
+    display: flex;
+    flex-direction: column;
+    margin: 1vh 0.5vw;
+}
+.table-gestion,
+.table-gestion-modal {
+    width: 77vw;
+    font-size: 16px;
+    font-family: 'Work Sans', sans-serif;
+    min-width: 450px;
+    border: 2px solid #068460; 
+    border-left: none;
+    border-right: none;
+    border-bottom: none;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+    text-align: center;
+    margin: 0 0.5vw 3vh 2vw;
+}
+.table-gestion-modal{
+    width: 55vw !important;
+    font-size: 14px !important;
+    margin: 0 1vw !important;
+}
+.table-gestion thead tr,
+.table-gestion-modal thead tr {
+    background-color: #068460;
+    color: #ffffff;
+    font-family: 'Work Sans', sans-serif;
+}
+.table-gestion th,
+.table-gestion tbody td {
+    padding: 10px;
+}
+.table-gestion-modal th,
+.table-gestion-modal tbody td {
+    padding: 5px;
+}
+.table-gestion tbody tr,
+.table-gestion-modal tbody tr {
+    border-bottom: 1px solid white;
+}
+.table-gestion tr th,
+.table-gestion-modal tr th {
+    text-align: center !important;
+}
+.modal-background {
+    background-color: rgba(0, 0, 0, 0.5);
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.modal-content{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    width: 60vw;
+    height: 78vh;
+    padding: 2vh 0.5vw;
+    background-color: white;
+    border-radius: 15px;
+    position: initial;
+    justify-content: flex-start;
+    overflow: auto;
+}
+.modal-title{
+    display: flex;
+    align-items: center;
+    justify-content:center;
+    flex-direction: column;
+    width: 58vw;
+    margin: 1vh 0 2vh 0;
+}
+.modal-content::-webkit-scrollbar {
+    width: 8px;
+}
+.modal-content::-webkit-scrollbar-track {
+    background-color: #dddddd;
+}
+.modal-content::-webkit-scrollbar-thumb {
+    background-color: #888888;
+}
+.linea{
+    border-top: 2px solid  rgb(168, 168, 168);;
+    width: 45vw;
+    padding: 0;
+}
+.x{
+    align-self: flex-end;
+    margin-right: 2vw;
+}
+.formModal{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 100%;
+}

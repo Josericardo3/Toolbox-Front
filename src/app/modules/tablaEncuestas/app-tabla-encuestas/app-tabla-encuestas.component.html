@@ -1,0 +1,51 @@
+<app-app-header></app-app-header>
+<div class="containerEncuesta">
+    <div class="titulo">
+        <h1>Tabla de encuesta</h1>
+        <app-app-header-arrow-left [redirectToDashboard]="true"></app-app-header-arrow-left>
+    </div>
+    <div class="encuesta">
+        <app-menu-corto class="menu"></app-menu-corto>
+        <div class="form">
+            <div class="top">
+                <div class="buscar">            
+                    <input type="text" placeholder="Buscar..." class="buscador" [(ngModel)]="busqueda" *ngIf="mostrarBuscador" (input)="filtrarDatos()">
+                </div>
+                <button class="compartir" routerLink="/encuesta" routerLinkActive="activebutton">
+                    <i class="fa-regular fa-rectangle-list" style="color: #ffffff; margin-right: 0.5vw;"></i>Crear encuesta
+                </button>
+            </div>
+            <table class="table-gestion" style="margin-top: 8px;">
+                <thead>
+                    <tr>
+                        <th scope="col">Título de la encuesta</th>
+                        <th scope="col">Personas encuestadas</th>
+                        <th scope="col" style="text-align: center;" (click)="mostrarBuscador = !mostrarBuscador">
+                            <i class="fa-solid fa-magnifying-glass" title="Buscar" style="cursor: pointer;"></i>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td>
+                            <a title="Editar">
+                                <i class="fa-solid fa-pen" style="color: #06543c;"></i>
+                            </a>
+                            <app-app-eliminar-encuesta></app-app-eliminar-encuesta>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<app-app-footer></app-app-footer>
+<app-modal></app-modal>
+<ngx-spinner
+  bdColor="rgba(0, 0, 0, 0.5)"
+  size="small"
+  template="<img src='https://www.superiorlawncareusa.com/wp-content/uploads/2020/05/loading-gif-png-5.gif' width='50' height='50'/>"
+>
+</ngx-spinner>

@@ -150,8 +150,4 @@ export class AppDocumentacionComponent implements OnInit {
     document.body.removeChild(link);
   }
 
-  goBack() {
-    this.router.navigate(['/dashboard'])
-  }
-
 }

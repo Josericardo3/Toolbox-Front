@@ -5,7 +5,7 @@ export const environment = {
   //apiURL:'https://toolbox31-001-site1.btempurl.com',
   //apiURL:'https://toolbox3-001-site1.etempurl.com',
   // // apiURLNuevo:'https://www.inti.somee.com',
-  apiURLNuevo:'https://hecatur.com',
+  apiURLNuevo:'https://10.4.3.140:8055',
   // apiURL:'https://www.inti.somee.com',
 
    apiURL: 'https://10.4.3.140:8051',

@@ -105,13 +105,6 @@ export class AppDiagnosticoComponent implements OnInit {
 
   capturarValor(event: any, value: any ,numeralprincipal: any , numeralEspecifico: any) {
     const normaValue = localStorage.getItem('idNormaSelected');
-
-      // const capturarObservacion = () => {
-      //   const idObs = `observacion-${iddiagnosticodinamico}`;
-      //   const valorObs = document.querySelector('#idObs') as HTMLInputElement;
-      //   const val = valorObs.value
-      // };
-
     const result = this.valoresForm.find((o: any) => o.numeralespecifico === numeralEspecifico);
     if (result) {
       result.valor = value;
@@ -124,7 +117,6 @@ export class AppDiagnosticoComponent implements OnInit {
         "numeralespecifico": numeralEspecifico,
         "observacion": "",
       });
-      // capturarObservacion();
     }
   }
 
@@ -150,16 +142,18 @@ export class AppDiagnosticoComponent implements OnInit {
   saveForm(){
     if (this.isFormValid()) {   
       this.ApiService.saveDataDiagnostico(this.valoresForm)
-      .subscribe((data: any) => {     
+      .subscribe((data: any) => {   
+        const request = {
+          FK_ID_USUARIO: parseInt(localStorage.getItem("Id")),
+          TIPO: "Modulo",
+          MODULO: "diagnosticoDoc"
+        };
+        this.ApiService.postMonitorizacionUsuario(request).subscribe();  
         const title = "Registro exitoso";
         const message = "Se guardaron los campos correctamente";
         this.Message.showModal(title, message);
         this.router.navigate(['/diagnosticoDoc']) 
       });
     }
-  }
-
-  goBack() {
-    this.router.navigate(['/dashboard'])
   }
 }

@@ -207,9 +207,10 @@
      width: 100%;
   font-family: 'Montserrat', sans-serif;
   font-weight: bolder;
-  font-size: 20px;
+  font-size: 25px;
   color: #068460;
   text-align: center;
+  margin-bottom: 29px !important;
   }
   input.ng-invalid.ng-touched {
     border: solid 2px tomato !important;
@@ -228,7 +229,15 @@
   
   .btn-register:disabled{
     background-color: #999999;
-    color: #000000;
+    /* color: #000000; */
+    color: white;
+    border-radius: 3px;
+    width: 120px;
+    height: 30px;
+    border: 1px solid white;
+    cursor: pointer;
+    margin-left: 5px;
+    padding: 0;
   }
   
   .po{
@@ -326,10 +335,11 @@
     padding: 20px;
     border-radius: 5px;
     height: 316px;
-    width: 438px;
+    width: 530px;
     flex-direction: column;
     justify-content: space-between;
-    border: 1px solid #0C9D74;
+    /* border: 1px solid #0C9D74; */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
   }
   .inpunt-asesor{
     width: 90px;
@@ -344,7 +354,8 @@
   .label-titulo{
     font-family: 'Work Sans', sans-serif;
     font-size: 14px;
-    margin: 3px;
+    /* margin: 3px; */
+    margin-right: 17px;
   }
   
   .btn-grup-asesor{
@@ -354,7 +365,16 @@
   }
   .btn-register{
     background:#0C9D74;
-    border-radius: 5px;
+    color: white;
+    border-radius: 3px;
+    width: 120px;
+    height: 30px;
+    border: 1px solid white;
+    cursor: pointer;
+    margin-left: 5px;
+    padding: 0;
+    font-size: 14px;
+    /* border-radius: 5px;
     color: white;
     padding: 0px 14px;
     cursor: pointer;
@@ -364,12 +384,21 @@
     text-align: center;
     padding-top: 3px;
     padding-bottom: 23px;
-    width: 70px;
+    width: 70px; */
     }
   
   .btn-cancel{
     background:#E3434D;
-    border-radius: 5px;
+    color: white;
+    border-radius: 3px;
+    width: 120px;
+    height: 30px;
+    border: 1px solid white;
+    cursor: pointer;
+    margin-left: 5px;
+    padding: 0;
+    font-size: 14px;
+    /* border-radius: 5px;
     color: white;
     padding: 0px 14px;
     cursor: pointer;
@@ -378,14 +407,55 @@
     font-size: 14px;
     text-align: center;
     padding-top: 3px;
-    padding-bottom: 23px;
+    padding-bottom: 23px; */
     
   }
   
+  .container-asesor{
+    margin-bottom: 29px !important;
+    display: flex;
+  }
   
-  
-  
-  
+  .input-user{
+    /* width: 392px;
+    font-size:14px;
+    height: 30px;
+    padding-left: 10px; */
+    font-family: Arial,FontAwesome;
+    display: block;
+    width: 392px;
+    height: 34px;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #555;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+  }
+  .input-asesor{
+    /* width: 389px;
+    font-size: 15px;
+    height: 30px;
+    padding-left: 10px; */
+    font-family: Arial,FontAwesome;
+    display: block;
+    width: 389px;
+    height: 34px;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #555;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+  }
   
   @media (max-width:480px) {
       .titulo{

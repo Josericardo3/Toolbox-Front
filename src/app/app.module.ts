@@ -77,6 +77,33 @@ import { AppHistorialNoticiasComponent } from './modules/historialNoticias/app-h
 import { AngularEditorModule } from '@kolkov/angular-editor';
 import { AppNoticiasCompletasComponent } from './modules/noticiasCompletas/app-noticias-completas/app-noticias-completas.component';
 import { ModalDetalleComponent } from './modules/ListaDeVerificacion/modal-detalle/modal-detalle.component';
+// import { AppMejoraContinuaComponent } from './modules/MejoraContinua/app-mejora-continua/app-mejora-continua.component';
+import { AppProcRequisitosLegalesComponent } from './modules/proc-requisitos-legales/app-proc-requisitos-legales/app-proc-requisitos-legales.component';
+import { AppPoliticaDesarrolloSostenibleComponent } from './modules/e-matriz-requisitos-legales/app-politica-desarrollo-sostenible/app-politica-desarrollo-sostenible.component';
+import { AppMatrizPartesInteresadasComponent } from './modules/matrizPartesInteresadas/app-matriz-partes-interesadas/app-matriz-partes-interesadas.component';
+import { AppAlcanceSGSComponent } from './modules/AlcanceSistemaGestiónSostenibilidad/app-alcance-sgs/app-alcance-sgs.component';
+
+
+import { MenuCortoComponent } from './modules/menuCorto/menu-corto/menu-corto.component';
+// import { AppMejoraContinuaComponent } from './modules/mejoraContinua/app-mejora-continua/app-mejora-continua.component';
+import { AppActividadesComponent } from './modules/Actividades/app-actividades/app-actividades.component';
+import { AppEncuestaComponent } from './modules/Encuesta/app-encuesta/app-encuesta.component';
+import { AppTarjetasComponent } from './modules/Tarjetas/app-tarjetas/app-tarjetas.component';
+import { AppMapaColombiaComponent } from './modules/mapaColombia/app-mapa-colombia/app-mapa-colombia.component';
+import { HeatmapComponent } from './heatmap/heatmap.component';
+import { MejoraaContinuaComponent } from "./modules/mejoraa-continua/mejoraa-continua.component";
+import { AppMenuAltaGerenciaComponent } from './modules/menuAltaGerencia/app-menu-alta-gerencia/app-menu-alta-gerencia.component';
+import { AppResultadosAuditoriaComponent } from './modules/resultadosAuditoria/app-resultados-auditoria/app-resultados-auditoria.component';
+import { AppResultadosEncuestasComponent } from './modules/resultadoEncuestas/app-resultados-encuestas/app-resultados-encuestas.component';
+import { AppActividadesPlanificadasComponent } from './modules/actividadesPlanificadas/app-actividades-planificadas/app-actividades-planificadas.component';
+import { AppTablaPartesInteresadasComponent } from './modules/tablaPartesInteresadas/app-tabla-partes-interesadas/app-tabla-partes-interesadas.component';
+import { AppResultEncuestasPreguntasComponent } from './modules/resultEncuestasPreguntas/app-result-encuestas-preguntas/app-result-encuestas-preguntas.component';
+import { AppEncuestaCreadaComponent } from './modules/encuestaCreada/app-encuesta-creada/app-encuesta-creada.component';
+import { AppTablaEncuestasComponent } from './modules/tablaEncuestas/app-tabla-encuestas/app-tabla-encuestas.component';
+import { AppEliminarEncuestaComponent } from './modules/tablaEncuestas/app-eliminar-encuesta/app-eliminar-encuesta.component';
+import { AppMonitorizacionComponent } from './modules/monitorizacion/app-monitorizacion/app-monitorizacion.component';
+//import { AppMejoraContinuaComponent } from "./modules/mejoraContinua/app-mejora-continua/app-mejora-continua.component";
+// import {GoogleMapsModule} from '@angular/google-maps'; 
 
 @NgModule({
   declarations: [
@@ -118,8 +145,30 @@ import { ModalDetalleComponent } from './modules/ListaDeVerificacion/modal-detal
     AppHistorialNoticiasComponent,
     AppNoticiasCompletasComponent,
     ModalDetalleComponent,
+    // AppMejoraContinuaComponent,
+    AppProcRequisitosLegalesComponent,
+    AppPoliticaDesarrolloSostenibleComponent,
+    AppMatrizPartesInteresadasComponent,
+    AppAlcanceSGSComponent,
+    MenuCortoComponent,
+    // AppMejoraContinuaComponent,
+    AppActividadesComponent,
+    AppEncuestaComponent,
+    AppTarjetasComponent,
+    AppMapaColombiaComponent,
+    HeatmapComponent,
     // SelectMultipleComponent,
-    
+    MejoraaContinuaComponent,
+    AppMenuAltaGerenciaComponent,
+    AppResultadosAuditoriaComponent,
+    AppResultadosEncuestasComponent,
+    AppActividadesPlanificadasComponent,
+    AppTablaPartesInteresadasComponent,
+    AppResultEncuestasPreguntasComponent,
+    AppEncuestaCreadaComponent,
+    AppTablaEncuestasComponent,
+    AppEliminarEncuestaComponent,
+    AppMonitorizacionComponent
   ],
   imports: [
     PipesModule,
@@ -146,7 +195,8 @@ import { ModalDetalleComponent } from './modules/ListaDeVerificacion/modal-detal
     CarouselModule,
     BrowserAnimationsModule,
     TabsModule,
-    AngularEditorModule
+    AngularEditorModule,
+    // GoogleMapsModule,
   ],
 
   providers: 

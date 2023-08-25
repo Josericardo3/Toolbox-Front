@@ -2,10 +2,10 @@
 <div class="containerGestorNoticia">
     <div class="titulo">
         <h1> Gestor de noticias </h1>
-        <app-app-header-arrow-left routerLink="/dashboard"></app-app-header-arrow-left>
+        <app-app-header-arrow-left></app-app-header-arrow-left>
     </div>
     <div class="divTop">
-        <input type="text" placeholder="Buscar..." class="buscador" [(ngModel)]="busqueda" *ngIf="mostrarBuscador" (input)="filtrarDatos()" >
+        <input type="text" placeholder="Buscar..." class="buscador" [(ngModel)]="busqueda" *ngIf="mostrarBuscador" (input)="filtrarDatos()">
         <button class="btn" (click)="showModal = true">
             <i class="fa-solid fa-plus" style="color: #fff;"></i> Agregar noticia
         </button>
@@ -22,7 +22,7 @@
                     <th scope="col">Descripción de la noticia</th>
                     <th scope="col">Imagen</th>
                     <th scope="col" style="text-align: center;" (click)="mostrarBuscador = !mostrarBuscador">
-                        <i class="fa-solid fa-magnifying-glass" title="Buscar"></i>
+                        <i class="fa-solid fa-magnifying-glass" title="Buscar" style="cursor: pointer;"></i>
                     </th>
                 </tr>
             </thead>
@@ -101,27 +101,27 @@
                 <div class="linea"></div>
             </div>
             <form [formGroup]="saveForm" class="form" (ngSubmit)="saveModal()">
-                <ng-multiselect-dropdown *ngIf="getRolValue() === 1" formControlName="selectMultipleAdmin"
-                [placeholder]="'Seleccione un prestador de servicios'" [settings]="dropdownSettings" [data]="dropdownList"
+                <ng-multiselect-dropdown *ngIf="getRolValue() === 3 || getRolValue() === 4" formControlName="selectMultipleAdmin"
+                [placeholder]="'Seleccione un prestador de servicios'" [settings]="dropdownSettings" [data]="dropdownListPst"
                 [ngModel]="selectedItems" (onSelect)="onItemSelect($event, 'admin')"
                 (onSelectAll)="onSelectAll($event, 'admin')" (onDeSelect)="onDeSelect($event, 'admin')" 
                 (onDeSelectAll)="onDeSelectAll($event, 'admin')"></ng-multiselect-dropdown>
-                <ng-multiselect-dropdown *ngIf="getRolValue() === 1" formControlName="selectMultipleNorma"
+                <ng-multiselect-dropdown *ngIf="getRolValue() === 3 || getRolValue() === 4" formControlName="selectMultipleNorma"
                 [placeholder]="'Seleccione una norma'" [settings]="dropdownSettingsNorma" [data]="dropdownListNorma"
                 [ngModel]="selectedItemsNorma" (onSelect)="onItemSelect($event, 'norma')"
                 (onSelectAll)="onSelectAll($event, 'norma')" (onDeSelect)="onDeSelect($event, 'norma')" 
                 (onDeSelectAll)="onDeSelectAll($event, 'norma')" style="margin-top:2vh;"></ng-multiselect-dropdown>
-                <ng-multiselect-dropdown *ngIf="getRolValue() === 1" formControlName="selectMultipleCategoria"
+                <ng-multiselect-dropdown *ngIf="getRolValue() === 3 || getRolValue() === 4" formControlName="selectMultipleCategoria"
                 [placeholder]="'Seleccione una categoría'" [settings]="dropdownSettingsCategoria"
                 [data]="dropdownListCategoria" [ngModel]="selectedItemsCategoria" (onSelect)="onItemSelect($event, 'categoria')"
                 (onSelectAll)="onSelectAll($event, 'categoria')" (onDeSelect)="onDeSelect($event, 'categoria')" 
                 (onDeSelectAll)="onDeSelectAll($event, 'categoria')" style="margin-top:2vh;"></ng-multiselect-dropdown>
-                <ng-multiselect-dropdown *ngIf="getRolValue() === 1" formControlName="selectMultipleSubCategoria"
+                <ng-multiselect-dropdown *ngIf="getRolValue() === 3 || getRolValue() === 4" formControlName="selectMultipleSubCategoria"
                 [placeholder]="'Seleccione una sub categoría'" [settings]="dropdownSettingsSubCategoria"
                 [data]="dropdownListSubCategoria" [ngModel]="selectedItemsSubCategoria" (onSelect)="onItemSelect($event, 'subcategoria')"
                 (onSelectAll)="onSelectAll($event, 'subcategoria')" (onDeSelect)="onDeSelect($event, 'subcategoria')" 
                 (onDeSelectAll)="onDeSelectAll($event, 'subcategoria')" style="margin-top:2vh;"></ng-multiselect-dropdown>
-                <ng-multiselect-dropdown *ngIf="getRolValue() === 0" formControlName="selectMultiplePST"
+                <ng-multiselect-dropdown *ngIf="getRolValue() === 1" formControlName="selectMultiplePST"
                 [placeholder]="'Seleccione un colaborador'" [settings]="dropdownSettings" [data]="dropdownList"
                 [ngModel]="selectedItems" (onSelect)="onItemSelect($event, 'pst')"
                 (onSelectAll)="onSelectAll($event, 'pst')" (onDeSelect)="onDeSelect($event, 'pst')" 
@@ -135,7 +135,7 @@
                     <label id="nombre" class="fileName">Ningún archivo seleccionado</label>
                 </div>
                 <button type="submit" class="botonG" 
-                [disabled]="!saveForm.controls.selectMultipleAdmin.valid || !saveForm.controls.tituloNoticia.value || !saveForm.controls.descripcionNoticia.value">
+                [disabled]=" ( (saveForm.controls.selectMultipleAdmin?.value?.length||0) === 0 && (saveForm.controls.selectMultipleNorma?.value?.length||0) === 0  && (saveForm.controls.selectMultipleCategoria.value?.length||0) === 0 && (saveForm.controls.selectMultipleSubCategoria.value?.length||0) === 0 && (saveForm.controls.selectMultiplePST.value?.length||0) === 0 )|| !saveForm.controls.tituloNoticia.value || !saveForm.controls.descripcionNoticia.value">
                 <i class="fa-regular fa-floppy-disk" style="color: #fff;"></i>
                 Guardar noticia</button>
             </form>

@@ -1,0 +1,34 @@
+<app-app-header></app-app-header>
+<div class="containerMonitorizacion">
+    <div class="titulo">
+        <h1>Monitorización</h1>
+        <app-app-header-arrow-left></app-app-header-arrow-left>
+    </div>
+    <div class="monitorizacion">
+        <div class="containerFiltros">
+            <h4>Filtrar por:</h4>
+            <div class="filtros">
+                <div class="select">
+                    <ng-multiselect-dropdown [placeholder]="'Seleccione por tipo de PST'" [settings]="dropdownSettings" 
+                    [data]="dropdownList" [ngModel]="selectedItems" (onSelect)="onItemSelect($event, 'pst')"
+                    (onSelectAll)="onSelectAll($event, 'pst')" (onDeSelect)="onDeSelect($event, 'pst')" 
+                    (onDeSelectAll)="onDeSelectAll($event, 'pst')"></ng-multiselect-dropdown>
+                </div>
+                <div class="select">
+                    <ng-multiselect-dropdown [placeholder]="'Seleccione por norma'" [settings]="dropdownSettingsNorma" 
+                    [data]="dropdownListNorma" [ngModel]="selectedItemsNorma" (onSelect)="onItemSelect($event, 'norma')"
+                    (onSelectAll)="onSelectAll($event, 'norma')" (onDeSelect)="onDeSelect($event, 'norma')" 
+                    (onDeSelectAll)="onDeSelectAll($event, 'norma')" style="margin-top:2vh;"></ng-multiselect-dropdown>
+                </div>
+            </div>
+        </div>
+        <svg id="mapa-colombia"></svg>
+    </div>
+</div>
+<app-app-footer></app-app-footer>
+<ngx-spinner
+  bdColor="rgba(0, 0, 0, 0.5)"
+  size="small"
+  template="<img src='https://www.superiorlawncareusa.com/wp-content/uploads/2020/05/loading-gif-png-5.gif' width='50' height='50'/>"
+>
+</ngx-spinner>

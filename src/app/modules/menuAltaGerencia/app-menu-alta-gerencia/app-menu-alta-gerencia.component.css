@@ -1,0 +1,41 @@
+.table-auditoria {
+    display: block;
+    height: 100%;
+    width: 100%;
+    /* margin: 0 1vw; */
+  }
+  .dropdown{
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+  }
+  .td-menu{
+    padding: 2vh 0 2vh 1vw;
+    width: 18vw;
+  }
+  .td-menu:hover{
+    background-color: rgb(242, 242, 242);
+  }
+  .td-menu:hover .p-menu{
+    color: #068460;
+    font-weight: bold;
+  }
+  .p-menu {
+    margin: 0.6vh 0;
+    color: black;
+    border-radius: 6px;
+    font-family: 'Work Sans', sans-serif;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  h3{
+    /* margin-left: 12px; */
+    font-family: 'Work Sans', sans-serif;
+    font-weight: bold;
+  }
+  .linea{
+    border-top: 2px solid  rgb(168, 168, 168);;
+    width: 18vw;
+    padding: 0;
+    margin-bottom: 2vh;
+  }

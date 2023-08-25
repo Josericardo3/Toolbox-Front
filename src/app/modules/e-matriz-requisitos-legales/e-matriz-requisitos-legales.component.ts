@@ -119,7 +119,6 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
     this.ApiService.getUsuario()
     .subscribe((data: any) => {
       this.datosUsuario = data;
-      console.log(this.datosUsuario)
       this.pst = data.nombrePst;
       this.logo = data.logo
     })
@@ -415,13 +414,6 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
 
   onSelect(value: string) {
     this.selectedOption = value;
-    if (value === 'otro') {
-      const otroInput = document.querySelector('#otroInput') as HTMLInputElement;
-      otroInput.style.display = 'block';
-    } else {
-      const otroInput = document.querySelector('#otroInput') as HTMLInputElement;
-      otroInput.style.display = 'none';
-    }
   }
 
   onOtroInputChange(event: Event) {
@@ -493,16 +485,11 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
       });
   }
 
-  goBack() {
-    this.router.navigate(['/dashboard'])
-  }
-
   generateReporteTurismo(){
     this.ApiService.gertArchivoMatriz()
     .subscribe((data: any) => {
       this.datosReporte = data;
       this.gruposTurismoReporte = this.datosReporte.filter((ley) => ley.CATEGORIA === 'Turismo')   
-      console.log(this.gruposTurismoReporte) 
       const pdfDefinition: any = {
         pageSize: {
           width: 794,
@@ -738,9 +725,7 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
     this.ApiService.gertArchivoMatriz()
     .subscribe((data: any) => {
       this.datosReporte = data;
-      console.log(data)
       this.gruposAmbientalReporte = this.datosReporte.filter((ley) => ley.CATEGORIA === 'Ambiental' || ley.CATEGORIA === 'NTC 6496 Ambiental')
-      console.log(this.gruposAmbientalReporte)
       const pdfDefinition: any = {
         pageSize: {
           width: 794,
@@ -1607,7 +1592,6 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
       this.gruposParticularReporte = this.datosReporte.filter((ley) => ley.CATEGORIA === 'NTC 6496 General' || ley.CATEGORIA === 'NTC 6487' || 
       ley.CATEGORIA === 'NTC 6503' || ley.CATEGORIA === 'NTC 6503 Economico' || ley.CATEGORIA === 'NTC 6504' || ley.CATEGORIA === 'NTC 6505'
       || ley.CATEGORIA === 'NTC 6505 Ambiental' || ley.CATEGORIA === 'NTC 6502' || ley.CATEGORIA === 'NTC 6506' || ley.CATEGORIA === 'NTC 6507' || ley.categoria === 'NTC 6523')
-      console.log(this.gruposParticularReporte)
       const pdfDefinition: any = {
         pageSize: {
           width: 794,
