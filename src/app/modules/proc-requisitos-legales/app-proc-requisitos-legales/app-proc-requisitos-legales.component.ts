@@ -247,11 +247,11 @@ export class AppProcRequisitosLegalesComponent implements OnInit{
   capturarValor(event: Event) {
     //idSelect: para que al volver a guardar se actualice el valor nuevo que se editó
     const idSelect = (event.target as HTMLSelectElement).id;
-    console.log(idSelect)
+   
     const valorSeleccionado = (event.target as HTMLSelectElement).value;
-    console.log(valorSeleccionado)
+    
     const textoPreg = (event.target as HTMLSelectElement).previousElementSibling?.textContent;
-    console.log(textoPreg)
+    
     if (textoPreg) {
       const result = this.valoresForm.find((o: any) => o.PREGUNTA === textoPreg);
       if (result) {
@@ -272,7 +272,7 @@ export class AppProcRequisitosLegalesComponent implements OnInit{
   saveForm(){  
     this.api.saveForms(this.valoresForm)
     .subscribe( data => {
-      console.log('Carga exitosa', data);
+      
       this.datos = data;
       // Deshabilitar los campos después de guardar
       this.formRequisitosLegales.get('actualizacion')?.disable();
@@ -293,12 +293,12 @@ export class AppProcRequisitosLegalesComponent implements OnInit{
    
     .subscribe((data: any) => {
       this.datos = data;
-      console.log(data);
+      
       data.RESPUESTAS.forEach((respuesta: any) => {
         const pregunta = respuesta.PREGUNTA;
         const valorRespuesta = respuesta.ID_RESPUESTA_FORMULARIOS;
         this.formRequisitosLegales.get(pregunta)?.patchValue(valorRespuesta);
-        console.log(valorRespuesta)
+       
       });
       if (data.RESPUESTAS && data.RESPUESTAS.length > 0) {
         // Activar boton de editar

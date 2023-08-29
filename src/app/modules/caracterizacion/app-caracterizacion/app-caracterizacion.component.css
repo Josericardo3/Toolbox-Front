@@ -51,20 +51,29 @@ input:disabled{
     border: 2px solid #068460;
     background-color: #f2f2f2fa;
 }
+.titulo{
+  display: flex;
+  justify-content: center;
+  flex-direction: row-reverse;
+  margin: 2vh 0;
+}
 h1{
-    font-family: 'Montserrat', sans-serif;
-    font-weight: bolder;
-    font-size: 32px;
-    color: #068460;
-    margin: 5vh 0 2vh 0;
-    width: 60vw;
-    text-align: center;
+  width: 80vw;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: bolder;
+  color: #068460;
+  text-align: center;
+  margin: 2vh 2vw;
+}
+.arrow{
+  align-self: flex-start;
+  margin: 0 4vw 0 -7vw;
 }
 p{
     font-family: 'Work Sans', sans-serif;
     font-size: 16px;
     color: red;
-    margin: 10px 0 20px 0;
+    margin: 0 0 2vh 0;
 }
 .containerCheck,
 .containerRadio {
@@ -223,11 +232,18 @@ input[type="checkbox"].ng-invalid.ng-touched {
 .error-message{
   margin: 0 0 1vh 0;
 }
-
-/* .invalid-touched{
-  border: solid 2px tomato !important;
-  border-radius: 10px;
-} */
+.titulo{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row-reverse;
+  margin: 2vh 0;
+  width: 100%;
+}
+.arrow{
+  align-self: flex-start;
+  margin: 0 3vw 0 -6vw;
+}
 
 @media (max-width: 900px) {
   .containerRadio {

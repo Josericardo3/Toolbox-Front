@@ -35,7 +35,7 @@ export class AppNoticiaComponent implements OnInit {
   getDataNoticia(){
     this.api.getNoticiaCompleta(this.idNoticia)
       .subscribe(data => {
-        console.log(data);
+       
         this.datosNoticia = data;
         this.imagen = this.datosNoticia.COD_IMAGEN ? 'data:image/png;base64,' + this.datosNoticia.COD_IMAGEN : '';
       })

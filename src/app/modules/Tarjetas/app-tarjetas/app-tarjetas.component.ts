@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 interface Option {
   label: string;
@@ -12,7 +12,10 @@ interface Option {
   styleUrls: ['./app-tarjetas.component.css']
 })
 export class AppTarjetasComponent {
-  @Input() pregunta: string;
+//   @Input() tarjeta: any;
+@Input() index: number;
+// @Input() isOn: boolean = false;
+@Output() eliminarTarjeta = new EventEmitter<number>();
   showOtro: boolean = false;
   addInput: boolean =  false;
   selectedOption: Option = { label: 'Seleccione una opción', value: '', icon: '' };
@@ -26,7 +29,7 @@ export class AppTarjetasComponent {
     { label: 'Casillas', value: 'checkbox', icon: 'fa-regular fa-square-check' },
     { label: 'Desplegable', value: 'desplegable', icon: 'fa-solid fa-circle-arrow-down' }
   ];
-
+  
   toggleOptions() {
     this.showOptions = !this.showOptions;
   }
@@ -35,6 +38,7 @@ export class AppTarjetasComponent {
     this.selectedOption = option;
     this.showOptions = false;
   }
+  
 
   agregarOtro(){
     this.showOtro = !this.showOtro;
@@ -44,4 +48,8 @@ export class AppTarjetasComponent {
     this.inputs.push(true);
   }
 
+  eliminarEstaTarjeta() {
+    this.eliminarTarjeta.emit(this.index);
+  }
+  
 }

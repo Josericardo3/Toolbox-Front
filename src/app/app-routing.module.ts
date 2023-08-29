@@ -33,6 +33,15 @@ import { AppActividadesComponent } from './modules/Actividades/app-actividades/a
 import { AppEncuestaComponent } from './modules/Encuesta/app-encuesta/app-encuesta.component';
 import { AppMapaColombiaComponent } from './modules/mapaColombia/app-mapa-colombia/app-mapa-colombia.component';
 import { MejoraaContinuaComponent } from './modules/mejoraa-continua/mejoraa-continua.component';
+import { AppMenuAltaGerenciaComponent } from './modules/menuAltaGerencia/app-menu-alta-gerencia/app-menu-alta-gerencia.component';
+import { AppResultadosEncuestasComponent } from './modules/resultadoEncuestas/app-resultados-encuestas/app-resultados-encuestas.component';
+import { AppResultadosAuditoriaComponent } from './modules/resultadosAuditoria/app-resultados-auditoria/app-resultados-auditoria.component';
+import { AppTablaPartesInteresadasComponent } from './modules/tablaPartesInteresadas/app-tabla-partes-interesadas/app-tabla-partes-interesadas.component';
+import { AppActividadesPlanificadasComponent } from './modules/actividadesPlanificadas/app-actividades-planificadas/app-actividades-planificadas.component';
+import { AppResultEncuestasPreguntasComponent } from './modules/resultEncuestasPreguntas/app-result-encuestas-preguntas/app-result-encuestas-preguntas.component';
+import { AppEncuestaCreadaComponent } from './modules/encuestaCreada/app-encuesta-creada/app-encuesta-creada.component';
+import { AppTablaEncuestasComponent } from './modules/tablaEncuestas/app-tabla-encuestas/app-tabla-encuestas.component';
+import { AppMonitorizacionComponent } from './modules/monitorizacion/app-monitorizacion/app-monitorizacion.component';
 
 
 const routes: Routes = [
@@ -58,16 +67,24 @@ const routes: Routes = [
   {path: 'gestorNoticia', component: AppGestorNoticiaComponent},
   {path: 'historial', component: AppHistorialNoticiasComponent},
   {path: 'noticiaCompleta', component: AppNoticiasCompletasComponent},
-  // {path: 'menu', component: AppMenuComponent},
+  // {path: 'menu', component: AppMenuAltaGerenciaComponent},
   {path: 'requisitosLegales', component: AppProcRequisitosLegalesComponent},
-  {path: 'partesInteresadas', component: AppMatrizPartesInteresadasComponent},
+  // {path: 'partesInteresadas', component: AppMatrizPartesInteresadasComponent},
   {path: 'actividades', component: AppActividadesComponent},
   {path: 'encuesta', component: AppEncuestaComponent},
   {path: 'mapaColombia', component:AppMapaColombiaComponent},
   {path: 'politicaDesarrolloSostenible', component: AppPoliticaDesarrolloSostenibleComponent},
   {path: 'partesInteresadas', component: AppMatrizPartesInteresadasComponent},
   {path: 'alcancedelSGS', component:AppAlcanceSGSComponent},
-  {path: 'mejoraContinua', component:MejoraaContinuaComponent }
+  {path: 'mejoraContinua', component:MejoraaContinuaComponent},
+  {path: 'resultadosEncuestas', component: AppResultadosEncuestasComponent},
+  {path: 'resultadosAuditoria', component: AppResultadosAuditoriaComponent},
+  {path: 'tablaPartesInteresadas', component: AppTablaPartesInteresadasComponent},
+  {path: 'actividadesPlanificadas', component: AppActividadesPlanificadasComponent},
+  {path: 'resultadosEncuestasPreguntas', component: AppResultEncuestasPreguntasComponent},
+  {path: 'encuestaCreada/:id', component: AppEncuestaCreadaComponent},
+  {path: 'tablaEncuestas', component: AppTablaEncuestasComponent},
+  {path: 'monitorizacion', component:AppMonitorizacionComponent }
 ];
 
 @NgModule({

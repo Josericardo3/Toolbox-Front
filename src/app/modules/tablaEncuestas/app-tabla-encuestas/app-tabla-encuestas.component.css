@@ -1,0 +1,116 @@
+.containerEncuesta{
+    display: flex;
+    flex-direction: column;
+    margin: 2vh 1vw 0 2vw;
+}
+.titulo{
+    display: flex;
+    flex-direction: row-reverse;
+    margin: 2vh 0;
+}
+h1{
+    width: 100%;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: bolder;
+    color: #068460;
+    text-align: center;
+    margin: 2vh 0;
+}
+.encuesta{
+    display: flex;
+}
+.compartir{
+    margin: 1vh 1vw;
+    height: 40px;
+    width: 180px;
+    padding: 5px;
+    background-color: #068460;
+    border-radius: 100px;
+    color: #FFFFFF;
+    font-family: 'Work Sans', sans-serif;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    align-self: flex-end;
+}
+.form{
+    display: flex;
+    flex-direction: column;
+    margin: 1vh 0.5vw;
+}
+.table-gestion,
+.table-gestion-modal {
+    width: 77vw;
+    font-size: 16px;
+    font-family: 'Work Sans', sans-serif;
+    min-width: 450px;
+    border: 2px solid #068460; 
+    border-left: none;
+    border-right: none;
+    border-bottom: none;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+    text-align: center;
+    margin: 0 0.5vw 3vh 2vw;
+}
+.table-gestion-modal{
+    width: 55vw !important;
+    font-size: 14px !important;
+    margin: 0 1vw !important;
+}
+.table-gestion thead tr,
+.table-gestion-modal thead tr {
+    background-color: #068460;
+    color: #ffffff;
+    font-family: 'Work Sans', sans-serif;
+}
+.table-gestion th,
+.table-gestion tbody td {
+    padding: 10px;
+}
+.table-gestion-modal th,
+.table-gestion-modal tbody td {
+    padding: 5px;
+}
+.table-gestion tbody tr,
+.table-gestion-modal tbody tr {
+    border-bottom: 1px solid white;
+}
+.table-gestion tr th,
+.table-gestion-modal tr th {
+    text-align: center !important;
+}
+.buscar{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}
+.buscador{
+    margin: 2vh 0.5vw 2vh 0;
+    background: #FFFFFF;
+    border: 2px solid #068460;
+    border-radius: 10px;
+    height: 40px;
+    padding: 5px;
+    width: 30vw;
+    font-family: 'Work Sans', sans-serif;
+    font-size: 14px;
+    color: #000000;
+    align-self: flex-end;
+}
+/* pagination */
+.page-style {
+    display: flex;
+    justify-content: flex-end;
+}
+.paginas {
+    display: inline-block;
+    max-width: 100%;
+    margin: 10px;
+    font-weight: 700;
+    font-size: 14px;
+    font-family: 'Work Sans', sans-serif;
+}
+.container-label {
+    display: flex;
+    align-items: center;
+}

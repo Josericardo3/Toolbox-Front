@@ -1,0 +1,114 @@
+<app-app-header></app-app-header>
+<div class="containerMonitorizacion">
+  <div class="titulo">
+    <h1>Monitorización</h1>
+    <app-app-header-arrow-left></app-app-header-arrow-left>
+  </div>
+  <div class="container">
+    <div class="btn">
+      <button class="button" (click)="getMonitorizacion()">Consultar</button>
+    </div>
+    
+    <div class="filtros">
+      <div class="section">
+        <ng-multiselect-dropdown 
+        [(ngModel)]="selectFiltros.listaTipoPST" 
+        [data]="dropdownListCategoryPST" 
+        [settings]="dropdownSettingsCategoryPST" 
+        [placeholder]="'Seleccionar por tipo de PST'" 
+        (onDeSelect)="onDeSelect($event, 'categoryPST');updateCategory()" 
+        (onSelect)="onItemSelect($event, 'categoryPST');updateCategory()"
+        (onSelectAll)="onSelectAll($event, 'categoryPST');updateCategory()"
+        (onDeSelectAll)="onDeSelectAll($event, 'categoryPST');updateCategory()">
+      </ng-multiselect-dropdown>
+        <ng-multiselect-dropdown 
+        [placeholder]="'Seleccionar por norma'" [settings]="dropdownSettingsNorma" 
+        [data]="dropdownListNorma" [ngModel]="selectedItems" (onSelect)="onItemSelect($event, 'norma')"
+        (onSelectAll)="onSelectAll($event, 'norma')" (onDeSelect)="onDeSelect($event, 'norma')" 
+        (onDeSelectAll)="onDeSelectAll($event, 'norma')"></ng-multiselect-dropdown>
+      </div>
+      <div class="section">
+        <ng-multiselect-dropdown 
+        [placeholder]="'Seleccionar por PST'" 
+        [settings]="dropdownSettingsSubCategoryPST" 
+        [data]="dropdownListSubCategoryPSTfilter" 
+        [(ngModel)]="selectFiltros.listaPST" 
+        (onSelect)="onItemSelect($event, 'subCategoryPST')"
+        (onSelectAll)="onSelectAll($event, 'SubCategoryPST')" 
+        (onDeSelect)="onDeSelect($event, 'SubCategoryPST')" 
+        (onDeSelectAll)="onDeSelectAll($event, 'SubCategoryPST')">
+      </ng-multiselect-dropdown>
+        <ng-multiselect-dropdown 
+        [placeholder]="'Seleccionar por numeral de norma'" [settings]="dropdownSettings" 
+        [data]="dropdownList" [ngModel]="selectedItems" (onSelect)="onItemSelect($event, 'pst')"
+        (onSelectAll)="onSelectAll($event, 'pst')" (onDeSelect)="onDeSelect($event, 'pst')" 
+        (onDeSelectAll)="onDeSelectAll($event, 'pst')"></ng-multiselect-dropdown>
+      </div>
+      <div class="section">
+        <ng-multiselect-dropdown 
+        [placeholder]="'Seleccionar por grupo listado de PST'" [settings]="dropdownSettingsGroupListing" 
+        [data]="dropdownListGroupListing" [(ngModel)]="selectFiltros.listaGrupoPST"  (onSelect)="onItemSelect($event, 'groupListing')"
+        (onSelectAll)="onSelectAll($event, 'groupListing')" (onDeSelect)="onDeSelect($event, 'groupListing')" 
+        (onDeSelectAll)="onDeSelectAll($event, 'groupListing')"></ng-multiselect-dropdown>
+        <ng-multiselect-dropdown 
+        [placeholder]="'Indicador'" [settings]="dropdownSettings" 
+        [data]="dropdownList" [ngModel]="selectedItems" (onSelect)="onItemSelect($event, 'pst')"
+        (onSelectAll)="onSelectAll($event, 'pst')" (onDeSelect)="onDeSelect($event, 'pst')" 
+        (onDeSelectAll)="onDeSelectAll($event, 'pst')"></ng-multiselect-dropdown>
+      </div>
+      </div>
+    <!-- *** SECCIÓN DE LA TABLA DE CONTENIDO DE LAS ACTIVIDADES ***-->
+    <table class="table-gestion" style="margin-top: 8px;">
+      <thead>
+        <tr>
+          <th scope="col">Tipo de PST</th>
+          <th scope="col">PST</th>
+          <th scope="col">Grupo listado de PST</th>
+          <th scope="col">Norma</th>
+          <th scope="col">Numeral de norma</th>
+          <th scope="col">Indicador</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of rolesArray; let i = index;" > 
+          <td>{{ user.CATEGORIA_RNT | titlecase }}</td>
+          <td>{{ user.SUB_CATEGORIA_RNT }}</td>
+          <td>{{ user.NOMBRE_PST }}</td>
+          <td>{{ user.CODIGO_NORMAS }}</td>
+          <td> Numeral de norma</td>
+          <td> Indicador </td>
+        </tr>
+      </tbody>
+    </table>
+    <p *ngIf="result"  style="text-align: center;margin-top: 10px; font-size: 19px; font-family: 'Work Sans', sans-serif;" >
+      No hay resultado para la búsqueda
+    </p>
+     <!-- paginacion -->
+  <footer class="page-style">
+    <div class="container-label">
+      <label class="paginas">  Página: {{ pages }} / {{ totalPaginas }} Mostrando: {{ totalRegistros }}  Registros: {{ datatotal }} </label>
+      <div class="ls-pagina ">
+      <pagination
+          lastText="&raquo;"
+          nextText="&rsaquo;"
+          firstText="&laquo;"
+          previousText="&lsaquo;"
+          [maxSize]="3"
+          [totalItems]="contentArray.length"
+          [itemsPerPage]="7"
+          [(ngModel)]="currentPage"
+          [boundaryLinks]="true"
+          (pageChanged)="pageChanged($event)"
+          [ngClass]="{'page-item': true}">
+        </pagination>
+    </div>
+    </div>
+  </footer>
+  </div>
+</div>
+<ngx-spinner
+  bdColor="rgba(0, 0, 0, 0.5)"
+  size="small"
+  template="<img src='https://www.superiorlawncareusa.com/wp-content/uploads/2020/05/loading-gif-png-5.gif' width='50' height='50'/>"
+>
+</ngx-spinner>

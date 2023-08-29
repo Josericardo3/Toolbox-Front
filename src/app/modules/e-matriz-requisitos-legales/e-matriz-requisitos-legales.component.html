@@ -1,6 +1,9 @@
 <app-app-header></app-app-header>
 <div class="MainContainerMatrizRequisitosLegales">
-<h1>Matriz de requisitos legales</h1>
+<div class="tituloP">
+    <h1>Matriz de requisitos legales</h1>
+    <app-app-header-arrow-left class="arrow"></app-app-header-arrow-left>
+</div>
 <input type="text" [(ngModel)]="busqueda" (input)="buscarTitulos()" placeholder="Buscar..." class="buscador">
   <div class="containerTabs">
     <div class="tabs">
@@ -108,8 +111,6 @@
                         </form>
                     </div>
                 </div>
-
-                <button type="button" (click)="goBack()" class="btn">Atrás</button>
             </div>
         </div>
         <div *ngSwitchCase="'tab2'">    
@@ -207,8 +208,6 @@
                         </form>
                     </div>
                 </div>
-
-                <button type="button" (click)="goBack()" class="btn">Atrás</button>
             </div>
         </div>
         <div *ngSwitchCase="'tab3'">
@@ -306,8 +305,6 @@
                         </form>
                     </div>
                 </div>
-  
-                <button type="button" (click)="goBack()" class="btn">Atrás</button>
             </div>
         </div>
         <div *ngSwitchCase="'tab4'">
@@ -405,8 +402,6 @@
                         </form>
                     </div>
                 </div>
-  
-                <button type="button" (click)="goBack()" class="btn">Atrás</button> 
             </div>
         </div>
         <div *ngSwitchCase="'tab5'">
@@ -504,8 +499,6 @@
                         </form>
                     </div>
                 </div>
-  
-                <button type="button" (click)="goBack()" class="btn">Atrás</button>
             </div>
         </div>
         <div *ngSwitchCase="'tab6'">
@@ -603,8 +596,6 @@
                         </form>
                     </div>
                 </div>
-  
-                <button type="button" (click)="goBack()" class="btn">Atrás</button>
             </div>
         </div>
     </div>

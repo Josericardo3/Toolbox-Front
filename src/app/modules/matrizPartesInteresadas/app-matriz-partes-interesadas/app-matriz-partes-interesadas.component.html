@@ -2,7 +2,7 @@
 <div class="containerMatrizPartesInteresadas">
     <div class="titulo">
         <h1>Matriz de partes interesadas</h1>
-        <app-app-header-arrow-left routerLink="/dashboard"></app-app-header-arrow-left>
+        <app-app-header-arrow-left></app-app-header-arrow-left>
     </div>
     <button type="button" class="btnReporte" (click)="generatePDF()" [disabled]="!generarPDFActivo">
         <i class="fa-solid fa-download" style="color: #ffffff; margin-right: 0.5vw;"></i>Descargar reporte
@@ -17,26 +17,23 @@
                 <div class="section1">
                     <label class="adicionarLabel"  for="interesada">Seleccione parte interesada</label>
                     <select class="adicionarInputSection"  formControlName="interesada" #selectOption (change)="
-                        capturarValor($event);
-                    onSelect(selectOption.value);
-                        
-                    ">
+                        capturarValor($event, 'interesada'); onSelect(selectOption.value);">
                         <option value="initial" disabled selected hidden>Parte interesada</option>
-                        <option id=0 value="proveedores">Proveedores</option>
-                        <option id=1 value="gubernamentales">Organizaciones gubernamentales</option>
-                        <option id=2 value="nogubernamentales">Organizaciones no gubernamentales</option>
-                        <option id=3 value="otro">Otro</option>
+                        <option id=1 value="proveedores">Proveedores</option>
+                        <option id=2 value="gubernamentales">Organizaciones gubernamentales</option>
+                        <option id=3 value="nogubernamentales">Organizaciones no gubernamentales</option>
+                        <option id=4 value="otro">Otro</option>
                     </select>
-                    <div class="changeOtro" *ngIf="selectedOption === 'otro'">
+                    <div id="otrocual" class="changeOtro" *ngIf="otrocual===true || selectedOption === 'otro'">
                         <label class="adicionarLabel" for="otro">Otro ¿Cuál?</label>
-                        <input type="text" id="4" formControlName="otro" value="" class="adicionarInputSection" appLetras  (input)="capturarValor($event)" >
+                        <input type="text" id="5" formControlName="otro" value="" class="adicionarInputSection" appLetras  (input)="capturarValor($event,'otro')" >
                     </div>
                 </div>
                 <div class="section2">
                     <label class="adicionarLabel" for="necesidades">Necesidades de la parte interesada</label>
-                    <input type="text" value=""  formControlName="necesidades" class="adicionarInputSection" (input)="capturarValor($event)"> 
+                    <input type="text" value=""  formControlName="necesidades" class="adicionarInputSection" (input)="capturarValor($event,'necesidades')"> 
                     <label class="adicionarLabel" for="expectativas">Expectativas de la parte interesada</label>
-                    <input type="text"  value="" formControlName="expectativas" class="adicionarInputSection" (input)="capturarValor($event)"> 
+                    <input type="text"  value="" formControlName="expectativas" class="adicionarInputSection" (input)="capturarValor($event,'expectativas')"> 
                 </div>
             </div>
             <p class="adicionarP">¿La organización cumple con los requisitos de las partes interesadas?</p>
@@ -45,7 +42,7 @@
                     <label for="estadoCumplimiento" class="adicionarLabel">Estado de cumplimiento</label>
                     <select name="estadoCumplimiento" formControlName="estadoCumplimiento" class="adicionarInput"
                     #select (change)="
-                    capturarValor($event);
+                    capturarValor($event,'estadoCumplimiento');
                     optionSelected(select.value)">
                         <option value="" selected disabled>Seleccione una opción</option>
                         <option value="cumple">Cumple</option>
@@ -56,22 +53,22 @@
                 <div class="subForm" *ngIf="option === 'noCumple' || option === 'cumpleParcialmente'">
                     <div class="subContainerform">
                         <label for="observaciones" class="adicionarLabel">Observaciones</label>
-                        <input type="text" class="adicionarInput" formControlName="observaciones" (input)="capturarValor($event)">
+                        <input type="text" class="adicionarInput" formControlName="observaciones" (input)="capturarValor($event,'observaciones')">
                     </div> 
                     <div class="subContainerform">
                         <label for="evidencia" class="adicionarLabel">Acciones a realizar</label>
-                        <input type="text" class="adicionarInput" formControlName="acciones" (input)="capturarValor($event)">
+                        <input type="text" class="adicionarInput" formControlName="acciones" (input)="capturarValor($event,'acciones')">
                     </div>
                 </div>   
                 <div class="subForm" *ngIf="option === 'noCumple' || option === 'cumpleParcialmente'">
                     <div class="subContainerform">
                         <label class="adicionarLabel">Fecha para la ejecución</label>
-                        <input type="date" class="adicionarInput" formControlName="fecha" (input)="capturarValor($event)">
+                        <input type="date" class="adicionarInput" formControlName="fecha" (input)="capturarValor($event,'fecha')">
                     </div>
                     <div class="subContainerform">
                         <label for="responsable" class="adicionarLabel">Responsable de ejecución</label>
                         <select name="responsable" class="adicionarInput" formControlName="responsable" (change)="
-                        capturarValor($event)">
+                        capturarValor($event,'responsable')">
                             <option value="" selected disabled>Seleccione de cumplimiento</option>
                             <option value="ResponsableC">Responsable de dar cumplimiento</option>
                             <option value="ResponsableD">Responsable</option>
@@ -80,7 +77,7 @@
                     <div class="subContainerform">
                         <label for="estado" class="adicionarLabel">Estado</label>
                         <select name="estado" class="adicionarInput" formControlName="estado" (change)="
-                        capturarValor($event)">
+                        capturarValor($event,'estado')">
                             <option value="" selected disabled>Seleccione una opción</option>
                             <option value="Abierto">Abierto</option>
                             <option value="Cerrado">Cerrado</option>

@@ -2,11 +2,14 @@
 <div class="containerEncuesta">
     <div class="titulo">
         <h1>Crear encuesta</h1>
-        <app-app-header-arrow-left routerLink="/dashboard"></app-app-header-arrow-left>
+        <app-app-header-arrow-left></app-app-header-arrow-left>
     </div>
     <div class="encuesta">
         <app-menu-corto></app-menu-corto>
         <div class="form">
+            <button class="compartir" (click)="compartirEncuesta()">
+                <i class="fa-solid fa-share-nodes" style="color: #ffffff;"></i> Compartir encuesta
+            </button>            
             <p class="p">Ingresar los datos para crear una encuesta nueva</p>
             <div class="encabezado">
                 <input type="text" class="tituloInput" placeholder="Título de la encuesta">
@@ -15,26 +18,24 @@
             <div class="containerTarjetas">
                 <app-app-tarjetas></app-app-tarjetas>
                 <div class="botones">
-                    <button class="agregar" (click)="agregarTarjeta()">
-                        <i class="fa-solid fa-plus" style="color: #000000;"></i> Agregar pregunta
-                    </button>
-                </div>
+                    <button class="agregar" id="agregarTarjetaPrimera" (click)="agregarTarjeta()">
+                       <i class="fa-solid fa-plus" style="color: #000000;"></i> Agregar pregunta
+                   </button> 
+               </div>
             </div>
-            <div class="containerTarjetas" *ngFor="let pregunta of tarjetas; let i = index">
-                <app-app-tarjetas [pregunta]="pregunta"></app-app-tarjetas>
+            <div class="containerTarjetas" *ngFor="let tarjeta of tarjetas; let i = index">
+                <app-app-tarjetas [index]="i" (eliminarTarjeta)="eliminarTarjeta($event, i)"></app-app-tarjetas>
                 <div class="botones">
-                    <button class="agregar" (click)="agregarTarjeta()">
+                     <button class="agregar" (click)="agregarTarjeta()">
                         <i class="fa-solid fa-plus" style="color: #000000;"></i> Agregar pregunta
-                    </button>
-                    <button *ngIf="i > 0" class="eliminarBoton" (click)="eliminarTarjeta(i)">
-                        <i class="fa-solid fa-xmark" style="color: #000000;"></i> Eliminar pregunta
-                    </button>
+                    </button> 
                 </div>
             </div>
         </div>
     </div>
 </div>
 <app-app-footer></app-app-footer>
+<app-modal></app-modal>
 <ngx-spinner
   bdColor="rgba(0, 0, 0, 0.5)"
   size="small"

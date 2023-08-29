@@ -231,6 +231,12 @@ export class AppListaDeVerificacionComponent {
 
   //redirige
   redirigirAVista() {
+    const request = {
+      FK_ID_USUARIO: parseInt(localStorage.getItem("Id")),
+      TIPO: "Modulo",
+      MODULO: "auditoria"
+    };
+    this.ApiService.postMonitorizacionUsuario(request).subscribe();  
     this.router.navigate(['/auditoria']);
   }
   indiceAuditoria :any;
@@ -262,6 +268,12 @@ export class AppListaDeVerificacionComponent {
   }
 
   openComponentLista(evt: any) {
+    const request = {
+      FK_ID_USUARIO: parseInt(localStorage.getItem("Id")),
+      TIPO: "Modulo",
+      MODULO: "listaDeVerificacion"
+    };
+    this.ApiService.postMonitorizacionUsuario(request).subscribe();  
     this.router.navigate(['/listaDeVerificacion'], {
       queryParams: {
         item: evt.target?.i
@@ -271,10 +283,22 @@ export class AppListaDeVerificacionComponent {
   }
 
   openComponent(evt: any) {
+    const request = {
+      FK_ID_USUARIO: parseInt(localStorage.getItem("Id")),
+      TIPO: "Modulo",
+      MODULO: "nuevoPlanDeAuditoria"
+    };
+    this.ApiService.postMonitorizacionUsuario(request).subscribe();  
     this.router.navigate(['/nuevoPlanDeAuditoria'], { queryParams: { item: evt.target?.id } });
   }
 
   openComponentInforme(evt: any) {
+    const request = {
+      FK_ID_USUARIO: parseInt(localStorage.getItem("Id")),
+      TIPO: "Modulo",
+      MODULO: "informeAuditoria"
+    };
+    this.ApiService.postMonitorizacionUsuario(request).subscribe();  
     this.router.navigate(['/informeAuditoria'], {
       queryParams: {
         item: evt.target?.i

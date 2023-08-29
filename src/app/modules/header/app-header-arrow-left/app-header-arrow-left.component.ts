@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-app-header-arrow-left',
@@ -6,5 +7,11 @@ import { Component } from '@angular/core';
   styleUrls: ['./app-header-arrow-left.component.css']
 })
 export class AppHeaderArrowLeftComponent {
+
+  constructor(private location: Location) { }
+
+  retroceder() {
+    this.location.back();
+  }
 
 }

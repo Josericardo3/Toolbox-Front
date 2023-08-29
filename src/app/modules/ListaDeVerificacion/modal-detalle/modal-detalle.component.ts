@@ -31,7 +31,6 @@ export class ModalDetalleComponent implements OnInit{
   getDetalleAuditor() {
     this.apiService.getAuditorias(this.idAuditoria)
     .subscribe((data:any) => {
-      // debugger
         // this.detalleAuditoria = data;
         this.CODIGO = data.CODIGO;
         this.EQUIPO_AUDITOR = data.AUDITOR_LIDER;

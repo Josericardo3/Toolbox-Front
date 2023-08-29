@@ -1,19 +1,19 @@
 <div class="header">
-    <app-app-header></app-app-header>
-    <div class="container">
-      <a title="Ver historial" [routerLink]="['/historial']"><i class="fa-regular fa-clock" style="color: #ffffff;"></i></a>
-        <div class="container-norma" *ngIf="!newUser">
-            <select  class="select-norma" name="select" *ngIf="arrNormas.length > 0"(change) = "changeSelected($event)">    
-              <option 
-                *ngFor="let element of arrNormas"
-                [value]="element.NORMA" 
-                [id]="element.ID_NORMA"
-                [selected]="element.NORMA===normaSelected">
-                {{element.NORMA}}
-              ​</option>
-            </select>
-        </div>
-     </div>
+  <app-app-header></app-app-header>
+  <div class="container">
+    <a title="Ver historial" [routerLink]="['/historial']"><i class="fa-regular fa-clock" style="color: #ffffff;"></i></a>
+      <div class="container-norma" *ngIf="!newUser">
+          <select  class="select-norma" name="select" *ngIf="arrNormas.length > 0"(change) = "changeSelected($event)">    
+            <option 
+              *ngFor="let element of arrNormas"
+              [value]="element.NORMA" 
+              [id]="element.ID_NORMA"
+              [selected]="element.NORMA===normaSelected">
+              {{element.NORMA}}
+            ​</option>
+          </select>
+      </div>
+   </div>
 </div>
 <div class="containerDashboard">
   <div class="mainContainer">
@@ -28,10 +28,11 @@
           <i class="fa-sharp fa-solid fa-list-check" style="color: #068460;"></i>
            <p class="sub-titulo">CARACTERIZACIÓN</p>
         </div>
-        <div class="item-img" (click)="menuFilter($event); buscarRuta('diagnostico')" (mouseover)="mouseOver($event)" 
+        <div class="item-img" (click)="fnShowModal()" (mouseover)="mouseOver($event)" 
         (mouseout)="mouseOut($event)">    
+        <!-- (click)="menuFilter($event); buscarRuta('diagnostico');fnShowModal()" -->
           <!-- <img src="../../../../assets/img-dashboard/diagnostico.svg" alt="diagnostico" id="diagnostico"> -->
-          <i class="fa-solid fa-magnifying-glass" style="color: #068460;" alt="diagnostico" id="diagnostico"></i>
+          <i class="fa-solid fa-magnifying-glass" style="color: #068460;" alt="diagnostico" id="diagnostico"  ></i>
            <p class="sub-titulo">DIAGNÓSTICO</p>
         </div>
           <div class="item-img" (click)="menuFilter($event); buscarRuta('planificacion')" (mouseover)="mouseOver($event)" (mouseout)="mouseOut($event)">
@@ -64,10 +65,10 @@
             <i class="fa-solid fa-gears" style="color: #068460;"></i>
              <p class="sub-titulo">EVIDENCIA E IMPLEMENTACIÓN</p>
           </div>
-          <div class="item-img-sinHover" (click)="menuFilter($event)" (mouseover)="mouseOver($event)" (mouseout)="mouseOut($event)">
+          <div class="item-img" (click)="menuFilter($event); buscarRuta('resultadosAuditoria')" (mouseover)="mouseOver($event)" (mouseout)="mouseOut($event)">
             <!-- <img src="../../../../assets/img-dashboard/gerencia.svg" alt="gerencia" id="gerencia"> -->
-            <i class="fa-solid fa-users" style="color: #9999;"></i>
-             <p class="sub-titulo-sinHover"> ALTA GERENCIA</p>
+            <i class="fa-solid fa-users" style="color: #068460;"></i>
+             <p class="sub-titulo"> ALTA GERENCIA</p>
           </div> 
           <!-- <div class="item-img"  (click)="menuFilter($event)" (mouseover)="mouseOver($event)" (mouseout)="mouseOut($event)">
             <img src="../../../../assets/img-dashboard/cronograma.svg" alt="cronograma" >
@@ -78,73 +79,129 @@
             <i class="fa-solid fa-ruler" style="color: #9999;"></i>
              <p class="sub-titulo-sinHover">MEDICIÓN Y KPI's</p>
           </div>
+          <div class="item-img" (click)="menuFilter($event); buscarRuta('mejoraContinua')" (mouseover)="mouseOver($event)" (mouseout)="mouseOut($event)">
+            <i class="fa-solid fa-arrows-spin" style="color: #068460;"></i>
+            <p class="sub-titulo">MEJORA CONTÍNUA</p>
+          </div>
+          <div class="item-img" *ngIf="getRolValue() === 4" routerLink="/monitorizacion"  (click)="menuFilter($event)" (mouseover)="mouseOver($event)" (mouseout)="mouseOut($event)">
+            <i class="fa-solid fa-video" style="color: #068460;"></i>
+            <p class="sub-titulo">MONITORIZACIÓN</p>
+          </div>
       </div>
     </div>
-    <div class="notificaciones">
-        <div class="not1">
-          <div class="titulo">
-            <h3>Noticias</h3>
-            <div class="linea"></div>
-          </div>
-           <div class="tituloNot">
-            <p *ngIf="resultNoticia" style=" color: white !important;; text-align: center;margin-top: 14px; font-size: 12px; font-family: 'Work Sans', sans-serif;">
-              No hay noticias
-            </p>
-            <div  *ngIf="!resultNoticia">
-              <div class="containerTarjeta" *ngFor="let campo of datosTarjetaNoticia.slice(0, 4)">
-                <div class="imagenTarjeta">
-                  <div *ngIf="campo.COD_IMAGEN; else noImageBlock">
-                    <img [src]="campo.COD_IMAGEN">
+
+  </div>
+  <div class="notificaciones">
+      <div class="not1">
+        <div class="titulo">
+          <h3>Noticias</h3>
+          <div class="linea"></div>
+        </div>
+         <div class="tituloNot">
+          <p *ngIf="resultNoticia" style=" color: white !important;; text-align: center;margin-top: 14px; font-size: 12px; font-family: 'Work Sans', sans-serif;">
+            No hay noticias
+          </p>
+          <div  *ngIf="!resultNoticia">
+            <div class="containerTarjeta" *ngFor="let campo of datosTarjetaNoticia.slice(0, 4)">
+              <div class="imagenTarjeta">
+                <div *ngIf="campo.COD_IMAGEN; else noImageBlock">
+                  <img [src]="campo.COD_IMAGEN">
+                </div>
+                <ng-template #noImageBlock>
+                  <div class="imagenTarjetaRec" [ngStyle]="{'background-color': 'white', 'width': '4vw'}">
+                    <img src="../../../../assets/img-dashboard/icons8-noticias-100.png">
                   </div>
-                  <ng-template #noImageBlock>
-                    <div class="imagenTarjetaRec" [ngStyle]="{'background-color': 'white', 'width': '4vw'}">
-                      <img src="../../../../assets/img-dashboard/icons8-noticias-100.png">
-                    </div>
-                  </ng-template>
-                </div>
-                <div class="cont" (click)="indexCard(campo.FK_ID_NOTICIA,campo.dato)">
-                  <p class="pTitulo">{{campo.TITULO_NOTICIA}}</p>
-                  <!-- <p class="pTarjeta">{{campo.DESCRIPCION_NOTICIA?.slice(0, 10)}}</p> -->
-                  <div class="lineaTarjeta"></div>
-                  <p class="pTarjeta">{{campo.NOMBRE_FIRMA}}</p>
-                </div>
+                </ng-template>
+              </div>
+              <div class="cont" (click)="indexCard(campo.FK_ID_NOTICIA,campo.dato)">
+                <p class="pTitulo">{{campo.TITULO_NOTICIA}}</p>
+                <div class="lineaTarjeta"></div>
+                <p class="pTarjeta">{{campo.NOMBRE_FIRMA}}</p>
               </div>
             </div>
-           </div>
-        </div>
-        <div class="not22">
-          <div class="not2">
-              <div class="titulo" style="margin-top: 2vh">
-                <h3>Recordatorios</h3>
-                <div class="linea"></div>
-              </div>
-              <div class="tituloRec">
-                <p *ngIf="result" style=" color: white !important;; text-align: center;margin-top: 14px; font-size: 12px; font-family: 'Work Sans', sans-serif;">
-                  No hay recordatorios
-                </p>
-                <div *ngIf="!result">
-                  <div   class="containerTarjeta"  *ngFor="let campo of datosTarjetaActividad.slice(0, 5); let index = index">
-                  <div class="imagenTarjetaRec" style="background-color: white; width: 2.5vw; padding: 3px 3px 3px 5px;">
-                    <img src="../../../../assets/img-dashboard/icons8-conversacion-100.png">
-                  </div>
-                  <div class="contRec" (click)="indexReminder(campo.fkIdActividad,campo.dato)">                
-                    <p class="pTarjeta">{{ campo.descripcion?.slice(0, 20) }}</p>
-                  </div>
-                </div>
-                </div>
-              </div>
           </div>
-          <div class="verMas">
-            <a class="a" routerLink="/noticiaCompleta" routerLinkActive="activebutton">ver mas</a>
-          </div>
+         </div>
+      </div>
+      <div class="not22">
+        <div class="not2">
+            <div class="titulo" style="margin-top: 2vh">
+              <h3>Recordatorios</h3>
+              <div class="linea"></div>
+            </div>
+            <div class="tituloRec">
+              <p *ngIf="result" style=" color: white !important;; text-align: center;margin-top: 14px; font-size: 12px; font-family: 'Work Sans', sans-serif;">
+                No hay recordatorios
+              </p>
+              <div *ngIf="!result">
+                <div   class="containerTarjeta"  *ngFor="let campo of datosTarjetaActividad.slice(0, 5); let index = index">
+                <div class="imagenTarjetaRec" style="background-color: white; width: 2.5vw; padding: 3px 3px 3px 5px;">
+                  <img src="../../../../assets/img-dashboard/icons8-conversacion-100.png">
+                </div>
+                <div class="contRec" (click)="indexReminder(campo.fkIdActividad,campo.dato)">                
+                  <p class="pTarjeta">{{ campo.descripcion?.slice(0, 20) }}</p>
+                </div>
+              </div>
+              </div>
+            </div>
         </div>
+        <div class="verMas">
+          <a class="a" routerLink="/noticiaCompleta" routerLinkActive="activebutton">ver mas</a>
+        </div>
+      </div>
+  </div>
+
+<app-modal></app-modal>
+
+<!-- Modal -->
+<div class="modal modal-dialog-centered" tabindex="-1" role="dialog" *ngIf="showModal" [ngClass]="{'show': showModal}" style="display: block;">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content modal-container">
+      <div class="modal-body">
+        <a title="Cancelar" class="close-btn" data-dismiss="modal" aria-label="Close" (click)="showModal = false;">
+          <i class="fa-solid fa-circle-xmark"></i>
+        </a>
+        <div class="btn-container">
+          <button class="btn-modal" [routerLink]="etapaShowInicio ? '/diagnosticoDoc' : '/diagnostico'" (click)="fnEtapa('inicial')" [ngClass]="{'disabled': !etapaShowInicio}">
+            <label *ngIf="etapaShowInicio; else diagnosticoInicio"  style="cursor: pointer;">
+              Ver resultados etapa Inicial
+            </label>
+            <ng-template #diagnosticoInicio>
+              <label  style="cursor: pointer;">
+              Realizar diagnóstico de etapa Inicial
+            </label>
+            </ng-template>
+          </button>
+      
+          <button class="btn-modal" [routerLink]="etapaShowIntermedio ? '/diagnosticoDoc' : '/diagnostico'"  (click)="fnEtapa('intermedia')" [ngClass]="{'disabled': !etapaShowIntermedio}">
+            <label *ngIf="etapaShowIntermedio; else diagnosticoIntermedio"  style="cursor: pointer;">
+              Ver resultados etapa Intermedia
+            </label>
+            <ng-template #diagnosticoIntermedio>
+              <label  style="cursor: pointer;">
+                Realizar diagnóstico de etapa Intermedia
+              </label>
+            </ng-template>
+          </button>
+      
+          <button class="btn-modal" [routerLink]="etapaShowFinal ? '/diagnosticoDoc' : '/diagnostico'"  (click)="fnEtapa('final')" [ngClass]="{'disabled': !etapaShowFinal}">
+            <label *ngIf="etapaShowFinal; else diagnosticoFinal" style="cursor: pointer;">
+              Ver resultados etapa Final
+            </label>
+            <ng-template #diagnosticoFinal>
+              <label  style="cursor: pointer;">
+                Realizar diagnóstico de etapa Final
+              </label>
+             
+            </ng-template>
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 </div>
-<app-modal></app-modal>
 <ngx-spinner
-  bdColor="rgba(0, 0, 0, 0.5)"
-  size="small"
-  template="<img src='https://www.superiorlawncareusa.com/wp-content/uploads/2020/05/loading-gif-png-5.gif' width='50' height='50'/>"
+bdColor="rgba(0, 0, 0, 0.5)"
+size="small"
+template="<img src='https://www.superiorlawncareusa.com/wp-content/uploads/2020/05/loading-gif-png-5.gif' width='50' height='50'/>"
 >
 </ngx-spinner>

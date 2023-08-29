@@ -1,6 +1,8 @@
 .table-auditoria {
     display: block;
     height: 100%;
+    width: 100%;
+    /* margin: 0 1vw; */
   }
   .dropdown{
     display: flex;
@@ -9,7 +11,7 @@
   }
   .td-menu{
     padding: 2vh 0 2vh 1vw;
-    width: 22vw;
+    width: 17vw;
   }
   .td-menu:hover{
     background-color: rgb(242, 242, 242);
@@ -27,13 +29,13 @@
     cursor: pointer;
   }
   h3{
-    margin-left: 12px;
+    /* margin-left: 12px; */
     font-family: 'Work Sans', sans-serif;
     font-weight: bold;
   }
   .linea{
     border-top: 2px solid  rgb(168, 168, 168);;
-    width: 22vw;
+    width: 17vw;
     padding: 0;
     margin-bottom: 2vh;
   }

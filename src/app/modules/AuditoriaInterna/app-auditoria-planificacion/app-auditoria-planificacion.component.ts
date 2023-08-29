@@ -54,8 +54,6 @@ export class AppAuditoriaPlanificacionComponent {
   fnListResponsible() {
     this.ApiService.getListResponsible().subscribe((data) => {
       this.arrayListResponsible = data;
-      console.log(this.arrayListResponsible,"este es el responsable")
-      console.log(this.listAuditor,"lider")
       this.listAuditor = this.arrayListResponsible.filter((e: any) =>
         e.CARGO === "Líder de Proceso"
       )

@@ -1,7 +1,7 @@
 
 <app-app-header></app-app-header> 
 <div id="registerContainer" class="registerContainer">
-  <div class="registre">
+  <div class="registre"  >
     <h1>Registrar Nuevo Prestador</h1>
     <form
       class="formRegister"
@@ -17,13 +17,15 @@
         formControlName="numeroDeIdentificacionTributaria"
       />
       <label>Registro Nacional de Turismo</label>
-      <div class="rnt-div">
-        <div class="rnt-icon" *ngIf="showCheckRnt">
+      <div class="rnt-div" >
+        <!--<div class="rnt-icon" *ngIf="showCheckRnt">
           <span class='iconCheckRnt'><i class="fa-solid fa-check"></i></span>
         </div>
         <div class="rnt-icon" *ngIf="showFaXmarkRnt">
           <span class='iconFaXmarkRnt'><i class="fa-solid fa-xmark"></i></span>
-        </div>
+        </div>-->
+        <div style="display: flex; align-items: center; ">
+
         <input  
         size="28"
         type="text"
@@ -31,7 +33,10 @@
         formControlName="registroNacionalDeTurismo"
         appNumeros 
         (change)="verificarRnt($event)">
+        <a class="validar-button" style="background-color: #068460; color: white; padding: 5px;" (click)="validarRnt()">Validar</a>
       </div>
+    </div>
+
       <div *ngIf="!showCheckRnt">
         <label class="control-error textDanger">
           {{msjRnt}}
@@ -59,7 +64,7 @@
             formControlName="subcategoriaRnt"
           >  
           <option value="" selected>Seleccionar subcategoría</option>
-          <option *ngFor="let element of arrAgency"[ngValue]="element">{{element.name}}</option>
+          <option *ngFor="let element of arrAgency"[ngValue]="element" >{{element.name}}</option>
           </select>
         </div>
       </div>
@@ -84,7 +89,8 @@
         <div class="email-icon" *ngIf="showFaXmark">
           <span class='iconFaXmark'><i class="fa-solid fa-xmark"></i></span>
         </div>
-        <input type="email" placeholder="Correo del PST" formControlName="correo" (change)="verificarCorreo($event)">
+        <input type="email" placeholder="Correo del PST" formControlName="correo"
+       (change)="verificarCorreo($event)" >
       </div>
       <div *ngIf="!showCheck">
         <label class="control-error textDanger">
@@ -164,11 +170,12 @@
         <select
           name="select"
           formControlName="tipoDeIdentificacionDelRepresentanteLegal"
-        >
-          <option value="value1" >Cédula de Ciudadanía</option>
-          <option value="value2" >Cédula de Extranjería</option>
-          <option value="value3" >Pasaporte</option>
-          <option value="value4" >Documento Nacional de Identidad</option>
+          >
+          <option value="CEDULA DE CIUDADANIA">Cédula de Ciudadanía</option>
+          <option value="CEDULA DE EXTRANJERIA">Cédula de Extranjería</option>
+          <option value="PASAPORTE">Pasaporte</option>
+          <option value="DOCUMENTO NACIONAL DE IDENTIDAD">Documento Nacional de Identidad</option>
+      
         </select>
       </div>
       
@@ -181,13 +188,12 @@
       <div class="selectDepar select-botton">
         <div class="select-value">
           <label>Departamento</label>
-          <select  id="selectDepartment" name="select" formControlName="departamento" (change)="setDepartments($event)">
+          <select  id="selectDepartment" name="select" formControlName="departamento" (change)="setDepartments($event)" >
           </select>
         </div>
         <div class="select-value select-margin margin-div padding-label">
           <label>Municipio</label>
           <select id="selectMunicipality" name="select" formControlName="municipio">
-            <option></option>
           </select>
         </div>
       </div>

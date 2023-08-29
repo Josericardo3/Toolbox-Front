@@ -1,0 +1,57 @@
+.containerResultadosEncuestas{
+    display: flex;
+    flex-direction: column;
+    margin: 2vh 0 0 1.5vw;
+}
+.titulo{
+    display: flex;
+    flex-direction: row-reverse;
+    margin: 2vh 0;
+}
+h1,h3{
+    width: 100%;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: bolder;
+    color: #068460;
+    text-align: center;
+    margin: 2vh 0;
+}
+h3{
+    margin: 0 0 !important;
+    color: black !important;
+    font-weight: 550 !important;
+}
+.resultados{
+    display: flex;
+}
+.form{
+    display: flex;
+    flex-direction: column;
+    margin-left: 2vw;
+}
+.encabezado,
+.ContainerRespuesta{
+    display: flex;
+    flex-direction: column;
+    margin: 1vh 2vw;
+    border-top: 10px solid #068460;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.15);
+    border-radius: 15px;
+    width: 70vw;
+    height: auto;
+    padding: 12px;
+}
+.ContainerRespuesta{
+    margin: 2vh 2vw !important;
+    border: 1px solid black !important;
+}
+.respuestas{
+    background-color: rgb(247, 247, 247);
+    border-radius: 7px;
+    width: 67vw;
+    height: auto;
+    padding: 4px;
+}
+.respuestas p{
+    margin: 0;
+}

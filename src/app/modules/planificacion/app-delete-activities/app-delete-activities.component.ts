@@ -19,10 +19,11 @@ export class AppDeleteActivitiesComponent {
     public AppPlanificacionComponent: AppPlanificacionComponent,
     private Message: ModalService,
   ) { }
-  ngOnInit() {
-  this.fnConsultActivities() 
 
+  ngOnInit() {
+  this.fnConsultActivities();
   }
+
   enviarValor() {
     const valor = -1 ;
     this.valorEnviado.emit(valor);
@@ -48,7 +49,6 @@ export class AppDeleteActivitiesComponent {
       this.enviarValor();
     }
    
-
   }
   cancelDelete(): void {
     // Lógica para cancelar la eliminación

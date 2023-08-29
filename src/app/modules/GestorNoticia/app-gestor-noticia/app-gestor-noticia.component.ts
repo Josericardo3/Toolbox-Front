@@ -179,7 +179,6 @@ export class AppGestorNoticiaComponent implements OnInit {
 
   eliminarNoticia(id: any) {
     this.indiceAEliminar = id;
-    console.log(id)
   }
 
   recibirValor(valor: number) {
@@ -283,7 +282,6 @@ export class AppGestorNoticiaComponent implements OnInit {
       this.cleanItemSelect();
       this.api.saveNoticia(formData).subscribe(
         (res) => {
-          console.log('Carga exitosa');
           this.showModal = false;
           this.getTableData();
         },
@@ -308,38 +306,38 @@ export class AppGestorNoticiaComponent implements OnInit {
   onItemSelect(item: any, dropdownId: string) {
     if (item && item.id && dropdownId === 'admin') {
       this.selectedAdmin.push(item.id);
-      console.log(item, this.selectedAdmin)
+     
     } else if (item && item.id && dropdownId === 'norma') {
       this.selectedNormas.push(item.id);
-      console.log(item, this.selectedNormas)
+      
     } else if (item && item.id && dropdownId === 'categoria') {
       this.selectedCategorias.push(item.id);
-      console.log(item, this.selectedCategorias)
+   
     } else if (item && item.id && dropdownId === 'subcategoria') {
       this.selectedSubCategorias.push(item.id);
-      console.log(item, this.selectedSubCategorias)
+      
     } else if (item && item.id && dropdownId === 'pst') {
       this.selectedPst.push(item.id);
-      console.log(item, this.selectedPst)
+    
     }
   }
 
   onSelectAll(items: any[], dropdownId: string) {
     if (dropdownId === 'admin') {
       this.selectedAdmin = items.map((item: any) => item.id);
-      console.log(this.selectedAdmin)
+      
     } else if (dropdownId === 'norma') {
       this.selectedNormas = items.map((item: any) => item.id);
-      console.log(this.selectedNormas)
+     
     } else if (dropdownId === 'categoria') {
       this.selectedCategorias = items.map((item: any) => item.id);
-      console.log(this.selectedCategorias)
+      
     } else if (dropdownId === 'subcategoria') {
       this.selectedSubCategorias = items.map((item: any) => item.id);
-      console.log(this.selectedSubCategorias)
+     
     } else if (dropdownId === 'pst') {
       this.selectedPst = items.map((item: any) => item.id);
-      console.log(this.selectedPst)
+     
     }
   }
 
@@ -457,9 +455,9 @@ export class AppGestorNoticiaComponent implements OnInit {
             const resizedImage = new File([blob], archivoSeleccionado.name, { type: blob.type });
 
             this.imagen = resizedImage;
-            console.log(this.imagen);
+            
             this.files.push(this.imagen);
-            console.log(this.files);
+          
           }, archivoSeleccionado.type);
         };
 

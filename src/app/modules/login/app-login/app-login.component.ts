@@ -97,10 +97,23 @@ export class AppLoginComponent implements OnInit {
     this.usuario.pass = reemplazarCaracteresEspeciales(this.usuario.pass);
     //jalar el valor del correo
     this.ApiService.login(this.usuario).subscribe(
+      
       (data: any) => {
+        const request = {
+          FK_ID_USUARIO: data.ID_USUARIO,
+          TIPO: "Login",
+          MODULO: "login"
+         };
+        this.ApiService.postMonitorizacionUsuario(request).subscribe();
        //PARA TOMAR TIPO_USUARIO
         localStorage.setItem("TIPO_USUARIO", data.Grupo[0].TIPO_USUARIO);
         if (data.Grupo[0].TIPO_USUARIO === 2 || data.Grupo[0].TIPO_USUARIO === 8) {
+          const request = {
+            FK_ID_USUARIO: data.ID_USUARIO,
+            TIPO: "Modulo",
+            MODULO: "gestionUsuario"
+           };
+          this.ApiService.postMonitorizacionUsuario(request).subscribe();
           this.router.navigate(["/gestionUsuario"]);
         } 
 
@@ -166,6 +179,12 @@ export class AppLoginComponent implements OnInit {
           );
         } else {
           // cuando el item es != de 1 es un asesor
+          const request = {
+            FK_ID_USUARIO: data.ID_USUARIO,
+            TIPO: "Modulo",
+            MODULO: "gestionUsuario"
+           };
+          this.ApiService.postMonitorizacionUsuario(request).subscribe();
           this.router.navigate(["/gestionUsuario"]);
         }
       },

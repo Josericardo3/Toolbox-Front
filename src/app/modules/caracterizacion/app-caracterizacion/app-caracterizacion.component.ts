@@ -306,8 +306,4 @@ public saveForm(){
     }
 }
 
-goBack() {
-  this.router.navigate(['/dashboard'])
-}
-
 }
