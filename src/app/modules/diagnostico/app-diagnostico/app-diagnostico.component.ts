@@ -142,16 +142,18 @@ export class AppDiagnosticoComponent implements OnInit {
   saveForm(){
     if (this.isFormValid()) {   
       this.ApiService.saveDataDiagnostico(this.valoresForm)
-      .subscribe((data: any) => {     
+      .subscribe((data: any) => {   
+        const request = {
+          FK_ID_USUARIO: parseInt(localStorage.getItem("Id")),
+          TIPO: "Modulo",
+          MODULO: "diagnosticoDoc"
+        };
+        this.ApiService.postMonitorizacionUsuario(request).subscribe();  
         const title = "Registro exitoso";
         const message = "Se guardaron los campos correctamente";
         this.Message.showModal(title, message);
         this.router.navigate(['/diagnosticoDoc']) 
       });
     }
-  }
-
-  goBack() {
-    this.router.navigate(['/dashboard'])
   }
 }

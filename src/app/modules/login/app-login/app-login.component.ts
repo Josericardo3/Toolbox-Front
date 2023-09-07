@@ -87,20 +87,44 @@ export class AppLoginComponent implements OnInit {
     }
   }
 
-  onLogin() {
+  async onLogin() {
     this.usuario.correo = this.loginForm.get("correo")?.value;
     this.usuario.registroNacionalDeTurismo = this.loginForm.get(
       "registroNacionalDeTurismo"
     )?.value;
+
     this.usuario.correo = this.loginForm.get("correo")?.value;
     this.usuario.pass = this.loginForm.get("pass")?.value;
     this.usuario.pass = reemplazarCaracteresEspeciales(this.usuario.pass);
     //jalar el valor del correo
     this.ApiService.login(this.usuario).subscribe(
+      
       (data: any) => {
+        this.ApiService.ValidateRntMincit(this.usuario.registroNacionalDeTurismo).subscribe((datarnt: any) => {
+          if (datarnt.error) {
+            const title = "Error";
+            const message = datarnt.error.message;
+            this.Message.showModal(title, message);
+            return;
+          }
+        }
+        );
+        const request = {
+          FK_ID_USUARIO: data.ID_USUARIO,
+          TIPO: "Login",
+          MODULO: "login"
+         };
+        this.ApiService.postMonitorizacionUsuario(request).subscribe();
+      
        //PARA TOMAR TIPO_USUARIO
         localStorage.setItem("TIPO_USUARIO", data.Grupo[0].TIPO_USUARIO);
         if (data.Grupo[0].TIPO_USUARIO === 2 || data.Grupo[0].TIPO_USUARIO === 8) {
+          const request = {
+            FK_ID_USUARIO: data.ID_USUARIO,
+            TIPO: "Modulo",
+            MODULO: "gestionUsuario"
+           };
+          this.ApiService.postMonitorizacionUsuario(request).subscribe();
           this.router.navigate(["/gestionUsuario"]);
         } 
 
@@ -166,6 +190,12 @@ export class AppLoginComponent implements OnInit {
           );
         } else {
           // cuando el item es != de 1 es un asesor
+          const request = {
+            FK_ID_USUARIO: data.ID_USUARIO,
+            TIPO: "Modulo",
+            MODULO: "gestionUsuario"
+           };
+          this.ApiService.postMonitorizacionUsuario(request).subscribe();
           this.router.navigate(["/gestionUsuario"]);
         }
       },

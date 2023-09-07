@@ -2,10 +2,10 @@
 <div class="containerGestorNoticia">
     <div class="titulo">
         <h1> Gestor de noticias </h1>
-        <app-app-header-arrow-left routerLink="/dashboard"></app-app-header-arrow-left>
+        <app-app-header-arrow-left></app-app-header-arrow-left>
     </div>
     <div class="divTop">
-        <input type="text" placeholder="Buscar..." class="buscador" [(ngModel)]="busqueda" *ngIf="mostrarBuscador" (input)="filtrarDatos()" >
+        <input type="text" placeholder="Buscar..." class="buscador" [(ngModel)]="busqueda" *ngIf="mostrarBuscador" (input)="filtrarDatos()">
         <button class="btn" (click)="showModal = true">
             <i class="fa-solid fa-plus" style="color: #fff;"></i> Agregar noticia
         </button>
@@ -22,7 +22,7 @@
                     <th scope="col">Descripción de la noticia</th>
                     <th scope="col">Imagen</th>
                     <th scope="col" style="text-align: center;" (click)="mostrarBuscador = !mostrarBuscador">
-                        <i class="fa-solid fa-magnifying-glass" title="Buscar"></i>
+                        <i class="fa-solid fa-magnifying-glass" title="Buscar" style="cursor: pointer;"></i>
                     </th>
                 </tr>
             </thead>

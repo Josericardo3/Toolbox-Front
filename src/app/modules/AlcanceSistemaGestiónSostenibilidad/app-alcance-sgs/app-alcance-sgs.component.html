@@ -1,7 +1,7 @@
 <app-app-header></app-app-header>
 <div  class="containerAlcance">
     <header>
-        <app-app-header-arrow-left routerLink="/dashboard"></app-app-header-arrow-left>
+        <app-app-header-arrow-left></app-app-header-arrow-left>
         <h1>Alcance Sistema de Gestión de Sostenibilidad</h1>
       </header>
       <button type="button" class="btnReporte" (click)="generatePDF()" [disabled]="disablePDF">
@@ -13,8 +13,11 @@
           ¿Cuáles son los principales servicios de su organización?
         </p>
         <input type="text" [(ngModel)]="estructura.servicios.RESPUESTA" [disabled]="accionActivo!='guardar'">
-        <div *ngFor="let adicional of arrayAdicionalesServicio" >
+        <div *ngFor="let adicional of arrayAdicionalesServicio; let i=index" id="is-relative">
           <input [(ngModel)]="adicional.RESPUESTA" placeholder="Ingrese servicio adicional" [disabled]="accionActivo!='guardar'">
+          <span id="icon" *ngIf="botonDelete">
+            <i class="fa-solid fa-trash" style="color: #06543c;font-size: 19px;margin: 4px;" (click)="deleteServicios(i)"></i>
+          </span>
         </div>
         <p class="info">Agregue los servicios que presta en su organización.</p>
 

@@ -1,6 +1,6 @@
 {
     "/api/*":{
-    "target":"http://10.4.3.140:8050",
+    "target":"https://cajadeherramientasqaapi.mincit.gov.co",
     "secure":false,
     "logLevel":"debug"
     }

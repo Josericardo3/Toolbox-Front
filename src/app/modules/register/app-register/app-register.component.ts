@@ -7,6 +7,9 @@ import { Store } from '@ngrx/store'
 import 'jquery-ui/ui/widgets/dialog.js'
 import { Categoria } from '../../../utils/constants'
 import { ModalService } from '../../../messagemodal/messagemodal.component.service';
+import { debug } from 'console'
+import { timeInterval } from 'rxjs'
+import { TimeInterval } from 'rxjs/internal/operators/timeInterval'
 
 
 @Component({
@@ -19,11 +22,14 @@ export class AppRegisterComponent implements OnInit {
   repeatPassword: string = '';
   showPassword: boolean = false;
   showRepeatPassword: boolean = false;
-  showModalSuccess: any
-  data: any
-  mostrarErrorCorreo: any
-  arrAgency: any
-  public registerForm!: FormGroup
+  showModalSuccess: any;
+  data: any;
+  datosRnt: any = [];
+  selectedCategory: any; 
+  mostrarErrorCorreo: any;
+  arrAgency: any;
+  accionDisabled: boolean = true;
+  public registerForm!: FormGroup;
   private emailPattern: any = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
   constructor(
     private router: Router,
@@ -118,9 +124,26 @@ export class AppRegisterComponent implements OnInit {
         validator: CustomValidators.comparePassword,
       },
     )
+    this.deshabilitarCampos(true);
+
   }
-
-
+  deshabilitarCampos(deshabilitar: boolean) {
+    if (deshabilitar) {
+      // Deshabilita todos los controles del formulario
+      this.registerForm.disable();
+      this.registerForm.get('registroNacionalDeTurismo').enable();
+      this.accionDisabled = true;
+    } else {
+      // Habilita todos los controles del formulario
+      this.registerForm.enable();
+      this.accionDisabled = false;
+    }
+  }
+  normalizeString(str: string): string {
+    return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+  }
+  
+  
   onLoadCategory(evt: any) {
     const filterCategory = this.categoria.name.agencias.filter(
       (agency: { id_categoria: number; name: string }) =>
@@ -128,11 +151,11 @@ export class AppRegisterComponent implements OnInit {
     )
 
     this.arrAgency = filterCategory.sort();
-
     return this.arrAgency;
   }
 
-  setDepartments(evt: any) {
+  async setDepartments(evt: any) {
+    let valor = evt?.target?.value || evt;
     let departments: any[] = [];
     let departmentsCode: any[] = [];
     let select = document.getElementById(
@@ -166,7 +189,7 @@ export class AppRegisterComponent implements OnInit {
           }
         })
     }
-    this.setMunicipalities(evt?.target?.value)
+    this.setMunicipalities(valor)
   }
 
   setMunicipalities(selectedDepartament: any) {
@@ -195,7 +218,13 @@ export class AppRegisterComponent implements OnInit {
             let option = document.createElement('option')
             option.text = item.nom_mpio
             select.add(option)
-          })
+          });
+          const selectedOption = arrFilterMpio.find(
+            (item) => item.cod_mpio === this.datosRnt?.codigo_municipio
+          );
+          if (selectedOption) {
+            this.registerForm.get('municipio').setValue(selectedOption.nom_mpio);
+          }
         }
       })
   }
@@ -260,10 +289,96 @@ export class AppRegisterComponent implements OnInit {
     //this.VendedorForm.controls['identidad'].setValue(response.body.data.identidad);
 
   }
+  async validarRnt(): Promise<any> {
+
+    const rnt = this.registerForm.get('registroNacionalDeTurismo').value;
+    await this.verificarRnt(rnt);
+    if(rnt==""){
+      const title = "Mensaje";
+      const message = "Debe completar el campo de Registro Nacional de Turismo";
+      this.Message.showModal(title, message);
+      return;
+    }  
+    if (this.showFaXmarkRnt == true) {
+      const title = "Mensaje";
+      const message = "El Registro Nacional de Turismo ya se encuentra registrado";
+      this.Message.showModal(title, message);
+    } else {
+      this.ApiService.ValidateRntMincit(rnt).subscribe((data: any) => {
+        if (data.error) {
+          const title = "Error";
+          const message = data.error.message;
+          this.Message.showModal(title, message);
+
+          this.registerForm.get('correo').setValue('');
+          this.registerForm.get('numeroDeIdentificacionTributaria').setValue('');
+          this.registerForm.get('razonSocialDelPst').setValue('');
+          this.registerForm.get('telefono').setValue('');
+          this.registerForm.get('nombreDelRepresenteLegal').setValue('');
+          this.registerForm.get('categoriaRnt').setValue('');
+          this.registerForm.get('subcategoriaRnt').setValue('');
+
+          this.registerForm.get('departamento').setValue('');
+          this.registerForm.get('municipio').setValue('');
+          this.deshabilitarCampos(true);
+        }
+        else {
+          this.datosRnt = data;
+          console.log(data);
+          this.deshabilitarCampos(false);
+
+          //aqui debo mandar el subcategoria filtrado
+          this.registerForm.get('correo').setValue(this.datosRnt?.correo_electronico_prestador);
+          this.registerForm.get('numeroDeIdentificacionTributaria').setValue(this.datosRnt?.numero_identificacion);
+          this.registerForm.get('razonSocialDelPst').setValue(this.datosRnt?.razon_social);
+          this.registerForm.get('telefono').setValue(this.datosRnt?.numero_telefonico);
+          this.registerForm.get('nombreDelRepresenteLegal').setValue(this.datosRnt?.nombre_representante_legal);
+          const selectedIndex = this.data.findIndex(element => element.name === this.datosRnt?.categoria);
+
+          const selectedcategory = this.data.find(element => this.normalizeString(element.name) === this.normalizeString(this.datosRnt?.categoria));
+          const categoryelectedid =selectedcategory?.id;
+
+        // Si se encontró el índice, establece el valor seleccionado en el campo de selección
+          if (selectedIndex !== -1) {
+            this.registerForm.get('categoriaRnt').setValue(this.data[selectedIndex]);
+          }
+          const filterCategory = this.categoria.name.agencias.filter(
+            (agency: { id_categoria: number; name: string }) =>
+              agency.id_categoria === categoryelectedid
+          )
+          this.arrAgency = filterCategory.sort();
+          const selectedIndexSub = this.arrAgency.findIndex(element => this.normalizeString(element.name) === this.normalizeString(this.datosRnt?.subcategoria));
+          if (selectedIndexSub !== -1) {
+            this.registerForm.get('subcategoriaRnt').setValue(this.arrAgency[selectedIndexSub]);
+          }
+
+                      
+      let selectDepartments = document.getElementById('selectDepartment') as HTMLSelectElement
+      let nameDepartment;
+        for (let i = 0; i < selectDepartments.options.length; i++) {
+          if (selectDepartments.options[i].id === String(this.datosRnt?.codigo_departamento)) {
+            nameDepartment = selectDepartments.options[i].value;
+            break;
+          }
+        }
+      this.registerForm.get('departamento').setValue(nameDepartment);
+      this.setDepartments(nameDepartment);
+
+      this.verificarCorreo(this.datosRnt?.correo_electronico_prestador);
+      this.verificarPhone(this.datosRnt?.numero_telefonico);
+          return this.arrAgency;
+        }
+        
+      })    }        
+    
+
+
+  }
+
 
   saveUser() {
     const request = {
-      NIT: this.registerForm.get("numeroDeIdentificacionTributaria")?.value.toString(),
+      NIT: this.registerForm.get("numeroDeIdentificacionTributaria")?.value,
       RNT: this.registerForm.get("registroNacionalDeTurismo")?.value,
       FK_ID_CATEGORIA_RNT: this.registerForm.get("categoriaRnt")?.value.id,
       FK_ID_SUB_CATEGORIA_RNT: this.registerForm.get("subcategoriaRnt")?.value.id,
@@ -299,7 +414,6 @@ export class AppRegisterComponent implements OnInit {
     const message = "El registro se ha realizado exitosamente"
     this.Message.showModal(title, message);
     return this.ApiService.createUser(request).subscribe((data: any) => {
-      debugger;
       if (data.StatusCode === 201) {
         this.router.navigate(['/']);      
       }
@@ -327,25 +441,31 @@ export class AppRegisterComponent implements OnInit {
   showCheckRnt: boolean = false;
   showFaXmarkRnt: boolean = false;
 
-  verificarRnt(rnt: any): void {
+  async verificarRnt(rnt: any): Promise<void> {
     this.showFaXmarkRnt = false;
     this.showCheckRnt = false;
     this.msjRnt = '';
-    rnt = rnt.target.value
-    this.ApiService.validateRnt(rnt).subscribe((data: any) => {
-      if (data == false) {
+    if (rnt.target != null){
+      rnt = rnt.target.value
+    }
+    try {
+      const data: any = await this.ApiService.validateRnt(rnt).toPromise();
+  
+      if (data === false) {
         this.showCheckRnt = true;
         this.showFaXmarkRnt = false;
         this.msjRnt = '';
       }
-      if (data == true) {
+      if (data === true) {
         this.registerForm.get('registroNacionalDeTurismo').setErrors({ valido: true });
         this.msjRnt = 'El Registro Nacional de Turismo ya se encuentra registrado';
         this.showFaXmarkRnt = true;
         this.showCheckRnt = false;
       }
-      
-    })
+    } catch (error) {
+      // Manejo de errores si la llamada API falla
+      console.error('Error al validar el RNT:', error);
+    }
   }
 
 
@@ -356,9 +476,8 @@ export class AppRegisterComponent implements OnInit {
   showFaXmark: boolean = false;
   bordeInpunt: boolean = false;
   verificarCorreo(correo: any): void {
-    correo = correo.target.value;
+    correo = correo.target ? correo.target.value : correo;
     this.ApiService.validateEmail(correo).subscribe((data: any) => {
-
       if (data == false) {
         this.showCheck = true;
         this.showFaXmark = false;
@@ -383,7 +502,8 @@ export class AppRegisterComponent implements OnInit {
   showFaXmarkPhone: boolean = false;
   // bordeInpunt: boolean = false;
   verificarPhone(phone: any): void {
-    phone = phone.target.value;
+    
+    phone = phone.target ? phone.target.value : phone;
     this.ApiService.validatePhone(phone).subscribe((data: any) => {
 
       if (data == false) {
@@ -403,15 +523,4 @@ export class AppRegisterComponent implements OnInit {
       }
     })
   }
-  // this.http.get('tu-api.com/verificar-correo?correo=' + correo)
-  //   .subscribe((response: any) => {
-  //     // Aquí puedes manejar la respuesta de la API y realizar las acciones correspondientes
-  //     if (response.valido) {
-  //       console.log('Correo válido');
-  //       // Realiza las acciones cuando el correo es válido
-  //     } else {
-  //       console.log('Correo inválido');
-  //       // Realiza las acciones cuando el correo es inválido
-  //     }
-  //   });
 }

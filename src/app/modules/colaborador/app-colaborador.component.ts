@@ -64,8 +64,6 @@ export class AppColaboradorComponent {
       idcargo: parseInt(this.registerNewColaborador.get("roles")?.value),
       correo: this.registerNewColaborador.get("correo")?.value
     }
-    console.log(request);
-
     this.ApiService.postRegisterColaborador(request).subscribe(
       (data) => {
           if(data.StatusCode == 201){

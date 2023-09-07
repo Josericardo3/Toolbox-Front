@@ -7,7 +7,7 @@ import * as fromRoot from 'src/app/state/reducer/example.reducer'
 import { AppState } from 'src/app/state/selectors/app.state'
 import { ModalService } from 'src/app/messagemodal/messagemodal.component.service'
 import { ApiService } from 'src/app/servicios/api/api.service';
-import { log } from 'console'
+
 
 //@Injectable()
 
@@ -18,6 +18,7 @@ import { log } from 'console'
 })
 export class AppDashboardComponent implements OnInit {
   //PG counter$: Observable<any>;
+  public showModal: boolean = false;
   datos: any = [];
   datosTarjeta: any = [];
   nombre: any;
@@ -26,8 +27,10 @@ export class AppDashboardComponent implements OnInit {
   userRol = localStorage.getItem('rol');
   newUser = localStorage.getItem("newUser");
   idUser = localStorage.getItem("Id");
+  normaValue = Number(window.localStorage.getItem('idNormaSelected'));
+  //idNorma = this.arrNormas[0].ID_NORMA;
   validateCaracterizacion = this.ApiService.validateCaracterizacion(this.idUser);
-  validateDiagnostico = this.ApiService.validateDiagnostico(this.idUser);
+  validateDiagnostico = this.ApiService.validateDiagnostico(this.normaValue);
   rolList = [
     {
       // colaborador
@@ -43,11 +46,28 @@ export class AppDashboardComponent implements OnInit {
   idActividad!: number;
   dato!: string;
   existingRoutes: string[] = [];
-  dataReminder: any =[]; 
+  dataReminder: any = [];
   showActividad: boolean = false;
   datosTarjetaActividad: any[] = [];
   datosTarjetaNoticia: any[] = [];
-  showimagen: any; 
+  showimagen: any;
+
+  result: boolean = false;
+  resultNoticia: boolean = false;
+  
+  //Permisos
+  AccesoCaracterizacion : boolean = true; 
+  AccesoDiagnostico : boolean = true; 
+  AccesoPlanificacion: boolean = true; 
+  AccesoDocumentacion : boolean = true; 
+  AccesoELearning: boolean = true; 
+  AccesoNoticias : boolean = true; 
+  AccesoAuditoria: boolean = true; 
+  AccesoEvidencia : boolean = true; 
+  AccesoGerencia : boolean = true; 
+  AccesoKpi : boolean = true; 
+  AccesoMejora : boolean = true; 
+  AccesoMonitorizacion : boolean = true;
 
   constructor(
     //PG private store: Store<{ initialState:any }>,
@@ -56,17 +76,90 @@ export class AppDashboardComponent implements OnInit {
     private ApiService: ApiService,
   ) {//PG this.counter$= store.select('initialState')
   }
-
+  normaDiadnostico: any = {};
   ngOnInit(): void {
+
+    this.ApiService.getUsuarioPermisoPerfil(this.userRol).subscribe(dataPermiso => {
+      console.log(dataPermiso);
+      if(dataPermiso[0].PLANIFICACION_DIAGNOSTICO === "x"){
+        this.AccesoPlanificacion = false;
+      }
+      if(dataPermiso[0].EVIDENCIA_IMPLEMENTACION === "x"){
+        this.AccesoEvidencia = false;
+      }
+      if(dataPermiso[0].FORMACION_ELEARNING === "x"){
+        this.AccesoELearning = false;
+      }
+      if(dataPermiso[0].NOTICIAS === "x"){
+        this.AccesoNoticias = false;
+      }
+      if(dataPermiso[0].DOCUMENTACION === "x"){
+        this.AccesoDocumentacion = false;
+      }
+      if(dataPermiso[0].ALTA_GERENCIA === "x"){
+        this.AccesoGerencia = false;
+      }
+      if(dataPermiso[0].MEDICION_KPIS === "x"){
+        this.AccesoKpi = false;
+      }
+      if(dataPermiso[0].AUDITORIA_INTERNA === "x"){
+        this.AccesoAuditoria = false;
+      }
+      if(dataPermiso[0].MEJORA_CONTINUA === "x"){
+        this.AccesoMejora = false;
+      }
+      if(dataPermiso[0].MONITORIZACION === "x"){
+        this.AccesoMonitorizacion = false;
+      }
+      if(dataPermiso[0].CARACTERIZACION === "x"){
+        this.AccesoCaracterizacion = false;
+      }
+      if(dataPermiso[0].DIAGNOSTICO === "x"){
+        this.AccesoDiagnostico = false;
+      }
+    });
+    this.showModal = false;
     this.existingRoutes = this.router.config.map(route => route.path);
     //borrar
     let arrNormas = JSON.parse(localStorage.getItem('norma') || '[]');
+    this.validateDiagnostico.subscribe((data: any) =>
+      this.normaDiadnostico = data);
+
     let normaSelected = localStorage.getItem("normaSelected");
     //prueba global selectFeatureCount
     // this.getNombreUsuario();
     this.getContenidoTarjeta();
   }
+  etapaShowInicio: boolean = false;
+  etapaShowIntermedio: boolean = false;
+  etapaShowFinal: boolean = false;
+  disabledBtn: boolean = false;
+  fnShowModal() {
+    this.showModal = true;
+    if (this.normaDiadnostico.ETAPA_INICIO == true) {
+      this.etapaShowInicio = true;
+    }
+    if (this.normaDiadnostico.ETAPA_INTERMEDIO == true) {
+      this.etapaShowIntermedio = true;
+    }
+    if (this.normaDiadnostico.ETAPA_FINAL == true) {
+      this.etapaShowFinal = true;
+    }
+  }
 
+  fnEtapa(etapa: string) {
+    if (etapa === "inicial") {
+      localStorage.setItem("etapa", '1');
+    }
+    else if (etapa === "intermedia") {
+      localStorage.setItem("etapa", '2');
+    }
+    else if (etapa === "final") {
+      localStorage.setItem("etapa", '3');
+    }
+  
+  }
+  
   buscarRuta(ruta: string) {
     if (!this.existingRoutes.includes(ruta)) {
       return; // La ventana no existe en el enrutamiento, salir del método
@@ -74,8 +167,6 @@ export class AppDashboardComponent implements OnInit {
     this.router.navigate([ruta]);
   }
 
-  result: boolean = false;
-  resultNoticia: boolean = false;
   getContenidoTarjeta() {
     this.ApiService.getTarjeta().subscribe(data => {
       this.datosTarjeta = data;
@@ -107,11 +198,11 @@ export class AppDashboardComponent implements OnInit {
         }
       }
 
-      if(this.datosTarjetaNoticia.length == 0 ||this.datosTarjetaNoticia.length <= 0){
-        this.resultNoticia= true; 
+      if (this.datosTarjetaNoticia.length == 0 || this.datosTarjetaNoticia.length <= 0) {
+        this.resultNoticia = true;
       }
-      if(this.datosTarjetaActividad.length == 0 ||this.datosTarjetaActividad.length <= 0){
-        this.result= true; 
+      if (this.datosTarjetaActividad.length == 0 || this.datosTarjetaActividad.length <= 0) {
+        this.result = true;
       }
     });
 
@@ -120,7 +211,7 @@ export class AppDashboardComponent implements OnInit {
   validateRol(evt: any) {
     const menuResult = this.rolList.map(
       (menuItem) =>
-        menuItem.rol === this.userRol && menuItem.view.includes(evt.target.alt),
+        menuItem.rol === this.userRol && menuItem.view.includes(evt.target.id),
     )
     return menuResult[0];
   }
@@ -133,17 +224,25 @@ export class AppDashboardComponent implements OnInit {
 
   menuFilter(evt: any) { //redireccionar
     if (this.validateRol(evt)) {// condicional cuando sí tiene acceso
-      evt.target.src = '../../../../assets/img-dashboard/' + evt.target.alt + '-3.svg';
-      switch (evt.target.alt) {
+      evt.target.src = '../../../../assets/img-dashboard/' + evt.target.id + '-3.svg';
+      switch (evt.target.id) {
         case 'caracterizacion':
           this.validateCaracterizacion.subscribe((data) => {
             if (data) {
+              this.router.navigate(['/dashboard']);
               const title = "Aviso";
               const message = "Usted ya ha realizado el proceso de caracterización, si desea modificarlo, por favor comuníquese con el administrador del sistema."
               this.Message.showModal(title, message);
               return
             } else {
-              this.router.navigate(['/' + evt.target.alt]);
+              const request = {
+                FK_ID_USUARIO: parseInt(localStorage.getItem("Id")),
+                TIPO: "Modulo",
+                MODULO: evt.target.id
+              };
+              this.ApiService.postMonitorizacionUsuario(request).subscribe();
+
+              this.router.navigate(['/' + evt.target.id]);
             }
           });
           break;
@@ -157,10 +256,23 @@ export class AppDashboardComponent implements OnInit {
             } else {
               this.validateDiagnostico.subscribe((data) => {
                 if (data) {
+                  const request = {
+                    FK_ID_USUARIO: parseInt(localStorage.getItem("Id")),
+                    TIPO: "Modulo",
+                    MODULO: "diagnosticoDoc"
+                  };
+                  this.ApiService.postMonitorizacionUsuario(request).subscribe();
+
                   this.router.navigate(['/diagnosticoDoc']);
                   return
                 } else {
-                  this.router.navigate(['/' + evt.target.alt]);
+                  const request = {
+                    FK_ID_USUARIO: parseInt(localStorage.getItem("Id")),
+                    TIPO: "Modulo",
+                    MODULO: evt.target.id
+                  };
+                  this.ApiService.postMonitorizacionUsuario(request).subscribe();
+                  this.router.navigate(['/' + evt.target.id]);
                 }
               });
             }
@@ -168,7 +280,13 @@ export class AppDashboardComponent implements OnInit {
 
 
           break;
-        default: this.router.navigate(['/' + evt.target.alt]);
+        default: const request = {
+          FK_ID_USUARIO: parseInt(localStorage.getItem("Id")),
+          TIPO: "Modulo",
+          MODULO: evt.target.id
+        };
+          this.ApiService.postMonitorizacionUsuario(request).subscribe();
+          this.router.navigate(['/' + evt.target.id]);
           break;
       }
     }
@@ -176,8 +294,8 @@ export class AppDashboardComponent implements OnInit {
 
   mouseOver(evt: any) {
     if (this.validateRol(evt)) {
-      evt.target.src = '../../../../assets/img-dashboard/' + evt.target.alt + '-3.svg';
-      const p = document.getElementById('p-' + evt.target.alt);
+      evt.target.src = '../../../../assets/img-dashboard/' + evt.target.id + '-3.svg';
+      const p = document.getElementById('p-' + evt.target.id);
       if (p) {
         p.style.color = "#068460";
       }
@@ -186,8 +304,8 @@ export class AppDashboardComponent implements OnInit {
 
   mouseOut(evt: any) {
     if (this.validateRol(evt)) {
-      evt.target.src = '../../../../assets/img-dashboard/' + evt.target.alt + '.svg';
-      const p = document.getElementById('p-' + evt.target.alt);
+      evt.target.src = '../../../../assets/img-dashboard/' + evt.target.id + '.svg';
+      const p = document.getElementById('p-' + evt.target.id);
       if (p) {
         p.style.color = "#999999";
       }
@@ -201,24 +319,54 @@ export class AppDashboardComponent implements OnInit {
 
   //prueba para auditoria
   redirigirAuditoria() {
+    const request = {
+      FK_ID_USUARIO: parseInt(localStorage.getItem("Id")),
+      TIPO: "Modulo",
+      MODULO: "listaDeVerificacion"
+    };
+    this.ApiService.postMonitorizacionUsuario(request).subscribe();
     this.router.navigate(['/listaDeVerificacion']);
   }
 
-  indexCard(index: any, dato: string){
-   this.idNoticia = index;
-   this.dato= dato;
-   this.router.navigate(['/noticia'],{ state: { idNoticia: this.idNoticia, dato: dato} });
+  indexCard(index: any, dato: string) {
+    const request = {
+      FK_ID_USUARIO: parseInt(localStorage.getItem("Id")),
+      TIPO: "Modulo",
+      MODULO: "noticia"
+    };
+    this.ApiService.postMonitorizacionUsuario(request).subscribe();
+    this.idNoticia = index;
+    this.dato = dato;
+    this.router.navigate(['/noticia'], { state: { idNoticia: this.idNoticia, dato: dato } });
   }
 
-  getActivities(){
+  getActivities() {
     this.ApiService.getActivities()
-    .subscribe(data => {
-      this.dataReminder = data;   
-    }) 
+      .subscribe(data => {
+        this.dataReminder = data;
+      })
   }
 
   indexReminder(index: number, dato: string) {
+    const request = {
+      FK_ID_USUARIO: parseInt(localStorage.getItem("Id")),
+      TIPO: "Modulo",
+      MODULO: "planificacion"
+    };
+    this.ApiService.postMonitorizacionUsuario(request).subscribe();
     this.router.navigate(['/planificacion'], { state: { idActividad: index, dato: dato } });
   }
 
+  getRolValue(): number {
+    // Obtener el valor del rol almacenado en el Local Storage
+    const rol = localStorage.getItem('rol');
+
+    // Verificar si el rol existe y es un número válido
+    if (rol && !isNaN(Number(rol))) {
+      return Number(rol);
+    }
+
+    // Valor predeterminado si no se encuentra el rol o no es un número válido
+    return 0;
+  }
 }

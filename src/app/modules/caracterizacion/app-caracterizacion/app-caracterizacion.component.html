@@ -1,7 +1,10 @@
+<app-app-header></app-app-header>
 <div class = "cointainer">
-  <app-app-header></app-app-header>
+<div class="titulo">
+    <h1>FORMULARIO DE CARACTERIZACIÓN DE {{ categoriaRNTValues }}</h1>
+    <app-app-header-arrow-left class="arrow"></app-app-header-arrow-left>
+</div>
 <form [formGroup]="formParent" class="controllerCaracterizacion" (ngSubmit)="saveForm()">
-  <h1>FORMULARIO DE CARACTERIZACIÓN DE {{ categoriaRNTValues }}</h1>
   <p>Todos los campos con el asterisco (*) son obligatorios</p>
     <div *ngFor="let campo of preguntasOrdenadas; let i = index" class="caracterizacion">
       <!-- <div *ngFor="let campo of datos.campos; let i = index" class="caracterizacion"> -->
@@ -164,7 +167,6 @@
     </div>
     <div class="divBtn">     
       <button type="submit" class="btn" [disabled]="!formParent">Guardar</button>
-      <button type="button" (click)="goBack()" class="btn">Atrás</button>
     </div> 
 </form>
 <app-app-footer></app-app-footer>

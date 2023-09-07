@@ -31,7 +31,7 @@ export class AppHistorialNoticiasComponent implements OnInit{
     .subscribe(data => {
       this.datos = data;
       this.dataInitial= data;
-      console.log(this.datos)
+    
 
        //paginado
        const totalPag = data.length;
@@ -51,6 +51,12 @@ export class AppHistorialNoticiasComponent implements OnInit{
   }
 
   indexCard(index:number){
+    const request = {
+      FK_ID_USUARIO: parseInt(localStorage.getItem("Id")),
+      TIPO: "Modulo",
+      MODULO: "noticia"
+    };
+    this.api.postMonitorizacionUsuario(request).subscribe();  
     this.idNoticia = this.datos[index].FK_ID_NOTICIA;
     this.dato= this.datos[index].TIPO;
      if (this.dato == 'Noticia' && this.idNoticia != undefined ) {

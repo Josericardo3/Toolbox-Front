@@ -1,6 +1,9 @@
 <app-app-header></app-app-header>
-<div class="controllerEvidencia">
-    <h1>Evidencia e Implementación</h1>  
+<div class="controllerEvidencia">  
+    <div class="tituloP">
+        <h1>Evidencia e Implementación</h1>
+        <app-app-header-arrow-left class="arrow"></app-app-header-arrow-left>
+    </div>
         <div class="div">
             <div class="titulo" (click)="toggleSection('contexts')" [ngClass]="{'verde': contextsVisible}">
                 <h3>4. CONTEXTO DE LA ORGANIZACIÓN</h3>
@@ -538,7 +541,6 @@
                 </div>
             </div>
         </div>
-    <button type="button" (click)="goBack()" class="btn">Atrás</button>
 </div>
 <app-app-footer></app-app-footer>
 <ngx-spinner

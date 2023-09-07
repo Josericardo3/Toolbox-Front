@@ -9,11 +9,11 @@ export class Categoria {
     tipo:[
       {
         id:1 ,
-        name:'GUIA DE TURISMO'
+        name:'GUIAS DE TURISMO'
       },
       {
         id:2 ,
-        name:'EMPRESA DE TRANSPORTE TERRESTRE AUTOMOTOR'
+        name:'EMPRESAS DE TRANSPORTE TERRESTRE AUTOMOTOR'
       },
       {
         id:3 ,
@@ -21,11 +21,11 @@ export class Categoria {
       },
       {
         id:4 ,
-        name:'ESTABLECIMIENTOS DE ALOJAMIENTO TURISTICO'
+        name:'ESTABLECIMIENTOS DE ALOJAMIENTO TURÍSTICO'
       },
       {
         id:5 ,
-        name:'AGENCIA DE VIAJES'
+        name:'AGENCIAS DE VIAJES'
       },
       {
         id:6 ,
@@ -33,7 +33,7 @@ export class Categoria {
       },
       {
         id:7,
-        name:'OPERADORES PROFESIONALES DE CONGRESO FERIAS Y CONVENCIONES'
+        name:'OPERADORES PROFESIONALES DE CONGRESOS, FERIAS Y CONVENCIONES'
       },
       {
         id:8 ,
@@ -41,7 +41,7 @@ export class Categoria {
       },
       {
         id:9 ,
-        name:'VIVIENDA TURISTICA'
+        name:'VIVIENDAS TURÍSTICAS'
       },
     ],
     agencias:[
@@ -68,7 +68,7 @@ export class Categoria {
       {
         id:5,
         id_categoria:3,
-        name: 'RESTAURANTES DE AUTOSERVICIOS'
+        name: 'RESTAURANTES DE AUTOSERVICIO'
       },
       {
         id:6,
@@ -103,7 +103,7 @@ export class Categoria {
       {
         id:12,
         id_categoria:3,
-        name: 'PANADERIAS,REPOSTERIAS,PASTELERIAS O CHOCOLATERIAS'
+        name: 'PANADERIAS, REPOSTERIAS, PASTELERIAS O CHOCOLATERIAS'
       },
       {
         id:13,
@@ -185,61 +185,62 @@ export class Categoria {
         id_categoria:4,
         name: 'GLAMPING'
       },
+      {
+        id:29,
+        id_categoria:8,
+        name: 'OTROS TIPOS DE ALOJAMIENTO NO PERMANENTES'
+      },
+      {
+        id:30,
+        id_categoria:9,
+        name: 'APARTAMENTO TURISTICO'
+      },
+      {
+        id:31,
+        id_categoria:9,
+        name: 'FINCAS TURISTICAS'
+      },
+      {
+        id:32,
+        id_categoria:9,
+        name: 'OTRO TIPO DE VIVIENDA TURISTICA'
+      },
     {
-      id:29,
+      id:33,
       id_categoria:5,
       name:'AGENCIA DE VIAJES OPERADORAS'
     },
     {
-      id:30,
+      id:34,
       id_categoria:5,
       name:'AGENCIA DE VIAJES Y DE TURISMO'
     },
     {
-      id:31,
+      id:35,
       id_categoria:5,
       name:'AGENCIA DE VIAJES MAYORISTAS'
     },
     {
-      id:32,
+      id:36,
       id_categoria:6,
       name:'COMERCIALIZADORA'
     },
     {
-      id:33,
+      id:37,
       id_categoria:6,
       name:'PROMOTORA'
     },
     {
-      id:34,
+      id:38,
       id_categoria:6,
       name:'PROMOTORA Y COMERCIALIZADORA'
     },
     {
-      id:35,
+      id:39,
       id_categoria:7,
       name: 'SIN CATEGORIA'
     },
-    {
-      id:36,
-      id_categoria:8,
-      name: 'OTROS TIPOS DE ALOJAMIENTO NO PERMANENTES'
-    },
-    {
-      id:37,
-      id_categoria:9,
-      name: 'APARTAMENTOS TURISTICOS'
-    },
-    {
-      id:38,
-      id_categoria:9,
-      name: 'FINCAS TURISTICAS'
-    },
-    {
-      id:39,
-      id_categoria:9,
-      name: 'OTRO TIPO DE VIVIENDA TURISTICA'
-    },
+  
     ],
   }
 }

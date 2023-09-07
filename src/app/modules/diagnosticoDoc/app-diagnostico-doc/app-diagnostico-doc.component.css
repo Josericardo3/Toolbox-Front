@@ -8,12 +8,23 @@
     margin: 15px;
     width: 100%;
 }
+.titulo{
+  display: flex;
+  justify-content: center;
+  flex-direction: row-reverse;
+  margin: 2vh 0;
+}
 h1{
-    font-family: 'Montserrat', sans-serif;
-    font-weight: bolder;
-    font-size: 34px;
-    color: #068460;
-    margin: 13vh 0 3vh 0;
+  width: 80vw;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: bolder;
+  color: #068460;
+  text-align: center;
+  margin: 2vh 2vw;
+}
+.arrow{
+  align-self: flex-start;
+  margin: 0 4vw 0 -7vw;
 }
 p{
     margin: 10px 0;
@@ -24,19 +35,6 @@ p{
 }
 a{
     color: rgb(14, 14, 232) !important;
-}
-.btn{
-    margin: 8vh 0 5vh 0;
-    height: 40px;
-    width: 200px;
-    padding: 5px;
-    background-color: #068460;
-    border-radius: 100px;
-    color: #FFFFFF;
-    font-family: 'Work Sans', sans-serif;
-    font-size: 16px;
-    border: none;
-    cursor: pointer;
 }
 .modal-background {
     background-color: rgba(0, 0, 0, 0.5);

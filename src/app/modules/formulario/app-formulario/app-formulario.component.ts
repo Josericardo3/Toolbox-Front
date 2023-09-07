@@ -119,17 +119,6 @@ export class AppFormularioComponent implements OnInit{
     });
   }
 
-  // onSubmit(idMatriz: number) {
-  //   const data = this.form.value;
-  
-  //   this.ApiService.saveLey(data).subscribe((data: any) => {
-  //     console.log('se guardó');
-  //     this.formService.guardarEstadoFormulario(idMatriz, data);
-  //   });
-  //   this.setSelectedValues();
-  //   this.isDisabled = true;
-  // }
-  
   setSelectedValues() {
     const estadoCumplimiento = this.form.get('estadoCumplimiento').value;
     const responsable = this.form.get('responsable').value;

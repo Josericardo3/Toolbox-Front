@@ -92,6 +92,16 @@ import { AppTarjetasComponent } from './modules/Tarjetas/app-tarjetas/app-tarjet
 import { AppMapaColombiaComponent } from './modules/mapaColombia/app-mapa-colombia/app-mapa-colombia.component';
 import { HeatmapComponent } from './heatmap/heatmap.component';
 import { MejoraaContinuaComponent } from "./modules/mejoraa-continua/mejoraa-continua.component";
+import { AppMenuAltaGerenciaComponent } from './modules/menuAltaGerencia/app-menu-alta-gerencia/app-menu-alta-gerencia.component';
+import { AppResultadosAuditoriaComponent } from './modules/resultadosAuditoria/app-resultados-auditoria/app-resultados-auditoria.component';
+import { AppResultadosEncuestasComponent } from './modules/resultadoEncuestas/app-resultados-encuestas/app-resultados-encuestas.component';
+import { AppActividadesPlanificadasComponent } from './modules/actividadesPlanificadas/app-actividades-planificadas/app-actividades-planificadas.component';
+import { AppTablaPartesInteresadasComponent } from './modules/tablaPartesInteresadas/app-tabla-partes-interesadas/app-tabla-partes-interesadas.component';
+import { AppResultEncuestasPreguntasComponent } from './modules/resultEncuestasPreguntas/app-result-encuestas-preguntas/app-result-encuestas-preguntas.component';
+import { AppEncuestaCreadaComponent } from './modules/encuestaCreada/app-encuesta-creada/app-encuesta-creada.component';
+import { AppTablaEncuestasComponent } from './modules/tablaEncuestas/app-tabla-encuestas/app-tabla-encuestas.component';
+import { AppEliminarEncuestaComponent } from './modules/tablaEncuestas/app-eliminar-encuesta/app-eliminar-encuesta.component';
+import { AppMonitorizacionComponent } from './modules/monitorizacion/app-monitorizacion/app-monitorizacion.component';
 //import { AppMejoraContinuaComponent } from "./modules/mejoraContinua/app-mejora-continua/app-mejora-continua.component";
 // import {GoogleMapsModule} from '@angular/google-maps'; 
 
@@ -148,7 +158,17 @@ import { MejoraaContinuaComponent } from "./modules/mejoraa-continua/mejoraa-con
     AppMapaColombiaComponent,
     HeatmapComponent,
     // SelectMultipleComponent,
-    MejoraaContinuaComponent
+    MejoraaContinuaComponent,
+    AppMenuAltaGerenciaComponent,
+    AppResultadosAuditoriaComponent,
+    AppResultadosEncuestasComponent,
+    AppActividadesPlanificadasComponent,
+    AppTablaPartesInteresadasComponent,
+    AppResultEncuestasPreguntasComponent,
+    AppEncuestaCreadaComponent,
+    AppTablaEncuestasComponent,
+    AppEliminarEncuestaComponent,
+    AppMonitorizacionComponent
   ],
   imports: [
     PipesModule,

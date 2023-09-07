@@ -28,6 +28,7 @@ h1{
 .form{
     display: flex;
     flex-direction: column;
+    margin-left: 2vw;
 }
 .encabezado{
     display: flex;
@@ -63,18 +64,30 @@ h1{
     display: flex;
     align-self: flex-end;
 }
-.agregar,
-.eliminarBoton{
+.agregar{
     border: none;
     background-color: #FFFFFF;
     font-family: 'Work Sans', sans-serif;
-    font-size: 15px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.15);
-    width: 13vw;
-    height: 6vh;
+    font-size: 1.05vw;
+    width: 6vw;
+    height: 3vh;
     border-radius: 10px;
-    margin: 1vh 2vw 4vh 1vw;
+    margin: 0 2vw 4vh 0;
 }
-.eliminarBoton{
-    margin: 1vh 2vw 4vh 0 !important;
+.compartir{
+    margin: 1vh 3vw;
+    height: 40px;
+    width: 200px;
+    padding: 5px;
+    background-color: #068460;
+    border-radius: 100px;
+    color: #FFFFFF;
+    font-family: 'Work Sans', sans-serif;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    align-self: flex-end;
+}
+.menu{
+    margin: 6vh 0 0 0
 }

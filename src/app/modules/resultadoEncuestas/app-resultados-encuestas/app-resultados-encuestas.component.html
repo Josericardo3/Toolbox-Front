@@ -1,0 +1,73 @@
+<app-app-header></app-app-header>
+<div class="containerResultadosEncuestas">
+    <div class="titulo">
+        <h1>Resultados de encuestas</h1>
+        <app-app-header-arrow-left [redirectToDashboard]="true"></app-app-header-arrow-left>
+    </div>
+    <div class="resultados">
+        <app-app-menu-alta-gerencia></app-app-menu-alta-gerencia>
+        <div class="form">
+            <!-- *** SECCIÓN DE LA TABLA ***-->
+            <table class="table-gestion" style="margin-top: 8px;">
+                <thead>
+                    <tr>
+                        <th scope="col">Título de la encuesta</th>
+                        <th scope="col">Personas encuestadas</th>
+                        <th scope="col">Ver resultados</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td>
+                            <a title="Editar" (click)="showModal = true">
+                                <i class="fa-solid fa-eye" style="color: #06543c; cursor: pointer;"></i>
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+        <!-- Modal personas que respondieron la encuesta -->
+        <div class="modal-background" id="modal-success" *ngIf="showModal">
+            <div class="modal-content">
+                <div class="modal-title">
+                    <a title="Cerrar" data-dismiss="modal" aria-label="Close" class="x">
+                        <i class="fa-solid fa-circle-xmark" style="color: #06543c;font-size: 25px;"
+                            (click)="showModal = false;"></i>
+                    </a>
+                    <h2 style="margin-top: 1vh;">Lista de destinatarios</h2>
+                    <div class="linea"></div>
+                </div>
+                <div class="formModal">
+                    <table class="table-gestion-modal" style="margin-top: 8px;">
+                        <thead>
+                            <tr>
+                                <th scope="col">Encuestados</th>
+                                <th scope="col">Fecha</th>
+                                <th scope="col">Ver resultados</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Marilú Marleni Rufino Melendez</td>
+                                <td></td>
+                                <td>
+                                    <a title="Editar" routerLink="/resultadosEncuestasPreguntas" routerLinkActive="activebutton">
+                                        <i class="fa-solid fa-eye" style="color: #06543c; cursor: pointer;"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+</div>
+<app-app-footer></app-app-footer>
+
+<ngx-spinner bdColor="rgba(0, 0, 0, 0.5)" size="small"
+    template="<img src='https://www.superiorlawncareusa.com/wp-content/uploads/2020/05/loading-gif-png-5.gif' width='50' height='50'/>">
+</ngx-spinner>

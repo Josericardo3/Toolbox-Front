@@ -118,35 +118,6 @@ export class AppAuditoriaInternaComponent {
     });
   }
   
-  
-  // getAuditorList() {
-  //   this.ApiService.getAuditorListService()
-  //     .subscribe((data: any) => {
-
-  //       this.listAuditor = data;
-  //       console.log(this.listAuditor,"este necesito")
-  //       this.equipoAuditor = data;
-
-
-  //       this.dropdownList = [
-  //         { "item_id": 0, "item_text": "Melissa Gutmont" },
-  //         { "item_id": 1, "item_text": "Carlancas Venec" },
-  //         { "item_id": 2, "item_text": "Oscar Sandoval" }
-  //       ];
-
-  //       this.dropdownSettings = {
-  //         singleSelection: false,
-  //         idField: 'item_id',
-  //         textField: 'item_text',
-  //         selectAllText: 'Seleccionar todos',
-  //         unSelectAllText: 'UnSelect All',
-  //         itemsShowLimit: 3,
-  //         allowSearchFilter: true
-  //       };
-  //       return this.listAuditor;
-  //     })
-  // }
-
   getActualDate() {
     let date = new Date();
     let day = date.getDate().toString().padStart(2, '0');
@@ -157,15 +128,31 @@ export class AppAuditoriaInternaComponent {
   }
 
   openComponent(evt: any) {
-
+    const request = {
+      FK_ID_USUARIO: parseInt(localStorage.getItem("Id")),
+      TIPO: "Modulo",
+      MODULO: "nuevoPlanDeAuditoria"
+    };
+    this.ApiService.postMonitorizacionUsuario(request).subscribe();
     this.router.navigate(['/nuevoPlanDeAuditoria'], { queryParams: { item: evt.target?.id } });
   }
   openComponentLista(evt: any) {
-
+    const request = {
+      FK_ID_USUARIO: parseInt(localStorage.getItem("Id")),
+      TIPO: "Modulo",
+      MODULO: "listaDeVerificacion"
+    };
+    this.ApiService.postMonitorizacionUsuario(request).subscribe();
     return this.router.navigate(['/listaDeVerificacion'], { queryParams: { item: evt.target?.id } });
   }
 
   openComponentInforme(evt: any) {
+    const request = {
+      FK_ID_USUARIO: parseInt(localStorage.getItem("Id")),
+      TIPO: "Modulo",
+      MODULO: "informeAuditoria"
+    };
+    this.ApiService.postMonitorizacionUsuario(request).subscribe();
     this.router.navigate(['/informeAuditoria'], {
       queryParams: {
         item: evt.target?.i
@@ -472,7 +459,6 @@ export class AppAuditoriaInternaComponent {
 
       this.ApiService.getListResponsible().subscribe((data) => {
       this.arrayListResponsible = data;
-      console.log(this.arrayListResponsible,"yesi de la suerte")
       this.listAuditor = this.arrayListResponsible.filter((e: any) =>
         e.CARGO === "Líder de Proceso"
       )

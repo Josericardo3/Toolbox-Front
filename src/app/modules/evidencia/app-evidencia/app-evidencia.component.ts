@@ -138,22 +138,6 @@ export class AppEvidenciaComponent implements OnInit{
       (response) => console.log(response),
       (error) => console.log(error)
     );
-    console.log('entró')
-    // if (this.file && this.file.size <= 10485760) { // 10 MB en bytes
-    //   const reader = new FileReader();
-    //   reader.readAsDataURL(this.file);
-    //   reader.onload = (e: ProgressEvent) => {
-    //     const contents = (e.target as FileReader).result as string;
-    //     const fileName = this.file.name;
-    //     const fileData = reader.result.toString().split(',')[1];
-    //     const filePath = `uploads/${fileName}`;
-    //     // localStorage.setItem(filePath, fileData);
-    //     localStorage.setItem(filePath, contents);
-    //     // Copia el archivo del Local Storage a la carpeta local "uploads"
-    //   // fs.writeFileSync('./uploads/' + this.file.name, contents);
-    //   };
-    // } else {
-    //   console.error('El archivo es demasiado grande. El tamaño máximo es de 10 MB.');
   }
   
   private saveFileToAssetsFolder(file: File): void {
@@ -327,7 +311,4 @@ export class AppEvidenciaComponent implements OnInit{
     }
   }
 
-  goBack() {
-    this.router.navigate(['/dashboard'])
-  }
 }

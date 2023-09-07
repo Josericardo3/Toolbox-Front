@@ -125,3 +125,18 @@ textarea{
   cursor: pointer;
   align-self: flex-start;
 }
+
+div#is-relative{
+
+    position: relative;
+  }
+
+#icon{
+    position: absolute;
+    display: block;
+    bottom: .5rem;
+    right: 1rem;
+    
+    user-select: none;
+    cursor: pointer;
+  }

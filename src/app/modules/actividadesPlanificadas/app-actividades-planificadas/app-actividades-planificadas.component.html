@@ -1,0 +1,94 @@
+<app-app-header></app-app-header>
+<div class="containerActividadesPlanificadas">
+    <div class="titulo">
+        <h1>Actividades planificadas</h1>
+        <app-app-header-arrow-left [redirectToDashboard]="true"></app-app-header-arrow-left>
+    </div>
+    <div class="resultados">
+        <app-app-menu-alta-gerencia></app-app-menu-alta-gerencia>
+        <div class="form">
+            <!--*** BLOQUE DE BUSQUEDA  ***-->
+            <div class="buscar">            
+                <input type="text" placeholder="Buscar..." class="buscador" [(ngModel)]="busqueda" *ngIf="mostrarBuscador" (input)="filtrarDatos()">
+            </div>
+            <!-- *** SECCIÓN DE LA TABLA ***-->
+            <table class="table-gestion" style="margin-top: 8px;">
+                <thead>
+                    <tr>
+                        <th scope="col">Responsable</th>
+                        <th scope="col">Descripción</th>
+                        <th scope="col">Estado</th>
+                        <th scope="col"></th>
+                        <th scope="col" style="text-align: center;" (click)="mostrarBuscador = !mostrarBuscador">
+                            <i class="fa-solid fa-magnifying-glass" title="Buscar" style="cursor: pointer;"></i>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let campo of estadoArray; let i = index;">
+                        <td>{{campo.NOMBRE_RESPONSABLE}}</td>
+                        <td  title="Dale click para leer la descripción" (click)="fnShowModal(i)">{{campo.DESCRIPCION.slice(0,40) }}</td>
+                        <td>{{campo.ESTADO_PLANIFICACION}}</td>
+                        <td><i class="fa fa-circle" [ngStyle]="{'color': campo.statecolor}"></i></td>
+                        <td>
+                            <a title="Editar" routerLink="/planificacion" routerLinkActive="activebutton">
+                                <i class="fa-solid fa-pen" style="color: #06543c;"></i>
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <p *ngIf="result" style="text-align: center;margin-top: 3vh; font-size: 19px; font-family: 'Work Sans', sans-serif;" >
+                No hay resultados para la búsqueda
+            </p>
+            <!-- Paginacion -->
+            <footer class="page-style">
+                <div class="container-label">
+                    <label class="paginas">
+                        Página: {{ pages }} / {{ totalPaginas }} Mostrando: {{ totalRegistros }} Registros: {{ datatotal }}
+                    </label>
+                    <div class="ls-pagina ">
+                        <pagination 
+                        lastText="&raquo;"
+                        nextText="&rsaquo;" 
+                        firstText="&laquo;" 
+                        previousText="&lsaquo;"
+                        [maxSize]="3" 
+                        [itemsPerPage]="7" 
+                        [boundaryLinks]="true" 
+                        [(ngModel)]="currentPage"
+                        [ngClass]="{'page-item': true}"
+                        [totalItems]="contentArray.length" 
+                        (pageChanged)="pageChanged($event)">
+                        </pagination>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+</div>
+<app-app-footer></app-app-footer>
+<!-- Modal -->
+<div class="modal modal-dialog-centered" tabindex="-1" role="dialog" *ngIf="showModal" [ngClass]="{'show': showModal}" style="display: block;">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content modal-contedor">
+        <div >
+          <a title="Cancelar"  style="display: flex;justify-content: flex-end;padding-right: 30px;padding-top: 18px;" data-dismiss="modal" aria-label="Close">
+            <i class="fa-solid fa-circle-xmark" style="color: #06543c;font-size: 25px;" (click)="showModal = false;"></i>
+          </a>
+          <h1 class="modal-title" style="font-size:20px !important;margin: 0!important;">Descripción de actividad</h1>
+        </div>
+        <div class="modal-body" style="text-align: center;">
+          <p>
+            {{  descripcion | titlecase }}
+          </p>
+        </div>
+        <div style="padding: 15px;text-align: center;">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="showModal = false;">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+<ngx-spinner bdColor="rgba(0, 0, 0, 0.5)" size="small"
+    template="<img src='https://www.superiorlawncareusa.com/wp-content/uploads/2020/05/loading-gif-png-5.gif' width='50' height='50'/>">
+</ngx-spinner>

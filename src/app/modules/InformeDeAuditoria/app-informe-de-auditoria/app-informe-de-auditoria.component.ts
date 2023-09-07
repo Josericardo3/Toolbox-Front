@@ -7,6 +7,7 @@ import { HttpClient } from '@angular/common/http';
 import { FormBuilder, FormGroup,Validators } from '@angular/forms';
 import { ApiService } from '../../../servicios/api/api.service';
 import { ModalService } from 'src/app/messagemodal/messagemodal.component.service';
+import { debug } from 'console';
 
 @Component({
   selector: 'app-app-informe-de-auditoria',
@@ -69,12 +70,13 @@ export class AppInformeDeAuditoriaComponent {
     this.ApiService.getAuditorias(audit.ID_AUDITORIA)
     .subscribe((data:any)=> {
       const filterAudit = data
-      console.log(data,"data con yesi AHORA")
+      
       //filterAudit[0].requisitos;
       this.requisitos = data;
       this.selectedProceso = filterAudit[0]; 
       //pinta los datos dinamicos fel formulario
       this.selectedProceso = data; 
+      this.selectedProceso.EQUIPO_AUDITOR = this.selectedProceso.EQUIPO_AUDITOR.replace(/,/g,", ");
       //pinta el proceso
       this.nuevoProceso = this.selectedProceso?.PROCESOS[0].PROCESO_DESCRIPCION;
       const tableAudit =  document.querySelector('#table_proceso') as HTMLInputElement;
@@ -84,21 +86,15 @@ export class AppInformeDeAuditoriaComponent {
       if(data){
         
         this.arrRequisito = data.PROCESOS.map((req,index) =>req.REQUISITOS)[0];
-        //console.log(this.arrRequisito,"requisitps",this.requisitos,"2do valor")
-        console.log(this.arrRequisito,"requisito")
         this.arrRequisito= data.PROCESOS.map((req,index) =>req.REQUISITOS)[0].slice(0, 6);
 
         this.arrProceso = data.PROCESOS;
         this.idInformeAuditoria = this.arrProceso[0].ID_PROCESO_AUDITORIA;
-        console.log(this.arrProceso,"proceso")
-      
         //paginado
         const totalPag = data.PROCESOS.map((req,index) =>req.REQUISITOS)[0].length;
         this.totalPaginas = Math.trunc(totalPag / 6) + 1;
         this.totalRegistros = data.PROCESOS.map((req,index) =>req.REQUISITOS)[0].length;
         this.contentArrayReq = data.PROCESOS.map((req,index) =>req.REQUISITOS)[0];
-        console.log(this.contentArrayReq,"content")
-
       }
 
       //this.arrProceso= data.procesos.map(proc) => proc
@@ -109,7 +105,6 @@ export class AppInformeDeAuditoriaComponent {
     const idPst = localStorage.getItem('Id')
     this.ApiService.getListarAuditorias(Number(idPst))
     .subscribe((data:any)=> {
-      //console.log(data,"ahora")
       this.procesoFinal= data;
       this.dataInitial = data;
    
@@ -120,8 +115,6 @@ export class AppInformeDeAuditoriaComponent {
       this.totalPaginas = Math.trunc(totalPag / 6) + 1;
       this.totalRegistros = data.length;
       this.contentArray = data;
-
-    //console.log(this.procesoFinal,"data")
 
     })
   
@@ -193,7 +186,6 @@ export class AppInformeDeAuditoriaComponent {
 
 
    this.ApiService.updateInformeAuditoria(request).subscribe((data:any) =>{
-     console.log(request,"requestFinalfelix")
      if (data.statusCode == 201) {
       const title = "Actualizacion exitosa.";
       const message = "El registro se ha realizado exitosamente";
@@ -203,14 +195,14 @@ export class AppInformeDeAuditoriaComponent {
     }
 
     })
+    this.ApiService.UpdateAuditoriaEstadoTerminado(this.idInformeAuditoria).subscribe();
   return this.generateInformeDeAuditoria(request);
    }}
 
    generateInformeDeAuditoria(request) {
-    console.log(request,"proceso ahora")
-    //console.log(request,'resuqest',this.arrRequisito,"requisito querido")
+
     const newFormantRequisito = this.arrRequisito.map(req =>  {
-      console.log(req,"req")
+
      return{
       numeracion:req.NUMERACION,
       requisito:req.REQUISITO,
@@ -488,21 +480,19 @@ export class AppInformeDeAuditoriaComponent {
   this.pages = event.page;
   const startItem = (event.page - 1) * event.itemsPerPage
   const endItem = event.page * event.itemsPerPage;
-  
-  this.procesoFinal = this.dataInitial.slice(startItem, endItem)
- 
+  this.procesoFinal = this.dataInitial.slice(startItem, endItem);
 }
 
 //pagination requisito
 pagesRequired: number = 1;
 pageChangedReq(event: any): void {
   this.pagesRequired = event.page;
-  console.log(this.pages,"pages")
+ 
   const startItem = (event.page - 1) * event.itemsPerPage
   const endItem = event.page * event.itemsPerPage;
   
   this.arrRequisito = this.contentArrayReq.slice(startItem, endItem)
-  console.log(this.arrRequisito,"arrrequi")
+
 }
 
 }

@@ -2,75 +2,207 @@
 <div class="containerActividades">
     <div class="titulo">
         <h1>Actividades</h1>
-        <app-app-header-arrow-left routerLink="/dashboard"></app-app-header-arrow-left>
+        <app-app-header-arrow-left [redirectToDashboard]="true"></app-app-header-arrow-left>
     </div>
     <div class="actividades">
-        <app-menu-corto></app-menu-corto>
+        <app-menu-corto class="menu"></app-menu-corto>
+         <!--*** NUEVO REGISTRO DE ACTIVIDAD *** -->
         <div class="form">
-            <div class="bodyNuevoregistro">
+          <div class="top">
+            <div class="buscar" *ngIf="showfilter">            
+              <input type="text" placeholder="Buscar..." class="buscador" [(ngModel)]="filter" (input)="filterResult()">
+            </div>
+            <button class="btn" (click)="fnNuevoRegistro()">
+              <i class="fa-solid fa-plus" style="color: #fff;"></i>Agregar actividad
+            </button>
+          </div>
+            <!--*** SECCION NUEVO REGISTRO DE ACTIVIDAD  *** -->
+            <div class="bodyNuevoregistro" *ngIf="crearNuevoRegistro">
                 <p>Nuevo registro</p>
                 <div class="items">
+                  <div class="containerSection">
                     <div class="section">
-                        <label>Responsable</label>
-                        <select class="input">
-                            <option value="" disabled>Selecciona una opción</option>
-                            <option>Responsable</option>
-                        </select>
+                      <label>Responsable</label>
+                      <select class="inputSection" [(ngModel)]="idUsuario" [(ngModel)]='ngSelect'>
+                        <option value="1" disabled>Selecciona una opción</option>
+                        <option *ngFor="let responsible of arrayListResponsible" [value]="responsible.ID_USUARIO">
+                          {{ responsible.NOMBRE | titlecase }}
+                        </option>
+                      </select>
                     </div>
-                    <div class="section">
+                    <div class="section">            
+                      <label>Tipo de actividad</label>
+                      <select class="inputSection" [(ngModel)]="activityType" [(ngModel)]='ngSelect' disabled>
+                      <option value="1">Mejora continúa</option>
+                      <option *ngFor="let activity of arrayActivity" [ngValue]="activity.VALOR">{{ activity.DESCRIPCION | titlecase }}</option> 
+                    </select>
+                    </div>
+                    <div class="section">            
                         <label>Descripción de actividad</label>
-                        <textarea class="input" style="height: 80px;" placeholder="Descripción de actividad"></textarea>
+                        <textarea class="inputSection" style="height: 70px;" placeholder="Descripción de actividad" [(ngModel)]="activity"></textarea>
                     </div>
+                  </div>
+                  <div class="containerSection">
                     <div class="section">
-                        <label>Inicio de actividad</label>
-                        <input type="date" class="input"/>
+                      <label>Inicio de actividad</label>
+                      <input type="date" class="inputSection" [(ngModel)]="inicioActivity"/>
                     </div>
                     <div class="section">
                         <label>Fin de actividad</label>
-                        <input type="date" class="input"/>
+                        <input type="date" class="inputSection" [(ngModel)]="finActivity" />
                     </div>
-                    <div class="section">
+                    <div class="section"  >
                         <label>Estado</label>
-                        <select class="input">
-                            <option value="" disabled>Selecciona una opción</option>
-                            <option>estado</option>
+                        <select class="inputSection" [(ngModel)]="selectedState" [(ngModel)]='ngSelect'>
+                            <option value="1" disabled>Selecciona una opción</option>
+                            <option *ngFor="let status of arrayStatus" [value]="status.DESCRIPCION">{{status.DESCRIPCION | titlecase }}</option>
                         </select>
                     </div>
                     <div class="sectionIcon">
-                        <a title="Guardar"><i class="fa-regular fa-floppy-disk" style="color: #06543c;font-size: 25px;"></i></a>
-                        <a title="Cancelar"><i class="fa-solid fa-circle-xmark" style="color: #06543c;font-size: 25px;"></i></a>
+                        <a title="Guardar" (click)="fnNewRecord()"><i class="fa-regular fa-floppy-disk"
+                                style="color: #06543c;font-size: 25px; margin: 0 0.9vw;"></i></a>
+                        <a title="Cancelar" (click)="fnCancelarNuevoRegistro()"><i class="fa-solid fa-circle-xmark"
+                                style="color: #06543c;font-size: 25px;"></i></a>
                     </div>
+                  </div>
                 </div>
             </div>
-           <table class="table-gestion" style="margin-top: 8px;">
-            <thead>
-                <tr>
-                    <th scope="col">Responsable</th>
-                    <th scope="col">Descripción de actividad</th>
-                    <th scope="col">Inicio de actividad</th>
-                    <th scope="col">Fin de actividad</th>
-                    <th scope="col">Estado</th>
-                    <th scope="col"></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>2</td>
-                    <td>3</td>
-                    <td>2</td>
-                    <td>3</td>
-                    <td></td>
-                </tr>
-            </tbody>
-           </table>
+
+            <!-- *** SECCIÓN DE LA TABLA DE CONTENIDO DE LAS ACTIVIDADES ***-->
+            <table class="table-gestion" style="margin-top: 8px;">
+                <thead>
+                    <tr>
+                        <th scope="col">Responsable</th>
+                        <th scope="col">Descripción de actividad</th>
+                        <th scope="col">Inicio de actividad</th>
+                        <th scope="col">Fin de actividad</th>
+                        <th scope="col">Estado</th>
+                        <th scope="col"></th>
+                        <th scope="col" style="text-align: center;">
+                          <i class="fa-solid fa-magnifying-glass" (click)="fnFiltro()" title="Buscar" style="cursor: pointer;"></i>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let user of rolesArray; let i = index;">
+                        <td *ngIf="caracteristicaIndice!=i">{{ user?.NOMBRE_RESPONSABLE | titlecase}}</td>
+                        <!-- **cuando edita**  -->
+                        <td *ngIf="caracteristicaIndice ==i">
+                          <select 
+                          title="Responsable"
+                          class="input" 
+                          style="margin-left: 0 !important" 
+                          [(ngModel)]="editarCaracteristica.FK_ID_RESPONSABLE" 
+                          (change)="onResponsibleSelectionChangeEditar($event)" >
+                            <option value="" disabled selected>Selecciona una opción</option>
+                            <option *ngFor="let responsible of arrayListResponsible" [ngValue]="responsible.ID_USUARIO">
+                              {{responsible.NOMBRE | titlecase }}
+                            </option>
+                          </select>
+                        </td>
+                        <td *ngIf="caracteristicaIndice!=i" (click)="fnShowModal(i)" title="Dale click para leer la tarea">{{ user.DESCRIPCION.slice(0,40)| titlecase }}</td>
+                        <!-- **cuando edita** -->
+                        <td *ngIf="caracteristicaIndice==i"  >
+                          <textarea
+                            rows="4"
+                            cols="20"
+                            class="input"
+                            maxlength="300"
+                            title="Hasta 300 caracteres"
+                            [(ngModel)]="editarCaracteristica.DESCRIPCION">
+                          </textarea>
+                        </td>
+                        <td *ngIf="caracteristicaIndice!=i">{{ user.FECHA_INICIO }}</td>
+                         <!-- **cuando edita** -->
+                        <td *ngIf="caracteristicaIndice==i">
+                          <input type="date" class="input" [(ngModel)]="editarCaracteristica.FECHA_INICIO"/>
+                        </td>
+                        <td *ngIf="caracteristicaIndice!=i"> {{ user.FECHA_FIN }}</td>
+                          <!-- **cuando edita** -->
+                          <td *ngIf="caracteristicaIndice==i">
+                            <input type="date" class="input" [(ngModel)]="editarCaracteristica.FECHA_FIN"/>
+                          </td>
+                        <td *ngIf="caracteristicaIndice!=i">{{ user.ESTADO_PLANIFICACION | titlecase }} </td>
+                           <!-- **cuando edita** -->
+                        <td *ngIf="caracteristicaIndice==i">
+                          <select
+                          [(ngModel)]="editarCaracteristica.ESTADO_PLANIFICACION"
+                           class="input">
+                          <option value="" disabled>Selecciona una opción</option>
+                          <option *ngFor="let status of arrayStatus" [value]="status.DESCRIPCION">{{status.DESCRIPCION | titlecase }}</option>
+                        </select>
+                        </td>
+                        <td><i class="fa fa-circle" [ngStyle]="{'color': user.statecolor}"></i></td>
+                        <td>
+                            <a title="Editar" (click)="fnActivityEdit(i)" *ngIf="caracteristicaIndice!=i" >
+                                <i class="fa-solid fa-pen" style="color: #06543c;"></i>
+                            </a>
+                           <app-app-delete-activities 
+                           *ngIf="caracteristicaIndice!=i"
+                           [indice]="indiceAEliminar"
+                           (click)="fnPlanificacionEliminar(i);"
+                           (valorEnviado)="recibirValor($event)"
+                           ></app-app-delete-activities>  
+                            <a  title="Grabar" *ngIf="caracteristicaIndice==i" (click)="fnSchedulingUpdate(i)" >
+                              <i class="fa-regular fa-floppy-disk" style="color: #06543c;font-size: 25px;"></i>
+                            </a>
+                           <a  title="Cancelar" (click)="fnActivityEditarCancelar()" *ngIf="caracteristicaIndice==i" >
+                              <i class="fa-solid fa-circle-xmark" style="color: #06543c;font-size: 25px;"></i>
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <p *ngIf="result"  style="text-align: center;margin-top: 10px; font-size: 19px; font-family: 'Work Sans', sans-serif;" >
+              No hay resultado para la búsqueda
+            </p>
         </div>
     </div>
+    <!-- paginacion -->
+  <footer class="page-style">
+    <div class="container-label">
+      <label class="paginas">  Página: {{ pages }} / {{ totalPaginas }} Mostrando: {{ totalRegistros }}  Registros: {{ datatotal }} </label>
+      <div class="ls-pagina ">
+      <pagination
+          lastText="&raquo;"
+          nextText="&rsaquo;"
+          firstText="&laquo;"
+          previousText="&lsaquo;"
+          [maxSize]="3"
+          [totalItems]="contentArray.length"
+          [itemsPerPage]="7"
+          [(ngModel)]="currentPage"
+          [boundaryLinks]="true"
+          (pageChanged)="pageChanged($event)"
+          [ngClass]="{'page-item': true}">
+        </pagination>
+    </div>
+    </div>
+  </footer>
 </div>
 <app-app-footer></app-app-footer>
-<ngx-spinner
-  bdColor="rgba(0, 0, 0, 0.5)"
-  size="small"
-  template="<img src='https://www.superiorlawncareusa.com/wp-content/uploads/2020/05/loading-gif-png-5.gif' width='50' height='50'/>"
->
+<app-modal></app-modal> 
+<!-- Modal -->
+<div class="modal modal-dialog-centered" tabindex="-1" role="dialog" *ngIf="showModal" [ngClass]="{'show': showModal}" style="display: block;">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content modal-contedor">
+      <div >
+        <a title="Cancelar"  style="display: flex;justify-content: flex-end;padding-right: 30px;padding-top: 18px;" data-dismiss="modal" aria-label="Close">
+          <i class="fa-solid fa-circle-xmark" style="color: #06543c;font-size: 25px;" (click)="showModal = false;"></i>
+        </a>
+        <h1 class="modal-title" style="font-size:20px !important;margin: 0!important;">Descripción de actividad</h1>
+      </div>
+      <div class="modal-body" style="text-align: center;">
+        <p>
+          {{  descripcion | titlecase }}
+        </p>
+      </div>
+      <div style="padding: 15px;text-align: center;">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="showModal = false;">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+<ngx-spinner bdColor="rgba(0, 0, 0, 0.5)" size="small"
+    template="<img src='https://www.superiorlawncareusa.com/wp-content/uploads/2020/05/loading-gif-png-5.gif' width='50' height='50'/>">
 </ngx-spinner>
