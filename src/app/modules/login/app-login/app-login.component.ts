@@ -99,7 +99,8 @@ export class AppLoginComponent implements OnInit {
     //jalar el valor del correo
     debugger;
     await this.ApiService.ValidateRntMincit(this.usuario.registroNacionalDeTurismo).subscribe((datarnt: any) => {
-      if (datarnt.error) {
+      debugger;
+      if (datarnt?.error) {
         const title = "Error";
         const message = datarnt.error.message;
         this.Message.showModal(title, message);
