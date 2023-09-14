@@ -97,18 +97,19 @@ export class AppLoginComponent implements OnInit {
     this.usuario.pass = this.loginForm.get("pass")?.value;
     this.usuario.pass = reemplazarCaracteresEspeciales(this.usuario.pass);
     //jalar el valor del correo
+    await this.ApiService.ValidateRntMincit(this.usuario.registroNacionalDeTurismo).subscribe((datarnt: any) => {
+      if (datarnt.error) {
+        const title = "Error";
+        const message = datarnt.error.message;
+        this.Message.showModal(title, message);
+        return;
+      }
+    }
+    );
     this.ApiService.login(this.usuario).subscribe(
       
       (data: any) => {
-        this.ApiService.ValidateRntMincit(this.usuario.registroNacionalDeTurismo).subscribe((datarnt: any) => {
-          if (datarnt.error) {
-            const title = "Error";
-            const message = datarnt.error.message;
-            this.Message.showModal(title, message);
-            return;
-          }
-        }
-        );
+       
         const request = {
           FK_ID_USUARIO: data.ID_USUARIO,
           TIPO: "Login",
