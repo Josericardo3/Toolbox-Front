@@ -11,7 +11,7 @@
     <!-- tabla -->
     <div class="container-form">
       <div class="grup-table-global" id="table_audit">
-        <div class="grup-btn-plan">
+        <div class="grup-btn-plan" *ngIf="getRolValue() !== 4 && getRolValue() !== 5 ">
           <button class="btn-nueva-auditoria" (click)="redirigirAVista()">Nuevo plan de Auditoría
             <i class="fa-solid fa-plus" style="color: #fff;"></i>
           </button>
@@ -117,7 +117,7 @@
                     <th class="tr-table-dinamic">HALLAZGO(S)</th>
                     <th class="tr-table-dinamic">OBSERVACIONES/NOTAS DE AUDITOR</th>
                     <th class="tr-table-dinamic">PREGUNTA(S)</th>
-                    <th class="tr-table-dinamic">ACCIONES</th>
+                    <th class="tr-table-dinamic" *ngIf="getRolValue() !== 4 && getRolValue() !== 5">ACCIONES</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -155,7 +155,7 @@
                       </select>
                        <input type="text" formControlName="preguntas" [(ngModel)]="editarCaracteristica.formPreguntasSelect"> 
                     </td>
-                    <td>
+                    <td *ngIf="getRolValue() !== 4 && getRolValue() !== 5">
                       <a title="Editar" (click)="fnPlanningEdit(i)" *ngIf="caracteristicaIndice!=i">
                         <i class="fa-solid fa-pen" style="color: #06543c;"></i>
                       </a>
@@ -199,7 +199,7 @@
                 </div>
               </footer>
              
-              <div class="div-guardar">
+              <div class="div-guardar" *ngIf="getRolValue() !== 4 && getRolValue() !== 5">
                 <button type="submit" class="btn-guardar" [disabled]="formParent.invalid" >Guardar</button>
               </div>
             </div>

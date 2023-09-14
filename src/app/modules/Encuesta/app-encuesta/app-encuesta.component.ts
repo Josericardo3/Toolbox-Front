@@ -12,17 +12,22 @@ interface Option {
   templateUrl: './app-encuesta.component.html',
   styleUrls: ['./app-encuesta.component.css']
 })
+
 export class AppEncuestaComponent {
-  tarjetas: string[] = [];
+
+  tarjetas: any[] = [];
+  tarjetaActivaIndex: number | null = null;
   encuestaId: string;
   encuestaUrl: string;
+
   constructor(private Message: ModalService) {}
 
-  agregarTarjeta(){
-    this.tarjetas.push('');
+  agregarTarjeta(index?: number){
+    this.tarjetas.splice(index + 1, 0, {});
+
   }
 
-  eliminarTarjeta(event: any, index: number) {
+  eliminarTarjeta(index?: number) {
     this.tarjetas.splice(index, 1);
   }
   

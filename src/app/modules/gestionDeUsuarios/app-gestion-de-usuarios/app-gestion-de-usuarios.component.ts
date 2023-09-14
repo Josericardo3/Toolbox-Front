@@ -4,6 +4,7 @@ import { ApiService } from 'src/app/servicios/api/api.service'
 import { FiltroTableLista } from 'src/app/servicios/api/models/paginador'
 import { FormGroup, Validators, FormBuilder, FormControl } from '@angular/forms'
 import { ModalService } from 'src/app/messagemodal/messagemodal.component.service'
+import { debug } from 'console'
 
 @Component({
   selector: 'app-app-gestion-de-usuarios',
@@ -11,6 +12,8 @@ import { ModalService } from 'src/app/messagemodal/messagemodal.component.servic
   styleUrls: ['./app-gestion-de-usuarios.component.css'],
 })
 export class AppGestionDeUsuariosComponent {
+  arrNormas: any;
+  arrResult: any;
 
   arrListAsesor: any = []
   returnedArray: any = []
@@ -86,15 +89,77 @@ export class AppGestionDeUsuariosComponent {
   }
 
   linkToDashboard(user: any) {
-    localStorage.setItem('rolPst', user.rnt)
+    debugger;
+    localStorage.setItem('Id', user.FK_ID_USUARIO);
+    localStorage.setItem('rol', '1');
+    localStorage.setItem('TIPO_USUARIO','1');
+    localStorage.setItem('idGrupo', '1');
+    localStorage.setItem('rnt', user.RNT);
+
+    this.ApiService.getNorma(user.ID_USUARIO).subscribe(
+      (categ: any) => {
+        this.arrNormas = categ;
+        localStorage.setItem(
+          "idCategoria",
+          JSON.stringify(this.arrNormas[0].FK_ID_CATEGORIA_RNT));
+    });
+      this.ApiService.validateCaracterizacion(user.FK_ID_USUARIO).subscribe(
+        (response) => {
+          if (response) {
+            this.ApiService.getNorma(user.FK_ID_USUARIO).subscribe(
+              (data: any) => {
+
+                if (
+                  data[0].FK_ID_CATEGORIA_RNT === 5 ||
+                  data[0].FK_ID_CATEGORIA_RNT === 2
+                ) {
+                  this.arrResult = data;
+
+                  localStorage.setItem(
+                    "norma",
+                    JSON.stringify(this.arrResult)
+                  );
+                  //No funciona
+                  /*
+                  const modalInicial = document.querySelector(
+                    "#modal-inicial"
+                  ) as HTMLElement;
+                  modalInicial.style.display = "block";*/
+                } else {
+                  this.arrResult = data;
+                  localStorage.setItem(
+                    "norma",
+                    JSON.stringify(this.arrResult)
+                  );
+                  localStorage.setItem("normaSelected", data[0].NORMA);
+                  localStorage.setItem("idNormaSelected", data[0].ID_NORMA);
+                  //modified by mel
+                  if( data[0].ID_NORMA === 1){
+                  this.router.navigate(["/dashboard"]);
+                  }else{
+                    this.router.navigate(["/dashboard"]);
+                  }
+                 
+                }
+              }
+            );
+          } else {
+            this.router.navigate(["/dashboard"]);
+          }
+        }
+      );
+    
     return this.router.navigate(['/dashboard'])
 
   }
+
+
+
  
   dataTotal = 0
   onLoadPst() {
    
-    this.ApiService.assignAdvisor(0).subscribe((data) => {
+    this.ApiService.assignAdvisor().subscribe((data) => {
       this.dataUser = data;
       this.dataInitial = data;
       this.contentArray = data;
@@ -103,6 +168,7 @@ export class AppGestionDeUsuariosComponent {
       this.dataTotal = data.length;
       const totalPag = data.length
       this.filtroTable.TotalPaginas = Math.ceil(totalPag / 7) ;;
+      debugger;
       return this.dataUser
     })
   }
@@ -267,5 +333,12 @@ export class AppGestionDeUsuariosComponent {
           return this.cerraModalNewAsesor()
         })
     }
+  }
+  getRolValue(): number {
+    const rol = localStorage.getItem('rol');
+    if (rol && !isNaN(Number(rol))) {
+      return Number(rol);
+    }
+    return 0;
   }
 }

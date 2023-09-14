@@ -2,17 +2,18 @@
 <div class="containerEncuesta">
     <div class="titulo">
         <h1>Tabla de encuesta</h1>
-        <app-app-header-arrow-left></app-app-header-arrow-left>
+        <app-app-header-arrow-left [redirectToDashboard]="true"></app-app-header-arrow-left>
     </div>
     <div class="encuesta">
-        <app-menu-corto></app-menu-corto>
+        <app-menu-corto class="menu"></app-menu-corto>
         <div class="form">
-            <button class="compartir" routerLink="/encuesta" routerLinkActive="activebutton">
-                <i class="fa-regular fa-rectangle-list" style="color: #ffffff; margin-right: 0.5vw;"></i>Crear encuesta
-            </button>
-            <!--*** BLOQUE DE BUSQUEDA  ***-->
-            <div class="buscar">            
-                <input type="text" placeholder="Buscar..." class="buscador" [(ngModel)]="busqueda" *ngIf="mostrarBuscador" (input)="filtrarDatos()">
+            <div class="top">
+                <div class="buscar">            
+                    <input type="text" placeholder="Buscar..." class="buscador" [(ngModel)]="busqueda" *ngIf="mostrarBuscador" (input)="filtrarDatos()">
+                </div>
+                <button class="compartir" routerLink="/encuesta" routerLinkActive="activebutton"  *ngIf="getRolValue() !== 4 && getRolValue() !== 5 &&  getRolValue() !== 7 " >
+                    <i class="fa-regular fa-rectangle-list" style="color: #ffffff; margin-right: 0.5vw;"></i>Crear encuesta
+                </button>
             </div>
             <table class="table-gestion" style="margin-top: 8px;">
                 <thead>
@@ -25,10 +26,10 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td>
+                    <tr *ngFor="let campo of arrayEncuestas;let i = index">
+                        <td>{{campo.TITULO}}</td>
+                        <td>{{campo.NUM_ENCUESTADOS}}</td>
+                        <td *ngIf="getRolValue() !== 4 && getRolValue() !== 5 &&  getRolValue() !== 7">
                             <a title="Editar">
                                 <i class="fa-solid fa-pen" style="color: #06543c;"></i>
                             </a>

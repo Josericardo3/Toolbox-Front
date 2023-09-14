@@ -128,9 +128,10 @@ export class ApiService {
     return this.http.post<any>(caracterizacion,observables)
   }
 
-  assignAdvisor(id: any): Observable<any> {
+  assignAdvisor(): Observable<any> {
+    var id = Number(window.localStorage.getItem('Id'));
     let assign = `${this.apiURLNuevo}/api/Asesor/usuarioPstxAsesor/${id}`
-    return this.http.get<any>(assign,id)
+    return this.http.get<any>(assign)
   }
 
   getDiagnostico(): Observable<any> {
@@ -255,7 +256,8 @@ export class ApiService {
   
   getTablaNoticias() {
     const rnt = localStorage.getItem('rnt');
-    let direccion = `${this.apiURLNuevo}/api/Noticia/noticia?Rnt=${rnt}`
+    const idrol = localStorage.getItem('rol');
+    let direccion = `${this.apiURLNuevo}/api/Noticia/noticia?Rnt=${rnt}&IdTipoUsuario=${idrol}`
     return this.http.get<any>(direccion)
   }
 
@@ -361,7 +363,8 @@ export class ApiService {
    ///ACTIVIDADES (VISTA DE PLANIFICACIÓN)
    getActivities(){
     const id = localStorage.getItem("Id");
-    let lista = `${this.apiURLNuevo}/api/Actividad/actividades?idUsuarioPst=${id}`
+    const idrol = localStorage.getItem("rol");
+    let lista = `${this.apiURLNuevo}/api/Actividad/actividades?idUsuarioPst=${id}&idTipoUsuario=${idrol}`
     return this.http.get<any>(lista)
   }
   getActivitiesCompleta(idActividad: any){
@@ -447,6 +450,12 @@ export class ApiService {
     return this.http.post<any>(direccion, request)
   }
 
+  // ENCUESTA
+
+  getEncuestas( ){
+    let lista = `${this.apiURLNuevo}/api/Encuesta`
+    return this.http.get<any>(lista)
+  }
   //MONITORIZACIÓN
 
   getMonitorizacion( ){
@@ -461,6 +470,12 @@ export class ApiService {
   ValidateRntMincit(rnt:any): Observable<string> {
     let validate = `${this.apiURLNuevo}/api/Validaciones/ObtenerDataMincit?RNT=${rnt}`
     let response = this.http.get<string>(validate);
+    return response;
+  }
+
+  getUsuarioPermisoPerfil(idusuarioperfil:any){
+    let validate = `${this.apiURLNuevo}/api/Usuario/usuarioPermisosPorPerfil?idUsuarioPerfil=${idusuarioperfil}`
+    let response = this.http.get<any>(validate);
     return response;
   }
 }

@@ -7,4 +7,11 @@ import { Component } from '@angular/core';
 })
 export class MenuCortoComponent {
 
+  getRolValue(): number {
+    const rol = localStorage.getItem('rol');
+    if (rol && !isNaN(Number(rol))) {
+      return Number(rol);
+    }
+    return 0;
+  }
 }

@@ -2,7 +2,7 @@
 <div class="containerPartesInteresadas">
     <div class="titulo">
         <h1>Matriz de partes interesadas</h1>
-        <app-app-header-arrow-left></app-app-header-arrow-left>
+        <app-app-header-arrow-left [redirectToDashboard]="true"></app-app-header-arrow-left>
     </div>
     <div class="resultados">
         <app-app-menu-alta-gerencia></app-app-menu-alta-gerencia>
@@ -25,23 +25,41 @@
                 <tbody>
                     <tr>
                         <th>PROVEEDOR(ES)</th>
-                        <td id="proveedores-necesidades"></td>
-                        <td id="proveedores-expectativas"></td>
-                        <td id="proveedores-requisitos"></td>
-                        <td id="proveedores-observaciones"></td>
-                        <td id="proveedores-acciones"></td>
+                        <ng-container *ngIf="orden === 'proveedores'">
+
+                        <td id="proveedores-necesidades">{{necesidades}}</td>
+                        <td id="proveedores-expectativas">{{expectativa}}</td>
+                        <td id="proveedores-requisitos">{{estadoC}}</td>
+                        <td id="proveedores-observaciones">{{observacion}}</td>
+                        <td id="proveedores-acciones">{{accion}}</td>
+                    </ng-container>
+
                     </tr>
+
                     <tr>
                         <th>ORGANIZACIONES GUBERNAMENTALES</th>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <ng-container *ngIf="orden === 'gubernamentales'">
+
+                        <td>{{necesidades}}</td>
+                        <td>{{expectativa}}</td>
+                        <td>{{estadoC}}</td>
+                        <td>{{observacion}}</td>
+                        <td>{{accion}}</td>
+
+                    </ng-container>
+
                     </tr>
+
                     <tr>
                         <th>ORGANIZACIONES NO GUBERNAMENTALES</th>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <ng-container *ngIf="orden === 'nogubernamentales'">
+
+                            <td>{{necesidades}}</td>
+                            <td>{{expectativa}}</td>
+                            <td>{{estadoC}}</td>
+                            <td>{{observacion}}</td>
+                            <td>{{accion}}</td>
+                        </ng-container>
                     </tr>
                     <tr>
                         <th>CLIENTE(S)</th>

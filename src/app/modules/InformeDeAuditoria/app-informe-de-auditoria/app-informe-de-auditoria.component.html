@@ -201,7 +201,7 @@
                   <textarea type="text" class="obs" formControlName="conclusiones"></textarea>
                 </div>
 
-                <div class="div-guardar">
+                <div class="div-guardar" *ngIf="getRolValue() !== 4 && getRolValue() !== 5">
                   <button type="submit" [disabled]="formParent.invalid" class="btn-guardar">
                     Guardar
                   </button>

@@ -2,19 +2,19 @@
 <div class="containerActividades">
     <div class="titulo">
         <h1>Actividades</h1>
-        <app-app-header-arrow-left></app-app-header-arrow-left>
+        <app-app-header-arrow-left [redirectToDashboard]="true"></app-app-header-arrow-left>
     </div>
     <div class="actividades">
-        <app-menu-corto></app-menu-corto>
+        <app-menu-corto class="menu"></app-menu-corto>
          <!--*** NUEVO REGISTRO DE ACTIVIDAD *** -->
         <div class="form">
-          <button class="btn" (click)="fnNuevoRegistro()">
-            <i class="fa-solid fa-plus" style="color: #fff;"></i>
-            Agregar actividad
-          </button>
-            <!--*** BLOQUE DE BUSQUEDA  ***-->
-          <div class="buscar" *ngIf="showfilter">            
-            <input type="text" placeholder="Buscar..." class="buscador" [(ngModel)]="filter" (input)="filterResult()">
+          <div class="top">
+            <div class="buscar" *ngIf="showfilter">            
+              <input type="text" placeholder="Buscar..." class="buscador" [(ngModel)]="filter" (input)="filterResult()">
+            </div>
+            <button class="btn" (click)="fnNuevoRegistro()" *ngIf="getRolValue() !== 4 && getRolValue() !== 5">
+              <i class="fa-solid fa-plus" style="color: #fff;"></i>Agregar actividad
+            </button>
           </div>
             <!--*** SECCION NUEVO REGISTRO DE ACTIVIDAD  *** -->
             <div class="bodyNuevoregistro" *ngIf="crearNuevoRegistro">
@@ -23,8 +23,8 @@
                   <div class="containerSection">
                     <div class="section">
                       <label>Responsable</label>
-                      <select class="input" [(ngModel)]="idUsuario">
-                        <option value="" >Selecciona una opción</option>
+                      <select class="inputSection" [(ngModel)]="idUsuario" [(ngModel)]='ngSelectResponsable'>
+                        <option value="1" disabled>Selecciona una opción</option>
                         <option *ngFor="let responsible of arrayListResponsible" [value]="responsible.ID_USUARIO">
                           {{ responsible.NOMBRE | titlecase }}
                         </option>
@@ -32,29 +32,29 @@
                     </div>
                     <div class="section">            
                       <label>Tipo de actividad</label>
-                      <select class="input" [(ngModel)]="activityType">
-                      <option value="" disabled>Selecciona una opción</option>
+                      <select class="inputSection" [(ngModel)]="activityType" [(ngModel)]='ngSelectActividad' disabled>
+                      <option value="1">Mejora continúa</option>
                       <option *ngFor="let activity of arrayActivity" [ngValue]="activity.VALOR">{{ activity.DESCRIPCION | titlecase }}</option> 
                     </select>
                     </div>
                     <div class="section">            
                         <label>Descripción de actividad</label>
-                        <textarea class="input" style="height: 70px;" placeholder="Descripción de actividad" [(ngModel)]="activity"></textarea>
+                        <textarea class="inputSection" style="height: 70px;" placeholder="Descripción de actividad" [(ngModel)]="activity"></textarea>
                     </div>
                   </div>
                   <div class="containerSection">
                     <div class="section">
                       <label>Inicio de actividad</label>
-                      <input type="date" class="input" [(ngModel)]="inicioActivity"/>
+                      <input type="date" class="inputSection" [(ngModel)]="inicioActivity"/>
                     </div>
                     <div class="section">
                         <label>Fin de actividad</label>
-                        <input type="date" class="input" [(ngModel)]="finActivity" />
+                        <input type="date" class="inputSection" [(ngModel)]="finActivity" />
                     </div>
                     <div class="section"  >
                         <label>Estado</label>
-                        <select class="input" [(ngModel)]="selectedState">
-                            <option value="" disabled>Selecciona una opción</option>
+                        <select class="inputSection" [(ngModel)]="selectedState" [(ngModel)]='ngSelectEstado'>
+                            <option value="1" disabled>Selecciona una opción</option>
                             <option *ngFor="let status of arrayStatus" [value]="status.DESCRIPCION">{{status.DESCRIPCION | titlecase }}</option>
                         </select>
                     </div>
@@ -72,6 +72,7 @@
             <table class="table-gestion" style="margin-top: 8px;">
                 <thead>
                     <tr>
+                      <th scope="col" *ngIf="getRolValue() === 4 || getRolValue()===3 || getRolValue()===5" >Pst</th>
                         <th scope="col">Responsable</th>
                         <th scope="col">Descripción de actividad</th>
                         <th scope="col">Inicio de actividad</th>
@@ -85,6 +86,7 @@
                 </thead>
                 <tbody>
                     <tr *ngFor="let user of rolesArray; let i = index;">
+                      <td *ngIf="getRolValue() === 4 || getRolValue()===3 || getRolValue()===5" >{{user.NOMBRE_PST || user.NOMBRE_RESPONSABLE}}</td>
                         <td *ngIf="caracteristicaIndice!=i">{{ user?.NOMBRE_RESPONSABLE | titlecase}}</td>
                         <!-- **cuando edita**  -->
                         <td *ngIf="caracteristicaIndice ==i">
@@ -133,7 +135,7 @@
                         </select>
                         </td>
                         <td><i class="fa fa-circle" [ngStyle]="{'color': user.statecolor}"></i></td>
-                        <td>
+                        <td *ngIf="getRolValue() !== 4 && getRolValue() !== 5">
                             <a title="Editar" (click)="fnActivityEdit(i)" *ngIf="caracteristicaIndice!=i" >
                                 <i class="fa-solid fa-pen" style="color: #06543c;"></i>
                             </a>
@@ -158,7 +160,7 @@
             </p>
         </div>
     </div>
-     <!-- paginacion -->
+    <!-- paginacion -->
   <footer class="page-style">
     <div class="container-label">
       <label class="paginas">  Página: {{ pages }} / {{ totalPaginas }} Mostrando: {{ totalRegistros }}  Registros: {{ datatotal }} </label>
@@ -181,9 +183,7 @@
   </footer>
 </div>
 <app-app-footer></app-app-footer>
-
 <app-modal></app-modal> 
-
 <!-- Modal -->
 <div class="modal modal-dialog-centered" tabindex="-1" role="dialog" *ngIf="showModal" [ngClass]="{'show': showModal}" style="display: block;">
   <div class="modal-dialog modal-dialog-centered" role="document">

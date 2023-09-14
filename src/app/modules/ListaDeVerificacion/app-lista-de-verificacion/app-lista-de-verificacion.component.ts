@@ -325,6 +325,14 @@ export class AppListaDeVerificacionComponent {
     this.selectedLeaderCargo = filterLider[0]?.CARGO;
   }
 
+  getRolValue(): number {
+    const rol = localStorage.getItem('rol');
+    if (rol && !isNaN(Number(rol))) {
+      return Number(rol);
+    }
+    return 0;
+  }
+
   getActualDate() {
     let date = new Date();
     let day = date.getDate().toString().padStart(2, '0');

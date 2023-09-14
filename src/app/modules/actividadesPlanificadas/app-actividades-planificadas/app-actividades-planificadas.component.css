@@ -24,8 +24,21 @@ h1{
     flex-direction: column;
     margin: 1vh 0.5vw;
 }
+
+.btn {
+        background: #068460;
+        color: white;
+        border-radius: 15px;
+        width: 161px;
+        height: 36px;
+        border: 1px solid white;
+        cursor: pointer;
+        margin: 0 2vw 3vh 2vw;
+        padding: 0;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
 .table-gestion {
-    width: 77vw;
+    width: 75vw;
     /* font-size: 16px; */
     font-family: 'Work Sans', sans-serif;
     min-width: 450px;

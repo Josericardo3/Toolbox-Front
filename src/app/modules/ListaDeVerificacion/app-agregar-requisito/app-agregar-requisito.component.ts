@@ -75,5 +75,11 @@ export class AppAgregarRequisitoComponent {
     event.preventDefault();
   }
 
-
+  getRolValue(): number {
+    const rol = localStorage.getItem('rol');
+    if (rol && !isNaN(Number(rol))) {
+      return Number(rol);
+    }
+    return 0;
+  }
 }

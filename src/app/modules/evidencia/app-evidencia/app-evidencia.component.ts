@@ -311,4 +311,12 @@ export class AppEvidenciaComponent implements OnInit{
     }
   }
 
+  getRolValue(): number {
+    const rol = localStorage.getItem('rol');
+    if (rol && !isNaN(Number(rol))) {
+      return Number(rol);
+    }
+    return 0;
+  }
+
 }

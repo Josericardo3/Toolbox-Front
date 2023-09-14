@@ -7,6 +7,7 @@ import * as fromRoot from 'src/app/state/reducer/example.reducer'
 import { AppState } from 'src/app/state/selectors/app.state'
 import { ModalService } from 'src/app/messagemodal/messagemodal.component.service'
 import { ApiService } from 'src/app/servicios/api/api.service';
+import { debounce } from 'lodash'
 
 
 //@Injectable()
@@ -54,6 +55,20 @@ export class AppDashboardComponent implements OnInit {
 
   result: boolean = false;
   resultNoticia: boolean = false;
+  
+  //Permisos
+  AccesoCaracterizacion : boolean = true; 
+  AccesoDiagnostico : boolean = true; 
+  AccesoPlanificacion: boolean = true; 
+  AccesoDocumentacion : boolean = true; 
+  AccesoELearning: boolean = true; 
+  AccesoNoticias : boolean = true; 
+  AccesoAuditoria: boolean = true; 
+  AccesoEvidencia : boolean = true; 
+  AccesoGerencia : boolean = true; 
+  AccesoKpi : boolean = true; 
+  AccesoMejora : boolean = true; 
+  AccesoMonitorizacion : boolean = true;
 
   constructor(
     //PG private store: Store<{ initialState:any }>,
@@ -64,6 +79,46 @@ export class AppDashboardComponent implements OnInit {
   }
   normaDiadnostico: any = {};
   ngOnInit(): void {
+
+    this.ApiService.getUsuarioPermisoPerfil(this.userRol).subscribe(dataPermiso => {
+
+      if(dataPermiso[0].PLANIFICACION_DIAGNOSTICO === "x"){
+        this.AccesoPlanificacion = false;
+      }
+      if(dataPermiso[0].EVIDENCIA_IMPLEMENTACION === "x"){
+        this.AccesoEvidencia = false;
+      }
+      if(dataPermiso[0].FORMACION_ELEARNING === "x"){
+        this.AccesoELearning = false;
+      }
+      if(dataPermiso[0].NOTICIAS === "x"){
+        this.AccesoNoticias = false;
+      }
+      if(dataPermiso[0].DOCUMENTACION === "x"){
+        this.AccesoDocumentacion = false;
+      }
+      if(dataPermiso[0].ALTA_GERENCIA === "x"){
+        this.AccesoGerencia = false;
+      }
+      if(dataPermiso[0].MEDICION_KPIS === "x"){
+        this.AccesoKpi = false;
+      }
+      if(dataPermiso[0].AUDITORIA_INTERNA === "x"){
+        this.AccesoAuditoria = false;
+      }
+      if(dataPermiso[0].MEJORA_CONTINUA === "x"){
+        this.AccesoMejora = false;
+      }
+      if(dataPermiso[0].MONITORIZACION === "x"){
+        this.AccesoMonitorizacion = false;
+      }
+      if(dataPermiso[0].CARACTERIZACION === "x"){
+        this.AccesoCaracterizacion = false;
+      }
+      if(dataPermiso[0].DIAGNOSTICO === "x"){
+        this.AccesoDiagnostico = false;
+      }
+    });
     this.showModal = false;
     this.existingRoutes = this.router.config.map(route => route.path);
     //borrar
@@ -169,6 +224,7 @@ export class AppDashboardComponent implements OnInit {
   }
 
   menuFilter(evt: any) { //redireccionar
+  
     if (this.validateRol(evt)) {// condicional cuando sí tiene acceso
       evt.target.src = '../../../../assets/img-dashboard/' + evt.target.id + '-3.svg';
       switch (evt.target.id) {

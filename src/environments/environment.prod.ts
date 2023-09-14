@@ -5,10 +5,10 @@ export const environment = {
   //apiURL:'https://toolbox31-001-site1.btempurl.com',
   //apiURL:'https://toolbox3-001-site1.etempurl.com',
   // // apiURLNuevo:'https://www.inti.somee.com',
-  apiURLNuevo:'https://172.18.72.20:8051',
+  apiURLNuevo:'https://cajadeherramientasqaapi.mincit.gov.co',
   // apiURL:'https://www.inti.somee.com',
 
-   apiURL: 'https://172.18.72.20:8051',
+   apiURL: 'https://cajadeherramientasqaapi.mincit.gov.co',
   //WapiURLNuevo:'https://10.4.3.140:8055',
   //apiURLNuevo:'https://localhost:8055',
   //apiURL: 'https://toolbox31-001-site1.btempurl.com',

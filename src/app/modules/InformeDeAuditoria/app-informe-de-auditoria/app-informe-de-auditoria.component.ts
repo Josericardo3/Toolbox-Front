@@ -78,7 +78,7 @@ export class AppInformeDeAuditoriaComponent {
       this.selectedProceso = data; 
       this.selectedProceso.EQUIPO_AUDITOR = this.selectedProceso.EQUIPO_AUDITOR.replace(/,/g,", ");
       //pinta el proceso
-      this.nuevoProceso = this.selectedProceso?.PROCESOS[0].PROCESO_DESCRIPCION;
+      this.nuevoProceso = this.selectedProceso?.PROCESOS[0]?.PROCESO_DESCRIPCION;
       const tableAudit =  document.querySelector('#table_proceso') as HTMLInputElement;
       const tableListaDeVerificacion =  document.querySelector('#formAuditoria') as HTMLInputElement;
       tableAudit.style.display = "none";
@@ -494,6 +494,12 @@ pageChangedReq(event: any): void {
   this.arrRequisito = this.contentArrayReq.slice(startItem, endItem)
 
 }
-
+getRolValue(): number {
+  const rol = localStorage.getItem('rol');
+  if (rol && !isNaN(Number(rol))) {
+    return Number(rol);
+  }
+  return 0;
+}
 }
 

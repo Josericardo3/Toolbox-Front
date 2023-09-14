@@ -9,11 +9,11 @@ export class Categoria {
     tipo:[
       {
         id:1 ,
-        name:'GUIA DE TURISMO'
+        name:'GUIAS DE TURISMO'
       },
       {
         id:2 ,
-        name:'EMPRESA DE TRANSPORTE TERRESTRE AUTOMOTOR'
+        name:'EMPRESAS DE TRANSPORTE TERRESTRE AUTOMOTOR'
       },
       {
         id:3 ,
@@ -21,7 +21,7 @@ export class Categoria {
       },
       {
         id:4 ,
-        name:'ESTABLECIMIENTOS DE ALOJAMIENTO TURISTICO'
+        name:'ESTABLECIMIENTOS DE ALOJAMIENTO TURÍSTICO'
       },
       {
         id:5 ,
@@ -41,7 +41,7 @@ export class Categoria {
       },
       {
         id:9 ,
-        name:'VIVIENDA TURISTICA'
+        name:'VIVIENDAS TURÍSTICAS'
       },
     ],
     agencias:[
@@ -193,7 +193,7 @@ export class Categoria {
       {
         id:30,
         id_categoria:9,
-        name: 'APARTAMENTOS TURISTICOS'
+        name: 'APARTAMENTO TURISTICO'
       },
       {
         id:31,

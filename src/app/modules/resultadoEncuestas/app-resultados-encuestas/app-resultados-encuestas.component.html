@@ -2,7 +2,7 @@
 <div class="containerResultadosEncuestas">
     <div class="titulo">
         <h1>Resultados de encuestas</h1>
-        <app-app-header-arrow-left></app-app-header-arrow-left>
+        <app-app-header-arrow-left [redirectToDashboard]="true"></app-app-header-arrow-left>
     </div>
     <div class="resultados">
         <app-app-menu-alta-gerencia></app-app-menu-alta-gerencia>
@@ -17,9 +17,9 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td></td>
-                        <td></td>
+                    <tr *ngFor="let campo of arrayEncuestas;let i = index">
+                        <td>{{campo.TITULO}}</td>
+                        <td>{{campo.NUM_ENCUESTADOS}}</td>
                         <td>
                             <a title="Editar" (click)="showModal = true">
                                 <i class="fa-solid fa-eye" style="color: #06543c; cursor: pointer;"></i>

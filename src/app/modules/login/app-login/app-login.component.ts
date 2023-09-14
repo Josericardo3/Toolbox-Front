@@ -87,11 +87,12 @@ export class AppLoginComponent implements OnInit {
     }
   }
 
-  onLogin() {
+  async onLogin() {
     this.usuario.correo = this.loginForm.get("correo")?.value;
     this.usuario.registroNacionalDeTurismo = this.loginForm.get(
       "registroNacionalDeTurismo"
     )?.value;
+
     this.usuario.correo = this.loginForm.get("correo")?.value;
     this.usuario.pass = this.loginForm.get("pass")?.value;
     this.usuario.pass = reemplazarCaracteresEspeciales(this.usuario.pass);
@@ -99,12 +100,22 @@ export class AppLoginComponent implements OnInit {
     this.ApiService.login(this.usuario).subscribe(
       
       (data: any) => {
+        this.ApiService.ValidateRntMincit(this.usuario.registroNacionalDeTurismo).subscribe((datarnt: any) => {
+          if (datarnt.error) {
+            const title = "Error";
+            const message = datarnt.error.message;
+            this.Message.showModal(title, message);
+            return;
+          }
+        }
+        );
         const request = {
           FK_ID_USUARIO: data.ID_USUARIO,
           TIPO: "Login",
           MODULO: "login"
          };
         this.ApiService.postMonitorizacionUsuario(request).subscribe();
+      
        //PARA TOMAR TIPO_USUARIO
         localStorage.setItem("TIPO_USUARIO", data.Grupo[0].TIPO_USUARIO);
         if (data.Grupo[0].TIPO_USUARIO === 2 || data.Grupo[0].TIPO_USUARIO === 8) {
@@ -131,7 +142,7 @@ export class AppLoginComponent implements OnInit {
               "idCategoria",
               JSON.stringify(this.arrNormas[0].FK_ID_CATEGORIA_RNT));
         });
-        if (data.Grupo[0].ITEM === 1 || data.Grupo[0].ITEM === 6 || data.Grupo[0].ITEM === 7 || data.Grupo[0].ITEM === 3 || data.Grupo[0].ITEM === 4 ) {
+        if (data.Grupo[0].ITEM === 1 || data.Grupo[0].ITEM === 6 || data.Grupo[0].ITEM === 7 || data.Grupo[0].ITEM === 3 || data.Grupo[0].ITEM === 4 || data.Grupo[0].ITEM === 5 ) {
           this.ApiService.validateCaracterizacion(data.ID_USUARIO).subscribe(
             (response) => {
               if (response) {

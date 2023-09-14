@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../servicios/api/api.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-app-resultados-auditoria',
@@ -24,7 +25,8 @@ export class AppResultadosAuditoriaComponent implements OnInit{
   currentPage: number = 1
 
   constructor(
-    public api: ApiService
+    public api: ApiService,
+    public router: Router,
   ) {}
 
   ngOnInit(){
@@ -116,6 +118,13 @@ export class AppResultadosAuditoriaComponent implements OnInit{
     // Asegúrate de que startItem y endItem no excedan los límites del array datos1
     this.estadoArray = this.cortarDatos.slice(startItem, Math.min(endItem, this.datos1.length));
     this.totalRegistros = this.estadoArray.length;
+  }
+  getRolValue(): number {
+    const rol = localStorage.getItem('rol');
+    if (rol && !isNaN(Number(rol))) {
+      return Number(rol);
+    }
+    return 0;
   }
   
 }

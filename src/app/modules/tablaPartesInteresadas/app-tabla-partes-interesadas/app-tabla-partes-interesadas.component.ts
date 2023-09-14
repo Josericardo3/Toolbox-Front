@@ -9,6 +9,12 @@ ApiService
 })
 export class AppTablaPartesInteresadasComponent {
   datos: any = [];
+  orden : string;
+  necesidades : string;
+  expectativa : string;
+  estadoC : string;
+  observacion : string;
+  accion : string;
 
   constructor(
     public api: ApiService
@@ -16,8 +22,28 @@ export class AppTablaPartesInteresadasComponent {
 
   ngOnInit(){
     this.getTable();
-  }
 
+    this.api.getFormsParteInteresada()
+    .subscribe((data: any) => {
+      this.datos = data.RESPUESTA_GRILLA;
+      if(this.datos.length!= 0){
+        const obj = this.datos.filter((item) => item.PREGUNTA === "interesada");
+        this.orden= obj[0].RESPUESTA;
+        const necesidad = this.datos.filter((item) => item.PREGUNTA === "necesidades");
+        this.necesidades = necesidad[0].RESPUESTA;
+        const expectativa = this.datos.filter((item) => item.PREGUNTA === "expectativas");
+        this.expectativa = expectativa[0].RESPUESTA;
+        const estadoC = this.datos.filter((item) => item.PREGUNTA === "estadoCumplimiento");
+        this.estadoC = estadoC[0].RESPUESTA;
+        const observacion = this.datos.filter((item) => item.PREGUNTA === "observaciones");
+        this.observacion = observacion[0].RESPUESTA;
+        const accion = this.datos.filter((item) => item.PREGUNTA === "acciones");
+        this.accion = accion[0].RESPUESTA;
+      }
+    })
+   
+   
+  }
   getTable(){
     this.api.getFormsParteInteresada()
     .subscribe(data => {

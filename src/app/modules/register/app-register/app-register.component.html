@@ -1,7 +1,7 @@
 
 <app-app-header></app-app-header> 
 <div id="registerContainer" class="registerContainer">
-  <div class="registre"  >
+  <div class="registre">
     <h1>Registrar Nuevo Prestador</h1>
     <form
       class="formRegister"
@@ -9,13 +9,7 @@
       (ngSubmit)="saveUser()"
     >
     <div class="registro">
-      <label>Número de identificación tributaria</label>
-      <input
-        type="number"
-        placeholder="Número de identificación tributaria"
-        size="28"
-        formControlName="numeroDeIdentificacionTributaria"
-      />
+      
       <label>Registro Nacional de Turismo</label>
       <div class="rnt-div" >
         <!--<div class="rnt-icon" *ngIf="showCheckRnt">
@@ -32,10 +26,19 @@
         placeholder="Registro Nacional de Turismo"  
         formControlName="registroNacionalDeTurismo"
         appNumeros 
-        (change)="verificarRnt($event)">
+        (change)="verificarRnt($event)"
+        >
         <a class="validar-button" style="background-color: #068460; color: white; padding: 5px;" (click)="validarRnt()">Validar</a>
       </div>
-    </div>
+      </div>
+      <label>Número de identificación tributaria</label>
+        <input class="formmincit"
+          type="number"
+          placeholder="Número de identificación tributaria"
+          size="28"
+          formControlName="numeroDeIdentificacionTributaria"
+          [ngClass]="{ 'dark-input': accionDisabled  }"
+          />
 
       <div *ngIf="!showCheckRnt">
         <label class="control-error textDanger">
@@ -49,7 +52,7 @@
       <div class="selectDepar select-botton">
         <div class="select-value ">
           <label>Categoría RNT</label>
-          <select name="select" id="selectCategoria"  formControlName="categoriaRnt" (change)="onLoadCategory($event)" >
+          <select name="select" id="selectCategoria"  formControlName="categoriaRnt" (change)="onLoadCategory($event)"     [ngClass]="{ 'dark-input': accionDisabled  }"          >
             <option value="" selected>Seleccionar categoría</option>
             <option *ngFor="let element of data" [ngValue]="element">{{element.name}}</option>
           </select>
@@ -62,6 +65,7 @@
             name="select"
             id="1"
             formControlName="subcategoriaRnt"
+            [ngClass]="{ 'dark-input': accionDisabled  }"
           >  
           <option value="" selected>Seleccionar subcategoría</option>
           <option *ngFor="let element of arrAgency"[ngValue]="element" >{{element.name}}</option>
@@ -74,12 +78,14 @@
         appLetras
         placeholder="Nombre del PST"
         formControlName="nombreDelPst"
+        [ngClass]="{ 'dark-input': accionDisabled  }"
       />
       <label>Razón Social del PST</label>
       <input
         type="text"
         placeholder="Razón Social del PST"
-        formControlName="razonSocialDelPst"      
+        formControlName="razonSocialDelPst"  
+        [ngClass]="{ 'dark-input': accionDisabled  }"
       />
       <label>Correo del PST</label>
       <div class="email-div">
@@ -90,7 +96,9 @@
           <span class='iconFaXmark'><i class="fa-solid fa-xmark"></i></span>
         </div>
         <input type="email" placeholder="Correo del PST" formControlName="correo"
-       (change)="verificarCorreo($event)" >
+       (change)="verificarCorreo($event)" 
+       [ngClass]="{ 'dark-input': accionDisabled  }"
+       >
       </div>
       <div *ngIf="!showCheck">
         <label class="control-error textDanger">
@@ -118,7 +126,9 @@
         maxlength="10" 
         formControlName="telefono"  
         placeholder="Ingresa tu número de teléfono" 
-        (change)="verificarPhone($event)">
+        (change)="verificarPhone($event)"
+        [ngClass]="{ 'dark-input': accionDisabled  }"
+        >
       </div>
       <div *ngIf="!showCheckPhone">
         <label class="control-error textDanger">
@@ -138,12 +148,14 @@
         appLetras
         placeholder="Nombre del representate Legal"
         formControlName="nombreDelRepresenteLegal"
+        [ngClass]="{ 'dark-input': accionDisabled  }"
       />
       <label class="control-error">Correo del representate Legal</label>
       <input
         type="email"
         placeholder="Correo del representate Legal"
         formControlName="correoRepresentanteLegal"
+        [ngClass]="{ 'dark-input': accionDisabled  }"
       />
       <label
         class="control-error textDanger"
@@ -155,7 +167,10 @@
       </label>
       <br>
       <label>Teléfono del Representante Legal</label>
-      <input type="text" formControlName="telefonoDelRepresentanteLegal"  maxlength="10"  appNumeros placeholder="Teléfono del Representante Legal">
+      <input type="text" formControlName="telefonoDelRepresentanteLegal"  maxlength="10"  
+      appNumeros placeholder="Teléfono del Representante Legal"
+      [ngClass]="{ 'dark-input': accionDisabled  }"
+      >
       <label
        class="control-error textDanger"
        *ngIf="
@@ -170,6 +185,7 @@
         <select
           name="select"
           formControlName="tipoDeIdentificacionDelRepresentanteLegal"
+          [ngClass]="{ 'dark-input': accionDisabled  }"
           >
           <option value="CEDULA DE CIUDADANIA">Cédula de Ciudadanía</option>
           <option value="CEDULA DE EXTRANJERIA">Cédula de Extranjería</option>
@@ -184,16 +200,21 @@
         type="text"
         placeholder="Identificación del Representante Legal"
         formControlName="identificacionDelRepresentanteLegal"
+        [ngClass]="{ 'dark-input': accionDisabled  }"
       />
       <div class="selectDepar select-botton">
         <div class="select-value">
           <label>Departamento</label>
-          <select  id="selectDepartment" name="select" formControlName="departamento" (change)="setDepartments($event)" >
+          <select  id="selectDepartment" name="select" formControlName="departamento" (change)="setDepartments($event)" 
+          [ngClass]="{ 'dark-input': accionDisabled  }"
+          >
           </select>
         </div>
         <div class="select-value select-margin margin-div padding-label">
           <label>Municipio</label>
-          <select id="selectMunicipality" name="select" formControlName="municipio">
+          <select id="selectMunicipality" name="select" formControlName="municipio"
+          [ngClass]="{ 'dark-input': accionDisabled  }"
+          >
           </select>
         </div>
       </div>
@@ -203,12 +224,14 @@
         appLetras
         placeholder="Nombre del Responsable de Sostenibilidad"
         formControlName="nombreDelResponsableDeSostenibilidad"
+        [ngClass]="{ 'dark-input': accionDisabled  }"
       />
       <label>Correo del Responsable de Sostenibilidad</label>
       <input
         type="email"
         placeholder="Correo del Responsable de Sostenibilidad"
         formControlName="correoDelResponsableDeSostenibilidad"
+        [ngClass]="{ 'dark-input': accionDisabled  }"
       />
       <label
         class="control-error textDanger"
@@ -217,12 +240,16 @@
             'correoDelResponsableDeSostenibilidad'
           ].hasError('pattern')
         "
+        [ngClass]="{ 'dark-input': accionDisabled  }"
       >
         Debe contener un correo válido
       </label>
       <br>
       <label>Teléfono del Responsable de Sostenibilidad</label>
-      <input type="text" formControlName="telefonoDelResponsableDeSostenibilidad"  maxlength="10"  appNumeros placeholder="Teléfono del Responsable de Sostenibilidad">
+      <input type="text" formControlName="telefonoDelResponsableDeSostenibilidad"  maxlength="10" 
+       appNumeros placeholder="Teléfono del Responsable de Sostenibilidad"
+       [ngClass]="{ 'dark-input': accionDisabled  }"
+       >
       <label
        class="control-error textDanger"
        *ngIf="
@@ -240,9 +267,10 @@
               <i class="fas fa-eye-slash"></i>
             </span>
           </div>
-        <input type="password" formControlName="password1" placeholder="Ingrese contraseña" id="passRegister" required="required" class="passLogin">
-
-
+        <input type="password" formControlName="password1" 
+        placeholder="Ingrese contraseña" id="passRegister" required="required" class="passLogin"
+        [ngClass]="{ 'dark-input': accionDisabled  }"
+        >
             <label 
             class="textDanger"
             *ngIf="
@@ -306,7 +334,10 @@
           <div class="eye">
             <span class='iconEye' (click)="seePasswordRegister2()"><i class="fas fa-eye-slash"></i></span>
         </div>
-        <input type="password" formControlName="confirmPassword" required="required" placeholder="Ingrese contraseña" id="passRegister2" class="passLogin">
+        <input type="password" formControlName="confirmPassword" required="required"
+         placeholder="Ingrese contraseña" id="passRegister2" class="passLogin"
+         [ngClass]="{ 'dark-input': accionDisabled  }"
+         >
 
           <label
             class="control-error"

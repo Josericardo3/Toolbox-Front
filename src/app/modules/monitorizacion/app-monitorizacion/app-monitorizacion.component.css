@@ -90,6 +90,7 @@ h1{
     cursor: pointer;
     background-image: none;
     border-radius: 4px;
+    margin-top: 0!important;
   }
   .btn{
     display: flex;

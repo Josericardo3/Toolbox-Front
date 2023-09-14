@@ -64,20 +64,15 @@ h1{
     display: flex;
     align-self: flex-end;
 }
-.agregar,
-.eliminarBoton{
+.agregar{
     border: none;
     background-color: #FFFFFF;
     font-family: 'Work Sans', sans-serif;
-    font-size: 15px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.15);
-    width: 13vw;
-    height: 6vh;
+    font-size: 1.05vw;
+    width: 6vw;
+    height: 3vh;
     border-radius: 10px;
-    margin: 1vh 2vw 4vh 1vw;
-}
-.eliminarBoton{
-    margin: 1vh 2vw 4vh 0 !important;
+    margin: 0 2vw 4vh 0;
 }
 .compartir{
     margin: 1vh 3vw;
@@ -92,4 +87,7 @@ h1{
     border: none;
     cursor: pointer;
     align-self: flex-end;
+}
+.menu{
+    margin: 6vh 0 0 0
 }

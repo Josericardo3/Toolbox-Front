@@ -2,7 +2,7 @@
 <div class="containerResultadosAuditoria">
     <div class="titulo">
         <h1>Resultados de auditoría</h1>
-        <app-app-header-arrow-left></app-app-header-arrow-left>
+        <app-app-header-arrow-left [redirectToDashboard]="true"></app-app-header-arrow-left>
     </div>
     <div class="resultados">
         <app-app-menu-alta-gerencia></app-app-menu-alta-gerencia>
@@ -30,7 +30,7 @@
                         <td>{{ datos2[item.ID_AUDITORIA]?.ALCANCE }}</td>
                         <td>{{ item.ESTADO_AUDITORIA }}</td>
                         <td><i class="fa fa-circle" [ngStyle]="{'color': item.statecolor}"></i></td>
-                        <td>
+                        <td *ngIf="getRolValue() !== 4 && getRolValue() !==5">
                             <a title="Editar" routerLink="/listaDeVerificacion" routerLinkActive="activebutton">
                                 <i class="fa-solid fa-pen" style="color: #06543c;"></i>
                             </a>

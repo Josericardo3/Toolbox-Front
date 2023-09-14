@@ -21,11 +21,11 @@ h1{
 }
 .compartir{
     margin: 1vh 1vw;
-    height: 40px;
+    height: 6vh;
     width: 180px;
     padding: 5px;
     background-color: #068460;
-    border-radius: 100px;
+    border-radius: 15px;
     color: #FFFFFF;
     font-family: 'Work Sans', sans-serif;
     font-size: 16px;
@@ -85,17 +85,24 @@ h1{
     justify-content: flex-end;
 }
 .buscador{
-    margin: 2vh 0.5vw 2vh 0;
+    margin: 1vh 1vw;
     background: #FFFFFF;
     border: 2px solid #068460;
     border-radius: 10px;
-    height: 40px;
+    height: 6vh;
     padding: 5px;
     width: 30vw;
     font-family: 'Work Sans', sans-serif;
     font-size: 14px;
     color: #000000;
     align-self: flex-end;
+}
+.menu{
+    margin: 6vh 0 0 0
+}
+.top{
+    display: flex;
+    justify-content: flex-end;
 }
 /* pagination */
 .page-style {

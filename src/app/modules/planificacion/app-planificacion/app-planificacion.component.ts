@@ -6,7 +6,7 @@ import { ModalService } from 'src/app/messagemodal/messagemodal.component.servic
 import { HttpClient } from '@angular/common/http';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ChangeDetectorRef } from '@angular/core';
-import { Console } from 'console';
+import { Console, debug } from 'console';
 
 @Component({
   selector: 'app-app-planificacion',
@@ -129,6 +129,7 @@ export class AppPlanificacionComponent {
     this.ApiService.getActivities().subscribe((data) => {
       this.rolesArraytemp = data;
       this.dataInitial = data;
+      console.log(this.dataInitial);
       for (let i = 0; i < this.rolesArraytemp.length; i++) {
         if (this.rolesArraytemp[i].ESTADO_PLANIFICACION.toLowerCase() == "programado") {
           this.rolesArraytemp[i].statecolor = '#f5970a';
@@ -143,6 +144,7 @@ export class AppPlanificacionComponent {
           this.rolesArraytemp[i].statecolor = '#068460';
         }
       }
+      debugger;
       this.rolesArray = this.rolesArraytemp;
 
       //paginado
@@ -164,10 +166,20 @@ export class AppPlanificacionComponent {
   }
 
   fnListResponsible() {
-    this.ApiService.getListResponsible().subscribe((data) => {
-      this.arrayListResponsible = data;
-
-    })
+    const idPerfil = this.getRolValue();
+    if(idPerfil == 3){
+      this.ApiService.getPSTSelect().subscribe((data) => {
+        this.arrayListResponsible = data;
+  
+      })
+    }else{
+      this.ApiService.getListResponsible().subscribe((data) => {
+        this.arrayListResponsible = data;
+  
+      })
+    }
+    debugger;
+ 
   }
 
   fnTypeOfActivity() {
@@ -479,6 +491,13 @@ export class AppPlanificacionComponent {
 
     this.cd.detectChanges();
 
+  }
+  getRolValue(): number {
+    const rol = localStorage.getItem('rol');
+    if (rol && !isNaN(Number(rol))) {
+      return Number(rol);
+    }
+    return 0;
   }
 
 }

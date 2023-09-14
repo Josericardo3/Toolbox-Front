@@ -8,6 +8,8 @@ import 'jquery-ui/ui/widgets/dialog.js'
 import { Categoria } from '../../../utils/constants'
 import { ModalService } from '../../../messagemodal/messagemodal.component.service';
 import { debug } from 'console'
+import { timeInterval } from 'rxjs'
+import { TimeInterval } from 'rxjs/internal/operators/timeInterval'
 
 
 @Component({
@@ -26,6 +28,7 @@ export class AppRegisterComponent implements OnInit {
   selectedCategory: any; 
   mostrarErrorCorreo: any;
   arrAgency: any;
+  accionDisabled: boolean = true;
   public registerForm!: FormGroup;
   private emailPattern: any = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
   constructor(
@@ -42,7 +45,6 @@ export class AppRegisterComponent implements OnInit {
     localStorage.removeItem("newUser")
     this.data = this.categoria.name.tipo
     this.setDepartments('')
-    
     this.registerForm = this.formBuilder.group(
       {
         telefono: [
@@ -122,8 +124,21 @@ export class AppRegisterComponent implements OnInit {
         validator: CustomValidators.comparePassword,
       },
     )
-  }
+    this.deshabilitarCampos(true);
 
+  }
+  deshabilitarCampos(deshabilitar: boolean) {
+    if (deshabilitar) {
+      // Deshabilita todos los controles del formulario
+      this.registerForm.disable();
+      this.registerForm.get('registroNacionalDeTurismo').enable();
+      this.accionDisabled = true;
+    } else {
+      // Habilita todos los controles del formulario
+      this.registerForm.enable();
+      this.accionDisabled = false;
+    }
+  }
   normalizeString(str: string): string {
     return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
   }
@@ -294,10 +309,24 @@ export class AppRegisterComponent implements OnInit {
           const title = "Error";
           const message = data.error.message;
           this.Message.showModal(title, message);
+
+          this.registerForm.get('correo').setValue('');
+          this.registerForm.get('numeroDeIdentificacionTributaria').setValue('');
+          this.registerForm.get('razonSocialDelPst').setValue('');
+          this.registerForm.get('telefono').setValue('');
+          this.registerForm.get('nombreDelRepresenteLegal').setValue('');
+          this.registerForm.get('categoriaRnt').setValue('');
+          this.registerForm.get('subcategoriaRnt').setValue('');
+
+          this.registerForm.get('departamento').setValue('');
+          this.registerForm.get('municipio').setValue('');
+          this.deshabilitarCampos(true);
         }
         else {
           this.datosRnt = data;
           console.log(data);
+          this.deshabilitarCampos(false);
+
           //aqui debo mandar el subcategoria filtrado
           this.registerForm.get('correo').setValue(this.datosRnt?.correo_electronico_prestador);
           this.registerForm.get('numeroDeIdentificacionTributaria').setValue(this.datosRnt?.numero_identificacion);
@@ -306,7 +335,7 @@ export class AppRegisterComponent implements OnInit {
           this.registerForm.get('nombreDelRepresenteLegal').setValue(this.datosRnt?.nombre_representante_legal);
           const selectedIndex = this.data.findIndex(element => element.name === this.datosRnt?.categoria);
 
-          const selectedcategory = this.data.find(element => element.name === this.datosRnt?.categoria);
+          const selectedcategory = this.data.find(element => this.normalizeString(element.name) === this.normalizeString(this.datosRnt?.categoria));
           const categoryelectedid =selectedcategory?.id;
 
         // Si se encontró el índice, establece el valor seleccionado en el campo de selección
@@ -318,13 +347,11 @@ export class AppRegisterComponent implements OnInit {
               agency.id_categoria === categoryelectedid
           )
           this.arrAgency = filterCategory.sort();
-          const selectedIndexSub = this.arrAgency.findIndex(element => element.name === this.datosRnt?.subcategoria);
+          const selectedIndexSub = this.arrAgency.findIndex(element => this.normalizeString(element.name) === this.normalizeString(this.datosRnt?.subcategoria));
           if (selectedIndexSub !== -1) {
             this.registerForm.get('subcategoriaRnt').setValue(this.arrAgency[selectedIndexSub]);
           }
 
-
-          this.registerForm.get('tipoDeIdentificacionDelRepresentanteLegal').setValue(this.datosRnt?.descripcion_identificacion);
                       
       let selectDepartments = document.getElementById('selectDepartment') as HTMLSelectElement
       let nameDepartment;
@@ -336,10 +363,6 @@ export class AppRegisterComponent implements OnInit {
         }
       this.registerForm.get('departamento').setValue(nameDepartment);
       this.setDepartments(nameDepartment);
-
-
-  
-
 
       this.verificarCorreo(this.datosRnt?.correo_electronico_prestador);
       this.verificarPhone(this.datosRnt?.numero_telefonico);

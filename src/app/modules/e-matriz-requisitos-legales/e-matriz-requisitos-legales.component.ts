@@ -213,16 +213,30 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
       const gruposAmbiental = this.datos.filter((ley) => ley.CATEGORIA === 'Ambiental' || ley.CATEGORIA === 'NTC 6496 Ambiental')
       .reduce((acumulador, ley) => {
         const clave = ley.TIPO_NORMATIVIDAD + ley.NUMERO + ley.ANIO;
-        if (!acumulador[clave]) {
+         if (!acumulador[clave]) {
           acumulador[clave] = {
             ...ley,           
             subLeyes: [{
+              ESTADO_CUMPLIMIENTO: ley.ESTADO_CUMPLIMIENTO,
+              RESPONSABLE_CUMPLIMIENTO: ley.RESPONSABLE_CUMPLIMIENTO,
+              DATA_CUMPLIMIENTO: ley.DATA_CUMPLIMIENTO,
+              PLAN_ACCIONES_A_REALIZAR: ley.PLAN_ACCIONES_A_REALIZAR,
+              PLAN_RESPONSABLE_CUMPLIMIENTO: ley.PLAN_RESPONSABLE_CUMPLIMIENTO,
+              PLAN_FECHA_EJECUCION: ley.PLAN_FECHA_EJECUCION,
+              PLAN_ESTADO: ley.PLAN_ESTADO,
               ID_MATRIZ: ley.ID_MATRIZ,
               DOCS_ESPECIFICOS: ley.DOCS_ESPECIFICOS,
             }],
           };
         } else {
           acumulador[clave].subLeyes.push({
+            ESTADO_CUMPLIMIENTO: ley.ESTADO_CUMPLIMIENTO,
+            RESPONSABLE_CUMPLIMIENTO: ley.RESPONSABLE_CUMPLIMIENTO,
+            DATA_CUMPLIMIENTO: ley.DATA_CUMPLIMIENTO,
+            PLAN_ACCIONES_A_REALIZAR: ley.PLAN_ACCIONES_A_REALIZAR,
+            PLAN_RESPONSABLE_CUMPLIMIENTO: ley.PLAN_RESPONSABLE_CUMPLIMIENTO,
+            PLAN_FECHA_EJECUCION: ley.PLAN_FECHA_EJECUCION,
+            PLAN_ESTADO: ley.PLAN_ESTADO,
             ID_MATRIZ: ley.ID_MATRIZ,
             DOCS_ESPECIFICOS: ley.DOCS_ESPECIFICOS,
           });
@@ -238,12 +252,26 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
           acumulador[clave] = {
             ...ley,           
             subLeyes: [{
+              ESTADO_CUMPLIMIENTO: ley.ESTADO_CUMPLIMIENTO,
+              RESPONSABLE_CUMPLIMIENTO: ley.RESPONSABLE_CUMPLIMIENTO,
+              DATA_CUMPLIMIENTO: ley.DATA_CUMPLIMIENTO,
+              PLAN_ACCIONES_A_REALIZAR: ley.PLAN_ACCIONES_A_REALIZAR,
+              PLAN_RESPONSABLE_CUMPLIMIENTO: ley.PLAN_RESPONSABLE_CUMPLIMIENTO,
+              PLAN_FECHA_EJECUCION: ley.PLAN_FECHA_EJECUCION,
+              PLAN_ESTADO: ley.PLAN_ESTADO,
               ID_MATRIZ: ley.ID_MATRIZ,
               DOCS_ESPECIFICOS: ley.DOCS_ESPECIFICOS,
             }],
           };
         } else {
           acumulador[clave].subLeyes.push({
+            ESTADO_CUMPLIMIENTO: ley.ESTADO_CUMPLIMIENTO,
+            RESPONSABLE_CUMPLIMIENTO: ley.RESPONSABLE_CUMPLIMIENTO,
+            DATA_CUMPLIMIENTO: ley.DATA_CUMPLIMIENTO,
+            PLAN_ACCIONES_A_REALIZAR: ley.PLAN_ACCIONES_A_REALIZAR,
+            PLAN_RESPONSABLE_CUMPLIMIENTO: ley.PLAN_RESPONSABLE_CUMPLIMIENTO,
+            PLAN_FECHA_EJECUCION: ley.PLAN_FECHA_EJECUCION,
+            PLAN_ESTADO: ley.PLAN_ESTADO,
             ID_MATRIZ: ley.ID_MATRIZ,
             DOCS_ESPECIFICOS: ley.DOCS_ESPECIFICOS,
           });
@@ -259,12 +287,26 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
           acumulador[clave] = {
             ...ley,           
             subLeyes: [{
+              ESTADO_CUMPLIMIENTO: ley.ESTADO_CUMPLIMIENTO,
+              RESPONSABLE_CUMPLIMIENTO: ley.RESPONSABLE_CUMPLIMIENTO,
+              DATA_CUMPLIMIENTO: ley.DATA_CUMPLIMIENTO,
+              PLAN_ACCIONES_A_REALIZAR: ley.PLAN_ACCIONES_A_REALIZAR,
+              PLAN_RESPONSABLE_CUMPLIMIENTO: ley.PLAN_RESPONSABLE_CUMPLIMIENTO,
+              PLAN_FECHA_EJECUCION: ley.PLAN_FECHA_EJECUCION,
+              PLAN_ESTADO: ley.PLAN_ESTADO,
               ID_MATRIZ: ley.ID_MATRIZ,
               DOCS_ESPECIFICOS: ley.DOCS_ESPECIFICOS,
             }],
           };
         } else {
           acumulador[clave].subLeyes.push({
+            ESTADO_CUMPLIMIENTO: ley.ESTADO_CUMPLIMIENTO,
+            RESPONSABLE_CUMPLIMIENTO: ley.RESPONSABLE_CUMPLIMIENTO,
+            DATA_CUMPLIMIENTO: ley.DATA_CUMPLIMIENTO,
+            PLAN_ACCIONES_A_REALIZAR: ley.PLAN_ACCIONES_A_REALIZAR,
+            PLAN_RESPONSABLE_CUMPLIMIENTO: ley.PLAN_RESPONSABLE_CUMPLIMIENTO,
+            PLAN_FECHA_EJECUCION: ley.PLAN_FECHA_EJECUCION,
+            PLAN_ESTADO: ley.PLAN_ESTADO,
             ID_MATRIZ: ley.ID_MATRIZ,
             DOCS_ESPECIFICOS: ley.DOCS_ESPECIFICOS,
           });
@@ -280,12 +322,26 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
           acumulador[clave] = {
             ...ley,           
             subLeyes: [{
+              ESTADO_CUMPLIMIENTO: ley.ESTADO_CUMPLIMIENTO,
+              RESPONSABLE_CUMPLIMIENTO: ley.RESPONSABLE_CUMPLIMIENTO,
+              DATA_CUMPLIMIENTO: ley.DATA_CUMPLIMIENTO,
+              PLAN_ACCIONES_A_REALIZAR: ley.PLAN_ACCIONES_A_REALIZAR,
+              PLAN_RESPONSABLE_CUMPLIMIENTO: ley.PLAN_RESPONSABLE_CUMPLIMIENTO,
+              PLAN_FECHA_EJECUCION: ley.PLAN_FECHA_EJECUCION,
+              PLAN_ESTADO: ley.PLAN_ESTADO,
               ID_MATRIZ: ley.ID_MATRIZ,
               DOCS_ESPECIFICOS: ley.DOCS_ESPECIFICOS,
             }],
           };
         } else {
           acumulador[clave].subLeyes.push({
+            ESTADO_CUMPLIMIENTO: ley.ESTADO_CUMPLIMIENTO,
+            RESPONSABLE_CUMPLIMIENTO: ley.RESPONSABLE_CUMPLIMIENTO,
+            DATA_CUMPLIMIENTO: ley.DATA_CUMPLIMIENTO,
+            PLAN_ACCIONES_A_REALIZAR: ley.PLAN_ACCIONES_A_REALIZAR,
+            PLAN_RESPONSABLE_CUMPLIMIENTO: ley.PLAN_RESPONSABLE_CUMPLIMIENTO,
+            PLAN_FECHA_EJECUCION: ley.PLAN_FECHA_EJECUCION,
+            PLAN_ESTADO: ley.PLAN_ESTADO,
             ID_MATRIZ: ley.ID_MATRIZ,
             DOCS_ESPECIFICOS: ley.DOCS_ESPECIFICOS,
           });
@@ -303,12 +359,26 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
           acumulador[clave] = {
             ...ley,           
             subLeyes: [{
+              ESTADO_CUMPLIMIENTO: ley.ESTADO_CUMPLIMIENTO,
+              RESPONSABLE_CUMPLIMIENTO: ley.RESPONSABLE_CUMPLIMIENTO,
+              DATA_CUMPLIMIENTO: ley.DATA_CUMPLIMIENTO,
+              PLAN_ACCIONES_A_REALIZAR: ley.PLAN_ACCIONES_A_REALIZAR,
+              PLAN_RESPONSABLE_CUMPLIMIENTO: ley.PLAN_RESPONSABLE_CUMPLIMIENTO,
+              PLAN_FECHA_EJECUCION: ley.PLAN_FECHA_EJECUCION,
+              PLAN_ESTADO: ley.PLAN_ESTADO,
               ID_MATRIZ: ley.ID_MATRIZ,
               DOCS_ESPECIFICOS: ley.DOCS_ESPECIFICOS,
             }],
           };
         } else {
           acumulador[clave].subLeyes.push({
+            ESTADO_CUMPLIMIENTO: ley.ESTADO_CUMPLIMIENTO,
+            RESPONSABLE_CUMPLIMIENTO: ley.RESPONSABLE_CUMPLIMIENTO,
+            DATA_CUMPLIMIENTO: ley.DATA_CUMPLIMIENTO,
+            PLAN_ACCIONES_A_REALIZAR: ley.PLAN_ACCIONES_A_REALIZAR,
+            PLAN_RESPONSABLE_CUMPLIMIENTO: ley.PLAN_RESPONSABLE_CUMPLIMIENTO,
+            PLAN_FECHA_EJECUCION: ley.PLAN_FECHA_EJECUCION,
+            PLAN_ESTADO: ley.PLAN_ESTADO,
             ID_MATRIZ: ley.ID_MATRIZ,
             DOCS_ESPECIFICOS: ley.DOCS_ESPECIFICOS,
           });
@@ -1801,5 +1871,13 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
       this.Message.showModal(title, message);
       pdfMake.createPdf(pdfDefinition).download('Reporte_Particular.pdf');
     });
+  }
+
+  getRolValue(): number {
+    const rol = localStorage.getItem('rol');
+    if (rol && !isNaN(Number(rol))) {
+      return Number(rol);
+    }
+    return 0;
   }
 }

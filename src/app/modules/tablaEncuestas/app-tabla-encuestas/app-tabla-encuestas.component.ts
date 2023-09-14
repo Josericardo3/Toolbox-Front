@@ -10,14 +10,30 @@ export class AppTablaEncuestasComponent implements OnInit{
   showModal: boolean = false;
   mostrarBuscador: boolean = false;
   busqueda: string = '';
+  arrayEncuestas = [];
 
   constructor(
     public api: ApiService
   ) {}
 
-  ngOnInit(){}
-
-  filtrarDatos() {
+  ngOnInit(){
+    this.fnListEncuestas();
 
   }
+
+  filtrarDatos() {
+  }
+  fnListEncuestas() {
+    this.api.getEncuestas().subscribe((data) => {
+      this.arrayEncuestas = data;
+    })
+  }
+  getRolValue(): number {
+    const rol = localStorage.getItem('rol');
+    if (rol && !isNaN(Number(rol))) {
+      return Number(rol);
+    }
+    return 0;
+  }
+
 }
