@@ -5,7 +5,7 @@ import { environment } from 'src/environments/environment.prod'
 import { LoginI } from '../../models/loginInterface'
 import { ResponseI } from '../../models/responseInterface'
 import { mergeMap } from 'rxjs/operators';
-import { debug } from 'console'
+
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
 };
@@ -28,17 +28,26 @@ export class ApiService {
   //   return this.http.post<any>(direccion, {})
 
   apiURL = environment.apiURL
-  apiURLNuevo = environment.apiURLNuevo
+  apiURLNuevo = "http://localhost:8080/"+environment.apiURLNuevo
   apiCHART = environment.apiChart
   constructor(private http: HttpClient) {}
 
-  login(form: LoginI): Observable<ResponseI> {
-    const { registroNacionalDeTurismo, pass, correo } = form
+  login(form: LoginI): Observable<ResponseI | object> {
+    // const { registroNacionalDeTurismo, pass, correo } = form
+
+    
     const refresh = localStorage.getItem('refresh');
     const headers = { 'Content-Type': 'application/json', 'tokenAccess': refresh || 'falta token' };
-    let direccion = `${this.apiURLNuevo}/api/Usuario/LoginUsuario?usuario=${registroNacionalDeTurismo}&Password=${pass}&Correo=${correo}`
+     let request = {
+      USER: form.registroNacionalDeTurismo,
+      CORREO: form.correo,
+      PASSWORD: form.pass
+     }
+    //let direccion = `${this.apiURLNuevo}/api/Usuario/LoginUsuario?usuario=${registroNacionalDeTurismo}&Password=${pass}&Correo=${correo}`
+    let direccion = `${this.apiURLNuevo}/api/Usuario/LoginUsuario`
     return this.http.post<any>(
-      direccion, 
+      direccion,
+      request, 
       {observe: "response"}
       // { registroNacionalDeTurismo, pass },
       // {headers}
@@ -114,23 +123,13 @@ export class ApiService {
   //para guardar caracterizacion en la BD
   saveData(request: any): Observable<any[]> {
     const caracterizacion = `${this.apiURLNuevo}/api/Caracterizacion/caracterizacion/respuesta`;
-    const categoriarnt = localStorage.getItem('norma');
-    const observables = [];
-    for (let i = 0; i < request.length; i++) {
-      const respuesta = {
-        VALOR: request[i].valor.toString(),
-        FK_ID_USUARIO: request[i].idUsuarioPst,
-        FK_ID_CATEGORIA_RNT: request[i].idCategoriaRnt,
-        FK_ID_CARACTERIZACION_DINAMICA: request[i].idCaracterizacion
-      };
-      observables.push(respuesta);
-    }  
-    return this.http.post<any>(caracterizacion,observables)
+    return this.http.post<any>(caracterizacion,request)
   }
 
-  assignAdvisor(id: any): Observable<any> {
+  assignAdvisor(): Observable<any> {
+    var id = Number(window.localStorage.getItem('Id'));
     let assign = `${this.apiURLNuevo}/api/Asesor/usuarioPstxAsesor/${id}`
-    return this.http.get<any>(assign,id)
+    return this.http.get<any>(assign)
   }
 
   getDiagnostico(): Observable<any> {
@@ -153,6 +152,7 @@ export class ApiService {
       };
       observables.push(respuesta);
     }
+   
     return this.http.post<any>(diagnostico,observables)
   }
 
@@ -255,7 +255,8 @@ export class ApiService {
   
   getTablaNoticias() {
     const rnt = localStorage.getItem('rnt');
-    let direccion = `${this.apiURLNuevo}/api/Noticia/noticia?Rnt=${rnt}`
+    const idrol = localStorage.getItem('rol');
+    let direccion = `${this.apiURLNuevo}/api/Noticia/noticia?Rnt=${rnt}&IdTipoUsuario=${idrol}`
     return this.http.get<any>(direccion)
   }
 
@@ -361,7 +362,8 @@ export class ApiService {
    ///ACTIVIDADES (VISTA DE PLANIFICACIÓN)
    getActivities(){
     const id = localStorage.getItem("Id");
-    let lista = `${this.apiURLNuevo}/api/Actividad/actividades?idUsuarioPst=${id}`
+    const idrol = localStorage.getItem("rol");
+    let lista = `${this.apiURLNuevo}/api/Actividad/actividades?idUsuarioPst=${id}&idTipoUsuario=${idrol}`
     return this.http.get<any>(lista)
   }
   getActivitiesCompleta(idActividad: any){
@@ -447,6 +449,12 @@ export class ApiService {
     return this.http.post<any>(direccion, request)
   }
 
+  // ENCUESTA
+
+  getEncuestas( ){
+    let lista = `${this.apiURLNuevo}/api/Encuesta`
+    return this.http.get<any>(lista)
+  }
   //MONITORIZACIÓN
 
   getMonitorizacion( ){

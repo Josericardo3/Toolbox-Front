@@ -94,7 +94,7 @@ export class AppGestionDeUsuariosComponent {
   dataTotal = 0
   onLoadPst() {
    
-    this.ApiService.assignAdvisor(0).subscribe((data) => {
+    this.ApiService.assignAdvisor().subscribe((data) => {
       this.dataUser = data;
       this.dataInitial = data;
       this.contentArray = data;

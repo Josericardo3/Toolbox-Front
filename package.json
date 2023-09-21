@@ -6,7 +6,9 @@
     "start": "ng serve --host cajadeherramientasqa.mincit.gov.co --port 3000 --proxy-config proxy.conf.json",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "start-proxy": "node cors-anywhere.js"
+
   },
   "private": true,
   "dependencies": {
