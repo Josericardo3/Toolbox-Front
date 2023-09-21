@@ -28,7 +28,7 @@ export class ApiService {
   //   return this.http.post<any>(direccion, {})
 
   apiURL = environment.apiURL
-  apiURLNuevo = "http://localhost:8080/"+environment.apiURLNuevo
+  apiURLNuevo = "https://corsproxy.io/?"+environment.apiURLNuevo
   apiCHART = environment.apiChart
   constructor(private http: HttpClient) {}
 
