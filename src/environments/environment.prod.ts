@@ -12,7 +12,7 @@ export const environment = {
   //WapiURLNuevo:'https://10.4.3.140:8055',
   //apiURLNuevo:'https://localhost:8055',
   //apiURL: 'https://toolbox31-001-site1.btempurl.com',
-  apiChart: 'https://quickchart.io/chart'
+  apiChart: 'https://quickchart.io/chart',
   // apiURL:'http://10.4.3.140:8050',
   // apiURL: 'https://www.toolbox.somee.com'
 
