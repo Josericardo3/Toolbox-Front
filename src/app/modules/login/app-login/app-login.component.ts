@@ -97,9 +97,9 @@ export class AppLoginComponent implements OnInit {
     this.usuario.pass = this.loginForm.get("pass")?.value;
     this.usuario.pass = reemplazarCaracteresEspeciales(this.usuario.pass);
     //jalar el valor del correo
-    debugger;
+
     await this.ApiService.ValidateRntMincit(this.usuario.registroNacionalDeTurismo).subscribe((datarnt: any) => {
-      debugger;
+   
       if (datarnt?.error) {
         const title = "Error";
         const message = datarnt.error.message;
@@ -110,47 +110,52 @@ export class AppLoginComponent implements OnInit {
         this.ApiService.login(this.usuario).subscribe(
       
           (data: any) => {
+         
            
             const request = {
-              FK_ID_USUARIO: data.ID_USUARIO,
+              FK_ID_USUARIO: data.body.ID_USUARIO,
               TIPO: "Login",
               MODULO: "login"
              };
+            
             this.ApiService.postMonitorizacionUsuario(request).subscribe();
-          
+           
            //PARA TOMAR TIPO_USUARIO
-            localStorage.setItem("TIPO_USUARIO", data.Grupo[0].TIPO_USUARIO);
-            if (data.Grupo[0].TIPO_USUARIO === 2 || data.Grupo[0].TIPO_USUARIO === 8) {
+            localStorage.setItem("TIPO_USUARIO", data.body.Grupo[0].TIPO_USUARIO);
+            
+            if (data.body.Grupo[0].TIPO_USUARIO === 2 || data.body.Grupo[0].TIPO_USUARIO === 8) {
               const request = {
-                FK_ID_USUARIO: data.ID_USUARIO,
+                FK_ID_USUARIO: data.body.ID_USUARIO,
                 TIPO: "Modulo",
                 MODULO: "gestionUsuario"
                };
+         
               this.ApiService.postMonitorizacionUsuario(request).subscribe();
               this.router.navigate(["/gestionUsuario"]);
+             ;
             } 
     
-            this.store.dispatch(saveDataLogin({ request: data }));
-            localStorage.setItem("rol", data.Grupo[0].TIPO_USUARIO);
-            localStorage.setItem("access", data.TokenAcceso);
-            localStorage.setItem("refresh", data.TokenRefresco);
-            localStorage.setItem("idGrupo", data.Grupo[0].ITEM);
-            localStorage.setItem("Id", data.ID_USUARIO);
+            this.store.dispatch(saveDataLogin({ request: data.body }));
+            localStorage.setItem("rol", data.body.Grupo[0].TIPO_USUARIO);
+            localStorage.setItem("access", data.body.TokenAcceso);
+            localStorage.setItem("refresh", data.body.TokenRefresco);
+            localStorage.setItem("idGrupo", data.body.Grupo[0].ITEM);
+            localStorage.setItem("Id", data.body.ID_USUARIO);
             localStorage.setItem("rnt",this.usuario.registroNacionalDeTurismo);
-            this.ApiService.getNorma(data.ID_USUARIO).subscribe(
+            this.ApiService.getNorma(data.body.ID_USUARIO).subscribe(
               (categ: any) => {
+               
                 this.arrNormas = categ;
                 localStorage.setItem(
                   "idCategoria",
                   JSON.stringify(this.arrNormas[0].FK_ID_CATEGORIA_RNT));
             });
-            if (data.Grupo[0].ITEM === 1 || data.Grupo[0].ITEM === 6 || data.Grupo[0].ITEM === 7 || data.Grupo[0].ITEM === 3 || data.Grupo[0].ITEM === 4 || data.Grupo[0].ITEM === 5 ) {
-              this.ApiService.validateCaracterizacion(data.ID_USUARIO).subscribe(
+            if (data.body.Grupo[0].ITEM === 1 || data.body.Grupo[0].ITEM === 6 || data.body.Grupo[0].ITEM === 7 || data.body.Grupo[0].ITEM === 3 || data.body.Grupo[0].ITEM === 4 || data.body.Grupo[0].ITEM === 5 ) {
+              this.ApiService.validateCaracterizacion(data.body.ID_USUARIO).subscribe(
                 (response) => {
                   if (response) {
-                    this.ApiService.getNorma(data.ID_USUARIO).subscribe(
+                    this.ApiService.getNorma(data.body.ID_USUARIO).subscribe(
                       (data: any) => {
-    
                         if (
                           data[0].FK_ID_CATEGORIA_RNT === 5 ||
                           data[0].FK_ID_CATEGORIA_RNT === 2

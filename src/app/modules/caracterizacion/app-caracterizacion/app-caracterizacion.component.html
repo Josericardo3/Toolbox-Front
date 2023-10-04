@@ -41,7 +41,7 @@
             <ng-template #elseBlock>
               <select [formControlName]="campo.NOMBRE" id="id-del-select" [id]="i" [required]="campo.REQUERIDO"
               (ngModelChange)="capturarValor(i, $event, campo.ID_CARACTERIZACION_DINAMICA)">
-                <option *ngFor="let opcion of campo.DESPLEGABLE" [value]="opcion.ID_DESPLEGABLE">{{opcion.NOMBRE}}</option>
+                <option *ngFor="let opcion of campo.DESPLEGABLE" [value]="opcion.NOMBRE">{{opcion.NOMBRE}}</option>
               </select>
             </ng-template>
           </div>

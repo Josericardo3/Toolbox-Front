@@ -22,12 +22,29 @@
         <p routerLink="">Cerrar Sesión</p>
       </div>
       <div class="grid-img">
-        <div class="item-img" (click)="menuFilter($event); buscarRuta('caracterizacion')" (mouseover)="mouseOver($event)" 
-        (mouseout)="mouseOut($event)" alt="caracterizacion" id="caracterizacion" [ngClass]="{'oculto': AccesoCaracterizacion}">
-          <!-- <img src="../../../../assets/img-dashboard/caracterizacion.svg" alt="caracterizacion" id="caracterizacion"> -->
-          <i class="fa-sharp fa-solid fa-list-check" style="color: #068460;"></i>
-           <p class="sub-titulo">CARACTERIZACIÓN</p>
+        <div (mouseover)="mouseOver($event)" (mouseout)="mouseOut($event)" [ngClass]="{'oculto': AccesoCaracterizacion}">
+          <div 
+            class="item-img" 
+            id="caracterizacion"
+            alt="caracterizacion"
+            (click)="menuFilter($event);buscarRuta('caracterizacion')" >
+            <!-- <img src="../../../../assets/img-dashboard/caracterizacion.svg" alt="caracterizacion" id="caracterizacion"> -->
+            <i 
+              id="caracterizacion"
+              class="fa-sharp fa-solid fa-list-check" 
+              style="color: #068460; cursor: pointer;" 
+              (click)="menuFilter($event); buscarRuta('caracterizacion')">
+           </i>
+            <p 
+              class="sub-titulo" 
+              id="caracterizacion"
+              style="cursor: pointer;" 
+              (click)="menuFilter($event); buscarRuta('caracterizacion')">
+              CARACTERIZACIÓN
+            </p>
+          </div>
         </div>
+        
         <div class="item-img" (click)="fnShowModal()" (mouseover)="mouseOver($event)" 
         (mouseout)="mouseOut($event)" [ngClass]="{'oculto': AccesoDiagnostico}">
         <!-- (click)="menuFilter($event); buscarRuta('diagnostico');fnShowModal()" -->

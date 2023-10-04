@@ -1,0 +1,627 @@
+{
+  "Niveles": [
+    {
+      "Nombre": "Contexto de la Organización",
+      "Orden": "4",
+      "Mostrar": false,
+      "Elementos": [
+        {
+          "Nombre": "Cumplimiento de la legislación",
+          "Orden": "4.1",
+          "Opcion": [
+            {
+              "Nombre": "Matriz de Requisitos Legales",
+              "router": "/EMatrizRequisitosLegales",
+              "Elementos": []
+            },
+            {
+              "Nombre": "Procedimiento de Requisitos Legales",
+              "router": "/requisitosLegales",
+              "Elementos": []
+            },
+            {
+              "Nombre": "Cargar documento",
+              "router": "",
+              "Elementos": []
+            }
+          ],
+          "Detalle": []
+        },
+        {
+          "Nombre": "Comprensión de la organización y de su contexto",
+          "Orden": "4.2",
+          "Opcion": [
+            {
+              "Nombre": "Generar documento",
+              "router": "",
+              "Elementos": []
+            },
+            {
+              "Nombre": "Cargar documento",
+              "router": "",
+              "Elementos": []
+            }
+          ],
+          "Detalle": []
+        },
+        {
+          "Nombre": "Comprensión de las necesidades y expectativas de las partes interesadas",
+          "Orden": "4.3",
+          "Opcion": [
+            {
+              "Nombre": "Taller de partes interesadas",
+              "router": "",
+              "Elementos": []
+            },
+            {
+              "Nombre": "Matriz de partes interesadas",
+              "router": "/partesInteresadas",
+              "Elementos": []
+            },
+            {
+              "Nombre": "Cargar documento",
+              "router": "",
+              "Elementos": []
+            }
+          ],
+          "Detalle": []
+        },
+        {
+          "Nombre": "Determinación del alcance del sistema de gestión de la sostenibilidad",
+          "Orden": "4.4",
+          "Opcion": [
+            {
+              "Nombre": "Generar Taller de Política de Desarrollo Sostenible",
+              "router": "/politicaDesarrolloSostenible",
+              "Elementos": []
+            },
+            {
+              "Nombre": "Generar Alcance Sistema de Gestión de Sostenibilidad",
+              "router": "/alcancedelSGS",
+              "Elementos": []
+            },
+            {
+              "Nombre": "Cargar documento",
+              "router": "",
+              "Elementos": []
+            }
+          ],
+          "Detalle": []
+        },
+        {
+          "Nombre": "Sistema de gestión de la sostenibilidad",
+          "Orden": "4.5",
+          "Opcion": [],
+          "Detalle": [
+            {
+              "Nombre": "Sistema de Gestión de la Sostenibilidad",
+              "Orden": "4.5.1",
+              "Opcion": [
+                {
+                  "Nombre": "Generar Documento",
+                  "router": "",
+                  "Elementos": []
+                },
+                {
+                  "Nombre": "Cargar Documento",
+                  "router": "",
+                  "Elementos": []
+                }
+              ]
+            },
+            {
+              "Nombre": "Sistema de Gestión de la Sostenibilidad",
+              "Orden": "4.5.2",
+              "Opcion": [
+                {
+                  "Nombre": "Generar Documento",
+                  "router": "",
+                  "Elementos": []
+                },
+                {
+                  "Nombre": "Cargar Documento",
+                  "router": "",
+                  "Elementos": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Nombre": "Liderazgo",
+      "Orden": "5",
+      "Mostrar": false,
+      "Elementos": [
+        {
+          "Nombre": "Liderazgo y compromiso",
+          "Orden": "5.1",
+          "Opcion": [
+            {
+              "Nombre": "Generar documento",
+              "router": "",
+              "Elementos": []
+            },
+            {
+              "Nombre": "Cargar documento",
+              "router": "",
+              "Elementos": []
+            }
+          ],
+          "Detalle": []
+        },
+        {
+          "Nombre": "Política",
+          "Orden": "5.2",
+          "Opcion": [
+            {
+              "Nombre": "Generar documento",
+              "router": "",
+              "Elementos": []
+            },
+            {
+              "Nombre": "Cargar documento",
+              "router": "",
+              "Elementos": []
+            }
+          ],
+          "Detalle": []
+        },
+        {
+          "Nombre": "Roles, responsabilidades y autoridades",
+          "Orden": "5.3",
+          "Opcion": [
+            {
+              "Nombre": "Generar documento",
+              "router": "",
+              "Elementos": []
+            },
+            {
+              "Nombre": "Cargar documento",
+              "router": "",
+              "Elementos": []
+            }
+          ],
+          "Detalle": []
+        }
+      ]
+    },
+    {
+      "Nombre": "Planificación",
+      "Mostrar": false,
+      "Orden": "6",
+      "Elementos": [
+        {
+          "Nombre": "Acciones para abordar riesgos y oportunidades",
+          "Mostrar": false,
+          "Orden": "6.1",
+          "Opcion": [],
+          "Detalle": [
+            {
+              "Nombre": "Generalidades ",
+              "Orden": "6.1.1",
+              "Opcion": [
+                {
+                  "Nombre": "Generar documento",
+                  "router": "",
+                  "Elementos": []
+                },
+                {
+                  "Nombre": "Cargar documento",
+                  "router": "",
+                  "Elementos": []
+                }
+              ]
+            },
+            {
+              "Nombre": "Identificación y evaluación de las cuestiones",
+              "Orden": "6.1.2",
+              "Opcion": [
+                {
+                  "Nombre": "Generar documento",
+                  "router": "",
+                  "Elementos": []
+                },
+                {
+                  "Nombre": "Cargar documento",
+                  "router": "",
+                  "Elementos": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "Nombre": "Objetivos de sostenibilidad y planificación para lograrlos",
+          "Mostrar": false,
+          "Orden": "6.2",
+          "Opcion": [],
+          "Detalle": [
+            {
+              "Nombre": "Objetivos de sostenibilidad y planificación para lograrlos",
+              "Orden": "6.2.1",
+              "Opcion": [
+                {
+                  "Nombre": "Generar documento",
+                  "router": "",
+                  "Elementos": []
+                },
+                {
+                  "Nombre": "Cargar documento",
+                  "router": "",
+                  "Elementos": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Nombre": "Apoyo",
+      "Mostrar": false,
+      "Orden": "7",
+      "Elementos": [
+        {
+          "Nombre": "Recursos",
+          "Orden": "7.1",
+          "Opcion": [
+            {
+              "Nombre": "Generar documento",
+              "router": "",
+              "Elementos": []
+            },
+            {
+              "Nombre": "Cargar documento",
+              "router": "",
+              "Elementos": []
+            }
+          ],
+          "Detalle": []
+        },
+        {
+          "Nombre": "Competencia",
+          "Orden": "7.2",
+          "Opcion": [
+            {
+              "Nombre": "Generar documento",
+              "router": "",
+              "Elementos": []
+            },
+            {
+              "Nombre": "Cargar documento",
+              "router": "",
+              "Elementos": []
+            }
+          ],
+          "Detalle": []
+        },
+        {
+          "Nombre": "Toma de conciencia",
+          "Orden": "7.3",
+          "Opcion": [
+            {
+              "Nombre": "Generar documento",
+              "router": "",
+              "Elementos": []
+            },
+            {
+              "Nombre": "Cargar documento",
+              "router": "",
+              "Elementos": []
+            }
+          ],
+          "Detalle": []
+        },
+        {
+          "Nombre": "comunicación",
+          "Orden": "7.4",
+          "Opcion": [
+            {
+              "Nombre": "Generar documento",
+              "router": "",
+              "Elementos": []
+            },
+            {
+              "Nombre": "Cargar documento",
+              "router": "",
+              "Elementos": []
+            }
+          ],
+          "Detalle": []
+        },
+        {
+          "Nombre": "Información documentada",
+          "Orden": "7.5",
+          "Opcion": [],
+          "Detalle": [
+            {
+              "Nombre": "Generalidades",
+              "Orden": "7.5.1",
+              "Opcion": [
+                {
+                  "Nombre": "Generar documento",
+                  "router": "",
+                  "Elementos": []
+                },
+                {
+                  "Nombre": "Cargar documento",
+                  "router": "",
+                  "Elementos": []
+                }
+              ]
+            },
+            {
+              "Nombre": "Creación y actualización",
+              "Orden": "7.5.2",
+              "Opcion": [
+                {
+                  "Nombre": "Generar documento",
+                  "router": "",
+                  "Elementos": []
+                },
+                {
+                  "Nombre": "Cargar documento",
+                  "router": "",
+                  "Elementos": []
+                }
+              ]
+            },
+            {
+              "Nombre": "Control de la información documentada",
+              "Orden": "7.5.3",
+              "Opcion": [
+                {
+                  "Nombre": "Generar documento",
+                  "router": "",
+                  "Elementos": []
+                },
+                {
+                  "Nombre": "Cargar documento",
+                  "router": "",
+                  "Elementos": []
+                }
+              ]
+            }
+          ]
+        }
+    ]
+  },
+  {
+    "Nombre": "Operación",
+    "Mostrar": false,
+    "Orden": "8",
+    "Elementos": [
+      {
+        "Nombre": "Planificación y control operacional",
+        "Orden": "8.1",
+        "Opcion": [
+          {
+            "Nombre": "Generar documento",
+            "router": "",
+            "Elementos": []
+          },
+          {
+            "Nombre": "Cargar documento",
+            "router": "",
+            "Elementos": []
+          }
+        ],
+        "Detalle": []
+      },
+      {
+        "Nombre": "Tratamiento de actividades, productos o servicios modificados",
+        "Orden": "8.2",
+        "Opcion": [
+          {
+            "Nombre": "Generar documento",
+            "router": "",
+            "Elementos": []
+          },
+          {
+            "Nombre": "Cargar documento",
+            "router": "",
+            "Elementos": []
+          }
+        ],
+        "Detalle": []
+      },
+      {
+        "Nombre": "Gestión de la cadena de suministro",
+        "Orden": "8.3",
+        "Opcion": [
+          {
+            "Nombre": "Generar documento",
+            "router": "",
+            "Elementos": []
+          },
+          {
+            "Nombre": "Cargar documento",
+            "router": "",
+            "Elementos": []
+          }
+        ],
+        "Detalle": []
+      }
+    ]
+  },
+  {
+    "Nombre": "Evaluación del desempeño",
+    "Orden": "9",
+    "Mostrar": false,
+    "Elementos": [
+      {
+        "Nombre": "Seguimiento, medición, análisis y evaluación",
+        "Orden": "9.1",
+        "Opcion": [
+          {
+            "Nombre": "Generar documento",
+            "router": "",
+            "Elementos": []
+          },
+          {
+            "Nombre": "Cargar documento",
+            "router": "",
+            "Elementos": []
+          }
+        ],
+        "Detalle": []
+      },
+      {
+        "Nombre": "Auditoría interna",
+        "Orden": "9.2",
+        "Opcion": [],
+        "Detalle": [
+          {
+            "Nombre": "Auditoría interna",
+            "Orden": "9.2.1",
+            "Opcion": [
+              {
+                "Nombre": "Generar documento",
+                "router": "",
+                "Elementos": []
+              },
+              {
+                "Nombre": "Cargar documento",
+                "router": "",
+                "Elementos": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "Nombre": "Revisión por la dirección",
+        "Orden": "9.3",
+        "Opcion": [
+          {
+            "Nombre": "Generar documento",
+            "router": "",
+            "Elementos": []
+          },
+          {
+            "Nombre": "Cargar documento",
+            "router": "",
+            "Elementos": []
+          }
+        ],
+        "Detalle": []
+      }
+    ]
+  },
+  {
+    "Nombre": "Mejora",
+    "Orden": "10",
+    "Mostrar": false,
+    "Elementos": [
+      {
+        "Nombre": "No conformidad y acción correctiva",
+        "Orden": "10.1",
+        "Opcion": [
+          {
+            "Nombre": "Generar documento",
+            "router": "",
+            "Elementos": []
+          },
+          {
+            "Nombre": "Cargar documento",
+            "router": "",
+            "Elementos": []
+          }
+        ],
+        "Detalle": []
+      },
+      {
+        "Nombre": "Mejora continua ",
+        "Orden": "10.2",
+        "Opcion": [
+          {
+            "Nombre": "Generar documento",
+            "router": "",
+            "Elementos": []
+          },
+          {
+            "Nombre": "Cargar documento",
+            "router": "",
+            "Elementos": []
+          }
+        ],
+        "Detalle": []
+      }
+    ]
+  },
+  {
+    "Nombre": "Anexo A",
+    "Orden": "",
+    "Mostrar": false,
+    "Elementos": [
+      {
+        "Nombre": "Contenido Anexo A",
+        "Orden": "",
+        "Opcion": [
+          {
+            "Nombre": "Generar documento",
+            "router": "",
+            "Elementos": []
+          },
+          {
+            "Nombre": "Cargar documento",
+            "router": "",
+            "Elementos": []
+          }
+        ],
+        "Detalle": []
+      }
+    ]
+  },
+  {
+    "Nombre": "Anexo B",
+    "Orden": "",
+    "Mostrar": false,
+    "Elementos": [
+      {
+        "Nombre": "Contenido Anexo B",
+        "Orden": "",
+        "Opcion": [
+          {
+            "Nombre": "Generar documento",
+            "router": "",
+            "Elementos": []
+          },
+          {
+            "Nombre": "Cargar documento",
+            "router": "",
+            "Elementos": []
+          }
+        ],
+        "Detalle": []
+      }
+    ]
+  },
+  {
+    "Nombre": "Anexo C",
+    "Orden": "",
+    "Mostrar": false,
+    "Elementos": [
+      {
+        "Nombre": "Contenido Anexo C",
+        "Orden": "",
+        "Opcion": [
+          {
+            "Nombre": "Generar documento",
+            "router": "",
+            "Elementos": []
+          },
+          {
+            "Nombre": "Cargar documento",
+            "router": "",
+            "Elementos": []
+          }
+        ],
+        "Detalle": []
+      }
+    ]
+  }
+]
+}

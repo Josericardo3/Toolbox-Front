@@ -108,7 +108,7 @@ export class AppDiagnosticoDocComponent implements OnInit {
   requisitosCumplidos: any = [];
   currentPage = 1;
   pageCount = 0;
-  imgTotalBar: any; 
+  imgTotalBar: any;
 
   constructor(
     private router: Router,
@@ -120,10 +120,20 @@ export class AppDiagnosticoDocComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.spinnerService.llamarSpinner();
-    this.getListaChequeo();
-    this.getListaDiagnostico();
-    this.getListaPlanMejora();
+    const id = Number(window.localStorage.getItem('Id'));
+ 
+    this.ApiService.validateCaracterizacion(id).subscribe((data: any) => {
+      if (data === true) {
+        this.spinnerService.llamarSpinner();
+        this.getListaChequeo();
+        this.getListaDiagnostico();
+        this.getListaPlanMejora();
+      }
+      else {
+        this.router.navigate(['/dashboard']);
+       
+      }
+    })
   }
 
   getListaChequeo() {
@@ -513,7 +523,7 @@ export class AppDiagnosticoDocComponent implements OnInit {
           const base64Data = reader.result as string;
           const safeImageUrl: SafeResourceUrl = this.sanitizer.bypassSecurityTrustResourceUrl(base64Data);
           this.imgTotalBar = safeImageUrl;
-         // this.generateDiagnostico();;
+          // this.generateDiagnostico();;
         };
         reader.readAsDataURL(data);
       });

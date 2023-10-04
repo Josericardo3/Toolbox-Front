@@ -77,8 +77,7 @@ export class RecoveryComponent implements OnInit {
 
     return;
     }
-
-    this.http.post(`https://cajadeherramientasqaapi.mincit.gov.co/api/Validaciones/CambioContraseña?password=${password}&id=${userCode}`, { id: this.id })
+    this.http.post(`https://172.18.72.20:8051/api/Validaciones/CambioContraseña?password=${password}&id=${userCode}`, { id: this.id })
 
       .subscribe(
        

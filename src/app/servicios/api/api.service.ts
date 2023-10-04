@@ -5,7 +5,7 @@ import { environment } from 'src/environments/environment.prod'
 import { LoginI } from '../../models/loginInterface'
 import { ResponseI } from '../../models/responseInterface'
 import { mergeMap } from 'rxjs/operators';
-import { debug } from 'console'
+
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
 };
@@ -32,13 +32,22 @@ export class ApiService {
   apiCHART = environment.apiChart
   constructor(private http: HttpClient) {}
 
-  login(form: LoginI): Observable<ResponseI> {
-    const { registroNacionalDeTurismo, pass, correo } = form
+  login(form: LoginI): Observable<ResponseI | object> {
+    // const { registroNacionalDeTurismo, pass, correo } = form
+
+    
     const refresh = localStorage.getItem('refresh');
     const headers = { 'Content-Type': 'application/json', 'tokenAccess': refresh || 'falta token' };
-    let direccion = `${this.apiURLNuevo}/api/Usuario/LoginUsuario?usuario=${registroNacionalDeTurismo}&Password=${pass}&Correo=${correo}`
+     let request = {
+      USER: form.registroNacionalDeTurismo,
+      CORREO: form.correo,
+      PASSWORD: form.pass
+     }
+    //let direccion = `${this.apiURLNuevo}/api/Usuario/LoginUsuario?usuario=${registroNacionalDeTurismo}&Password=${pass}&Correo=${correo}`
+    let direccion = `${this.apiURLNuevo}/api/Usuario/LoginUsuario`
     return this.http.post<any>(
-      direccion, 
+      direccion,
+      request, 
       {observe: "response"}
       // { registroNacionalDeTurismo, pass },
       // {headers}
@@ -114,18 +123,7 @@ export class ApiService {
   //para guardar caracterizacion en la BD
   saveData(request: any): Observable<any[]> {
     const caracterizacion = `${this.apiURLNuevo}/api/Caracterizacion/caracterizacion/respuesta`;
-    const categoriarnt = localStorage.getItem('norma');
-    const observables = [];
-    for (let i = 0; i < request.length; i++) {
-      const respuesta = {
-        VALOR: request[i].valor.toString(),
-        FK_ID_USUARIO: request[i].idUsuarioPst,
-        FK_ID_CATEGORIA_RNT: request[i].idCategoriaRnt,
-        FK_ID_CARACTERIZACION_DINAMICA: request[i].idCaracterizacion
-      };
-      observables.push(respuesta);
-    }  
-    return this.http.post<any>(caracterizacion,observables)
+    return this.http.post<any>(caracterizacion,request)
   }
 
   assignAdvisor(): Observable<any> {
@@ -154,6 +152,7 @@ export class ApiService {
       };
       observables.push(respuesta);
     }
+   
     return this.http.post<any>(diagnostico,observables)
   }
 

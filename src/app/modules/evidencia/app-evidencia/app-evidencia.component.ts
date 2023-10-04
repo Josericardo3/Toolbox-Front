@@ -5,6 +5,8 @@ import { HttpClient } from '@angular/common/http';
 import { FileUploadService } from 'src/app/servicios/file-upload/file-upload.service';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
+import { Injectable } from '@angular/core';
+
 
 @Component({
   selector: 'app-app-evidencia',
@@ -16,7 +18,8 @@ export class AppEvidenciaComponent implements OnInit{
 
   lastVisible: any;
 
-  contextsVisible = false;
+  contextsVisible: boolean = false;
+
   subContextsVisible = false;
   liderazgoVisible = false;
   planificacionVisible = false;
@@ -62,6 +65,7 @@ export class AppEvidenciaComponent implements OnInit{
   subirVisibleA = false;
   subirVisibleB = false;
   subirVisibleC = false;
+  jsonData: any;
 
   public file: File | any;
   public loading: boolean;
@@ -74,10 +78,18 @@ export class AppEvidenciaComponent implements OnInit{
     private http: HttpClient,
     private FileUploadService: FileUploadService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
   ) {}
 
   ngOnInit(): void { 
+   // D:\INTI\inti-front\src\assets\evidencia.json
+    this.http.get('assets/evidencia.json').subscribe(data => {
+    this.jsonData = data;
+    console.log(data);
+    
+    });
+
+
         // Detectar el parámetro en la URL y, si es "liderazgo", desplegar la sección correspondiente
         this.route.paramMap.subscribe(params => {
           if (params.get('section') === 'contexts') {
@@ -117,6 +129,7 @@ export class AppEvidenciaComponent implements OnInit{
           }
         });
   }
+ 
 
   capturarFile(){
     const archivoSeleccionado = this.archivo.nativeElement.files[0];
@@ -155,80 +168,33 @@ export class AppEvidenciaComponent implements OnInit{
       );
   }
 
-  toggleSection(section) {
-    if (section === 'contexts') {
-      this.contextsVisible = !this.contextsVisible;
-    } else if (section === 'subContexts') {
-      this.subContextsVisible = !this.subContextsVisible;
-    } else if (section === 'liderazgo') {
-      this.liderazgoVisible = !this.liderazgoVisible;
-    } else if (section === 'planificacion') {
-      this.planificacionVisible = !this.planificacionVisible;
-    } else if (section === 'subPlanificacionA') {
-      this.subPlanificacionA = !this.subPlanificacionA;
-    } else if (section === 'subPlanificacionB') {
-      this.subPlanificacionB = !this.subPlanificacionB;
-    } else if (section === 'apoyo') {
-      this.apoyoVisible = !this.apoyoVisible;
-    } else if (section === 'subApoyo') {
-      this.subApoyoVisible = !this.subApoyoVisible;
-    } else if (section === 'operacion') {
-      this.operacionVisible = !this.operacionVisible;
-    } else if (section === 'evaluacion') {
-      this.evaluacionVisible = !this.evaluacionVisible;
-    } else if (section === 'subEvaluacion') {
-      this.subEvaluacionVisible = !this.subEvaluacionVisible;
-    } else if (section === 'mejora') {
-      this.mejoraVisible = !this.mejoraVisible
-    } else if (section === 'anexoA') {
-      this.anexoAVisible = !this.anexoAVisible;
-    } else if (section === 'anexoB') {
-      this.anexoBVisible = !this.anexoBVisible;
-    } else if (section === 'anexoC') {
-      this.anexoCVisible = !this.anexoCVisible;
+  toggleSection(section: string) {
+    const t = this.jsonData.Niveles.find((e: any) => e.Nombre === section);
+
+    if (t) {
+      t.Mostrar = !t.Mostrar; 
     }
+
     
     // Cierra el div abierto si se hace clic en otro div
     if (this.lastVisible && this.lastVisible !== section) {
-      if (this.lastVisible === 'contexts') {
-        this.contextsVisible = false;
-      } else if (this.lastVisible === 'subContexts') {
-        this.subContextsVisible = false;
-      } else if (this.lastVisible === 'liderazgo') {
-        this.liderazgoVisible = false;
-      } else if (this.lastVisible === 'planificacion') {
-        this.planificacionVisible = false;
-      } else if (this.lastVisible === 'subPlanificacionA') {
-        this.subPlanificacionA = false;
-      } else if (this.lastVisible === 'subPlanificacionB') {
-        this.subPlanificacionB = false;
-      } else if (this.lastVisible === 'apoyo') {
-        this.apoyoVisible = false;
-      } else if (this.lastVisible === 'subApoyo') {
-        this.subApoyoVisible = false;
-      } else if (this.lastVisible === 'operacion') {
-        this.operacionVisible = false;
-      } else if (this.lastVisible === 'evaluacion') {
-        this.evaluacionVisible = false;
-      } else if (this.lastVisible === 'subEvaluacion') {
-        this.subEvaluacionVisible = false;
-      } else if(this.lastVisible === 'mejora') {
-        this.mejoraVisible = false;
-      } else if(this.lastVisible === 'anexoA') {
-        this.anexoAVisible = false;
-      } else if(this.lastVisible === 'anexoB') {
-        this.anexoBVisible = false;
-      } else if(this.lastVisible === 'anexoC') {
-        this.anexoCVisible = false;
+      const t = this.jsonData.Niveles.find((e: any) => e.Nombre === this.lastVisible);
+      if (t) {
+        t.Mostrar = false; 
       }
+      
     }
     
     this.lastVisible = section;
 
   }
 
-  toggleSubContexts() {
-    this.subContextsVisible = !this.subContextsVisible;
+  toggleSubContexts(i: any,elemento: string) {
+    const t = this.jsonData.Niveles.find((e: any) => e.Nombre === elemento);
+      if (t) {
+       t.Elementos[i].Mostrar= !t.Elementos[i].Mostrar;
+       this.subContextsVisible = true;
+      }
   }
 
   toggleSubPlanificacionA(){
