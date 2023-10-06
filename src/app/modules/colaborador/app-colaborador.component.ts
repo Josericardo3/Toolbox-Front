@@ -81,8 +81,8 @@ export class AppColaboradorComponent {
             this.Message.showModal(title, message);
             this.fnListResponsible();
             this.valorEnviadoColaborador.emit(true);
-            const openModalButton = document.getElementById("openModalButton");
-            openModalButton.click();
+            // const openModalButton = document.getElementById("openModalButton");
+            // openModalButton.click();
        
           }
           else{

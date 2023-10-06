@@ -129,7 +129,6 @@ export class AppPlanificacionComponent {
     this.ApiService.getActivities().subscribe((data) => {
       this.rolesArraytemp = data;
       this.dataInitial = data;
-      console.log(this.dataInitial);
       for (let i = 0; i < this.rolesArraytemp.length; i++) {
         if (this.rolesArraytemp[i].ESTADO_PLANIFICACION.toLowerCase() == "programado") {
           this.rolesArraytemp[i].statecolor = '#f5970a';
@@ -144,7 +143,6 @@ export class AppPlanificacionComponent {
           this.rolesArraytemp[i].statecolor = '#068460';
         }
       }
-      debugger;
       this.rolesArray = this.rolesArraytemp;
 
       //paginado
@@ -178,8 +176,6 @@ export class AppPlanificacionComponent {
   
       })
     }
-    debugger;
- 
   }
 
   fnTypeOfActivity() {

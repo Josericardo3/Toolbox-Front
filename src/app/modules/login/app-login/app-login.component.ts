@@ -78,12 +78,12 @@ export class AppLoginComponent implements OnInit {
     const icon = document.querySelector("i") as HTMLElement;
     if (passLogin.type === "password") {
       passLogin.type = "text";
-      icon.classList.remove("fa-eye-slash");
-      icon.classList.add("fa-eye");
+      icon?.classList.remove("fa-eye-slash");
+      icon?.classList.add("fa-eye");
     } else {
       passLogin.type = "password";
-      icon.classList.add("fa-eye-slash");
-      icon.classList.remove("fa-eye");
+      icon?.classList.add("fa-eye-slash");
+      icon?.classList.remove("fa-eye");
     }
   }
 
