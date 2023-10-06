@@ -16,6 +16,7 @@ import { Store } from "@ngrx/store";
 import { saveDataLogin } from "src/app/state/action/example.action";
 import { HttpErrorResponse, HttpResponse } from "@angular/common/http";
 import { ModalService } from "src/app/messagemodal/messagemodal.component.service";
+import { debug } from "console";
 //PG import { TokenStorageService } from '../../../servicios/token/token-storage.service';
 
 @Component({
@@ -98,7 +99,7 @@ export class AppLoginComponent implements OnInit {
     this.usuario.pass = reemplazarCaracteresEspeciales(this.usuario.pass);
     //jalar el valor del correo
 
-    await this.ApiService.ValidateRntMincit(this.usuario.registroNacionalDeTurismo).subscribe((datarnt: any) => {
+    /*await this.ApiService.ValidateRntMincit(this.usuario.registroNacionalDeTurismo).subscribe((datarnt: any) => {
    
       if (datarnt?.error) {
         const title = "Error";
@@ -107,6 +108,7 @@ export class AppLoginComponent implements OnInit {
         return;
       }
       else{
+*/    
         this.ApiService.login(this.usuario).subscribe(
       
           (data: any) => {
@@ -211,9 +213,9 @@ export class AppLoginComponent implements OnInit {
             this.errorMessage = "Correo o contraseña inválidos";
           }
         );
-      }
+    /*  }
     }
-    );
+    );*/
     
   }
 }
