@@ -5,7 +5,6 @@ import { environment } from 'src/environments/environment.prod'
 import { LoginI } from '../../models/loginInterface'
 import { ResponseI } from '../../models/responseInterface'
 import { mergeMap } from 'rxjs/operators';
-import { isNumber } from 'lodash'
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -28,8 +27,8 @@ export class ApiService {
    
   //   return this.http.post<any>(direccion, {})
 
-  apiURL = "https://corsproxy.io/?"+environment.apiURL
-  apiURLNuevo = "https://corsproxy.io/?"+environment.apiURLNuevo
+  apiURL = environment.apiURL
+  apiURLNuevo = environment.apiURLNuevo
   apiCHART = environment.apiChart
   constructor(private http: HttpClient) {}
 
@@ -468,15 +467,9 @@ export class ApiService {
     return this.http.put<any>(assign,id)
   }
   ValidateRntMincit(rnt:any): Observable<string> {
-    if(isNumber(rnt)){
-      let validate = `${this.apiURLNuevo}/api/Validaciones/ObtenerDataMincit?RNT=${rnt}`
-      let response = this.http.get<string>(validate);
-      return response;
-
-    }
-    else{
-      return;
-    }
+    let validate = `${this.apiURLNuevo}/api/Validaciones/ObtenerDataMincit?RNT=${rnt}`
+    let response = this.http.get<string>(validate);
+    return response;
   }
 
   getUsuarioPermisoPerfil(idusuarioperfil:any){
