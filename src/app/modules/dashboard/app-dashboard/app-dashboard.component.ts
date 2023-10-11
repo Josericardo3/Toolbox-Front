@@ -371,4 +371,8 @@ export class AppDashboardComponent implements OnInit {
     // Valor predeterminado si no se encuentra el rol o no es un número válido
     return 0;
   }
+  redirigirAUrlExterna() {
+    const urlExterna = 'https://starlit-lollipop-776b18.netlify.app';
+    window.location.href = urlExterna;
+  }
 }
