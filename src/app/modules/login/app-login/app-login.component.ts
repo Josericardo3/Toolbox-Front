@@ -96,7 +96,6 @@ export class AppLoginComponent implements OnInit {
     this.usuario.correo = this.loginForm.get("correo")?.value;
     this.usuario.pass = this.loginForm.get("pass")?.value;
     this.usuario.pass = reemplazarCaracteresEspeciales(this.usuario.pass);
-    //jalar el valor del correo
 
     /*await this.ApiService.ValidateRntMincit(this.usuario.registroNacionalDeTurismo).subscribe((datarnt: any) => {
    
