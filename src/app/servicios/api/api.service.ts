@@ -5,6 +5,7 @@ import { environment } from 'src/environments/environment.prod'
 import { LoginI } from '../../models/loginInterface'
 import { ResponseI } from '../../models/responseInterface'
 import { mergeMap } from 'rxjs/operators';
+import { isNumber } from 'lodash'
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -467,9 +468,15 @@ export class ApiService {
     return this.http.put<any>(assign,id)
   }
   ValidateRntMincit(rnt:any): Observable<string> {
-    let validate = `${this.apiURLNuevo}/api/Validaciones/ObtenerDataMincit?RNT=${rnt}`
-    let response = this.http.get<string>(validate);
-    return response;
+    if(isNumber(rnt)){
+      let validate = `${this.apiURLNuevo}/api/Validaciones/ObtenerDataMincit?RNT=${rnt}`
+      let response = this.http.get<string>(validate);
+      return response;
+
+    }
+    else{
+      return
+    }
   }
 
   getUsuarioPermisoPerfil(idusuarioperfil:any){
