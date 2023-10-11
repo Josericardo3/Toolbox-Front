@@ -5,6 +5,7 @@ import {FormGroup, FormControl, Validators, FormBuilder, NgModel} from '@angular
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
 import { ModalService } from 'src/app/messagemodal/messagemodal.component.service' 
+import { environment } from 'src/environments/environment.prod';
 
 declare var $: any;
 @Component({
@@ -17,6 +18,7 @@ export class RecoveryComponent implements OnInit {
   error: string;
   mostrarFormulario2: boolean = false;
   passwordHidden = true;
+  apiURLNuevo = environment.apiURLNuevo
   //password: string;
   //confirmPassword: string;
   //error: string;
@@ -78,7 +80,7 @@ export class RecoveryComponent implements OnInit {
     return;
     }
 
-    this.http.post(`https://172.18.72.20:8051/api/Validaciones/CambioContraseña?password=${password}&id=${userCode}`, { id: this.id })
+    this.http.post(`${this.apiURLNuevo}/api/Validaciones/CambioContraseña?password=${password}&id=${userCode}`, { id: this.id })
 
       .subscribe(
        

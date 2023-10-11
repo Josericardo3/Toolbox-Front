@@ -6,7 +6,7 @@
     </div>
     <div class="divTop" >
         <input type="text" placeholder="Buscar..." class="buscador" [(ngModel)]="busqueda" *ngIf="mostrarBuscador" (input)="filtrarDatos()">
-        <button class="btn" (click)="showModal = true" *ngIf="getRolValue() !== 5 && getRolValue() !== 7 && getRolValue() !== 4"> 
+        <button class="btn" (click)="showModal = true" *ngIf="getRolValue() !== 5 && getRolValue() !== 7"> 
             <i class="fa-solid fa-plus" style="color: #fff;"></i> Agregar noticia
         </button>
     </div>
@@ -48,7 +48,7 @@
                         </a>
                     </td>
                     <td>
-                        <ng-container *ngIf="!edicionIndices.includes(i) && (getRolValue() !== 4 && getRolValue() !== 5 && getRolValue() !== 7)">
+                        <ng-container *ngIf="!edicionIndices.includes(i) && (getRolValue() !== 5 && getRolValue() !== 7)">
                             <a title="Editar" (click)="showModalEditar = true; fnEditar(i)">
                                 <i class="fa-solid fa-pen" style="color: #06543c;"></i>
                             </a>
@@ -97,22 +97,22 @@
                 <div class="linea"></div>
             </div>
             <form [formGroup]="saveForm" class="form" (ngSubmit)="saveModal()">
-                <ng-multiselect-dropdown *ngIf="getRolValue() === 3 " formControlName="selectMultipleAdmin"
+                <ng-multiselect-dropdown *ngIf="getRolValue() === 3  || getRolValue() === 4" formControlName="selectMultipleAdmin"
                 [placeholder]="'Seleccione un prestador de servicios'" [settings]="dropdownSettings" [data]="dropdownListPst"
                 [ngModel]="selectedItems" (onSelect)="onItemSelect($event, 'admin')"
                 (onSelectAll)="onSelectAll($event, 'admin')" (onDeSelect)="onDeSelect($event, 'admin')" 
                 (onDeSelectAll)="onDeSelectAll($event, 'admin')"></ng-multiselect-dropdown>
-                <ng-multiselect-dropdown *ngIf="getRolValue() === 3 " formControlName="selectMultipleNorma"
+                <ng-multiselect-dropdown *ngIf="getRolValue() === 3 || getRolValue() === 4" formControlName="selectMultipleNorma"
                 [placeholder]="'Seleccione una norma'" [settings]="dropdownSettingsNorma" [data]="dropdownListNorma"
                 [ngModel]="selectedItemsNorma" (onSelect)="onItemSelect($event, 'norma')"
                 (onSelectAll)="onSelectAll($event, 'norma')" (onDeSelect)="onDeSelect($event, 'norma')" 
                 (onDeSelectAll)="onDeSelectAll($event, 'norma')" style="margin-top:2vh;"></ng-multiselect-dropdown>
-                <ng-multiselect-dropdown *ngIf="getRolValue() === 3" formControlName="selectMultipleCategoria"
+                <ng-multiselect-dropdown *ngIf="getRolValue() === 3 || getRolValue() === 4" formControlName="selectMultipleCategoria"
                 [placeholder]="'Seleccione una categoría'" [settings]="dropdownSettingsCategoria"
                 [data]="dropdownListCategoria" [ngModel]="selectedItemsCategoria" (onSelect)="onItemSelect($event, 'categoria')"
                 (onSelectAll)="onSelectAll($event, 'categoria')" (onDeSelect)="onDeSelect($event, 'categoria')" 
                 (onDeSelectAll)="onDeSelectAll($event, 'categoria')" style="margin-top:2vh;"></ng-multiselect-dropdown>
-                <ng-multiselect-dropdown *ngIf="getRolValue() === 3" formControlName="selectMultipleSubCategoria"
+                <ng-multiselect-dropdown *ngIf="getRolValue() === 3 || getRolValue() === 4" formControlName="selectMultipleSubCategoria"
                 [placeholder]="'Seleccione una sub categoría'" [settings]="dropdownSettingsSubCategoria"
                 [data]="dropdownListSubCategoria" [ngModel]="selectedItemsSubCategoria" (onSelect)="onItemSelect($event, 'subcategoria')"
                 (onSelectAll)="onSelectAll($event, 'subcategoria')" (onDeSelect)="onDeSelect($event, 'subcategoria')" 
@@ -182,10 +182,16 @@
                 <h2>Lista de destinatarios</h2>
                 <div class="linea"></div>
             </div>
-            <div class="form" *ngFor="let campo of descripcionNormas" >
+            <div class="form" *ngFor="let campo of descripcionListaDestinatario">
+                <li *ngIf="campo.NOMBRE_DESTINATARIO">{{campo.NOMBRE_DESTINATARIO}}</li>
+                <!-- <li *ngIf="campo.NORMAS">{{campo.NORMAS}}</li>
+                <li *ngIf="campo.CATEGORIAS">{{campo.CATEGORIAS}}</li>
+                <li *ngIf="campo.SUB_CATEGORIAS">{{campo.SUB_CATEGORIAS}}</li> -->
+
+            <!-- <div class="form" *ngFor="let campo of descripcionNormas" > -->
               <!--  -->
                 <!-- <li *ngIf="campo.NOMBRE_DESTINATARIO">{{campo.NOMBRE_DESTINATARIO}}</li> -->
-                <li >{{ campo.NORMA}}</li>
+                <!-- <li >{{ campo.NORMA}}</li> -->
                 <!-- <li *ngIf="campo.CATEGORIAS">{{campo.CATEGORIAS}}</li>
                 <li *ngIf="campo.SUB_CATEGORIAS">{{campo.SUB_CATEGORIAS}}</li> -->
             </div>

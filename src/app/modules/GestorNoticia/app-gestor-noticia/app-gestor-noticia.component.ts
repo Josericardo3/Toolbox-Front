@@ -203,15 +203,15 @@ export class AppGestorNoticiaComponent implements OnInit {
     }
   }
 
-  descripcionNormas:any;
+  descripcionListaDestinatario:any;
   fnShowModalLista(index: number){
-    this.descripcionNormas =  this.datos[index].NORMAS;
-    const tempo = this.descripcionNormas?.split(', ');
+    this.descripcionListaDestinatario =  this.datos[index].NOMBRE_DESTINATARIO;
+    const tempo = this.descripcionListaDestinatario?.split(', ');
     if(tempo){
       const arrayConNorma = tempo.map((elemento) => {
-        return { NORMA: elemento };
+        return { NOMBRE_DESTINATARIO: elemento };
       });
-      this.descripcionNormas = arrayConNorma;
+      this.descripcionListaDestinatario = arrayConNorma;
     }
     this.showModalLista = true
     return
@@ -300,6 +300,11 @@ export class AppGestorNoticiaComponent implements OnInit {
       this.api.saveNoticia(formData).subscribe(
         (res) => {
           this.showModal = false;
+
+          const title = "Noticia creada";
+          const message = "Noticia creada exitosamente";
+
+      this.Message.showModal(title, message);
           this.getTableData();
         },
         (error) => {

@@ -98,7 +98,7 @@ export class AppLoginComponent implements OnInit {
     this.usuario.pass = reemplazarCaracteresEspeciales(this.usuario.pass);
     //jalar el valor del correo
 
-    await this.ApiService.ValidateRntMincit(this.usuario.registroNacionalDeTurismo).subscribe((datarnt: any) => {
+    /*await this.ApiService.ValidateRntMincit(this.usuario.registroNacionalDeTurismo).subscribe((datarnt: any) => {
    
       if (datarnt?.error) {
         const title = "Error";
@@ -106,7 +106,7 @@ export class AppLoginComponent implements OnInit {
         this.Message.showModal(title, message);
         return;
       }
-      else{
+      else{*/
         this.ApiService.login(this.usuario).subscribe(
       
           (data: any) => {
@@ -211,9 +211,9 @@ export class AppLoginComponent implements OnInit {
             this.errorMessage = "Correo o contraseña inválidos";
           }
         );
-      }
+      /*}
     }
-    );
+    );*/
     
   }
 }
