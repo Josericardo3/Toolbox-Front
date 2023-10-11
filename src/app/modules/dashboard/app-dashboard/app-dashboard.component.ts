@@ -7,6 +7,7 @@ import * as fromRoot from 'src/app/state/reducer/example.reducer'
 import { AppState } from 'src/app/state/selectors/app.state'
 import { ModalService } from 'src/app/messagemodal/messagemodal.component.service'
 import { ApiService } from 'src/app/servicios/api/api.service';
+import { debounce } from 'lodash'
 
 
 //@Injectable()
@@ -80,7 +81,7 @@ export class AppDashboardComponent implements OnInit {
   ngOnInit(): void {
 
     this.ApiService.getUsuarioPermisoPerfil(this.userRol).subscribe(dataPermiso => {
-      console.log(dataPermiso);
+
       if(dataPermiso[0].PLANIFICACION_DIAGNOSTICO === "x"){
         this.AccesoPlanificacion = false;
       }
@@ -223,6 +224,7 @@ export class AppDashboardComponent implements OnInit {
   }
 
   menuFilter(evt: any) { //redireccionar
+  
     if (this.validateRol(evt)) {// condicional cuando sí tiene acceso
       evt.target.src = '../../../../assets/img-dashboard/' + evt.target.id + '-3.svg';
       switch (evt.target.id) {

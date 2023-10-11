@@ -10,7 +10,6 @@ import { SpinnerService } from "../spinnerService/spinner.service";
 export class InterceptorService implements HttpInterceptor {
     constructor(private spinnerService: SpinnerService) { }
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        console.log("prueba");
         this.spinnerService.llamarSpinner();
         return next.handle(req).pipe(
             finalize(() => this.spinnerService.detenerSpinner())

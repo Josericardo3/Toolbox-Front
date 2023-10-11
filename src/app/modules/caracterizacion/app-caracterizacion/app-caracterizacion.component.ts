@@ -68,13 +68,25 @@ export class AppCaracterizacionComponent implements OnInit {
   ) {}
 
 ngOnInit(): void { 
-  this.formParent = this.formBuilder.group({});
-  this.getCaracterizacion();
-  this.getPreguntasOrdenadas();
-  this.http.get('https://www.datos.gov.co/resource/gdxc-w37w.json')
-  .subscribe((data: any[]) => {
-    this.municipios = data;
-  });  
+  const id = Number(window.localStorage.getItem('Id'));
+  console.log(id + ' id');
+  this.ApiService.validateCaracterizacion(id).subscribe((data: any)=>{
+    if(data === true){
+      this.router.navigate(['/dashboard']);
+    }
+    else{
+      this.formParent = this.formBuilder.group({});
+      this.getCaracterizacion();
+      this.getPreguntasOrdenadas();
+      this.http.get('https://www.datos.gov.co/resource/gdxc-w37w.json')
+      .subscribe((data: any[]) => {
+        this.municipios = data;
+      });  
+    }
+  })
+
+
+ 
   //validar input-otro
   this.otroControlA = new FormControl('', [Validators.required]);
   this.otroControlB = new FormControl('', [Validators.required]);
@@ -109,7 +121,6 @@ getCaracterizacion(){
   .subscribe((data: any) => {
     this.datos = data;
     this.preguntasDesordenadas = data.CAMPOS;
-
     // Obtiene el valor de "Categoría RNT" para el título
     const campoCategoriaRNT = this.datos.CAMPOS.find(campo => campo.NOMBRE === 'Categoría RNT');
     this.categoriaRNTValues = campoCategoriaRNT.VALUES;
@@ -290,10 +301,19 @@ hasDepency(id: number) {
 }
 
 public saveForm(){
+
+  const caracterizacionRespuesta = this.valoresForm.map((elemento) => {
+    return { VALOR: elemento.valor.toString(),
+      FK_ID_USUARIO:Number(elemento.idUsuarioPst), 
+      FK_ID_CATEGORIA_RNT: Number(elemento.idCategoriaRnt),
+      FK_ID_CARACTERIZACION_DINAMICA: elemento.id};
+    
+  })
+
     this.mostrarMensaje = true;
     if (this.formParent.valid) {
 
-      this.ApiService.saveData(this.valoresForm).subscribe((data: any) => {
+      this.ApiService.saveData(caracterizacionRespuesta).subscribe((data: any) => {
         const title = "Se guardó correctamente";
         const message = "El formulario se ha guardado exitosamente"
         this.Message.showModal(title,message);

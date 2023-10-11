@@ -42,7 +42,10 @@ export class AppActividadesComponent {
   result: boolean = false;
   idResponsable!: number;
 
-  ngSelect = 1;
+  ngSelectActividad = 1;
+  ngSelectEstado = 1;
+  ngSelectResponsable = 1;
+
 
   constructor(
     public ApiService: ApiService,
@@ -229,15 +232,14 @@ export class AppActividadesComponent {
         this.finActivity = this.datePipe.transform(this.finActivity, 'dd-MM-yyyy');
       }
     }
-
-    if (this.activity.length && this.activityType.length && this.inicioActivity.length && this.finActivity.length && this.selectedState.length && this.idUsuario.length > 0) {
+    if (this.activity.length  && this.inicioActivity.length && this.finActivity.length && this.selectedState.length && this.idUsuario.length > 0) {
       const request = {
         FK_ID_USUARIO_PST: parseInt(localStorage.getItem("Id")),
         FK_ID_RESPONSABLE: Number(this.idUsuario),
         DESCRIPCION: this.activity,
         FECHA_INICIO: this.inicioActivity,
         FECHA_FIN: this.finActivity,
-        TIPO_ACTIVIDAD: this.activityType,
+        TIPO_ACTIVIDAD: this.activityType || "Mejora Continua",
         ESTADO_PLANIFICACION: this.selectedState
       }
 
@@ -332,6 +334,7 @@ export class AppActividadesComponent {
        || (item.DESCRIPCION.trim().toUpperCase().includes(this.filter.trim().toUpperCase()) || this.filter.trim().toUpperCase() == '')
       || (item.FECHA_INICIO.trim().toUpperCase().includes(this.filter.trim().toUpperCase()) || this.filter.trim().toUpperCase() == '')
       || (item.FECHA_FIN.trim().toUpperCase().includes(this.filter.trim().toUpperCase()) || this.filter.trim().toUpperCase() == '')
+      || (item.NOMBRE_PST?.trim().toUpperCase().includes(this.filter.trim().toUpperCase()) || this.filter.trim().toUpperCase() == '')
       || (item.ESTADO_PLANIFICACION.trim().toUpperCase().includes(this.filter.trim().toUpperCase()) || this.filter.trim().toUpperCase() == '')
       )
       this.contentArray = [];
@@ -348,5 +351,12 @@ export class AppActividadesComponent {
       this.rolesArray = this.rolesArray.slice(0, 7);
       return this.rolesArray.length > 0 ? this.rolesArray : this.result = true;
     }
+  }
+  getRolValue(): number {
+    const rol = localStorage.getItem('rol');
+    if (rol && !isNaN(Number(rol))) {
+      return Number(rol);
+    }
+    return 0;
   }
 }

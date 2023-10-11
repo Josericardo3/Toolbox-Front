@@ -102,7 +102,6 @@ import { AppEncuestaCreadaComponent } from './modules/encuestaCreada/app-encuest
 import { AppTablaEncuestasComponent } from './modules/tablaEncuestas/app-tabla-encuestas/app-tabla-encuestas.component';
 import { AppEliminarEncuestaComponent } from './modules/tablaEncuestas/app-eliminar-encuesta/app-eliminar-encuesta.component';
 import { AppMonitorizacionComponent } from './modules/monitorizacion/app-monitorizacion/app-monitorizacion.component';
-import { TokenInterceptor } from "./auth/token.interceptor";
 //import { AppMejoraContinuaComponent } from "./modules/mejoraContinua/app-mejora-continua/app-mejora-continua.component";
 // import {GoogleMapsModule} from '@angular/google-maps'; 
 
@@ -210,7 +209,6 @@ import { TokenInterceptor } from "./auth/token.interceptor";
     BsModalService,
     TabsetConfig,
     AppPlanificacionComponent,
-    //{provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor,   multi: true}
   ],
   entryComponents: [
     AppDeleteActivitiesComponent,

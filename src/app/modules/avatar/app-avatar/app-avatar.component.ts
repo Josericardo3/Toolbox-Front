@@ -93,7 +93,7 @@ export class AppAvatarComponent {
     this.ApiService.getUserAvatar(idUsuario).subscribe((data: any) => {
       this.userAvatar = data.FK_ID_TIPO_AVATAR;
       this.userAvatarValue = this.userAvatar.toString();
-      console.log(this.userAvatar);
+
     })
   }
   

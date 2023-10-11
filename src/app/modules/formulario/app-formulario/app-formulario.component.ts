@@ -19,7 +19,7 @@ export class AppFormularioComponent implements OnInit{
   datos: any = [];
   public form: FormGroup;
   selectedTabIndex: number = -1;
-  isDisabled: boolean = false;
+  isDisabled: boolean = true;
   estadoFormulario: any;
 
   constructor(
@@ -31,10 +31,8 @@ export class AppFormularioComponent implements OnInit{
 
   ngOnInit() {
     this.estadoFormulario = this.formService.obtenerEstadoFormulario(this.selectedMatrizId);  
-    this.ApiService.getLeyes()
-    .subscribe((data: any) => {
-      this.datos = data;
-    })
+
+
 
     this.form = this.formBuilder.group({
       estadoCumplimiento:[this.estadoFormulario?.ESTADO_CUMPLIMIENTO ||''],
@@ -46,23 +44,22 @@ export class AppFormularioComponent implements OnInit{
       fecha:[this.estadoFormulario?.FECHA || ''],
       estado:[this.estadoFormulario?.ESTADO || ''],
     });  
-    
     this.setSelectedValues();
-    //this.isDisabled = this.estadoFormulario ? true : false
+    this.isDisabled = true
     this.setFormDisabledState();
     this.restaurarForm();
   }
   
   restaurarForm(){
     this.form = this.formBuilder.group({
-      estadoCumplimiento: [{ value: this.data?.ESTADO_CUMPLIMIENTO || this.estadoFormulario?.ESTADO_CUMPLIMIENTO || '', disabled: this.data?.ESTADO_CUMPLIMIENTO !== null }],
-      responsable: [{ value: this.data?.RESPONSABLE_CUMPLIMIENTO || this.estadoFormulario?.RESPONSABLE || '', disabled: this.data?.RESPONSABLE_CUMPLIMIENTO !== null }],
-      evidencia: [{ value: this.data?.DATA_CUMPLIMIENTO || this.estadoFormulario?.EVIDENCIA || '', disabled: this.data?.DATA_CUMPLIMIENTO !== null }],
-      observaciones: [{ value: this.data?.DATA_CUMPLIMIENTO ? '' : this.estadoFormulario?.OBSERVACIONES || '', disabled: this.data?.DATA_CUMPLIMIENTO !== null }],
-      acciones: [{ value: this.data?.PLAN_ACCIONES_A_REALIZAR || this.estadoFormulario?.ACCIONES || '', disabled: this.data?.PLAN_ACCIONES_A_REALIZAR !== null }],
-      responsableCumplimiento: [{ value: this.data?.PLAN_RESPONSABLE_CUMPLIMIENTO || this.estadoFormulario?.RESPONSABLE_CUMPLIMIENTO || '', disabled: this.data?.PLAN_RESPONSABLE_CUMPLIMIENTO !== null }],
-      fecha: [{ value: this.data?.PLAN_FECHA_EJECUCION || this.estadoFormulario?.FECHA || '', disabled: this.data?.PLAN_FECHA_EJECUCION !== null }],
-      estado: [{ value: this.data?.PLAN_ESTADO || this.estadoFormulario?.ESTADO || '', disabled: this.data?.PLAN_ESTADO !== null }],
+      estadoCumplimiento: [{ value: this.data?.ESTADO_CUMPLIMIENTO || this.estadoFormulario?.ESTADO_CUMPLIMIENTO || '', disabled: true }],
+      responsable: [{ value: this.data?.RESPONSABLE_CUMPLIMIENTO || this.estadoFormulario?.RESPONSABLE || '', disabled: true}],
+      evidencia: [{ value: this.data?.DATA_CUMPLIMIENTO || this.estadoFormulario?.EVIDENCIA || '', disabled: true }],
+      observaciones: [{ value: this.data?.DATA_CUMPLIMIENTO ? '' : this.estadoFormulario?.OBSERVACIONES || '', disabled: true }],
+      acciones: [{ value: this.data?.PLAN_ACCIONES_A_REALIZAR || this.estadoFormulario?.ACCIONES || '', disabled: true }],
+      responsableCumplimiento: [{ value: this.data?.PLAN_RESPONSABLE_CUMPLIMIENTO || this.estadoFormulario?.RESPONSABLE_CUMPLIMIENTO || '', disabled: true }],
+      fecha: [{ value: this.data?.PLAN_FECHA_EJECUCION || this.estadoFormulario?.FECHA || '', disabled: true }],
+      estado: [{ value: this.data?.PLAN_ESTADO || this.estadoFormulario?.ESTADO || '', disabled: true }],
     });
   }
 
@@ -145,4 +142,11 @@ export class AppFormularioComponent implements OnInit{
     this.form.enable();
   }
 
+  getRolValue(): number {
+    const rol = localStorage.getItem('rol');
+    if (rol && !isNaN(Number(rol))) {
+      return Number(rol);
+    }
+    return 0;
+  }
 }

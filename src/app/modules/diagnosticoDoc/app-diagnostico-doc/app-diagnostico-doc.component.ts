@@ -22,7 +22,7 @@ import { headerLogo, footerLogo } from './logoBase64';
 //import * as htmlToImage from 'html-to-image';
 //import domtoimage from 'dom-to-image';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { debug } from 'console';
+import { SpinnerService } from 'src/app/servicios/spinnerService/spinner.service';
 
 @Component({
   selector: 'app-app-diagnostico-doc',
@@ -52,8 +52,8 @@ export class AppDiagnosticoDocComponent implements OnInit {
   etapaFinal: any;
   nombreAsesor: any;
   fechaInforme: any
-
   graficoimg: any;
+
   //Lista Pla de Mejora
   datosP: any = [];
   NTCP: string;
@@ -94,33 +94,46 @@ export class AppDiagnosticoDocComponent implements OnInit {
   porcentajeNC: any;
   porcentajeCP: any;
   porcentajeC: any;
-
   numeral: string;
   showModal = false;
   valorModal: any;
   valoresModal: any;
-
   chartImage: any;
-
   imageData: string;
   pdfImage: string;
   dataUrlMain = '';
-
+  listaRequisitos: any = [];
+  graficosimg: any;
+  totalesD: any;
+  requisitosCumplidos: any = [];
   currentPage = 1;
   pageCount = 0;
+  imgTotalBar: any;
 
   constructor(
     private router: Router,
     private ApiService: ApiService,
     private http: HttpClient,
     private Message: ModalService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private spinnerService: SpinnerService
   ) { }
 
   ngOnInit(): void {
-    this.getListaChequeo();
-    this.getListaDiagnostico();
-    this.getListaPlanMejora();
+    const id = Number(window.localStorage.getItem('Id'));
+ 
+    this.ApiService.validateCaracterizacion(id).subscribe((data: any) => {
+      if (data === true) {
+        this.spinnerService.llamarSpinner();
+        this.getListaChequeo();
+        this.getListaDiagnostico();
+        this.getListaPlanMejora();
+      }
+      else {
+        this.router.navigate(['/dashboard']);
+       
+      }
+    })
   }
 
   getListaChequeo() {
@@ -154,11 +167,9 @@ export class AppDiagnosticoDocComponent implements OnInit {
         this.porcentajeC = this.datosL.PORCENTAJE_C;
       });
   }
-
   getListaDiagnostico() {
     this.ApiService.getListaDiagnosticoApi()
       .subscribe((data: any) => {
-
         this.datosD = data;
         this.nombrePstD = this.datosD.DATA_USUARIO?.NOMBRE_PST;
         this.nitD = this.datosD.DATA_USUARIO?.NIT;
@@ -182,6 +193,131 @@ export class AppDiagnosticoDocComponent implements OnInit {
         this.etapaFinal = this.datosD.ETAPA_FINAL;
         this.nombreAsesor = this.datosD.NOMBRE_ASESOR;
         this.fechaInforme = this.datosD.FECHA_INFORME;
+        const arrayLength = this.datosD.DATA_AGRUPACION.length;
+        let count = 0;
+        const collection = {};
+
+        for (let i = 0; i < arrayLength; i++) {
+          const obj = this.datosD.DATA_AGRUPACION[i];
+          this.listaRequisitos.push(obj.TITULO_PRINCIPAL);
+          collection[obj.NUMERAL_PRINCIPAL] = null;
+          let values = {
+            'C': 0,
+            'NC': 0,
+            'CP': 0,
+            'NA': 0,
+            'OTROS': 0
+          }
+
+          obj.LISTA_CAMPOS.forEach((lstCampos: any, index) => {
+            switch (lstCampos.CALIFICADO) {
+              case 'Cumple':
+                values.C += 1;
+                break;
+              case 'No Cumple':
+                values.NC += 1;
+                break;
+              case 'Cumple Parcialmente':
+                values.CP += 1;
+                break;
+              case 'No Aplica':
+                values.NA += 1;
+                break;
+              default:
+                values.OTROS += 1;
+                break;
+            }
+          })
+
+          var configChart = `{
+            "type": "doughnut",
+            "data": {
+              "datasets": [
+                {
+                  "data": [${values.NA},${values.NC}, ${values.CP}, ${values.C}],
+                  "backgroundColor": [
+                    "rgba(66, 133, 244, 255)",     // Azul
+                    "rgba(234, 67, 53, 255)",    // Rojo
+                    "rgba(251, 188, 4, 255)",  // Amarillo
+                    "rgba(52, 168, 83, 255)"    // Verde
+                  ],
+                  "label": "Dataset 1"
+                }
+              ],
+              "labels": ["No aplica", "No cumple", "Cumple Parcialmente", "Cumple"]
+            },
+            "options": {
+              "cutout": "60%",
+              "plugins": {
+                "legend": {
+                  "position": "right",
+                  "align": "center",
+                  "labels": {
+                    "color": "black",
+                    "fontSize": 16,
+                    "fontStyle": "bold",
+                    "pointStyle": "rect",
+                    "usePointStyle": true,
+                    "padding": 10
+                  }
+                },
+                "tooltip": {
+                  "enabled": false
+                },
+                "datalabels": {
+                  "display": true,
+                  "formatter": function(value, context) {
+                    var dataset = context.dataset;
+                    var data = dataset.data;
+                    var total = data.reduce(function(sum, current) {
+                      return sum + current;
+                    }, 0);
+                    var currentValue = data[context.dataIndex];
+                    var percentage = ((currentValue / total) * 100).toFixed(2);
+                    return percentage + "%";
+                  },
+                  "color": "black",
+                  "font": {
+                    "weight": "normal"
+                  }
+                }
+              }
+            },
+            "devicePixelRatio": 2,
+            "width": 300,
+            "height": 300
+          }`
+
+          this.ApiService.getGrafico(configChart)
+            .subscribe((data: Blob) => {
+              const reader = new FileReader();
+              reader.onloadend = () => {
+                const base64Data = reader.result as string;
+                const safeImageUrl: SafeResourceUrl = this.sanitizer.bypassSecurityTrustResourceUrl(base64Data);
+                collection[obj.NUMERAL_PRINCIPAL] = safeImageUrl;
+                const foundObject = this.datosD.DATA_CONSOLIDADO.find((element: any) => element.REQUSITO === obj.TITULO_PRINCIPAL);
+                foundObject.CUMPLE = values.C;
+                foundObject.NO_CUMPLE = values.NC;
+                foundObject.CUMPLE_PARCIAL = values.CP;
+                foundObject.NO_APLICA = values.NA;
+                var sumaTotal = values.C + values.NC + values.CP + values.NA;
+                var sumaCumple = values.C + values.CP;
+                var porctotal = (sumaCumple / sumaTotal) * 100;
+                foundObject.PORC_CUMPLE = porctotal.toFixed(2);
+                count++;
+                if (count === arrayLength - 1) {
+                  setTimeout(() => {
+                    this.getTotales();
+                    this.getSubtotales();
+                    this.generateGrafico();
+                  }, 1000);
+                }
+              };
+              reader.readAsDataURL(data);
+            });
+        }
+        this.graficosimg = collection;
+
         // Calcular totales
         this.totales = this.datosD.DATA_CONSOLIDADO.reduce((acc: any, val: any) => {
           acc.NO_APLICA += parseFloat(val.NO_APLICA);
@@ -191,9 +327,22 @@ export class AppDiagnosticoDocComponent implements OnInit {
           return acc;
         }, { NO_APLICA: 0, NO_CUMPLE: 0, CUMPLE_PARCIAL: 0, CUMPLE: 0 });
       })
-
   }
-
+  getTotales() {
+    this.totalesD = {
+      cumple: this.datosD.DATA_CONSOLIDADO.reduce((accumulator, obj) => accumulator + parseFloat(obj.CUMPLE), 0).toFixed(2),
+      noCumple: this.datosD.DATA_CONSOLIDADO.reduce((accumulator, obj) => accumulator + parseFloat(obj.NO_CUMPLE), 0).toFixed(2),
+      cumpleParcial: this.datosD.DATA_CONSOLIDADO.reduce((accumulator, obj) => accumulator + parseFloat(obj.CUMPLE_PARCIAL), 0).toFixed(2),
+      noAplica: this.datosD.DATA_CONSOLIDADO.reduce((accumulator, obj) => accumulator + parseFloat(obj.NO_APLICA), 0).toFixed(2),
+      porcCumple: ''
+    }
+    this.totalesD.porcCumple = (((this.totalesD.cumple) + Number(this.totalesD.cumpleParcial)) / (Number(this.totalesD.cumple) + Number(this.totalesD.noCumple) + Number(this.totalesD.cumpleParcial) + Number(this.totalesD.noAplica)) * 100).toFixed(2);
+  }
+  getSubtotales() {
+    this.datosD.DATA_CONSOLIDADO.forEach((element: any) => {
+      this.requisitosCumplidos.push(element.PORC_CUMPLE);
+    });
+  }
   getListaPlanMejora() {
     // var normaValue = window.localStorage.getItem('idNormaSelected');
     // var idUsuario = window.localStorage.getItem('Id');
@@ -221,21 +370,177 @@ export class AppDiagnosticoDocComponent implements OnInit {
         this.fechaInformeP = this.datosP.FECHA_INFORME;
       });
   }
+  generateGrafico() {
+    try {
+      var configChart = `{
+        "type": "pie",
+        "data": {
+          "datasets": [
+            {
+              "data": [${this.totalesD.noAplica},${this.totalesD.cumpleParcial}, ${this.totalesD.noCumple}, ${this.totalesD.cumple}],
+              "backgroundColor": [
+                "rgba(66, 133, 244, 255)",     // Azul
+                "rgba(234, 67, 53, 255)",    // Rojo
+                "rgba(251, 188, 4, 255)",  // Amarillo
+                "rgba(52, 168, 83, 255)"    // Verde
+              ],
+              "label": "Dataset 1"
+            }
+          ],
+          "labels": ["No aplica", "No cumple", "Cumple Parcialmente", "Cumple"]
+        },
+        "options": {
+          "cutout": "60%",
+          "plugins": {
+            "legend": {
+              "position": "right",
+              "align": "center",
+              "labels": {
+                "color": "black",
+                "fontSize": 16,
+                "fontStyle": "bold",
+                "pointStyle": "rect",
+                "usePointStyle": true,
+                "padding": 10
+              }
+            },
+            "tooltip": {
+              "enabled": false
+            },
+            "datalabels": {
+              "display": true,
+              "formatter": function(value, context) {
+                var dataset = context.dataset;
+                var data = dataset.data;
+                var total = data.reduce(function(sum, current) {
+                  return sum + current;
+                }, 0);
+                var currentValue = data[context.dataIndex];
+                var percentage = ((currentValue / total) * 100).toFixed(2);
+                return percentage + "%";
+              },
+              "color": "black",
+              "font": {
+                "weight": "normal"
+              }
+            }
+          }
+        },
+        "devicePixelRatio": 2,
+        "width": 300,
+        "height": 300
+      }`
 
+      this.ApiService.getGrafico(configChart)
+        .subscribe((data: Blob) => {
+
+
+          const reader = new FileReader();
+          reader.onloadend = () => {
+            const base64Data = reader.result as string;
+            const safeImageUrl: SafeResourceUrl = this.sanitizer.bypassSecurityTrustResourceUrl(base64Data);
+            this.chartImage = safeImageUrl;
+
+            // yesi this.imgTotal = safeImageUrl;
+            this.generateGraficoBarras();
+          };
+          reader.readAsDataURL(data);
+        });
+    } catch (error) {
+      const title = "Advertencia";
+      const message = "Se está generando el documento, por favor intente en unos segundos"
+      this.Message.showModal(title, message);
+    }
+  }
+  generateGraficoBarras() {
+    const listaRequisitosMayusculas = this.listaRequisitos.map(requisito => requisito.toUpperCase());
+    const configChart = `{
+      type: 'horizontalBar',
+      data: {
+        labels: ${JSON.stringify(listaRequisitosMayusculas)},
+        datasets: [
+          {
+            label: 'Cumplimiento',
+            data: [${this.requisitosCumplidos.map((cumplimiento) => parseFloat(cumplimiento))}],
+            backgroundColor: 'rgba(9,60,146,255)',
+            borderColor: 'rgba(9,60,146,255)',
+            borderWidth: 1,
+            datalabels: {
+              anchor: 'end',
+              align: 'right',
+              color: '#fff',
+              font: {
+                weight: 'bold',
+                size: 16,
+              },
+              formatter: function(value, context) {
+                return value;
+              },
+              labels: {
+                title: {
+                  font: {
+                    weight: 'bold',
+                    size: 16,
+                  },
+                },
+              },
+            },
+          }, ],
+        },
+        options: {
+          scales: {
+            xAxes: [{
+              ticks: {
+                callback: function(value) {
+                  return value + "%";
+                },
+                suggestedMax: 100,
+                beginAtZero: true,
+                fontSize: 10
+              },
+              maxBarThickness: 20,
+            }],
+            yAxes: [{
+              ticks: {
+                fontSize: 8
+              },
+            }
+          ]
+          },
+          legend: {
+            display: false
+          },
+          title: {
+            display: false,
+          }
+        },
+      }
+    `
+    this.ApiService.getGrafico(configChart)
+      .subscribe((data: Blob) => {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          const base64Data = reader.result as string;
+          const safeImageUrl: SafeResourceUrl = this.sanitizer.bypassSecurityTrustResourceUrl(base64Data);
+          this.imgTotalBar = safeImageUrl;
+          // this.generateDiagnostico();;
+        };
+        reader.readAsDataURL(data);
+      });
+  }
   generateDiagnostico() {
     if (!!!this.datosD) {
       const title = "Error";
       const message = "No se encontró información para generar el informe de diagnóstico"
       this.Message.showModal(title, message);
     } else {
-      // this.captureChart();
       const pdfDefinition: any = {
         header: {
           columns: [
-            { image: headerLogo, fit: [150, 150], style: ['headerLogo']}
+            { image: headerLogo, fit: [150, 150], style: ['headerLogo'] }
           ]
         },
-        footer: function(currentPage: number, pageCount: number) {
+        footer: function (currentPage: number, pageCount: number) {
           return {
             columns: [
               {
@@ -256,8 +561,8 @@ export class AppDiagnosticoDocComponent implements OnInit {
           width: 794,
           height: 1123
         },
-        
-        pageMargins: [ 40, 60, 40, 60 ],
+
+        pageMargins: [40, 60, 40, 60],
         content: [
           {
             toc: {
@@ -442,7 +747,7 @@ export class AppDiagnosticoDocComponent implements OnInit {
                 {}
               ],
               [
-                { text: 'this.imgCircular', colSpan: 5 },
+                { image: this.chartImage.changingThisBreaksApplicationSecurity, width: 500, alignment: 'center', colSpan: 5 },
                 {},
                 {},
                 {},
@@ -465,7 +770,7 @@ export class AppDiagnosticoDocComponent implements OnInit {
                 {}
               ],
               [
-                { text: 'this.imgLineal', colSpan: 5 },
+                { image: this.imgTotalBar.changingThisBreaksApplicationSecurity, alignment: 'center', colSpan: 5 },
                 {},
                 {},
                 {},
@@ -581,7 +886,12 @@ export class AppDiagnosticoDocComponent implements OnInit {
           ]);
         });
         pdfDefinition.content[5].table.body.push([
-          { text: 'this.chartImage', width: 500, alignment: 'center', colSpan: 5 },
+          {
+            image: this.graficosimg[obj.NUMERAL_PRINCIPAL].changingThisBreaksApplicationSecurity,
+            alignment: 'center',
+            colSpan: 5,
+            fit: [300, 180] // Especifica las dimensiones deseadas [ancho, alto]
+          },
           {},
           {},
           {},
@@ -594,7 +904,6 @@ export class AppDiagnosticoDocComponent implements OnInit {
       pdfMake.createPdf(pdfDefinition).download('Informe_de_diagnóstico.pdf');
     }
   }
- 
   generateListaChequeo() {
     if (!!!this.datosL.RESPONSE_USUARIO) {
       const title = "No hay datos";
@@ -605,10 +914,10 @@ export class AppDiagnosticoDocComponent implements OnInit {
     const pdfDefinition: any = {
       header: {
         columns: [
-          { image: headerLogo, fit: [150, 150], style: ['headerLogo']}
+          { image: headerLogo, fit: [150, 150], style: ['headerLogo'] }
         ]
       },
-      footer: function(currentPage: number, pageCount: number) {
+      footer: function (currentPage: number, pageCount: number) {
         return {
           columns: [
             {
@@ -629,7 +938,7 @@ export class AppDiagnosticoDocComponent implements OnInit {
         width: 794,
         height: 1123,
       },
-      pageMargins: [ 40, 60, 40, 60 ],
+      pageMargins: [40, 60, 40, 60],
       content: [
         {
           toc: {
@@ -821,7 +1130,6 @@ export class AppDiagnosticoDocComponent implements OnInit {
     this.Message.showModal(title, message);
     pdfMake.createPdf(pdfDefinition).download('Informe_de_lista_de_chequeo.pdf');
   }
-
   generatePlanMejora() {
     if (!!!this.datosP.USUARIO) {
       const title = "No hay datos";
@@ -832,10 +1140,10 @@ export class AppDiagnosticoDocComponent implements OnInit {
     const pdfDefinition: any = {
       header: {
         columns: [
-          { image: headerLogo, fit: [150, 150], style: ['headerLogo']}
+          { image: headerLogo, fit: [150, 150], style: ['headerLogo'] }
         ]
       },
-      footer: function(currentPage: number, pageCount: number) {
+      footer: function (currentPage: number, pageCount: number) {
         return {
           columns: [
             {
@@ -856,7 +1164,7 @@ export class AppDiagnosticoDocComponent implements OnInit {
         width: 794,
         height: 1123,
       },
-      pageMargins: [ 40, 120, 40, 120 ],
+      pageMargins: [40, 120, 40, 120],
       content: [
         {
           toc: {
@@ -1034,7 +1342,6 @@ export class AppDiagnosticoDocComponent implements OnInit {
     this.Message.showModal(title, message);
     pdfMake.createPdf(pdfDefinition).download('Informe_de_plan_de_mejora.pdf');
   }
-
   saveForm() {
     this.router.navigate(['/dashboard'])
   }

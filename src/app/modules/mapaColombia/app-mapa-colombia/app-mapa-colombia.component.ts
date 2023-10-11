@@ -162,7 +162,6 @@ export class AppMapaColombiaComponent implements OnInit {
   getSelectMultiplePST() {
     this.api.getPSTSelect().subscribe((data) => {
       this.dropdownList = data;
-      console.log(data);
       this.dropdownList = data.map((item) => {
         return {
           id: item.ID_USUARIO,

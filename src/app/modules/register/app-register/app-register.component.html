@@ -31,12 +31,6 @@
         <a class="validar-button" style="background-color: #068460; color: white; padding: 5px;" (click)="validarRnt()">Validar</a>
       </div>
       </div>
-      <div *ngIf="!showCheckRnt">
-        <label class="control-error textDanger">
-          {{msjRnt}}
-        </label>
-        <br />
-      </div>
       <label>Número de identificación tributaria</label>
         <input class="formmincit"
           type="number"
@@ -46,7 +40,12 @@
           [ngClass]="{ 'dark-input': accionDisabled  }"
           />
 
-
+      <div *ngIf="!showCheckRnt">
+        <label class="control-error textDanger">
+          {{msjRnt}}
+        </label>
+        <br />
+      </div>
 
 
 

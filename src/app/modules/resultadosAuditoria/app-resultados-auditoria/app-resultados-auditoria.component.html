@@ -30,7 +30,7 @@
                         <td>{{ datos2[item.ID_AUDITORIA]?.ALCANCE }}</td>
                         <td>{{ item.ESTADO_AUDITORIA }}</td>
                         <td><i class="fa fa-circle" [ngStyle]="{'color': item.statecolor}"></i></td>
-                        <td>
+                        <td *ngIf="getRolValue() !== 4 && getRolValue() !==5">
                             <a title="Editar" routerLink="/listaDeVerificacion" routerLinkActive="activebutton">
                                 <i class="fa-solid fa-pen" style="color: #06543c;"></i>
                             </a>

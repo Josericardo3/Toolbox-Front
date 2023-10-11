@@ -13,7 +13,8 @@ export class AppHeaderComponent implements OnInit {
   constructor(private ApiService: ApiService,) { }
 
   ngOnInit() {
-    this.getNombreUsuario();
+    const id = localStorage.getItem('Id');
+    if (id != null || undefined) this.getNombreUsuario();
   }
 
   Logo(){
@@ -22,10 +23,10 @@ export class AppHeaderComponent implements OnInit {
    }
 
    getNombreUsuario(){
-   /* this.ApiService.getUsuario()
+    this.ApiService.getUsuario()
     .subscribe(data =>{
       this.datos = data
       this.nombre = this.datos.NOMBRE_PST
-    })*/
+    })
   }
 }

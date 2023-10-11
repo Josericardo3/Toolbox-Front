@@ -29,6 +29,7 @@ registerLocaleData(localeEsPE, 'es-PE');
 })
 export class AppAuditoriaInternaComponent {
   showTable: boolean = false; // Variable para controlar la visibilidad de la tabla
+  showDisableBtn: boolean = true;
   toggleValue: boolean = false;//prueba toggle
   listAuditor: any = [];
   equipoAuditor: any = [];
@@ -54,34 +55,25 @@ export class AppAuditoriaInternaComponent {
       alcanceAuditoria: ["", Validators.required],
       criterioAuditoria: ["", Validators.required],
       dateInit: ["", Validators.required],
-     // mytime: [""],
+      actividadTable: ["", Validators.required],
       dateEnd: [""],
-      //hourEnd: [""],
       fecha: [""],
       planAuditoriaDate: [""],
-      // processOrActivity:["",Validators.required],
-      //normOrRequest:["",Validators.required],
       auditor: [""],
       auditados: [""],
       observacion: [""],
       fechaActual: [""],
-    //  obsText: [""],
       startTime: ["", Validators.required],
       endTime: ["", Validators.required],
       hora: [""],
-      //prueba
-      //    toggleValue:[false],
       proceso: [""],
       actividad: [""],
-      //pruena norma
-      // toggleValueNorma:[false],
-      //norma: ["",Validators.required],
-      //requisito: [""],
-
     });
+
     this.getAuditorList();
     this.fnListResponsible();
-    this.getUser() 
+    this.getUser()
+
   }
 
   onDateChange(date: Date) {
@@ -91,21 +83,27 @@ export class AppAuditoriaInternaComponent {
 
   /* nicio */
   onItemSelect(item: any) {
-   // console.log(item);
+    // console.log(item);
   }
   onSelectAll(items: any) {
-   // console.log(items);
+    // console.log(items);
   }
   /* Fin */
+  listAuditorData: any = [];
   getAuditorList() {
     this.ApiService.getAuditorListService().subscribe((data: any) => {
+
       this.listAuditor = data;
+
       this.equipoAuditor = data;
       this.dropdownList = this.listAuditor.map((auditor: any) => ({
         item_id: auditor.ID_USUARIO,
         item_text: auditor.NOMBRE
       }));
-  
+      // this.listAuditor = this.listAuditorData.map((auditor: any) => ({
+
+      //   NOMBRE: auditor.NOMBRE
+      // }));
       this.dropdownSettings = {
         singleSelection: false,
         idField: 'item_id',
@@ -117,7 +115,7 @@ export class AppAuditoriaInternaComponent {
       };
     });
   }
-  
+
   getActualDate() {
     let date = new Date();
     let day = date.getDate().toString().padStart(2, '0');
@@ -354,11 +352,11 @@ export class AppAuditoriaInternaComponent {
               ],
               ...this.valueAuditoria.map(requisito =>
                 [
-                  
+
                   { text: requisito.fecha, style: ['columna'] },
                   { text: requisito.hora, style: ['columna'] },
-                  { text: requisito.PROCESO_DESCRIPCION, style: ['columna'] },
-                  { text: requisito.NORMAS_DESCRIPCION, style: ['columna'] },
+                  { text: requisito.proceso? requisito.proceso : requisito.actividad, style: ['columna'] },
+                  { text: requisito.norma? requisito.norma: requisito.requisito, style: ['columna'] },
                   { text: requisito.auditor, style: ['columna'] },
                   { text: requisito.auditados, style: ['columna'] }
                 ]
@@ -431,11 +429,22 @@ export class AppAuditoriaInternaComponent {
   totalPaginasAuditoria: any;
   totalRegistrosAuditoria: any;
   datatotalAuditoria: any;
+
   recibirValorModal(valor: any) {
-  
+
+    this.valueAuditoria.push(valor)
+    if (this.valueAuditoria.length > 0) {
+      this.formParent.get('actividadTable').disable();
+    }
+    else {
+      this.formParent.get('actividadTable').enable();
+    }
+
+
     this.showTable = true; // mostrar tabla
-    this.valueAuditoria = valor;
+
     this.arrayAuditoria = this.valueAuditoria;
+
     //Paginado//
     const totalPag = this.arrayAuditoria.length;
     this.contentArrayAuditoria = this.arrayAuditoria;
@@ -457,11 +466,15 @@ export class AppAuditoriaInternaComponent {
   arrayListResponsible: any = [];
   fnListResponsible() {
 
-      this.ApiService.getListResponsible().subscribe((data) => {
+    this.ApiService.getListResponsible().subscribe((data) => {
+
       this.arrayListResponsible = data;
-      this.listAuditor = this.arrayListResponsible.filter((e: any) =>
+      const tempoListAuditor = this.arrayListResponsible.filter((e: any) =>
         e.CARGO === "Líder de Proceso"
       )
+
+      if (tempoListAuditor.length > 0) this.listAuditor = tempoListAuditor
+
     })
   }
 
@@ -469,7 +482,7 @@ export class AppAuditoriaInternaComponent {
   activiti: boolean = true;
   process: boolean = true;
   fnPlanningEdit(indice: number) {
-  
+
     this.activiti = true;
     this.process = true;
     this.caracteristicaIndice = indice;
@@ -514,6 +527,12 @@ export class AppAuditoriaInternaComponent {
       })
     }
     this.valueAuditoria = this.newArray;
+    if (this.valueAuditoria.length > 0) {
+      this.formParent.get('actividadTable').disable();
+    }
+    else {
+      this.formParent.get('actividadTable').enable();
+    }
     this.arrayAuditoria = this.valueAuditoria;
     //Paginado//
     const totalPag = this.arrayAuditoria.length;
@@ -523,5 +542,14 @@ export class AppAuditoriaInternaComponent {
     this.totalRegistrosAuditoria = this.valueAuditoria.length;
     this.datatotalAuditoria = this.arrayAuditoria.length;
   }
+  getRolValue(): number {
+    const rol = localStorage.getItem('rol');
+    if (rol && !isNaN(Number(rol))) {
+      return Number(rol);
+    }
+    return 0;
+  }
+
+
 }
 //prueba nueva pc

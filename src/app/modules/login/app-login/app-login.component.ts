@@ -16,7 +16,6 @@ import { Store } from "@ngrx/store";
 import { saveDataLogin } from "src/app/state/action/example.action";
 import { HttpErrorResponse, HttpResponse } from "@angular/common/http";
 import { ModalService } from "src/app/messagemodal/messagemodal.component.service";
-import { debug } from "console";
 //PG import { TokenStorageService } from '../../../servicios/token/token-storage.service';
 
 @Component({
@@ -79,12 +78,12 @@ export class AppLoginComponent implements OnInit {
     const icon = document.querySelector("i") as HTMLElement;
     if (passLogin.type === "password") {
       passLogin.type = "text";
-      icon.classList.remove("fa-eye-slash");
-      icon.classList.add("fa-eye");
+      icon?.classList.remove("fa-eye-slash");
+      icon?.classList.add("fa-eye");
     } else {
       passLogin.type = "password";
-      icon.classList.add("fa-eye-slash");
-      icon.classList.remove("fa-eye");
+      icon?.classList.add("fa-eye-slash");
+      icon?.classList.remove("fa-eye");
     }
   }
 
@@ -107,8 +106,7 @@ export class AppLoginComponent implements OnInit {
         this.Message.showModal(title, message);
         return;
       }
-      else{
-*/    
+      else{*/
         this.ApiService.login(this.usuario).subscribe(
       
           (data: any) => {
@@ -213,7 +211,7 @@ export class AppLoginComponent implements OnInit {
             this.errorMessage = "Correo o contraseña inválidos";
           }
         );
-    /*  }
+      /*}
     }
     );*/
     

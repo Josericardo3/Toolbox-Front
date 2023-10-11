@@ -12,7 +12,7 @@
             <div class="buscar" *ngIf="showfilter">            
               <input type="text" placeholder="Buscar..." class="buscador" [(ngModel)]="filter" (input)="filterResult()">
             </div>
-            <button class="btn" (click)="fnNuevoRegistro()">
+            <button class="btn" (click)="fnNuevoRegistro()" *ngIf="getRolValue() !== 4 && getRolValue() !== 5">
               <i class="fa-solid fa-plus" style="color: #fff;"></i>Agregar actividad
             </button>
           </div>
@@ -23,7 +23,7 @@
                   <div class="containerSection">
                     <div class="section">
                       <label>Responsable</label>
-                      <select class="inputSection" [(ngModel)]="idUsuario" [(ngModel)]='ngSelect'>
+                      <select class="inputSection" [(ngModel)]="idUsuario" [(ngModel)]='ngSelectResponsable'>
                         <option value="1" disabled>Selecciona una opción</option>
                         <option *ngFor="let responsible of arrayListResponsible" [value]="responsible.ID_USUARIO">
                           {{ responsible.NOMBRE | titlecase }}
@@ -32,7 +32,7 @@
                     </div>
                     <div class="section">            
                       <label>Tipo de actividad</label>
-                      <select class="inputSection" [(ngModel)]="activityType" [(ngModel)]='ngSelect' disabled>
+                      <select class="inputSection" [(ngModel)]="activityType" [(ngModel)]='ngSelectActividad' disabled>
                       <option value="1">Mejora continúa</option>
                       <option *ngFor="let activity of arrayActivity" [ngValue]="activity.VALOR">{{ activity.DESCRIPCION | titlecase }}</option> 
                     </select>
@@ -53,7 +53,7 @@
                     </div>
                     <div class="section"  >
                         <label>Estado</label>
-                        <select class="inputSection" [(ngModel)]="selectedState" [(ngModel)]='ngSelect'>
+                        <select class="inputSection" [(ngModel)]="selectedState" [(ngModel)]='ngSelectEstado'>
                             <option value="1" disabled>Selecciona una opción</option>
                             <option *ngFor="let status of arrayStatus" [value]="status.DESCRIPCION">{{status.DESCRIPCION | titlecase }}</option>
                         </select>
@@ -72,6 +72,7 @@
             <table class="table-gestion" style="margin-top: 8px;">
                 <thead>
                     <tr>
+                      <th scope="col" *ngIf="getRolValue() === 4 || getRolValue()===3 || getRolValue()===5" >Pst</th>
                         <th scope="col">Responsable</th>
                         <th scope="col">Descripción de actividad</th>
                         <th scope="col">Inicio de actividad</th>
@@ -85,6 +86,7 @@
                 </thead>
                 <tbody>
                     <tr *ngFor="let user of rolesArray; let i = index;">
+                      <td *ngIf="getRolValue() === 4 || getRolValue()===3 || getRolValue()===5" >{{user.NOMBRE_PST || user.NOMBRE_RESPONSABLE}}</td>
                         <td *ngIf="caracteristicaIndice!=i">{{ user?.NOMBRE_RESPONSABLE | titlecase}}</td>
                         <!-- **cuando edita**  -->
                         <td *ngIf="caracteristicaIndice ==i">
@@ -133,7 +135,7 @@
                         </select>
                         </td>
                         <td><i class="fa fa-circle" [ngStyle]="{'color': user.statecolor}"></i></td>
-                        <td>
+                        <td *ngIf="getRolValue() !== 4 && getRolValue() !== 5">
                             <a title="Editar" (click)="fnActivityEdit(i)" *ngIf="caracteristicaIndice!=i" >
                                 <i class="fa-solid fa-pen" style="color: #06543c;"></i>
                             </a>

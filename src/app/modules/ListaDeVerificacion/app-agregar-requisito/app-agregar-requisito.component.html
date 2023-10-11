@@ -1,5 +1,5 @@
 <!-- Button trigger modal -->
-  <button id="openModalButton" class="btn-agregar" (click)="cancelEvent($event)" data-toggle="modal" data-target="#myModal">
+  <button id="openModalButton" class="btn-agregar" (click)="cancelEvent($event)" data-toggle="modal" data-target="#myModal" *ngIf="getRolValue() !== 4 && getRolValue() !== 5" >
     Agregar requisito
     <i class="fa-solid fa-plus" style="color: #fff;"></i>
   </button>

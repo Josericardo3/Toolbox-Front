@@ -3,7 +3,7 @@
     <div class="linea"></div>
     <table class="dropdown">
       <tbody>
-        <tr>
+        <tr  *ngIf="getRolValue() !== 7">
           <td class="td-menu">
             <p class="p-menu" routerLink="/mejoraContinua" routerLinkActive="activebutton">
                 <i class="fa-solid fa-chart-line" style="font-size: 20px; margin-right: 8px;"></i> Mejora contínua

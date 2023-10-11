@@ -11,6 +11,7 @@ export class FormService {
     this.formularioEstado[idMatriz] = estado;
   }
   obtenerEstadoFormulario(idMatriz: number) {
+    debugger;
     return this.formularioEstado[idMatriz];
   }
 

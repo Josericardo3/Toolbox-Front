@@ -58,7 +58,8 @@
 }
 .container-section{
   display: flex;
-  align-items: center;
+   /* align-items: center;  */
+   align-items: flex-start; 
   justify-content: flex-start;
   padding: 1vh 0;
   width: 100%;

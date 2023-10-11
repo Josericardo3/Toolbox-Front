@@ -76,7 +76,7 @@
                 </ng-template>
 
                 <div id="ContainerdetalleAdicionar">
-                    <div class="adicionar" (click)="toggleSection('adicionarTurismo')">
+                    <div class="adicionar" (click)="toggleSection('adicionarTurismo')" *ngIf="getRolValue() !== 4 && getRolValue()!==5 && getRolValue()!==7">
                         <button class="adicionarBtn" id="adicionarRequisitoTurismo">Adicionar requisito legal +</button>
                     </div>
                     <div class="detalleAdicionar" id="detalleAdicionarRequisito" *ngIf="adicionarVisibleTurismo">
@@ -134,7 +134,7 @@
                                 <p class="parrafo">{{campo.DESCRIPCION}}</p>
                                 <h4 style="font-weight: bolder;" class="parrafo">ARTÍCULOS / SECCIONES / REQUISITOS ESPECÍFICOS QUE APLICAN</h4>
                                 <p class="parrafo">{{ subCampo.DOCS_ESPECIFICOS}}</p>
-                                <app-app-formulario [selectedMatrizId]="subCampo.ID_MATRIZ" [idMatriz]="idMatriz"></app-app-formulario>
+                                <app-app-formulario [selectedMatrizId]="subCampo.ID_MATRIZ" [data]="subCampo" [idMatriz]="idMatriz"></app-app-formulario>
                             </div>
                         </ng-container>       
                     </div>
@@ -173,7 +173,7 @@
                 </ng-template>
                              
                 <div id="ContainerdetalleAdicionar">
-                    <div class="adicionar" (click)="toggleSection('adicionarAmbiental')">
+                    <div class="adicionar" (click)="toggleSection('adicionarAmbiental')" *ngIf="getRolValue() !== 4 && getRolValue()!==5 && getRolValue()!==7">
                         <button class="adicionarBtn" id="adicionarRequisitoTurismo">Adicionar requisito legal +</button>
                     </div>
                     <div class="detalleAdicionar" id="detalleAdicionarRequisito" *ngIf="adicionarVisibleAmbiental">
@@ -231,7 +231,7 @@
                                 <p class="parrafo">{{campo.DESCRIPCION}}</p>
                                 <h4 style="font-weight: bolder;" class="parrafo">ARTÍCULOS / SECCIONES / REQUISITOS ESPECÍFICOS QUE APLICAN</h4>
                                 <p class="parrafo">{{ subCampo.DOCS_ESPECIFICOS}}</p>
-                                <app-app-formulario [selectedMatrizId]="subCampo.ID_MATRIZ" [idMatriz]="idMatriz"></app-app-formulario>
+                                <app-app-formulario [selectedMatrizId]="subCampo.ID_MATRIZ" [data]="subCampo" [idMatriz]="idMatriz"></app-app-formulario>
                             </div>
                         </ng-container>       
                     </div>
@@ -270,7 +270,7 @@
                 </ng-template>
                              
                 <div id="ContainerdetalleAdicionar">
-                    <div class="adicionar" (click)="toggleSection('adicionarLaboral')">
+                    <div class="adicionar" (click)="toggleSection('adicionarLaboral')" *ngIf="getRolValue() !== 4 && getRolValue()!==5 && getRolValue()!==7">
                         <button class="adicionarBtn" id="adicionarRequisitoTurismo">Adicionar requisito legal +</button>
                     </div>
                     <div class="detalleAdicionar" id="detalleAdicionarRequisito" *ngIf="adicionarVisibleLaboral">
@@ -328,7 +328,7 @@
                                 <p class="parrafo">{{campo.DESCRIPCION}}</p>
                                 <h4 style="font-weight: bolder;" class="parrafo">ARTÍCULOS / SECCIONES / REQUISITOS ESPECÍFICOS QUE APLICAN</h4>
                                 <p class="parrafo">{{ subCampo.DOCS_ESPECIFICOS}}</p>
-                                <app-app-formulario [selectedMatrizId]="subCampo.ID_MATRIZ" [idMatriz]="idMatriz"></app-app-formulario>
+                                <app-app-formulario [selectedMatrizId]="subCampo.ID_MATRIZ" [data]="subCampo" [idMatriz]="idMatriz"></app-app-formulario>
                             </div>
                         </ng-container>    
                     </div>
@@ -367,7 +367,7 @@
                 </ng-template>
                              
                 <div id="ContainerdetalleAdicionar">
-                    <div class="adicionar" (click)="toggleSection('adicionarSocial')">
+                    <div class="adicionar" (click)="toggleSection('adicionarSocial')" *ngIf="getRolValue() !== 4 && getRolValue()!==5 && getRolValue()!==7">
                         <button class="adicionarBtn" id="adicionarRequisitoTurismo">Adicionar requisito legal +</button>
                     </div>
                     <div class="detalleAdicionar" id="detalleAdicionarRequisito" *ngIf="adicionarVisibleSocial">
@@ -425,7 +425,7 @@
                                 <p class="parrafo">{{campo.DESCRIPCION}}</p>
                                 <h4 style="font-weight: bolder;" class="parrafo">ARTÍCULOS / SECCIONES / REQUISITOS ESPECÍFICOS QUE APLICAN</h4>
                                 <p class="parrafo">{{ subCampo.DOCS_ESPECIFICOS}}</p>
-                                <app-app-formulario [selectedMatrizId]="subCampo.ID_MATRIZ" [idMatriz]="idMatriz"></app-app-formulario>
+                                <app-app-formulario [selectedMatrizId]="subCampo.ID_MATRIZ" [data]="subCampo" [idMatriz]="idMatriz"></app-app-formulario>
                             </div>
                         </ng-container>           
                     </div>
@@ -464,7 +464,7 @@
                 </ng-template>
                              
                 <div id="ContainerdetalleAdicionar">
-                    <div class="adicionar" (click)="toggleSection('adicionarEconomico')">
+                    <div class="adicionar" (click)="toggleSection('adicionarEconomico')" *ngIf="getRolValue() !== 4 && getRolValue()!==5 && getRolValue()!==7">
                         <button class="adicionarBtn" id="adicionarRequisitoTurismo">Adicionar requisito legal +</button>
                     </div>
                     <div class="detalleAdicionar" id="detalleAdicionarRequisito" *ngIf="adicionarVisibleEconomico">
@@ -522,7 +522,7 @@
                                 <p class="parrafo">{{campo.DESCRIPCION}}</p>
                                 <h4 style="font-weight: bolder;" class="parrafo">ARTÍCULOS / SECCIONES / REQUISITOS ESPECÍFICOS QUE APLICAN</h4>
                                 <p class="parrafo">{{ subCampo.DOCS_ESPECIFICOS}}</p>
-                                <app-app-formulario [selectedMatrizId]="subCampo.ID_MATRIZ" [idMatriz]="idMatriz"></app-app-formulario>
+                                <app-app-formulario [selectedMatrizId]="subCampo.ID_MATRIZ" [data]="subCampo" [idMatriz]="idMatriz"></app-app-formulario>
                             </div>
                         </ng-container>  
                     </div>
@@ -561,7 +561,7 @@
                 </ng-template>
                              
                 <div id="ContainerdetalleAdicionar">
-                    <div class="adicionar" (click)="toggleSection('adicionarParticular')">
+                    <div class="adicionar" (click)="toggleSection('adicionarParticular')" *ngIf="getRolValue() !== 4 && getRolValue()!==5 && getRolValue()!==7">
                         <button class="adicionarBtn" id="adicionarRequisitoTurismo">Adicionar requisito legal +</button>
                     </div>
                     <div class="detalleAdicionar" id="detalleAdicionarRequisito" *ngIf="adicionarVisibleParticular">

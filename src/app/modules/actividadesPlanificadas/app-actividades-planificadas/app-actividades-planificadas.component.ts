@@ -85,11 +85,12 @@ export class AppActividadesPlanificadasComponent implements OnInit{
       this.estadoArray = this.dataInitial;
       this.updatePaginado(this.dataInitial);
     }
-
+debugger;
     this.estadoArray = this.dataInitial.filter(item =>
       item.NOMBRE_RESPONSABLE.toLowerCase().includes(this.busqueda.toLowerCase()) ||
       item.DESCRIPCION.toLowerCase().includes(this.busqueda.toLowerCase()) ||
-      item.ESTADO_PLANIFICACION.toLowerCase().includes(this.busqueda.toLowerCase())
+      item.ESTADO_PLANIFICACION.toLowerCase().includes(this.busqueda.toLowerCase()) ||
+      item.NOMBRE_PST?.toLowerCase().includes(this.busqueda.toLowerCase())
     );
 
     this.totalRegistros = this.estadoArray.length;
@@ -122,5 +123,13 @@ export class AppActividadesPlanificadasComponent implements OnInit{
     this.estadoArray = this.cortarDatos.slice(startItem, Math.min(endItem, this.datos.length));
     this.totalRegistros = this.estadoArray.length;
   }
+  getRolValue(): number {
+    const rol = localStorage.getItem('rol');
+    if (rol && !isNaN(Number(rol))) {
+      return Number(rol);
+    }
+    return 0;
+  }
+
 
 }

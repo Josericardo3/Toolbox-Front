@@ -13,7 +13,7 @@
     <div class="titulo">
       Gestión de Asesores
       <div class="container-btn">
-      <div *ngIf="showAddAsesor">
+      <div *ngIf="showAddAsesor && getRolValue() === 2">
         <p class="p-close" (click)="openModalNuevoAsesor()">Registrar un nuevo asesor</p>
       </div>
       <div>
@@ -55,11 +55,11 @@
             <td>{{ user.ESTADO_ATENCION  | titlecase }}</td>
             <td class="btn-container">
               
-              <button type="button" class="btn btn-default btn-atencion" (click)="linkToDashboard(user)">
+              <button type="button" class="btn btn-default btn-atencion" (click)="linkToDashboard(user)"  *ngIf="getRolValue() === 8">
                 Iniciar atención
               </button>
               <div *ngIf="showAddAsesor">
-              <button  type="button" class="btn btn-default btn-asignar"  (click)="nuevoAsesor(user)">Asignar asesor</button>
+              <button  type="button" class="btn btn-default btn-asignar"  (click)="nuevoAsesor(user)" *ngIf="getRolValue() === 2">Asignar asesor</button>
               </div>
             </td>
           </tr>

@@ -5,6 +5,7 @@
     <app-app-header-arrow-left></app-app-header-arrow-left>
   </div>
   <div class="container">
+    <div>
     <div class="btn">
       <button class="button" (click)="getMonitorizacion()">Consultar</button>
     </div>
@@ -57,6 +58,7 @@
         (onDeSelectAll)="onDeSelectAll($event, 'pst')"></ng-multiselect-dropdown>
       </div>
       </div>
+    </div>
     <!-- *** SECCIÓN DE LA TABLA DE CONTENIDO DE LAS ACTIVIDADES ***-->
     <table class="table-gestion" style="margin-top: 8px;">
       <thead>
@@ -83,7 +85,8 @@
     <p *ngIf="result"  style="text-align: center;margin-top: 10px; font-size: 19px; font-family: 'Work Sans', sans-serif;" >
       No hay resultado para la búsqueda
     </p>
-     <!-- paginacion -->
+  </div>
+ <!-- paginacion -->
   <footer class="page-style">
     <div class="container-label">
       <label class="paginas">  Página: {{ pages }} / {{ totalPaginas }} Mostrando: {{ totalRegistros }}  Registros: {{ datatotal }} </label>
@@ -104,7 +107,6 @@
     </div>
     </div>
   </footer>
-  </div>
 </div>
 <ngx-spinner
   bdColor="rgba(0, 0, 0, 0.5)"

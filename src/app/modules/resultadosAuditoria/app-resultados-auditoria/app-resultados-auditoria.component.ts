@@ -119,5 +119,12 @@ export class AppResultadosAuditoriaComponent implements OnInit{
     this.estadoArray = this.cortarDatos.slice(startItem, Math.min(endItem, this.datos1.length));
     this.totalRegistros = this.estadoArray.length;
   }
+  getRolValue(): number {
+    const rol = localStorage.getItem('rol');
+    if (rol && !isNaN(Number(rol))) {
+      return Number(rol);
+    }
+    return 0;
+  }
   
 }

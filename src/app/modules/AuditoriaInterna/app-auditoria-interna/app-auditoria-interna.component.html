@@ -41,7 +41,7 @@
                   <label class="label-color">Auditor lider</label>
                   <select id="chkveg1" class="select-auditor" formControlName="liderAuthor">
                     <option value="" disabled selected>Seleccionar</option>
-                    <option *ngFor="let auditor of this.listAuditor" [value]="auditor.NOMBRE">
+                    <option *ngFor="let auditor of listAuditor" [value]="auditor.NOMBRE">
                       {{ auditor.NOMBRE}}
                     </option>
                   </select>
@@ -115,7 +115,7 @@
                   <h1 class="sub-titulo" style="align-self: flex-start;">Planificación de la Auditoria Interna</h1>
                 </div>
                   <div class="rp-btn">
-                  <app-app-auditoria-planificacion  (valorEnviadoModal)="recibirValorModal($event)"></app-app-auditoria-planificacion>
+                  <app-app-auditoria-planificacion  (valorEnviadoModal)="recibirValorModal($event)" formControlName="actividadTable"></app-app-auditoria-planificacion>
                  </div>
                 
                 <!-- tabla dinamica -->
@@ -217,9 +217,9 @@
                 formControlName="observacion"></textarea>
               </div>
     
-              <div class="div-guardar">
+              <div class="div-guardar"  *ngIf="getRolValue() !== 4 && getRolValue() !== 5">
                 <button type="submit" [disabled]="formParent.invalid" class="btn-guardar">
-                  Guardar
+                  Guarda
                 </button>
               </div>
              </div>

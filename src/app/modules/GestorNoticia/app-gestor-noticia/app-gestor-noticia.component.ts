@@ -203,10 +203,25 @@ export class AppGestorNoticiaComponent implements OnInit {
     }
   }
 
+  descripcionListaDestinatario:any;
+  fnShowModalLista(index: number){
+    this.descripcionListaDestinatario =  this.datos[index].NOMBRE_DESTINATARIO;
+    const tempo = this.descripcionListaDestinatario?.split(', ');
+    if(tempo){
+      const arrayConNorma = tempo.map((elemento) => {
+        return { NOMBRE_DESTINATARIO: elemento };
+      });
+      this.descripcionListaDestinatario = arrayConNorma;
+    }
+    this.showModalLista = true
+    return
+  }
+
   filtrarDatos(){
     this.result = false;
     if (!this.busqueda) {
       this.datos = this.dataInitial;
+      console.log( this.datos,2222);
       this.updatePaginado(this.dataInitial);
     }
     else {
@@ -215,9 +230,11 @@ export class AppGestorNoticiaComponent implements OnInit {
         (campo.NOMBRE && campo.NOMBRE.toLowerCase().includes(terminoBusqueda)) ||
         (campo.NORMA && campo.NORMA.toLowerCase().includes(terminoBusqueda)) ||
         (campo.TITULO && campo.TITULO.toLowerCase().includes(terminoBusqueda)) ||
-        (campo.DESCRIPCION && campo.DESCRIPCION.toLowerCase().includes(terminoBusqueda))
+        (campo.DESCRIPCION && campo.DESCRIPCION.toLowerCase().includes(terminoBusqueda)) ||
+        (campo.NOMBRE_PST && campo.NOMBRE_PST.toLowerCase().includes(terminoBusqueda))
       );
       this.datos = filter;
+      console.log( this.datos,3333);
       this.updatePaginado(filter);
       // Verificar si se encontraron resultados
       if (filter.length === 0) {
@@ -283,6 +300,11 @@ export class AppGestorNoticiaComponent implements OnInit {
       this.api.saveNoticia(formData).subscribe(
         (res) => {
           this.showModal = false;
+
+          const title = "Noticia creada";
+          const message = "Noticia creada exitosamente";
+
+      this.Message.showModal(title, message);
           this.getTableData();
         },
         (error) => {
@@ -587,15 +609,10 @@ export class AppGestorNoticiaComponent implements OnInit {
   }
 
   getRolValue(): number {
-    // Obtener el valor del rol almacenado en el Local Storage
     const rol = localStorage.getItem('rol');
-
-    // Verificar si el rol existe y es un número válido
     if (rol && !isNaN(Number(rol))) {
       return Number(rol);
     }
-
-    // Valor predeterminado si no se encuentra el rol o no es un número válido
     return 0;
   }
 

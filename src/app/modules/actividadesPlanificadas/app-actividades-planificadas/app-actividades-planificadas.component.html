@@ -15,6 +15,7 @@
             <table class="table-gestion" style="margin-top: 8px;">
                 <thead>
                     <tr>
+                        <th scope="col" *ngIf="getRolValue() === 4 || getRolValue()===3 || getRolValue()===5" >Pst</th>
                         <th scope="col">Responsable</th>
                         <th scope="col">Descripción</th>
                         <th scope="col">Estado</th>
@@ -26,11 +27,12 @@
                 </thead>
                 <tbody>
                     <tr *ngFor="let campo of estadoArray; let i = index;">
+                        <td>{{campo.NOMBRE_PST || campo.NOMBRE_RESPONSABLE}}</td>
                         <td>{{campo.NOMBRE_RESPONSABLE}}</td>
                         <td  title="Dale click para leer la descripción" (click)="fnShowModal(i)">{{campo.DESCRIPCION.slice(0,40) }}</td>
                         <td>{{campo.ESTADO_PLANIFICACION}}</td>
                         <td><i class="fa fa-circle" [ngStyle]="{'color': campo.statecolor}"></i></td>
-                        <td>
+                        <td *ngIf="getRolValue() !== 4 && getRolValue() !==5">
                             <a title="Editar" routerLink="/planificacion" routerLinkActive="activebutton">
                                 <i class="fa-solid fa-pen" style="color: #06543c;"></i>
                             </a>

@@ -23,29 +23,32 @@ export class ApiService {
 
   // login(form: LoginI): Observable<ResponseI>{
   //   const {registroNacionalDeTurismo,pass} = form;
+  //   let direccion = `${this.apiURL}/api/Usuario/LoginUsuario?usuario=${registroNacionalDeTurismo}&Password=${pass}`;
    
   //   return this.http.post<any>(direccion, {})
 
-  apiURL = environment.apiURL
-  apiURLNuevo = environment.apiURLNuevo
+  apiURL = "https://corsproxy.io/?"+environment.apiURL
+  apiURLNuevo = "https://corsproxy.io/?"+environment.apiURLNuevo
   apiCHART = environment.apiChart
   constructor(private http: HttpClient) {}
 
   login(form: LoginI): Observable<ResponseI | object> {
     // const { registroNacionalDeTurismo, pass, correo } = form
+
+    
     const refresh = localStorage.getItem('refresh');
-    console.log("refresh", refresh);
     const headers = { 'Content-Type': 'application/json', 'tokenAccess': refresh || 'falta token' };
      let request = {
       USER: form.registroNacionalDeTurismo,
       CORREO: form.correo,
       PASSWORD: form.pass
      }
+    //let direccion = `${this.apiURLNuevo}/api/Usuario/LoginUsuario?usuario=${registroNacionalDeTurismo}&Password=${pass}&Correo=${correo}`
     let direccion = `${this.apiURLNuevo}/api/Usuario/LoginUsuario`
     return this.http.post<any>(
       direccion,
-      request
-      //{observe: "response"}
+      request, 
+      {observe: "response"}
       // { registroNacionalDeTurismo, pass },
       // {headers}
       )

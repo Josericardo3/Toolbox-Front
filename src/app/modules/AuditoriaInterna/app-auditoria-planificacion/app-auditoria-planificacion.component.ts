@@ -85,7 +85,8 @@ export class AppAuditoriaPlanificacionComponent {
  
   saveForm() {
   
-    this.valueFormParent.push(this.formParent.value)
+    //this.valueFormParent.push(this.formParent.value)
+    this.valueFormParent = this.formParent.value
    
       for (let i = 0; i < this.valueFormParent.length; i++) {
       if(this.valueFormParent[i].proceso!='' && this.valueFormParent[i].proceso != undefined ){
@@ -116,6 +117,19 @@ export class AppAuditoriaPlanificacionComponent {
     const openModalButton = document.getElementById("closeModal");
     openModalButton.click();
     this.formParent.reset();
+  }
+
+  getRolValue(): number {
+    const rol = localStorage.getItem('rol');
+    if (rol && !isNaN(Number(rol))) {
+      return Number(rol);
+    }
+    return 0;
+  }
+
+  public ocultarGrabar(): boolean {
+    const rolValue = this.getRolValue();
+    return rolValue === 4 || rolValue === 5;
   }
   
 }
