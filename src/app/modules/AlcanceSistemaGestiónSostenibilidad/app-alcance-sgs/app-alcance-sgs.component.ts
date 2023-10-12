@@ -366,7 +366,7 @@ export class AppAlcanceSGSComponent implements OnInit {
         },
       }
     }
-    pdfMake.createPdf(pdfDefinition).download('ALCANCE_DEL_SGS');
+    pdfMake.createPdf(pdfDefinition).open();
   }
 
   cancelarEdit() {

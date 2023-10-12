@@ -901,7 +901,7 @@ export class AppDiagnosticoDocComponent implements OnInit {
       const title = "Se descargó correctamente";
       const message = "La descarga se ha realizado exitosamente"
       this.Message.showModal(title, message);
-      pdfMake.createPdf(pdfDefinition).download('Informe_de_diagnóstico.pdf');
+      pdfMake.createPdf(pdfDefinition).open();
     }
   }
   generateListaChequeo() {
@@ -1128,7 +1128,7 @@ export class AppDiagnosticoDocComponent implements OnInit {
     const title = "Se descargó correctamente";
     const message = "La descarga se ha realizado exitosamente"
     this.Message.showModal(title, message);
-    pdfMake.createPdf(pdfDefinition).download('Informe_de_lista_de_chequeo.pdf');
+    pdfMake.createPdf(pdfDefinition).open();
   }
   generatePlanMejora() {
     if (!!!this.datosP.USUARIO) {
@@ -1340,7 +1340,7 @@ export class AppDiagnosticoDocComponent implements OnInit {
     const title = "Se descargó correctamente";
     const message = "La descarga se ha realizado exitosamente"
     this.Message.showModal(title, message);
-    pdfMake.createPdf(pdfDefinition).download('Informe_de_plan_de_mejora.pdf');
+    pdfMake.createPdf(pdfDefinition).open();
   }
   saveForm() {
     this.router.navigate(['/dashboard'])

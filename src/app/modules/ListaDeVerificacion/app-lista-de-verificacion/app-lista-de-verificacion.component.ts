@@ -544,7 +544,7 @@ export class AppListaDeVerificacionComponent {
       }
     }
 
-    return pdfMake.createPdf(docDefinition).download('Lista _verificacion_de_auditoria.pdf');
+    return pdfMake.createPdf(docDefinition).open();
 
   }
 

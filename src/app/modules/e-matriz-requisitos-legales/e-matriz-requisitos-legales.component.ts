@@ -787,7 +787,7 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
       const title = "Se descargó correctamente";
       const message = "La descarga se ha realizado exitosamente"
       this.Message.showModal(title, message);
-      pdfMake.createPdf(pdfDefinition).download('Reporte_Turismo.pdf');
+      pdfMake.createPdf(pdfDefinition).open();
     });
   }
 
@@ -1003,7 +1003,7 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
       const title = "Se descargó correctamente";
       const message = "La descarga se ha realizado exitosamente"
       this.Message.showModal(title, message);
-      pdfMake.createPdf(pdfDefinition).download('Reporte_Ambiental.pdf');
+      pdfMake.createPdf(pdfDefinition).open();
     });
   }
 
@@ -1219,7 +1219,7 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
       const title = "Se descargó correctamente";
       const message = "La descarga se ha realizado exitosamente"
       this.Message.showModal(title, message);
-      pdfMake.createPdf(pdfDefinition).download('Reporte_Laboral.pdf');
+      pdfMake.createPdf(pdfDefinition).open();
     });
   }
 
@@ -1435,7 +1435,7 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
       const title = "Se descargó correctamente";
       const message = "La descarga se ha realizado exitosamente"
       this.Message.showModal(title, message);
-      pdfMake.createPdf(pdfDefinition).download('Reporte_Social.pdf');
+      pdfMake.createPdf(pdfDefinition).open();
     });
   }
 
@@ -1651,7 +1651,7 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
       const title = "Se descargó correctamente";
       const message = "La descarga se ha realizado exitosamente"
       this.Message.showModal(title, message);
-      pdfMake.createPdf(pdfDefinition).download('Reporte_Economico.pdf');
+      pdfMake.createPdf(pdfDefinition).open();
     });
   }
 
@@ -1869,7 +1869,7 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
       const title = "Se descargó correctamente";
       const message = "La descarga se ha realizado exitosamente"
       this.Message.showModal(title, message);
-      pdfMake.createPdf(pdfDefinition).download('Reporte_Particular.pdf');
+      pdfMake.createPdf(pdfDefinition).open();
     });
   }
 

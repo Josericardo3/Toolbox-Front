@@ -9,6 +9,7 @@ import { SpinnerService } from 'src/app/servicios/spinnerService/spinner.service
 import { NgxSpinnerModule } from 'ngx-spinner'; 
 import { ConditionalExpr } from '@angular/compiler';
 import { ModalService } from 'src/app/messagemodal/messagemodal.component.service'
+import { throws } from 'assert';
 
 @Component({
   selector: 'app-app-caracterizacion',
@@ -25,8 +26,10 @@ export class AppCaracterizacionComponent implements OnInit {
   datos: any = [];
   preguntasDesordenadas: any = [];
   preguntasOrdenadas: any = [];
-
+  idUser: any;
   municipios: any = [];
+  arrNormas: any;
+  arrResult: any;
 
   dataSelect!: any[];
   dataOption!: any[];
@@ -303,6 +306,7 @@ hasDepency(id: number) {
 public saveForm(){
 
   const caracterizacionRespuesta = this.valoresForm.map((elemento) => {
+    this.idUser =  Number(elemento.idUsuarioPst);
     return { VALOR: elemento.valor.toString(),
       FK_ID_USUARIO:Number(elemento.idUsuarioPst), 
       FK_ID_CATEGORIA_RNT: Number(elemento.idCategoriaRnt),
@@ -314,6 +318,54 @@ public saveForm(){
     if (this.formParent.valid) {
 
       this.ApiService.saveData(caracterizacionRespuesta).subscribe((data: any) => {
+        debugger;
+        this.ApiService.getNorma(this.idUser).subscribe(
+          (categ: any) => {
+           debugger;
+            this.arrNormas = categ;
+            localStorage.setItem(
+              "idCategoria",
+              JSON.stringify(this.arrNormas[0].FK_ID_CATEGORIA_RNT));
+        });
+          this.ApiService.validateCaracterizacion(this.idUser).subscribe(
+            (response) => {
+              if (response) {
+                this.ApiService.getNorma(this.idUser).subscribe(
+                  (data: any) => {
+                    if (
+                      data[0].FK_ID_CATEGORIA_RNT === 5 ||
+                      data[0].FK_ID_CATEGORIA_RNT === 2
+                    ) {
+                      this.arrResult = data;
+
+                      localStorage.setItem(
+                        "norma",
+                        JSON.stringify(this.arrResult)
+                      );
+   
+                    } else {
+                      this.arrResult = data;
+                      localStorage.setItem(
+                        "norma",
+                        JSON.stringify(this.arrResult)
+                      );
+                      localStorage.setItem("normaSelected", data[0].NORMA);
+                      localStorage.setItem("idNormaSelected", data[0].ID_NORMA);
+                      if( data[0].ID_NORMA === 1){
+                      this.router.navigate(["/dashboard"]);
+                      }else{
+                        this.router.navigate(["/dashboard"]);
+                      }
+                     
+                    }
+                  }
+                );
+              } else {
+                this.router.navigate(["/dashboard"]);
+              }
+            }
+          );
+        
         const title = "Se guardó correctamente";
         const message = "El formulario se ha guardado exitosamente"
         this.Message.showModal(title,message);

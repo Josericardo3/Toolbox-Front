@@ -2,7 +2,7 @@
 <form class="controllerDiagnosticoDoc" (ngSubmit)="saveForm()">
   <div class="titulo">
     <h1>Formatos de descarga del formulario de diagnóstico</h1>
-    <app-app-header-arrow-left class="arrow"></app-app-header-arrow-left>
+    <app-app-header-arrow-left class="arrow" [redirectToDashboard]="true"></app-app-header-arrow-left>
   </div>
     <div id="listDocuments"> 
         <p>Descargar lista de chequeo | <a (click)="generateListaChequeo()">Documento PDF</a></p>

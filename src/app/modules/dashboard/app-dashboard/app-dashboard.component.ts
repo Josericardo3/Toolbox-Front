@@ -135,17 +135,39 @@ export class AppDashboardComponent implements OnInit {
   etapaShowIntermedio: boolean = false;
   etapaShowFinal: boolean = false;
   disabledBtn: boolean = false;
+  bloquearIntermedio: boolean =false;
+  bloquearFinal: boolean =false;
   fnShowModal() {
-    this.showModal = true;
-    if (this.normaDiadnostico.ETAPA_INICIO == true) {
-      this.etapaShowInicio = true;
-    }
-    if (this.normaDiadnostico.ETAPA_INTERMEDIO == true) {
-      this.etapaShowIntermedio = true;
-    }
-    if (this.normaDiadnostico.ETAPA_FINAL == true) {
-      this.etapaShowFinal = true;
-    }
+    this.validateCaracterizacion.subscribe((data) => {
+      if (!data) {
+        const title = "Aviso";
+        const message = "Debe realizar el proceso de caracterización antes de continuar con el proceso de diagnostico"
+        this.Message.showModal(title, message);
+        return
+      }else{
+        this.showModal = true;
+        if (this.normaDiadnostico.ETAPA_INICIO == false) {
+          this.bloquearIntermedio = true;
+          this.bloquearFinal = true;
+        }
+        if (this.normaDiadnostico.ETAPA_INICIO == true) {
+          this.etapaShowInicio = true;
+          this.bloquearIntermedio = false;
+          this.bloquearFinal = true;
+        }
+        if (this.normaDiadnostico.ETAPA_INTERMEDIO == true) {
+          this.etapaShowIntermedio = true;
+          this.bloquearIntermedio = false;
+          this.bloquearFinal = false;
+        }
+        if (this.normaDiadnostico.ETAPA_FINAL == true) {
+          this.etapaShowFinal = true;
+          this.bloquearIntermedio = false;
+          this.bloquearFinal = false;
+        }
+      }
+    });
+ 
   }
 
   fnEtapa(etapa: string) {

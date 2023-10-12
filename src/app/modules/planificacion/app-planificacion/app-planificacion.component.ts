@@ -212,15 +212,26 @@ export class AppPlanificacionComponent {
     if (typeof (this.startActivityDate) == 'object' && typeof (this.endtActivityDate) == 'object') {
       const inicioValue = new Date(this.startActivityDate);
       const finValue = new Date(this.endtActivityDate);
+      const now = new Date();  
+      const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+      debugger;
       if (finValue < inicioValue) {
         const title = "Registro no exitoso";
         const message = "Por favor verifique la fecha";
         this.Message.showModal(title, message);
         return;
-      } else {
-        this.startActivityDate = this.startActivityDate.getDate().toString().padStart(2, '0') + "-" + (this.startActivityDate.getUTCMonth() + 1).toString().padStart(2, '0') + "-" + this.startActivityDate.getUTCFullYear();
-        this.endtActivityDate = this.endtActivityDate.getDate().toString().padStart(2, '0') + "-" + (this.endtActivityDate.getUTCMonth() + 1).toString().padStart(2, '0') + "-" + this.endtActivityDate.getUTCFullYear();
       }
+       else if(inicioValue< today || finValue < today){
+        const title = "Registro no exitoso";
+        const message = "Por favor la fecha no puede ser menor a la fecha actual";
+        this.Message.showModal(title, message);
+        return;
+      }
+      else {
+          this.startActivityDate = this.startActivityDate.getDate().toString().padStart(2, '0') + "-" + (this.startActivityDate.getUTCMonth() + 1).toString().padStart(2, '0') + "-" + this.startActivityDate.getUTCFullYear();
+          this.endtActivityDate = this.endtActivityDate.getDate().toString().padStart(2, '0') + "-" + (this.endtActivityDate.getUTCMonth() + 1).toString().padStart(2, '0') + "-" + this.endtActivityDate.getUTCFullYear();
+      }
+    
     }
 
     if (this.endtActivityDate.length && this.startActivityDate.length && this.activity.length && this.selectedState.length > 0 && this.description != '' && this.description.length != 0) {

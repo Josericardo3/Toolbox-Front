@@ -76,9 +76,45 @@ export class AppAuditoriaInternaComponent {
 
   }
 
-  onDateChange(date: Date) {
-    // Acceder al valor del campo de fecha a través del formulario
-    const dateEndValue = this.formParent.get('dateEnd')?.value;
+  getActualDate() {
+    let date = new Date();
+    let day = date.getDate().toString().padStart(2, '0');
+    let month = (date.getMonth() + 1).toString().padStart(2, '0');
+    let year = date.getFullYear();
+    let formattedDate = `${day}/${month}/${year}`;
+    return formattedDate;
+  }
+
+  onDateChange(event: any) {
+    const dateInitValue = this.formParent.get('dateInit').value;
+    const dateEndValue = this.formParent.get('dateEnd').value;
+    const currentDate = new Date();
+
+    if (dateEndValue && dateInitValue) {
+      const dateInit = new Date(dateInitValue);
+      const dateEnd = new Date(dateEndValue);
+  
+      if (dateEnd < dateInit) {
+        this.Validacion('Reunión de Cierre no puede ser posterior a la Reunión de Apertura');
+      } else if (dateInit < currentDate) {
+        this.Validacion('La fecha de "Reunión de Apertura" no puede ser posterior a la fecha actual');
+      } else if (dateEnd > currentDate) {
+        this.Validacion('La fecha de "Reunión de Cierre" no puede ser posterior a la fecha actual');
+      }
+    }
+  }
+  
+  
+
+  
+
+
+  Validacion(Msj){
+    const title = "Datos Inválidos.";
+    const message = Msj;
+    this.Message.showModal(title, message);
+    this.formParent.get('dateInit').setValue('');
+    this.formParent.get('dateEnd').setValue('');
   }
 
   /* nicio */
@@ -116,14 +152,7 @@ export class AppAuditoriaInternaComponent {
     });
   }
 
-  getActualDate() {
-    let date = new Date();
-    let day = date.getDate().toString().padStart(2, '0');
-    let month = (date.getMonth() + 1).toString().padStart(2, '0');
-    let year = date.getFullYear();
-    let formattedDate = `${day}/${month}/${year}`;
-    return formattedDate;
-  }
+ 
 
   openComponent(evt: any) {
     const request = {
@@ -171,6 +200,7 @@ export class AppAuditoriaInternaComponent {
     }
   }
 
+
   formantDate(dateArg) {
     let gmtDate = dateArg;
     let formattedDate = moment.utc(gmtDate);
@@ -184,6 +214,8 @@ export class AppAuditoriaInternaComponent {
     const finalHour = moment(formattedHour).format('hh:mm:ss A');
     return finalHour;
   }
+
+  
   myTime: string;
   startTime: string;
   endTime: string;
@@ -213,7 +245,7 @@ export class AppAuditoriaInternaComponent {
       conformidades: [],
       procesos: this.valueAuditoria
     }
-      ;
+      ;      
 
     this.ApiService.insertAuditoria(request)
       .subscribe((data: any) => {
@@ -416,7 +448,7 @@ export class AppAuditoriaInternaComponent {
         }
       }
     }
-    pdfMake.createPdf(docDefinition).download('Plan_de_auditoria.pdf');
+    pdfMake.createPdf(docDefinition).open();
   }
 
   // valores de la tabla del formulario de planificación auditoria
@@ -552,4 +584,3 @@ export class AppAuditoriaInternaComponent {
 
 
 }
-//prueba nueva pc
