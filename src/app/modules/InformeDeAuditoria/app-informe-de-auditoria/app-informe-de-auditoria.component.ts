@@ -472,7 +472,7 @@ export class AppInformeDeAuditoriaComponent {
     
     
     }
-    pdfMake.createPdf(docDefinition).download('Informe_de_auditoria.pdf');
+    pdfMake.createPdf(docDefinition).open();
   }
 
   //pagination

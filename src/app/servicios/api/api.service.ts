@@ -256,7 +256,8 @@ export class ApiService {
   getTablaNoticias() {
     const rnt = localStorage.getItem('rnt');
     const idrol = localStorage.getItem('rol');
-    let direccion = `${this.apiURLNuevo}/api/Noticia/noticia?Rnt=${rnt}&IdTipoUsuario=${idrol}`
+    const id = localStorage.getItem("Id");
+    let direccion = `${this.apiURLNuevo}/api/Noticia/noticia?Rnt=${rnt}&id=${id}&IdTipoUsuario=${idrol}`
     return this.http.get<any>(direccion)
   }
 

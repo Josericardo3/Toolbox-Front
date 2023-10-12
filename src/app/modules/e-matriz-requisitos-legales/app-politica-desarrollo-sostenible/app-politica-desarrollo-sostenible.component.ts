@@ -711,6 +711,6 @@ export class AppPoliticaDesarrolloSostenibleComponent implements OnInit {
         },
       }
     }
-    pdfMake.createPdf(pdfDefinition).download('TALLER_POLÍTICA_DE_DESARROLLO_SOSTENIBLE.pdf');
+    pdfMake.createPdf(pdfDefinition).open();
   }
 }

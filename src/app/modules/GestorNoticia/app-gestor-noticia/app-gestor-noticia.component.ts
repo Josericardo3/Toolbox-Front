@@ -203,18 +203,76 @@ export class AppGestorNoticiaComponent implements OnInit {
     }
   }
 
-  descripcionListaDestinatario:any;
+  // descripcionListaDestinatario:any;
+  // fnShowModalLista(index: number){
+
+  //   let IdTipoUsuario = Number(localStorage.getItem('rol'));
+  //   let ArrayLista = []
+  //   //console.log(typeof(idrol)+ ' IdTipoUsuario');
+  //   debugger
+  //   if(IdTipoUsuario== 4 || 3){
+  //     ArrayLista = this.datos[index].map((elemento) => {
+  //       return { NOMBRE_DESTINATARIO: elemento.NOMBRE_DESTINATARIO , };
+  //     });
+
+
+
+  //   }
+
+
+  //   this.descripcionListaDestinatario =  this.datos[index].NOMBRE_DESTINATARIO;
+  //   const tempo = this.descripcionListaDestinatario?.split(', ');
+
+  //   if(tempo){
+  //     const arrayConNorma = tempo.map((elemento) => {
+  //       return { NOMBRE_DESTINATARIO: elemento };
+  //     });
+  //     this.descripcionListaDestinatario = arrayConNorma;
+  //   }
+  //   this.showModalLista = true
+  //   return
+  // }
+
+  descripcionNormas:any;
+  datosIndexListaDestinatario : any= [];
+  datosLista:any; 
   fnShowModalLista(index: number){
-    this.descripcionListaDestinatario =  this.datos[index].NOMBRE_DESTINATARIO;
-    const tempo = this.descripcionListaDestinatario?.split(', ');
-    if(tempo){
-      const arrayConNorma = tempo.map((elemento) => {
-        return { NOMBRE_DESTINATARIO: elemento };
-      });
-      this.descripcionListaDestinatario = arrayConNorma;
-    }
-    this.showModalLista = true
-    return
+    this.datosIndexListaDestinatario=[];
+    let IdTipoUsuario = Number(localStorage.getItem('rol'));
+    this.showModalLista = true;
+
+if (IdTipoUsuario == 4 || 3) {
+    this.datosIndexListaDestinatario.push(this.datos[index]); 
+    const listaTempo = this.datosIndexListaDestinatario.map((elemento)=>{
+      return{
+        NOMBRE_DESTINATARIO: elemento.NOMBRE_DESTINATARIO,
+        CATEGORIAS: elemento.CATEGORIAS,
+        SUB_CATEGORIAS: elemento.SUB_CATEGORIAS
+      }
+    })
+    this.datosLista= listaTempo;
+   
+    this.descripcionNormas =  this.datos[index].NORMAS;
+    const tempo = this.descripcionNormas.split(', ');
+
+    const arrayConNorma = tempo.map((elemento) => {
+      return { NORMA: elemento };
+    });
+    this.descripcionNormas = arrayConNorma;
+  }
+else{
+
+ const nombreLista = this.datos[index].NOMBRE_DESTINATARIO;
+  const tempo = nombreLista?.split(', ');
+
+  if (tempo) {
+    const arrayConNorma = tempo.map((elemento) => {
+      return { NOMBRE_DESTINATARIO: elemento };
+    });
+    this.datosLista = arrayConNorma;
+  }
+}
+
   }
 
   filtrarDatos(){
@@ -230,9 +288,8 @@ export class AppGestorNoticiaComponent implements OnInit {
         (campo.NOMBRE && campo.NOMBRE.toLowerCase().includes(terminoBusqueda)) ||
         (campo.NORMA && campo.NORMA.toLowerCase().includes(terminoBusqueda)) ||
         (campo.TITULO && campo.TITULO.toLowerCase().includes(terminoBusqueda)) ||
-        (campo.DESCRIPCION && campo.DESCRIPCION.toLowerCase().includes(terminoBusqueda)) ||
-        (campo.NOMBRE_PST && campo.NOMBRE_PST.toLowerCase().includes(terminoBusqueda))
-      );
+        (campo.DESCRIPCION && campo.DESCRIPCION.toLowerCase().includes(terminoBusqueda)) 
+             );
       this.datos = filter;
       console.log( this.datos,3333);
       this.updatePaginado(filter);

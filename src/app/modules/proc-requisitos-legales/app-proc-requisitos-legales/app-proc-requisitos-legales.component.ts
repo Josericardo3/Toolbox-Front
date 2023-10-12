@@ -241,7 +241,7 @@ export class AppProcRequisitosLegalesComponent implements OnInit{
         }
       }
     }
-    pdfMake.createPdf(pdfDefinition).download('Procedimiento_requisitos_legales.pdf');
+    pdfMake.createPdf(pdfDefinition).open();
   }
   
   capturarValor(event: Event) {

@@ -54,7 +54,7 @@
                 <div class="forma-campo">
                   <label class="obs-titulo">Reunion de apertura</label>
                   <div class="divHora">
-                    <input formControlName="dateInit" type="text" [required]="true"
+                    <input formControlName="dateInit" type="text" (ngModelChange)="onDateChange($event)" [required]="true"
                     placeholder="DD-MM-YYYY" maxlength="10" appDateInputMask placement="top" tooltip="Campo Obligatorio"
                     bsDatepicker #dp="bsDatepicker" [bsConfig]="{
                         adaptivePosition: true,
@@ -66,7 +66,7 @@
                 </div>
                 <div class="forma-campo">
                   <label class="forma-hora">Hora</label>
-                  <input type="time" value="" formControlName="startTime" />
+                  <input type="time" value="" formControlName="startTime" (ngModelChange)="onDateChange($event)" />
                 </div>
               </div>
               <div class="col-md-6 col-sm-6" style="margin-top: 41px;">
@@ -92,7 +92,7 @@
                 <div class="forma-campo">
                   <label class="obs-titulo">Reunion de Cierre</label>
                   <div class="divHora">
-                    <input type="text" formControlName="dateEnd" appDateInputMask [required]="true"
+                    <input type="text" formControlName="dateEnd" (ngModelChange)="onDateChange($event)" appDateInputMask [required]="true"
                     placeholder="DD-MM-YYYY" maxlength="10" placement="top" tooltip="Campo Obligatorio" bsDatepicker
                     #dp2="bsDatepicker" [bsConfig]="{
                       adaptivePosition: true,
@@ -104,7 +104,7 @@
                 </div>
                 <div class="forma-campo">
                   <label class="forma-hora">Hora</label>
-                  <input type="time" value="" formControlName="endTime" />
+                  <input type="time" value="" formControlName="endTime" (ngModelChange)="onDateChange($event)" />
                 </div>
               </div>
              </div>

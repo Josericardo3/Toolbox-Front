@@ -656,7 +656,7 @@ export class AppMatrizPartesInteresadasComponent implements OnInit {
         }
       }
     }
-    pdfMake.createPdf(pdfDefinition).download('Matriz_partes_interesadas.pdf');
+    pdfMake.createPdf(pdfDefinition).open();
     // Limpiar el formulario después de generar el PDF
     this.generarPDFActivo = true;
     //this.form.reset();
