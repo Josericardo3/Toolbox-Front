@@ -140,6 +140,7 @@
                     <label for="archivo" class="fileBtn">Seleccionar imagen</label>
                     <label id="nombre" class="fileName">Ningún archivo seleccionado</label>
                 </div>
+                <span>Las dimensiones de la imagen no deben exceder el máximo de 760 x 760 píxeles.</span>
                 <button type="submit" class="botonG"
                     [disabled]=" ( (saveForm.controls.selectMultipleAdmin?.value?.length||0) === 0 && (saveForm.controls.selectMultipleNorma?.value?.length||0) === 0  && (saveForm.controls.selectMultipleCategoria.value?.length||0) === 0 && (saveForm.controls.selectMultipleSubCategoria.value?.length||0) === 0 && (saveForm.controls.selectMultiplePST.value?.length||0) === 0 )|| !saveForm.controls.tituloNoticia.value || !saveForm.controls.descripcionNoticia.value">
                     <i class="fa-regular fa-floppy-disk" style="color: #fff;"></i>
@@ -163,7 +164,7 @@
                 <input type="text" id="usuario" formControlName="usuario" [(ngModel)]="editarCaracteristica.NOMBRE"
                     [disabled]="true"><br>
                 <label for="">Título de la noticia</label>
-                <input type="text" id="titulo" formControlName="titulo" [(ngModel)]="editarCaracteristica.TITULO"><br>
+                <input type="text" id="titulo" formControlName="titulo" [(ngModel)]="editarCaracteristica.TITULO" ><br>
                 <label for="">Descripción de la noticia</label>
                 <angular-editor placeholder="Agregar una descripción" formControlName="descripcion"
                     style="margin-top:2vh;" id="descripcion"

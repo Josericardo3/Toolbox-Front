@@ -26,6 +26,7 @@ import { ModalService } from "src/app/messagemodal/messagemodal.component.servic
 export class AppLoginComponent implements OnInit {
   arrResult: any;
   arrNormas: any;
+  idnorma: any;
   usuario = { registroNacionalDeTurismo: "", pass: "", correo: "" };
   public loginForm!: FormGroup;
   errorMessage!: string;
@@ -150,6 +151,7 @@ export class AppLoginComponent implements OnInit {
                   "idCategoria",
                   JSON.stringify(this.arrNormas[0].FK_ID_CATEGORIA_RNT));
             });
+            this.idnorma=0;
             if (data.body.Grupo[0].ITEM === 1 || data.body.Grupo[0].ITEM === 6 || data.body.Grupo[0].ITEM === 7 || data.body.Grupo[0].ITEM === 3 || data.body.Grupo[0].ITEM === 4 || data.body.Grupo[0].ITEM === 5 ) {
               this.ApiService.validateCaracterizacion(data.body.ID_USUARIO).subscribe(
                 (response) => {
@@ -180,6 +182,7 @@ export class AppLoginComponent implements OnInit {
                           );
                           localStorage.setItem("normaSelected", data[0].NORMA);
                           localStorage.setItem("idNormaSelected", data[0].ID_NORMA);
+                          this.idnorma = data[0].ID_NORMA;
                           //modified by mel
                           if( data[0].ID_NORMA === 1){
                           this.router.navigate(["/dashboard"]);
@@ -191,7 +194,12 @@ export class AppLoginComponent implements OnInit {
                       }
                     );
                   } else {
-                    this.router.navigate(["/dashboard"]);
+                    if(this.idnorma>0){
+                      this.router.navigate(["/dashboard"]);
+                    }
+                    else{
+                      this.router.navigate(["/caracterizacion"]);
+                    }
                   }
                 }
               );

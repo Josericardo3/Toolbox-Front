@@ -117,11 +117,11 @@
                 [required]="campo.REQUERIDO">          
                 {{opcion.nombre}}
                 <div>
-                  <input type="text" *ngIf="opcion.mostrarInput && opcion.NOMBRE === 'OTROS'" class="inputContainer" 
+                  <input type="text" *ngIf="(opcion.mostrarInput && opcion.NOMBRE === 'OTROS') " class="inputContainer" 
                   placeholder="Especifica otro" [id]="i" (ngModelChange)="capturarValor(i, $event, campo.ID_CARACTERIZACION_DINAMICA)"
                   [formControl]="otroControlB" [ngClass]="{'ng-invalid ng-touched': validarCampoOtroB()}">
                 </div>
-              </div>
+                    </div>
             </div>
           </div>   
 

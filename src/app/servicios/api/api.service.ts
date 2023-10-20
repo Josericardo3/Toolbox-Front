@@ -504,4 +504,12 @@ export class ApiService {
     let response = this.http.get<any>(validate);
     return response;
   }
+
+  //REQUISITOS NORMAS
+  getNormaTitulo(){
+    const idNormaSelected = localStorage.getItem('idNormaSelected');
+    let lista = `${this.apiURLNuevo}/api/RequisitosNormas/requisitos/${idNormaSelected}`
+    return this.http.get<any>(lista)
+  }
+
 }

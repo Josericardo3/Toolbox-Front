@@ -32,8 +32,10 @@ export class AppAuditoriaInternaComponent {
   showDisableBtn: boolean = true;
   toggleValue: boolean = false;//prueba toggle
   listAuditor: any = [];
+  listNormaTitulo: any = [];
   equipoAuditor: any = [];
   dropdownList = [];
+  dropdownListNorma = [];
   selectedItems = [];
   dropdownSettings: IDropdownSettings;
   formParent!: FormGroup;
@@ -51,6 +53,7 @@ export class AppAuditoriaInternaComponent {
     this.formParent = this.formBuilder.group({
       liderAuthor: ["", Validators.required],
       auditorTeam: ["", Validators.required],
+      requerimiento: ["", Validators.required],
       objAuditoria: ["", Validators.required],
       alcanceAuditoria: ["", Validators.required],
       criterioAuditoria: ["", Validators.required],
@@ -89,17 +92,25 @@ export class AppAuditoriaInternaComponent {
     const dateInitValue = this.formParent.get('dateInit').value;
     const dateEndValue = this.formParent.get('dateEnd').value;
     const currentDate = new Date();
-
+    
     if (dateEndValue && dateInitValue) {
-      const dateInit = new Date(dateInitValue);
-      const dateEnd = new Date(dateEndValue);
-  
-      if (dateEnd < dateInit) {
-        this.Validacion('Reunión de Cierre no puede ser posterior a la Reunión de Apertura');
-      } else if (dateInit < currentDate) {
-        this.Validacion('La fecha de "Reunión de Apertura" no puede ser posterior a la fecha actual');
-      } else if (dateEnd > currentDate) {
-        this.Validacion('La fecha de "Reunión de Cierre" no puede ser posterior a la fecha actual');
+
+      const inicioValue = new Date(dateInitValue);
+      const finValue = new Date(dateEndValue);
+      const now = new Date();  
+      const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+      debugger;
+      if (finValue < inicioValue) {
+        const title = "Registro no exitoso";
+        const message = "Por favor verifique la fecha";
+        this.Message.showModal(title, message);
+        return;
+      }
+       else if(inicioValue< today || finValue < today){
+        const title = "Registro no exitoso";
+        const message = "Por favor la fecha no puede ser menor a la fecha actual";
+        this.Message.showModal(title, message);
+        return;
       }
     }
   }
@@ -151,6 +162,28 @@ export class AppAuditoriaInternaComponent {
       };
     });
   }
+
+  getNormaTitulo() {
+
+     this.ApiService.getNormaTitulo().subscribe((data: any) => {
+      console.log(data);
+      this.listNormaTitulo = data;
+      this.dropdownListNorma = data.map((item: any) => ({
+        TITULO: item.TITULO
+      }));
+  
+      this.dropdownSettings = {
+        singleSelection: false,
+        idField: 'item_text',
+        textField: 'item_text',
+        selectAllText: 'Seleccionar todos',
+        unSelectAllText: 'Deseleccionar todo',
+        itemsShowLimit: 3,
+        allowSearchFilter: true
+      };
+    });
+  }
+  
 
  
 

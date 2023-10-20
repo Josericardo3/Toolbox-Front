@@ -206,6 +206,12 @@ textarea{
     flex-direction: row;
     justify-content: flex-end;
 }
+span{
+    font-family: 'Work Sans', sans-serif;
+    font-size: 10px;
+    color: red;
+    margin: 0 0 2vh 0;
+}
 :host ::ng-deep .multiselect-dropdown .dropdown-btn {
   
     color: #000000 !important;

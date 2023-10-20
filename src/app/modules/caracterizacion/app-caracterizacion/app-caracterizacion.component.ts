@@ -22,6 +22,8 @@ export class AppCaracterizacionComponent implements OnInit {
   otroControlA: FormControl;
   otroControlB: FormControl;
   otroControlC: FormControl;
+  otroControlRed: FormControl;
+
 
   datos: any = [];
   preguntasDesordenadas: any = [];
@@ -107,6 +109,10 @@ validarCampoOtroB() {
 validarCampoOtroC() {
   return this.otroControlC.invalid && this.otroControlC.touched;
 }
+validarCampoOtroRed() {
+  debugger;
+  return  this.otroControlRed.touched;
+}
 // validarCampoOtroA(index: number) {
 //   return this.otroControlA[index].invalid && this.otroControlA[index].touched;
 // }
@@ -180,17 +186,18 @@ onChangeAventuraSeleccionada(value: boolean) {
   
     if (this.aventuraSeleccionada) {
       // Si se seleccionó "SI", se muestra solo la norma que comienza con "NTC 6502"
+      debugger;
       this.opcionesNorma = this.dataNorma.filter(
-        opcion => opcion.norma && opcion.norma.startsWith('NTC 6502') ||
-        opcion.norma.startsWith('NTC ISO 21101') ||
-        opcion.norma.startsWith('NTC 6523')
-      ).map(opcion => opcion.id);
+        opcion => opcion.NORMA && opcion.NORMA.startsWith('NTC 6502') ||
+        opcion.NORMA.startsWith('NTC ISO 21101') ||
+        opcion.NORMA.startsWith('NTC 6523')
+      ).map(opcion => opcion.ID_NORMA);
     } else {
       // Si se seleccionó "NO", se muestran las tres normas
       this.opcionesNorma = this.dataNorma.filter(
-        opcion => opcion.norma && (
-          opcion.norma.startsWith('NTC 6502'))
-      ).map(opcion => opcion.id);
+        opcion => opcion.NORMA && (
+          opcion.NORMA.startsWith('NTC 6502'))
+      ).map(opcion => opcion.ID_NORMA);
     } 
 }
 
@@ -292,7 +299,7 @@ capturarValor(id: string | number, valor: any, idcaracterizaciondinamica: any) {
       "valor": valor,
       "idUsuarioPst": localStorage.getItem('Id'),
       "idCategoriaRnt": localStorage.getItem('idCategoria'),
-      "idCaracterizacion": 1 //id de la pregunta
+      "idCaracterizacion": idcaracterizaciondinamica
     });
   }
 }
@@ -377,5 +384,7 @@ public saveForm(){
       });
     }
 }
-
+checkMarcadoEnDesplegable(campo:any) {
+  return campo.DESPLEGABLE.some(opcion => opcion.checked);
+}
 }
