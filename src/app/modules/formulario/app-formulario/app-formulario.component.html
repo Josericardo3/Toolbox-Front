@@ -1,4 +1,4 @@
-    <form [formGroup]="form" (ngSubmit)="onSubmit(selectedMatrizId)">
+    <form [formGroup]="form" (ngSubmit)="onSubmit(selectedMatrizId, $event)">
         <div class="containerform">
             <div class="subContainerform">
                 <label for="estadoCumplimiento" class="estado">Estado de cumplimiento</label>
@@ -67,9 +67,38 @@
             </div>
         </div>          
         <div class="containerBtn" *ngIf="getRolValue() !== 4 && getRolValue()!==5 && getRolValue()!==7">
-            <button type="submit" class="btnGuardar" [disabled]="isDisabled">
+            <button type="submit" class="btnGuardar" [disabled]="isDisabled" (click)="showModal = true">
                 <i class="fa-solid fa-floppy-disk" style="color: white; margin: 0 0.5vw;"></i>Guardar</button>
             <button type="button" class="btnGuardar" (click)="activarCampos(true)"> 
                 <i class="fa-solid fa-pen" style="color: white; margin: 0 0.4vw;"></i> Editar</button>
         </div>
+        
     </form>
+    <!-- <div class="modal-background" id="modal-success" *ngIf="showModal">
+
+        <div class="modal-content">
+
+          <div class="modal-borde">
+
+            <div class="modal-title">
+
+                <h4><b>BREVE RESUMEN DE ACTUALIZACIONES</b></h4>
+
+            </div>
+
+                <textarea id="textAreaModal" class="textAreaModal"></textarea>
+
+            <div class="containerBtn">
+
+                <button class="btnGuardar"(click)="showModal = false; saveModal()">
+                    <i class="fa-solid fa-floppy-disk" style="color: white; margin: 0 0.5vw;"></i>Guardar Resumen
+                </button>
+
+            </div>
+
+          </div>
+
+        </div>
+
+    </div> -->
+    

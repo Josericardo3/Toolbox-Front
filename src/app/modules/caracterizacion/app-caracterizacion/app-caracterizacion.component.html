@@ -63,7 +63,7 @@
           <div *ngIf="campo.MENSAJE != 'dependencia' && campo.NOMBRE !== '¿Cuáles servicios de aventura presta?'">
             <div *ngSwitchCase="'checkbox'" class="containerCheck">
               <div *ngFor="let opcion of campo.DESPLEGABLE" class="check"> 
-                <input type="checkbox" [formControlName]="campo.NOMBRE" [value]="opcion.ID_DESPLEGABLE_CARACTERIZACION" [required]="campo.REQUERIDO"
+                <input type="checkbox" [formControlName]="campo.NOMBRE" [value]="opcion.ID_DESPLEGABLE_CARACTERIZACION"
                 class="checkbox" (change)="opcion.mostrarInput = opcion.NOMBRE === 'OTROS'? !opcion.mostrarInput : false"
                 [id]="i" (ngModelChange)="capturarValor(i, $event, campo.ID_CARACTERIZACION_DINAMICA)">{{opcion.NOMBRE}}
                 <div>
@@ -76,7 +76,7 @@
           </div>
 
           <div *ngSwitchCase="'radio'" class="containerRadio">
-            <div *ngFor="let opcion of campo.DESPLEGABLE" class="radio">
+            <div *ngFor="let opcion of campo.DESPLEGABLE" class="radio"> 
               <div *ngIf="campo.NOMBRE === 'Cuenta con líder de sostenibilidad   (Si / No)'; else elseRadio" class="radio">
                 <input type="radio" [formControlName]="campo.NOMBRE" [value]="opcion.ID_DESPLEGABLE_CARACTERIZACION" [id]="i"   
                 (change)="showSostenibilidad = (opcion.NOMBRE === 'SI')" [required]="campo.REQUERIDO"         

@@ -225,7 +225,7 @@ export class AppProcRequisitosLegalesComponent implements OnInit{
           'El Responsable de Sostenibilidad ​de​be​​ comunicar ​los requisitos legales​ a las personas responsables de su cumplimiento, de manera oportuna.​',
           '\n',
           { text: '5.6. EVALUACIÓN DEL CUMPLIMIENTO DE LOS REQUISITOS LEGALES', style: ['subtitulo'] },
-          { text: 'El Responsable de Sostenibilidad es el responsable de planificar y gestionar la evaluación del cumplimiento de los requisitos legales aplicables ​en la empresa​. M​ínimo ' + this.evaluacion + ' ​se, ​verifica​ el cumplimiento de ​​la normatividad legal ​​en ​la matriz de requisitos legales​,​ donde se define ​si los requisitos se cumplen, están en proceso o no se cumplen​. Esta evaluación puede realizarse por componente: ambiental, sociocultural, económico u otro, registrando su fecha de evaluación por componente, sin que esta exceda el plazo establecido. Si se presentan hallazgos de cumplimiento parcial o no cumplimiento en la evaluación, se debe establecer el plan de intervención.' },
+          { text: 'El Responsable de Sostenibilidad es el responsable de planificar y gestionar la evaluación del cumplimiento de los requisitos legales aplicables ​en la empresa​. M​ínimo ' + this.evaluacion + ' ​Se ​verifica​ el cumplimiento de ​​la normatividad legal ​​en ​la matriz de requisitos legales​,​ donde se define ​si los requisitos se cumplen, están en proceso o no se cumplen​. Esta evaluación puede realizarse por componente: ambiental, sociocultural, económico u otro, registrando su fecha de evaluación por componente, sin que esta exceda el plazo establecido. Si se presentan hallazgos de cumplimiento parcial o no cumplimiento en la evaluación, se debe establecer el plan de intervención.' },
           '\n',
           { text: '5.7. ELABORACIÓN, EJECUCIÓN Y SEGUIMIENTO DEL PLAN DE INTERVENCIÓN', style: ['subtitulo'] },
           'De acuerdo con los resultados de la evaluación, cuando no se cumple con los requisitos legales se requiere elaborar un plan de intervención que establezca las acciones a realizar, fecha para la ejecución y responsable de la ejecución.  Debe realizarse el respectivo seguimiento y registrar su estado, hasta el cierre del hallazgo.',
@@ -311,17 +311,17 @@ export class AppProcRequisitosLegalesComponent implements OnInit{
         if (respuestaActualizacion) {
           this.formRequisitosLegales.get('actualizacion').setValue(respuestaActualizacion.RESPUESTA);
           if (respuestaActualizacion.RESPUESTA === 'semestral') {
-            this.actualizacion = 'seis meses';
+            this.actualizacion = 'seis meses.';
           } else if (respuestaActualizacion.RESPUESTA === 'anual') {
-            this.actualizacion = 'una vez al año';
+            this.actualizacion = 'una vez al año.';
           }
         }  
         if (respuestaEvaluacion) {
           this.formRequisitosLegales.get('evaluacion').setValue(respuestaEvaluacion.RESPUESTA);
           if (respuestaEvaluacion.RESPUESTA === 'semestral') {
-            this.evaluacion = 'seis meses';
+            this.evaluacion = 'seis meses.';
           } else if (respuestaEvaluacion.RESPUESTA === 'anual') {
-            this.evaluacion = 'una vez al año';
+            this.evaluacion = 'una vez al año.';
           }
         }    
         // Deshabilitar los campos después de guardar

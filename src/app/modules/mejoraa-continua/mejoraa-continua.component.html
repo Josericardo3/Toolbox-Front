@@ -1,41 +1,95 @@
 <app-app-header></app-app-header>
 <div class="containerMejoraContinua">
-    <div class="titulo">
-        <h1>Mejora contínua</h1>
-        <app-app-header-arrow-left [redirectToDashboard]="true"></app-app-header-arrow-left>
-    </div>
-    <div class="mejora">
-        <app-menu-corto></app-menu-corto>
-        <div class="form">
-            <div class="filtros">
-                <div class="section">
-                    <label>Selecciona la fecha de inicio</label>
-                    <input type="date" class="date">
-                </div>
-                <div class="section">
-                    <label>Selecciona la fecha de fin</label>
-                    <input type="date" class="date">
-                </div>
-            </div>
-            <input type="text" placeholder="Buscar..." class="buscador">
-            <table class="table-gestion" style="margin-top: 8px;">
-                <thead>
-                    <tr>
-                        <th scope="col">Descripción</th>
-                        <th scope="col">NTC</th>
-                        <th scope="col">Legales</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>2</td>
-                        <td>3</td>
-                    </tr>
-                </tbody>
-            </table>
+  <div class="titulo">
+    <h1>Mejora contínua</h1>
+    <app-app-header-arrow-left [redirectToDashboard]="true"></app-app-header-arrow-left>
+  </div>
+  <div class="mejora">
+    <app-menu-corto></app-menu-corto>
+    <div class="form">
+      <div class="filtros">
+        <div class="section">
+          <label>Selecciona la fecha de inicio</label>
+          <input type="date" class="date">
         </div>
+        <div class="section">
+          <label>Selecciona la fecha de fin</label>
+          <input type="date" class="date">
+        </div>
+      </div>
+      <input type="text" placeholder="Buscar..." class="buscador" [(ngModel)]="filter" (input)="filterResult()">
+      <table class="table-gestion" style="margin-top: 8px;">
+        <thead>
+          <tr>
+            <th scope="col">Descripción</th>
+            <th scope="col">NTC</th>
+            <th scope="col">Requisitos</th>
+            <th scope="col">Acción</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+          <tr *ngFor="let user of rolessArray; let i = index;">
+            <td *ngIf="caracteristicaIndice!=i">{{ user?.DESCRIPCION.slice(0,40)| titlecase }}</td>
+            <!-- **cuando edita** -->
+            <!--<td *ngIf="caracteristicaIndice==i">
+              <textarea rows="4"
+                        cols="20"
+                        class="input"
+                        maxlength="300"
+                        title="Hasta 300 caracteres"
+                        [(ngModel)]="editarCaracteristica.DESCRIPCION">
+            </textarea>
+            </td>-->
+            <td *ngIf="caracteristicaIndice!=i">{{ user?.NTC.slice(0,40)| titlecase }}</td>
+            <!-- **cuando edita** -->
+            <!--<td *ngIf="caracteristicaIndice==i">
+              <textarea rows="4"
+                        cols="20"
+                        class="input"
+                        maxlength="300"
+                        title="Hasta 300 caracteres"
+                        [(ngModel)]="editarCaracteristica.DESCRIPCION">
+              </textarea>
+            </td>-->
+            <td *ngIf="caracteristicaIndice!=i">{{ user?.REQUISITOS.slice(0,40)| titlecase }}</td>
+            <!-- **cuando edita** -->
+            <!--<td *ngIf="caracteristicaIndice==i">
+              <textarea rows="4"
+                        cols="20"
+                        class="input"
+                        maxlength="300"
+                        title="Hasta 300 caracteres"
+                        [(ngModel)]="editarCaracteristica.DESCRIPCION">
+              </textarea>
+            </td>-->
+            <td><a>Acción</a></td>
+          </tr>
+        </tbody>
+      </table>
     </div>
+  </div>
+  <!-- paginacion -->
+  <footer class="page-style">
+    <div class="container-label">
+      <label class="paginas">  Página: {{ pages }} / {{ totalPaginas }} Mostrando: {{ totalRegistros }}  Registros: {{ datatotal }} </label>
+      <div class="ls-pagina ">
+        <pagination
+            lastText="&raquo;"
+            nextText="&rsaquo;"
+            firstText="&laquo;"
+            previousText="&lsaquo;"
+            [maxSize]="3"
+            [totalItems]="contentArray.length"
+            [itemsPerPage]="7"
+            [(ngModel)]="currentPage"
+            [boundaryLinks]="true"
+            (pageChanged)="pageChanged($event)"
+            [ngClass]="{'page-item': true}">
+        </pagination>
+      </div>
+    </div>
+  </footer>
 </div>
 <app-app-footer></app-app-footer>
 <ngx-spinner

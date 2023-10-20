@@ -4,6 +4,12 @@
     <h1>Matriz de requisitos legales</h1>
     <app-app-header-arrow-left class="arrow"></app-app-header-arrow-left>
 </div>
+<!-- <div class="reporte">
+    <button type="button" class="btnReporte" (click)="showModal = true">Resumen</button>
+</div> -->
+
+
+
 <input type="text" [(ngModel)]="busqueda" (input)="buscarTitulos()" placeholder="Buscar..." class="buscador">
   <div class="containerTabs">
     <div class="tabs">
@@ -80,7 +86,11 @@
                         <button class="adicionarBtn" id="adicionarRequisitoTurismo">Adicionar requisito legal +</button>
                     </div>
                     <div class="detalleAdicionar" id="detalleAdicionarRequisito" *ngIf="adicionarVisibleTurismo">
-                        <form [formGroup]="tab1Form">
+                        <form [formGroup]="tab1Form" >
+
+                            <label class="adicionarLabel">Categoría</label>
+                            <input type="text" class="adicionarInput" id="categoriaInput" formControlName="categoria" value ="Turismo" readonly appLetras> 
+
                             <label class="adicionarLabel">Tipo de normatividad</label>
                             <select class="adicionarInput" id="tipoNormatividadSelect" #selectOption (change)="onSelect(selectOption.value)"
                             formControlName="tipoNormatividad">
@@ -94,7 +104,7 @@
                                 <label class="adicionarLabel">Otro ¿Cuál?</label>
                                 <input type="text" class="adicionarInput" id="otroInput" (input)="onOtroInputChange($event)" appLetras>
                             </div>
-                                
+                                                            
                             <label class="adicionarLabel">Número</label>
                             <input type="number" class="adicionarInput" id="numeroInput" formControlName="numero" appNumeros> 
                                 
@@ -178,6 +188,9 @@
                     </div>
                     <div class="detalleAdicionar" id="detalleAdicionarRequisito" *ngIf="adicionarVisibleAmbiental">
                         <form [formGroup]="tab2Form">
+                                <label class="adicionarLabel">Categoría</label>
+                                <input type="text" class="adicionarInput" id="categoriaInput" formControlName="categoria" value ="Ambiental" readonly appLetras>
+
                                 <label class="adicionarLabel">Tipo de normatividad</label>
                                 <select class="adicionarInput" id="tipoNormatividadSelect" #selectOption (change)="onSelect(selectOption.value)"
                                 formControlName="tipoNormatividad">
@@ -275,6 +288,10 @@
                     </div>
                     <div class="detalleAdicionar" id="detalleAdicionarRequisito" *ngIf="adicionarVisibleLaboral">
                         <form [formGroup]="tab3Form">
+
+                                <label class="adicionarLabel">Categoría</label>
+                                <input type="text" class="adicionarInput" id="categoriaInput" formControlName="categoria" value ="Laboral y SGSST" readonly appLetras>
+                                
                                 <label class="adicionarLabel">Tipo de normatividad</label>
                                 <select class="adicionarInput" id="tipoNormatividadSelect" #selectOption (change)="onSelect(selectOption.value)"
                                 formControlName="tipoNormatividad">
@@ -372,6 +389,9 @@
                     </div>
                     <div class="detalleAdicionar" id="detalleAdicionarRequisito" *ngIf="adicionarVisibleSocial">
                         <form [formGroup]="tab4Form">
+                                <label class="adicionarLabel">Categoría</label>
+                                <input type="text" class="adicionarInput" id="categoriaInput" formControlName="categoria" value ="Social" readonly appLetras>
+
                                 <label class="adicionarLabel">Tipo de normatividad</label>
                                 <select class="adicionarInput" id="tipoNormatividadSelect" #selectOption (change)="onSelect(selectOption.value)"
                                 formControlName="tipoNormatividad">
@@ -469,6 +489,10 @@
                     </div>
                     <div class="detalleAdicionar" id="detalleAdicionarRequisito" *ngIf="adicionarVisibleEconomico">
                         <form [formGroup]="tab5Form">
+
+                                <label class="adicionarLabel">Categoría</label>
+                                <input type="text" class="adicionarInput" id="categoriaInput" formControlName="categoria" value ="Economico" readonly appLetras>
+
                                 <label class="adicionarLabel">Tipo de normatividad</label>
                                 <select class="adicionarInput" id="tipoNormatividadSelect" #selectOption (change)="onSelect(selectOption.value)"
                                 formControlName="tipoNormatividad">
@@ -566,6 +590,10 @@
                     </div>
                     <div class="detalleAdicionar" id="detalleAdicionarRequisito" *ngIf="adicionarVisibleParticular">
                         <form [formGroup]="tab6Form">
+
+                                <label class="adicionarLabel">Categoría</label>
+                                <input type="text" class="adicionarInput" id="categoriaParticularInput" formControlName="categoria">   
+
                                 <label class="adicionarLabel">Tipo de normatividad</label>
                                 <select class="adicionarInput" id="tipoNormatividadSelect" #selectOption (change)="onSelect(selectOption.value)"
                                 formControlName="tipoNormatividad">
@@ -601,5 +629,8 @@
     </div>
   </div>
 </div>
+
+
+<app-modal></app-modal>
 <app-app-footer></app-app-footer>
 <ngx-spinner></ngx-spinner>

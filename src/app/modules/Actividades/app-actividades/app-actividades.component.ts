@@ -1,7 +1,9 @@
 import { DatePipe } from '@angular/common';
 import { ChangeDetectorRef, Component } from '@angular/core';
+import { using } from 'rxjs';
 import { ModalService } from 'src/app/messagemodal/messagemodal.component.service';
 import { ApiService } from 'src/app/servicios/api/api.service';
+
 
 @Component({
   selector: 'app-app-actividades',
@@ -221,7 +223,11 @@ export class AppActividadesComponent {
     if (typeof this.inicioActivity === 'string' && typeof this.finActivity === 'string') {
       const inicioValue = new Date(this.inicioActivity);
       const finValue = new Date(this.finActivity);
-      if (finValue < inicioValue) {
+      //ALMACENA EL VALOR DE LA FECHA ACTUAL
+      const fechaActual = new Date();
+      
+      //MODIFICACION DE LA VALIDACION
+      if ((finValue < inicioValue) || (inicioValue < fechaActual) || (finValue < fechaActual)){
         const title = "Registro no exitoso";
         const message = "Por favor verifique la fecha";
         this.Message.showModal(title, message);

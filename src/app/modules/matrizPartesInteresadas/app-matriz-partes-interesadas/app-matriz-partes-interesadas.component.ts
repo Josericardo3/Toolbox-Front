@@ -6,6 +6,7 @@ import * as pdfFonts from 'pdfmake/build/vfs_fonts';
 import { ObjectUnsubscribedError } from 'rxjs';
 (pdfMake as any).vfs = pdfFonts.pdfMake.vfs;
 import { ApiService } from 'src/app/servicios/api/api.service';
+import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-app-matriz-partes-interesadas',
@@ -43,11 +44,24 @@ export class AppMatrizPartesInteresadasComponent implements OnInit {
   otrocual: boolean = false;
   datafinal: any;
   public form!: FormGroup;
+  rolessArray: any = [];
+  dataInitial: any = [];
+  totalPaginas: number = 0;
+  datatotal: number = 0;
+  contentArray: any = [];
+  currentPage: number = 1;
+  totalRegistros: number = 0;
+  caracteristicaIndice: number;
+  pages = 1;
+  filter: string = '';
+  showfilter: boolean = false;
+  result: boolean = false;
 
   constructor(
     private api: ApiService,
     private fb: FormBuilder,
     public ApiService: ApiService,
+    private cd: ChangeDetectorRef
   ) { }
 
   ngOnInit() {
@@ -66,10 +80,50 @@ export class AppMatrizPartesInteresadasComponent implements OnInit {
 
     });
 
+    this.fnListResponsible();
     this.usuario();
-    this.updateForm();
-  
+    //this.updateForm();
+    this.fnConsultMatrizPartesInteresadas();
     //this.isEditarActivo= true;
+  }
+
+  fnConsultMatrizPartesInteresadas() {
+    this.ApiService.getDataParteInteresada().subscribe((data) => {
+      this.rolessArray = data;
+      this.dataInitial = data;
+      //paginado
+      const totalPag = data.length;
+      this.totalPaginas = Math.ceil(totalPag / 7);
+      if (this.totalPaginas == 0) this.totalPaginas = 1;
+
+      this.datatotal = this.dataInitial.length;
+      this.contentArray = data;
+      this.currentPage = 1
+      if (this.datatotal >= 7) {
+        this.totalRegistros = 7;
+      } else {
+        this.totalRegistros = this.dataInitial.length;
+      }
+    })
+  }
+  fnActivityEditarCancelar() {
+    this.caracteristicaIndice = -1;
+  }
+
+  pageChanged(event: any): void {
+    this.pages = event.page;
+    const startItem = (event.page - 1) * event.itemsPerPage
+    const endItem = event.page * event.itemsPerPage;
+
+    if (this.filter.trim() !== '') {
+      this.datatotal = this.contentArray.length;
+      this.rolessArray = this.contentArray.slice(startItem, endItem)
+    } else {
+      this.datatotal = this.dataInitial.length;
+      this.rolessArray = this.dataInitial.slice(startItem, endItem)
+    }
+    this.totalRegistros = this.rolessArray.length;
+    this.cd.detectChanges();
   }
 
   getTextoPregFormControlName(): string {
@@ -104,6 +158,28 @@ export class AppMatrizPartesInteresadasComponent implements OnInit {
     this.form.get('otro')?.updateValueAndValidity();
   }
 
+  fnListResponsible() {
+    const idPerfil = this.getRolValue();
+    if (idPerfil == 3) {
+      this.ApiService.getPSTSelect().subscribe((data) => {
+        this.responsable = data;
+
+      })
+    } else {
+      this.ApiService.getListResponsible().subscribe((data) => {
+        this.responsable = data;
+
+      })
+    }
+  }
+
+  getRolValue(): number {
+    const rol = localStorage.getItem('rol');
+    if (rol && !isNaN(Number(rol))) {
+      return Number(rol);
+    }
+    return 0;
+  }
 
   capturarValor(event: Event, formControllerName:string) {
     const elemento = event.target as HTMLInputElement;
@@ -471,7 +547,7 @@ export class AppMatrizPartesInteresadasComponent implements OnInit {
             [
               { image: this.logo, fit: [50, 50], alignment: 'center', margin: [0, 3, 0, 3], rowSpan: 2 },
               { text: this.pst, alignment: 'center', margin: [0, 21, 0, 21], rowSpan: 2 },
-              { text: 'PARTES INTERESADAS', alignment: 'center', rowSpan: 2, margin: [0, 9, 0, 9] },
+              { text: 'MATRIZ DE PARTES INTERESADAS', alignment: 'center', rowSpan: 2, margin: [0, 9, 0, 9] },
               { text: 'CÓDIGO:', alignment: 'center' }
             ],
             [

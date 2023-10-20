@@ -229,6 +229,11 @@ export class ApiService {
     return this.http.get<any>(lista)
   }
 
+  insertLey(request: any){
+    const ley = `${this.apiURLNuevo}/api/MatrizLegal/InsertLey`;
+    return this.http.post<any>(ley, request)
+  }
+
   saveLey(request: any){
     const ley = `${this.apiURLNuevo}/api/MatrizLegal/RespuestaMatrizLegal`;
     return this.http.post<any>(ley, request)
@@ -243,6 +248,12 @@ export class ApiService {
   getUsuario(){
     const id = localStorage.getItem('Id');
     let direccion = `${this.apiURLNuevo}/api/Usuario/${id}`
+    return this.http.get<any>(direccion)
+  }
+
+  getDatosHeaderMatriz(){
+    const rnt = localStorage.getItem('rnt');
+    let direccion = `${this.apiURLNuevo}/api/MatrizLegal/DataHeaderMatrizLegal?RNT=${rnt}`;
     return this.http.get<any>(direccion)
   }
 
@@ -360,8 +371,17 @@ export class ApiService {
     let assign = `${this.apiURLNuevo}/api/Auditoria/RequisitoAuditoria?idrequisito=${id}`
     return this.http.delete<any>(assign)
   }
+
+  //MEJORA CONTINUA
+  getMejoraContinua() {
+    const id = localStorage.getItem("Id");
+    let list = `${this.apiURLNuevo}/api/MejoraContinua/${id}`
+    console.log(list);
+    return this.http.get<any>(list)
+  }
+
    ///ACTIVIDADES (VISTA DE PLANIFICACIÓN)
-   getActivities(){
+  getActivities(){
     const id = localStorage.getItem("Id");
     const idrol = localStorage.getItem("rol");
     let lista = `${this.apiURLNuevo}/api/Actividad/actividades?idUsuarioPst=${id}&idTipoUsuario=${idrol}`
@@ -439,6 +459,12 @@ export class ApiService {
   }
   
   //actualizar formulario
+  getDataParteInteresada() {
+    const id = localStorage.getItem("Id");
+    let list = `${this.apiURLNuevo}/api/MatrizPartesInteresadas/${id}`
+    console.log(list);
+    return this.http.get<any>(list)
+  }
   getFormsParteInteresada(){
     const rnt = localStorage.getItem('rnt');
     const idUsuarioPst = window.localStorage.getItem('Id');
