@@ -8,6 +8,7 @@ import { debug, log } from 'console';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { ModalService } from 'src/app/messagemodal/messagemodal.component.service'
 import { DomSanitizer } from '@angular/platform-browser';
+import { ColorLista } from 'src/app/servicios/api/models/color';
 
 @Component({
   selector: 'app-app-gestor-noticia',
@@ -91,6 +92,8 @@ export class AppGestorNoticiaComponent implements OnInit {
   dropdownListSubCategoria: any[] = [];
   selectedItemsSubCategoria: any[] = [];
   dropdownSettingsSubCategoria: IDropdownSettings;
+  colorWallpaper:ColorLista;
+  colorTitle:ColorLista;
 
   constructor(
     private http: HttpClient,
@@ -101,8 +104,11 @@ export class AppGestorNoticiaComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.caracteristicaIndice = -1;
+    this.api.colorTempo();
+    this.colorWallpaper = JSON.parse(localStorage.getItem("color")).wallpaper;
+    this.colorTitle = JSON.parse(localStorage.getItem("color")).title;
 
+    this.caracteristicaIndice = -1;
     this.getTableData();
     this.getSelectMultiplePST();
     this.getSelectMultipleColaboradores();
@@ -323,7 +329,6 @@ else{
     this.totalRegistros = this.filterArray.length;
   }
   
-
   saveModal() {
     try {
       const id = localStorage.getItem('Id');
@@ -573,6 +578,7 @@ else{
       allowSearchFilter: true
     };
   }
+
   getSelectMultipleColaboradores() {
     this.api.getListResponsible()
       .subscribe(data => {
@@ -595,6 +601,7 @@ else{
       allowSearchFilter: true
     };
   }
+
   getSelectMultipleNorma() {
     this.api.getNormaSelect()
       .subscribe(data => {

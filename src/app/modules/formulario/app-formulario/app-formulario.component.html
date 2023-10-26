@@ -1,4 +1,4 @@
-    <form [formGroup]="form" (ngSubmit)="onSubmit(selectedMatrizId)">
+    <form [formGroup]="form" (ngSubmit)="onSubmit(selectedMatrizId, $event)">
         <div class="containerform">
             <div class="subContainerform">
                 <label for="estadoCumplimiento" class="estado">Estado de cumplimiento</label>
@@ -40,6 +40,16 @@
                     <label for="acciones" class="estado">Acciones a realizar</label>
                     <textarea name="acciones" id="acciones" formControlName="acciones" placeholder="Acciones" class="estadoFormB" 
                     [attr.disabled]="isDisabled ? 'disabled' : null" [ngClass]="{'campo-desactivado': isDisabled}"></textarea>
+                    <div class="containerMejoraContinua" [attr.disabled]="isDisabled ? 'disabled' : null"
+                    [ngClass]="{'checkbox-desactivado': isDisabled}" *ngIf ="showCheckbox">
+                        <label class="checkbox-container" >
+                            <input type="checkbox" id="myCheckbox" [attr.disabled]="isDisabled ? 'disabled' : null"
+                            [ngClass]="{'checkbox-desactivado': isDisabled}" (change)="toggleCheckbox()" />
+                            <span class="checkmark"></span>
+                          </label>
+                          <p>MEJORA CONTINUA</p>
+                    </div>
+                    
                 </div>
                 <div class="subContainerformB">
                     <label for="responsableCumplimiento" class="estado">Responsable de dar cumplimiento</label>
@@ -67,9 +77,42 @@
             </div>
         </div>          
         <div class="containerBtn" *ngIf="getRolValue() !== 4 && getRolValue()!==5 && getRolValue()!==7">
-            <button type="submit" class="btnGuardar" [disabled]="isDisabled">
+            <button type="Submit" class="btnGuardar" [disabled]="isDisabled" *ngIf="showGuardar==true && showBotones==true" >
                 <i class="fa-solid fa-floppy-disk" style="color: white; margin: 0 0.5vw;"></i>Guardar</button>
-            <button type="button" class="btnGuardar" (click)="activarCampos(true)"> 
+            <button type="button" class="btnGuardar" (click)="activarCampos(true)" *ngIf="showGuardar==false && showBotones==true"> 
                 <i class="fa-solid fa-pen" style="color: white; margin: 0 0.4vw;"></i> Editar</button>
+            <button type="button" class="btnGuardar" *ngIf="showBotones==true" [disabled]="disableModificar" (click)="terminarModificarCampos2()"> 
+                Terminar Modificacion</button>
+            
         </div>
+        
     </form>
+    <!-- <div class="modal-background" id="modal-success" *ngIf="showModal">
+
+        <div class="modal-content">
+
+          <div class="modal-borde">
+
+            <div class="modal-title">
+
+                <h4><b>BREVE RESUMEN DE ACTUALIZACIONES</b></h4>
+
+            </div>
+
+                <textarea id="textAreaModal" class="textAreaModal"></textarea>
+
+            <div class="containerBtn">
+
+                <button class="btnGuardar"(click)="showModal = false; saveModal()">
+                    <i class="fa-solid fa-floppy-disk" style="color: white; margin: 0 0.5vw;"></i>Guardar Resumen
+                </button>
+
+            </div>
+
+          </div>
+
+        </div>
+
+    </div> -->
+    
+    

@@ -1,5 +1,7 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { Router } from '@angular/router';
+import { ApiService } from 'src/app/servicios/api/api.service';
+import { ColorLista } from 'src/app/servicios/api/models/color';
 
 @Component({
   selector: 'app-app-documentacion',
@@ -27,18 +29,23 @@ export class AppDocumentacionComponent implements OnInit {
   anexoAVisible = false;
   anexoBVisible = false;
   anexoCVisible = false;
-
+  colorTitle:ColorLista;
+  colorWallpaper:ColorLista;
   normaSelected: string;
   ntc: string;
   pdfUrl: string;
 
   constructor(
-    private router: Router
+    private router: Router,
+    private ApiService: ApiService,
   ) {}
 
   ngOnInit(): void {
     this.normaSelected = localStorage.getItem('normaSelected');
     this.ntc = this.normaSelected.substring(0, 8);
+    this.ApiService.colorTempo(); 
+    this.colorTitle = JSON.parse(localStorage.getItem("color")).title;
+    this.colorWallpaper = JSON.parse(localStorage.getItem("color")).wallpaper;
     // this.pdfUrl = `../../../../assets/DOCS/Norma/${this.ntc}-MATRIZ REQUISITOS LEGALES-Aprobada V2.pdf`;
   }
 

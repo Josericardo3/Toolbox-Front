@@ -8,6 +8,13 @@ import { ModalService } from 'src/app/messagemodal/messagemodal.component.servic
 import { Subscription } from 'rxjs';
 import { AppFormularioComponent } from '../formulario/app-formulario/app-formulario.component';
 import { FormService } from 'src/app/servicios/form/form.service';
+import { AUTO_STYLE } from '@angular/animations';
+import { BarOptions } from 'chart.js';
+import { ModalPadreService } from 'src/app/servicios/api/modal.padre.services';
+import { throwToolbarMixedModesError } from '@angular/material/toolbar';
+import { SpinnerService } from 'src/app/servicios/spinnerService/spinner.service';
+import { NgxSpinnerService } from 'ngx-spinner';
+
 (pdfMake as any).vfs = pdfFonts.pdfMake.vfs;
 
 @Component({
@@ -47,6 +54,25 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
   adicionarVisibleEconomico = false;
   adicionarVisibleParticular = false;
 
+//agregando nuevo
+  showModal: boolean = false;
+  title: '';
+  message: '';
+
+  
+  
+  //MODAL DEL RESUMEN
+
+  showModalResumen: boolean = false;
+  descripcionResumen1: string;
+  descripcionResumen2: string;
+  descripcionResumen3: string;
+  descripcionResumen4: string;
+  descripcionResumen5: string;
+  descripcionResumen6: string;
+ 
+  
+  categoria: string;
   descripcion: string;
   secciones: string;
   numero: string;
@@ -96,9 +122,43 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
   // public form!: FormGroup;
   isFormDisabled: boolean = false
   isDisabled: boolean = false;
+
+
+
+  //BOTON MODIFICAR NUEVO
+  disabledModificar: boolean = false;
+
+  disabledTabs1: boolean = false;
+  disabledTabs2: boolean = false;
+  disabledTabs3: boolean = false;
+  disabledTabs4: boolean = false;
+  disabledTabs5: boolean = false;
+  disabledTabs6: boolean = false;
+
+
+
+
   subscriptions: any;
 
   leyesVisibles: boolean[] = [];
+//editarcaracteristica
+  editarCaracteristica: any = {};
+  
+  datosHeaderMatriz: any = [];
+  //crear para cada uno de los rubros  
+  headerTurismo: any;
+  headerAmbiental: any;
+  headerLaboral: any;
+  headerSocial: any;
+  headerEconomico: any;
+
+
+  saveForm : FormGroup;
+  //modelo
+
+  modelo: any = {};
+
+
   datosUsuario: any = [];
   pst: any;
   logo: any;
@@ -110,17 +170,68 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
     private router: Router,
     private formBuilder: FormBuilder,
     private Message: ModalService,
-    private formService: FormService
+    private formService: FormService,
+    //SERVICIO PARA COMUNICAR APP-FORMULARIO CON MATRIZ-REQUISITOS-LEGAL
+    private modalPadre: ModalPadreService,
+    private spinnerService: SpinnerService,
+    private spinner: NgxSpinnerService,
   ) {}
 
   ngOnInit() {
+    //REMOVER ARRAY TEMPORAL
+    
+
+
+
+
+    localStorage.removeItem('MiArrayTemporal');
+    this.getUser();
     this.separarCategoria();
+    this.showModal = true;
+
+    //NOS SUSCRIBIMOS AL SERVICIO Y LE PASAMOS LA FUNCION QUE QUEREMOS QUE UTILIZE NUESTRO BOTON EN EL FORMULARIO
+    this.modalPadre.abrirModal$.subscribe(()=>{
+      this.terminarModificarCampos()
+    })
+    
 
     this.ApiService.getUsuario()
     .subscribe((data: any) => {
       this.datosUsuario = data;
       this.pst = data.nombrePst;
       this.logo = data.logo
+    })
+    //para turismo
+    this.ApiService.getDatosHeaderMatriz()
+    .subscribe((data: any) => {
+      this.datosHeaderMatriz = data;
+      this.headerTurismo = data.find(p => p.CATEGORIA === "Turismo");
+      console.log("asdo",this.headerTurismo);
+     
+    })
+    this.ApiService.getDatosHeaderMatriz()
+    .subscribe((data: any) => {
+      this.datosHeaderMatriz = data;
+      this.headerAmbiental = data.find(p => p.CATEGORIA === "Ambiental");
+     
+    })
+    this.ApiService.getDatosHeaderMatriz()
+    .subscribe((data: any) => {
+      this.datosHeaderMatriz = data;
+      this.headerLaboral = data.find(p => p.CATEGORIA === "Laboral y SGSST");
+     
+    })
+    this.ApiService.getDatosHeaderMatriz()
+    .subscribe((data: any) => {
+      this.datosHeaderMatriz = data;
+      this.headerEconomico = data.find(p => p.CATEGORIA === "Economico");
+     
+    })
+    this.ApiService.getDatosHeaderMatriz()
+    .subscribe((data: any) => {
+      this.datosHeaderMatriz = data;
+      this.headerSocial = data.find(p => p.CATEGORIA === "Social");
+     
     })
 
     this.tab1Form = this.formBuilder.group({
@@ -170,8 +281,27 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
       descripcion: ['', Validators.required],
       secciones: ['', Validators.required],
     });
-  } 
+    //SAVEFORM DEL MODAL RESUMEN
+    this.saveForm = this.formBuilder.group({
+      descripcionNoticia: ['', Validators.required],
+      
+    });
 
+    
+  } 
+  userInfor:any={};
+  
+  getUser() {
+    const idUsuario = window.localStorage.getItem('Id');
+    this.ApiService.getUser(idUsuario).subscribe((data: any) => {
+      this.userInfor = data;
+      
+      //console.log(this.userInfor.LOGO);
+    })
+  }
+
+
+  
   separarCategoria(){
     this.ApiService.getLeyes()
     .subscribe((data: any) => {
@@ -492,39 +622,53 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
   }
 
   agregarDiv() {
+    const tipoNormatividad = this.tab1Form.value.tipoNormatividad;
     const anio = (document.querySelector('#anioInput') as HTMLInputElement).value;
+    var categoria = "";
+    if (this.tabActual === 'tab1'||this.tabActual === 'tab2'||this.tabActual === 'tab3'||this.tabActual === 'tab4'||this.tabActual === 'tab5') {
+      categoria = (document.querySelector('#categoriaInput') as HTMLInputElement).value;
+    } else if (this.tabActual === 'tab6') {
+      categoria = (document.querySelector('#categoriaParticularInput') as HTMLInputElement).value;
+    } 
     const numero = (document.querySelector('#numeroInput') as HTMLInputElement).value;
+    const emisor = this.userInfor.NOMBRE;
     const descripcion = (document.querySelector('#descripcionTextAreaAdd') as HTMLTextAreaElement).value;
     const secciones = (document.querySelector('#seccionesTextAreaAdd') as HTMLTextAreaElement).value;
     // const tipoNormatividad = this.selectedOption === 'otro' ? (document.querySelector('#otroInput') as HTMLInputElement).value : this.selectedOption;
     // this.tipoNormatividad = this.selectedOption === 'otro' ? this.otroValor : this.selectedOption;
     this.tipoNormatividad = this.selectedOption === 'otro' ? this.otroValor : this.selectedOption;
-  
+    debugger
     if (this.tipoNormatividad === 'otro') {
       this.tipoNormatividad = this.otroValor;
     }
     
     this.nuevoDiv = {
-      anio: anio,
-      numero: numero,
-      descripcion: descripcion,
-      secciones: secciones,
-      tipoNormatividad: this.tipoNormatividad
+          ID_DOCUMENTO: 1,
+  				CATEGORIA: categoria,
+  				TIPO_NORMATIVIDAD: this.tipoNormatividad,
+  				NUMERO: numero,
+  				ANIO: anio,
+  				EMISOR: emisor,
+  				DESCRIPCION: descripcion,
+  				DOCS_ESPECIFICOS: secciones
+
     };
 
-    if (this.tabActual === 'tab1') {
-      this.divsTab1.push(this.nuevoDiv);
-    } else if (this.tabActual === 'tab2') {
-      this.divsTab2.push(this.nuevoDiv);
-    } else if (this.tabActual === 'tab3') {
-      this.divsTab3.push(this.nuevoDiv);
-    } else if (this.tabActual === 'tab4') {
-      this.divsTab4.push(this.nuevoDiv);
-    } else if (this.tabActual === 'tab5') {
-      this.divsTab5.push(this.nuevoDiv);
-    } else if (this.tabActual === 'tab6') {
-      this.divsTab6.push(this.nuevoDiv);
-    }
+    
+    
+    this.ApiService.insertLey(this.nuevoDiv).subscribe(
+      (res:any) => {
+        
+        this.separarCategoria();
+        this.showModal = true;
+        const title = "Requisito Legal";
+        const message = "Requisito Legal Agregado";
+        this.Message.showModal(title, message);
+        
+      },
+      (error) => {
+        console.error('Error al enviar la solicitud:', error);
+      });
 
     this.nuevoDiv = {};
 
@@ -536,7 +680,8 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
     this.tab4Form.reset();
     this.tab5Form.reset();
     this.tab6Form.reset();
-  }  
+    
+  }   
 
   eliminarDivAdd() {
     const divAdd = document.getElementById('divAdd');
@@ -554,217 +699,276 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
           }
       });
   }
+  actualizarHeader(){
+    this.ApiService.getDatosHeaderMatriz()
+    .subscribe((data: any) => {
+      this.datosHeaderMatriz = data;
+      this.headerTurismo = data.find(p => p.CATEGORIA === "Turismo");
+      this.headerAmbiental = data.find(p => p.CATEGORIA === "Ambiental");
+      this.headerLaboral = data.find(p => p.CATEGORIA === "Laboral y SGSST");
+      this.headerEconomico = data.find(p => p.CATEGORIA === "Economico");
+      this.headerSocial = data.find(p => p.CATEGORIA === "Social");
+      console.log("datita",data);
+      console.log("asdo2",this.headerTurismo); 
+      console.log("asd3",this.headerAmbiental);
+    })
+    
+  }
+  
+  generateReporteTurismo(){   
 
-  generateReporteTurismo(){
+    this.actualizarHeader();   
+     
     this.ApiService.gertArchivoMatriz()
     .subscribe((data: any) => {
+      debugger
       this.datosReporte = data;
-      this.gruposTurismoReporte = this.datosReporte.filter((ley) => ley.CATEGORIA === 'Turismo')   
+      this.gruposTurismoReporte = this.datosReporte.filter((ley) => ley.CATEGORIA === 'Turismo')  
+  
+      //CAMBIOS RADICALES
+      
+      
+      let bodyContent;
+      
+      //SI USERINFOR.LOGO ES NULO CAMBIA EL FORMATO DEL PDF A TIPO TEXT
+      if(this.userInfor.LOGO == null){
+        bodyContent = {
+          width: 'auto',
+          table: {
+            widths: ['*', '*', '*', '*'],
+            body: [
+              [     
+                { text: this.userInfor.LOGO, fit:[50, 50], alignment: 'center', rowSpan: 2 },
+                //{ image: this.userInfor.LOGO, fit: [50, 50], alignment: 'center', rowSpan: 2 },
+                { text: this.userInfor.RAZON_SOCIAL_PST, alignment: 'center', margin:[ 0, 15, 0, 15 ], rowSpan: 2},
+                { text:'MATRIZ DE REQUISITOS LEGALES', alignment: 'center', margin:[ 0, 15, 0, 15 ],rowSpan: 2 },
+                { text: 'CÓDIGO: GS-M-01', alignment: 'center', margin:[ 0, 2, 0, 2 ] }
+              ],
+              [
+                {},
+                {},
+                '',
+                { text: 'VERSIÓN: 01', alignment: 'center', margin:[ 0, 2, 0, 2 ] },
+              ]
+            ]
+          }
+        }
+
+      }
+      else{
+        bodyContent = {
+          width: 'auto',
+          table: {
+            widths: ['*', '*', '*', '*'],
+            body: [
+              [     
+                //{ text: this.userInfor.LOGO, fit:[50, 50], alignment: 'center', rowSpan: 2 },
+                { image: this.userInfor.LOGO, fit: [50, 50], alignment: 'center', rowSpan: 2 },
+                { text: this.userInfor.RAZON_SOCIAL_PST, alignment: 'center', margin:[ 0, 15, 0, 15 ], rowSpan: 2},
+                { text:'MATRIZ DE REQUISITOS LEGALES', alignment: 'center', margin:[ 0, 15, 0, 15 ],rowSpan: 2 },
+                { text: 'CÓDIGO: GS-M-01', alignment: 'center', margin:[ 0, 2, 0, 2 ] }
+              ],
+              [
+                {},
+                {},
+                '',
+                { text: 'VERSIÓN: 01', alignment: 'center', margin:[ 0, 2, 0, 2 ] },
+              ]
+            ]
+          }
+        }
+
+      }
+      const matrizUsuario = {
+        columns: [
+          {
+            width: 'auto',
+            table: {
+              widths: ['auto', '*', '*', '*', '*', '*'],
+              body: [
+                [     
+                  { text: 'COMPONENTE ACTUALIZADO', style: ['tituloTabla'] },
+                  { text: 'AMBIENTAL', style: ['tituloTabla'] },
+                  { text: 'LABORAL Y SGSST', style: ['tituloTabla'] },
+                  { text: 'TURISMO', style: ['tituloTabla'] },
+                  { text: 'SOCIAL', style: ['tituloTabla'] },
+                  { text: 'ECONÓMICO', style: ['tituloTabla'] }
+                ],
+                [
+                  { text: 'FECHA ÚLTIMA ACTUALIZACIÓN', style: ['tituloTabla'] },
+                  { text: this.headerAmbiental?.PLAN_FECHA_SEGUIMIENTO, alignment: 'center',rowSpan: 1 },
+                  { text: this.headerLaboral?.PLAN_FECHA_SEGUIMIENTO, alignment: 'center',rowSpan: 1 },
+                  { text: this.headerTurismo?.PLAN_FECHA_SEGUIMIENTO, alignment: 'center',rowSpan: 1 },
+                  { text: this.headerSocial?.PLAN_FECHA_SEGUIMIENTO, alignment: 'center',rowSpan: 1 },
+                  { text: this.headerEconomico?.PLAN_FECHA_SEGUIMIENTO, alignment: 'center',rowSpan: 1 }
+
+                ],
+                [
+                  { text: 'NOMBRE DE QUIÉN ACTUALIZA', style: ['tituloTabla'] },
+                  { text: this.headerAmbiental?.NOMBRE, alignment: 'center',rowSpan: 1 },
+                  { text: this.headerLaboral?.NOMBRE, alignment: 'center',rowSpan: 1 },
+                  { text: this.headerTurismo?.NOMBRE, alignment: 'center',rowSpan: 1 },
+                  { text: this.headerSocial?.NOMBRE, alignment: 'center',rowSpan: 1 },
+                  { text: this.headerEconomico?.NOMBRE, alignment: 'center',rowSpan: 1 }
+                ],
+                [
+                  { text: 'COMPONENTE EVALUADO', style: ['tituloTabla'] },
+                  { text: 'AMBIENTAL', style: ['tituloTabla'] },
+                  { text: 'LABORAL Y SGSST', style: ['tituloTabla'] },
+                  { text: 'TURISMO', style: ['tituloTabla'] },
+                  { text: 'SOCIAL', style: ['tituloTabla'] },
+                  { text: 'ECONÓMICO', style: ['tituloTabla'] }
+                ],
+                [
+                  { text: 'FECHA ÚLTIMA EVALUACIÓN', style: ['tituloTabla'] },
+                  { text: this.headerAmbiental?.PLAN_FECHA_SEGUIMIENTO, alignment: 'center',rowSpan: 1 },
+                  { text: this.headerLaboral?.PLAN_FECHA_SEGUIMIENTO, alignment: 'center',rowSpan: 1 },
+                  { text: this.headerTurismo?.PLAN_FECHA_SEGUIMIENTO, alignment: 'center',rowSpan: 1 },
+                  { text: this.headerSocial?.PLAN_FECHA_SEGUIMIENTO, alignment: 'center',rowSpan: 1 },
+                  { text: this.headerEconomico?.PLAN_FECHA_SEGUIMIENTO, alignment: 'center',rowSpan: 1 }
+                ],
+                [
+                  { text: 'EVALUADOR', style: ['tituloTabla'] },
+                  { text: this.headerAmbiental?.VALOR, alignment: 'center',rowSpan: 1 },
+                  { text: this.headerLaboral?.VALOR, alignment: 'center',rowSpan: 1 },
+                  { text: this.headerTurismo?.VALOR, alignment: 'center',rowSpan: 1 },
+                  { text: this.headerSocial?.VALOR, alignment: 'center',rowSpan: 1 },
+                  { text: this.headerEconomico?.VALOR, alignment: 'center',rowSpan: 1 }
+
+                ],
+                
+              ]
+            },
+            fontSize: 7,
+            margin: [0, 0, 27, 0]
+          },
+          {
+            table: {
+              heights: [87],
+              widths: ['*', '*'],
+              body: [
+                [     
+                  { text: 'BREVE RESUMEN DE NORMATIVIDAD QUE SE ACTUALIZA', style: ['tituloTabla'], margin:[ 0, 36, 0, 36 ] },
+                  { text: this.headerTurismo?.RESUMEN, alignment: 'center',rowSpan: 1 }
+                ]
+              ]
+            },
+            fontSize: 8,
+          },
+        ]
+      };
+      const matrizLeyes = {
+        table: {
+          widths: ['auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto'],
+          body: [
+            [     
+              { text: 'REQUISITOS LEGALES', colSpan:10, style: ['tituloTabla'], margin:[ 0, 10, 0, 10 ] },
+              {},
+              {},
+              {},
+              {},
+              {},
+              {},
+              {},
+              {},
+              {},
+              { text: '¿APLICA PLAN DE INTERVENCIÓN?', colSpan:2, style: ['tituloTabla'] },
+              {},
+              { text: 'PLAN DE INTERVENCIÓN', colSpan:5, style: ['tituloTabla'], margin:[ 0, 10, 0, 10 ] },
+              {},
+              {},
+              {},
+              {},
+            ],
+            [     
+              { text: 'TIPO DE NORMATIVIDAD', style: ['tituloTabla'], margin:[ 0, 15, 0, 15 ] },
+              { text: 'NÚMERO', style: ['tituloTabla'], margin:[ 0, 21, 0, 21 ] },
+              { text: 'AÑO', style: ['tituloTabla'], margin:[ 0, 21, 0, 21 ] },
+              { text: 'EMISOR', style: ['tituloTabla'], margin:[ 0, 21, 0, 21 ] },
+              { text: 'DESCRIPCIÓN', style: ['tituloTabla'], margin:[ 0, 21, 0, 21 ] },
+              { text: 'ARTÍCULOS / SECCIONES / REQUISITOS ESPECÍFICOS QUE APLICAN', style: ['tituloTabla'] },
+              { text: 'ESTADO DE CUMPLIMIENTO (SI/NO/EN PROCESO/NA)', style: ['tituloTabla'], margin:[ 0, 5, 0, 5 ] },
+              { text: 'RESPONSABLE DE DAR CUMPLIMIENTO', style: ['tituloTabla'], margin:[ 0, 10, 0, 10 ] },
+              { text: 'EVIDENCIA DEL CUMPLIMIENTO', style: ['tituloTabla'], margin:[ 0, 15, 0, 15 ] },
+              { text: 'OBSERVACIONES / INCUMPLIMIENTO', style: ['tituloTabla'], margin:[ 0, 15, 0, 15 ] },
+              { text: 'SI', style: ['tituloTabla'], margin:[ 0, 21, 0, 21 ] },
+              { text: 'NO', style: ['tituloTabla'], margin:[ 0, 21, 0, 21 ] },
+              { text: 'ACCIONES A REALIZAR', style: ['tituloTabla'], margin:[ 0, 10, 0, 10 ] },
+              { text: 'FECHA PARA LA  EJECUCIÓN', style: ['tituloTabla'], margin:[ 0, 10, 0, 10 ] },
+              { text: 'RESPONSABLE DE LA EJECUCIÓN', style: ['tituloTabla'], margin:[ 0, 10, 0, 10 ] },
+              { text: 'FECHA / SEGUIMIENTO', style: ['tituloTabla'], margin:[ 0, 15, 0, 15 ] },
+              { text: 'ESTADO (ABIERTO / CERRADO)', style: ['tituloTabla'], margin:[ 0, 10, 0, 10 ] },
+            ],
+          // ...this.gruposTurismoReporte.flatMap((item: any) =>
+          //   item.DOCUMENTO.map((documento: any) => [
+          //     { text: documento.TIPO_NORMATIVIDAD, style: ['dinamicTable'] },
+          //     { text: documento.NUMERO, style: ['dinamicTable'] },
+          //     { text: documento.AÑO, style: ['dinamicTable'] },
+          //     { text: documento.EMISOR, style: ['dinamicTable'] },
+          //     { text: documento.DESCRIPCION, style: ['dinamicTable'] },
+          //     { text: documento.ARTICULOS_SECCIONES_REQUISITOS_APLICAN, style: ['dinamicTable'] },
+          //     { text: documento.RESPUESTAS[0].ESTADO_CUMPLIMIENTO, style: ['dinamicTable'] },
+          //     { text: documento.RESPUESTAS[0].RESPONSABLE_CUMPLIMIENTO, style: ['dinamicTable'] },
+          //     { text: documento.RESPUESTAS[0].EVIDENCIA_CUMPLIMIENTO, style: ['dinamicTable'] },
+          //     { text: documento.RESPUESTAS[0].OBSERVACIONES_INCUMPLIMIENTO, style: ['dinamicTable'] },
+          //     { text: documento.RESPUESTAS[0].APLICA_PLAN_INTERVENCION, style: ['dinamicTable'] },
+          //     { text: documento.RESPUESTAS[0].APLICA_PLAN_INTERVENCION, style: ['dinamicTable'] },
+          //     { text: documento.RESPUESTAS[0].ACCION_A_REALIZAR, style: ['dinamicTable'] },
+          //     { text: documento.RESPUESTAS[0].FECHA_EJECUCION, style: ['dinamicTable'] },
+          //     { text: documento.RESPUESTAS[0].RESPONSABLE_EJECUCION, style: ['dinamicTable'] },
+          //     { text: documento.RESPUESTAS[0].FECHA_SEGUIMIENTO, style: ['dinamicTable'] },
+          //     { text: documento.RESPUESTAS[0].ESTADO, style: ['dinamicTable'] }
+          //   ])
+          // ),
+        ...this.gruposTurismoReporte.flatMap((item: any) =>
+          item.DOCUMENTO.map((documento: any) => {
+            const aplicaPlanIntervencion = documento.RESPUESTAS[0].APLICA_PLAN_INTERVENCION;
+            
+            let siValue = '';
+            let noValue = '';
+            
+  
+            if (aplicaPlanIntervencion === 'Si') {
+              siValue = 'SI';
+            } else if (aplicaPlanIntervencion === 'No') {
+              noValue = 'NO';
+            }
+            //console.log("gian", documento);
+            return [
+              { text: documento.TIPO_NORMATIVIDAD, style: ['dinamicTable'] },
+              { text: documento.NUMERO, style: ['dinamicTable'] },
+              { text: documento.AÑO, style: ['dinamicTable'] },
+              { text: documento.EMISOR, style: ['dinamicTable'] },
+              { text: documento.DESCRIPCION, style: ['dinamicTable'] },
+              { text: documento.ARTICULOS_SECCIONES_REQUISITOS_APLICAN, style: ['dinamicTable'] },
+              { text: documento.RESPUESTAS[0].ESTADO_CUMPLIMIENTO, style: ['dinamicTable'] },
+              { text: documento.RESPUESTAS[0].RESPONSABLE_CUMPLIMIENTO, style: ['dinamicTable'] },
+              { text: documento.RESPUESTAS[0].EVIDENCIA_CUMPLIMIENTO, style: ['dinamicTable'] },
+              { text: documento.RESPUESTAS[0].OBSERVACIONES_INCUMPLIMIENTO, style: ['dinamicTable'] },
+              { text: siValue, style: ['dinamicTable'] },
+              { text: noValue, style: ['dinamicTable'] },
+              { text: documento.RESPUESTAS[0].ACCION_A_REALIZAR, style: ['dinamicTable'] },
+              { text: documento.RESPUESTAS[0].FECHA_EJECUCION, style: ['dinamicTable'] },
+              { text: documento.RESPUESTAS[0].RESPONSABLE_EJECUCION, style: ['dinamicTable'] },
+              { text: documento.RESPUESTAS[0].FECHA_SEGUIMIENTO, style: ['dinamicTable'] },
+              { text: documento.RESPUESTAS[0].ESTADO, style: ['dinamicTable'] },
+            ];
+          })
+        )
+          ],
+        },
+        fontSize: 6,
+      };
+      //CREANDO PDF
       const pdfDefinition: any = {
+        
         pageSize: {
           width: 794,
           height: 1123,
         },
         pageOrientation: 'landscape',
         pageMargins: [ 15, 60, 15, 60 ],
-        content: [
-          // {
-          //   width: 'auto',
-          //   table: {
-          //     widths: ['*', '*', '*', '*'],
-          //     body: [
-          //       [     
-          //         { image: this.logo, fit:[50, 50], alignment: 'center', rowSpan: 2 },
-          //         { text: this.pst, alignment: 'center', margin:[ 0, 15, 0, 15 ], rowSpan: 2},
-          //         { text:'MATRIZ DE REQUISITOS LEGALES', alignment: 'center', margin:[ 0, 15, 0, 15 ],rowSpan: 2 },
-          //         { text: 'CÓDIGO: GS-M-01', alignment: 'center', margin:[ 0, 2, 0, 2 ] }
-          //       ],
-          //       [
-          //         {},
-          //         {},
-          //         '',
-          //         { text: 'VERSIÓN: 01', alignment: 'center', margin:[ 0, 2, 0, 2 ] },
-          //       ]
-          //     ]
-          //   }
-          // },
-          // '\n',
-          {
-            columns: [
-              {
-                width: 'auto',
-                table: {
-                  widths: ['auto', '*', '*', '*', '*', '*'],
-                  body: [
-                    [     
-                      { text: 'COMPONENTE ACTUALIZADO', style: ['tituloTabla'] },
-                      { text: 'AMBIENTAL', style: ['tituloTabla'] },
-                      { text: 'LABORAL Y SGSST', style: ['tituloTabla'] },
-                      { text: 'TURISMO', style: ['tituloTabla'] },
-                      { text: 'SOCIAL', style: ['tituloTabla'] },
-                      { text: 'ECONÓMICO', style: ['tituloTabla'] }
-                    ],
-                    [
-                      { text: 'FECHA ÚLTIMA ACTUALIZACIÓN', style: ['tituloTabla'] },
-                      '',
-                      '',
-                      '',
-                      '',
-                      ''
-                    ],
-                    [
-                      { text: 'NOMBRE DE QUIÉN ACTUALIZA', style: ['tituloTabla'] },
-                      '',
-                      '',
-                      '',
-                      '',
-                      ''
-                    ],
-                    [
-                      { text: 'COMPONENTE EVALUADO', style: ['tituloTabla'] },
-                      { text: 'AMBIENTAL', style: ['tituloTabla'] },
-                      { text: 'LABORAL Y SGSST', style: ['tituloTabla'] },
-                      { text: 'TURISMO', style: ['tituloTabla'] },
-                      { text: 'SOCIAL', style: ['tituloTabla'] },
-                      { text: 'ECONÓMICO', style: ['tituloTabla'] }
-                    ],
-                    [
-                      { text: 'FECHA ÚLTIMA EVALUACIÓN', style: ['tituloTabla'] },
-                      '',
-                      '',
-                      '',
-                      '',
-                      ''
-                    ],
-                    [
-                      { text: 'EVALUADOR', style: ['tituloTabla'] },
-                      '',
-                      '',
-                      '',
-                      '',
-                      ''
-                    ],
-                  ]
-                },
-                fontSize: 7,
-                margin: [0, 0, 27, 0]
-              },
-              {
-                table: {
-                  heights: [87],
-                  widths: ['*', '*'],
-                  body: [
-                    [     
-                      { text: 'BREVE RESUMEN DE NORMATIVIDAD QUE SE ACTUALIZA', style: ['tituloTabla'], margin:[ 0, 36, 0, 36 ] },
-                      {}
-                    ]
-                  ]
-                },
-                fontSize: 8,
-              },
-            ]
-          },
-          '\n',
-          {
-            table: {
-              widths: ['auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto'],
-              body: [
-                [     
-                  { text: 'REQUISITOS LEGALES', colSpan:10, style: ['tituloTabla'], margin:[ 0, 10, 0, 10 ] },
-                  {},
-                  {},
-                  {},
-                  {},
-                  {},
-                  {},
-                  {},
-                  {},
-                  {},
-                  { text: '¿APLICA PLAN DE INTERVENCIÓN?', colSpan:2, style: ['tituloTabla'] },
-                  {},
-                  { text: 'PLAN DE INTERVENCIÓN', colSpan:5, style: ['tituloTabla'], margin:[ 0, 10, 0, 10 ] },
-                  {},
-                  {},
-                  {},
-                  {},
-                ],
-                [     
-                  { text: 'TIPO DE NORMATIVIDAD', style: ['tituloTabla'], margin:[ 0, 15, 0, 15 ] },
-                  { text: 'NÚMERO', style: ['tituloTabla'], margin:[ 0, 21, 0, 21 ] },
-                  { text: 'AÑO', style: ['tituloTabla'], margin:[ 0, 21, 0, 21 ] },
-                  { text: 'EMISOR', style: ['tituloTabla'], margin:[ 0, 21, 0, 21 ] },
-                  { text: 'DESCRIPCIÓN', style: ['tituloTabla'], margin:[ 0, 21, 0, 21 ] },
-                  { text: 'ARTÍCULOS / SECCIONES / REQUISITOS ESPECÍFICOS QUE APLICAN', style: ['tituloTabla'] },
-                  { text: 'ESTADO DE CUMPLIMIENTO (SI/NO/EN PROCESO/NA)', style: ['tituloTabla'], margin:[ 0, 5, 0, 5 ] },
-                  { text: 'RESPONSABLE DE DAR CUMPLIMIENTO', style: ['tituloTabla'], margin:[ 0, 10, 0, 10 ] },
-                  { text: 'EVIDENCIA DEL CUMPLIMIENTO', style: ['tituloTabla'], margin:[ 0, 15, 0, 15 ] },
-                  { text: 'OBSERVACIONES / INCUMPLIMIENTO', style: ['tituloTabla'], margin:[ 0, 15, 0, 15 ] },
-                  { text: 'SI', style: ['tituloTabla'], margin:[ 0, 21, 0, 21 ] },
-                  { text: 'NO', style: ['tituloTabla'], margin:[ 0, 21, 0, 21 ] },
-                  { text: 'ACCIONES A REALIZAR', style: ['tituloTabla'], margin:[ 0, 10, 0, 10 ] },
-                  { text: 'FECHA PARA LA  EJECUCIÓN', style: ['tituloTabla'], margin:[ 0, 10, 0, 10 ] },
-                  { text: 'RESPONSABLE DE LA EJECUCIÓN', style: ['tituloTabla'], margin:[ 0, 10, 0, 10 ] },
-                  { text: 'FECHA / SEGUIMIENTO', style: ['tituloTabla'], margin:[ 0, 15, 0, 15 ] },
-                  { text: 'ESTADO (ABIERTO / CERRADO)', style: ['tituloTabla'], margin:[ 0, 10, 0, 10 ] },
-                ],
-              // ...this.gruposTurismoReporte.flatMap((item: any) =>
-              //   item.DOCUMENTO.map((documento: any) => [
-              //     { text: documento.TIPO_NORMATIVIDAD, style: ['dinamicTable'] },
-              //     { text: documento.NUMERO, style: ['dinamicTable'] },
-              //     { text: documento.AÑO, style: ['dinamicTable'] },
-              //     { text: documento.EMISOR, style: ['dinamicTable'] },
-              //     { text: documento.DESCRIPCION, style: ['dinamicTable'] },
-              //     { text: documento.ARTICULOS_SECCIONES_REQUISITOS_APLICAN, style: ['dinamicTable'] },
-              //     { text: documento.RESPUESTAS[0].ESTADO_CUMPLIMIENTO, style: ['dinamicTable'] },
-              //     { text: documento.RESPUESTAS[0].RESPONSABLE_CUMPLIMIENTO, style: ['dinamicTable'] },
-              //     { text: documento.RESPUESTAS[0].EVIDENCIA_CUMPLIMIENTO, style: ['dinamicTable'] },
-              //     { text: documento.RESPUESTAS[0].OBSERVACIONES_INCUMPLIMIENTO, style: ['dinamicTable'] },
-              //     { text: documento.RESPUESTAS[0].APLICA_PLAN_INTERVENCION, style: ['dinamicTable'] },
-              //     { text: documento.RESPUESTAS[0].APLICA_PLAN_INTERVENCION, style: ['dinamicTable'] },
-              //     { text: documento.RESPUESTAS[0].ACCION_A_REALIZAR, style: ['dinamicTable'] },
-              //     { text: documento.RESPUESTAS[0].FECHA_EJECUCION, style: ['dinamicTable'] },
-              //     { text: documento.RESPUESTAS[0].RESPONSABLE_EJECUCION, style: ['dinamicTable'] },
-              //     { text: documento.RESPUESTAS[0].FECHA_SEGUIMIENTO, style: ['dinamicTable'] },
-              //     { text: documento.RESPUESTAS[0].ESTADO, style: ['dinamicTable'] }
-              //   ])
-              // )
-            ...this.gruposTurismoReporte.flatMap((item: any) =>
-              item.DOCUMENTO.map((documento: any) => {
-                const aplicaPlanIntervencion = documento.RESPUESTAS[0].APLICA_PLAN_INTERVENCION;
-                let siValue = '';
-                let noValue = '';
-      
-                if (aplicaPlanIntervencion === 'si') {
-                  siValue = 'SI';
-                } else if (aplicaPlanIntervencion === 'no') {
-                  noValue = 'NO';
-                }
-                return [
-                  { text: documento.TIPO_NORMATIVIDAD, style: ['dinamicTable'] },
-                  { text: documento.NUMERO, style: ['dinamicTable'] },
-                  { text: documento.AÑO, style: ['dinamicTable'] },
-                  { text: documento.EMISOR, style: ['dinamicTable'] },
-                  { text: documento.DESCRIPCION, style: ['dinamicTable'] },
-                  { text: documento.ARTICULOS_SECCIONES_REQUISITOS_APLICAN, style: ['dinamicTable'] },
-                  { text: documento.RESPUESTAS[0].ESTADO_CUMPLIMIENTO, style: ['dinamicTable'] },
-                  { text: documento.RESPUESTAS[0].RESPONSABLE_CUMPLIMIENTO, style: ['dinamicTable'] },
-                  { text: documento.RESPUESTAS[0].EVIDENCIA_CUMPLIMIENTO, style: ['dinamicTable'] },
-                  { text: documento.RESPUESTAS[0].OBSERVACIONES_INCUMPLIMIENTO, style: ['dinamicTable'] },
-                  { text: siValue, style: ['dinamicTable'] },
-                  { text: noValue, style: ['dinamicTable'] },
-                  { text: documento.RESPUESTAS[0].ACCION_A_REALIZAR, style: ['dinamicTable'] },
-                  { text: documento.RESPUESTAS[0].FECHA_EJECUCION, style: ['dinamicTable'] },
-                  { text: documento.RESPUESTAS[0].RESPONSABLE_EJECUCION, style: ['dinamicTable'] },
-                  { text: documento.RESPUESTAS[0].FECHA_SEGUIMIENTO, style: ['dinamicTable'] },
-                  { text: documento.RESPUESTAS[0].ESTADO, style: ['dinamicTable'] },
-                ];
-              })
-            )
-              ],
-            },
-            fontSize: 6,
-          }
-        ],
+        content: [bodyContent          ,         '\n',  matrizUsuario        ,     '\n',  matrizLeyes    ],
         styles: {
           header: {
             fontSize: 16,
@@ -783,204 +987,263 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
             alignment: 'center'
           },
         }
-      }
+      }      
+      pdfMake.createPdf(pdfDefinition).download('Reporte_Turismo.pdf');
       const title = "Se descargó correctamente";
       const message = "La descarga se ha realizado exitosamente"
       this.Message.showModal(title, message);
-      pdfMake.createPdf(pdfDefinition).open();
+      
+      
     });
+    
   }
 
   generateReporteAmbiental(){
+    this.actualizarHeader();
     this.ApiService.gertArchivoMatriz()
     .subscribe((data: any) => {
       this.datosReporte = data;
       this.gruposAmbientalReporte = this.datosReporte.filter((ley) => ley.CATEGORIA === 'Ambiental' || ley.CATEGORIA === 'NTC 6496 Ambiental')
+      let bodyContent;
+      //SI USERINFOR.LOGO ES NULO CAMBIA EL FORMATO DEL PDF A TIPO TEXT
+      if(this.userInfor.LOGO == null){
+        bodyContent = {
+          width: 'auto',
+          table: {
+            widths: ['*', '*', '*', '*'],
+            body: [
+              [     
+                { text: this.userInfor.LOGO, fit:[50, 50], alignment: 'center', rowSpan: 2 },
+                //{ image: this.userInfor.LOGO, fit: [50, 50], alignment: 'center', rowSpan: 2 },
+                { text: this.userInfor.RAZON_SOCIAL_PST, alignment: 'center', margin:[ 0, 15, 0, 15 ], rowSpan: 2},
+                { text:'MATRIZ DE REQUISITOS LEGALES', alignment: 'center', margin:[ 0, 15, 0, 15 ],rowSpan: 2 },
+                { text: 'CÓDIGO: GS-M-01', alignment: 'center', margin:[ 0, 2, 0, 2 ] }
+              ],
+              [
+                {},
+                {},
+                '',
+                { text: 'VERSIÓN: 01', alignment: 'center', margin:[ 0, 2, 0, 2 ] },
+              ]
+            ]
+          }
+        }
+
+      }
+      else{
+        bodyContent = {
+          width: 'auto',
+          table: {
+            widths: ['*', '*', '*', '*'],
+            body: [
+              [     
+                //{ text: this.userInfor.LOGO, fit:[50, 50], alignment: 'center', rowSpan: 2 },
+                { image: this.userInfor.LOGO, fit: [50, 50], alignment: 'center', rowSpan: 2 },
+                { text: this.userInfor.RAZON_SOCIAL_PST, alignment: 'center', margin:[ 0, 15, 0, 15 ], rowSpan: 2},
+                { text:'MATRIZ DE REQUISITOS LEGALES', alignment: 'center', margin:[ 0, 15, 0, 15 ],rowSpan: 2 },
+                { text: 'CÓDIGO: GS-M-01', alignment: 'center', margin:[ 0, 2, 0, 2 ] }
+              ],
+              [
+                {},
+                {},
+                '',
+                { text: 'VERSIÓN: 01', alignment: 'center', margin:[ 0, 2, 0, 2 ] },
+              ]
+            ]
+          }
+        }
+
+      }
+      const matrizUsuario = {
+        columns: [
+          {
+            width: 'auto',
+            table: {
+              widths: ['auto', '*', '*', '*', '*', '*'],
+              body: [
+                [     
+                  { text: 'COMPONENTE ACTUALIZADO', style: ['tituloTabla'] },
+                  { text: 'AMBIENTAL', style: ['tituloTabla'] },
+                  { text: 'LABORAL Y SGSST', style: ['tituloTabla'] },
+                  { text: 'TURISMO', style: ['tituloTabla'] },
+                  { text: 'SOCIAL', style: ['tituloTabla'] },
+                  { text: 'ECONÓMICO', style: ['tituloTabla'] }
+                ],
+                [
+                  { text: 'FECHA ÚLTIMA ACTUALIZACIÓN', style: ['tituloTabla'] },
+                  { text: this.headerAmbiental?.PLAN_FECHA_SEGUIMIENTO, alignment: 'center',rowSpan: 1 },
+                  { text: this.headerLaboral?.PLAN_FECHA_SEGUIMIENTO, alignment: 'center',rowSpan: 1 },
+                  { text: this.headerTurismo?.PLAN_FECHA_SEGUIMIENTO, alignment: 'center',rowSpan: 1 },
+                  { text: this.headerSocial?.PLAN_FECHA_SEGUIMIENTO, alignment: 'center',rowSpan: 1 },
+                  { text: this.headerEconomico?.PLAN_FECHA_SEGUIMIENTO, alignment: 'center',rowSpan: 1 }
+
+                ],
+                [
+                  { text: 'NOMBRE DE QUIÉN ACTUALIZA', style: ['tituloTabla'] },
+                  { text: this.headerAmbiental?.NOMBRE, alignment: 'center',rowSpan: 1 },
+                  { text: this.headerLaboral?.NOMBRE, alignment: 'center',rowSpan: 1 },
+                  { text: this.headerTurismo?.NOMBRE, alignment: 'center',rowSpan: 1 },
+                  { text: this.headerSocial?.NOMBRE, alignment: 'center',rowSpan: 1 },
+                  { text: this.headerEconomico?.NOMBRE, alignment: 'center',rowSpan: 1 }
+                ],
+                [
+                  { text: 'COMPONENTE EVALUADO', style: ['tituloTabla'] },
+                  { text: 'AMBIENTAL', style: ['tituloTabla'] },
+                  { text: 'LABORAL Y SGSST', style: ['tituloTabla'] },
+                  { text: 'TURISMO', style: ['tituloTabla'] },
+                  { text: 'SOCIAL', style: ['tituloTabla'] },
+                  { text: 'ECONÓMICO', style: ['tituloTabla'] }
+                ],
+                [
+                  { text: 'FECHA ÚLTIMA EVALUACIÓN', style: ['tituloTabla'] },
+                  { text: this.headerAmbiental?.PLAN_FECHA_SEGUIMIENTO, alignment: 'center',rowSpan: 1 },
+                  { text: this.headerLaboral?.PLAN_FECHA_SEGUIMIENTO, alignment: 'center',rowSpan: 1 },
+                  { text: this.headerTurismo?.PLAN_FECHA_SEGUIMIENTO, alignment: 'center',rowSpan: 1 },
+                  { text: this.headerSocial?.PLAN_FECHA_SEGUIMIENTO, alignment: 'center',rowSpan: 1 },
+                  { text: this.headerEconomico?.PLAN_FECHA_SEGUIMIENTO, alignment: 'center',rowSpan: 1 }
+                ],
+                [
+                  { text: 'EVALUADOR', style: ['tituloTabla'] },
+                  { text: this.headerAmbiental?.VALOR, alignment: 'center',rowSpan: 1 },
+                  { text: this.headerLaboral?.VALOR, alignment: 'center',rowSpan: 1 },
+                  { text: this.headerTurismo?.VALOR, alignment: 'center',rowSpan: 1 },
+                  { text: this.headerSocial?.VALOR, alignment: 'center',rowSpan: 1 },
+                  { text: this.headerEconomico?.VALOR, alignment: 'center',rowSpan: 1 }
+
+                ],
+                
+              ]
+            },
+            fontSize: 7,
+            margin: [0, 0, 27, 0]
+          },
+          {
+            table: {
+              heights: [87],
+              widths: ['*', '*'],
+              body: [
+                [     
+                  { text: 'BREVE RESUMEN DE NORMATIVIDAD QUE SE ACTUALIZA', style: ['tituloTabla'], margin:[ 0, 36, 0, 36 ] },
+                  { text: this.headerAmbiental?.RESUMEN, alignment: 'center',rowSpan: 1 }
+                ]
+              ]
+            },
+            fontSize: 8,
+          },
+        ]
+      };
+      const matrizLeyes = {
+        table: {
+          widths: ['auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto'],
+          body: [
+            [     
+              { text: 'REQUISITOS LEGALES', colSpan:10, style: ['tituloTabla'], margin:[ 0, 10, 0, 10 ] },
+              {},
+              {},
+              {},
+              {},
+              {},
+              {},
+              {},
+              {},
+              {},
+              { text: '¿APLICA PLAN DE INTERVENCIÓN?', colSpan:2, style: ['tituloTabla'] },
+              {},
+              { text: 'PLAN DE INTERVENCIÓN', colSpan:5, style: ['tituloTabla'], margin:[ 0, 10, 0, 10 ] },
+              {},
+              {},
+              {},
+              {},
+            ],
+            [     
+              { text: 'TIPO DE NORMATIVIDAD', style: ['tituloTabla'], margin:[ 0, 15, 0, 15 ] },
+              { text: 'NÚMERO', style: ['tituloTabla'], margin:[ 0, 21, 0, 21 ] },
+              { text: 'AÑO', style: ['tituloTabla'], margin:[ 0, 21, 0, 21 ] },
+              { text: 'EMISOR', style: ['tituloTabla'], margin:[ 0, 21, 0, 21 ] },
+              { text: 'DESCRIPCIÓN', style: ['tituloTabla'], margin:[ 0, 21, 0, 21 ] },
+              { text: 'ARTÍCULOS / SECCIONES / REQUISITOS ESPECÍFICOS QUE APLICAN', style: ['tituloTabla'] },
+              { text: 'ESTADO DE CUMPLIMIENTO (SI/NO/EN PROCESO/NA)', style: ['tituloTabla'], margin:[ 0, 5, 0, 5 ] },
+              { text: 'RESPONSABLE DE DAR CUMPLIMIENTO', style: ['tituloTabla'], margin:[ 0, 10, 0, 10 ] },
+              { text: 'EVIDENCIA DEL CUMPLIMIENTO', style: ['tituloTabla'], margin:[ 0, 15, 0, 15 ] },
+              { text: 'OBSERVACIONES / INCUMPLIMIENTO', style: ['tituloTabla'], margin:[ 0, 15, 0, 15 ] },
+              { text: 'SI', style: ['tituloTabla'], margin:[ 0, 21, 0, 21 ] },
+              { text: 'NO', style: ['tituloTabla'], margin:[ 0, 21, 0, 21 ] },
+              { text: 'ACCIONES A REALIZAR', style: ['tituloTabla'], margin:[ 0, 10, 0, 10 ] },
+              { text: 'FECHA PARA LA  EJECUCIÓN', style: ['tituloTabla'], margin:[ 0, 10, 0, 10 ] },
+              { text: 'RESPONSABLE DE LA EJECUCIÓN', style: ['tituloTabla'], margin:[ 0, 10, 0, 10 ] },
+              { text: 'FECHA / SEGUIMIENTO', style: ['tituloTabla'], margin:[ 0, 15, 0, 15 ] },
+              { text: 'ESTADO (ABIERTO / CERRADO)', style: ['tituloTabla'], margin:[ 0, 10, 0, 10 ] },
+            ],
+          // ...this.gruposTurismoReporte.flatMap((item: any) =>
+          //   item.DOCUMENTO.map((documento: any) => [
+          //     { text: documento.TIPO_NORMATIVIDAD, style: ['dinamicTable'] },
+          //     { text: documento.NUMERO, style: ['dinamicTable'] },
+          //     { text: documento.AÑO, style: ['dinamicTable'] },
+          //     { text: documento.EMISOR, style: ['dinamicTable'] },
+          //     { text: documento.DESCRIPCION, style: ['dinamicTable'] },
+          //     { text: documento.ARTICULOS_SECCIONES_REQUISITOS_APLICAN, style: ['dinamicTable'] },
+          //     { text: documento.RESPUESTAS[0].ESTADO_CUMPLIMIENTO, style: ['dinamicTable'] },
+          //     { text: documento.RESPUESTAS[0].RESPONSABLE_CUMPLIMIENTO, style: ['dinamicTable'] },
+          //     { text: documento.RESPUESTAS[0].EVIDENCIA_CUMPLIMIENTO, style: ['dinamicTable'] },
+          //     { text: documento.RESPUESTAS[0].OBSERVACIONES_INCUMPLIMIENTO, style: ['dinamicTable'] },
+          //     { text: documento.RESPUESTAS[0].APLICA_PLAN_INTERVENCION, style: ['dinamicTable'] },
+          //     { text: documento.RESPUESTAS[0].APLICA_PLAN_INTERVENCION, style: ['dinamicTable'] },
+          //     { text: documento.RESPUESTAS[0].ACCION_A_REALIZAR, style: ['dinamicTable'] },
+          //     { text: documento.RESPUESTAS[0].FECHA_EJECUCION, style: ['dinamicTable'] },
+          //     { text: documento.RESPUESTAS[0].RESPONSABLE_EJECUCION, style: ['dinamicTable'] },
+          //     { text: documento.RESPUESTAS[0].FECHA_SEGUIMIENTO, style: ['dinamicTable'] },
+          //     { text: documento.RESPUESTAS[0].ESTADO, style: ['dinamicTable'] }
+          //   ])
+          // ),
+        ...this.gruposAmbientalReporte.flatMap((item: any) =>
+          item.DOCUMENTO.map((documento: any) => {
+            const aplicaPlanIntervencion = documento.RESPUESTAS[0].APLICA_PLAN_INTERVENCION;
+            
+            let siValue = '';
+            let noValue = '';
+            
+  
+            if (aplicaPlanIntervencion === 'Si') {
+              siValue = 'SI';
+            } else if (aplicaPlanIntervencion === 'No') {
+              noValue = 'NO';
+            }
+            //console.log("gian", documento);
+            return [
+              { text: documento.TIPO_NORMATIVIDAD, style: ['dinamicTable'] },
+              { text: documento.NUMERO, style: ['dinamicTable'] },
+              { text: documento.AÑO, style: ['dinamicTable'] },
+              { text: documento.EMISOR, style: ['dinamicTable'] },
+              { text: documento.DESCRIPCION, style: ['dinamicTable'] },
+              { text: documento.ARTICULOS_SECCIONES_REQUISITOS_APLICAN, style: ['dinamicTable'] },
+              { text: documento.RESPUESTAS[0].ESTADO_CUMPLIMIENTO, style: ['dinamicTable'] },
+              { text: documento.RESPUESTAS[0].RESPONSABLE_CUMPLIMIENTO, style: ['dinamicTable'] },
+              { text: documento.RESPUESTAS[0].EVIDENCIA_CUMPLIMIENTO, style: ['dinamicTable'] },
+              { text: documento.RESPUESTAS[0].OBSERVACIONES_INCUMPLIMIENTO, style: ['dinamicTable'] },
+              { text: siValue, style: ['dinamicTable'] },
+              { text: noValue, style: ['dinamicTable'] },
+              { text: documento.RESPUESTAS[0].ACCION_A_REALIZAR, style: ['dinamicTable'] },
+              { text: documento.RESPUESTAS[0].FECHA_EJECUCION, style: ['dinamicTable'] },
+              { text: documento.RESPUESTAS[0].RESPONSABLE_EJECUCION, style: ['dinamicTable'] },
+              { text: documento.RESPUESTAS[0].FECHA_SEGUIMIENTO, style: ['dinamicTable'] },
+              { text: documento.RESPUESTAS[0].ESTADO, style: ['dinamicTable'] },
+            ];
+          })
+        )
+          ],
+        },
+        fontSize: 6,
+      };
+      //CREANDO PDF
       const pdfDefinition: any = {
+        
         pageSize: {
           width: 794,
           height: 1123,
         },
         pageOrientation: 'landscape',
         pageMargins: [ 15, 60, 15, 60 ],
-        content: [
-          // {
-          //   width: 'auto',
-          //   table: {
-          //     widths: ['*', '*', '*', '*'],
-          //     body: [
-          //       [     
-          //         { image: this.logo, fit:[50, 50], alignment: 'center', rowSpan: 2 },
-          //         { text: this.pst, alignment: 'center', margin:[ 0, 15, 0, 15 ], rowSpan: 2},
-          //         { text:'MATRIZ DE REQUISITOS LEGALES', alignment: 'center', margin:[ 0, 15, 0, 15 ],rowSpan: 2 },
-          //         { text: 'CÓDIGO: GS-M-01', alignment: 'center', margin:[ 0, 2, 0, 2 ] }
-          //       ],
-          //       [
-          //         {},
-          //         {},
-          //         '',
-          //         { text: 'VERSIÓN: 01', alignment: 'center', margin:[ 0, 2, 0, 2 ] },
-          //       ]
-          //     ]
-          //   }
-          // },
-          // '\n',
-          {
-            columns: [
-              {
-                width: 'auto',
-                table: {
-                  widths: ['auto', '*', '*', '*', '*', '*'],
-                  body: [
-                    [     
-                      { text: 'COMPONENTE ACTUALIZADO', style: ['tituloTabla'] },
-                      { text: 'AMBIENTAL', style: ['tituloTabla'] },
-                      { text: 'LABORAL Y SGSST', style: ['tituloTabla'] },
-                      { text: 'TURISMO', style: ['tituloTabla'] },
-                      { text: 'SOCIAL', style: ['tituloTabla'] },
-                      { text: 'ECONÓMICO', style: ['tituloTabla'] }
-                    ],
-                    [
-                      { text: 'FECHA ÚLTIMA ACTUALIZACIÓN', style: ['tituloTabla'] },
-                      '',
-                      '',
-                      '',
-                      '',
-                      ''
-                    ],
-                    [
-                      { text: 'NOMBRE DE QUIÉN ACTUALIZA', style: ['tituloTabla'] },
-                      '',
-                      '',
-                      '',
-                      '',
-                      ''
-                    ],
-                    [
-                      { text: 'COMPONENTE EVALUADO', style: ['tituloTabla'] },
-                      { text: 'AMBIENTAL', style: ['tituloTabla'] },
-                      { text: 'LABORAL Y SGSST', style: ['tituloTabla'] },
-                      { text: 'TURISMO', style: ['tituloTabla'] },
-                      { text: 'SOCIAL', style: ['tituloTabla'] },
-                      { text: 'ECONÓMICO', style: ['tituloTabla'] }
-                    ],
-                    [
-                      { text: 'FECHA ÚLTIMA EVALUACIÓN', style: ['tituloTabla'] },
-                      '',
-                      '',
-                      '',
-                      '',
-                      ''
-                    ],
-                    [
-                      { text: 'EVALUADOR', style: ['tituloTabla'] },
-                      '',
-                      '',
-                      '',
-                      '',
-                      ''
-                    ],
-                  ]
-                },
-                fontSize: 8,
-                margin: [0, 0, 27, 0]
-              },
-              {
-                width: 'auto',
-                table: {
-                  heights: [87],
-                  widths: ['*', '*'],
-                  body: [
-                    [     
-                      { text: 'BREVE RESUMEN DE NORMATIVIDAD QUE SE ACTUALIZA', style: ['tituloTabla'], margin:[ 0, 36, 0, 36 ] },
-                      {}
-                    ]
-                  ]
-                },
-                fontSize: 8,
-              },
-            ]
-          },
-          '\n',
-          {
-            table: {
-              widths: ['auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto'],
-              body: [
-                [     
-                  { text: 'REQUISITOS LEGALES', colSpan:10, style: ['tituloTabla'], margin:[ 0, 10, 0, 10 ] },
-                  {},
-                  {},
-                  {},
-                  {},
-                  {},
-                  {},
-                  {},
-                  {},
-                  {},
-                  { text: '¿APLICA PLAN DE INTERVENCIÓN?', colSpan:2, style: ['tituloTabla'] },
-                  {},
-                  { text: 'PLAN DE INTERVENCIÓN', colSpan:5, style: ['tituloTabla'], margin:[ 0, 10, 0, 10 ] },
-                  {},
-                  {},
-                  {},
-                  {},
-                ],
-                [     
-                  { text: 'TIPO DE NORMATIVIDAD', style: ['tituloTabla'], margin:[ 0, 15, 0, 15 ] },
-                  { text: 'NÚMERO', style: ['tituloTabla'], margin:[ 0, 21, 0, 21 ] },
-                  { text: 'AÑO', style: ['tituloTabla'], margin:[ 0, 21, 0, 21 ] },
-                  { text: 'EMISOR', style: ['tituloTabla'], margin:[ 0, 21, 0, 21 ] },
-                  { text: 'DESCRIPCIÓN', style: ['tituloTabla'], margin:[ 0, 21, 0, 21 ] },
-                  { text: 'ARTÍCULOS / SECCIONES /  REQUISITOS ESPECÍFICOS  QUE APLICAN', style: ['tituloTabla'] },
-                  { text: 'ESTADO DE CUMPLIMIENTO (SI/NO/EN PROCESO/NA)', style: ['tituloTabla'], margin:[ 0, 5, 0, 5 ] },
-                  { text: 'RESPONSABLE DE DAR CUMPLIMIENTO', style: ['tituloTabla'], margin:[ 0, 10, 0, 10 ] },
-                  { text: 'EVIDENCIA DEL CUMPLIMIENTO', style: ['tituloTabla'], margin:[ 0, 15, 0, 15 ] },
-                  { text: 'OBSERVACIONES / INCUMPLIMIENTO', style: ['tituloTabla'], margin:[ 0, 15, 0, 15 ] },
-                  { text: 'SI', style: ['tituloTabla'], margin:[ 0, 21, 0, 21 ] },
-                  { text: 'NO', style: ['tituloTabla'], margin:[ 0, 21, 0, 21 ] },
-                  { text: 'ACCIONES A REALIZAR', style: ['tituloTabla'], margin:[ 0, 10, 0, 10 ] },
-                  { text: 'FECHA PARA LA  EJECUCIÓN', style: ['tituloTabla'], margin:[ 0, 10, 0, 10 ] },
-                  { text: 'RESPONSABLE DE LA EJECUCIÓN', style: ['tituloTabla'], margin:[ 0, 10, 0, 10 ] },
-                  { text: 'FECHA / SEGUIMIENTO', style: ['tituloTabla'], margin:[ 0, 15, 0, 15 ] },
-                  { text: 'ESTADO (ABIERTO / CERRADO)', style: ['tituloTabla'], margin:[ 0, 10, 0, 10 ] },
-                ],
-                ...this.gruposAmbientalReporte.flatMap((item: any) =>
-                item.DOCUMENTO.map((documento: any) => {
-                  const aplicaPlanIntervencion = documento.RESPUESTAS[0].APLICA_PLAN_INTERVENCION;
-                  let siValue = '';
-                  let noValue = '';
-        
-                  if (aplicaPlanIntervencion === 'si') {
-                    siValue = 'SI';
-                  } else if (aplicaPlanIntervencion === 'no') {
-                    noValue = 'NO';
-                  }
-                  return [
-                    { text: documento.TIPO_NORMATIVIDAD, style: ['dinamicTable'] },
-                    { text: documento.NUMERO, style: ['dinamicTable'] },
-                    { text: documento.AÑO, style: ['dinamicTable'] },
-                    { text: documento.EMISOR, style: ['dinamicTable'] },
-                    { text: documento.DESCRIPCION, style: ['dinamicTable'] },
-                    { text: documento.ARTICULOS_SECCIONES_REQUISITOS_APLICAN, style: ['dinamicTable'] },
-                    { text: documento.RESPUESTAS[0].ESTADO_CUMPLIMIENTO, style: ['dinamicTable'] },
-                    { text: documento.RESPUESTAS[0].RESPONSABLE_CUMPLIMIENTO, style: ['dinamicTable'] },
-                    { text: documento.RESPUESTAS[0].EVIDENCIA_CUMPLIMIENTO, style: ['dinamicTable'] },
-                    { text: documento.RESPUESTAS[0].OBSERVACIONES_INCUMPLIMIENTO, style: ['dinamicTable'] },
-                    { text: siValue, style: ['dinamicTable'] },
-                    { text: noValue, style: ['dinamicTable'] },
-                    { text: documento.RESPUESTAS[0].ACCION_A_REALIZAR, style: ['dinamicTable'] },
-                    { text: documento.RESPUESTAS[0].FECHA_EJECUCION, style: ['dinamicTable'] },
-                    { text: documento.RESPUESTAS[0].RESPONSABLE_EJECUCION, style: ['dinamicTable'] },
-                    { text: documento.RESPUESTAS[0].FECHA_SEGUIMIENTO, style: ['dinamicTable'] },
-                    { text: documento.RESPUESTAS[0].ESTADO, style: ['dinamicTable'] },
-                  ];
-                })
-              )
-              ]
-            },
-            fontSize: 6,
-          }
-        ],
+        content: [bodyContent          ,         '\n',  matrizUsuario        ,     '\n',  matrizLeyes    ],
         styles: {
           header: {
             fontSize: 16,
@@ -999,204 +1262,261 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
             alignment: 'center'
           },
         }
-      }
+      }               
       const title = "Se descargó correctamente";
       const message = "La descarga se ha realizado exitosamente"
       this.Message.showModal(title, message);
-      pdfMake.createPdf(pdfDefinition).open();
+      pdfMake.createPdf(pdfDefinition).download('Reporte_Ambiental.pdf');
+      
     });
   }
 
   generateReporteLaboral(){
+    this.actualizarHeader();
     this.ApiService.gertArchivoMatriz()
     .subscribe((data: any) => {
       this.datosReporte = data;
       this.gruposLaboralReporte = this.datosReporte.filter((ley) => ley.CATEGORIA === 'Laboral y SGSST')
+      let bodyContent;
+      //SI USERINFOR.LOGO ES NULO CAMBIA EL FORMATO DEL PDF A TIPO TEXT
+      if(this.userInfor.LOGO == null){
+        bodyContent = {
+          width: 'auto',
+          table: {
+            widths: ['*', '*', '*', '*'],
+            body: [
+              [     
+                { text: this.userInfor.LOGO, fit:[50, 50], alignment: 'center', rowSpan: 2 },
+                //{ image: this.userInfor.LOGO, fit: [50, 50], alignment: 'center', rowSpan: 2 },
+                { text: this.userInfor.RAZON_SOCIAL_PST, alignment: 'center', margin:[ 0, 15, 0, 15 ], rowSpan: 2},
+                { text:'MATRIZ DE REQUISITOS LEGALES', alignment: 'center', margin:[ 0, 15, 0, 15 ],rowSpan: 2 },
+                { text: 'CÓDIGO: GS-M-01', alignment: 'center', margin:[ 0, 2, 0, 2 ] }
+              ],
+              [
+                {},
+                {},
+                '',
+                { text: 'VERSIÓN: 01', alignment: 'center', margin:[ 0, 2, 0, 2 ] },
+              ]
+            ]
+          }
+        }
+
+      }
+      else{
+        bodyContent = {
+          width: 'auto',
+          table: {
+            widths: ['*', '*', '*', '*'],
+            body: [
+              [     
+                //{ text: this.userInfor.LOGO, fit:[50, 50], alignment: 'center', rowSpan: 2 },
+                { image: this.userInfor.LOGO, fit: [50, 50], alignment: 'center', rowSpan: 2 },
+                { text: this.userInfor.RAZON_SOCIAL_PST, alignment: 'center', margin:[ 0, 15, 0, 15 ], rowSpan: 2},
+                { text:'MATRIZ DE REQUISITOS LEGALES', alignment: 'center', margin:[ 0, 15, 0, 15 ],rowSpan: 2 },
+                { text: 'CÓDIGO: GS-M-01', alignment: 'center', margin:[ 0, 2, 0, 2 ] }
+              ],
+              [
+                {},
+                {},
+                '',
+                { text: 'VERSIÓN: 01', alignment: 'center', margin:[ 0, 2, 0, 2 ] },
+              ]
+            ]
+          }
+        }
+
+      }
+      const matrizUsuario = {
+        columns: [
+          {
+            width: 'auto',
+            table: {
+              widths: ['auto', '*', '*', '*', '*', '*'],
+              body: [
+                [     
+                  { text: 'COMPONENTE ACTUALIZADO', style: ['tituloTabla'] },
+                  { text: 'AMBIENTAL', style: ['tituloTabla'] },
+                  { text: 'LABORAL Y SGSST', style: ['tituloTabla'] },
+                  { text: 'TURISMO', style: ['tituloTabla'] },
+                  { text: 'SOCIAL', style: ['tituloTabla'] },
+                  { text: 'ECONÓMICO', style: ['tituloTabla'] }
+                ],
+                [
+                  { text: 'FECHA ÚLTIMA ACTUALIZACIÓN', style: ['tituloTabla'] },
+                  { text: this.headerAmbiental?.PLAN_FECHA_SEGUIMIENTO, alignment: 'center',rowSpan: 1 },
+                  { text: this.headerLaboral?.PLAN_FECHA_SEGUIMIENTO, alignment: 'center',rowSpan: 1 },
+                  { text: this.headerTurismo?.PLAN_FECHA_SEGUIMIENTO, alignment: 'center',rowSpan: 1 },
+                  { text: this.headerSocial?.PLAN_FECHA_SEGUIMIENTO, alignment: 'center',rowSpan: 1 },
+                  { text: this.headerEconomico?.PLAN_FECHA_SEGUIMIENTO, alignment: 'center',rowSpan: 1 }
+
+                ],
+                [
+                  { text: 'NOMBRE DE QUIÉN ACTUALIZA', style: ['tituloTabla'] },
+                  { text: this.headerAmbiental?.NOMBRE, alignment: 'center',rowSpan: 1 },
+                  { text: this.headerLaboral?.NOMBRE, alignment: 'center',rowSpan: 1 },
+                  { text: this.headerTurismo?.NOMBRE, alignment: 'center',rowSpan: 1 },
+                  { text: this.headerSocial?.NOMBRE, alignment: 'center',rowSpan: 1 },
+                  { text: this.headerEconomico?.NOMBRE, alignment: 'center',rowSpan: 1 }
+                ],
+                [
+                  { text: 'COMPONENTE EVALUADO', style: ['tituloTabla'] },
+                  { text: 'AMBIENTAL', style: ['tituloTabla'] },
+                  { text: 'LABORAL Y SGSST', style: ['tituloTabla'] },
+                  { text: 'TURISMO', style: ['tituloTabla'] },
+                  { text: 'SOCIAL', style: ['tituloTabla'] },
+                  { text: 'ECONÓMICO', style: ['tituloTabla'] }
+                ],
+                [
+                  { text: 'FECHA ÚLTIMA EVALUACIÓN', style: ['tituloTabla'] },
+                  { text: this.headerAmbiental?.PLAN_FECHA_SEGUIMIENTO, alignment: 'center',rowSpan: 1 },
+                  { text: this.headerLaboral?.PLAN_FECHA_SEGUIMIENTO, alignment: 'center',rowSpan: 1 },
+                  { text: this.headerTurismo?.PLAN_FECHA_SEGUIMIENTO, alignment: 'center',rowSpan: 1 },
+                  { text: this.headerSocial?.PLAN_FECHA_SEGUIMIENTO, alignment: 'center',rowSpan: 1 },
+                  { text: this.headerEconomico?.PLAN_FECHA_SEGUIMIENTO, alignment: 'center',rowSpan: 1 }
+                ],
+                [
+                  { text: 'EVALUADOR', style: ['tituloTabla'] },
+                  { text: this.headerAmbiental?.VALOR, alignment: 'center',rowSpan: 1 },
+                  { text: this.headerLaboral?.VALOR, alignment: 'center',rowSpan: 1 },
+                  { text: this.headerTurismo?.VALOR, alignment: 'center',rowSpan: 1 },
+                  { text: this.headerSocial?.VALOR, alignment: 'center',rowSpan: 1 },
+                  { text: this.headerEconomico?.VALOR, alignment: 'center',rowSpan: 1 }
+
+                ],
+                
+              ]
+            },
+            fontSize: 7,
+            margin: [0, 0, 27, 0]
+          },
+          {
+            table: {
+              heights: [87],
+              widths: ['*', '*'],
+              body: [
+                [     
+                  { text: 'BREVE RESUMEN DE NORMATIVIDAD QUE SE ACTUALIZA', style: ['tituloTabla'], margin:[ 0, 36, 0, 36 ] },
+                  { text: this.headerLaboral?.RESUMEN, alignment: 'center',rowSpan: 1 }
+                ]
+              ]
+            },
+            fontSize: 8,
+          },
+        ]
+      };
+      const matrizLeyes = {
+        table: {
+          widths: ['auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto'],
+          body: [
+            [     
+              { text: 'REQUISITOS LEGALES', colSpan:10, style: ['tituloTabla'], margin:[ 0, 10, 0, 10 ] },
+              {},
+              {},
+              {},
+              {},
+              {},
+              {},
+              {},
+              {},
+              {},
+              { text: '¿APLICA PLAN DE INTERVENCIÓN?', colSpan:2, style: ['tituloTabla'] },
+              {},
+              { text: 'PLAN DE INTERVENCIÓN', colSpan:5, style: ['tituloTabla'], margin:[ 0, 10, 0, 10 ] },
+              {},
+              {},
+              {},
+              {},
+            ],
+            [     
+              { text: 'TIPO DE NORMATIVIDAD', style: ['tituloTabla'], margin:[ 0, 15, 0, 15 ] },
+              { text: 'NÚMERO', style: ['tituloTabla'], margin:[ 0, 21, 0, 21 ] },
+              { text: 'AÑO', style: ['tituloTabla'], margin:[ 0, 21, 0, 21 ] },
+              { text: 'EMISOR', style: ['tituloTabla'], margin:[ 0, 21, 0, 21 ] },
+              { text: 'DESCRIPCIÓN', style: ['tituloTabla'], margin:[ 0, 21, 0, 21 ] },
+              { text: 'ARTÍCULOS / SECCIONES / REQUISITOS ESPECÍFICOS QUE APLICAN', style: ['tituloTabla'] },
+              { text: 'ESTADO DE CUMPLIMIENTO (SI/NO/EN PROCESO/NA)', style: ['tituloTabla'], margin:[ 0, 5, 0, 5 ] },
+              { text: 'RESPONSABLE DE DAR CUMPLIMIENTO', style: ['tituloTabla'], margin:[ 0, 10, 0, 10 ] },
+              { text: 'EVIDENCIA DEL CUMPLIMIENTO', style: ['tituloTabla'], margin:[ 0, 15, 0, 15 ] },
+              { text: 'OBSERVACIONES / INCUMPLIMIENTO', style: ['tituloTabla'], margin:[ 0, 15, 0, 15 ] },
+              { text: 'SI', style: ['tituloTabla'], margin:[ 0, 21, 0, 21 ] },
+              { text: 'NO', style: ['tituloTabla'], margin:[ 0, 21, 0, 21 ] },
+              { text: 'ACCIONES A REALIZAR', style: ['tituloTabla'], margin:[ 0, 10, 0, 10 ] },
+              { text: 'FECHA PARA LA  EJECUCIÓN', style: ['tituloTabla'], margin:[ 0, 10, 0, 10 ] },
+              { text: 'RESPONSABLE DE LA EJECUCIÓN', style: ['tituloTabla'], margin:[ 0, 10, 0, 10 ] },
+              { text: 'FECHA / SEGUIMIENTO', style: ['tituloTabla'], margin:[ 0, 15, 0, 15 ] },
+              { text: 'ESTADO (ABIERTO / CERRADO)', style: ['tituloTabla'], margin:[ 0, 10, 0, 10 ] },
+            ],
+          // ...this.gruposTurismoReporte.flatMap((item: any) =>
+          //   item.DOCUMENTO.map((documento: any) => [
+          //     { text: documento.TIPO_NORMATIVIDAD, style: ['dinamicTable'] },
+          //     { text: documento.NUMERO, style: ['dinamicTable'] },
+          //     { text: documento.AÑO, style: ['dinamicTable'] },
+          //     { text: documento.EMISOR, style: ['dinamicTable'] },
+          //     { text: documento.DESCRIPCION, style: ['dinamicTable'] },
+          //     { text: documento.ARTICULOS_SECCIONES_REQUISITOS_APLICAN, style: ['dinamicTable'] },
+          //     { text: documento.RESPUESTAS[0].ESTADO_CUMPLIMIENTO, style: ['dinamicTable'] },
+          //     { text: documento.RESPUESTAS[0].RESPONSABLE_CUMPLIMIENTO, style: ['dinamicTable'] },
+          //     { text: documento.RESPUESTAS[0].EVIDENCIA_CUMPLIMIENTO, style: ['dinamicTable'] },
+          //     { text: documento.RESPUESTAS[0].OBSERVACIONES_INCUMPLIMIENTO, style: ['dinamicTable'] },
+          //     { text: documento.RESPUESTAS[0].APLICA_PLAN_INTERVENCION, style: ['dinamicTable'] },
+          //     { text: documento.RESPUESTAS[0].APLICA_PLAN_INTERVENCION, style: ['dinamicTable'] },
+          //     { text: documento.RESPUESTAS[0].ACCION_A_REALIZAR, style: ['dinamicTable'] },
+          //     { text: documento.RESPUESTAS[0].FECHA_EJECUCION, style: ['dinamicTable'] },
+          //     { text: documento.RESPUESTAS[0].RESPONSABLE_EJECUCION, style: ['dinamicTable'] },
+          //     { text: documento.RESPUESTAS[0].FECHA_SEGUIMIENTO, style: ['dinamicTable'] },
+          //     { text: documento.RESPUESTAS[0].ESTADO, style: ['dinamicTable'] }
+          //   ])
+          // ),
+        ...this.gruposLaboralReporte.flatMap((item: any) =>
+          item.DOCUMENTO.map((documento: any) => {
+            const aplicaPlanIntervencion = documento.RESPUESTAS[0].APLICA_PLAN_INTERVENCION;
+            
+            let siValue = '';
+            let noValue = '';
+            
+  
+            if (aplicaPlanIntervencion === 'Si') {
+              siValue = 'SI';
+            } else if (aplicaPlanIntervencion === 'No') {
+              noValue = 'NO';
+            }
+            //console.log("gian", documento);
+            return [
+              { text: documento.TIPO_NORMATIVIDAD, style: ['dinamicTable'] },
+              { text: documento.NUMERO, style: ['dinamicTable'] },
+              { text: documento.AÑO, style: ['dinamicTable'] },
+              { text: documento.EMISOR, style: ['dinamicTable'] },
+              { text: documento.DESCRIPCION, style: ['dinamicTable'] },
+              { text: documento.ARTICULOS_SECCIONES_REQUISITOS_APLICAN, style: ['dinamicTable'] },
+              { text: documento.RESPUESTAS[0].ESTADO_CUMPLIMIENTO, style: ['dinamicTable'] },
+              { text: documento.RESPUESTAS[0].RESPONSABLE_CUMPLIMIENTO, style: ['dinamicTable'] },
+              { text: documento.RESPUESTAS[0].EVIDENCIA_CUMPLIMIENTO, style: ['dinamicTable'] },
+              { text: documento.RESPUESTAS[0].OBSERVACIONES_INCUMPLIMIENTO, style: ['dinamicTable'] },
+              { text: siValue, style: ['dinamicTable'] },
+              { text: noValue, style: ['dinamicTable'] },
+              { text: documento.RESPUESTAS[0].ACCION_A_REALIZAR, style: ['dinamicTable'] },
+              { text: documento.RESPUESTAS[0].FECHA_EJECUCION, style: ['dinamicTable'] },
+              { text: documento.RESPUESTAS[0].RESPONSABLE_EJECUCION, style: ['dinamicTable'] },
+              { text: documento.RESPUESTAS[0].FECHA_SEGUIMIENTO, style: ['dinamicTable'] },
+              { text: documento.RESPUESTAS[0].ESTADO, style: ['dinamicTable'] },
+            ];
+          })
+        )
+          ],
+        },
+        fontSize: 6,
+      };
+      //CREANDO PDF
       const pdfDefinition: any = {
+        
         pageSize: {
           width: 794,
           height: 1123,
         },
         pageOrientation: 'landscape',
         pageMargins: [ 15, 60, 15, 60 ],
-        content: [
-          // {
-          //   width: 'auto',
-          //   table: {
-          //     widths: ['*', '*', '*', '*'],
-          //     body: [
-          //       [     
-          //         { image: this.logo, fit:[50, 50], alignment: 'center', rowSpan: 2 },
-          //         { text: this.pst, alignment: 'center', margin:[ 0, 15, 0, 15 ], rowSpan: 2},
-          //         { text:'MATRIZ DE REQUISITOS LEGALES', alignment: 'center', margin:[ 0, 15, 0, 15 ],rowSpan: 2 },
-          //         { text: 'CÓDIGO: GS-M-01', alignment: 'center', margin:[ 0, 2, 0, 2 ] }
-          //       ],
-          //       [
-          //         {},
-          //         {},
-          //         '',
-          //         { text: 'VERSIÓN: 01', alignment: 'center', margin:[ 0, 2, 0, 2 ] },
-          //       ]
-          //     ]
-          //   }
-          // },
-          // '\n',
-          {
-            columns: [
-              {
-                width: 'auto',
-                table: {
-                  widths: ['auto', '*', '*', '*', '*', '*'],
-                  body: [
-                    [     
-                      { text: 'COMPONENTE ACTUALIZADO', style: ['tituloTabla'] },
-                      { text: 'AMBIENTAL', style: ['tituloTabla'] },
-                      { text: 'LABORAL Y SGSST', style: ['tituloTabla'] },
-                      { text: 'TURISMO', style: ['tituloTabla'] },
-                      { text: 'SOCIAL', style: ['tituloTabla'] },
-                      { text: 'ECONÓMICO', style: ['tituloTabla'] }
-                    ],
-                    [
-                      { text: 'FECHA ÚLTIMA ACTUALIZACIÓN', style: ['tituloTabla'] },
-                      '',
-                      '',
-                      '',
-                      '',
-                      ''
-                    ],
-                    [
-                      { text: 'NOMBRE DE QUIÉN ACTUALIZA', style: ['tituloTabla'] },
-                      '',
-                      '',
-                      '',
-                      '',
-                      ''
-                    ],
-                    [
-                      { text: 'COMPONENTE EVALUADO', style: ['tituloTabla'] },
-                      { text: 'AMBIENTAL', style: ['tituloTabla'] },
-                      { text: 'LABORAL Y SGSST', style: ['tituloTabla'] },
-                      { text: 'TURISMO', style: ['tituloTabla'] },
-                      { text: 'SOCIAL', style: ['tituloTabla'] },
-                      { text: 'ECONÓMICO', style: ['tituloTabla'] }
-                    ],
-                    [
-                      { text: 'FECHA ÚLTIMA EVALUACIÓN', style: ['tituloTabla'] },
-                      '',
-                      '',
-                      '',
-                      '',
-                      ''
-                    ],
-                    [
-                      { text: 'EVALUADOR', style: ['tituloTabla'] },
-                      '',
-                      '',
-                      '',
-                      '',
-                      ''
-                    ],
-                  ]
-                },
-                fontSize: 8,
-                margin: [0, 0, 27, 0]
-              },
-              {
-                width: 'auto',
-                table: {
-                  heights: [87],
-                  widths: ['*', '*'],
-                  body: [
-                    [     
-                      { text: 'BREVE RESUMEN DE NORMATIVIDAD QUE SE ACTUALIZA', style: ['tituloTabla'], margin:[ 0, 36, 0, 36 ] },
-                      {}
-                    ]
-                  ]
-                },
-                fontSize: 8,
-              },
-            ]
-          },
-          '\n',
-          {
-            table: {
-              widths: ['auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto'],
-              body: [
-                [     
-                  { text: 'REQUISITOS LEGALES', colSpan:10, style: ['tituloTabla'], margin:[ 0, 10, 0, 10 ] },
-                  {},
-                  {},
-                  {},
-                  {},
-                  {},
-                  {},
-                  {},
-                  {},
-                  {},
-                  { text: '¿APLICA PLAN DE INTERVENCIÓN?', colSpan:2, style: ['tituloTabla'] },
-                  {},
-                  { text: 'PLAN DE INTERVENCIÓN', colSpan:5, style: ['tituloTabla'], margin:[ 0, 10, 0, 10 ] },
-                  {},
-                  {},
-                  {},
-                  {},
-                ],
-                [     
-                  { text: 'TIPO DE NORMATIVIDAD', style: ['tituloTabla'], margin:[ 0, 15, 0, 15 ] },
-                  { text: 'NÚMERO', style: ['tituloTabla'], margin:[ 0, 21, 0, 21 ] },
-                  { text: 'AÑO', style: ['tituloTabla'], margin:[ 0, 21, 0, 21 ] },
-                  { text: 'EMISOR', style: ['tituloTabla'], margin:[ 0, 21, 0, 21 ] },
-                  { text: 'DESCRIPCIÓN', style: ['tituloTabla'], margin:[ 0, 21, 0, 21 ] },
-                  { text: 'ARTÍCULOS / SECCIONES /  REQUISITOS ESPECÍFICOS  QUE APLICAN', style: ['tituloTabla'] },
-                  { text: 'ESTADO DE CUMPLIMIENTO (SI/NO/EN PROCESO/NA)', style: ['tituloTabla'], margin:[ 0, 5, 0, 5 ] },
-                  { text: 'RESPONSABLE DE DAR CUMPLIMIENTO', style: ['tituloTabla'], margin:[ 0, 10, 0, 10 ] },
-                  { text: 'EVIDENCIA DEL CUMPLIMIENTO', style: ['tituloTabla'], margin:[ 0, 15, 0, 15 ] },
-                  { text: 'OBSERVACIONES / INCUMPLIMIENTO', style: ['tituloTabla'], margin:[ 0, 15, 0, 15 ] },
-                  { text: 'SI', style: ['tituloTabla'], margin:[ 0, 21, 0, 21 ] },
-                  { text: 'NO', style: ['tituloTabla'], margin:[ 0, 21, 0, 21 ] },
-                  { text: 'ACCIONES A REALIZAR', style: ['tituloTabla'], margin:[ 0, 10, 0, 10 ] },
-                  { text: 'FECHA PARA LA  EJECUCIÓN', style: ['tituloTabla'], margin:[ 0, 10, 0, 10 ] },
-                  { text: 'RESPONSABLE DE LA EJECUCIÓN', style: ['tituloTabla'], margin:[ 0, 10, 0, 10 ] },
-                  { text: 'FECHA / SEGUIMIENTO', style: ['tituloTabla'], margin:[ 0, 15, 0, 15 ] },
-                  { text: 'ESTADO (ABIERTO / CERRADO)', style: ['tituloTabla'], margin:[ 0, 10, 0, 10 ] },
-                ],
-                ...this.gruposLaboralReporte.flatMap((item: any) =>
-                item.DOCUMENTO.map((documento: any) => {
-                  const aplicaPlanIntervencion = documento.RESPUESTAS[0].APLICA_PLAN_INTERVENCION;
-                  let siValue = '';
-                  let noValue = '';
-        
-                  if (aplicaPlanIntervencion === 'si') {
-                    siValue = 'SI';
-                  } else if (aplicaPlanIntervencion === 'no') {
-                    noValue = 'NO';
-                  }
-                  return [
-                    { text: documento.TIPO_NORMATIVIDAD, style: ['dinamicTable'] },
-                    { text: documento.NUMERO, style: ['dinamicTable'] },
-                    { text: documento.AÑO, style: ['dinamicTable'] },
-                    { text: documento.EMISOR, style: ['dinamicTable'] },
-                    { text: documento.DESCRIPCION, style: ['dinamicTable'] },
-                    { text: documento.ARTICULOS_SECCIONES_REQUISITOS_APLICAN, style: ['dinamicTable'] },
-                    { text: documento.RESPUESTAS[0].ESTADO_CUMPLIMIENTO, style: ['dinamicTable'] },
-                    { text: documento.RESPUESTAS[0].RESPONSABLE_CUMPLIMIENTO, style: ['dinamicTable'] },
-                    { text: documento.RESPUESTAS[0].EVIDENCIA_CUMPLIMIENTO, style: ['dinamicTable'] },
-                    { text: documento.RESPUESTAS[0].OBSERVACIONES_INCUMPLIMIENTO, style: ['dinamicTable'] },
-                    { text: siValue, style: ['dinamicTable'] },
-                    { text: noValue, style: ['dinamicTable'] },
-                    { text: documento.RESPUESTAS[0].ACCION_A_REALIZAR, style: ['dinamicTable'] },
-                    { text: documento.RESPUESTAS[0].FECHA_EJECUCION, style: ['dinamicTable'] },
-                    { text: documento.RESPUESTAS[0].RESPONSABLE_EJECUCION, style: ['dinamicTable'] },
-                    { text: documento.RESPUESTAS[0].FECHA_SEGUIMIENTO, style: ['dinamicTable'] },
-                    { text: documento.RESPUESTAS[0].ESTADO, style: ['dinamicTable'] },
-                  ];
-                })
-                )
-              ]
-            },
-            fontSize: 6,
-          }
-        ],
+        content: [bodyContent          ,         '\n',  matrizUsuario        ,     '\n',  matrizLeyes    ],
         styles: {
           header: {
             fontSize: 16,
@@ -1215,7 +1535,7 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
             alignment: 'center'
           },
         }
-      }
+      }      
       const title = "Se descargó correctamente";
       const message = "La descarga se ha realizado exitosamente"
       this.Message.showModal(title, message);
@@ -1224,195 +1544,251 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
   }
 
   generateReporteSocial(){
+    this.actualizarHeader();
     this.ApiService.gertArchivoMatriz()
     .subscribe((data: any) => {
       this.datosReporte = data;
       this.gruposSocialReporte = this.datosReporte.filter((ley) => ley.CATEGORIA === 'Social')
+      let bodyContent;
+      //SI USERINFOR.LOGO ES NULO CAMBIA EL FORMATO DEL PDF A TIPO TEXT
+      if(this.userInfor.LOGO == null){
+        bodyContent = {
+          width: 'auto',
+          table: {
+            widths: ['*', '*', '*', '*'],
+            body: [
+              [     
+                { text: this.userInfor.LOGO, fit:[50, 50], alignment: 'center', rowSpan: 2 },
+                //{ image: this.userInfor.LOGO, fit: [50, 50], alignment: 'center', rowSpan: 2 },
+                { text: this.userInfor.RAZON_SOCIAL_PST, alignment: 'center', margin:[ 0, 15, 0, 15 ], rowSpan: 2},
+                { text:'MATRIZ DE REQUISITOS LEGALES', alignment: 'center', margin:[ 0, 15, 0, 15 ],rowSpan: 2 },
+                { text: 'CÓDIGO: GS-M-01', alignment: 'center', margin:[ 0, 2, 0, 2 ] }
+              ],
+              [
+                {},
+                {},
+                '',
+                { text: 'VERSIÓN: 01', alignment: 'center', margin:[ 0, 2, 0, 2 ] },
+              ]
+            ]
+          }
+        }
+
+      }
+      else{
+        bodyContent = {
+          width: 'auto',
+          table: {
+            widths: ['*', '*', '*', '*'],
+            body: [
+              [     
+                //{ text: this.userInfor.LOGO, fit:[50, 50], alignment: 'center', rowSpan: 2 },
+                { image: this.userInfor.LOGO, fit: [50, 50], alignment: 'center', rowSpan: 2 },
+                { text: this.userInfor.RAZON_SOCIAL_PST, alignment: 'center', margin:[ 0, 15, 0, 15 ], rowSpan: 2},
+                { text:'MATRIZ DE REQUISITOS LEGALES', alignment: 'center', margin:[ 0, 15, 0, 15 ],rowSpan: 2 },
+                { text: 'CÓDIGO: GS-M-01', alignment: 'center', margin:[ 0, 2, 0, 2 ] }
+              ],
+              [
+                {},
+                {},
+                '',
+                { text: 'VERSIÓN: 01', alignment: 'center', margin:[ 0, 2, 0, 2 ] },
+              ]
+            ]
+          }
+        }
+
+      }
+      const matrizUsuario = {
+        columns: [
+          {
+            width: 'auto',
+            table: {
+              widths: ['auto', '*', '*', '*', '*', '*'],
+              body: [
+                [     
+                  { text: 'COMPONENTE ACTUALIZADO', style: ['tituloTabla'] },
+                  { text: 'AMBIENTAL', style: ['tituloTabla'] },
+                  { text: 'LABORAL Y SGSST', style: ['tituloTabla'] },
+                  { text: 'TURISMO', style: ['tituloTabla'] },
+                  { text: 'SOCIAL', style: ['tituloTabla'] },
+                  { text: 'ECONÓMICO', style: ['tituloTabla'] }
+                ],
+                [
+                  { text: 'FECHA ÚLTIMA ACTUALIZACIÓN', style: ['tituloTabla'] },
+                  { text: this.headerAmbiental?.PLAN_FECHA_SEGUIMIENTO, alignment: 'center',rowSpan: 1 },
+                  { text: this.headerLaboral?.PLAN_FECHA_SEGUIMIENTO, alignment: 'center',rowSpan: 1 },
+                  { text: this.headerTurismo?.PLAN_FECHA_SEGUIMIENTO, alignment: 'center',rowSpan: 1 },
+                  { text: this.headerSocial?.PLAN_FECHA_SEGUIMIENTO, alignment: 'center',rowSpan: 1 },
+                  { text: this.headerEconomico?.PLAN_FECHA_SEGUIMIENTO, alignment: 'center',rowSpan: 1 }
+
+                ],
+                [
+                  { text: 'NOMBRE DE QUIÉN ACTUALIZA', style: ['tituloTabla'] },
+                  { text: this.headerAmbiental?.NOMBRE, alignment: 'center',rowSpan: 1 },
+                  { text: this.headerLaboral?.NOMBRE, alignment: 'center',rowSpan: 1 },
+                  { text: this.headerTurismo?.NOMBRE, alignment: 'center',rowSpan: 1 },
+                  { text: this.headerSocial?.NOMBRE, alignment: 'center',rowSpan: 1 },
+                  { text: this.headerEconomico?.NOMBRE, alignment: 'center',rowSpan: 1 }
+                ],
+                [
+                  { text: 'COMPONENTE EVALUADO', style: ['tituloTabla'] },
+                  { text: 'AMBIENTAL', style: ['tituloTabla'] },
+                  { text: 'LABORAL Y SGSST', style: ['tituloTabla'] },
+                  { text: 'TURISMO', style: ['tituloTabla'] },
+                  { text: 'SOCIAL', style: ['tituloTabla'] },
+                  { text: 'ECONÓMICO', style: ['tituloTabla'] }
+                ],
+                [
+                  { text: 'FECHA ÚLTIMA EVALUACIÓN', style: ['tituloTabla'] },
+                  { text: this.headerAmbiental?.PLAN_FECHA_SEGUIMIENTO, alignment: 'center',rowSpan: 1 },
+                  { text: this.headerLaboral?.PLAN_FECHA_SEGUIMIENTO, alignment: 'center',rowSpan: 1 },
+                  { text: this.headerTurismo?.PLAN_FECHA_SEGUIMIENTO, alignment: 'center',rowSpan: 1 },
+                  { text: this.headerSocial?.PLAN_FECHA_SEGUIMIENTO, alignment: 'center',rowSpan: 1 },
+                  { text: this.headerEconomico?.PLAN_FECHA_SEGUIMIENTO, alignment: 'center',rowSpan: 1 }
+                ],
+                [
+                  { text: 'EVALUADOR', style: ['tituloTabla'] },
+                  { text: this.headerAmbiental?.VALOR, alignment: 'center',rowSpan: 1 },
+                  { text: this.headerLaboral?.VALOR, alignment: 'center',rowSpan: 1 },
+                  { text: this.headerTurismo?.VALOR, alignment: 'center',rowSpan: 1 },
+                  { text: this.headerSocial?.VALOR, alignment: 'center',rowSpan: 1 },
+                  { text: this.headerEconomico?.VALOR, alignment: 'center',rowSpan: 1 }
+
+                ],
+                
+              ]
+            },
+            fontSize: 7,
+            margin: [0, 0, 27, 0]
+          },
+          {
+            table: {
+              heights: [87],
+              widths: ['*', '*'],
+              body: [
+                [     
+                  { text: 'BREVE RESUMEN DE NORMATIVIDAD QUE SE ACTUALIZA', style: ['tituloTabla'], margin:[ 0, 36, 0, 36 ] },
+                  { text: this.headerSocial?.RESUMEN, alignment: 'center',rowSpan: 1 }
+                ]
+              ]
+            },
+            fontSize: 8,
+          },
+        ]
+      };
+      const matrizLeyes = {
+        table: {
+          widths: ['auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto'],
+          body: [
+            [     
+              { text: 'REQUISITOS LEGALES', colSpan:10, style: ['tituloTabla'], margin:[ 0, 10, 0, 10 ] },
+              {},
+              {},
+              {},
+              {},
+              {},
+              {},
+              {},
+              {},
+              {},
+              { text: '¿APLICA PLAN DE INTERVENCIÓN?', colSpan:2, style: ['tituloTabla'] },
+              {},
+              { text: 'PLAN DE INTERVENCIÓN', colSpan:5, style: ['tituloTabla'], margin:[ 0, 10, 0, 10 ] },
+              {},
+              {},
+              {},
+              {},
+            ],
+            [     
+              { text: 'TIPO DE NORMATIVIDAD', style: ['tituloTabla'], margin:[ 0, 15, 0, 15 ] },
+              { text: 'NÚMERO', style: ['tituloTabla'], margin:[ 0, 21, 0, 21 ] },
+              { text: 'AÑO', style: ['tituloTabla'], margin:[ 0, 21, 0, 21 ] },
+              { text: 'EMISOR', style: ['tituloTabla'], margin:[ 0, 21, 0, 21 ] },
+              { text: 'DESCRIPCIÓN', style: ['tituloTabla'], margin:[ 0, 21, 0, 21 ] },
+              { text: 'ARTÍCULOS / SECCIONES / REQUISITOS ESPECÍFICOS QUE APLICAN', style: ['tituloTabla'] },
+              { text: 'ESTADO DE CUMPLIMIENTO (SI/NO/EN PROCESO/NA)', style: ['tituloTabla'], margin:[ 0, 5, 0, 5 ] },
+              { text: 'RESPONSABLE DE DAR CUMPLIMIENTO', style: ['tituloTabla'], margin:[ 0, 10, 0, 10 ] },
+              { text: 'EVIDENCIA DEL CUMPLIMIENTO', style: ['tituloTabla'], margin:[ 0, 15, 0, 15 ] },
+              { text: 'OBSERVACIONES / INCUMPLIMIENTO', style: ['tituloTabla'], margin:[ 0, 15, 0, 15 ] },
+              { text: 'SI', style: ['tituloTabla'], margin:[ 0, 21, 0, 21 ] },
+              { text: 'NO', style: ['tituloTabla'], margin:[ 0, 21, 0, 21 ] },
+              { text: 'ACCIONES A REALIZAR', style: ['tituloTabla'], margin:[ 0, 10, 0, 10 ] },
+              { text: 'FECHA PARA LA  EJECUCIÓN', style: ['tituloTabla'], margin:[ 0, 10, 0, 10 ] },
+              { text: 'RESPONSABLE DE LA EJECUCIÓN', style: ['tituloTabla'], margin:[ 0, 10, 0, 10 ] },
+              { text: 'FECHA / SEGUIMIENTO', style: ['tituloTabla'], margin:[ 0, 15, 0, 15 ] },
+              { text: 'ESTADO (ABIERTO / CERRADO)', style: ['tituloTabla'], margin:[ 0, 10, 0, 10 ] },
+            ],
+          // ...this.gruposTurismoReporte.flatMap((item: any) =>
+          //   item.DOCUMENTO.map((documento: any) => [
+          //     { text: documento.TIPO_NORMATIVIDAD, style: ['dinamicTable'] },
+          //     { text: documento.NUMERO, style: ['dinamicTable'] },
+          //     { text: documento.AÑO, style: ['dinamicTable'] },
+          //     { text: documento.EMISOR, style: ['dinamicTable'] },
+          //     { text: documento.DESCRIPCION, style: ['dinamicTable'] },
+          //     { text: documento.ARTICULOS_SECCIONES_REQUISITOS_APLICAN, style: ['dinamicTable'] },
+          //     { text: documento.RESPUESTAS[0].ESTADO_CUMPLIMIENTO, style: ['dinamicTable'] },
+          //     { text: documento.RESPUESTAS[0].RESPONSABLE_CUMPLIMIENTO, style: ['dinamicTable'] },
+          //     { text: documento.RESPUESTAS[0].EVIDENCIA_CUMPLIMIENTO, style: ['dinamicTable'] },
+          //     { text: documento.RESPUESTAS[0].OBSERVACIONES_INCUMPLIMIENTO, style: ['dinamicTable'] },
+          //     { text: documento.RESPUESTAS[0].APLICA_PLAN_INTERVENCION, style: ['dinamicTable'] },
+          //     { text: documento.RESPUESTAS[0].APLICA_PLAN_INTERVENCION, style: ['dinamicTable'] },
+          //     { text: documento.RESPUESTAS[0].ACCION_A_REALIZAR, style: ['dinamicTable'] },
+          //     { text: documento.RESPUESTAS[0].FECHA_EJECUCION, style: ['dinamicTable'] },
+          //     { text: documento.RESPUESTAS[0].RESPONSABLE_EJECUCION, style: ['dinamicTable'] },
+          //     { text: documento.RESPUESTAS[0].FECHA_SEGUIMIENTO, style: ['dinamicTable'] },
+          //     { text: documento.RESPUESTAS[0].ESTADO, style: ['dinamicTable'] }
+          //   ])
+          // ),
+        ...this.gruposSocialReporte.flatMap((item: any) =>
+          item.DOCUMENTO.map((documento: any) => {
+            const aplicaPlanIntervencion = documento.RESPUESTAS[0].APLICA_PLAN_INTERVENCION;
+            
+            let siValue = '';
+            let noValue = '';
+            
+  
+            if (aplicaPlanIntervencion === 'Si') {
+              siValue = 'SI';
+            } else if (aplicaPlanIntervencion === 'No') {
+              noValue = 'NO';
+            }
+            //console.log("gian", documento);
+            return [
+              { text: documento.TIPO_NORMATIVIDAD, style: ['dinamicTable'] },
+              { text: documento.NUMERO, style: ['dinamicTable'] },
+              { text: documento.AÑO, style: ['dinamicTable'] },
+              { text: documento.EMISOR, style: ['dinamicTable'] },
+              { text: documento.DESCRIPCION, style: ['dinamicTable'] },
+              { text: documento.ARTICULOS_SECCIONES_REQUISITOS_APLICAN, style: ['dinamicTable'] },
+              { text: documento.RESPUESTAS[0].ESTADO_CUMPLIMIENTO, style: ['dinamicTable'] },
+              { text: documento.RESPUESTAS[0].RESPONSABLE_CUMPLIMIENTO, style: ['dinamicTable'] },
+              { text: documento.RESPUESTAS[0].EVIDENCIA_CUMPLIMIENTO, style: ['dinamicTable'] },
+              { text: documento.RESPUESTAS[0].OBSERVACIONES_INCUMPLIMIENTO, style: ['dinamicTable'] },
+              { text: siValue, style: ['dinamicTable'] },
+              { text: noValue, style: ['dinamicTable'] },
+              { text: documento.RESPUESTAS[0].ACCION_A_REALIZAR, style: ['dinamicTable'] },
+              { text: documento.RESPUESTAS[0].FECHA_EJECUCION, style: ['dinamicTable'] },
+              { text: documento.RESPUESTAS[0].RESPONSABLE_EJECUCION, style: ['dinamicTable'] },
+              { text: documento.RESPUESTAS[0].FECHA_SEGUIMIENTO, style: ['dinamicTable'] },
+              { text: documento.RESPUESTAS[0].ESTADO, style: ['dinamicTable'] },
+            ];
+          })
+        )
+          ],
+        },
+        fontSize: 6,
+      };
+      //CREANDO PDF
       const pdfDefinition: any = {
+        
         pageSize: {
           width: 794,
           height: 1123,
         },
         pageOrientation: 'landscape',
         pageMargins: [ 15, 60, 15, 60 ],
-        content: [
-          // {
-          //   width: 'auto',
-          //   table: {
-          //     widths: ['*', '*', '*', '*'],
-          //     body: [
-          //       [     
-          //         { image: this.logo, fit:[50, 50], alignment: 'center', rowSpan: 2 },
-          //         { text: this.pst, alignment: 'center', margin:[ 0, 15, 0, 15 ], rowSpan: 2},
-          //         { text:'MATRIZ DE REQUISITOS LEGALES', alignment: 'center', margin:[ 0, 15, 0, 15 ],rowSpan: 2 },
-          //         { text: 'CÓDIGO: GS-M-01', alignment: 'center', margin:[ 0, 2, 0, 2 ] }
-          //       ],
-          //       [
-          //         {},
-          //         {},
-          //         '',
-          //         { text: 'VERSIÓN: 01', alignment: 'center', margin:[ 0, 2, 0, 2 ] },
-          //       ]
-          //     ]
-          //   }
-          // },
-          // '\n',
-          {
-            columns: [
-              {
-                width: 'auto',
-                table: {
-                  widths: ['auto', '*', '*', '*', '*', '*'],
-                  body: [
-                    [     
-                      { text: 'COMPONENTE ACTUALIZADO', style: ['tituloTabla'] },
-                      { text: 'AMBIENTAL', style: ['tituloTabla'] },
-                      { text: 'LABORAL Y SGSST', style: ['tituloTabla'] },
-                      { text: 'TURISMO', style: ['tituloTabla'] },
-                      { text: 'SOCIAL', style: ['tituloTabla'] },
-                      { text: 'ECONÓMICO', style: ['tituloTabla'] }
-                    ],
-                    [
-                      { text: 'FECHA ÚLTIMA ACTUALIZACIÓN', style: ['tituloTabla'] },
-                      '',
-                      '',
-                      '',
-                      '',
-                      ''
-                    ],
-                    [
-                      { text: 'NOMBRE DE QUIÉN ACTUALIZA', style: ['tituloTabla'] },
-                      '',
-                      '',
-                      '',
-                      '',
-                      ''
-                    ],
-                    [
-                      { text: 'COMPONENTE EVALUADO', style: ['tituloTabla'] },
-                      { text: 'AMBIENTAL', style: ['tituloTabla'] },
-                      { text: 'LABORAL Y SGSST', style: ['tituloTabla'] },
-                      { text: 'TURISMO', style: ['tituloTabla'] },
-                      { text: 'SOCIAL', style: ['tituloTabla'] },
-                      { text: 'ECONÓMICO', style: ['tituloTabla'] }
-                    ],
-                    [
-                      { text: 'FECHA ÚLTIMA EVALUACIÓN', style: ['tituloTabla'] },
-                      '',
-                      '',
-                      '',
-                      '',
-                      ''
-                    ],
-                    [
-                      { text: 'EVALUADOR', style: ['tituloTabla'] },
-                      '',
-                      '',
-                      '',
-                      '',
-                      ''
-                    ],
-                  ]
-                },
-                fontSize: 8,
-                margin: [0, 0, 27, 0]
-              },
-              {
-                width: 'auto',
-                table: {
-                  heights: [87],
-                  widths: ['*', '*'],
-                  body: [
-                    [     
-                      { text: 'BREVE RESUMEN DE NORMATIVIDAD QUE SE ACTUALIZA', style: ['tituloTabla'], margin:[ 0, 36, 0, 36 ] },
-                      {}
-                    ]
-                  ]
-                },
-                fontSize: 8,
-              },
-            ]
-          },
-          '\n',
-          {
-            table: {
-              widths: ['auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto'],
-              body: [
-                [     
-                  { text: 'REQUISITOS LEGALES', colSpan:10, style: ['tituloTabla'], margin:[ 0, 10, 0, 10 ] },
-                  {},
-                  {},
-                  {},
-                  {},
-                  {},
-                  {},
-                  {},
-                  {},
-                  {},
-                  { text: '¿APLICA PLAN DE INTERVENCIÓN?', colSpan:2, style: ['tituloTabla'] },
-                  {},
-                  { text: 'PLAN DE INTERVENCIÓN', colSpan:5, style: ['tituloTabla'], margin:[ 0, 10, 0, 10 ] },
-                  {},
-                  {},
-                  {},
-                  {},
-                ],
-                [     
-                  { text: 'TIPO DE NORMATIVIDAD', style: ['tituloTabla'], margin:[ 0, 15, 0, 15 ] },
-                  { text: 'NÚMERO', style: ['tituloTabla'], margin:[ 0, 21, 0, 21 ] },
-                  { text: 'AÑO', style: ['tituloTabla'], margin:[ 0, 21, 0, 21 ] },
-                  { text: 'EMISOR', style: ['tituloTabla'], margin:[ 0, 21, 0, 21 ] },
-                  { text: 'DESCRIPCIÓN', style: ['tituloTabla'], margin:[ 0, 21, 0, 21 ] },
-                  { text: 'ARTÍCULOS / SECCIONES /  REQUISITOS ESPECÍFICOS  QUE APLICAN', style: ['tituloTabla'] },
-                  { text: 'ESTADO DE CUMPLIMIENTO (SI/NO/EN PROCESO/NA)', style: ['tituloTabla'], margin:[ 0, 5, 0, 5 ] },
-                  { text: 'RESPONSABLE DE DAR CUMPLIMIENTO', style: ['tituloTabla'], margin:[ 0, 10, 0, 10 ] },
-                  { text: 'EVIDENCIA DEL CUMPLIMIENTO', style: ['tituloTabla'], margin:[ 0, 15, 0, 15 ] },
-                  { text: 'OBSERVACIONES / INCUMPLIMIENTO', style: ['tituloTabla'], margin:[ 0, 15, 0, 15 ] },
-                  { text: 'SI', style: ['tituloTabla'], margin:[ 0, 21, 0, 21 ] },
-                  { text: 'NO', style: ['tituloTabla'], margin:[ 0, 21, 0, 21 ] },
-                  { text: 'ACCIONES A REALIZAR', style: ['tituloTabla'], margin:[ 0, 10, 0, 10 ] },
-                  { text: 'FECHA PARA LA  EJECUCIÓN', style: ['tituloTabla'], margin:[ 0, 10, 0, 10 ] },
-                  { text: 'RESPONSABLE DE LA EJECUCIÓN', style: ['tituloTabla'], margin:[ 0, 10, 0, 10 ] },
-                  { text: 'FECHA / SEGUIMIENTO', style: ['tituloTabla'], margin:[ 0, 15, 0, 15 ] },
-                  { text: 'ESTADO (ABIERTO / CERRADO)', style: ['tituloTabla'], margin:[ 0, 10, 0, 10 ] },
-                ],
-                ...this.gruposSocialReporte.flatMap((item: any) =>
-                item.DOCUMENTO.map((documento: any) => {
-                  const aplicaPlanIntervencion = documento.RESPUESTAS[0].APLICA_PLAN_INTERVENCION;
-                  let siValue = '';
-                  let noValue = '';
-        
-                  if (aplicaPlanIntervencion === 'si') {
-                    siValue = 'SI';
-                  } else if (aplicaPlanIntervencion === 'no') {
-                    noValue = 'NO';
-                  }
-                  return [
-                    { text: documento.TIPO_NORMATIVIDAD, style: ['dinamicTable'] },
-                    { text: documento.NUMERO, style: ['dinamicTable'] },
-                    { text: documento.AÑO, style: ['dinamicTable'] },
-                    { text: documento.EMISOR, style: ['dinamicTable'] },
-                    { text: documento.DESCRIPCION, style: ['dinamicTable'] },
-                    { text: documento.ARTICULOS_SECCIONES_REQUISITOS_APLICAN, style: ['dinamicTable'] },
-                    { text: documento.RESPUESTAS[0].ESTADO_CUMPLIMIENTO, style: ['dinamicTable'] },
-                    { text: documento.RESPUESTAS[0].RESPONSABLE_CUMPLIMIENTO, style: ['dinamicTable'] },
-                    { text: documento.RESPUESTAS[0].EVIDENCIA_CUMPLIMIENTO, style: ['dinamicTable'] },
-                    { text: documento.RESPUESTAS[0].OBSERVACIONES_INCUMPLIMIENTO, style: ['dinamicTable'] },
-                    { text: siValue, style: ['dinamicTable'] },
-                    { text: noValue, style: ['dinamicTable'] },
-                    { text: documento.RESPUESTAS[0].ACCION_A_REALIZAR, style: ['dinamicTable'] },
-                    { text: documento.RESPUESTAS[0].FECHA_EJECUCION, style: ['dinamicTable'] },
-                    { text: documento.RESPUESTAS[0].RESPONSABLE_EJECUCION, style: ['dinamicTable'] },
-                    { text: documento.RESPUESTAS[0].FECHA_SEGUIMIENTO, style: ['dinamicTable'] },
-                    { text: documento.RESPUESTAS[0].ESTADO, style: ['dinamicTable'] },
-                  ];
-                })
-              )
-              ]
-            },
-            fontSize: 6,
-          }
-        ],
+        content: [bodyContent          ,         '\n',  matrizUsuario        ,     '\n',  matrizLeyes    ],
         styles: {
           header: {
             fontSize: 16,
@@ -1431,7 +1807,7 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
             alignment: 'center'
           },
         }
-      }
+      }      
       const title = "Se descargó correctamente";
       const message = "La descarga se ha realizado exitosamente"
       this.Message.showModal(title, message);
@@ -1440,195 +1816,251 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
   }
 
   generateReporteEconomico(){
+    this.actualizarHeader();
     this.ApiService.gertArchivoMatriz()
     .subscribe((data: any) => {
       this.datosReporte = data;
       this.gruposEconomicoReporte = this.datosReporte.filter((ley) => ley.CATEGORIA === 'Economico')
+      let bodyContent;
+      //SI USERINFOR.LOGO ES NULO CAMBIA EL FORMATO DEL PDF A TIPO TEXT
+      if(this.userInfor.LOGO == null){
+        bodyContent = {
+          width: 'auto',
+          table: {
+            widths: ['*', '*', '*', '*'],
+            body: [
+              [     
+                { text: this.userInfor.LOGO, fit:[50, 50], alignment: 'center', rowSpan: 2 },
+                //{ image: this.userInfor.LOGO, fit: [50, 50], alignment: 'center', rowSpan: 2 },
+                { text: this.userInfor.RAZON_SOCIAL_PST, alignment: 'center', margin:[ 0, 15, 0, 15 ], rowSpan: 2},
+                { text:'MATRIZ DE REQUISITOS LEGALES', alignment: 'center', margin:[ 0, 15, 0, 15 ],rowSpan: 2 },
+                { text: 'CÓDIGO: GS-M-01', alignment: 'center', margin:[ 0, 2, 0, 2 ] }
+              ],
+              [
+                {},
+                {},
+                '',
+                { text: 'VERSIÓN: 01', alignment: 'center', margin:[ 0, 2, 0, 2 ] },
+              ]
+            ]
+          }
+        }
+
+      }
+      else{
+        bodyContent = {
+          width: 'auto',
+          table: {
+            widths: ['*', '*', '*', '*'],
+            body: [
+              [     
+                //{ text: this.userInfor.LOGO, fit:[50, 50], alignment: 'center', rowSpan: 2 },
+                { image: this.userInfor.LOGO, fit: [50, 50], alignment: 'center', rowSpan: 2 },
+                { text: this.userInfor.RAZON_SOCIAL_PST, alignment: 'center', margin:[ 0, 15, 0, 15 ], rowSpan: 2},
+                { text:'MATRIZ DE REQUISITOS LEGALES', alignment: 'center', margin:[ 0, 15, 0, 15 ],rowSpan: 2 },
+                { text: 'CÓDIGO: GS-M-01', alignment: 'center', margin:[ 0, 2, 0, 2 ] }
+              ],
+              [
+                {},
+                {},
+                '',
+                { text: 'VERSIÓN: 01', alignment: 'center', margin:[ 0, 2, 0, 2 ] },
+              ]
+            ]
+          }
+        }
+
+      }
+      const matrizUsuario = {
+        columns: [
+          {
+            width: 'auto',
+            table: {
+              widths: ['auto', '*', '*', '*', '*', '*'],
+              body: [
+                [     
+                  { text: 'COMPONENTE ACTUALIZADO', style: ['tituloTabla'] },
+                  { text: 'AMBIENTAL', style: ['tituloTabla'] },
+                  { text: 'LABORAL Y SGSST', style: ['tituloTabla'] },
+                  { text: 'TURISMO', style: ['tituloTabla'] },
+                  { text: 'SOCIAL', style: ['tituloTabla'] },
+                  { text: 'ECONÓMICO', style: ['tituloTabla'] }
+                ],
+                [
+                  { text: 'FECHA ÚLTIMA ACTUALIZACIÓN', style: ['tituloTabla'] },
+                  { text: this.headerAmbiental?.PLAN_FECHA_SEGUIMIENTO, alignment: 'center',rowSpan: 1 },
+                  { text: this.headerLaboral?.PLAN_FECHA_SEGUIMIENTO, alignment: 'center',rowSpan: 1 },
+                  { text: this.headerTurismo?.PLAN_FECHA_SEGUIMIENTO, alignment: 'center',rowSpan: 1 },
+                  { text: this.headerSocial?.PLAN_FECHA_SEGUIMIENTO, alignment: 'center',rowSpan: 1 },
+                  { text: this.headerEconomico?.PLAN_FECHA_SEGUIMIENTO, alignment: 'center',rowSpan: 1 }
+
+                ],
+                [
+                  { text: 'NOMBRE DE QUIÉN ACTUALIZA', style: ['tituloTabla'] },
+                  { text: this.headerAmbiental?.NOMBRE, alignment: 'center',rowSpan: 1 },
+                  { text: this.headerLaboral?.NOMBRE, alignment: 'center',rowSpan: 1 },
+                  { text: this.headerTurismo?.NOMBRE, alignment: 'center',rowSpan: 1 },
+                  { text: this.headerSocial?.NOMBRE, alignment: 'center',rowSpan: 1 },
+                  { text: this.headerEconomico?.NOMBRE, alignment: 'center',rowSpan: 1 }
+                ],
+                [
+                  { text: 'COMPONENTE EVALUADO', style: ['tituloTabla'] },
+                  { text: 'AMBIENTAL', style: ['tituloTabla'] },
+                  { text: 'LABORAL Y SGSST', style: ['tituloTabla'] },
+                  { text: 'TURISMO', style: ['tituloTabla'] },
+                  { text: 'SOCIAL', style: ['tituloTabla'] },
+                  { text: 'ECONÓMICO', style: ['tituloTabla'] }
+                ],
+                [
+                  { text: 'FECHA ÚLTIMA EVALUACIÓN', style: ['tituloTabla'] },
+                  { text: this.headerAmbiental?.PLAN_FECHA_SEGUIMIENTO, alignment: 'center',rowSpan: 1 },
+                  { text: this.headerLaboral?.PLAN_FECHA_SEGUIMIENTO, alignment: 'center',rowSpan: 1 },
+                  { text: this.headerTurismo?.PLAN_FECHA_SEGUIMIENTO, alignment: 'center',rowSpan: 1 },
+                  { text: this.headerSocial?.PLAN_FECHA_SEGUIMIENTO, alignment: 'center',rowSpan: 1 },
+                  { text: this.headerEconomico?.PLAN_FECHA_SEGUIMIENTO, alignment: 'center',rowSpan: 1 }
+                ],
+                [
+                  { text: 'EVALUADOR', style: ['tituloTabla'] },
+                  { text: this.headerAmbiental?.VALOR, alignment: 'center',rowSpan: 1 },
+                  { text: this.headerLaboral?.VALOR, alignment: 'center',rowSpan: 1 },
+                  { text: this.headerTurismo?.VALOR, alignment: 'center',rowSpan: 1 },
+                  { text: this.headerSocial?.VALOR, alignment: 'center',rowSpan: 1 },
+                  { text: this.headerEconomico?.VALOR, alignment: 'center',rowSpan: 1 }
+
+                ],
+                
+              ]
+            },
+            fontSize: 7,
+            margin: [0, 0, 27, 0]
+          },
+          {
+            table: {
+              heights: [87],
+              widths: ['*', '*'],
+              body: [
+                [     
+                  { text: 'BREVE RESUMEN DE NORMATIVIDAD QUE SE ACTUALIZA', style: ['tituloTabla'], margin:[ 0, 36, 0, 36 ] },
+                  { text: this.headerEconomico?.RESUMEN, alignment: 'center',rowSpan: 1 }
+                ]
+              ]
+            },
+            fontSize: 8,
+          },
+        ]
+      };
+      const matrizLeyes = {
+        table: {
+          widths: ['auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto'],
+          body: [
+            [     
+              { text: 'REQUISITOS LEGALES', colSpan:10, style: ['tituloTabla'], margin:[ 0, 10, 0, 10 ] },
+              {},
+              {},
+              {},
+              {},
+              {},
+              {},
+              {},
+              {},
+              {},
+              { text: '¿APLICA PLAN DE INTERVENCIÓN?', colSpan:2, style: ['tituloTabla'] },
+              {},
+              { text: 'PLAN DE INTERVENCIÓN', colSpan:5, style: ['tituloTabla'], margin:[ 0, 10, 0, 10 ] },
+              {},
+              {},
+              {},
+              {},
+            ],
+            [     
+              { text: 'TIPO DE NORMATIVIDAD', style: ['tituloTabla'], margin:[ 0, 15, 0, 15 ] },
+              { text: 'NÚMERO', style: ['tituloTabla'], margin:[ 0, 21, 0, 21 ] },
+              { text: 'AÑO', style: ['tituloTabla'], margin:[ 0, 21, 0, 21 ] },
+              { text: 'EMISOR', style: ['tituloTabla'], margin:[ 0, 21, 0, 21 ] },
+              { text: 'DESCRIPCIÓN', style: ['tituloTabla'], margin:[ 0, 21, 0, 21 ] },
+              { text: 'ARTÍCULOS / SECCIONES / REQUISITOS ESPECÍFICOS QUE APLICAN', style: ['tituloTabla'] },
+              { text: 'ESTADO DE CUMPLIMIENTO (SI/NO/EN PROCESO/NA)', style: ['tituloTabla'], margin:[ 0, 5, 0, 5 ] },
+              { text: 'RESPONSABLE DE DAR CUMPLIMIENTO', style: ['tituloTabla'], margin:[ 0, 10, 0, 10 ] },
+              { text: 'EVIDENCIA DEL CUMPLIMIENTO', style: ['tituloTabla'], margin:[ 0, 15, 0, 15 ] },
+              { text: 'OBSERVACIONES / INCUMPLIMIENTO', style: ['tituloTabla'], margin:[ 0, 15, 0, 15 ] },
+              { text: 'SI', style: ['tituloTabla'], margin:[ 0, 21, 0, 21 ] },
+              { text: 'NO', style: ['tituloTabla'], margin:[ 0, 21, 0, 21 ] },
+              { text: 'ACCIONES A REALIZAR', style: ['tituloTabla'], margin:[ 0, 10, 0, 10 ] },
+              { text: 'FECHA PARA LA  EJECUCIÓN', style: ['tituloTabla'], margin:[ 0, 10, 0, 10 ] },
+              { text: 'RESPONSABLE DE LA EJECUCIÓN', style: ['tituloTabla'], margin:[ 0, 10, 0, 10 ] },
+              { text: 'FECHA / SEGUIMIENTO', style: ['tituloTabla'], margin:[ 0, 15, 0, 15 ] },
+              { text: 'ESTADO (ABIERTO / CERRADO)', style: ['tituloTabla'], margin:[ 0, 10, 0, 10 ] },
+            ],
+          // ...this.gruposTurismoReporte.flatMap((item: any) =>
+          //   item.DOCUMENTO.map((documento: any) => [
+          //     { text: documento.TIPO_NORMATIVIDAD, style: ['dinamicTable'] },
+          //     { text: documento.NUMERO, style: ['dinamicTable'] },
+          //     { text: documento.AÑO, style: ['dinamicTable'] },
+          //     { text: documento.EMISOR, style: ['dinamicTable'] },
+          //     { text: documento.DESCRIPCION, style: ['dinamicTable'] },
+          //     { text: documento.ARTICULOS_SECCIONES_REQUISITOS_APLICAN, style: ['dinamicTable'] },
+          //     { text: documento.RESPUESTAS[0].ESTADO_CUMPLIMIENTO, style: ['dinamicTable'] },
+          //     { text: documento.RESPUESTAS[0].RESPONSABLE_CUMPLIMIENTO, style: ['dinamicTable'] },
+          //     { text: documento.RESPUESTAS[0].EVIDENCIA_CUMPLIMIENTO, style: ['dinamicTable'] },
+          //     { text: documento.RESPUESTAS[0].OBSERVACIONES_INCUMPLIMIENTO, style: ['dinamicTable'] },
+          //     { text: documento.RESPUESTAS[0].APLICA_PLAN_INTERVENCION, style: ['dinamicTable'] },
+          //     { text: documento.RESPUESTAS[0].APLICA_PLAN_INTERVENCION, style: ['dinamicTable'] },
+          //     { text: documento.RESPUESTAS[0].ACCION_A_REALIZAR, style: ['dinamicTable'] },
+          //     { text: documento.RESPUESTAS[0].FECHA_EJECUCION, style: ['dinamicTable'] },
+          //     { text: documento.RESPUESTAS[0].RESPONSABLE_EJECUCION, style: ['dinamicTable'] },
+          //     { text: documento.RESPUESTAS[0].FECHA_SEGUIMIENTO, style: ['dinamicTable'] },
+          //     { text: documento.RESPUESTAS[0].ESTADO, style: ['dinamicTable'] }
+          //   ])
+          // ),
+        ...this.gruposEconomicoReporte.flatMap((item: any) =>
+          item.DOCUMENTO.map((documento: any) => {
+            const aplicaPlanIntervencion = documento.RESPUESTAS[0].APLICA_PLAN_INTERVENCION;
+            
+            let siValue = '';
+            let noValue = '';
+            
+  
+            if (aplicaPlanIntervencion === 'Si') {
+              siValue = 'SI';
+            } else if (aplicaPlanIntervencion === 'No') {
+              noValue = 'NO';
+            }
+            //console.log("gian", documento);
+            return [
+              { text: documento.TIPO_NORMATIVIDAD, style: ['dinamicTable'] },
+              { text: documento.NUMERO, style: ['dinamicTable'] },
+              { text: documento.AÑO, style: ['dinamicTable'] },
+              { text: documento.EMISOR, style: ['dinamicTable'] },
+              { text: documento.DESCRIPCION, style: ['dinamicTable'] },
+              { text: documento.ARTICULOS_SECCIONES_REQUISITOS_APLICAN, style: ['dinamicTable'] },
+              { text: documento.RESPUESTAS[0].ESTADO_CUMPLIMIENTO, style: ['dinamicTable'] },
+              { text: documento.RESPUESTAS[0].RESPONSABLE_CUMPLIMIENTO, style: ['dinamicTable'] },
+              { text: documento.RESPUESTAS[0].EVIDENCIA_CUMPLIMIENTO, style: ['dinamicTable'] },
+              { text: documento.RESPUESTAS[0].OBSERVACIONES_INCUMPLIMIENTO, style: ['dinamicTable'] },
+              { text: siValue, style: ['dinamicTable'] },
+              { text: noValue, style: ['dinamicTable'] },
+              { text: documento.RESPUESTAS[0].ACCION_A_REALIZAR, style: ['dinamicTable'] },
+              { text: documento.RESPUESTAS[0].FECHA_EJECUCION, style: ['dinamicTable'] },
+              { text: documento.RESPUESTAS[0].RESPONSABLE_EJECUCION, style: ['dinamicTable'] },
+              { text: documento.RESPUESTAS[0].FECHA_SEGUIMIENTO, style: ['dinamicTable'] },
+              { text: documento.RESPUESTAS[0].ESTADO, style: ['dinamicTable'] },
+            ];
+          })
+        )
+          ],
+        },
+        fontSize: 6,
+      };
+      //CREANDO PDF
       const pdfDefinition: any = {
+        
         pageSize: {
           width: 794,
           height: 1123,
         },
         pageOrientation: 'landscape',
         pageMargins: [ 15, 60, 15, 60 ],
-        content: [
-          // {
-          //   width: 'auto',
-          //   table: {
-          //     widths: ['*', '*', '*', '*'],
-          //     body: [
-          //       [     
-          //         { image: this.logo, fit:[50, 50], alignment: 'center', rowSpan: 2 },
-          //         { text: this.pst, alignment: 'center', margin:[ 0, 15, 0, 15 ], rowSpan: 2},
-          //         { text:'MATRIZ DE REQUISITOS LEGALES', alignment: 'center', margin:[ 0, 15, 0, 15 ],rowSpan: 2 },
-          //         { text: 'CÓDIGO: GS-M-01', alignment: 'center', margin:[ 0, 2, 0, 2 ] }
-          //       ],
-          //       [
-          //         {},
-          //         {},
-          //         '',
-          //         { text: 'VERSIÓN: 01', alignment: 'center', margin:[ 0, 2, 0, 2 ] },
-          //       ]
-          //     ]
-          //   }
-          // },
-          // '\n',
-          {
-            columns: [
-              {
-                width: 'auto',
-                table: {
-                  widths: ['auto', '*', '*', '*', '*', '*'],
-                  body: [
-                    [     
-                      { text: 'COMPONENTE ACTUALIZADO', style: ['tituloTabla'] },
-                      { text: 'AMBIENTAL', style: ['tituloTabla'] },
-                      { text: 'LABORAL Y SGSST', style: ['tituloTabla'] },
-                      { text: 'TURISMO', style: ['tituloTabla'] },
-                      { text: 'SOCIAL', style: ['tituloTabla'] },
-                      { text: 'ECONÓMICO', style: ['tituloTabla'] }
-                    ],
-                    [
-                      { text: 'FECHA ÚLTIMA ACTUALIZACIÓN', style: ['tituloTabla'] },
-                      '',
-                      '',
-                      '',
-                      '',
-                      ''
-                    ],
-                    [
-                      { text: 'NOMBRE DE QUIÉN ACTUALIZA', style: ['tituloTabla'] },
-                      '',
-                      '',
-                      '',
-                      '',
-                      ''
-                    ],
-                    [
-                      { text: 'COMPONENTE EVALUADO', style: ['tituloTabla'] },
-                      { text: 'AMBIENTAL', style: ['tituloTabla'] },
-                      { text: 'LABORAL Y SGSST', style: ['tituloTabla'] },
-                      { text: 'TURISMO', style: ['tituloTabla'] },
-                      { text: 'SOCIAL', style: ['tituloTabla'] },
-                      { text: 'ECONÓMICO', style: ['tituloTabla'] }
-                    ],
-                    [
-                      { text: 'FECHA ÚLTIMA EVALUACIÓN', style: ['tituloTabla'] },
-                      '',
-                      '',
-                      '',
-                      '',
-                      ''
-                    ],
-                    [
-                      { text: 'EVALUADOR', style: ['tituloTabla'] },
-                      '',
-                      '',
-                      '',
-                      '',
-                      ''
-                    ],
-                  ]
-                },
-                fontSize: 8,
-                margin: [0, 0, 27, 0]
-              },
-              {
-                width: 'auto',
-                table: {
-                  heights: [87],
-                  widths: ['*', '*'],
-                  body: [
-                    [     
-                      { text: 'BREVE RESUMEN DE NORMATIVIDAD QUE SE ACTUALIZA', style: ['tituloTabla'], margin:[ 0, 36, 0, 36 ] },
-                      {}
-                    ]
-                  ]
-                },
-                fontSize: 8,
-              },
-            ]
-          },
-          '\n',
-          {
-            table: {
-              widths: ['auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto'],
-              body: [
-                [     
-                  { text: 'REQUISITOS LEGALES', colSpan:10, style: ['tituloTabla'], margin:[ 0, 10, 0, 10 ] },
-                  {},
-                  {},
-                  {},
-                  {},
-                  {},
-                  {},
-                  {},
-                  {},
-                  {},
-                  { text: '¿APLICA PLAN DE INTERVENCIÓN?', colSpan:2, style: ['tituloTabla'] },
-                  {},
-                  { text: 'PLAN DE INTERVENCIÓN', colSpan:5, style: ['tituloTabla'], margin:[ 0, 10, 0, 10 ] },
-                  {},
-                  {},
-                  {},
-                  {},
-                ],
-                [     
-                  { text: 'TIPO DE NORMATIVIDAD', style: ['tituloTabla'], margin:[ 0, 15, 0, 15 ] },
-                  { text: 'NÚMERO', style: ['tituloTabla'], margin:[ 0, 21, 0, 21 ] },
-                  { text: 'AÑO', style: ['tituloTabla'], margin:[ 0, 21, 0, 21 ] },
-                  { text: 'EMISOR', style: ['tituloTabla'], margin:[ 0, 21, 0, 21 ] },
-                  { text: 'DESCRIPCIÓN', style: ['tituloTabla'], margin:[ 0, 21, 0, 21 ] },
-                  { text: 'ARTÍCULOS / SECCIONES /  REQUISITOS ESPECÍFICOS  QUE APLICAN', style: ['tituloTabla'] },
-                  { text: 'ESTADO DE CUMPLIMIENTO (SI/NO/EN PROCESO/NA)', style: ['tituloTabla'], margin:[ 0, 5, 0, 5 ] },
-                  { text: 'RESPONSABLE DE DAR CUMPLIMIENTO', style: ['tituloTabla'], margin:[ 0, 10, 0, 10 ] },
-                  { text: 'EVIDENCIA DEL CUMPLIMIENTO', style: ['tituloTabla'], margin:[ 0, 15, 0, 15 ] },
-                  { text: 'OBSERVACIONES / INCUMPLIMIENTO', style: ['tituloTabla'], margin:[ 0, 15, 0, 15 ] },
-                  { text: 'SI', style: ['tituloTabla'], margin:[ 0, 21, 0, 21 ] },
-                  { text: 'NO', style: ['tituloTabla'], margin:[ 0, 21, 0, 21 ] },
-                  { text: 'ACCIONES A REALIZAR', style: ['tituloTabla'], margin:[ 0, 10, 0, 10 ] },
-                  { text: 'FECHA PARA LA  EJECUCIÓN', style: ['tituloTabla'], margin:[ 0, 10, 0, 10 ] },
-                  { text: 'RESPONSABLE DE LA EJECUCIÓN', style: ['tituloTabla'], margin:[ 0, 10, 0, 10 ] },
-                  { text: 'FECHA / SEGUIMIENTO', style: ['tituloTabla'], margin:[ 0, 15, 0, 15 ] },
-                  { text: 'ESTADO (ABIERTO / CERRADO)', style: ['tituloTabla'], margin:[ 0, 10, 0, 10 ] },
-                ],
-                ...this.gruposEconomicoReporte.flatMap((item: any) =>
-                item.DOCUMENTO.map((documento: any) => {
-                  const aplicaPlanIntervencion = documento.RESPUESTAS[0].APLICA_PLAN_INTERVENCION;
-                  let siValue = '';
-                  let noValue = '';
-        
-                  if (aplicaPlanIntervencion === 'si') {
-                    siValue = 'SI';
-                  } else if (aplicaPlanIntervencion === 'no') {
-                    noValue = 'NO';
-                  }
-                  return [
-                    { text: documento.TIPO_NORMATIVIDAD, style: ['dinamicTable'] },
-                    { text: documento.NUMERO, style: ['dinamicTable'] },
-                    { text: documento.AÑO, style: ['dinamicTable'] },
-                    { text: documento.EMISOR, style: ['dinamicTable'] },
-                    { text: documento.DESCRIPCION, style: ['dinamicTable'] },
-                    { text: documento.ARTICULOS_SECCIONES_REQUISITOS_APLICAN, style: ['dinamicTable'] },
-                    { text: documento.RESPUESTAS[0].ESTADO_CUMPLIMIENTO, style: ['dinamicTable'] },
-                    { text: documento.RESPUESTAS[0].RESPONSABLE_CUMPLIMIENTO, style: ['dinamicTable'] },
-                    { text: documento.RESPUESTAS[0].EVIDENCIA_CUMPLIMIENTO, style: ['dinamicTable'] },
-                    { text: documento.RESPUESTAS[0].OBSERVACIONES_INCUMPLIMIENTO, style: ['dinamicTable'] },
-                    { text: siValue, style: ['dinamicTable'] },
-                    { text: noValue, style: ['dinamicTable'] },
-                    { text: documento.RESPUESTAS[0].ACCION_A_REALIZAR, style: ['dinamicTable'] },
-                    { text: documento.RESPUESTAS[0].FECHA_EJECUCION, style: ['dinamicTable'] },
-                    { text: documento.RESPUESTAS[0].RESPONSABLE_EJECUCION, style: ['dinamicTable'] },
-                    { text: documento.RESPUESTAS[0].FECHA_SEGUIMIENTO, style: ['dinamicTable'] },
-                    { text: documento.RESPUESTAS[0].ESTADO, style: ['dinamicTable'] },
-                  ];
-                })
-              )
-              ]
-            },
-            fontSize: 6,
-          }
-        ],
+        content: [bodyContent          ,         '\n',  matrizUsuario        ,     '\n',  matrizLeyes    ],
         styles: {
           header: {
             fontSize: 16,
@@ -1647,7 +2079,7 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
             alignment: 'center'
           },
         }
-      }
+      }      
       const title = "Se descargó correctamente";
       const message = "La descarga se ha realizado exitosamente"
       this.Message.showModal(title, message);
@@ -1662,191 +2094,246 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
       this.gruposParticularReporte = this.datosReporte.filter((ley) => ley.CATEGORIA === 'NTC 6496 General' || ley.CATEGORIA === 'NTC 6487' || 
       ley.CATEGORIA === 'NTC 6503' || ley.CATEGORIA === 'NTC 6503 Economico' || ley.CATEGORIA === 'NTC 6504' || ley.CATEGORIA === 'NTC 6505'
       || ley.CATEGORIA === 'NTC 6505 Ambiental' || ley.CATEGORIA === 'NTC 6502' || ley.CATEGORIA === 'NTC 6506' || ley.CATEGORIA === 'NTC 6507' || ley.categoria === 'NTC 6523')
+      let bodyContent;
+      //SI USERINFOR.LOGO ES NULO CAMBIA EL FORMATO DEL PDF A TIPO TEXT
+      if(this.userInfor.LOGO == null){
+        bodyContent = {
+          width: 'auto',
+          table: {
+            widths: ['*', '*', '*', '*'],
+            body: [
+              [     
+                { text: this.userInfor.LOGO, fit:[50, 50], alignment: 'center', rowSpan: 2 },
+                //{ image: this.userInfor.LOGO, fit: [50, 50], alignment: 'center', rowSpan: 2 },
+                { text: this.userInfor.RAZON_SOCIAL_PST, alignment: 'center', margin:[ 0, 15, 0, 15 ], rowSpan: 2},
+                { text:'MATRIZ DE REQUISITOS LEGALES', alignment: 'center', margin:[ 0, 15, 0, 15 ],rowSpan: 2 },
+                { text: 'CÓDIGO: GS-M-01', alignment: 'center', margin:[ 0, 2, 0, 2 ] }
+              ],
+              [
+                {},
+                {},
+                '',
+                { text: 'VERSIÓN: 01', alignment: 'center', margin:[ 0, 2, 0, 2 ] },
+              ]
+            ]
+          }
+        }
+
+      }
+      else{
+        bodyContent = {
+          width: 'auto',
+          table: {
+            widths: ['*', '*', '*', '*'],
+            body: [
+              [     
+                //{ text: this.userInfor.LOGO, fit:[50, 50], alignment: 'center', rowSpan: 2 },
+                { image: this.userInfor.LOGO, fit: [50, 50], alignment: 'center', rowSpan: 2 },
+                { text: this.userInfor.RAZON_SOCIAL_PST, alignment: 'center', margin:[ 0, 15, 0, 15 ], rowSpan: 2},
+                { text:'MATRIZ DE REQUISITOS LEGALES', alignment: 'center', margin:[ 0, 15, 0, 15 ],rowSpan: 2 },
+                { text: 'CÓDIGO: GS-M-01', alignment: 'center', margin:[ 0, 2, 0, 2 ] }
+              ],
+              [
+                {},
+                {},
+                '',
+                { text: 'VERSIÓN: 01', alignment: 'center', margin:[ 0, 2, 0, 2 ] },
+              ]
+            ]
+          }
+        }
+
+      }
+      const matrizUsuario = {
+        columns: [
+          {
+            width: 'auto',
+            table: {
+              widths: ['auto', '*', '*', '*', '*', '*'],
+              body: [
+                [     
+                  { text: 'COMPONENTE ACTUALIZADO', style: ['tituloTabla'] },
+                  { text: 'AMBIENTAL', style: ['tituloTabla'] },
+                  { text: 'LABORAL Y SGSST', style: ['tituloTabla'] },
+                  { text: 'TURISMO', style: ['tituloTabla'] },
+                  { text: 'SOCIAL', style: ['tituloTabla'] },
+                  { text: 'ECONÓMICO', style: ['tituloTabla'] }
+                ],
+                [
+                  { text: 'FECHA ÚLTIMA ACTUALIZACIÓN', style: ['tituloTabla'] },
+                  { text: this.headerAmbiental?.PLAN_FECHA_SEGUIMIENTO, alignment: 'center',rowSpan: 1 },
+                  { text: this.headerLaboral?.PLAN_FECHA_SEGUIMIENTO, alignment: 'center',rowSpan: 1 },
+                  { text: this.headerTurismo?.PLAN_FECHA_SEGUIMIENTO, alignment: 'center',rowSpan: 1 },
+                  { text: this.headerSocial?.PLAN_FECHA_SEGUIMIENTO, alignment: 'center',rowSpan: 1 },
+                  { text: this.headerEconomico?.PLAN_FECHA_SEGUIMIENTO, alignment: 'center',rowSpan: 1 }
+
+                ],
+                [
+                  { text: 'NOMBRE DE QUIÉN ACTUALIZA', style: ['tituloTabla'] },
+                  { text: this.headerAmbiental?.NOMBRE, alignment: 'center',rowSpan: 1 },
+                  { text: this.headerLaboral?.NOMBRE, alignment: 'center',rowSpan: 1 },
+                  { text: this.headerTurismo?.NOMBRE, alignment: 'center',rowSpan: 1 },
+                  { text: this.headerSocial?.NOMBRE, alignment: 'center',rowSpan: 1 },
+                  { text: this.headerEconomico?.NOMBRE, alignment: 'center',rowSpan: 1 }
+                ],
+                [
+                  { text: 'COMPONENTE EVALUADO', style: ['tituloTabla'] },
+                  { text: 'AMBIENTAL', style: ['tituloTabla'] },
+                  { text: 'LABORAL Y SGSST', style: ['tituloTabla'] },
+                  { text: 'TURISMO', style: ['tituloTabla'] },
+                  { text: 'SOCIAL', style: ['tituloTabla'] },
+                  { text: 'ECONÓMICO', style: ['tituloTabla'] }
+                ],
+                [
+                  { text: 'FECHA ÚLTIMA EVALUACIÓN', style: ['tituloTabla'] },
+                  { text: this.headerAmbiental?.PLAN_FECHA_SEGUIMIENTO, alignment: 'center',rowSpan: 1 },
+                  { text: this.headerLaboral?.PLAN_FECHA_SEGUIMIENTO, alignment: 'center',rowSpan: 1 },
+                  { text: this.headerTurismo?.PLAN_FECHA_SEGUIMIENTO, alignment: 'center',rowSpan: 1 },
+                  { text: this.headerSocial?.PLAN_FECHA_SEGUIMIENTO, alignment: 'center',rowSpan: 1 },
+                  { text: this.headerEconomico?.PLAN_FECHA_SEGUIMIENTO, alignment: 'center',rowSpan: 1 }
+                ],
+                [
+                  { text: 'EVALUADOR', style: ['tituloTabla'] },
+                  { text: this.headerAmbiental?.VALOR, alignment: 'center',rowSpan: 1 },
+                  { text: this.headerLaboral?.VALOR, alignment: 'center',rowSpan: 1 },
+                  { text: this.headerTurismo?.VALOR, alignment: 'center',rowSpan: 1 },
+                  { text: this.headerSocial?.VALOR, alignment: 'center',rowSpan: 1 },
+                  { text: this.headerEconomico?.VALOR, alignment: 'center',rowSpan: 1 }
+
+                ],
+                
+              ]
+            },
+            fontSize: 7,
+            margin: [0, 0, 27, 0]
+          },
+          {
+            table: {
+              heights: [87],
+              widths: ['*', '*'],
+              body: [
+                [     
+                  { text: 'BREVE RESUMEN DE NORMATIVIDAD QUE SE ACTUALIZA', style: ['tituloTabla'], margin:[ 0, 36, 0, 36 ] },
+                  { text: this.descripcionResumen6, alignment: 'center',rowSpan: 1 }
+                ]
+              ]
+            },
+            fontSize: 8,
+          },
+        ]
+      };
+      const matrizLeyes = {
+        table: {
+          widths: ['auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto'],
+          body: [
+            [     
+              { text: 'REQUISITOS LEGALES', colSpan:10, style: ['tituloTabla'], margin:[ 0, 10, 0, 10 ] },
+              {},
+              {},
+              {},
+              {},
+              {},
+              {},
+              {},
+              {},
+              {},
+              { text: '¿APLICA PLAN DE INTERVENCIÓN?', colSpan:2, style: ['tituloTabla'] },
+              {},
+              { text: 'PLAN DE INTERVENCIÓN', colSpan:5, style: ['tituloTabla'], margin:[ 0, 10, 0, 10 ] },
+              {},
+              {},
+              {},
+              {},
+            ],
+            [     
+              { text: 'TIPO DE NORMATIVIDAD', style: ['tituloTabla'], margin:[ 0, 15, 0, 15 ] },
+              { text: 'NÚMERO', style: ['tituloTabla'], margin:[ 0, 21, 0, 21 ] },
+              { text: 'AÑO', style: ['tituloTabla'], margin:[ 0, 21, 0, 21 ] },
+              { text: 'EMISOR', style: ['tituloTabla'], margin:[ 0, 21, 0, 21 ] },
+              { text: 'DESCRIPCIÓN', style: ['tituloTabla'], margin:[ 0, 21, 0, 21 ] },
+              { text: 'ARTÍCULOS / SECCIONES / REQUISITOS ESPECÍFICOS QUE APLICAN', style: ['tituloTabla'] },
+              { text: 'ESTADO DE CUMPLIMIENTO (SI/NO/EN PROCESO/NA)', style: ['tituloTabla'], margin:[ 0, 5, 0, 5 ] },
+              { text: 'RESPONSABLE DE DAR CUMPLIMIENTO', style: ['tituloTabla'], margin:[ 0, 10, 0, 10 ] },
+              { text: 'EVIDENCIA DEL CUMPLIMIENTO', style: ['tituloTabla'], margin:[ 0, 15, 0, 15 ] },
+              { text: 'OBSERVACIONES / INCUMPLIMIENTO', style: ['tituloTabla'], margin:[ 0, 15, 0, 15 ] },
+              { text: 'SI', style: ['tituloTabla'], margin:[ 0, 21, 0, 21 ] },
+              { text: 'NO', style: ['tituloTabla'], margin:[ 0, 21, 0, 21 ] },
+              { text: 'ACCIONES A REALIZAR', style: ['tituloTabla'], margin:[ 0, 10, 0, 10 ] },
+              { text: 'FECHA PARA LA  EJECUCIÓN', style: ['tituloTabla'], margin:[ 0, 10, 0, 10 ] },
+              { text: 'RESPONSABLE DE LA EJECUCIÓN', style: ['tituloTabla'], margin:[ 0, 10, 0, 10 ] },
+              { text: 'FECHA / SEGUIMIENTO', style: ['tituloTabla'], margin:[ 0, 15, 0, 15 ] },
+              { text: 'ESTADO (ABIERTO / CERRADO)', style: ['tituloTabla'], margin:[ 0, 10, 0, 10 ] },
+            ],
+          // ...this.gruposTurismoReporte.flatMap((item: any) =>
+          //   item.DOCUMENTO.map((documento: any) => [
+          //     { text: documento.TIPO_NORMATIVIDAD, style: ['dinamicTable'] },
+          //     { text: documento.NUMERO, style: ['dinamicTable'] },
+          //     { text: documento.AÑO, style: ['dinamicTable'] },
+          //     { text: documento.EMISOR, style: ['dinamicTable'] },
+          //     { text: documento.DESCRIPCION, style: ['dinamicTable'] },
+          //     { text: documento.ARTICULOS_SECCIONES_REQUISITOS_APLICAN, style: ['dinamicTable'] },
+          //     { text: documento.RESPUESTAS[0].ESTADO_CUMPLIMIENTO, style: ['dinamicTable'] },
+          //     { text: documento.RESPUESTAS[0].RESPONSABLE_CUMPLIMIENTO, style: ['dinamicTable'] },
+          //     { text: documento.RESPUESTAS[0].EVIDENCIA_CUMPLIMIENTO, style: ['dinamicTable'] },
+          //     { text: documento.RESPUESTAS[0].OBSERVACIONES_INCUMPLIMIENTO, style: ['dinamicTable'] },
+          //     { text: documento.RESPUESTAS[0].APLICA_PLAN_INTERVENCION, style: ['dinamicTable'] },
+          //     { text: documento.RESPUESTAS[0].APLICA_PLAN_INTERVENCION, style: ['dinamicTable'] },
+          //     { text: documento.RESPUESTAS[0].ACCION_A_REALIZAR, style: ['dinamicTable'] },
+          //     { text: documento.RESPUESTAS[0].FECHA_EJECUCION, style: ['dinamicTable'] },
+          //     { text: documento.RESPUESTAS[0].RESPONSABLE_EJECUCION, style: ['dinamicTable'] },
+          //     { text: documento.RESPUESTAS[0].FECHA_SEGUIMIENTO, style: ['dinamicTable'] },
+          //     { text: documento.RESPUESTAS[0].ESTADO, style: ['dinamicTable'] }
+          //   ])
+          // ),
+        ...this.gruposParticularReporte.flatMap((item: any) =>
+          item.DOCUMENTO.map((documento: any) => {
+            const aplicaPlanIntervencion = documento.RESPUESTAS[0].APLICA_PLAN_INTERVENCION;
+            
+            let siValue = '';
+            let noValue = '';
+            
+  
+            if (aplicaPlanIntervencion === 'Si') {
+              siValue = 'SI';
+            } else if (aplicaPlanIntervencion === 'No') {
+              noValue = 'NO';
+            }
+            //console.log("gian", documento);
+            return [
+              { text: documento.TIPO_NORMATIVIDAD, style: ['dinamicTable'] },
+              { text: documento.NUMERO, style: ['dinamicTable'] },
+              { text: documento.AÑO, style: ['dinamicTable'] },
+              { text: documento.EMISOR, style: ['dinamicTable'] },
+              { text: documento.DESCRIPCION, style: ['dinamicTable'] },
+              { text: documento.ARTICULOS_SECCIONES_REQUISITOS_APLICAN, style: ['dinamicTable'] },
+              { text: documento.RESPUESTAS[0].ESTADO_CUMPLIMIENTO, style: ['dinamicTable'] },
+              { text: documento.RESPUESTAS[0].RESPONSABLE_CUMPLIMIENTO, style: ['dinamicTable'] },
+              { text: documento.RESPUESTAS[0].EVIDENCIA_CUMPLIMIENTO, style: ['dinamicTable'] },
+              { text: documento.RESPUESTAS[0].OBSERVACIONES_INCUMPLIMIENTO, style: ['dinamicTable'] },
+              { text: siValue, style: ['dinamicTable'] },
+              { text: noValue, style: ['dinamicTable'] },
+              { text: documento.RESPUESTAS[0].ACCION_A_REALIZAR, style: ['dinamicTable'] },
+              { text: documento.RESPUESTAS[0].FECHA_EJECUCION, style: ['dinamicTable'] },
+              { text: documento.RESPUESTAS[0].RESPONSABLE_EJECUCION, style: ['dinamicTable'] },
+              { text: documento.RESPUESTAS[0].FECHA_SEGUIMIENTO, style: ['dinamicTable'] },
+              { text: documento.RESPUESTAS[0].ESTADO, style: ['dinamicTable'] },
+            ];
+          })
+        )
+          ],
+        },
+        fontSize: 6,
+      };
+      //CREANDO PDF
       const pdfDefinition: any = {
+        
         pageSize: {
           width: 794,
           height: 1123,
         },
         pageOrientation: 'landscape',
         pageMargins: [ 15, 60, 15, 60 ],
-        content: [
-          // {
-          //   width: 'auto',
-          //   table: {
-          //     widths: ['*', '*', '*', '*'],
-          //     body: [
-          //       [     
-          //         { image: this.logo, fit:[50, 50], alignment: 'center', rowSpan: 2 },
-          //         { text: this.pst, alignment: 'center', margin:[ 0, 15, 0, 15 ], rowSpan: 2},
-          //         { text:'MATRIZ DE REQUISITOS LEGALES', alignment: 'center', margin:[ 0, 15, 0, 15 ],rowSpan: 2 },
-          //         { text: 'CÓDIGO: GS-M-01', alignment: 'center', margin:[ 0, 2, 0, 2 ] }
-          //       ],
-          //       [
-          //         {},
-          //         {},
-          //         '',
-          //         { text: 'VERSIÓN: 01', alignment: 'center', margin:[ 0, 2, 0, 2 ] },
-          //       ]
-          //     ]
-          //   }
-          // },
-          // '\n',
-          {
-            columns: [
-              {
-                width: 'auto',
-                table: {
-                  widths: ['auto', '*', '*', '*', '*', '*'],
-                  body: [
-                    [     
-                      { text: 'COMPONENTE ACTUALIZADO', style: ['tituloTabla'] },
-                      { text: 'AMBIENTAL', style: ['tituloTabla'] },
-                      { text: 'LABORAL Y SGSST', style: ['tituloTabla'] },
-                      { text: 'TURISMO', style: ['tituloTabla'] },
-                      { text: 'SOCIAL', style: ['tituloTabla'] },
-                      { text: 'ECONÓMICO', style: ['tituloTabla'] }
-                    ],
-                    [
-                      { text: 'FECHA ÚLTIMA ACTUALIZACIÓN', style: ['tituloTabla'] },
-                      '',
-                      '',
-                      '',
-                      '',
-                      ''
-                    ],
-                    [
-                      { text: 'NOMBRE DE QUIÉN ACTUALIZA', style: ['tituloTabla'] },
-                      '',
-                      '',
-                      '',
-                      '',
-                      ''
-                    ],
-                    [
-                      { text: 'COMPONENTE EVALUADO', style: ['tituloTabla'] },
-                      { text: 'AMBIENTAL', style: ['tituloTabla'] },
-                      { text: 'LABORAL Y SGSST', style: ['tituloTabla'] },
-                      { text: 'TURISMO', style: ['tituloTabla'] },
-                      { text: 'SOCIAL', style: ['tituloTabla'] },
-                      { text: 'ECONÓMICO', style: ['tituloTabla'] }
-                    ],
-                    [
-                      { text: 'FECHA ÚLTIMA EVALUACIÓN', style: ['tituloTabla'] },
-                      '',
-                      '',
-                      '',
-                      '',
-                      ''
-                    ],
-                    [
-                      { text: 'EVALUADOR', style: ['tituloTabla'] },
-                      '',
-                      '',
-                      '',
-                      '',
-                      ''
-                    ],
-                  ]
-                },
-                fontSize: 8,
-                margin: [0, 0, 27, 0]
-              },
-              {
-                width: 'auto',
-                table: {
-                  heights: [87],
-                  widths: ['*', '*'],
-                  body: [
-                    [     
-                      { text: 'BREVE RESUMEN DE NORMATIVIDAD QUE SE ACTUALIZA', style: ['tituloTabla'], margin:[ 0, 36, 0, 36 ] },
-                      {}
-                    ]
-                  ]
-                },
-                fontSize: 8,
-              },
-            ]
-          },
-          '\n',
-          {
-            table: {
-              widths: ['auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto'],
-              body: [
-                [     
-                  { text: 'REQUISITOS LEGALES', colSpan:10, style: ['tituloTabla'], margin:[ 0, 10, 0, 10 ] },
-                  {},
-                  {},
-                  {},
-                  {},
-                  {},
-                  {},
-                  {},
-                  {},
-                  {},
-                  { text: '¿APLICA PLAN DE INTERVENCIÓN?', colSpan:2, style: ['tituloTabla'] },
-                  {},
-                  { text: 'PLAN DE INTERVENCIÓN', colSpan:5, style: ['tituloTabla'], margin:[ 0, 10, 0, 10 ] },
-                  {},
-                  {},
-                  {},
-                  {},
-                ],
-                [     
-                  { text: 'TIPO DE NORMATIVIDAD', style: ['tituloTabla'], margin:[ 0, 15, 0, 15 ] },
-                  { text: 'NÚMERO', style: ['tituloTabla'], margin:[ 0, 21, 0, 21 ] },
-                  { text: 'AÑO', style: ['tituloTabla'], margin:[ 0, 21, 0, 21 ] },
-                  { text: 'EMISOR', style: ['tituloTabla'], margin:[ 0, 21, 0, 21 ] },
-                  { text: 'DESCRIPCIÓN', style: ['tituloTabla'], margin:[ 0, 21, 0, 21 ] },
-                  { text: 'ARTÍCULOS / SECCIONES /  REQUISITOS ESPECÍFICOS  QUE APLICAN', style: ['tituloTabla'] },
-                  { text: 'ESTADO DE CUMPLIMIENTO (SI/NO/EN PROCESO/NA)', style: ['tituloTabla'], margin:[ 0, 5, 0, 5 ] },
-                  { text: 'RESPONSABLE DE DAR CUMPLIMIENTO', style: ['tituloTabla'], margin:[ 0, 10, 0, 10 ] },
-                  { text: 'EVIDENCIA DEL CUMPLIMIENTO', style: ['tituloTabla'], margin:[ 0, 15, 0, 15 ] },
-                  { text: 'OBSERVACIONES / INCUMPLIMIENTO', style: ['tituloTabla'], margin:[ 0, 15, 0, 15 ] },
-                  { text: 'SI', style: ['tituloTabla'], margin:[ 0, 21, 0, 21 ] },
-                  { text: 'NO', style: ['tituloTabla'], margin:[ 0, 21, 0, 21 ] },
-                  { text: 'ACCIONES A REALIZAR', style: ['tituloTabla'], margin:[ 0, 10, 0, 10 ] },
-                  { text: 'FECHA PARA LA  EJECUCIÓN', style: ['tituloTabla'], margin:[ 0, 10, 0, 10 ] },
-                  { text: 'RESPONSABLE DE LA EJECUCIÓN', style: ['tituloTabla'], margin:[ 0, 10, 0, 10 ] },
-                  { text: 'FECHA / SEGUIMIENTO', style: ['tituloTabla'], margin:[ 0, 15, 0, 15 ] },
-                  { text: 'ESTADO (ABIERTO / CERRADO)', style: ['tituloTabla'], margin:[ 0, 10, 0, 10 ] },
-                ],
-                ...this.gruposParticularReporte.flatMap((item: any) =>
-                item.DOCUMENTO.map((documento: any) => {
-                  const aplicaPlanIntervencion = documento.RESPUESTAS[0].APLICA_PLAN_INTERVENCION;
-                  let siValue = '';
-                  let noValue = '';
-        
-                  if (aplicaPlanIntervencion === 'si') {
-                    siValue = 'SI';
-                  } else if (aplicaPlanIntervencion === 'no') {
-                    noValue = 'NO';
-                  }
-                  return [
-                    { text: documento.TIPO_NORMATIVIDAD, style: ['dinamicTable'] },
-                    { text: documento.NUMERO, style: ['dinamicTable'] },
-                    { text: documento.AÑO, style: ['dinamicTable'] },
-                    { text: documento.EMISOR, style: ['dinamicTable'] },
-                    { text: documento.DESCRIPCION, style: ['dinamicTable'] },
-                    { text: documento.ARTICULOS_SECCIONES_REQUISITOS_APLICAN, style: ['dinamicTable'] },
-                    { text: documento.RESPUESTAS[0].ESTADO_CUMPLIMIENTO, style: ['dinamicTable'] },
-                    { text: documento.RESPUESTAS[0].RESPONSABLE_CUMPLIMIENTO, style: ['dinamicTable'] },
-                    { text: documento.RESPUESTAS[0].EVIDENCIA_CUMPLIMIENTO, style: ['dinamicTable'] },
-                    { text: documento.RESPUESTAS[0].OBSERVACIONES_INCUMPLIMIENTO, style: ['dinamicTable'] },
-                    { text: siValue, style: ['dinamicTable'] },
-                    { text: noValue, style: ['dinamicTable'] },
-                    { text: documento.RESPUESTAS[0].ACCION_A_REALIZAR, style: ['dinamicTable'] },
-                    { text: documento.RESPUESTAS[0].FECHA_EJECUCION, style: ['dinamicTable'] },
-                    { text: documento.RESPUESTAS[0].RESPONSABLE_EJECUCION, style: ['dinamicTable'] },
-                    { text: documento.RESPUESTAS[0].FECHA_SEGUIMIENTO, style: ['dinamicTable'] },
-                    { text: documento.RESPUESTAS[0].ESTADO, style: ['dinamicTable'] },
-                  ];
-                })
-              )
-              ]
-            },
-            fontSize: 6,
-          }
-        ],
+        content: [bodyContent          ,         '\n',  matrizUsuario        ,     '\n',  matrizLeyes    ],
         styles: {
           header: {
             fontSize: 16,
@@ -1865,7 +2352,7 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
             alignment: 'center'
           },
         }
-      }
+      }      
       const title = "Se descargó correctamente";
       const message = "La descarga se ha realizado exitosamente"
       this.Message.showModal(title, message);
@@ -1880,4 +2367,126 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
     }
     return 0;
   }
+
+  modificarBloquearCampos(){
+    this.disabledModificar = !this.disabledModificar;
+  
+    if(this.tabActual == 'tab1'){
+      this.disabledTabs2 = !this.disabledTabs2;
+      this.disabledTabs3 = !this.disabledTabs3;
+      this.disabledTabs4 = !this.disabledTabs4;
+      this.disabledTabs5 = !this.disabledTabs5;
+      this.disabledTabs6 = !this.disabledTabs6;
+    }
+    if(this.tabActual == 'tab2'){
+      this.disabledTabs1 = !this.disabledTabs1;
+      this.disabledTabs3 = !this.disabledTabs3;
+      this.disabledTabs4 = !this.disabledTabs4;
+      this.disabledTabs5 = !this.disabledTabs5;
+      this.disabledTabs6 = !this.disabledTabs6;
+    }
+    if(this.tabActual == 'tab3'){
+      this.disabledTabs2 = !this.disabledTabs2;
+      this.disabledTabs1 = !this.disabledTabs1;
+      this.disabledTabs4 = !this.disabledTabs4;
+      this.disabledTabs5 = !this.disabledTabs5;
+      this.disabledTabs6 = !this.disabledTabs6;
+    }
+    if(this.tabActual == 'tab4'){
+      this.disabledTabs2 = !this.disabledTabs2;
+      this.disabledTabs3 = !this.disabledTabs3;
+      this.disabledTabs1 = !this.disabledTabs1;
+      this.disabledTabs5 = !this.disabledTabs5;
+      this.disabledTabs6 = !this.disabledTabs6;
+    }
+    if(this.tabActual == 'tab5'){
+      this.disabledTabs2 = !this.disabledTabs2;
+      this.disabledTabs3 = !this.disabledTabs3;
+      this.disabledTabs4 = !this.disabledTabs4;
+      this.disabledTabs1 = !this.disabledTabs1;
+      this.disabledTabs6 = !this.disabledTabs6;
+    }
+    if(this.tabActual == 'tab6'){
+      this.disabledTabs2 = !this.disabledTabs2;
+      this.disabledTabs3 = !this.disabledTabs3;
+      this.disabledTabs4 = !this.disabledTabs4;
+      this.disabledTabs5 = !this.disabledTabs5;
+      this.disabledTabs1 = !this.disabledTabs1;
+    }
+  }
+
+  //GUARDA DATOS INTRODUCIDOS EN EL TEXT AREA
+  terminarModificarCampos(){
+    this.modificarBloquearCampos();
+    var arrayMatrices: any=[];
+    arrayMatrices = localStorage.getItem('MiArrayTemporal');
+
+    if(arrayMatrices != null){
+      this.showModalResumen=!this.showModalResumen;
+    }
+
+    
+
+  }
+  guardarTextArea(){
+    // const textAreaModal = document.getElementById("textAreaModal") as HTMLTextAreaElement
+    // this.texto = textAreaModal.value;
+    // console.log("asd", this.texto);
+    
+    const descripcion = this.saveForm.value.descripcionNoticia;
+     // if(this.tabActual == 'tab1'){
+    //   this.descripcionResumen1 = descripcion;
+    //   console.log(this.descripcionResumen1)
+    // }
+    // if(this.tabActual == 'tab2'){
+    //   this.descripcionResumen2 = descripcion;
+    //   console.log(this.descripcionResumen2)
+    // }
+    // if(this.tabActual == 'tab3'){
+    //   this.descripcionResumen3 = descripcion;
+    //   console.log(this.descripcionResumen3)
+    // }
+    // if(this.tabActual == 'tab4'){
+    //   this.descripcionResumen4 = descripcion;
+    // }
+    // if(this.tabActual == 'tab5'){
+    //   this.descripcionResumen5 = descripcion;
+    // }
+    if(this.tabActual == 'tab6'){
+      this.descripcionResumen6 = descripcion;
+    }  
+    var datosLocalStorage=localStorage.getItem('MiArrayTemporal');
+    var arrayID = datosLocalStorage.split(',');
+    arrayID.forEach(element => {
+      const data = {
+        FK_ID_USUARIO: window.localStorage.getItem('Id'),
+        FK_ID_MATRIZ_LEGAL: element,
+        RESUMEN: descripcion
+      }
+      this.ApiService.saveRespuestaMatrizResumen(data).subscribe((x:any)=>{
+        console.log('Se guardó correctamente: 2', x);
+      })
+      
+    });
+    
+
+
+    
+    
+    this.showModalResumen=!this.showModalResumen;
+    const title = "Guardado exitoso";
+    const message = "Se ha guardado correctamente"
+    this.Message.showModal(title,message);
+    //remover array
+    localStorage.removeItem('MiArrayTemporal');
+
+
+    //BORRA EL CONTENIDO DEL TEXT AREA AL SER CONSULTADO POR 2DA VEZ EN LA MISMA SESION
+    this.saveForm.reset();
+    
+    
+
+  }
+
+  
 }

@@ -1,4 +1,4 @@
-<app-app-header></app-app-header>
+<app-app-header class="noticias-app-header"></app-app-header>
 <div class="containerGestorNoticia">
     <div class="titulo">
         <h1> Gestor de noticias </h1>
@@ -18,8 +18,8 @@
             <thead>
                 <tr>
                     <th scope="col">Usuario</th>
-                    <th scope="col">Información de destino</th>
-                    <th scope="col">Título de la noticia</th>
+                    <th scope="col" class="inf-tabla">Información de destino</th>
+                    <th scope="col" class="title-tabla">Título de la noticia</th>
                     <th scope="col">Descripción de la noticia</th>
                     <th scope="col">Imagen</th>
                     <th scope="col" style="text-align: center;" (click)="mostrarBuscador = !mostrarBuscador">
@@ -30,12 +30,12 @@
             <tbody>
                 <tr *ngFor="let campo of filterArray;let i = index">
                     <td>{{campo.NOMBRE}}</td>
-                    <td>
-                        <a title="Ver lista" (click)="fnShowModalLista(i)">
+                    <td class="inf-tabla">
+                        <a title="Ver lista" (click)="fnShowModalLista(i)" >
                             <i class="fa-solid fa-list-ul" style="color: #06543c; font-size: 18px;"></i>
                         </a>
                     </td>
-                    <td>{{campo.TITULO}}</td>
+                    <td  class="title-tabla">{{campo.TITULO}}</td>
                     <td (click)="fnShowModal(i)" title="Dale click para leer la Noticia">
                         {{ getInnerText(campo.DESCRIPCION) | slice:0:97 }}{{ campo.DESCRIPCION.length > 97 ? '...' : ''
                         }}
@@ -52,7 +52,7 @@
                             <a title="Editar" (click)="showModalEditar = true; fnEditar(i)">
                                 <i class="fa-solid fa-pen" style="color: #06543c;"></i>
                             </a>
-                            <app-app-eliminar-noticia [indice]="indiceAEliminar"
+                            <app-app-eliminar-noticia [indice]="indiceAEliminar" class="delete"
                                 (click)="eliminarNoticia(campo.ID_NOTICIA)" (valorEnviado)="recibirValor($event)">
                             </app-app-eliminar-noticia>
                         </ng-container>
@@ -140,6 +140,7 @@
                     <label for="archivo" class="fileBtn">Seleccionar imagen</label>
                     <label id="nombre" class="fileName">Ningún archivo seleccionado</label>
                 </div>
+                <span>Las dimensiones de la imagen no deben exceder el máximo de 760 x 760 píxeles.</span>
                 <button type="submit" class="botonG"
                     [disabled]=" ( (saveForm.controls.selectMultipleAdmin?.value?.length||0) === 0 && (saveForm.controls.selectMultipleNorma?.value?.length||0) === 0  && (saveForm.controls.selectMultipleCategoria.value?.length||0) === 0 && (saveForm.controls.selectMultipleSubCategoria.value?.length||0) === 0 && (saveForm.controls.selectMultiplePST.value?.length||0) === 0 )|| !saveForm.controls.tituloNoticia.value || !saveForm.controls.descripcionNoticia.value">
                     <i class="fa-regular fa-floppy-disk" style="color: #fff;"></i>
@@ -163,7 +164,7 @@
                 <input type="text" id="usuario" formControlName="usuario" [(ngModel)]="editarCaracteristica.NOMBRE"
                     [disabled]="true"><br>
                 <label for="">Título de la noticia</label>
-                <input type="text" id="titulo" formControlName="titulo" [(ngModel)]="editarCaracteristica.TITULO"><br>
+                <input type="text" id="titulo" formControlName="titulo" [(ngModel)]="editarCaracteristica.TITULO" ><br>
                 <label for="">Descripción de la noticia</label>
                 <angular-editor placeholder="Agregar una descripción" formControlName="descripcion"
                     style="margin-top:2vh;" id="descripcion"

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from 'src/app/servicios/api/api.service';
+import { ColorLista } from 'src/app/servicios/api/models/color';
 
 @Component({
   selector: 'app-app-actividades-planificadas',
@@ -21,13 +22,21 @@ export class AppActividadesPlanificadasComponent implements OnInit{
   totalRegistros: number = 0;
   datatotal: number = 0;
   contentArray: any = [];
-  currentPage: number = 1
+  currentPage: number = 1;
+  colorWallpaper:ColorLista;
+  colorTitle:ColorLista;
+  isCollapsed = true;
+  mostrarNotificacion : boolean = false;
 
   constructor(
     private api: ApiService,
   ) {}
 
   ngOnInit(){
+    this.api.colorTempo();
+    this.colorWallpaper = JSON.parse(localStorage.getItem("color")).wallpaper;
+    this.colorTitle = JSON.parse(localStorage.getItem("color")).title;
+  
     this.getTable();
   }
 

@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, CUSTOM_ELEMENTS_SCHEMA, ElementRef, NgModule, OnInit, ViewChild } from '@angular/core';
-import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
+import { FormGroup, FormControl, Validators, FormBuilder, AbstractControl, ValidationErrors } from '@angular/forms';
 import { ApiService } from 'src/app/servicios/api/api.service';
 // import 'core-js/es/object';
 import { Router } from '@angular/router';
@@ -8,7 +8,8 @@ import { Categoria } from '../../../utils/constants';
 import { SpinnerService } from 'src/app/servicios/spinnerService/spinner.service';
 import { NgxSpinnerModule } from 'ngx-spinner'; 
 import { ConditionalExpr } from '@angular/compiler';
-import { ModalService } from 'src/app/messagemodal/messagemodal.component.service'
+import { ModalService } from 'src/app/messagemodal/messagemodal.component.service';
+import { ColorLista } from 'src/app/servicios/api/models/color';
 import { throws } from 'assert';
 
 @Component({
@@ -22,6 +23,17 @@ export class AppCaracterizacionComponent implements OnInit {
   otroControlA: FormControl;
   otroControlB: FormControl;
   otroControlC: FormControl;
+  otroControlRed: FormControl;
+  facebook: FormControl;
+  twitter: FormControl;
+  instagram: FormControl;
+  tiktok: FormControl;
+  mostrarInputsRedesSociales: { [key: string]: boolean } = {
+    'FACEBOOK': false,
+    'TWITTER': false,
+    'INSTAGRAM': false,
+    'TIKTOK': false,
+  };
 
   datos: any = [];
   preguntasDesordenadas: any = [];
@@ -54,12 +66,14 @@ export class AppCaracterizacionComponent implements OnInit {
   opcionesNorma: any[] = [];
 
   public mostrarMensaje: boolean = false;
-  public templateGenerado: string = ''; // Variable de componente para almacenar el template generado
+  public templateGenerado: string = '';
  
   private emailPattern: any = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   private webPattern: any = /^(http:\/\/www\.|http:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/;
   mostrarContenido: boolean;
   contenidoNTC6502: string;
+  colorTitle:ColorLista;
+  colorWallpaper:ColorLista;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -72,7 +86,9 @@ export class AppCaracterizacionComponent implements OnInit {
 
 ngOnInit(): void { 
   const id = Number(window.localStorage.getItem('Id'));
-  console.log(id + ' id');
+  this.colorTitle = JSON.parse(localStorage.getItem("color")).title;
+  this.colorWallpaper = JSON.parse(localStorage.getItem("color")).wallpaper;
+
   this.ApiService.validateCaracterizacion(id).subscribe((data: any)=>{
     if(data === true){
       this.router.navigate(['/dashboard']);
@@ -88,12 +104,18 @@ ngOnInit(): void {
     }
   })
 
-
- 
   //validar input-otro
   this.otroControlA = new FormControl('', [Validators.required]);
   this.otroControlB = new FormControl('', [Validators.required]);
   this.otroControlC = new FormControl('', [Validators.required]);
+  this.facebook = new FormControl('', [Validators.required]);
+  this.twitter = new FormControl('', [Validators.required]);
+  this.instagram = new FormControl('', [Validators.required]);
+  this.tiktok = new FormControl('', [Validators.required]);
+}
+
+toggleMostrarInputRedesSociales(opcion: string) {
+  this.mostrarInputsRedesSociales[opcion] = !this.mostrarInputsRedesSociales[opcion];
 }
 
 validarCampoOtroA() {
@@ -107,17 +129,10 @@ validarCampoOtroB() {
 validarCampoOtroC() {
   return this.otroControlC.invalid && this.otroControlC.touched;
 }
-// validarCampoOtroA(index: number) {
-//   return this.otroControlA[index].invalid && this.otroControlA[index].touched;
-// }
+validarCampoOtroRed() {
+  return  this.otroControlRed.touched;
+}
 
-// validarCampoOtroB(index: number) {
-//   return this.otroControlB[index].invalid && this.otroControlB[index].touched;
-// }
-
-// validarCampoOtroC(index: number) {
-//   return this.otroControlC[index].invalid && this.otroControlC[index].touched;
-// }
 getCaracterizacion(){
   this.ApiService.getData()
   // this.http.get('assets/datos.json')
@@ -140,15 +155,8 @@ getCaracterizacion(){
       }
     });
 
-    // for (let campo of this.datos.campos) {
-    //   if (campo.requerido) {
-    //     this.formParent.addControl(campo.nombre, this.formBuilder.control(''));
-    //   }
-    // }
-
     this.createFormControls();
     this.ordenarPreguntas();
-
   });
 }
 
@@ -180,17 +188,18 @@ onChangeAventuraSeleccionada(value: boolean) {
   
     if (this.aventuraSeleccionada) {
       // Si se seleccionó "SI", se muestra solo la norma que comienza con "NTC 6502"
+      debugger;
       this.opcionesNorma = this.dataNorma.filter(
-        opcion => opcion.norma && opcion.norma.startsWith('NTC 6502') ||
-        opcion.norma.startsWith('NTC ISO 21101') ||
-        opcion.norma.startsWith('NTC 6523')
-      ).map(opcion => opcion.id);
+        opcion => opcion.NORMA && opcion.NORMA.startsWith('NTC 6502') ||
+        opcion.NORMA.startsWith('NTC ISO 21101') ||
+        opcion.NORMA.startsWith('NTC 6523')
+      ).map(opcion => opcion.ID_NORMA);
     } else {
       // Si se seleccionó "NO", se muestran las tres normas
       this.opcionesNorma = this.dataNorma.filter(
-        opcion => opcion.norma && (
-          opcion.norma.startsWith('NTC 6502'))
-      ).map(opcion => opcion.id);
+        opcion => opcion.NORMA && (
+          opcion.NORMA.startsWith('NTC 6502'))
+      ).map(opcion => opcion.ID_NORMA);
     } 
 }
 
@@ -292,7 +301,7 @@ capturarValor(id: string | number, valor: any, idcaracterizaciondinamica: any) {
       "valor": valor,
       "idUsuarioPst": localStorage.getItem('Id'),
       "idCategoriaRnt": localStorage.getItem('idCategoria'),
-      "idCaracterizacion": 1 //id de la pregunta
+      "idCaracterizacion": idcaracterizaciondinamica
     });
   }
 }
@@ -304,7 +313,6 @@ hasDepency(id: number) {
 }
 
 public saveForm(){
-
   const caracterizacionRespuesta = this.valoresForm.map((elemento) => {
     this.idUser =  Number(elemento.idUsuarioPst);
     return { VALOR: elemento.valor.toString(),
@@ -378,4 +386,7 @@ public saveForm(){
     }
 }
 
+checkMarcadoEnDesplegable(campo:any) {
+  return campo.DESPLEGABLE.some(opcion => opcion.checked);
+}
 }

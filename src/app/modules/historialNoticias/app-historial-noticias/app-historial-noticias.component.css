@@ -1,26 +1,30 @@
-.containerHistorial{
+.containerHistorial {
     display: flex;
     flex-direction: column;
     margin: 2vh 5vw;
 }
-.titulo{
+
+.titulo {
     display: flex;
     flex-direction: row-reverse;
     margin: 2vh 0;
 }
-h1{
+
+h1 {
     width: 100%;
     font-family: 'Montserrat', sans-serif;
     font-weight: bolder;
     color: #068460;
     text-align: center;
 }
-.containerTarjetas{
+
+.containerTarjetas {
     display: flex;
     flex-direction: column;
     cursor: pointer;
 }
-.tarjetas{
+
+.tarjetas {
     display: flex;
     flex-direction: column;
     background-color: rgb(235, 235, 235);
@@ -30,27 +34,32 @@ h1{
     padding: 10px 15px;
     margin-top: 2vh;
 }
-.fecha{
+
+.fecha {
     font-family: 'Work Sans', sans-serif;
     font-size: 16px;
     font-weight: bold;
     margin: 0 0 0.5vh 0;
 }
-.contenido{
+
+.contenido {
     font-family: 'Work Sans', sans-serif;
     font-size: 13px;
     margin: 0 0 0.5vh 0;
 }
+
 /* Paginado */
 .page-style {
     display: flex;
     justify-content: flex-end;
     margin: 2vh 0 0 0;
 }
+
 .container-label {
     display: flex;
     align-items: center;
 }
+
 .paginas {
     display: inline-block;
     max-width: 100%;
@@ -58,4 +67,27 @@ h1{
     font-weight: 700;
     font-size: 14px;
     font-family: 'Work Sans', sans-serif;
+}
+
+@media(max-width: 480px) {
+
+    .h1,
+    h1 {
+        font-size: 22px;
+    }
+
+    /* PAGINADO */
+    .page-style {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+    }
+
+    .container-label {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+    }
+
+
 }

@@ -3,6 +3,7 @@
     flex-direction: row;
     align-items: center;
     justify-content: center;
+    background-color: var(--color-wallpaper, #f6f8f9);
     width: 100%;
     height: auto;
 }
@@ -35,7 +36,7 @@ h1{
     font-family: 'Montserrat', sans-serif;
     font-weight: bolder;
     font-size: 32px;
-    color: #068460;
+    color: var(--color-title, #962d46);
     text-align: center;
     align-self: center;
 }
@@ -116,7 +117,7 @@ h1{
     cursor: pointer;
     position: absolute;
     right: 0;
-    margin: 1.8vh 1vw 0 0;
+    margin: 1.7vh 1vw 0 0;
   }
 input.ng-invalid.ng-touched {
     border: solid 2px tomato !important;
@@ -138,7 +139,7 @@ input.ng-valid{
     align-self: flex-start;
   }
 
-  @media (max-width: 900px) {
+  /* @media (max-width: 900px) {
     .loginContainer {
       flex-direction: column;
     }
@@ -146,4 +147,58 @@ input.ng-valid{
         font-size: 25px;
         width: max-content;
     }
-  }
+  } */
+
+  @media (max-width: 900px) {
+    .loginContainer {
+        flex-direction: column;
+        align-items: center;
+    }
+    .login {
+        width: 80%; 
+        padding: 0 1rem;
+    }
+    .divImg {
+        width: 80%; 
+        padding-bottom: 0px;
+    }
+    .img {
+        width: 70%; 
+    }
+    h1 {
+        font-size: 25px; 
+        width: 100%;
+        text-align: center;
+    }
+    .formBody input {
+        width: 100%;
+    }
+    .password  {
+        display: block;
+        width: 100%;
+    }
+    .eye {
+        position: relative;
+        display: flex;
+    }
+    .iconEye {
+        margin: 21px;
+        color: #068460;
+        cursor: pointer;
+        position: absolute;
+        right: 2%; 
+        top: 50%;
+        transform: translateY(-50%);
+    }
+    .password .textDanger{
+        width: 100%;
+    }
+    .btn-login{
+        display: flex;
+        justify-content: center;
+        width: 100%;
+    }
+    .p{
+        font-size: 15px;
+    }
+}

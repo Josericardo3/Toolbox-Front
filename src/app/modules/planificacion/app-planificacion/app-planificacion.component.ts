@@ -1,12 +1,9 @@
 import { Component, TemplateRef } from '@angular/core';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { ApiService } from 'src/app/servicios/api/api.service'
-// import { AppDeleteActivitiesComponent } from '../app-delete-activities/app-delete-activities.component';
 import { ModalService } from 'src/app/messagemodal/messagemodal.component.service';
-import { HttpClient } from '@angular/common/http';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ChangeDetectorRef } from '@angular/core';
-import { Console, debug } from 'console';
+import { ColorLista } from 'src/app/servicios/api/models/color';
 
 @Component({
   selector: 'app-app-planificacion',
@@ -38,7 +35,11 @@ export class AppPlanificacionComponent {
   idResponsable!: number;
   descripcion!: string;
   pages = 1;
-
+  colorTitle:ColorLista;
+  colorWallpaper:ColorLista;
+  isCollapsed = true;
+  mostrarNotificacion: boolean = false;
+  
   constructor(
     public ApiService: ApiService,
     private modalService: BsModalService,
@@ -48,6 +49,10 @@ export class AppPlanificacionComponent {
   ) { }
 
   ngOnInit() {
+    this.ApiService.colorTempo(); 
+    this.colorTitle = JSON.parse(localStorage.getItem("color")).title;
+    this.colorWallpaper = JSON.parse(localStorage.getItem("color")).wallpaper;
+
     this.caracteristicaIndice = -1;
     this.caracteristicaIndiceEliminar = -1;
     this.showModal = false;
@@ -143,6 +148,7 @@ export class AppPlanificacionComponent {
           this.rolesArraytemp[i].statecolor = '#068460';
         }
       }
+      debugger;
       this.rolesArray = this.rolesArraytemp;
 
       //paginado

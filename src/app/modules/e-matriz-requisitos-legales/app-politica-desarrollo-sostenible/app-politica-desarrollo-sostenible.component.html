@@ -5,7 +5,7 @@
     <h1>Taller de Política de Desarrollo Sostenible</h1>
   </header>
   <button type="button" class="btnReporte" (click)="generatePDF()" [disabled]="disablePDF">
-    <i class="fa-solid fa-download" style="color: #ffffff; margin-right: 0.5vw;"></i>Descargar reporte
+    <i class="fa-solid fa-download" style="color: #ffffff; margin-right: 0.5vw;"></i>Visualizar reporte
   </button>
   <div class="form">
     <h3>Responda las siguientes preguntas:</h3>
@@ -53,7 +53,7 @@
                   </p>
                   <select name="comunicacion" id="comunicacion" [(ngModel)]="pregunta.RESPUESTA" [disabled]="accionActivo!='guardar'">
                     <option value="" disabled>Seleccione una opción</option>
-                    <option value="Responsable">Responsable</option>
+                    <option *ngFor="let responsible of quienComunica" [ngValue]="responsible.NOMBRE">{{responsible.NOMBRE | titlecase }}</option>
                   </select>
                   <p class="info">Responda según desee implementar.</p>
                 </div>
@@ -110,7 +110,7 @@
     </div>
     
     <div class="containerBtn">
-      <button type="submit" class="botonG" (click)="saveForm()" [disabled]="accionActivo!='guardar' || (llenadoIncorrecto() &&  accionActivo=='guardar')">
+      <button type="submit" class="botonG" (click)="saveForm()" [disabled]="accionActivo != 'guardar' || (llenadoIncorrecto() &&  accionActivo=='guardar')">
         <i class="fa-regular fa-floppy-disk" style="color: #fff;"></i> Guardar
       </button>
       <button *ngIf="botonOcultar" type="button" class="botonG" [disabled]="accionActivo !='editar'" (click)="activarCampos()">

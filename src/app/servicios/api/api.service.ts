@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders, HttpResponse, HttpErrorResponse } from '@angular/common/http'
 import { Injectable } from '@angular/core'
-import  {of, forkJoin, Observable } from 'rxjs'
+import { of, forkJoin, Observable } from 'rxjs'
 import { environment } from 'src/environments/environment.prod'
 import { LoginI } from '../../models/loginInterface'
 import { ResponseI } from '../../models/responseInterface'
@@ -24,36 +24,49 @@ export class ApiService {
   // login(form: LoginI): Observable<ResponseI>{
   //   const {registroNacionalDeTurismo,pass} = form;
   //   let direccion = `${this.apiURL}/api/Usuario/LoginUsuario?usuario=${registroNacionalDeTurismo}&Password=${pass}`;
-   
+
   //   return this.http.post<any>(direccion, {})
 
-  apiURL = "https://corsproxy.io/?"+environment.apiURL
-  apiURLNuevo = "https://corsproxy.io/?"+environment.apiURLNuevo
+  apiURL = environment.apiURL
+  apiURLNuevo = environment.apiURLNuevo
   apiCHART = environment.apiChart
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
+  color: Object;
+//Esperar endpoint
+  colorTempo() {
+    this.color = {
+      header: '#3366CC',
+      wallpaper: '#f6f8f9',
+      title: '#962d46',
+    };
+    localStorage.setItem("color", JSON.stringify(this.color));
+
+  }
 
   login(form: LoginI): Observable<ResponseI | object> {
     // const { registroNacionalDeTurismo, pass, correo } = form
 
-    
+
     const refresh = localStorage.getItem('refresh');
     const headers = { 'Content-Type': 'application/json', 'tokenAccess': refresh || 'falta token' };
-     let request = {
+    let request = {
       USER: form.registroNacionalDeTurismo,
       CORREO: form.correo,
       PASSWORD: form.pass
-     }
+    }
+
+
     //let direccion = `${this.apiURLNuevo}/api/Usuario/LoginUsuario?usuario=${registroNacionalDeTurismo}&Password=${pass}&Correo=${correo}`
     let direccion = `${this.apiURLNuevo}/api/Usuario/LoginUsuario`
     return this.http.post<any>(
       direccion,
-      request, 
-      {observe: "response"}
+      request,
+      { observe: "response" }
       // { registroNacionalDeTurismo, pass },
       // {headers}
-      )
+    )
   }
-  
+
   createUser(request: any): Observable<any> {
     let direccion = `${this.apiURLNuevo}/api/Usuario`
     return this.http.post<any>(direccion, request)
@@ -64,7 +77,7 @@ export class ApiService {
     return this.http.post<any>(direccion, request)
   }
 
-  refreshToken(token:string){
+  refreshToken(token: string) {
     return this.http.post(this.apiURLNuevo + 'refreshtoken', {
       refreshToken: token
     }, httpOptions);
@@ -79,12 +92,12 @@ export class ApiService {
     return this.http.get<any>(direccion, idUsuario)
   }
 
-  getNorma(idCategoria:any){
+  getNorma(idCategoria: any) {
     let norma = `${this.apiURLNuevo}/api/Caracterizacion/SelectorDeNorma?id=${idCategoria}`
     return this.http.get<any>(norma, idCategoria)
   }
 
-  validateCaracterizacion(idUsuario:any): Observable<string> {
+  validateCaracterizacion(idUsuario: any): Observable<string> {
     let validate = `${this.apiURLNuevo}/api/Validaciones/UsuarioCaracterizacion/${idUsuario}`
     let response = this.http.get<string>(validate);
     return response;
@@ -105,7 +118,7 @@ export class ApiService {
     return response;
   }
 
-  validateDiagnostico(idNorma:any): Observable<string> {
+  validateDiagnostico(idNorma: any): Observable<string> {
     const idUsuario = localStorage.getItem("Id");
     let validate = `${this.apiURLNuevo}/api/Validaciones/UsuarioDiagnostico?idUsuario=${idUsuario}&idNorma=${idNorma}`
     let response = this.http.get<string>(validate);
@@ -123,7 +136,7 @@ export class ApiService {
   //para guardar caracterizacion en la BD
   saveData(request: any): Observable<any[]> {
     const caracterizacion = `${this.apiURLNuevo}/api/Caracterizacion/caracterizacion/respuesta`;
-    return this.http.post<any>(caracterizacion,request)
+    return this.http.post<any>(caracterizacion, request)
   }
 
   assignAdvisor(): Observable<any> {
@@ -141,7 +154,7 @@ export class ApiService {
   saveDataDiagnostico(request: any): Observable<any[]> {
     const diagnostico = `${this.apiURLNuevo}/api/Diagnostico/Diagnosticorespuesta`;
     const observables = [];
-  
+
     for (let i = 0; i < request.length; i++) {
       const respuesta = {
         VALOR: request[i].observacion.toString() + " - " + request[i].valor.toString(),
@@ -152,8 +165,8 @@ export class ApiService {
       };
       observables.push(respuesta);
     }
-   
-    return this.http.post<any>(diagnostico,observables)
+
+    return this.http.post<any>(diagnostico, observables)
   }
 
   //enlista el asesor
@@ -161,16 +174,16 @@ export class ApiService {
     let assign = `${this.apiURLNuevo}/api/Asesor/ListarAsesor`
     return this.http.get<any>(assign)
   }
- 
+
   updateAsesor(resquest): Observable<any> {
     let assign = `${this.apiURLNuevo}/api/Asesor/registrarPSTxAsesor`
-    return this.http.post<any>(assign,resquest)
+    return this.http.post<any>(assign, resquest)
   }
 
   //crea un nuevo asesor
   createNewAsesor(request): Observable<any> {
     let assign = `${this.apiURLNuevo}/api/Asesor/Asesor`
-    return this.http.post<any>(assign,request)
+    return this.http.post<any>(assign, request)
   }
   getGrafico(request) {
     const apiUrl = `${this.apiCHART}`;
@@ -184,38 +197,38 @@ export class ApiService {
       responseType: 'blob'
     });
   }
-  
-  getListaChequeoApi(){
+
+  getListaChequeoApi() {
     const normaValue = window.localStorage.getItem('idNormaSelected');
     const idUsuario = window.localStorage.getItem('Id');
     const etapa = Number(window.localStorage.getItem('etapa'));
- 
-    let lista = `${this.apiURLNuevo}/api/ListaChequeo/ListaChequeo?idnorma=${normaValue}&idusuariopst=${idUsuario}&etapa=${etapa}` 
+
+    let lista = `${this.apiURLNuevo}/api/ListaChequeo/ListaChequeo?idnorma=${normaValue}&idusuariopst=${idUsuario}&etapa=${etapa}`
     return this.http.get<any>(lista)
   }
 
-  getListaDiagnosticoApi(){
-  
+  getListaDiagnosticoApi() {
+
     const normaValue = Number(window.localStorage.getItem('idNormaSelected'));
     const idUsuario = Number(window.localStorage.getItem('Id'));
     const etapa = Number(window.localStorage.getItem('etapa'));
-  
+
     let lista = `${this.apiURLNuevo}/api/ListaChequeo/ListaDiagnostico?idnorma=${normaValue}&idusuariopst=${idUsuario}&etapa=${etapa}`
     return this.http.get<any>(lista)
   }
 
-  getPlanMejoraApi(){
+  getPlanMejoraApi() {
     var normaValue = window.localStorage.getItem('idNormaSelected');
     var idUsuario = window.localStorage.getItem('Id');
     const etapa = Number(window.localStorage.getItem('etapa'));
     // const id = localStorage.getItem('Id');
     // const normaValue = JSON.parse(window.localStorage.getItem('norma'));
     // const idn = normaValue[0].id;
-    let lista = `${this.apiURLNuevo}/api/PlanMejora/PlanMejora?idnorma=${normaValue}&idusuariopst=${idUsuario}&etapa=${etapa}` 
+    let lista = `${this.apiURLNuevo}/api/PlanMejora/PlanMejora?idnorma=${normaValue}&idusuariopst=${idUsuario}&etapa=${etapa}`
     return this.http.get<any>(lista)
   }
 
-  getOrdenCaracterizacion(){
+  getOrdenCaracterizacion() {
     // const normaValue = JSON.parse(window.localStorage.getItem('idCategoria'));
     const normaValue = localStorage.getItem('idCategoria');
     let lista = `${this.apiURLNuevo}/api/Caracterizacion/OrdenCaracterizacion?id=${normaValue}`
@@ -223,10 +236,15 @@ export class ApiService {
   }
 
   //Matriz de Requisitos Legales
-  getLeyes(){
+  getLeyes() {
     const id = localStorage.getItem('Id');
     let lista = `${this.apiURLNuevo}/api/MatrizLegal/MatrizLegal?IdDoc=1&IdUsuario=${id}`
     return this.http.get<any>(lista)
+  }
+
+  insertLey(request: any){
+    const ley = `${this.apiURLNuevo}/api/MatrizLegal/InsertLey`;
+    return this.http.post<any>(ley, request)
   }
 
   saveLey(request: any){
@@ -234,25 +252,36 @@ export class ApiService {
     return this.http.post<any>(ley, request)
   }
 
-  gertArchivoMatriz(){
+  gertArchivoMatriz() {
     const id = localStorage.getItem('Id');
     let lista = `${this.apiURLNuevo}/api/MatrizLegal/ArchivoMatrizLegal?IdDocumento=1&idUsuario=${id}`
     return this.http.get<any>(lista)
   }
 
-  getUsuario(){
+  getUsuario() {
     const id = localStorage.getItem('Id');
     let direccion = `${this.apiURLNuevo}/api/Usuario/${id}`
     return this.http.get<any>(direccion)
   }
 
+  getDatosHeaderMatriz(){
+    const rnt = localStorage.getItem('rnt');
+    let direccion = `${this.apiURLNuevo}/api/MatrizLegal/DataHeaderMatrizLegal?RNT=${rnt}`;
+    return this.http.get<any>(direccion)
+  }
+  //INSERTA EL RESUMEN EN LA MATRIZ CORRESPONDIENTE
+  saveRespuestaMatrizResumen(request:any){
+    const resumen = `${this.apiURLNuevo}/api/MatrizLegal/RespuestaMatrizLegalResumen`;
+    return this.http.post<any>(resumen, request)
+  }
+
   //PARA LAS NOTICIAS
-  getNotifications(){
+  getNotifications() {
     const id = localStorage.getItem("Id");
     let lista = `${this.apiURLNuevo}/api/Noticia/notificacionesusuario/${id}`
     return this.http.get<any>(lista)
   }
-  
+
   getTablaNoticias() {
     const rnt = localStorage.getItem('rnt');
     const idrol = localStorage.getItem('rol');
@@ -262,7 +291,7 @@ export class ApiService {
   }
 
   saveNoticia(request: any) {
-    const modalNoticia= `${this.apiURLNuevo}/api/Noticia/noticia`;
+    const modalNoticia = `${this.apiURLNuevo}/api/Noticia/noticia`;
     return this.http.post<any>(modalNoticia, request)
   }
 
@@ -276,42 +305,42 @@ export class ApiService {
     return this.http.delete<any>(assign)
   }
 
-  getPSTSelect(){
+  getPSTSelect() {
     let direccion = `${this.apiURLNuevo}/api/General/ListarPst`
     return this.http.get<any>(direccion)
   }
 
-  getNormaSelect(){
+  getNormaSelect() {
     let direccion = `${this.apiURLNuevo}/api/General/GetNormas`
     return this.http.get<any>(direccion)
   }
 
-  getCategoriaSelect(){
+  getCategoriaSelect() {
     let direccion = `${this.apiURLNuevo}/api/General/ListarCategorias`
     return this.http.get<any>(direccion)
   }
 
-  getNoticiaCompleta(idNoticia: any){
+  getNoticiaCompleta(idNoticia: any) {
     let direccion = `${this.apiURLNuevo}/api/Noticia/noticia/${idNoticia}`
     return this.http.get<any>(direccion)
   }
-  
-  getHistorial(){
+
+  getHistorial() {
     const id = localStorage.getItem('Id');
     let direccion = `${this.apiURLNuevo}/api/Noticia/historialnotificaciones/${id}`
     return this.http.get<any>(direccion)
   }
 
   //NOTIFICACIONES
-  getTarjeta(){
+  getTarjeta() {
     const id = localStorage.getItem('Id');
     let direccion = `${this.apiURLNuevo}/api/Noticia/notificacionesusuario/${id}`
     return this.http.get<any>(direccion)
   }
   // obtener el listado de asesores
-  getAuditorListService(){
+  getAuditorListService() {
     const rnt = localStorage.getItem('rnt');
-    let endpointListAuditor = `${this.apiURLNuevo}/api/Auditoria/ListarAuditor/${rnt}` 
+    let endpointListAuditor = `${this.apiURLNuevo}/api/Auditoria/ListarAuditor/${rnt}`
     return this.http.get<any>(endpointListAuditor)
   }
 
@@ -327,155 +356,218 @@ export class ApiService {
   //   let assign = `${this.apiURL}/api/Auditoria/InsertAuditoria`
   //   return this.http.post<any>(assign,resquest)
   // }
-   insertAuditoria(resquest){
+  insertAuditoria(resquest) {
     let assign = `${this.apiURLNuevo}/api/Auditoria/InsertPlanAuditoria`
-    return this.http.post<any>(assign,resquest)
+    return this.http.post<any>(assign, resquest)
   }
-  getListarAuditorias(id: any){
-    let endpointListAuditor = `${this.apiURLNuevo}/api/Auditoria/ListarAuditorias/${id}` 
-    return this.http.get<any>(endpointListAuditor,id)
+  getListarAuditorias(id: any) {
+    let endpointListAuditor = `${this.apiURLNuevo}/api/Auditoria/ListarAuditorias/${id}`
+    return this.http.get<any>(endpointListAuditor, id)
   }
 
-  getAuditor(id: any){
-    let endpointListAuditor = `${this.apiURLNuevo}/api/Auditoria/Auditoria/${id}` 
+  getAuditor(id: any) {
+    let endpointListAuditor = `${this.apiURLNuevo}/api/Auditoria/Auditoria/${id}`
     return this.http.get<any>(endpointListAuditor)
   }
 
   //obtener el usuario 15; para segunda tabla y 3ra
-  getAuditorias(id: any){
-    let endpointListAuditor = `${this.apiURLNuevo}/api/Auditoria/Auditoria/${id}` 
-    return this.http.get<any>(endpointListAuditor,id)
+  getAuditorias(id: any) {
+    let endpointListAuditor = `${this.apiURLNuevo}/api/Auditoria/Auditoria/${id}`
+    return this.http.get<any>(endpointListAuditor, id)
   }
 
-  updateAuditoria(resquest){
+  updateAuditoria(resquest) {
     let assign = `${this.apiURLNuevo}/api/Auditoria/UpdateVerificacionAuditoria`
-    return this.http.put<any>(assign,resquest)
+    return this.http.put<any>(assign, resquest)
   }
 
-  updateInformeAuditoria(resquest){
+  updateInformeAuditoria(resquest) {
     let assign = `${this.apiURLNuevo}/api/Auditoria/UpdateInformeAuditoria`
-    return this.http.put<any>(assign,resquest)
+    return this.http.put<any>(assign, resquest)
   }
-  deleteRequisitoAuditoria(id: any){
+  deleteRequisitoAuditoria(id: any) {
     let assign = `${this.apiURLNuevo}/api/Auditoria/RequisitoAuditoria?idrequisito=${id}`
     return this.http.delete<any>(assign)
   }
+
+  //MEJORA CONTINUA
+  getMejoraContinua() {
+    const id = localStorage.getItem("Id");
+    let list = `${this.apiURLNuevo}/api/MejoraContinua/${id}`
+    console.log(list);
+    return this.http.get<any>(list)
+  }
+
+  postMejoraContinua(request: any){
+    const list = `${this.apiURLNuevo}/api/MejoraContinua`;
+    return this.http.post<any>(list, request)
+  }
+  //Matriz Partes Interesadas
+  postMatrizPartesInteresadas(request: any) {
+    let assign = `${this.apiURLNuevo}/api/MatrizPartesInteresadas`
+    return this.http.post<any>(assign, request)
+  }
+  putMatrizPartesInteresadas(request: any) {
+    let assign = `${this.apiURLNuevo}/api/MatrizPartesInteresadas/MatrizPartesInteresadas`
+    return this.http.put<any>(assign, request)
+  }
+  deleteMatrizPartesInteresadas(id: any) {
+    let assign = `${this.apiURLNuevo}/api/MatrizPartesInteresadas/${id}`
+    console.log(assign);
+    return this.http.delete<any>(assign)
+  }
+  //Get Normas
+  getDatosNormas(id: any) {
+    let list = `${this.apiURLNuevo}/api/RequisitosNormas/requisitos/${id}`
+    console.log(list);
+    return this.http.get<any>(list)
+  }
+
    ///ACTIVIDADES (VISTA DE PLANIFICACIÓN)
-   getActivities(){
+  getActivities(){
     const id = localStorage.getItem("Id");
     const idrol = localStorage.getItem("rol");
     let lista = `${this.apiURLNuevo}/api/Actividad/actividades?idUsuarioPst=${id}&idTipoUsuario=${idrol}`
     return this.http.get<any>(lista)
   }
-  getActivitiesCompleta(idActividad: any){
+  getActivitiesCompleta(idActividad: any) {
     let direccion = `${this.apiURLNuevo}/api/Actividad/actividades/${idActividad}`
     return this.http.get<any>(direccion)
   }
-  getListResponsible(){
+  getListResponsible() {
     const rnt = localStorage.getItem('rnt');
     let lista = `${this.apiURLNuevo}/api/Actividad/ListarResponsables/${rnt}`
     return this.http.get<any>(lista)
   }
-  getTypeList(idtabla :any){
+  getTypeList(idtabla: any) {
     let lista = `${this.apiURLNuevo}/api/General/ListarMaestros/${idtabla}`
     return this.http.get<any>(lista)
   }
-  postNewRecord(request: any){
+  postNewRecord(request: any) {
     let assign = `${this.apiURLNuevo}/api/Actividad/actividades`
-    return this.http.post<any>(assign,request)
+    return this.http.post<any>(assign, request)
   }
- 
-  deleteActivities(id: any){
+
+  deleteActivities(id: any) {
     let assign = `${this.apiURLNuevo}/api/Actividad/actividades?id=${id}`
     return this.http.delete<any>(assign)
   }
-  putActivities(request: any){
+  putActivities(request: any) {
     let assign = `${this.apiURLNuevo}/api/Actividad/actividades`
-    return this.http.put<any>(assign,request)
+    return this.http.put<any>(assign, request)
   }
-  getUsersRoles(request: any){
+  getUsersRoles(request: any) {
     let assign = `${this.apiURLNuevo}/api/Usuario/usuarioRoles`
-    return this.http.post<any>(assign,request)
+    return this.http.post<any>(assign, request)
   }
-  postRegisterColaborador(request: any){
+  postRegisterColaborador(request: any) {
     let assign = `${this.apiURLNuevo}/api/Usuario/registrarEmpleadoPst?id=${request.idUsuario}&nombre=${request.nombre}&idcargo=${request.idcargo}&correo=${request.correo}`
-    return this.http.post<any>(assign,null)
+    return this.http.post<any>(assign, null)
   }
-  putAvatar(request: any){
+  putAvatar(request: any) {
     const idUsuarioPst = window.localStorage.getItem('Id');
     let lista = `${this.apiURLNuevo}/api/Actividad/Avatar?idusuariopst=${idUsuarioPst}&idavatar=${request}`
-    return this.http.put<any>(lista,request)
+    return this.http.put<any>(lista, request)
   }
-  putLogo(request: any){
+  putLogo(request: any) {
     const send = {
       ID_USUARIO: window.localStorage.getItem('Id'),
       LOGO: request
     }
     let lista = `${this.apiURLNuevo}/api/Actividad/Logo`
-    return this.http.put<any>(lista,send)
+    return this.http.put<any>(lista, send)
   }
 
   //FORMULARIOS DE EVIDENCIA
-  saveForms(request: any){
+  saveForms(request: any) {
     const form = `${this.apiURLNuevo}/api/Formulario`;
     return this.http.post<any>(form, request)
   }
-  getDataForm(idFormulario: number){
+  getDataForm(idFormulario: number) {
     const rnt = localStorage.getItem('rnt');
     const idUsuarioPst = window.localStorage.getItem('Id');
     let direccion = `${this.apiURLNuevo}/api/Formulario?ID_FORMULARIO=${idFormulario}&RNT=${rnt}&ID_USUARIO=${idUsuarioPst}`
     return this.http.get<any>(direccion)
   }
-  
-  getForms(){
+
+  getForms() {
     const rnt = localStorage.getItem('rnt');
     const idUsuarioPst = window.localStorage.getItem('Id');
     let direccion = `${this.apiURLNuevo}/api/Formulario?ID_FORMULARIO=1&RNT=${rnt}&ID_USUARIO=${idUsuarioPst}`
     return this.http.get<any>(direccion)
   }
-  deleteForm(idRespuestaformulario){ 
-      let assign = `${this.apiURLNuevo}/api/Formulario?idRespuestaformulario=${idRespuestaformulario}`
-      return this.http.delete<any>(assign)
+  deleteForm(idRespuestaformulario) {
+    let assign = `${this.apiURLNuevo}/api/Formulario?idRespuestaformulario=${idRespuestaformulario}`
+    return this.http.delete<any>(assign)
   }
-  
+
   //actualizar formulario
+  getDataParteInteresada() {
+    const id = localStorage.getItem("Id");
+    let list = `${this.apiURLNuevo}/api/MatrizPartesInteresadas/${id}`
+    console.log(list);
+    return this.http.get<any>(list)
+  }
   getFormsParteInteresada(){
     const rnt = localStorage.getItem('rnt');
     const idUsuarioPst = window.localStorage.getItem('Id');
     let direccion = `${this.apiURLNuevo}/api/Formulario?ID_FORMULARIO=2&RNT=${rnt}&ID_USUARIO=${idUsuarioPst}`
     return this.http.get<any>(direccion)
   }
-  postMonitorizacionUsuario(request: any){
+  postMonitorizacionUsuario(request: any) {
     const direccion = `${this.apiURLNuevo}/api/General/MonitorizacionUsuario`;
     return this.http.post<any>(direccion, request)
   }
 
-  // ENCUESTA
-
-  getEncuestas( ){
-    let lista = `${this.apiURLNuevo}/api/Encuesta`
-    return this.http.get<any>(lista)
-  }
   //MONITORIZACIÓN
 
-  getMonitorizacion( ){
+  getMonitorizacion() {
     let lista = `${this.apiURLNuevo}/api/Monitorizacion/MonitorizacionIndicador`
     return this.http.get<any>(lista)
   }
 
-    UpdateAuditoriaEstadoTerminado(id: any){
+  UpdateAuditoriaEstadoTerminado(id: any) {
     let assign = `${this.apiURLNuevo}/api/Auditoria/UpdateEstadoTerminadoAuditoria?idAuditoria=${id}`
-    return this.http.put<any>(assign,id)
+    return this.http.put<any>(assign, id)
   }
-  ValidateRntMincit(rnt:any): Observable<string> {
+  ValidateRntMincit(rnt: any): Observable<string> {
     let validate = `${this.apiURLNuevo}/api/Validaciones/ObtenerDataMincit?RNT=${rnt}`
     let response = this.http.get<string>(validate);
     return response;
   }
 
-  getUsuarioPermisoPerfil(idusuarioperfil:any){
+  //ENCUESTA
+  saveEncuesta(request: any){
+    const encuesta = `${this.apiURLNuevo}/api/Encuesta`;
+    return this.http.post<any>(encuesta, request)
+  }
+  getUsuarioPermisoPerfil(idusuarioperfil: any) {
     let validate = `${this.apiURLNuevo}/api/Usuario/usuarioPermisosPorPerfil?idUsuarioPerfil=${idusuarioperfil}`
     let response = this.http.get<any>(validate);
     return response;
   }
+  getEncuestas(){
+    let lista = `${this.apiURLNuevo}/api/Encuesta`
+    return this.http.get<any>(lista)
+  }
+  deleteEncuesta(idDelete: any){
+    let validate = `${this.apiURLNuevo}/api/Encuesta/DeleteEncuesta?idEncuesta=${idDelete}`
+    return this.http.delete<any>(validate)
+  }
+  getEncuestasRespuesta(id: any){
+    let lista = `${this.apiURLNuevo}/api/Encuesta/Preguntas?IdEncuesta=${id}`
+    return this.http.get<any>(lista)
+  }
+
+  //REQUISITOS NORMAS
+  getRequerimientosNormas(id: any){
+    let lista = `${this.apiURLNuevo}/api/RequisitosNormas/requisitos/${id}`
+    return this.http.get<any>(lista)
+  }
+
+  getNormaList(){
+    let lista = `${this.apiURLNuevo}/api/General/GetNormas`
+    return this.http.get<any>(lista)
+  }
+
 }

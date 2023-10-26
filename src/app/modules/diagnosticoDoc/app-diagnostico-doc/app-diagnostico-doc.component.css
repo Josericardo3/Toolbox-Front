@@ -5,8 +5,10 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    margin: 15px;
+    /* margin: 15px; */
     width: 100%;
+    padding: 0 6px;
+    background-color: var(--color-wallpaper, #f6f8f9);
 }
 .titulo{
   display: flex;
@@ -18,13 +20,13 @@ h1{
   width: 80vw;
   font-family: 'Montserrat', sans-serif;
   font-weight: bolder;
-  color: #068460;
+  color: var(--color-title, #962d46);
   text-align: center;
   margin: 2vh 2vw;
 }
 .arrow{
   align-self: flex-start;
-  margin: 0 4vw 0 -7vw;
+  margin: 1px -1vw 0 -4vw;
 }
 p{
     margin: 10px 0;
@@ -104,4 +106,8 @@ a{
     font-weight: 400;
     font-family:'Work Sans', sans-serif;
   }
-  
+  @media (max-width: 410px) {
+     h1 {
+      font-size: 30px;
+  }
+}

@@ -29,7 +29,7 @@
               <div class="radio">
                 <input type="radio" [value]="opcion.ITEM" [name]="'radio' + j + '-' + i" (change)="capturarValor($event, opcion.ITEM, subcampo.NUMERAL_PRINCIPAL , subcampo.NUMERAL_ESPECIFICO)" 
                 (click)="valorSeleccionado = opcion.ITEM" [id]="subcampo.NUMERAL_ESPECIFICO" (change)="opcionSeleccionada = true"
-                [formControlName]="'radio' + j + '-' + i"> {{opcion.VALOR}}
+                [formControlName]="'radio' + j + '-' + i"> {{opcion.DESCRIPCION}}
               </div>
             </div>
           </div>

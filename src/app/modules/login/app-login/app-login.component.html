@@ -45,7 +45,9 @@
                     </label>
                 </div>
                 <div *ngIf="errorMessage" class="error-message">{{errorMessage}}</div>
-             <button type="submit" class="btn" [disabled]="loginForm.invalid">Ingresar</button>    <!--M routerLink="/dashboard" routerLinkActive="activebutton" -->
+                <div class="btn-login">
+             <button type="submit" class="btn" [disabled]="loginForm.invalid">Ingresar</button> 
+            </div>   <!--M routerLink="/dashboard" routerLinkActive="activebutton" -->
             <p class="p">¿Olvidó su contraseña? <a routerLink="/recovery" routerLinkActive="activebutton">Ingrese aquí</a></p>
             <p class="p">¿No tienes una cuenta? <a routerLink="/register" routerLinkActive="activebutton">Registrarse como prestador</a></p>
         </form>

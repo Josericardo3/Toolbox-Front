@@ -1,4 +1,4 @@
-<app-app-header></app-app-header>
+<app-app-header class="inform-app-header"></app-app-header>
 
 <div class="componente-global">
   <div class="titulo">
@@ -56,7 +56,7 @@
           <div class="row"> 
             <div class="col-md-3 col-sm-12 order-sm-2 order-md-1 d-flex justify-content-center"
             style="margin-top: -37px;">
-              <app-app-menu *ngIf="!mostrarMenu"></app-app-menu>
+              <app-app-menu *ngIf="!mostrarMenu" class="menu-auditoria"></app-app-menu>
             </div>
             <div class="col-md-9 col-sm-12 order-sm-1 order-md-2"> 
             <div class="containerForm">
@@ -88,13 +88,13 @@
                   Conformidad del sistema de gestion de sostenibilidad
                 </label>
                 <br />
-                <table class="table" id="table_audit" 
+                <table class="table-conformidad" id="table_audit" 
                  style="max-width: 100%; height: 25px;margin-bottom: 20px; width: 64.6vw;">
                   <thead style="background: #068460; color: white;">
                     <tr>
                       <div class="text-th">
                         <th style="padding: 5px;">DESCRIPCIÓN</th>
-                        <th style="margin-left: 376px;padding: 5px;">NTC</th>
+                        <th style="margin-left: 376px;padding: 5px;" class="ntc">NTC</th>
                         <th style="margin-left: 54px;padding: 5px;">LEGALES</th>
                       </div>
                     </tr>
@@ -104,40 +104,40 @@
                       <div style="display: flex;justify-content: space-between;">
                         <td class="td-conformidad">Total de <span style="color: black;">NO CONFORMIDADES</span>
                           detectadas en esta auditoría</td>
-                        <td style="margin-left: 24px;margin-top: 5px;">{{proceso?.CANT_NC}}</td>
-                        <td style="margin-right: 68px;margin-top: 5px;">--</td>
+                        <td style="margin-left: 24px;margin-top: 5px;" class="ntc">{{proceso?.CANT_NC}}</td>
+                        <td style="margin-right: 68px;margin-top: 5px;" class="legales">--</td>
                       </div>
                     </tr>
                     <tr>
                       <div style="display: flex;justify-content: space-between;">
                         <td class="td-conformidad">Total de <span style="color: black;">OBSERVACIONES</span> detectadas
                           en esta auditoría</td>
-                        <td style="margin-left: 52px;">{{proceso?.CANT_OBS}}</td>
-                        <td style="margin-right: 67px;">--</td>
+                        <td style="margin-left: 52px;" class="ntc">{{proceso?.CANT_OBS}}</td>
+                        <td style="margin-right: 67px;"  class="legales">--</td>
                       </div>
                     </tr>
                     <tr>
                       <div style="display: flex;justify-content: space-between;">
                         <td class="td-conformidad">Total de <span style="color: black;">OPORTUNIDADES DE MEJORA</span>
                           detectadas en esta auditoría</td>
-                        <td style="margin-right: 34px;">{{proceso?.CANT_OM}}</td>
-                        <td style="margin-right: 67px;">--</td>
+                        <td style="margin-right: 34px;" class="ntc">{{proceso?.CANT_OM}}</td>
+                        <td style="margin-right: 67px;"  class="legales" >--</td>
                       </div>
                     </tr>
                     <tr>
                       <div style="display: flex;justify-content: space-between;">
                         <td class="td-conformidad">Total de <span style="color: black;">FORTALEZAS</span> detectadas en
                           esta auditoría</td>
-                        <td style="margin-left: 79px;">{{proceso?.CANT_F}}</td>
-                        <td style="margin-right: 67px;">--</td>
+                        <td style="margin-left: 79px;" class="ntc">{{proceso?.CANT_F}}</td>
+                        <td style="margin-right: 67px;"  class="legales">--</td>
                       </div>
                     </tr>
                     <tr>
                       <div style="display: flex;justify-content: space-between;">
                         <td class="td-conformidad">Total de <span style="color: black;">CONFORMIDADES</span> detectadas
                           en esta auditoría</td>
-                        <td style="margin-left: 49px;">{{proceso?.CANT_C}}</td>
-                        <td style="margin-right: 67px;">--</td>
+                        <td style="margin-left: 49px;" class="ntc">{{proceso?.CANT_C}}</td>
+                        <td style="margin-right: 67px;"  class="legales" >--</td>
                       </div>
                     </tr>
                   </tbody>

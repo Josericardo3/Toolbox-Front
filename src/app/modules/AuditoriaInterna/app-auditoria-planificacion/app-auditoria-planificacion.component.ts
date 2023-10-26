@@ -1,6 +1,8 @@
 import { Component, EventEmitter, OnInit, Output, TemplateRef } from '@angular/core';
-import { FormGroup, Validators, FormBuilder, AbstractControl } from '@angular/forms';
+import { FormGroup, Validators, FormBuilder, AbstractControl, FormControl } from '@angular/forms';
+import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { ModalService } from 'src/app/messagemodal/messagemodal.component.service';
 import { ApiService } from 'src/app/servicios/api/api.service';
 
 @Component({
@@ -12,7 +14,12 @@ export class AppAuditoriaPlanificacionComponent {
   modalRef: BsModalRef;
   activeTab: string = 'proceso';
   valueFormParent: any = [];
+  normas: any[] = [];
   formParent!: FormGroup;
+  dropdownSettings: IDropdownSettings;
+  dropdownList = [];
+  selectedItems = [];
+
   @Output() valorEnviadoModal = new EventEmitter<object>();
 
 
@@ -20,6 +27,7 @@ export class AppAuditoriaPlanificacionComponent {
     private modalService: BsModalService,
     private formBuilder: FormBuilder,
     public ApiService: ApiService,
+    private Message: ModalService,
   ) { }
 
   openModal(template: TemplateRef<any>) {
@@ -30,6 +38,13 @@ export class AppAuditoriaPlanificacionComponent {
     event.preventDefault();
   }
 
+    /* nicio */
+    onItemSelect(item: any) {
+      // console.log(item);
+    }
+    onSelectAll(items: any) {
+      // console.log(items);
+    }
 
   ngOnInit(): void {
     this.formParent = this.formBuilder.group({
@@ -37,15 +52,16 @@ export class AppAuditoriaPlanificacionComponent {
       auditor: ["", Validators.required],
       auditados: ["", Validators.required],
       observacion: [""],
+      normaTeam: ["", Validators.required],
       hora: ["", Validators.required],
       //tabs 1
       proceso: ["", Validators.required],
       actividad: ["", Validators.required],
       //tabs 2
       norma: ["", Validators.required],
-      requisito: ["", Validators.required],
     });
     this.fnListResponsible();
+    this.getNormas(); 
   }
   listAuditor: any = [];
   equipoAuditor: any = [];
@@ -78,14 +94,20 @@ export class AppAuditoriaPlanificacionComponent {
     } else if (value === 'requisito') {
       this.formParent.get('requisito').enable();
       this.formParent.get('norma').disable();
+      this.onNormaSelect();
       this.tipoNorma='requisito';
     }
   }
   auditeeCharge:any = ''; 
  
+  onNormaSelect() {
+    let constante = this.formParent.get('norma').value;
+    const idNorma = constante ? constante.ID_NORMA : null;
+    this.getRequerimientosNormas(idNorma);
+  }
+  
   saveForm() {
   
-    //this.valueFormParent.push(this.formParent.value)
     this.valueFormParent = this.formParent.value
    
       for (let i = 0; i < this.valueFormParent.length; i++) {
@@ -131,5 +153,50 @@ export class AppAuditoriaPlanificacionComponent {
     const rolValue = this.getRolValue();
     return rolValue === 4 || rolValue === 5;
   }
+
+  getNormas() {
+    this.ApiService.getNormaList().subscribe((data: any) => {
+      this.normas = data;
+    });
+  }
+
+  getRequerimientosNormas(id: any) {
+    this.ApiService.getRequerimientosNormas(id).subscribe((data: any) => {
+      this.dropdownList = data.map((requisito: any) => requisito.TITULO);
+    });
+    this.dropdownSettings = {
+      singleSelection: false,
+      idField: 'item_id',
+      textField: 'item_text',
+      selectAllText: 'Seleccionar todos',
+      unSelectAllText: 'Deseleccionar todo',
+      itemsShowLimit: 3,
+      allowSearchFilter: true
+    };
+  }
+  
+  
+  onDateChange(event: any) {
+    debugger;
+    const dateInitValue = this.formParent.get('fecha').value;    
+    if (dateInitValue) {
+      const inicioValue = new Date(dateInitValue);
+      const now = new Date();  
+      const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+       if(inicioValue< today){
+        const title = "Registro no exitoso";
+        const message = "Por favor la fecha no puede ser menor a la fecha actual";
+        this.Message.showModal(title, message);
+        this.formParent.get('fecha').setValue('');
+        return;
+      }
+    }
+  }
+  
+  
+  
+  
+
+  
   
 }

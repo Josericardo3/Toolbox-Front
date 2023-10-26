@@ -1,11 +1,20 @@
-<app-app-header></app-app-header>
+<app-app-header class="actividades-app-header"></app-app-header>
 <div class="containerActividadesPlanificadas">
     <div class="titulo">
         <h1>Actividades planificadas</h1>
         <app-app-header-arrow-left [redirectToDashboard]="true"></app-app-header-arrow-left>
     </div>
     <div class="resultados">
-        <app-app-menu-alta-gerencia></app-app-menu-alta-gerencia>
+        <app-app-menu-alta-gerencia class="menu-alta-gerencia"></app-app-menu-alta-gerencia>
+        <mat-menu #menu="matMenu">
+            <app-app-menu-alta-gerencia class="responsi-gerencia-menu"></app-app-menu-alta-gerencia>
+          </mat-menu>
+        <div class="resposi-icon">
+            <!-- <i class="fa-solid fa-bars navbar-toggle collapsed" style="color: #ffffff;font-size: 20px;" (click)="isCollapsed = !isCollapsed"></i> -->
+            <button mat-icon-button [matMenuTriggerFor]="menu" style="color: #ffffff;">
+                <i class="fa-solid fa-bars" style="font-size: 20px;"></i>
+              </button>
+        </div>
         <div class="form">
             <!--*** BLOQUE DE BUSQUEDA  ***-->
             <div class="buscar">            
@@ -18,18 +27,20 @@
                         <th scope="col">Responsable</th>
                         <th scope="col">Descripción</th>
                         <th scope="col">Estado</th>
-                        <th scope="col"></th>
+                        <th scope="col" class="color-estado "></th>
                         <th scope="col" style="text-align: center;" (click)="mostrarBuscador = !mostrarBuscador">
                             <i class="fa-solid fa-magnifying-glass" title="Buscar" style="cursor: pointer;"></i>
                         </th>
+                        <th scope="col"></th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr *ngFor="let campo of estadoArray; let i = index;">
+                        <td  *ngIf="getRolValue() === 4 || getRolValue()===3 || getRolValue()===5" >{{campo.NOMBRE_PST || campo.NOMBRE_RESPONSABLE}}</td>
                         <td>{{campo.NOMBRE_RESPONSABLE}}</td>
                         <td  title="Dale click para leer la descripción" (click)="fnShowModal(i)">{{campo.DESCRIPCION.slice(0,40) }}</td>
                         <td>{{campo.ESTADO_PLANIFICACION}}</td>
-                        <td><i class="fa fa-circle" [ngStyle]="{'color': campo.statecolor}"></i></td>
+                        <td class="color-estado "><i class="fa fa-circle" [ngStyle]="{'color': campo.statecolor}"></i></td>
                         <td *ngIf="getRolValue() !== 4 && getRolValue() !==5">
                             <a title="Editar" routerLink="/planificacion" routerLinkActive="activebutton">
                                 <i class="fa-solid fa-pen" style="color: #06543c;"></i>

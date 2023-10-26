@@ -1,11 +1,19 @@
-<app-app-header></app-app-header>
+<app-app-header class="resultados-app-header"></app-app-header>
 <div class="containerResultadosEncuestas">
     <div class="titulo">
         <h1>Resultados de encuestas</h1>
         <app-app-header-arrow-left [redirectToDashboard]="true"></app-app-header-arrow-left>
     </div>
     <div class="resultados">
-        <app-app-menu-alta-gerencia></app-app-menu-alta-gerencia>
+        <app-app-menu-alta-gerencia class="menu-alta-gerencia" ></app-app-menu-alta-gerencia> 
+        <mat-menu #menu="matMenu">
+            <app-app-menu-alta-gerencia class="responsi-gerencia-menu"></app-app-menu-alta-gerencia>
+          </mat-menu>
+        <div class="resposi-icon">
+            <button mat-icon-button [matMenuTriggerFor]="menu" style="color: #ffffff;">
+                <i class="fa-solid fa-bars" style="font-size: 20px;"></i>
+              </button>
+        </div>
         <div class="form">
             <!-- *** SECCIÓN DE LA TABLA ***-->
             <table class="table-gestion" style="margin-top: 8px;">

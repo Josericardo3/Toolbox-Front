@@ -1,9 +1,9 @@
 <div class="header">
-  <app-app-header></app-app-header>
+  <app-app-header class="custom-app-header"></app-app-header>
   <div class="container">
-    <a title="Ver historial" [routerLink]="['/historial']"><i class="fa-regular fa-clock" style="color: #ffffff;"></i></a>
+    <a title="Ver historial" [routerLink]="['/historial']" class="historial-fa-clock"><i class="fa-regular fa-clock" style="color: #ffffff;"></i></a>
       <div class="container-norma" *ngIf="!newUser">
-          <select  class="select-norma" name="select" *ngIf="arrNormas.length > 0"(change) = "changeSelected($event)">    
+          <select  class="select-norma" name="select" *ngIf="arrNormas.length > 0"(change)="changeSelected($event)">    
             <option 
               *ngFor="let element of arrNormas"
               [value]="element.NORMA" 
@@ -14,11 +14,18 @@
           </select>
       </div>
    </div>
+   <div  class="container-header">
+     <i class="fa-regular fa-clock" style="color: #ffffff;font-size: 20px;margin-right: 10px;" [routerLink]="['/historial']" (click)="isCollapsed = !isCollapsed"></i>
+     <i class="fa-solid fa-bell navbar-toggle collapsed" style="color: #ffffff;font-size: 20px;" (click)="isCollapsed = !isCollapsed"></i>
+  </div>
 </div>
-<div class="containerDashboard">
+<div class="containerDashboard" >
   <div class="mainContainer">
     <div class="dashboard">
-      <div class="button-cerrar">
+        <div class="button-cerrar"  *ngIf="adminTes" >
+          <p routerLink="">Cerrar Sesión</p>
+       </div>
+       <div class="close" *ngIf="!adminTes">
         <p routerLink="">Cerrar Sesión</p>
       </div>
       <div class="grid-img">
@@ -64,11 +71,11 @@
             <i class="fa-regular fa-note-sticky" style="color: #068460;"></i>
              <p class="sub-titulo">DOCUMENTACIÓN</p>
           </div>
-          <div class="item-img" (click)="redirigirAUrlExterna()" (mouseover)="mouseOver($event)" (mouseout)="mouseOut($event)"
+          <div class="item-img-sinHover" (click)="menuFilter($event)" (mouseover)="mouseOver($event)" (mouseout)="mouseOut($event)"
           [ngClass]="{'oculto': AccesoELearning}">
             <!-- <img src="../../../../assets/img-dashboard/formacion.svg" alt="formacion" id="formacion"> -->
-            <i class="fa-solid fa-laptop-file" style="color: #068460;"></i>
-             <p class="sub-titulo">FORMACIÓN E E-LEARNING</p>
+            <i class="fa-solid fa-laptop-file" style="color: #9999;"></i>
+             <p class="sub-titulo-sinHover">FORMACIÓN E E-LEARNING</p>
           </div>
           <div class="item-img" (click)="menuFilter($event); buscarRuta('gestorNoticia')" (mouseover)="mouseOver($event)"
            (mouseout)="mouseOut($event)" [ngClass]="{'oculto': AccesoNoticias}">
@@ -76,7 +83,7 @@
             <i class="fa-solid fa-newspaper" style="color: #068460;"></i>
              <p class="sub-titulo">NOTICIAS</p>
           </div>
-          <!-- <div class="item-img" (click)="redirigirAuditoria(); buscarRuta('listaDeVerificacion')"
+          <!--<div class="item-img" (click)="redirigirAuditoria(); buscarRuta('listaDeVerificacion')"
            (mouseover)="mouseOver($event)" (mouseout)="mouseOut($event)" [ngClass]="{'oculto': AccesoAuditoria}">
             <i class="fa-solid fa-chart-line" style="color: #068460;"></i>
              <P class="sub-titulo">AUDITORÍA INTERNA</P>
@@ -95,27 +102,28 @@
             <img src="../../../../assets/img-dashboard/cronograma.svg" alt="cronograma" >
              <p class="sub-titulo">CRONOGRAMA</p>
           </div> -->
-          <div class="item-img-sinHover" (click)="menuFilter($event)" (mouseover)="mouseOver($event)" (mouseout)="mouseOut($event)"
+          <div class="item-img" (click)="redirigirAUrlExterna()" (mouseover)="mouseOver($event)" (mouseout)="mouseOut($event)"
           [ngClass]="{'oculto': AccesoKpi}">
             <!-- <img src="../../../../assets/img-dashboard/medicion.svg" alt="medicion" > -->
-            <i class="fa-solid fa-ruler" style="color: #9999;"></i>
-             <p class="sub-titulo-sinHover">MEDICIÓN Y KPI's</p>
+            <i class="fa-solid fa-ruler" style="color: #068460;"></i>
+             <p class="sub-titulo">MEDICIÓN Y KPI's</p>
           </div>
-         <!-- <div class="item-img" (click)="menuFilter($event); buscarRuta('mejoraContinua')" (mouseover)="mouseOver($event)" 
+          <!--<div class="item-img-sinHover" (click)="menuFilter($event); buscarRuta('mejoraContinua')" (mouseover)="mouseOver($event)" 
           (mouseout)="mouseOut($event)" [ngClass]="{'oculto': AccesoMejora}">
             <i class="fa-solid fa-arrows-spin" style="color: #068460;"></i>
-            <p class="sub-titulo">MEJORA CONTÍNUA</p>
+            <p class="sub-titulo-sinHover">MEJORA CONTÍNUA</p>
           </div>
-          <div class="item-img" (click)="menuFilter($event); buscarRuta('monitorizacion')" 
+          <div class="item-img-sinHover" (click)="menuFilter($event); buscarRuta('monitorizacion')" 
           (mouseover)="mouseOver($event)" (mouseout)="mouseOut($event)"  [ngClass]="{'oculto': AccesoMonitorizacion}">
             <i class="fa-solid fa-video" style="color: #068460;"></i>
-            <p class="sub-titulo">MONITORIZACIÓN</p>
+            <p class="sub-titulo-sinHover">MONITORIZACIÓN</p>
           </div>-->
       </div>
     </div>
 
   </div>
-  <div class="notificaciones">
+
+  <div class="notificaciones collapse navbar-collapse"  [ngClass]="{ 'mostrar-notificaciones': mostrarNotificacion }" [collapse]="isCollapsed">
       <div class="not1">
         <div class="titulo">
           <h3>Noticias</h3>
@@ -222,6 +230,7 @@
     </div>
   </div>
 </div>
+
 <ngx-spinner
 bdColor="rgba(0, 0, 0, 0.5)"
 size="small"

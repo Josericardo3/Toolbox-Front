@@ -6,6 +6,9 @@
     width: 100%;
     margin-bottom: 50px;
 }
+.cointainer{
+  background-color: var(--color-wallpaper, #f6f8f9);
+}
 .caracterizacion{
   width: 60vw;
 }
@@ -61,7 +64,7 @@ h1{
   width: 80vw;
   font-family: 'Montserrat', sans-serif;
   font-weight: bolder;
-  color: #068460;
+  color: var(--color-title, #962d46);
   text-align: center;
   margin: 2vh 2vw;
 }
@@ -237,7 +240,8 @@ input[type="checkbox"].ng-invalid.ng-touched {
   align-items: center;
   justify-content: center;
   flex-direction: row-reverse;
-  margin: 2vh 0;
+  margin: 0 2vh 0;
+  padding-top: 12px;
   width: 100%;
 }
 .arrow{
@@ -249,7 +253,17 @@ input[type="checkbox"].ng-invalid.ng-touched {
   .containerRadio {
     width: 26vw;
   }
+  .caracterizacion{
+    width: 60%;
+  }
+  h1{
+    font-size: 20px;
+  }
   input[type=radio]{
       width: 5%;
+  }
+  p{
+    font-size: 15px;
+    margin: 2vh;
   }
 }

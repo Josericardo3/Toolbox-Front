@@ -40,12 +40,12 @@
                   <tr>
                       <th scope="col">Auditados</th>
                       <th scope="col">Auditor</th>
-                      <th scope="col">Cargo del líder</th>
+                      <th scope="col" class="cargo-lider">Cargo del líder</th>
                       <th scope="col">Líder del proceso</th>
-                      <th scope="col">Normas de descripción</th>
-                      <th scope="col">Otros auditados</th>
-                      <th scope="col">Tipo de norma</th>
-                      <th scope="col">Tipo de proceso</th>
+                      <th scope="col" class="normas-descripcion">Normas de descripción</th>
+                      <th scope="col" class="otros-auditados">Otros auditados</th>
+                      <th scope="col" class="tipo-norma">Tipo de norma</th>
+                      <th scope="col" class="tipo-proceso">Tipo de proceso</th>
                       <th scope="col">Acciones</th>
                   </tr>
               </thead>
@@ -53,12 +53,12 @@
                   <tr *ngFor="let proceso of PROCESOS,let index= index">
                       <td>{{ proceso.AUDITADOS }}</td>
                       <td>{{ proceso.AUDITOR }}</td>
-                      <td>{{ proceso.CARGO_LIDER }}</td>
+                      <td class="cargo-lider">{{ proceso.CARGO_LIDER }}</td>
                       <td>{{ proceso.LIDER_PROCESO}}</td>
-                      <td>{{ proceso.NORMAS_DESCRIPCION }}</td>
-                      <td>{{ proceso.OTROS_AUDITADOS }}</td>
-                      <td>{{ proceso.TIPO_NORMA }}</td>
-                      <td>{{ proceso.TIPO_PROCESO}}</td>
+                      <td class="normas-descripcion">{{ proceso.NORMAS_DESCRIPCION }}</td>
+                      <td class="otros-auditados">{{ proceso.OTROS_AUDITADOS }}</td>
+                      <td class="tipo-norma">{{ proceso.TIPO_NORMA }}</td>
+                      <td class="tipo-proceso">{{ proceso.TIPO_PROCESO}}</td>
                       <td> 
                         <a (click)="enviarValor(proceso.ID_PROCESO_AUDITORIA, index);showModal = false;" title="Seleccionar">
                           <i class="fa-solid fa-file-circle-check fsh" style="color: #06543c;margin: 4px;"></i>

@@ -1,18 +1,26 @@
-<app-app-header></app-app-header>
+<app-app-header class="actividades-app-header"></app-app-header>
 <div class="containerActividades">
     <div class="titulo">
         <h1>Actividades</h1>
         <app-app-header-arrow-left [redirectToDashboard]="true"></app-app-header-arrow-left>
     </div>
     <div class="actividades">
-        <app-menu-corto class="menu"></app-menu-corto>
+        <app-menu-corto  class="menu-corto menu" ></app-menu-corto>
+        <mat-menu #menu="matMenu">
+          <app-menu-corto class="responsi-menu" ></app-menu-corto>
+        </mat-menu>
+        <div class="resposi-icon">
+            <button mat-icon-button [matMenuTriggerFor]="menu" style="color: #ffffff;">
+              <i class="fa-solid fa-bars" style="font-size: 20px;"></i>
+            </button>
+          </div>
          <!--*** NUEVO REGISTRO DE ACTIVIDAD *** -->
         <div class="form">
           <div class="top">
             <div class="buscar" *ngIf="showfilter">            
               <input type="text" placeholder="Buscar..." class="buscador" [(ngModel)]="filter" (input)="filterResult()">
             </div>
-            <button class="btn" (click)="fnNuevoRegistro()" *ngIf="getRolValue() !== 4 && getRolValue() !== 5">
+            <button class="btn" (click)="fnNuevoRegistro()" *ngIf="getRolValue() !== 4 && getRolValue() !== 5 && getRolValue() !== 7">
               <i class="fa-solid fa-plus" style="color: #fff;"></i>Agregar actividad
             </button>
           </div>
@@ -69,6 +77,7 @@
             </div>
 
             <!-- *** SECCIÓN DE LA TABLA DE CONTENIDO DE LAS ACTIVIDADES ***-->
+            <div class="table-container">
             <table class="table-gestion" style="margin-top: 8px;">
                 <thead>
                     <tr>
@@ -133,7 +142,7 @@
                         </select>
                         </td>
                         <td><i class="fa fa-circle" [ngStyle]="{'color': user.statecolor}"></i></td>
-                        <td *ngIf="getRolValue() !== 4 && getRolValue() !== 5">
+                        <td *ngIf="getRolValue() !== 4 && getRolValue() !== 5 && getRolValue() !== 7">
                             <a title="Editar" (click)="fnActivityEdit(i)" *ngIf="caracteristicaIndice!=i" >
                                 <i class="fa-solid fa-pen" style="color: #06543c;"></i>
                             </a>
@@ -153,6 +162,7 @@
                     </tr>
                 </tbody>
             </table>
+          </div>
             <p *ngIf="result"  style="text-align: center;margin-top: 10px; font-size: 19px; font-family: 'Work Sans', sans-serif;" >
               No hay resultado para la búsqueda
             </p>

@@ -1,4 +1,4 @@
-import { Component, Injectable, OnInit } from '@angular/core'
+import { Component, Injectable, NgModule, OnInit } from '@angular/core'
 import { Router } from '@angular/router'
 import { selectFeatureCount } from '../../../state/selectors/items.selectors'
 import { Observable } from 'rxjs'
@@ -8,9 +8,8 @@ import { AppState } from 'src/app/state/selectors/app.state'
 import { ModalService } from 'src/app/messagemodal/messagemodal.component.service'
 import { ApiService } from 'src/app/servicios/api/api.service';
 import { debounce } from 'lodash'
+import { ColorLista } from 'src/app/servicios/api/models/color'
 
-
-//@Injectable()
 
 @Component({
   selector: 'app-app-dashboard',
@@ -52,7 +51,7 @@ export class AppDashboardComponent implements OnInit {
   datosTarjetaActividad: any[] = [];
   datosTarjetaNoticia: any[] = [];
   showimagen: any;
-
+  colorWallpaper:ColorLista;
   result: boolean = false;
   resultNoticia: boolean = false;
   
@@ -78,8 +77,18 @@ export class AppDashboardComponent implements OnInit {
   ) {//PG this.counter$= store.select('initialState')
   }
   normaDiadnostico: any = {};
+  applyStyle: boolean = false;
+  adminTes: boolean = false;
+  pst:boolean=false; 
   ngOnInit(): void {
+    if (localStorage.getItem('rol') == "4" || 4 ||"3"|| 3) {
+      this.applyStyle = true;
+      this.adminTes  = true; 
 
+      }
+      
+    this.ApiService.colorTempo();
+    this.colorWallpaper = JSON.parse(localStorage.getItem("color")).wallpaper;
     this.ApiService.getUsuarioPermisoPerfil(this.userRol).subscribe(dataPermiso => {
 
       if(dataPermiso[0].PLANIFICACION_DIAGNOSTICO === "x"){
@@ -126,11 +135,16 @@ export class AppDashboardComponent implements OnInit {
     this.validateDiagnostico.subscribe((data: any) =>
       this.normaDiadnostico = data);
 
+ 
     let normaSelected = localStorage.getItem("normaSelected");
     //prueba global selectFeatureCount
     // this.getNombreUsuario();
     this.getContenidoTarjeta();
   }
+
+  mostrarNotificacion : boolean = false;
+  isCollapsed = true;
+
   etapaShowInicio: boolean = false;
   etapaShowIntermedio: boolean = false;
   etapaShowFinal: boolean = false;

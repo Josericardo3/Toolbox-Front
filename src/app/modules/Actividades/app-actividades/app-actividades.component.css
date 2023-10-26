@@ -1,7 +1,10 @@
+
 .containerActividades{
     display: flex;
     flex-direction: column;
-    margin: 2vh 0 0 1.5vw;
+    background-color: var(--color-wallpaper, #f6f8f9);
+    /*padding: 4px;*/
+    padding: 2vh 0 0 1.5vw; 
 }
 .titulo{
     display: flex;
@@ -12,7 +15,7 @@ h1{
     width: 100%;
     font-family: 'Montserrat', sans-serif;
     font-weight: bolder;
-    color: #068460;
+    color: var(--color-title, #962d46);
     text-align: center;
     margin: 2vh 0;
 }
@@ -174,4 +177,130 @@ label{
 .top{
     display: flex;
     justify-content: flex-end;
+}
+.resposi-icon {
+    display: none;
+}
+@media (max-width: 970px) {
+
+    /* NOMBRE DE LA CABECERA  */
+    .actividades-app-header 
+        .container-pst p {
+            display: none;
+        }
+    
+
+    button[mat-menu-trigger-for="menu"] {
+        display: block;
+      }
+
+    .menu-corto {
+        display: none
+    }
+    .responsi-menu .linea {
+        width: auto;
+    }
+    
+    .responsi-menu .td-menu {
+        width: auto;
+    }
+    
+    .responsi-menu .p-menu {
+        margin: 0.6vh 0.5vw;
+    }
+    
+    .resposi-icon {
+        display: flex;
+    }
+
+    .resposi-icon {
+        width: 95%;
+        top: 3px;
+        justify-content: flex-end;
+        display: flex;
+        position: absolute;
+        flex-direction: row;
+    }
+
+    .navbar-toggle {
+        padding: 0;
+        margin-right: 15px;
+        margin-top: 0;
+        position: relative;
+    }
+     /* REGISTRO ACTIVIDAD */
+    .bodyNuevoregistro{
+        width: 95%;
+     }
+
+    .h1,
+    h1 {
+        font-size: 30px;
+    }
+
+    .titulo {
+        margin: 0;
+    }
+
+    /* FILTROS */
+    .filtros {
+        display: flex;
+        justify-content: flex-start;
+    }
+
+    /* TABLA  */
+    .form {
+        width: 100% !important;
+    }
+
+    .table-gestion {
+        width: auto;
+        margin-top: 4px;
+        margin: 9px;
+        padding: 11px;
+    }
+
+    .table-gestion th,
+    .table-gestion tbody td {
+        padding: 11px;
+    }
+    
+}
+@media(max-width: 630px){
+    /* TABLA */
+    .table-container{
+        max-height: 300px; /* Establece la altura máxima deseada */
+        overflow-y: auto; 
+    }
+    .table-gestion{
+        width: 100%;
+    }
+
+    /*** SECCION NUEVO REGISTRO DE ACTIVIDAD  ***/
+    .containerSection {
+        display: flex;
+        flex-direction: column;
+        margin: 0 0.4vw;
+        justify-content: center;
+    }
+    .inputSection {
+        width: 78vw !important;
+    }
+    .sectionIcon{
+        display: flex;
+        justify-content: center;
+    }
+
+     /* PAGINADO */
+     .page-style {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+    }
+
+    .container-label {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+    }
 }

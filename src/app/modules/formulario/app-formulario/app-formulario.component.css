@@ -75,4 +75,155 @@ h3, h2, .parrafo, .estado{
     background-color: #f5f5f5 !important;
     color: #999999 !important;
   }
+
+  :disabled{
+    background-color: #737373;
+}
+
+  .checkbox-desactivado {
+    color: #999999 !important;
+  }
+  /*modal boton guardar*/
+  .modal-background {
+    display: flex;
+    
+
+    justify-content: center;
+  }
+  
+  .modal-content {
+
+    display: flex;
+
+    background-color: white;
+
+    padding: 30px;
+
+    border-radius: 15px;
+
+    width: 55vw;
+
+    position: initial;
+
+    height: 60vh;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+  }
+
+  .modal-borde{
+    border-radius: 15px;
+    border: 2px solid #ccc;
+    width: 50vw;
+    height: 54vh;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .modal-title{
+    display: flex;
+    justify-content: center;
+    border-radius: 5px;
+    margin: 2vh 0;
+    padding: 5px;
+    align-items: center;
+    width: 28vw;
+    font-family: 'Work Sans', sans-serif;
+    font-size: 40px;
+    font-weight: 700px;
+  }
+  .textAreaModal{
+    width: 80%; 
+    height: calc(80% - 50px); 
+    resize: none; 
+    border: 1px solid rgb(190, 185, 185);
+  }
+
+  .x{
+    align-self: flex-end;
+  }
+   
+  /* .modal-btn{
+    margin: 3vh 3vw !important;
+    height: 40px;
+    width: 200px;
+    padding: 10px;
+    background-color: #068460;
+    border-radius: 100px;
+    color: #FFFFFF;
+    font-family: 'Work Sans', sans-serif;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    align-self: center;
+  } */
+
+  /*SWITCH MEJORA CONTINUA*/
+  .checkbox-label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+  }
+  
+  .checkbox-container {
+    display: flex;
+    align-items: center;
+    padding-left: 10px;
+    cursor: pointer;
+  }
+  
+  .checkbox-container input {
+    display: none;
+  }
+  
+  .checkmark {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 20px;
+    height: 20px;
+    border: 1px solid #ccc;
+    border-radius: 50%;
+    background-color: #fff;
+    margin-right: 10px;
+    transition: background-color 0.2s;
+  }
+  
+  /* Estilos cuando el checkbox está marcado (activo) */
+  .checkbox-container input:checked + .checkmark {
+    background-color: #4caf50; /* Color verde cuando está activo */
+  }
+  
+  .label-text {
+    font-size: 16px;
+  }
+  
+  /* Estilos para el checkmark (marca) */
+  .checkmark:after {
+    content: "";
+    display: none;
+  }
+  
+  .checkbox-container input:checked + .checkmark:after {
+    display: block;
+    content: "\2714"; /* Símbolo de marca de verificación */
+    font-size: 16px;
+    color: white;
+  }
+  
+  .containerMejoraContinua{
+    font-family: Arial, sans-serif;
+  display: flex;
+  align-items: center;
+  
+  height: 2vh;
+  width: 15vw;
+  margin: 0;
+  }
   

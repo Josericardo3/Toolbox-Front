@@ -23,6 +23,7 @@ import { headerLogo, footerLogo } from './logoBase64';
 //import domtoimage from 'dom-to-image';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { SpinnerService } from 'src/app/servicios/spinnerService/spinner.service';
+import { ColorLista } from 'src/app/servicios/api/models/color';
 
 @Component({
   selector: 'app-app-diagnostico-doc',
@@ -109,6 +110,8 @@ export class AppDiagnosticoDocComponent implements OnInit {
   currentPage = 1;
   pageCount = 0;
   imgTotalBar: any;
+  colorTitle:ColorLista;
+  colorWallpaper:ColorLista;
 
   constructor(
     private router: Router,
@@ -121,7 +124,10 @@ export class AppDiagnosticoDocComponent implements OnInit {
 
   ngOnInit(): void {
     const id = Number(window.localStorage.getItem('Id'));
- 
+    this.ApiService.colorTempo(); 
+    this.colorTitle = JSON.parse(localStorage.getItem("color")).title;
+    this.colorWallpaper = JSON.parse(localStorage.getItem("color")).wallpaper;
+
     this.ApiService.validateCaracterizacion(id).subscribe((data: any) => {
       if (data === true) {
         this.spinnerService.llamarSpinner();
@@ -377,7 +383,7 @@ export class AppDiagnosticoDocComponent implements OnInit {
         "data": {
           "datasets": [
             {
-              "data": [${this.totalesD.noAplica},${this.totalesD.cumpleParcial}, ${this.totalesD.noCumple}, ${this.totalesD.cumple}],
+              "data": [${this.totalesD.noAplica},${this.totalesD.noCumple}, ${this.totalesD.cumpleParcial}, ${this.totalesD.cumple}],
               "backgroundColor": [
                 "rgba(66, 133, 244, 255)",     // Azul
                 "rgba(234, 67, 53, 255)",    // Rojo
@@ -715,7 +721,7 @@ export class AppDiagnosticoDocComponent implements OnInit {
                 { text: '% Cumplimiento', alignment: 'center' },
               ],
               ...this.datosD.DATA_CONSOLIDADO.map((item: any) => [
-                { text: item.REQUISITO },
+                { text: item.REQUSITO },
                 { text: item.NO_APLICA, alignment: 'center' },
                 { text: item.NO_CUMPLE, alignment: 'center' },
                 { text: item.CUMPLE_PARCIAL, alignment: 'center' },
@@ -794,7 +800,7 @@ export class AppDiagnosticoDocComponent implements OnInit {
                 {}
               ],
               [
-                { text: 'G', colSpan: 6 },
+                { text: '', colSpan: 6 },
                 {},
                 {},
                 {},

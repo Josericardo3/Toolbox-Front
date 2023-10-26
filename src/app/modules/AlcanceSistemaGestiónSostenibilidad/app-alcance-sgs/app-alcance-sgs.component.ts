@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ModalService } from 'src/app/messagemodal/messagemodal.component.service';
 import { ApiService } from 'src/app/servicios/api/api.service';
 import * as pdfMake from 'pdfmake/build/pdfmake';
+import { NOMEM } from 'dns';
 
 class Pregunta {
   PREGUNTA: string;
@@ -16,13 +17,7 @@ class Pregunta {
   styleUrls: ['./app-alcance-sgs.component.css']
 })
 
-
-
-
 export class AppAlcanceSGSComponent implements OnInit {
-
-
-
   constructor(
     private Message: ModalService,
     private api: ApiService,
@@ -31,8 +26,8 @@ export class AppAlcanceSGSComponent implements OnInit {
       servicios: {} as Pregunta,
       justificacion: {} as Pregunta,
       sostenibilidad: {} as Pregunta,
-      checked1: {} as Pregunta,
-      checked2: {} as Pregunta,
+      //checked1: {} as Pregunta,
+      //checked2: {} as Pregunta,
       // compromisoEmpresa: {} as Pregunta,
       // adicionales: [] as Adicional[]
     };
@@ -46,10 +41,11 @@ export class AppAlcanceSGSComponent implements OnInit {
   ubicación: string = '';
   estructura: any;
   idFKUsuario = localStorage.getItem('Id');
-  selectedCheckboxes: any = {
-    checkbox1: false,
-    checkbox2: false,
-  };
+  caracterizacion: string = '';
+  selectedCheckboxes: any = [];
+
+  //
+  NormasArray: any = [];
 
   ngOnInit() {
     this.getUser();
@@ -70,7 +66,7 @@ export class AppAlcanceSGSComponent implements OnInit {
           item.FK_USUARIO = Number(this.idFKUsuario);
           return item;
         });
-
+        this.caracterizacion = response.VALOR;
         this.ubicación = response.DEPARTAMENTO + ', ' + response.MUNICIPIO
         if (data.length > 0) { //ya hubo registro previo "ESTO ES EDICION"
           this.accionActivo = "editar";
@@ -86,9 +82,12 @@ export class AppAlcanceSGSComponent implements OnInit {
 
           let temporal = data.find(item => item.PREGUNTA === requisitosNoAplica);
           const temporalValue = this.separateCheckboxValues(temporal.RESPUESTA);
-          this.selectedCheckboxes.checkbox1 = temporalValue[0];
-          this.selectedCheckboxes.checkbox2 = temporalValue[1];
-
+          for (let i = 0; i < this.NormasArray.length; i++) {
+            if (temporalValue[i] == undefined)
+              this.selectedCheckboxes[i] = i + ';f';
+            else
+              this.selectedCheckboxes.push(temporalValue[i]);
+          }
         }
         else {//no existe registro previo  "NUEVO"
           this.accionActivo = "guardar";
@@ -121,9 +120,14 @@ export class AppAlcanceSGSComponent implements OnInit {
             "OTRO_VALOR": "",
             "FK_USUARIO": Number(this.idFKUsuario)
           }
-          this.selectedCheckboxes.checkbox1 = "4.1;false";
-          this.selectedCheckboxes.checkbox2 = "4.2;false";
+          for (let i = 0; i < this.NormasArray.length; i++) {
+            this.selectedCheckboxes[i] = i + ';f';
+          }
         }
+      })
+    this.api.getDatosNormas(localStorage.getItem('idNormaSelected'))
+      .subscribe((response: any) => {
+        this.NormasArray = response;
       })
   }
 
@@ -150,9 +154,11 @@ export class AppAlcanceSGSComponent implements OnInit {
     if (this.estructura.justificacion.RESPUESTA.trim() == "") {
       incorrecto = true;
     }
-    if (this.selectedCheckboxes.checkbox1.trim() == "4.1;false" && this.selectedCheckboxes.checkbox2 == "4.2;false") {
-      incorrecto = true;
-    }
+    //for (let i = 0; i < this.NormasArray.length; i++) {
+    //  if (this.selectedCheckboxes[i].trim() == i + ";false") {
+    //    incorrecto = true;
+    //  }
+    //}
 
     this.arrayAdicionalesServicio.forEach(adicional => {
       if (adicional.RESPUESTA.trim() == "") {
@@ -162,16 +168,19 @@ export class AppAlcanceSGSComponent implements OnInit {
     return incorrecto;
   }
   saveForm() {
-
-
     let preguntasRequest = [];
+    let respCheckbox = '';
     if (this.estructura.servicios?.FK_USUARIO == 0 || undefined) this.estructura.servicios.FK_USUARIO = Number(this.idFKUsuario);
     preguntasRequest[0] = this.estructura.servicios;
-
     if (this.estructura.sostenibilidad?.FK_USUARIO == 0 || undefined) this.estructura.sostenibilidad.FK_USUARIO = Number(this.idFKUsuario);
-    this.estructura.sostenibilidad.RESPUESTA = this.selectedCheckboxes.checkbox1 + ',' + this.selectedCheckboxes.checkbox2,
-      preguntasRequest[1] = this.estructura.sostenibilidad;
-
+    for (let i = 0; i < this.NormasArray.length; i++) {
+      if(i != this.NormasArray.length-1)
+        respCheckbox = respCheckbox + this.selectedCheckboxes[i] + ',';
+      else
+        respCheckbox = respCheckbox + this.selectedCheckboxes[i];
+    }
+    this.estructura.sostenibilidad.RESPUESTA = respCheckbox;
+    preguntasRequest[1] = this.estructura.sostenibilidad;
     if (this.estructura.justificacion?.FK_USUARIO == 0 || undefined) this.estructura.justificacion.FK_USUARIO = Number(this.idFKUsuario);
     preguntasRequest[2] = this.estructura.justificacion;
 
@@ -187,16 +196,18 @@ export class AppAlcanceSGSComponent implements OnInit {
       })
   }
 
-  checkboxChange(event: any, option: string) {
+  checkboxChange(event: any, option: number) {
     // Actualizamos el valor del checkbox con la opción y el estado
     const checkboxState = event.target.checked;
-
-    if (option == '4.1') this.selectedCheckboxes.checkbox1 = option + ';' + checkboxState.toString();
-    else this.selectedCheckboxes.checkbox2 = option + ';' + checkboxState.toString();
+    if (checkboxState == true)
+      this.selectedCheckboxes[option] = option + ';t';
+    else
+      this.selectedCheckboxes[option] = option + ';f';
   }
 
   numOfInputs: number = 0;
   arrayAdicionalesServicio: any[] = [];
+  RespuestaRequisitos: any[] = [];
 
   agregarAdicional() {
     this.numOfInputs++;
@@ -219,9 +230,46 @@ export class AppAlcanceSGSComponent implements OnInit {
     })
   }
   disablePDF: boolean = false;
+
+  obtenerNormaNoAplica(respuesta) {
+    const pairs = respuesta.split(",");
+
+    const trueNumbers = pairs
+      .map(pair => pair.split(";"))
+      .filter(pair => pair[1] === "t")
+      .map(pair => pair[0]);
+
+    const normaspdf = [];
+    for (let i = 0; i < trueNumbers.length; i++) {
+      normaspdf.push(this.NormasArray[trueNumbers[i]].TITULO)
+    }
+    return normaspdf;
+  }
+
+  obtenerNumeralesEnArreglo(arreglo: string[]): string {
+    const numeralesEncontrados: string[] = [];
+    let response = '';
+    for (const cadena of arreglo) {
+      // Utilizamos una expresión regular para buscar los numerales en varios formatos
+      const regex = /(\d+(\.\d+)*)|([A-Za-z]\.\d+(\.\d+)*)/g;
+      const numeralesEncontradosEnCadena = cadena.match(regex);
+
+      if (numeralesEncontradosEnCadena) {
+        numeralesEncontrados.push(...numeralesEncontradosEnCadena);
+      }
+    }
+    for (let i = 0; i < numeralesEncontrados.length; i++) {
+      if (i != numeralesEncontrados.length-1)
+        response = response + numeralesEncontrados[i] + ', ';
+      else
+        response = response + numeralesEncontrados[i];
+    }
+    return response;
+  }
+
   generatePDF() {
     const respuesta = this.estructura.sostenibilidad.RESPUESTA;
-    const RespuestaRequisitos = respuesta.replace(/\s*;\s*false|\s*;\s*true/g, '');
+    this.RespuestaRequisitos = this.obtenerNormaNoAplica(respuesta);
     const pdfDefinition: any = {
       pageOrientation: 'portrait', // 'portrait' indica orientación vertical (predeterminado)
       pageMargins: [30, 30, 30, 30],
@@ -278,8 +326,8 @@ export class AppAlcanceSGSComponent implements OnInit {
               [
                 { text: this.arrayAdicionalesServicio.length > 0 ? this.estructura.servicios.RESPUESTA + ' ' + this.arrayAdicionalesServicio.map(tab => tab.RESPUESTA).join(' ') : this.estructura.servicios.RESPUESTA, style: ['columna'] },
                 { text: this.ubicación, style: ['columna'] },
-                { text: 'Urbano', style: ['columna'] },
-                { text: RespuestaRequisitos + '. Justificación: ' + this.estructura.justificacion.RESPUESTA, style: ['columna'] }
+                { text: this.caracterizacion, style: ['columna'] },
+                { text: this.obtenerNumeralesEnArreglo(this.RespuestaRequisitos) + '. Justificación: ' + this.estructura.justificacion.RESPUESTA, style: ['columna'] }
               ]
             ],
           },
@@ -342,7 +390,7 @@ export class AppAlcanceSGSComponent implements OnInit {
                     '\n\n', // Salto de línea
                     '-Nos encontramos ubicados en: dirección, ' + this.ubicación + '. En zona rural y en zona natural.',
                     '-Se excluyen los siguientes numerales de la NTC',
-                    '4.1 Requisitos legales. Porque ' + this.estructura.justificacion.RESPUESTA
+                    this.obtenerNumeralesEnArreglo(this.RespuestaRequisitos) + ' Requisitos legales. Porque ' + this.estructura.justificacion.RESPUESTA
                   ],
                   alignment: 'justify',
                   fontSize: 12,

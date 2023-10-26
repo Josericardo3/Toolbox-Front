@@ -14,34 +14,28 @@
     border-left: 10px solid #068460;
     margin: 3vh 2vw !important;
 }
-.tituloInput,
-.descripcion,
-.pregunta,
 .select-header{
     background: #FFFFFF;
     border-radius: 10px;
-    height: 6vh;
-    padding: 5px;
-    width: 67vw;
+    height: auto;
     font-family: 'Work Sans', sans-serif;
-    font-size: 15px;
     border: 1px solid #000000;
-    margin: 1vh 0;
-}
-.tituloInput::placeholder{
-    font-size: 20px;
-}
-.select-header{
-    width: 27vw !important;
+    width: auto;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 10px !important;
-    margin: 1vh 0 0 0 !important;
+    padding: 8px;
+    margin: 1vh 0 0 0;
 }
 .pregunta{
-    margin: 1vh 2vw 1vh 0 !important;
-    width: 36vw !important;
+    background: #FFFFFF;
+    border-radius: 10px;
+    height: auto;
+    padding: 8px;
+    font-family: 'Work Sans', sans-serif;
+    border: 1px solid #000000;
+    margin: 1vh 2vw 1vh 0;
+    width: 44vw;
 }
 .section{
     display: flexs;
@@ -61,20 +55,20 @@
 .obligatorio{
     margin: 0 0.1vw !important;
     font-family: 'Work Sans', sans-serif;
-    font-size: 16px;
+    /* font-size: 16px; */
 }
 .select-wrapper {
     position: relative;
     display: inline-block;
-    width: 27vw;
+    width: auto;
     z-index: 1;
 }
 .options-container {
     position: absolute;
     top: 100%;
     left: 0;
-    width: 27vw;
-    padding: 0;
+    width: auto;
+    padding: 3% 20% 3% 8%;
     margin: 0;
     list-style: none;
     border: 1px solid #000000;
@@ -85,8 +79,9 @@
     display: none;
 }
 .options-container li {
-    padding: 6px 0 6px 15px;
+    padding: 6px 2px;
     cursor: pointer;
+    width: max-content;
 }
 .options-container li:hover {
     background-color: #f2f2f2;
@@ -103,9 +98,9 @@
     background: #FFFFFF;
     height: 6vh;
     padding: 5px;
-    width: 36vw;
+    width: auto;
     font-family: 'Work Sans', sans-serif;
-    font-size: 15px;
+    /* font-size: 15px; */
     border: none;
     border-bottom: 1px solid #a4a4a4;
     margin: 1vh 0;
@@ -128,6 +123,7 @@
 .radioButton{
     display: flex;
     flex-direction: column;
+    width: 30vw;
 }
 .eliminar{
     display: flex;
@@ -137,26 +133,28 @@
     margin: 0 0 1vh 1vw;
     cursor: pointer;
 }
-
+.fa-angle-down{
+    margin: 0.3vh 0 0 1vw;
+}
 /*personalizar el checkbox*/
 .toggle-input {
     display: none;
 }
 .toggle-label {
     display: inline-block;
-    width: 3vw;
-    height: 2.65vh;
+    width: 9.5%;
+    padding: 2% 2%;
     background-color: #ccc;
     border-radius: 10px;
     position: relative;
     cursor: pointer;
-    margin: 0 0 0 0.5vw;
+    margin: 0 2%;
 } 
 .toggle-label::before {
     content: "";
     display: block;
-    width: 1vw;
-    height: 2.2vh;
+    width: 20%;
+    padding: 20% 20%;
     background-color: #fff;
     border-radius: 50%;
     position: absolute;
@@ -168,7 +166,7 @@
     background-color: #068460;
 }
 .toggle-input:checked + .toggle-label::before {
-    transform: translateX(20px);
+    transform: translateX(120%);
 }
 .botones{
     display: flex;

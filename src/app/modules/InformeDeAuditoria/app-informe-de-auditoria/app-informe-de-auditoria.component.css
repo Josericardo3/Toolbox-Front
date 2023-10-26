@@ -310,10 +310,47 @@ margin: 0px 10px 5px 10px;
     margin-bottom: 2vh;
 }
  /* responsive  */
- @media(max-width: 480px) {
-.titulo{
-    margin-top: 42px;
+ .menu-auditoria{
+    display: block;
+ }
+ /* Estilos para pantallas pequeñas (menos de 970px de ancho) */
+@media (max-width: 970px) {
+    .inform-app-header 
+        .container-pst p {
+            display: none;
+        }
+    
+    .titulo{
+        position: static;
+    }
+    h1 {
+        font-size: 28px;
+    }
+
+    .menu-auditoria{
+        display: none;
+    
+    }
+
+    .table{
+        width: 100% !important;
+    }
+    .table-conformidad {
+        font-size: 12px;
+        width: 100% !important;
+    }
+    textarea{
+        width: 100% !important;
+    }
 }
+ @media(max-width: 480px) {
+
+    .titulo-nav {
+        margin-right: 0 !important;
+    }
+/* .titulo{
+    margin-top: 42px;
+} */
 h1{
     margin-bottom: 22px;
 }
@@ -323,7 +360,10 @@ flex-direction: column;
 margin-top: 3px;
 margin-right: 106px;
 }
+.menu-auditoria{
+    display: none;
 
+}
 .fs{
     font-size: 12px !important;
 }
@@ -347,8 +387,13 @@ table{
     margin-bottom: 14px;
     /* width: 84.6vw !important; */
 }
+.table .tr-table th{
+    font-size: 11px;
+    padding: 2px !important;
+}
 .label-conformidad{
    font-size: 16px;
+   text-align: center;
    margin-right: 0px;
 }
 
@@ -370,6 +415,7 @@ table{
 }
 .contenido{
     padding: 0px;
+    margin: 13px;
 }
 .containerForm{
     margin: 0px;
@@ -378,4 +424,42 @@ table{
     font-size: 16px;
 }
 
+
+
+
+
+/* nuevo  */
+.table{
+    width: 100% !important;
+}
+.table-conformidad {
+    font-size: 12px;
+    width: 100% !important;
+}
+
+/* Restablece el ancho máximo para adaptarse al ancho de la pantalla */
+.table-conformidad table#table_audit {
+    width: 100%;
+    max-width: none;
+}
+
+/* Ajusta los estilos específicos para las filas */
+.table-conformidad tr {
+    display: block;
+    margin-bottom: 20px;
+}
+
+/* Ajusta los estilos específicos para las celdas */
+.table-conformidad td {
+    flex: 1;
+    margin-right: 0; /* Elimina el espacio entre celdas */
+}
+.ntc{
+    margin-left: 29px !important;
+    text-align: center;
+}
+.legales{
+    margin-right: 15px !important;
+    text-align: center;
+}
  }

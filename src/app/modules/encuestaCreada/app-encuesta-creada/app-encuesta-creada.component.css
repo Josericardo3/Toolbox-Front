@@ -1,7 +1,10 @@
 .containerEncuesta{
     display: flex;
     flex-direction: column;
-    margin: 2vh 1vw 0 2vw;
+    background-color: #f3f3f3;
+    align-items: center;
+    justify-content: flex-start;
+    height: 100%;
 }
 .titulo{
     display: flex;
@@ -16,6 +19,159 @@ h1{
     text-align: center;
     margin: 2vh 0;
 }
-.encuesta{
+.form{
     display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
 }
+.encabezado{
+    display: flex;
+    flex-direction: column;
+    border-top: 10px solid #068460;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.10);
+    border-radius: 8px;
+    width: 70vw;
+    height: auto;
+    padding: 1vh 2vw;
+    background-color: #FFFFFF;
+    margin: 4vh 0 1vh 0;
+}
+.descripcion{
+    font-family: 'Work Sans', sans-serif;
+    font-size: 15px;
+    margin: 0;
+    font-weight: 500;
+}
+.containerTarjetas{
+    display: flex;
+    flex-direction: column;
+    /* box-shadow: 0 0 15px rgba(0, 0, 0, 0.10); */
+    border-radius: 8px;
+    width: 70vw;
+    height: auto;
+    padding: 2vh 2vw;
+    border-top: none;
+    /* border-left: 7px solid #068460; */
+    margin: 1vh 0;
+    background-color: #FFFFFF;
+}
+.btn{
+    height: 6vh;
+    width: auto;
+    padding: 10px;
+    background-color: #068460;
+    border-radius: 15px;
+    color: #FFFFFF;
+    font-family: 'Work Sans', sans-serif;
+    border: none;
+    cursor: pointer;
+    align-self: self-start;
+    margin: 2vh 0 4vh 0;
+}
+.obligatorio{
+    font-family: 'Work Sans', sans-serif;
+    font-size: 12px;
+    color: tomato;
+}
+.linea{
+    border-top: 1.5px solid rgb(180, 180, 180);
+    width: 65vw;
+    padding: 0;
+    margin: 2vh 0 ;
+}
+.descripcion{
+    font-family: 'Work Sans', sans-serif;
+    width: auto;
+}
+.respuestaCorta,
+.respuestaLarga{
+    background: #FFFFFF;
+    padding: 1%;
+    font-family: 'Work Sans', sans-serif;
+    border: none;
+    border-bottom: 1px solid #a4a4a4;
+    margin: 1vh 0;
+}
+.respuestaCorta::placeholder,
+.respuestaLarga::placeholder{
+    font-size: small;
+}
+.respuestaCorta{
+    width: 25vw;
+}
+.respuestaLarga{
+    min-width: 64vw !important;
+    min-height: 10vh;
+    scrollbar-width: thin;
+    scrollbar-color: #a4a4a4 transparent;
+    font-size: small;
+}
+.respuestaLarga::-webkit-scrollbar {
+    width: 3px;
+}
+.respuestaLarga::-webkit-scrollbar-thumb {
+    background-color: #a4a4a4;
+    border-radius: 4px;
+}
+.respuestaLarga::-webkit-scrollbar-track {
+    background: transparent;
+}
+.select{
+    border: 1px solid #a4a4a4;
+    border-radius: 7px;
+    width: 45vw;
+    height: 5vh;
+    margin: 1vh 0;
+    padding: 5px;
+}  
+.tipoDiv{
+    display: flex;
+    flex-direction: column;
+}
+input[type="radio"] {
+    appearance: none; /* Oculta el estilo nativo del radio button */
+    width: 1.5vw;
+    height: 2.5vh;
+    border: 1.6px solid darkgray; /* Borde gris para la bolita */
+    border-radius: 50%; /* Forma redonda para la bolita */
+    outline: none; /* Elimina el resplandor de enfoque */
+    /* vertical-align: middle; */
+    margin: -0.4vh 1.5vw -0.4vh 0;
+  }
+  label {
+    display: inline-block;
+    margin: 1vh 0 0 0;
+    font-weight: normal;
+  }
+  input[type="radio"]:checked {
+    background-color: #ccc; /* Cambia el fondo de la bolita cuando está seleccionado */
+  }
+  input[type="checkbox"] {
+    appearance: none; /* Oculta el estilo nativo del checkbox */
+    width: 1.5vw;
+    height: 2.5vh;
+    border: 1.6px solid darkgray;
+    border-radius: 3px; /* Borde redondeado */
+    outline: none; /* Elimina el resplandor de enfoque */
+    margin: -0.4vh 1.5vw -0.4vh 0;
+
+    position: relative;
+  }
+  input[type="checkbox"]:checked::after {
+    content: "\2713"; /* Código de verificación Unicode (aspa) */
+    /* font-size: 14px;
+    line-height: 16px;
+    color: red;
+    font-weight: bold;
+    margin: 0 0.2vw; */
+
+    font-size: 1.5vw; /* Tamaño del aspa (ajustar según sea necesario) */
+    line-height: 2.5vh; /* Alineación vertical con el checkbox */
+    color: red; /* Color del aspa (puedes ajustar el color) */
+    font-weight: bold;
+    position: absolute; /* Establece una posición absoluta para el aspa */
+    top: 0; /* Alinea el aspa en la parte superior del checkbox */
+    left: 0;
+  }
+

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../servicios/api/api.service';
 import { Router } from '@angular/router';
+import { ColorLista } from 'src/app/servicios/api/models/color';
 
 @Component({
   selector: 'app-app-resultados-auditoria',
@@ -22,14 +23,21 @@ export class AppResultadosAuditoriaComponent implements OnInit{
   totalRegistros: number = 0;
   datatotal: number = 0;
   contentArray: any = [];
-  currentPage: number = 1
-
+  currentPage: number = 1;
+  colorWallpaper:ColorLista;
+  colorTitle:ColorLista;
+ 
+  
   constructor(
     public api: ApiService,
     public router: Router,
   ) {}
 
   ngOnInit(){
+    this.api.colorTempo();
+    this.colorWallpaper = JSON.parse(localStorage.getItem("color")).wallpaper;
+    this.colorTitle = JSON.parse(localStorage.getItem("color")).title;
+
     this.getTable();
     this.filtrarDatos();
   }

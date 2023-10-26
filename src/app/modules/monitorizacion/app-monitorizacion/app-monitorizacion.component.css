@@ -136,3 +136,42 @@ h1{
     display: flex;
     align-items: center;
 }
+@media (max-width: 970px) {
+        /* NOMBRE DE LA CABECERA  */
+        .monitorizacion-app-header 
+            .container-pst p {
+                display: none;
+            }
+        
+
+          /* TABLA */
+    .table-container{
+        max-height: 300px; /* Establece la altura máxima deseada */
+        overflow-y: auto; 
+    }
+    .table-gestion{
+        width: 100%;
+    }
+}
+@media(max-width: 630px){
+
+    .filtros{
+        display: flex;
+        width: 100%;
+        justify-content: space-evenly;
+        flex-direction: column;
+    }
+
+
+    /* PAGINADO */
+    .page-style {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+    }
+    .container-label {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+    }
+}

@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component, ViewEncapsulation, Renderer2, HostListener } from '@angular/core';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { ApiService } from '../../../servicios/api/api.service'
 import { FormGroup, FormArray, FormControl, Validators, FormBuilder } from '@angular/forms';
@@ -6,9 +6,6 @@ import { HttpClient } from '@angular/common/http';
 import * as pdfMake from 'pdfmake/build/pdfmake';
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';
 (pdfMake as any).vfs = pdfFonts.pdfMake.vfs;
-// import pdfMake from 'pdfmake/build/pdfmake';
-// import pdfFonts from 'pdfmake/build/vfs_fonts';
-//pdfMake.vfs = pdfFonts.pdfMake.vfs;
 import { Router } from '@angular/router';
 import * as moment from 'moment';
 import 'moment-timezone';
@@ -16,6 +13,7 @@ import { Injectable } from '@angular/core';
 import { registerLocaleData } from '@angular/common';
 import localeEsPE from '@angular/common/locales/es-PE';
 import { ModalService } from 'src/app/messagemodal/messagemodal.component.service';
+import { ColorLista } from 'src/app/servicios/api/models/color';
 registerLocaleData(localeEsPE, 'es-PE');
 
 @Injectable({
@@ -32,22 +30,32 @@ export class AppAuditoriaInternaComponent {
   showDisableBtn: boolean = true;
   toggleValue: boolean = false;//prueba toggle
   listAuditor: any = [];
+  listNormaTitulo: any = [];
   equipoAuditor: any = [];
   dropdownList = [];
+  dropdownListNorma = [];
   selectedItems = [];
   dropdownSettings: IDropdownSettings;
   formParent!: FormGroup;
-
+  colorWallpaper:ColorLista;
+  colorTitle:ColorLista;
+  isCollapsed = true;
+  mostrarNotificacion : boolean = false;
+  
   constructor(
     private http: HttpClient,
     private router: Router,
     private formBuilder: FormBuilder,
     public ApiService: ApiService,
     private Message: ModalService,
-
+    private renderer: Renderer2
   ) { }
 
   ngOnInit(): void {
+    this.ApiService.colorTempo();
+    this.colorWallpaper = JSON.parse(localStorage.getItem("color")).wallpaper;
+    this.colorTitle = JSON.parse(localStorage.getItem("color")).title;
+
     this.formParent = this.formBuilder.group({
       liderAuthor: ["", Validators.required],
       auditorTeam: ["", Validators.required],
@@ -69,12 +77,29 @@ export class AppAuditoriaInternaComponent {
       proceso: [""],
       actividad: [""],
     });
-
     this.getAuditorList();
     this.fnListResponsible();
-    this.getUser()
+    this.getUser();
 
+
+    
   }
+  //Para el responsive
+  @HostListener('window:resize', ['$event'])
+  onResize(event: Event): void {
+    const screenWidth = window.innerWidth;
+
+    if (screenWidth <= 970) {
+      // Cambiar el valor de isCollapsed a false cuando el ancho de pantalla es menor o igual a 970px
+      this.isCollapsed = true;
+    } else {
+      // Cambiar el valor de isCollapsed a true cuando el ancho de pantalla es mayor a 970px
+      this.isCollapsed = false;
+    }
+  }
+
+
+
 
   getActualDate() {
     let date = new Date();
@@ -89,17 +114,27 @@ export class AppAuditoriaInternaComponent {
     const dateInitValue = this.formParent.get('dateInit').value;
     const dateEndValue = this.formParent.get('dateEnd').value;
     const currentDate = new Date();
-
+    
     if (dateEndValue && dateInitValue) {
-      const dateInit = new Date(dateInitValue);
-      const dateEnd = new Date(dateEndValue);
-  
-      if (dateEnd < dateInit) {
-        this.Validacion('Reunión de Cierre no puede ser posterior a la Reunión de Apertura');
-      } else if (dateInit < currentDate) {
-        this.Validacion('La fecha de "Reunión de Apertura" no puede ser posterior a la fecha actual');
-      } else if (dateEnd > currentDate) {
-        this.Validacion('La fecha de "Reunión de Cierre" no puede ser posterior a la fecha actual');
+
+      const inicioValue = new Date(dateInitValue);
+      const finValue = new Date(dateEndValue);
+      const now = new Date();  
+      const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+      debugger;
+      if (finValue < inicioValue) {
+        const title = "Registro no exitoso";
+        const message = "Por favor verifique la fecha";
+        this.Message.showModal(title, message);
+        return;
+      }
+       else if(inicioValue< today || finValue < today){
+        const title = "Registro no exitoso";
+        const message = "Por favor la fecha no puede ser menor a la fecha actual";
+        this.Message.showModal(title, message);
+        this.formParent.get('dateInit').setValue('');
+        this.formParent.get('dateEnd').setValue('');
+        return;
       }
     }
   }
@@ -136,10 +171,6 @@ export class AppAuditoriaInternaComponent {
         item_id: auditor.ID_USUARIO,
         item_text: auditor.NOMBRE
       }));
-      // this.listAuditor = this.listAuditorData.map((auditor: any) => ({
-
-      //   NOMBRE: auditor.NOMBRE
-      // }));
       this.dropdownSettings = {
         singleSelection: false,
         idField: 'item_id',
@@ -151,6 +182,8 @@ export class AppAuditoriaInternaComponent {
       };
     });
   }
+
+
 
  
 
@@ -466,10 +499,10 @@ export class AppAuditoriaInternaComponent {
 
     this.valueAuditoria.push(valor)
     if (this.valueAuditoria.length > 0) {
-      this.formParent.get('actividadTable').disable();
+      this.formParent?.get('actividadTable').disable();
     }
     else {
-      this.formParent.get('actividadTable').enable();
+      this.formParent?.get('actividadTable').enable();
     }
 
 

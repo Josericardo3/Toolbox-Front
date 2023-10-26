@@ -1,6 +1,7 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { getDate } from 'ngx-bootstrap/chronos/utils/date-getters';
 import * as pdfMake from 'pdfmake/build/pdfmake';
 import { ModalService } from 'src/app/messagemodal/messagemodal.component.service';
 import { ApiService } from 'src/app/servicios/api/api.service';
@@ -30,13 +31,14 @@ export class AppPoliticaDesarrolloSostenibleComponent implements OnInit {
   estructura: any;
   seleccion: string = '';
   showInput: boolean = false;
-
+  quienComunica: any = [];
   preguntasRespuestasArray: any[] = []
 
   constructor(
     private Message: ModalService,
     private api: ApiService,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    private ApiService: ApiService
   ) {
     this.estructura = {
       establecimiento: {} as Pregunta,
@@ -47,6 +49,7 @@ export class AppPoliticaDesarrolloSostenibleComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.fnListResponsible();
     this.usuario();
     this.getDataFor();
   }
@@ -81,7 +84,6 @@ export class AppPoliticaDesarrolloSostenibleComponent implements OnInit {
   compromiso: any;
   diferenciadores: any;
   comoSeComunica: any;
-  quienComunica: any;
   cuando: any;
   dondeEstaraDisponible: any;
   disablePDF: boolean = false;
@@ -194,6 +196,29 @@ export class AppPoliticaDesarrolloSostenibleComponent implements OnInit {
       })
   }
 
+  fnListResponsible() {
+    const idPerfil = this.getRolValue();
+    if (idPerfil == 3) {
+      this.ApiService.getPSTSelect().subscribe((data) => {
+        this.quienComunica = data;
+
+      })
+    } else {
+      this.ApiService.getListResponsible().subscribe((data) => {
+        this.quienComunica = data;
+
+      })
+    }
+  }
+
+  getRolValue(): number {
+    const rol = localStorage.getItem('rol');
+    if (rol && !isNaN(Number(rol))) {
+      return Number(rol);
+    }
+    return 0;
+  }
+
   saveForm() {
 
     let id = localStorage.getItem('Id');
@@ -263,27 +288,28 @@ export class AppPoliticaDesarrolloSostenibleComponent implements OnInit {
     }
     else incorrecto = false;
 
-    this.estructura.adicionales.forEach(tab => {
+    //this.estructura.adicionales.forEach(tab => {
 
-      tab.preguntas.forEach(item => {
-        if (item.PREGUNTA == "¿Cuándo?") {
-          if (typeof item.RESPUESTA == "string") {
-            if (item.RESPUESTA.trim() == "") incorrecto = true;
-          }
-          else if (item.RESPUESTA === undefined) incorrecto = true;
-        }
-        else if (item.PREGUNTA == "¿Dónde estará disponible?" 
-                &&item.RESPUESTA!= "Página web" 
-                && item.RESPUESTA!= "Redes sociales" 
-                &&  item.OTRO_VALOR.trim() == "") {
-          incorrecto = true;
-        }
-        else if (item.RESPUESTA.trim() == "" ) {
-          incorrecto = true;
-        }
-      });
+    //  tab.preguntas.forEach(item => {
+    //    if (item.PREGUNTA == "¿Cuándo?") {
+          //console.log(typeof item.RESPUESTA)
+          //if (typeof item.RESPUESTA == "string") {
+          //  if (item.RESPUESTA.trim() == "") incorrecto = true;
+          //}
+          //else if (item.RESPUESTA === undefined) incorrecto = true;
+    //    }
+    //    else if (item.PREGUNTA == "¿Dónde estará disponible?" 
+    //            &&item.RESPUESTA!= "Página web" 
+    //            && item.RESPUESTA!= "Redes sociales" 
+    //            &&  item.OTRO_VALOR.trim() == "") {
+    //      incorrecto = true;
+    //    }
+    //    else if (item.RESPUESTA.trim() == "" ) {
+    //      incorrecto = true;
+    //    }
+    //  });
 
-    });
+    //});
 
     return incorrecto;
   }
@@ -307,6 +333,8 @@ export class AppPoliticaDesarrolloSostenibleComponent implements OnInit {
       return adicional.orden > max ? adicional.orden : max;
     }, 0);
     let newOrden = maxOrden + 1;
+    console.log(this.accionActivo);
+    //this.accionActivo = "guardar";
     const tab = {
       orden: newOrden,
       preguntas: [
@@ -387,6 +415,15 @@ export class AppPoliticaDesarrolloSostenibleComponent implements OnInit {
     // Lógica adicional para el cambio de fecha, si es necesario
   }
 
+  getdateact() {
+    var fec = new Date();
+    var day = fec.getDate();
+    var month = fec.getMonth() + 1;
+    var year = fec.getFullYear();
+
+    return day + "/" + month + "/" + year;
+  }
+
   checkboxChange(pregunta: Pregunta, value: string) {
     pregunta.RESPUESTA = value;
     pregunta.OTRO_VALOR = '';
@@ -412,6 +449,28 @@ export class AppPoliticaDesarrolloSostenibleComponent implements OnInit {
     }
 
     const pdfDefinition: any = {
+      header: {
+        table: {
+          widths: ['*', '*', '*', '*'],
+          body: [
+            [
+              { image: this.logo, fit: [50, 50], alignment: 'center', margin: [0, 3, 0, 3], rowSpan: 2 },
+              { text: this.pst, alignment: 'center', margin: [0, 21, 0, 21], rowSpan: 2 },
+              { text: 'TALLER POLÍTICA DE DESARROLLO SOSTENIBLE', alignment: 'center', rowSpan: 2, margin: [0, 9, 0, 9] },
+              { text: 'CÓDIGO:', alignment: 'center' }
+            ],
+            [
+              {},
+              {},
+              '',
+              { text: 'VERSIÓN: 01', alignment: 'center', margin: [0, 12, 0, 12] },
+            ]
+          ]
+        },
+        margin: [45, 8, 45, 8],
+        fontSize: 11,
+      },
+
       pageSize: {
         width: 794,
         height: 1123,
@@ -473,7 +532,7 @@ export class AppPoliticaDesarrolloSostenibleComponent implements OnInit {
         { text: 'POLÍTICA 1.', style: ['parrafo'] },
         {
           text: [
-            { text: 'NOMBRE DEL PST ', style: ['parrafo'] },
+            { text: this.razonSocial + ', ', style: ['parrafo'] },
             { text: 'ofrece servicios de alojamiento y hospedaje;', decoration: 'underline' },
             'nuestros huéspedes reciben',
             { text: 'estándares de calidad: seguridad, confianza, disposición, planificación que son nuestras herramientas para la satisfacción de sus necesidades y expectativas.', decoration: 'underline' },
@@ -493,7 +552,8 @@ export class AppPoliticaDesarrolloSostenibleComponent implements OnInit {
         { text: 'POLÍTICA 2.', style: ['parrafo'] },
         {
           text: [
-            { text: 'NOMBRE DEL PST, ', style: ['parrafo'] },
+            {
+              text: this.razonSocial+', ', style: ['parrafo'] },
             { text: 'ofrece ambientes familiares que satisfacen las expectativas de sus huéspedes,', decoration: 'underline' },
             'manteniendo, orientados por la sostenibilidad turística, implementando programas con los siguientes compromisos:'
           ],
@@ -617,7 +677,7 @@ export class AppPoliticaDesarrolloSostenibleComponent implements OnInit {
           },
         },
         { text: '\n\n' }, // Salto de línea}
-        { text: 'Ciudad, fecha', style: ['parrafo'] },
+        { text: this.ubicación + ' - ' + this.getdateact(), style: ['parrafo'] },
         { text: '\n\n' }, // Salto de línea}
         { text: 'Nombre y firma del representante legal', style: ['parrafo'] },
         { text: '\n\n' }, // Salto de línea}

@@ -523,4 +523,11 @@ export class AppRegisterComponent implements OnInit {
       }
     })
   }
+  inputsize(event: Event) {
+    const inputElement = event.target as HTMLInputElement;
+    if (inputElement.value.length > 12) {
+      inputElement.value = inputElement.value.slice(0, 12);
+      this.registerForm.get('identificacionDelRepresentanteLegal')?.setValue(inputElement.value);
+    }
+  }
 }

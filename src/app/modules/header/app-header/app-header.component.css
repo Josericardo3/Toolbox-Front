@@ -2,7 +2,10 @@
 .container{
   display: flex;
   width: 100vw;
-  background-color: #068460;
+  /* background-color: var(--color-header, #3366CC); */
+  background-color: #068460 ;
+  height: 50px;
+   /* //    #068460; */
   /* position: fixed; */
   /* margin-bottom: 0.1vh; */
   top: 0;

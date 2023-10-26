@@ -1,10 +1,53 @@
 <div class="containerEncuesta">
-    <div class="titulo">
-        <h1>Título de la encuesta creada</h1>
-    </div>
-    <div class="encuesta">
-        <div class="form">
+    <div [formGroup]="form" class="form" (ngSubmit)="enviarFormulario()">
+        <div class="encabezado">
+            <h1>{{datosPreguntaEncuesta.TITULO}}</h1>
+            <p class="descripcion">{{datosPreguntaEncuesta.DESCRIPCION}}</p>
+            <div class="linea"></div>
+            <p class="obligatorio">Todos los campos con * son obligatorios</p>
         </div>
+        <div class="containerTarjetas" *ngFor="let pregunta of datosPreguntaEncuesta.MAE_ENCUESTA_PREGUNTAS">
+            <div *ngIf="pregunta.TIPO === 'respuestaCorta'" class="tipoDiv">
+                <label class="descripcion">{{pregunta.DESCRIPCION}}
+                    <span *ngIf="pregunta.OBLIGATORIO == true" style="color: tomato;">*</span>
+                </label>
+                <input type="text" placeholder="Ingresar respuesta corta" class="respuestaCorta" formControlName="respuestaCorta" [required]="pregunta.OBLIGATORIO">
+            </div>
+            <div *ngIf="pregunta.TIPO === 'respuestaLarga'" class="tipoDiv">
+                <label class="descripcion">{{pregunta.DESCRIPCION}}
+                    <span *ngIf="pregunta.OBLIGATORIO == true" style="color: tomato;">*</span>
+                </label>
+                <textarea placeholder="Ingresar respuesta larga" class="respuestaLarga" formControlName="respuestaLarga" [required]="pregunta.OBLIGATORIO"></textarea>
+            </div>
+            <div *ngIf="pregunta.TIPO === 'radioButton'" class="tipoDiv">
+                <label class="descripcion">{{pregunta.DESCRIPCION}}
+                    <span *ngIf="pregunta.OBLIGATORIO == true" style="color: tomato;">*</span>
+                </label>
+                <label *ngFor="let opcion of pregunta.VALOR.split(';')">
+                    <input type="radio" [required]="pregunta.OBLIGATORIO" [value]="opcion" name="opcion">{{opcion}}
+                </label>
+            </div>                              
+            <div *ngIf="pregunta.TIPO === 'checkbox'" class="tipoDiv">
+                <label class="descripcion">{{pregunta.DESCRIPCION}}
+                    <span *ngIf="pregunta.OBLIGATORIO == true" style="color: tomato;">*</span>
+                </label>
+                <label *ngFor="let opcion of pregunta.VALOR.split(';')">
+                    <input type="checkbox" [required]="pregunta.OBLIGATORIO" [value]="opcion" name="opcion">{{opcion}}
+                </label>
+            </div>
+            <div *ngIf="pregunta.TIPO === 'desplegable'" class="tipoDiv">
+                <label class="descripcion">{{pregunta.DESCRIPCION}}
+                    <span *ngIf="pregunta.OBLIGATORIO == true" style="color: tomato;">*</span>
+                </label>
+                <select [formControlName]="'desplegableOption'" class="select" [required]="pregunta.OBLIGATORIO">
+                    <option value="" selected disabled>Seleccione una opción</option>
+                    <option *ngFor="let opcion of pregunta.VALOR.split(';'); let i = index" [value]="opcion">{{opcion}}</option>
+                </select>
+            </div>          
+        </div>
+        <button class="btn" type="submit" [disabled]="form.invalid">
+            <i class="fa-solid fa-floppy-disk" style="color: #ffffff;"></i> Enviar
+        </button> 
     </div>
 </div>
 <ngx-spinner

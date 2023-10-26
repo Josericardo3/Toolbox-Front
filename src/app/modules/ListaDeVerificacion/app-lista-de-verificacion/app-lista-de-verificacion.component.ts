@@ -11,6 +11,7 @@ import * as pdfFonts from 'pdfmake/build/vfs_fonts';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { ApiService } from 'src/app/servicios/api/api.service';
 import { ModalService } from 'src/app/messagemodal/messagemodal.component.service';
+import { ColorLista } from 'src/app/servicios/api/models/color';
 
 @Component({
   selector: 'app-app-lista-de-verificacion',
@@ -44,7 +45,9 @@ export class AppListaDeVerificacionComponent {
   idAuditoria: any;
   requisitoIndex: any;
   dropdownSettings: IDropdownSettings;
- 
+  colorWallpaper:ColorLista;
+  colorTitle:ColorLista
+  
   constructor(
     private router: Router,
     private http: HttpClient,
@@ -54,6 +57,10 @@ export class AppListaDeVerificacionComponent {
   ) { }
 
   ngOnInit(): void {
+    this.ApiService.colorTempo();
+    this.colorWallpaper = JSON.parse(localStorage.getItem("color")).wallpaper;
+    this.colorTitle = JSON.parse(localStorage.getItem("color")).title;
+
     this.formParent = this.formBuilder.group({
       documentos: ["", Validators.required],
       team: ["", Validators.required],

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from 'src/app/servicios/api/api.service';
+import { ColorLista } from 'src/app//servicios/api/models/color';
 
 @Component({
   selector: 'app-app-header',
@@ -9,24 +10,27 @@ import { ApiService } from 'src/app/servicios/api/api.service';
 export class AppHeaderComponent implements OnInit {
   datos: any = [];
   nombre: any;
+  colorHeader: ColorLista;
 
   constructor(private ApiService: ApiService,) { }
 
   ngOnInit() {
+    this.ApiService.colorTempo();
+    this.colorHeader = JSON.parse(localStorage.getItem("color")).header;
     const id = localStorage.getItem('Id');
     if (id != null || undefined) this.getNombreUsuario();
   }
 
-  Logo(){
+  Logo() {
     const url = 'https://www.gov.co/home'
-    window.location.href=url;
-   }
+    window.location.href = url;
+  }
 
-   getNombreUsuario(){
+  getNombreUsuario() {
     this.ApiService.getUsuario()
-    .subscribe(data =>{
-      this.datos = data
-      this.nombre = this.datos.NOMBRE_PST
-    })
+      .subscribe(data => {
+        this.datos = data
+        this.nombre = this.datos.NOMBRE_PST
+      })
   }
 }

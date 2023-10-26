@@ -6,6 +6,8 @@ import { FileUploadService } from 'src/app/servicios/file-upload/file-upload.ser
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { Injectable } from '@angular/core';
+import { ColorLista } from 'src/app/servicios/api/models/color';
+import { ApiService } from 'src/app/servicios/api/api.service';
 
 
 @Component({
@@ -70,7 +72,8 @@ export class AppEvidenciaComponent implements OnInit{
   public file: File | any;
   public loading: boolean;
   public archivos: any = []
-
+  colorTitle:ColorLista;
+  colorWallpaper:ColorLista;
   private selectedFile: File;
   public fileName: string;
   
@@ -79,14 +82,17 @@ export class AppEvidenciaComponent implements OnInit{
     private FileUploadService: FileUploadService,
     private router: Router,
     private route: ActivatedRoute,
+    private ApiService: ApiService,
   ) {}
 
   ngOnInit(): void { 
+    this.ApiService.colorTempo(); 
+    this.colorTitle = JSON.parse(localStorage.getItem("color")).title;
+    this.colorWallpaper = JSON.parse(localStorage.getItem("color")).wallpaper;
+
    // D:\INTI\inti-front\src\assets\evidencia.json
     this.http.get('assets/evidencia.json').subscribe(data => {
     this.jsonData = data;
-    console.log(data);
-    
     });
 
 

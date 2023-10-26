@@ -1,7 +1,7 @@
-<app-app-header></app-app-header>
+<app-app-header class="lista-app-header"></app-app-header>
 
 <div class="componente-global">
-  <div class="titulo">
+  <div class="titulo-lista">
     <h1 class="titulo-nav">Lista de verificación auditoría</h1>
     <div class="contenedor-arrow">
       <app-app-header-arrow-left></app-app-header-arrow-left>
@@ -32,7 +32,7 @@
                 <td>{{ audit.FECHA_AUDITORIA }}</td>
                 <td>{{ audit.PROCESO }}</td>
                 <td>
-                  <app-modal-detalle [idAuditoria]="audit.ID_AUDITORIA" (valorEnviado)="recibirValorDetalle($event)"></app-modal-detalle>
+                  <app-modal-detalle class="modal-detalles" [idAuditoria]="audit.ID_AUDITORIA" (valorEnviado)="recibirValorDetalle($event)"></app-modal-detalle>
                 </td>
               </tr>
             </tbody>

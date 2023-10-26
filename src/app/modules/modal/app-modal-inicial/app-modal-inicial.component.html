@@ -19,11 +19,11 @@
               <ng-container>
                 <th class="text dinamic"
                   *ngFor="let element of data"
-                  id="{{ element.norma }}"
+                  id="{{ element.NORMA }}"
                   style="width: 350px; margin: 6px 6px 6px 6px"
-                  (click)="linkToDashboard($event,element.id)"
+                  (click)="linkToDashboard($event,element.ID_NORMA)"
                 >
-                  {{ element.norma }}
+                  {{ element.NORMA }}
                 </th>
               </ng-container>
             </tr>

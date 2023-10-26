@@ -1,35 +1,42 @@
-.containerResultadosAuditoria{
+.containerResultadosAuditoria {
     display: flex;
     flex-direction: column;
-    margin: 2vh 0 0 1.5vw;
+    /* margin: 2vh 0 0 1.5vw; */
+    padding: 2vh 0 0 1.5vw;
+    background-color: var(--color-wallpaper, #f6f8f9);
 }
-.titulo{
+
+.titulo {
     display: flex;
     flex-direction: row-reverse;
     margin: 2vh 0;
 }
-h1{
+
+h1 {
     width: 100%;
     font-family: 'Montserrat', sans-serif;
     font-weight: bolder;
-    color: #068460;
+    color: var(--color-title, #962d46);
     text-align: center;
     margin: 2vh 0;
 }
-.resultados{
+
+.resultados {
     display: flex;
 }
-.form{
+
+.form {
     display: flex;
     flex-direction: column;
     margin: 1vh 0.5vw;
 }
+
 .table-gestion {
     width: 75vw;
     font-size: 16px;
     font-family: 'Work Sans', sans-serif;
     min-width: 450px;
-    border: 2px solid #068460; 
+    border: 2px solid #068460;
     border-left: none;
     border-right: none;
     border-bottom: none;
@@ -37,27 +44,33 @@ h1{
     text-align: center;
     margin: 0 0.5vw 3vh 2vw;
 }
+
 .table-gestion thead tr {
     background-color: #068460;
     color: #ffffff;
     font-family: 'Work Sans', sans-serif;
 }
+
 .table-gestion th,
 .table-gestion tbody td {
     padding: 10px;
 }
+
 .table-gestion tbody tr {
     border-bottom: 1px solid white;
 }
-.table-gestion tr th{
+
+.table-gestion tr th {
     text-align: center !important;
 }
-.buscar{
+
+.buscar {
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
 }
-.buscador{
+
+.buscador {
     margin: 2vh 0.5vw 3vh 0;
     background: #FFFFFF;
     border: 2px solid #068460;
@@ -70,11 +83,13 @@ h1{
     color: #000000;
     align-self: flex-end;
 }
+
 /* pagination */
 .page-style {
     display: flex;
     justify-content: flex-end;
 }
+
 .paginas {
     display: inline-block;
     max-width: 100%;
@@ -83,7 +98,106 @@ h1{
     font-size: 14px;
     font-family: 'Work Sans', sans-serif;
 }
+
 .container-label {
     display: flex;
     align-items: center;
+}
+
+/* RESPOSIVO */
+.resposi-icon {
+    display: none;
+}
+
+@media (max-width: 970px) {
+
+    /* NOMBRE DE LA CABECERA  */
+    .resultados-app-header 
+        .container-pst p {
+            display: none;
+        }
+    
+
+    /* MENU */
+    .menu-alta-gerencia {
+        display: none;
+    }
+
+     
+
+    .responsi-gerencia-menu  .linea {
+            width: auto;      
+        }
+
+        .responsi-gerencia-menu .td-menu{
+            width: auto;
+        }
+    
+
+    .resposi-icon {
+        display: flex;
+    }
+
+    .resposi-icon {
+        width: 95%;
+        top: 3px;
+        justify-content: flex-end;
+        display: flex;
+        position: absolute;
+        flex-direction: row;
+    }
+
+    .navbar-toggle {
+        padding: 0;
+        margin-right: 15px;
+        margin-top: 0;
+        position: relative;
+    }
+
+    /* TABLA DE RESULTADOS DE AUDITORIA */
+    .form {
+        width: 100% !important;
+    }
+
+    .table-gestion {
+        width: auto;
+    }
+
+    @media(max-width: 480px) {
+
+        .h1,
+        h1 {
+            font-size: 22px;
+        }
+
+        .menu-alta-gerencia 
+            .table-gestion {
+                font-size: 13px;
+            }
+        
+
+        /* PAGINADO */
+        .page-style {
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        .container-label {
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        /* TABLA */
+        .color-estado {
+            display: none;
+        }
+
+        .table-gestion{
+            
+            font-size: 13px;
+             min-width: 0;
+        }
+    }
 }

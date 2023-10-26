@@ -1,4 +1,4 @@
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from "@angular/core";
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA, isDevMode } from "@angular/core";
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; 
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
@@ -18,7 +18,7 @@ import { AppCaracterizacionComponent } from './modules/caracterizacion/app-carac
 import { AppDiagnosticoComponent } from './modules/diagnostico/app-diagnostico/app-diagnostico.component';
 import { AppModalInicialComponent } from './modules/modal/app-modal-inicial/app-modal-inicial.component';
 import { AppModalSuccessComponent } from './modules/modal-success/app-modal-success/app-modal-success.component';
-import {AppGestionDeUsuariosComponent } from './modules/gestionDeUsuarios/app-gestion-de-usuarios/app-gestion-de-usuarios.component';
+import { AppGestionDeUsuariosComponent } from './modules/gestionDeUsuarios/app-gestion-de-usuarios/app-gestion-de-usuarios.component';
 import { AppModalPstComponent } from './modules/modalPst/app-modal-pst/app-modal-pst.component'; 
 import { CommonModule } from '@angular/common';
 import { AppDiagnosticoDocComponent } from './modules/diagnosticoDoc/app-diagnostico-doc/app-diagnostico-doc.component';
@@ -102,6 +102,8 @@ import { AppEncuestaCreadaComponent } from './modules/encuestaCreada/app-encuest
 import { AppTablaEncuestasComponent } from './modules/tablaEncuestas/app-tabla-encuestas/app-tabla-encuestas.component';
 import { AppEliminarEncuestaComponent } from './modules/tablaEncuestas/app-eliminar-encuesta/app-eliminar-encuesta.component';
 import { AppMonitorizacionComponent } from './modules/monitorizacion/app-monitorizacion/app-monitorizacion.component';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { MaterialModule } from "./material.module";
 //import { AppMejoraContinuaComponent } from "./modules/mejoraContinua/app-mejora-continua/app-mejora-continua.component";
 // import {GoogleMapsModule} from '@angular/google-maps'; 
 
@@ -171,6 +173,13 @@ import { AppMonitorizacionComponent } from './modules/monitorizacion/app-monitor
     AppMonitorizacionComponent
   ],
   imports: [
+    /*NgxSpinnerModule.forRoot({
+      bdColor: 'rgba(0, 0, 0, 0.8)',
+      size: 'medium',
+      color: '#fff',
+      type: 'ball-scale-multiple',
+    }),*/
+    MaterialModule,
     PipesModule,
     BrowserModule,
     AppRoutingModule,
@@ -196,6 +205,12 @@ import { AppMonitorizacionComponent } from './modules/monitorizacion/app-monitor
     BrowserAnimationsModule,
     TabsModule,
     AngularEditorModule,
+    ServiceWorkerModule.register('ngsw-worker.js', {
+      enabled: !isDevMode(),
+      // Register the ServiceWorker as soon as the application is stable
+      // or after 30 seconds (whichever comes first).
+      registrationStrategy: 'registerWhenStable:30000'
+    }),
     // GoogleMapsModule,
   ],
 

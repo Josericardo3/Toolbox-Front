@@ -1,46 +1,56 @@
-.containerMejoraContinua{
+.containerMejoraContinua {
     display: flex;
     flex-direction: column;
-    margin: 2vh 1vw 0 2vw;
+    /* margin: 2vh 1vw 0 2vw; */
+    background-color: var(--color-wallpaper, #f6f8f9);
+    padding: 2vh 0 0 1.5vw;
 }
-.titulo{
+
+.titulo {
     display: flex;
     flex-direction: row-reverse;
     margin: 2vh 0;
 }
-h1{
+
+h1 {
     width: 100%;
     font-family: 'Montserrat', sans-serif;
     font-weight: bolder;
-    color: #068460;
+    color: var(--color-title, #962d46);
     text-align: center;
     margin: 2vh 0;
 }
-.mejora{
+
+.mejora {
     display: flex;
 }
-.form{
+
+.form {
     display: flex;
     flex-direction: column;
 }
-.filtros{
+
+.filtros {
     margin: 0 0 0 2vw;
     display: flex;
     width: 100%;
 }
-.section{
+
+.section {
     display: flex;
     flex-direction: column;
     margin: 0 1vw;
 }
-label{
+
+label {
     font-family: 'Work Sans', sans-serif;
     font-size: 15px;
     margin: 1vh 0;
     font-weight: 500;
 }
+
 .date,
-.buscador{
+.buscador {
     background: #FFFFFF;
     border-radius: 10px;
     height: 6vh;
@@ -51,34 +61,166 @@ label{
     border: 1px solid #000000;
     margin: 0.5vh 0;
 }
-.buscador{
+
+.buscador {
     margin: 2vh 3vw !important;
 }
+
 tr th {
     text-align: center !important;
 }
+
 .table-gestion {
     width: 100%;
-    font-size: 16px;
+    font-size: 14px;
     font-family: 'Work Sans', sans-serif;
     min-width: 450px;
-    border: 2px solid #068460; 
+    border: 2px solid #068460;
     border-left: none;
     border-right: none;
     border-bottom: none;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
     text-align: center;
-    margin: 2vh 0 4vh 3vw;
+    margin: 2vh 4vw 4vh 2vw;
 }
+
 .table-gestion thead tr {
     background-color: #068460;
     color: #ffffff;
     font-family: 'Work Sans', sans-serif;
 }
+
 .table-gestion th,
 .table-gestion tbody td {
     padding: 15px;
 }
+
 .table-gestion tbody tr {
     border-bottom: 1px solid white;
+}
+
+
+/* pagination */
+.page-style {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.paginas {
+  display: inline-block;
+  max-width: 100%;
+  margin: 10px;
+  font-weight: 700;
+  font-size: 14px;
+  font-family: 'Work Sans', sans-serif;
+}
+
+.container-label {
+  display: flex;
+  align-items: center;
+}
+.resposi-icon {
+    display: none;
+}
+
+@media (max-width: 970px) {
+
+    /* NOMBRE DE LA CABECERA  */
+    .mejora-app-header 
+        .container-pst p {
+            display: none;
+        }
+    
+
+    /* MENU */
+
+    button[mat-menu-trigger-for="menu"] {
+        display: block;
+      }
+
+    .menu-corto {
+        display: none
+    }
+    .responsi-menu .linea {
+        width: auto;
+    }
+    
+    .responsi-menu .td-menu {
+        width: auto;
+    }
+    
+    .responsi-menu .p-menu {
+        margin: 0.6vh 0.5vw;
+    }
+
+    .resposi-icon {
+        display: flex;
+    }
+
+    .resposi-icon {
+        width: 95%;
+        top: 3px;
+        justify-content: flex-end;
+        display: flex;
+        position: absolute;
+        flex-direction: row;
+    }
+
+    .navbar-toggle {
+        padding: 0;
+        margin-right: 15px;
+        margin-top: 0;
+        position: relative;
+    }
+
+    .h1,
+    h1 {
+        font-size: 30px;
+    }
+
+    .titulo {
+        margin: 0;
+    }
+
+    /* FILTROS */
+    .filtros {
+        display: flex;
+        justify-content: flex-start;
+    }
+
+    /* TABLA  */
+    .form {
+        width: 100% !important;
+    }
+
+    .table-gestion {
+        width: auto;
+        margin-top: 4px;
+        margin: 9px;
+        padding: 11px;
+    }
+
+    .table-gestion th,
+    .table-gestion tbody td {
+        padding: 11px;
+    }
+}
+@media(max-width: 480px) {
+
+    .h1,
+    h1 {
+        font-size: 22px;
+    }
+
+    .menu-corto  
+        .table-gestion {
+            font-size: 13px;
+        }
+    
+
+    .table-gestion{
+        
+        font-size: 13px;
+         min-width: 0;
+    }
 }

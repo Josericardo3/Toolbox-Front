@@ -62,21 +62,31 @@
 
           <div *ngIf="campo.MENSAJE != 'dependencia' && campo.NOMBRE !== '¿Cuáles servicios de aventura presta?'">
             <div *ngSwitchCase="'checkbox'" class="containerCheck">
-              <div *ngFor="let opcion of campo.DESPLEGABLE" class="check"> 
+              <div *ngFor="let opcion of campo.DESPLEGABLE; let j = index" class="check"> 
                 <input type="checkbox" [formControlName]="campo.NOMBRE" [value]="opcion.ID_DESPLEGABLE_CARACTERIZACION" [required]="campo.REQUERIDO"
-                class="checkbox" (change)="opcion.mostrarInput = opcion.NOMBRE === 'OTROS'? !opcion.mostrarInput : false"
+                class="checkbox" (change)="opcion.mostrarInput = opcion.NOMBRE === 'OTROS'? !opcion.mostrarInput : false; toggleMostrarInputRedesSociales(opcion.NOMBRE)"
                 [id]="i" (ngModelChange)="capturarValor(i, $event, campo.ID_CARACTERIZACION_DINAMICA)">{{opcion.NOMBRE}}
                 <div>
                   <input type="text" *ngIf="opcion.mostrarInput && opcion.NOMBRE === 'OTROS'" class="inputContainer"
                   placeholder="Especifica otro" [id]="i" (ngModelChange)="capturarValor(i, $event, campo.ID_CARACTERIZACION_DINAMICA)"
                   [formControl]="otroControlA" [ngClass]="{'ng-invalid ng-touched': validarCampoOtroA()}">
                 </div>
+                <div *ngIf="campo.NOMBRE === '¿Cuáles redes sociales tiene?' && opcion.NOMBRE !== 'OTROS'">
+                  <input type="text" *ngIf="mostrarInputsRedesSociales['FACEBOOK'] && opcion.NOMBRE === 'FACEBOOK'" [formControl]="facebook" 
+                  class="inputContainer" placeholder="Ingrese red social" (ngModelChange)="capturarValor(i, $event, campo.ID_CARACTERIZACION_DINAMICA)">
+                  <input type="text" *ngIf="mostrarInputsRedesSociales['TWITTER'] && opcion.NOMBRE === 'TWITTER'" [formControl]="twitter" 
+                  class="inputContainer" placeholder="Ingrese red social" (ngModelChange)="capturarValor(i, $event, campo.ID_CARACTERIZACION_DINAMICA)">
+                  <input type="text" *ngIf="mostrarInputsRedesSociales['INSTAGRAM'] && opcion.NOMBRE === 'INSTAGRAM'" [formControl]="instagram" 
+                  class="inputContainer" placeholder="Ingrese red social" (ngModelChange)="capturarValor(i, $event, campo.ID_CARACTERIZACION_DINAMICA)">
+                  <input type="text" *ngIf="mostrarInputsRedesSociales['TIKTOK'] && opcion.NOMBRE === 'TIKTOK'" [formControl]="tiktok" 
+                  class="inputContainer" placeholder="Ingrese red social" (ngModelChange)="capturarValor(i, $event, campo.ID_CARACTERIZACION_DINAMICA)">
+                </div>
               </div>
             </div>
           </div>
 
           <div *ngSwitchCase="'radio'" class="containerRadio">
-            <div *ngFor="let opcion of campo.DESPLEGABLE" class="radio">
+            <div *ngFor="let opcion of campo.DESPLEGABLE" class="radio"> 
               <div *ngIf="campo.NOMBRE === 'Cuenta con líder de sostenibilidad   (Si / No)'; else elseRadio" class="radio">
                 <input type="radio" [formControlName]="campo.NOMBRE" [value]="opcion.ID_DESPLEGABLE_CARACTERIZACION" [id]="i"   
                 (change)="showSostenibilidad = (opcion.NOMBRE === 'SI')" [required]="campo.REQUERIDO"         
@@ -117,11 +127,11 @@
                 [required]="campo.REQUERIDO">          
                 {{opcion.nombre}}
                 <div>
-                  <input type="text" *ngIf="opcion.mostrarInput && opcion.NOMBRE === 'OTROS'" class="inputContainer" 
+                  <input type="text" *ngIf="(opcion.mostrarInput && opcion.NOMBRE === 'OTROS') " class="inputContainer" 
                   placeholder="Especifica otro" [id]="i" (ngModelChange)="capturarValor(i, $event, campo.ID_CARACTERIZACION_DINAMICA)"
                   [formControl]="otroControlB" [ngClass]="{'ng-invalid ng-touched': validarCampoOtroB()}">
                 </div>
-              </div>
+                    </div>
             </div>
           </div>   
 
@@ -160,7 +170,10 @@
         <div class="error-message" *ngIf="campo.REQUERIDO && campo.VALUES == null && formParent.controls[campo.NOMBRE]?.invalid 
         && formParent.controls[campo.NOMBRE]?.touched">
           <span style="color: tomato;">*Este campo es obligatorio</span>
-        </div>            
+        </div>    
+        <!-- <div class="error-message" *ngIf="formParent.get(campo.NOMBRE).hasError('required') && formParent.get(campo.NOMBRE).touched">
+          <span style="color: tomato;">*Este campo es obligatorio</span>
+        </div> -->
     </div>
     <div *ngIf="mostrarMensaje && !formParent.valid" class="completarCamposLabel">
       Por favor complete todos los campos obligatorios.

@@ -1,7 +1,10 @@
 import { DatePipe } from '@angular/common';
 import { ChangeDetectorRef, Component } from '@angular/core';
+import { using } from 'rxjs';
 import { ModalService } from 'src/app/messagemodal/messagemodal.component.service';
 import { ApiService } from 'src/app/servicios/api/api.service';
+import { ColorLista } from 'src/app/servicios/api/models/color';
+
 
 @Component({
   selector: 'app-app-actividades',
@@ -45,6 +48,10 @@ export class AppActividadesComponent {
   ngSelectActividad = 1;
   ngSelectEstado = 1;
   ngSelectResponsable = 1;
+  colorWallpaper: ColorLista;
+  colorTitle: ColorLista;
+  isCollapsed = true;
+  mostrarNotificacion: boolean = false;
 
 
   constructor(
@@ -55,6 +62,10 @@ export class AppActividadesComponent {
   ) { }
 
   ngOnInit() {
+    this.ApiService.colorTempo();
+    this.colorWallpaper = JSON.parse(localStorage.getItem("color")).wallpaper;
+    this.colorTitle = JSON.parse(localStorage.getItem("color")).title;
+
     this.fnConsultActivities();
     this.fnListResponsible();
     this.fnStatusList();
@@ -221,7 +232,11 @@ export class AppActividadesComponent {
     if (typeof this.inicioActivity === 'string' && typeof this.finActivity === 'string') {
       const inicioValue = new Date(this.inicioActivity);
       const finValue = new Date(this.finActivity);
-      if (finValue < inicioValue) {
+      //ALMACENA EL VALOR DE LA FECHA ACTUAL
+      const fechaActual = new Date();
+      
+      //MODIFICACION DE LA VALIDACION
+      if ((finValue < inicioValue) || (inicioValue < fechaActual) || (finValue < fechaActual)){
         const title = "Registro no exitoso";
         const message = "Por favor verifique la fecha";
         this.Message.showModal(title, message);
