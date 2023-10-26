@@ -131,7 +131,7 @@
 }
 
 .mainContainer {
-  background-color: var(--color-wallpaper, #f6f8f9);
+  /*background-color: var(--color-wallpaper, #f6f8f9);*/
   display: flex;
   width: 100vw;
   height: 91vh;
