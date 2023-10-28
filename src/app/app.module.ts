@@ -1,4 +1,4 @@
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from "@angular/core";
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA, isDevMode } from "@angular/core";
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; 
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
@@ -18,7 +18,7 @@ import { AppCaracterizacionComponent } from './modules/caracterizacion/app-carac
 import { AppDiagnosticoComponent } from './modules/diagnostico/app-diagnostico/app-diagnostico.component';
 import { AppModalInicialComponent } from './modules/modal/app-modal-inicial/app-modal-inicial.component';
 import { AppModalSuccessComponent } from './modules/modal-success/app-modal-success/app-modal-success.component';
-import {AppGestionDeUsuariosComponent } from './modules/gestionDeUsuarios/app-gestion-de-usuarios/app-gestion-de-usuarios.component';
+import { AppGestionDeUsuariosComponent } from './modules/gestionDeUsuarios/app-gestion-de-usuarios/app-gestion-de-usuarios.component';
 import { AppModalPstComponent } from './modules/modalPst/app-modal-pst/app-modal-pst.component'; 
 import { CommonModule } from '@angular/common';
 import { AppDiagnosticoDocComponent } from './modules/diagnosticoDoc/app-diagnostico-doc/app-diagnostico-doc.component';
@@ -102,8 +102,36 @@ import { AppEncuestaCreadaComponent } from './modules/encuestaCreada/app-encuest
 import { AppTablaEncuestasComponent } from './modules/tablaEncuestas/app-tabla-encuestas/app-tabla-encuestas.component';
 import { AppEliminarEncuestaComponent } from './modules/tablaEncuestas/app-eliminar-encuesta/app-eliminar-encuesta.component';
 import { AppMonitorizacionComponent } from './modules/monitorizacion/app-monitorizacion/app-monitorizacion.component';
+import { MedicionKpisComponent } from './modules/medicion-kpis/medicion-kpis.component';
+import { MenuMedicionKpisComponent } from './modules/medicion-kpis/menu-medicion-kpis/menu-medicion-kpis.component';
+import { ObjetivosKpisComponent } from './modules/medicion-kpis/objetivos-kpis/objetivos-kpis.component';
+import { IndicadoresKpisComponent } from './modules/medicion-kpis/indicadores-kpis/indicadores-kpis.component';
+import { FormularioObjetivoKpiComponent } from './modules/medicion-kpis/objetivos-kpis/formulario-objetivo-kpi/formulario-objetivo-kpi.component';
+import { GestionObjetivoKpiComponent } from './modules/medicion-kpis/objetivos-kpis/gestion-objetivo-kpi/gestion-objetivo-kpi.component';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { MaterialModule } from "./material.module";
 //import { AppMejoraContinuaComponent } from "./modules/mejoraContinua/app-mejora-continua/app-mejora-continua.component";
 // import {GoogleMapsModule} from '@angular/google-maps'; 
+import { FormularioIndicadorKpiComponent } from './modules/medicion-kpis/indicadores-kpis/formulario-indicador-kpi/formulario-indicador-kpi.component';
+import { GestionIndicadorKpiComponent } from "./modules/medicion-kpis/indicadores-kpis/gestion-indicador-kpi/gestion-indicador-kpi.component";
+import { AlertComponent } from "./modules/alert/alert.component";
+import { PaquetesComponent } from "./modules/medicion-kpis/paquetes/paquetes.component";
+import { GestionPaqueteKpiComponent } from "./modules/medicion-kpis/paquetes/gestion-paquete-kpi/gestion-paquete-kpi.component";
+import { FormularioPaqueteKpiComponent } from "./modules/medicion-kpis/paquetes/formulario-paquete-kpi/formulario-paquete-kpi.component";
+import { MatPaginatorIntl } from "@angular/material/paginator";
+import { MatPaginatorIntlEsp } from "./MatPaginatorIntl";
+import { MAT_DATE_LOCALE } from "@angular/material/core";
+import { FormularioEvaluacionIndicadorComponent } from "./modules/medicion-kpis/indicadores-kpis/formulario-evaluacion-indicador/formulario-evaluacion-indicador.component";
+import { GestionEvaluacionIndicadorComponent } from "./modules/medicion-kpis/indicadores-kpis/gestion-evaluacion-indicador/gestion-evaluacion-indicador.component";
+import { RegistroEvaluacionIndicadorComponent } from "./modules/medicion-kpis/registro-evaluacion-indicador/registro-evaluacion-indicador.component";
+import { GestionRegistroEvaluacionIndicadorComponent } from "./modules/medicion-kpis/registro-evaluacion-indicador/gestion-registro-evaluacion-indicador/gestion-registro-evaluacion-indicador.component";
+import { FormularioRegistroEvaluacionIndicadorComponent } from "./modules/medicion-kpis/registro-evaluacion-indicador/formulario-registro-evaluacion-indicador/formulario-registro-evaluacion-indicador.component";
+import { DetalleRegistroEvaluacionIndicadorComponent } from "./modules/medicion-kpis/registro-evaluacion-indicador/detalle-registro-evaluacion-indicador/detalle-registro-evaluacion-indicador.component";
+import { GraficoIndicadoresEvaluacionComponent } from "./modules/medicion-kpis/indicadores-kpis/grafico-indicadores-evaluacion/grafico-indicadores-evaluacion.component";
+import { RecordatoriosKpisComponent } from "./modules/medicion-kpis/recordatorios-kpis/recordatorios-kpis.component";
+import { FormularioRecordatorioKpisComponent } from "./modules/medicion-kpis/recordatorios-kpis/formulario-recordatorio-kpis/formulario-recordatorio-kpis.component";
+import { CargarDocumentoComponent } from "./modules/evidencia/cargar-documento/cargar-documento.component";
+import { RecoveryFormularioComponent } from "./recovery/app-recovery/recoveryformulario/recoveryformulario.component";
 
 @NgModule({
   declarations: [
@@ -124,6 +152,7 @@ import { AppMonitorizacionComponent } from './modules/monitorizacion/app-monitor
     AppDocumentacionComponent,
     AppEvidenciaComponent,
     RecoveryComponent,
+    RecoveryFormularioComponent,
     ModalComponent,
     EMatrizRequisitosLegalesComponent,
     AppAuditoriaInternaComponent,
@@ -168,9 +197,39 @@ import { AppMonitorizacionComponent } from './modules/monitorizacion/app-monitor
     AppEncuestaCreadaComponent,
     AppTablaEncuestasComponent,
     AppEliminarEncuestaComponent,
-    AppMonitorizacionComponent
+    AppMonitorizacionComponent,
+    MedicionKpisComponent,
+    MenuMedicionKpisComponent,
+    ObjetivosKpisComponent,
+    IndicadoresKpisComponent,
+    FormularioObjetivoKpiComponent,
+    GestionObjetivoKpiComponent,
+    FormularioIndicadorKpiComponent,
+    GestionIndicadorKpiComponent,
+    AlertComponent,
+    PaquetesComponent,
+    GestionPaqueteKpiComponent,
+    FormularioPaqueteKpiComponent,
+    FormularioEvaluacionIndicadorComponent,
+    GestionEvaluacionIndicadorComponent,
+    RegistroEvaluacionIndicadorComponent,
+    GestionRegistroEvaluacionIndicadorComponent,
+    FormularioRegistroEvaluacionIndicadorComponent,
+    DetalleRegistroEvaluacionIndicadorComponent,
+    GraficoIndicadoresEvaluacionComponent,
+    RecordatoriosKpisComponent,
+    FormularioRecordatorioKpisComponent,
+    CargarDocumentoComponent
+    
   ],
   imports: [
+    /*NgxSpinnerModule.forRoot({
+      bdColor: 'rgba(0, 0, 0, 0.8)',
+      size: 'medium',
+      color: '#fff',
+      type: 'ball-scale-multiple',
+    }),*/
+    MaterialModule,
     PipesModule,
     BrowserModule,
     AppRoutingModule,
@@ -185,6 +244,7 @@ import { AppMonitorizacionComponent } from './modules/monitorizacion/app-monitor
     CommonModule,
     NgxSpinnerModule,
     ButtonsModule,
+    MaterialModule,
     PaginationModule.forRoot(),
     AccordionModule.forRoot(),
     CollapseModule.forRoot(),
@@ -195,8 +255,16 @@ import { AppMonitorizacionComponent } from './modules/monitorizacion/app-monitor
     CarouselModule,
     BrowserAnimationsModule,
     TabsModule,
+    //NgSelectModule,
     AngularEditorModule,
+    ServiceWorkerModule.register('ngsw-worker.js', {
+      enabled: !isDevMode(),
+      // Register the ServiceWorker as soon as the application is stable
+      // or after 30 seconds (whichever comes first).
+      registrationStrategy: 'registerWhenStable:30000'
+    }),
     // GoogleMapsModule,
+    
   ],
 
   providers: 
@@ -205,10 +273,13 @@ import { AppMonitorizacionComponent } from './modules/monitorizacion/app-monitor
     BsDatepickerInlineConfig,
     BrowserAnimationsModule,
     BsDatepickerConfig, 
+    
     //NgbCarouselModule,
     BsModalService,
     TabsetConfig,
     AppPlanificacionComponent,
+    { provide: MatPaginatorIntl, useClass: MatPaginatorIntlEsp },
+    { provide: MAT_DATE_LOCALE, useValue: 'es-ES' },
   ],
   entryComponents: [
     AppDeleteActivitiesComponent,

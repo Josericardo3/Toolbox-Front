@@ -5,7 +5,7 @@
         <h1>Alcance Sistema de Gestión de Sostenibilidad</h1>
       </header>
       <button type="button" class="btnReporte" (click)="generatePDF()" [disabled]="disablePDF">
-        <i class="fa-solid fa-download" style="color: #ffffff; margin-right: 0.5vw;"></i>Descargar reporte
+        <i class="fa-solid fa-download" style="color: #ffffff; margin-right: 0.5vw;"></i>Visualizar reporte
       </button> 
       <div class="form">
         <h3>Responda las siguientes preguntas:</h3>
@@ -27,16 +27,9 @@
         <p class="texto" id="preg2">
           ¿Requisitos de la norma que no aplican?
         </p>
-        <div class="container-check">
-          <!-- <input type="checkbox" class="input-check"  [(ngModel)]="selectedCheckboxes.checkbox1" (change)="checkboxChange('checkbox1')"> -->
-          <input type="checkbox" class="input-check"  [checked]="selectedCheckboxes.checkbox1=== '4.1;true'"  (change)="checkboxChange($event, '4.1')"  [disabled]="accionActivo!='guardar'">
-          <p>4.1</p>
-          <!-- 
-            [disabled]="accionActivo!='guardar'" -->
-        </div>
-        <div class="container-check">
-          <input type="checkbox" class="input-check" [checked]="selectedCheckboxes.checkbox2=== '4.2;true'" (change)="checkboxChange($event, '4.2')"  [disabled]="accionActivo!='guardar'">
-          <p>4.2</p>
+        <div *ngFor="let norma of NormasArray; let i = index;" class="container-check">
+          <input type="checkbox" class="input-check" [checked]="selectedCheckboxes[i] === i + ';t'" (change)="checkboxChange($event, i)"  [disabled]="accionActivo!='guardar'">
+          <p>{{ norma.TITULO }}</p>
           <!-- 
             [disabled]="accionActivo!='guardar'" -->
         </div>
@@ -56,7 +49,6 @@
           <i class="fa-sharp fa-solid fa-x" style="color: white; margin: 0 0.4vw;"></i> Cancelar
         </button>
       </div>
-
 </div>
 <ngx-spinner bdColor="rgba(0, 0, 0, 0.5)" size="small"
   template="<img src='https://www.superiorlawncareusa.com/wp-content/uploads/2020/05/loading-gif-png-5.gif' width='50' height='50'/>">

@@ -113,10 +113,11 @@
 .select-norma {
   color: #068460;
   height: 27px;
+  width: 350px;
   border-radius: 5px;
 }
 
-.fa-clock {
+.historial-fa-clock {
   font-size: 20px;
   margin: -6vh 1vw 0 -4vw;
   position: absolute;
@@ -130,6 +131,7 @@
 }
 
 .mainContainer {
+  /* background-color: var(--color-wallpaper, #f6f8f9); */
   display: flex;
   width: 100vw;
   height: 91vh;
@@ -358,7 +360,7 @@ h3 {
 .btn-modal {
   cursor: pointer !important;
   padding: 12px 24px;
-   margin: 5px;
+  margin: 5px;
   height: 60px;
   width: 240px;
   background-color: #068460;
@@ -373,7 +375,7 @@ h3 {
   display: flex;
   justify-content: center;
   align-items: center;
-  text-decoration: none; 
+  text-decoration: none;
 }
 
 .btn-modal:hover {
@@ -386,16 +388,231 @@ h3 {
   cursor: not-allowed;
 }
 
-.disabled{
+.disabled {
   background-color: #e1e1e1;
   cursor: not-allowed;
-  pointer-events: none; /* Evita interacciones del usuario */
+  pointer-events: none;
+  /* Evita interacciones del usuario */
 
 }
+
 label {
   font-weight: 100;
   padding: 15px;
 }
+
 .oculto {
   display: none;
+}
+h4 {
+  color: white;
+  font-weight: bold;
+  font-size: 14px;
+  margin: 1vh 0 0.5vh 0
+}
+.close {
+  display: none;
+}
+
+/* .fa-clock {
+  display: block;
+} */
+
+.container-header {
+  display: none;
+}
+
+/* Estilos para pantallas pequeñas */
+
+@media (max-width: 768px) {
+ 
+  .custom-app-header .container {
+      padding-left: 1px;
+    }
+
+    .custom-app-header .container-pst {
+      display: none;
+    }
+  
+  
+  /* NOTICIAS */
+  .cont {
+      width: 63vw !important;
+    }
+
+    .imagenTarjeta img, .imagenTarjetaRec img {
+      max-width: 70%;
+      max-height: 98%;
+      margin-left: 5px;
+  }
+
+  .containerTarjeta, .containerTarjetaRec{
+    margin: 2vh 0 0 7vw;
+  }
+  
+  .historial-fa-clock {
+    display: none;
+  }
+
+  .header {
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  .container-header {
+    width: 95%;
+    top: 17px;
+    justify-content: flex-end;
+    display: flex;
+    position: absolute;
+    flex-direction: row;
+  }
+
+  .navbar-toggle {
+    padding: 0;
+    margin-right: 15px;
+    margin-top: 0;
+    position: relative;
+  }
+
+  .button-cerrar {
+    display: block;
+    /* margin: -1vh 6vw 6vh 0 !important; */
+    margin: 25vh 6vw 6vh 0 !important;
+  }
+
+  .container-norma {
+    display: none !important;
+  }
+
+  .notificaciones {
+    position: absolute;
+    right: 0;
+    width: 98%;
+    height: auto;
+    background-color: #a09a9a;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15)
+  }
+
+  .notificaciones h3 {
+    font-size: 20px;
+  }
+
+  .notificaciones .imagenTarjeta {
+    width: 11vw;
+  }
+
+  .imagenTarjeta img,
+  .imagenTarjetaRec img {
+    max-width: 54%;
+    max-height: 98%;
+  }
+
+  .cont {
+    width: 37vw;
+  }
+
+  .dashboard {
+    width: 100%;
+  }
+.closeValidacion{
+  margin-top: 66px ;
+}
+  .close {
+    margin-top: 20px;
+    display: flex;
+    width: 100%;
+    height: 91vh;
+    justify-content: flex-end;
+    opacity: 2;
+    font-weight: 100;
+    text-shadow: none;
+  }
+
+  .close p:hover {
+    font-weight: bold;
+  }
+
+  .close p {
+    margin-top: 115px;
+    padding: 7px;
+    font-family: 'Work Sans', sans-serif;
+    font-size: 14px;
+    cursor: pointer;
+    color: black;
+  }
+
+  .grid-img {
+    padding: 1px;
+    height: auto;
+    width: 100%;
+    margin: 1px;
+    grid-template-columns: repeat(2, 1fr);
+    /* Cambiar a 2 columnas */
+    row-gap: 10px;
+    column-gap: 10px;
+    gap: 19px;
+  }
+
+  .item-img i,
+  .item-img-sinHover i {
+    font-size: 3rem;
+    /* Reducir el tamaño de fuente */
+  }
+}
+
+/* Otros ajustes de estilo para pantallas pequeñas */
+@media (max-width: 675px) {
+  .custom-app-header 
+    .container {
+      /* background-color: #ffcc00; */
+      padding-left: 1px;
+    }
+  
+
+  .header {
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  .imagenTarjeta img,
+  .imagenTarjetaRec img {
+    max-width: 95%;
+    max-height: 98%;
+  }
+
+  .container-header {
+    width: 86%;
+    top: 17px;
+    justify-content: flex-end;
+    display: flex;
+    position: absolute;
+    flex-direction: row;
+  }
+
+  /* tarjetas de noticias  */
+  .containerTarjeta,
+  .containerTarjetaRec {
+    width: 100%;
+  }
+  .containerTarjeta, .containerTarjetaRec{
+    margin: 2vh 0 0 2vw;
+  }
+
+  .cont {
+    width: 72vw;
+  }
+}
+
+@media (max-width: 430px) {
+
+  .imagenTarjeta img,
+  .imagenTarjetaRec img {
+    max-width: 90%;
+    max-height: 98%;
+  }
 }

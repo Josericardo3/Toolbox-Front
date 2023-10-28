@@ -53,8 +53,13 @@
                 Por favor seleccione una opción
               </span>
             </div>
-          </div>          
-          <div style="margin-left: 149px;margin-bottom: 14px;">
+          </div> 
+          <div>
+            <label class="notificacion-planificación">
+                <input type="checkbox" name="recibirNoticias"  [checked]="recibirNoticias" (change)="onChangeCheckbox($event)"> Deseo recibir noticias por correo electrónico.
+            </label>
+        </div>         
+          <div class="container-btn">
             <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
             <button class="btn btn-primary" [disabled]="registerNewColaborador.invalid" (click)= "saveNewColaborador()" >Aceptar</button>
           </div>

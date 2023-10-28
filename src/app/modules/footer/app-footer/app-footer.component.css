@@ -1,5 +1,5 @@
 .govco-footer{
-    width: 100vw;
+    width: 100%;
 }
 /* agregados */
 .govco-portales-contenedor {
@@ -89,7 +89,7 @@ color: white;
     font-size: 20.8px;
 }
 
-@media only screen and (max-width: 480px) {
+@media only screen and (max-width: 540px) {
     .govco-portales-contenedor {
         display: grid;
         grid-template-columns: none;
@@ -100,4 +100,19 @@ color: white;
 
     .govco-separator-rows{
         border-left: 0px;
-  }}
+  }
+.footer-direccion, .footer{
+    display: none;
+}
+.text {
+    font-size: 20px;
+    text-align: center;
+}
+.govco-portales-contenedor{
+    padding: 12px 10px !important;
+}
+.politicas-footer{
+    text-decoration-line: underline;
+    text-align: center;
+}
+}

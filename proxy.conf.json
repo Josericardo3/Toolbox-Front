@@ -1,6 +1,6 @@
 {
     "/api/*":{
-    "target":"http://172.18.72.20/:8050",
+    "target":"https://172.18.72.20:8051",
     "secure":false,
     "logLevel":"debug"
     }

@@ -7,11 +7,15 @@ import { ObjectUnsubscribedError } from 'rxjs';
 (pdfMake as any).vfs = pdfFonts.pdfMake.vfs;
 import { ApiService } from 'src/app/servicios/api/api.service';
 import { ChangeDetectorRef } from '@angular/core';
+import { ModalService } from 'src/app/messagemodal/messagemodal.component.service';
+import { debug } from 'util';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-app-matriz-partes-interesadas',
   templateUrl: './app-matriz-partes-interesadas.component.html',
-  styleUrls: ['./app-matriz-partes-interesadas.component.css']
+  styleUrls: ['./app-matriz-partes-interesadas.component.css'],
+  providers: [DatePipe]
 })
 export class AppMatrizPartesInteresadasComponent implements OnInit {
   valoresForm: any[] = [];
@@ -56,16 +60,33 @@ export class AppMatrizPartesInteresadasComponent implements OnInit {
   filter: string = '';
   showfilter: boolean = false;
   result: boolean = false;
+  //
+  ParteInteresada: string;
+  Necesidad: string;
+  Expectativa: string;
+  Cumplimiento: string;
+  Observaciones: string;
+  Acciones: string;
+  Fecha: string;
+  Responsable: string;
+  Estado: string;
+  selectedResponsable: string='';
+  editarCaracteristica: any = {};
+  indiceAEliminar: number = -1;
+  isChecked: boolean = false;
+  mejoraContinua: number;
+  id_colab_number: number;
 
   constructor(
     private api: ApiService,
     private fb: FormBuilder,
     public ApiService: ApiService,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private datePipe: DatePipe,
+    private Message: ModalService,
   ) { }
 
   ngOnInit() {
-    //this.isEditarActivo= true;
     this.form = this.fb.group({
       estadoCumplimiento: ['', Validators.required],
       observaciones: [''],
@@ -77,16 +98,17 @@ export class AppMatrizPartesInteresadasComponent implements OnInit {
       necesidades: ['', Validators.required],
       otro: [""],
       expectativas: ["", Validators.required]
-
     });
 
     this.fnListResponsible();
     this.usuario();
-    //this.updateForm();
     this.fnConsultMatrizPartesInteresadas();
-    //this.isEditarActivo= true;
+    this.isEditarActivo = true;
+    this.generarPDFActivo = true;
   }
-
+  fnChangeEditarStatus(val: boolean) {
+    this.isEditarActivo = val;
+  }
   fnConsultMatrizPartesInteresadas() {
     this.ApiService.getDataParteInteresada().subscribe((data) => {
       this.rolessArray = data;
@@ -97,6 +119,7 @@ export class AppMatrizPartesInteresadasComponent implements OnInit {
       if (this.totalPaginas == 0) this.totalPaginas = 1;
 
       this.datatotal = this.dataInitial.length;
+      this.rolessArray = this.dataInitial.slice(0, 7);
       this.contentArray = data;
       this.currentPage = 1
       if (this.datatotal >= 7) {
@@ -126,25 +149,6 @@ export class AppMatrizPartesInteresadasComponent implements OnInit {
     this.cd.detectChanges();
   }
 
-  getTextoPregFormControlName(): string {
-    return this.option === 'noCumple' || this.option === 'cumpleParcialmente' ? 'observaciones' : 'necesidades';
-  }
-
-  getIdSeleccionado(opcion: string): number {
-    switch (opcion) {
-      case 'proveedores':
-        return 1;
-      case 'gubernamentales':
-        return 2;
-      case 'nogubernamentales':
-        return 3;
-      case 'otro':
-        return 4;
-      default:
-        return -1; // Valor por defecto en caso de opción inválida
-    }
-  }
-
   usuario() {
     this.api.getUsuario()
       .subscribe((data: any) => {
@@ -152,10 +156,6 @@ export class AppMatrizPartesInteresadasComponent implements OnInit {
         this.pst = data.NOMBRE_PST;
         this.logo = data.LOGO
       })
-  }
-  
-  inputreset() {
-    this.form.get('otro')?.updateValueAndValidity();
   }
 
   fnListResponsible() {
@@ -180,325 +180,221 @@ export class AppMatrizPartesInteresadasComponent implements OnInit {
     }
     return 0;
   }
-
-  capturarValor(event: Event, formControllerName:string) {
-    const elemento = event.target as HTMLInputElement;
-    const idInput = elemento.id;
-    const valorInput = elemento.value;
-    const textoLabel = elemento.previousElementSibling?.textContent;
-    const ORDEN = {
-      proveedores: 1,
-      gubernamentales: 2,
-      nogubernamentales: 3,
-      otro: 4
-    }
-
-
-    if (textoLabel) {
-      const result = this.valoresForm.find((o: any) => o.PREGUNTA === formControllerName);
-      var objDataFinal = this.datafinal.find((o:any)=> o.PREGUNTA === formControllerName);
-    
-      var idRespuesta = 0;
-      if(objDataFinal){
-        idRespuesta = objDataFinal.ID_RESPUESTA_FORMULARIOS;
-      }
-      if (result) {
-        result.RESPUESTA = valorInput;
-        result.ORDEN = ORDEN[this.form.get('interesada').value];
-        result.ID_RESPUESTA_FORMULARIOS = idRespuesta || 0 ;
-      } else {
-        this.valoresForm.push({
-          ID_RESPUESTA_FORMULARIOS: idRespuesta || 0 ,
-          FK_MAE_FORMULARIOS: 2,
-          PREGUNTA:formControllerName,
-          ORDEN: ORDEN[this.form.get('interesada').value],
-          RESPUESTA: valorInput,
-          FK_USUARIO: localStorage.getItem('Id')
-        });
-      }
-    }
+  fnEliminarRegistro(indice: number) {
+    this.indiceAEliminar = this.rolessArray[indice].ID_MATRIZ_PARTES_INTERESADAS;
+    this.ApiService.deleteMatrizPartesInteresadas(this.indiceAEliminar).subscribe((data:any) => {
+      const title = "Eliminación exitosa";
+      const message = "El registro se ha eliminado exitosamente";
+      this.Message.showModal(title, message);
+      this.fnConsultMatrizPartesInteresadas();
+    })
   }
-
-  disabledInput() {
+  //EDITAR PARTE INTERESADA
+  fnMatrizPartesInteresadasEdit(indice: number) {
+    this.caracteristicaIndice = indice;
+    this.editarCaracteristica = {};
+    //this.isChecked = true;
+    Object.assign(this.editarCaracteristica, this.rolessArray[indice]);
+    this.fnChangeEditarStatus(false);
+    if (this.editarCaracteristica.MEJORA_CONTINUA == 1)
+      this.isChecked == true;
+    else
+      this.isChecked == false;
+    //this.editarCaracteristica.FECHA_EJECUCION = this.datePipe.transform(this.editarCaracteristica.FECHA_EJECUCION, 'yyyy-MM-dd');
     this.form.get('interesada').disable();
-    this.form.get('otro').disable();
-    this.form.get('necesidades').disable();
-    this.form.get('expectativas').disable();
-    this.form.get('estadoCumplimiento').disable();
-    this.form.get('observaciones').disable();
-    this.form.get('acciones').disable();
-    this.form.get('fecha').disable();
-    this.form.get('responsable').disable();
-    this.form.get('estado').disable();
+    this.option = this.editarCaracteristica.ESTADO_DE_CUMPLIMIENTO;
   }
-
-  capturarTodosLosValores() {
-  
-    const ORDEN = {
-      proveedores: 1,
-      gubernamentales: 2,
-      nogubernamentales: 3,
-      otro: 4
-    };
-
-    const camposFiltrados = [
-      'interesada',
-      'necesidades',
-      'expectativas',
-      'estadoCumplimiento',
-      'otro',
-      'observaciones',
-      'acciones',
-      'fecha',
-      'responsable',
-      'estado',
-    ];
-
-    camposFiltrados.forEach((campo) => {
-      const textoLabel = campo;
-      if (textoLabel) {
-        let result = this.valoresForm.find((o: any) => o.PREGUNTA === campo);
-        if(this.datafinal){
-          var objDataFinal = this.datafinal.find((o:any)=> o.PREGUNTA === campo);
-        }
-        else{
-          var objDataFinal = this.valoresForm.find((o:any)=> o.PREGUNTA === campo);
-
-        }
-        var id;
-        if(objDataFinal){
-          
-           id  = objDataFinal.ID_RESPUESTA_FORMULARIOS || 0;
-        }
-      
-        if (result) {
-          result.RESPUESTA = this.form.get(campo)?.value || ''; // Si está vacío, enviar como cadena vacía
-          result.ORDEN = ORDEN[this.form.get('interesada').value];
-          result.ID_RESPUESTA_FORMULARIOS = id || 0;
-          
-        } else {
-          result = {
-            ID_RESPUESTA_FORMULARIOS: id || 0,
-            FK_MAE_FORMULARIOS: 2,
-            PREGUNTA: campo,
-            ORDEN: ORDEN[this.form.get('interesada').value],
-            RESPUESTA: this.form.get(campo)?.value || '', // Si está vacío, enviar como cadena vacía
-            FK_USUARIO: localStorage.getItem('Id')
-          };
-          this.valoresForm.push(result);
-        }
-      }
-    });
-   
+  checkboxChange(event: any) {
+    // Actualizamos el valor del checkbox con la opción y el estado
+    const checkboxState = event.target.checked;
+    if (checkboxState == true)
+      this.isChecked = true;
+    else
+      this.isChecked = false;
   }
-
-  saveForm() {
-    this.capturarTodosLosValores();
-   
-    this.ApiService.saveForms(this.valoresForm)
-      .subscribe((data: any) => {
-   
-        this.isEditarActivo = false;
-        this.generarPDFActivo = true;
-
-        //Restablecer la validación del campo "otro" si no se selecciona la opción "otro"
-        if (this.selectedOption !== 'otro') {
-          this.form.get('otro')?.clearValidators();
-          this.form.get('otro')?.updateValueAndValidity();
-        }
-        this.disabledInput();
-      })
-
-  }
-
-  onSelect(value: string) {
-    this.selectedOption = value;
-
-    const ordenVariables = {
-      'proveedores': 1,
-      'gubernamentales': 2,
-      "nogubernamentales": 3,
-      "otro": 4,
-    };
-
-    var filterData = this.datos.filter(e => e.ORDEN === ordenVariables[value]);
+  limpiarCampos() {
+    this.form.get('interesada')?.setValue('');
+    this.form.get('necesidades')?.setValue('');
+    this.form.get('expectativas')?.setValue('');
+    this.form.get('estadoCumplimiento')?.setValue('');
     this.form.get('observaciones')?.setValue('');
     this.form.get('acciones')?.setValue('');
     this.form.get('fecha')?.setValue('');
     this.form.get('responsable')?.setValue('');
     this.form.get('estado')?.setValue('');
+    this.form.get('interesada').enable();
+    this.fnChangeEditarStatus(true);
+    this.editarCaracteristica.MEJORA_CONTINUA = 0;
+    this.isChecked = false;
+    //for (var i = 0; i < this.editarCaracteristica.length; i++) {
+    //  this.editarCaracteristica.pop();
+    //}
+    //console.log(this.editarCaracteristica);
+  }
+  fnUpdatePartesInteresadas() {
+    this.editarCaracteristica.NECESIDAD = this.form.get('necesidades').value;
+    this.editarCaracteristica.EXPECTATIVA = this.form.get('expectativas').value;
+    this.editarCaracteristica.ESTADO_DE_CUMPLIMIENTO = this.form.get('estadoCumplimiento').value;
+    this.editarCaracteristica.OBSERVACIONES = this.form.get('observaciones').value;
+    this.editarCaracteristica.ACCIONES_A_REALIZAR = this.form.get('acciones').value;
+    this.editarCaracteristica.RESPONSABLE = this.form.get('responsable').value;
+    this.editarCaracteristica.ESTADO_ABIERTO_CERRADO = this.form.get('estado').value;
+    this.editarCaracteristica.FECHA_EJECUCION = this.form.get('fecha').value;
+    if (this.isChecked==true)
+      this.editarCaracteristica.MEJORA_CONTINUA = 1;
+    else
+      this.editarCaracteristica.MEJORA_CONTINUA = 0;
+    
+    this.ApiService.putMatrizPartesInteresadas(this.editarCaracteristica).subscribe((data) => {
+      const title = "Actualizacion exitosa.";
+      const message = "El registro se ha realizado exitosamente";
+      this.Message.showModal(title, message);
 
-    if (value === 'otro' && filterData.length === 0) {
-      this.form.get('necesidades').setValue('');
-      this.form.get('expectativas').setValue('');
-      this.form.get('estadoCumplimiento').setValue('');
-      this.form.get('otro')?.setValidators([Validators.required]);
-      this.form.get('otro')?.updateValueAndValidity();
-      const mostrar = document.querySelector('#otro') as HTMLInputElement;
-      if(mostrar!= null){
-        mostrar.style.display = 'block';
-      }
+      this.fnChangeEditarStatus(true);
+      this.fnConsultMatrizPartesInteresadas();
+      this.caracteristicaIndice = -1;
+      this.limpiarCampos();
+    })
+  }
+  //getIdnumberResponsable(num: number) {
+  //  this.id_colab_number = num;
+  //  console.log(this.id_colab_number);
+  //}
+  addDatosParteInteresada() {
+    this.ParteInteresada = this.form.get('interesada').value;
+    this.Necesidad = this.form.get('necesidades').value;
+    this.Expectativa = this.form.get('expectativas').value;
+    this.Cumplimiento = this.form.get('estadoCumplimiento').value;
+    this.Observaciones = this.form.get('observaciones').value;
+    this.Acciones = this.form.get('acciones').value;
+    this.Fecha = this.form.get('fecha').value;
+    this.Responsable = this.form.get('responsable').value;
+    this.Estado = this.form.get('estado').value;
+    //this.Fecha = this.datePipe.transform(this.Fecha, 'dd-MM-yyyy');
 
-      // Deshabilitar el botón de editar cuando se selecciona "otro"
-      //this.isEditarActivo = true;
-    } else if (filterData.length === 0) {
-      this.form.get('otro')?.clearValidators();
-      this.form.get('otro')?.updateValueAndValidity();
+    if (this.option == 'cumple') {
+      this.Observaciones = '-';
+      this.Acciones = '-';
+      this.Fecha = '-';
+      this.Responsable = '-';
+      this.Estado = '-';
+      this.mejoraContinua = 0;
+    }
+    else { this.mejoraContinua = 1; }
 
-      if (this.PI.length > 0 && this.form.get('interesada').value === 'proveedores') {
-        this.form.get('necesidades').setValue(this.PI[1].RESPUESTA);
-        this.form.get('expectativas').setValue(this.PI[2].RESPUESTA);
-        this.form.get('estadoCumplimiento').setValue(this.PI[3].RESPUESTA);
-
-      } else {
-        this.form.get('necesidades').setValue('');
-        this.form.get('expectativas').setValue('');
-        this.form.get('estadoCumplimiento').setValue('');
-      }
-      const ocultar = document.querySelector('#otro') as HTMLInputElement;
-      if(ocultar!= null){
-        ocultar.style.display = 'none';
-      }
-      // Habilitar el botón de editar para otras opciones seleccionadas
-     // this.isEditarActivo = false;
+    const ORDEN = {
+      proveedores: 1,
+      gubernamentales: 2,
+      nogubernamentales: 3,
+      clientes: 4,
+      huespedes: 5,
+      colaboradores: 6,
+      accionistas: 7,
+      comunidad: 8,
+      comunidadvulnerable: 9,
+      atractivos: 10,
+      otro: 11
     }
 
-    // precargar los dato cuando existen en el servicio
-
-    //this.fnFillData(this.datos);
-
-  }
-
-  optionSelected(value: string) {
-    this.option = value;
-    if (value !== 'cumple') {
-      this.form.get('observaciones')?.setValidators([Validators.required]);
-      this.form.get('observaciones')?.updateValueAndValidity();
-      this.form.get('acciones')?.setValidators([Validators.required]);
-      this.form.get('acciones')?.updateValueAndValidity();
-      this.form.get('fecha')?.setValidators([Validators.required]);
-      this.form.get('fecha')?.updateValueAndValidity();
-      this.form.get('responsable')?.setValidators([Validators.required]);
-      this.form.get('responsable')?.updateValueAndValidity();
-      this.form.get('estado')?.setValidators([Validators.required]);
-      this.form.get('estado')?.updateValueAndValidity();
-    } else {
-      this.form.get('observaciones')?.clearValidators();
-      this.form.get('observaciones')?.updateValueAndValidity();
-      this.form.get('acciones')?.clearValidators();
-      this.form.get('acciones')?.updateValueAndValidity();
-      this.form.get('fecha')?.clearValidators();
-      this.form.get('fecha')?.updateValueAndValidity();
-      this.form.get('responsable')?.clearValidators();
-      this.form.get('responsable')?.updateValueAndValidity();
-      this.form.get('estado')?.clearValidators();
-      this.form.get('estado')?.updateValueAndValidity();
-    }
-  }
-
-  activarCampos() {
-    //Habilitar los campos después de guardar
-    this.form.get('interesada').enable();
-    this.form.get('otro').enable();
-    this.form.get('interesada').enable();
-    this.form.get('necesidades').enable();
-    this.form.get('expectativas').enable();
-    this.form.get('estadoCumplimiento').enable();
-    this.form.get('observaciones').enable();
-    this.form.get('acciones').enable();
-    this.form.get('fecha').enable();
-    this.form.get('responsable').enable();
-    this.form.get('estado').enable();
-    this.isEditarActivo=true;
-  }
-
-  updateForm() {
-    this.api.getFormsParteInteresada()
-      .subscribe((data: any) => {
-        this.datos = data.RESPUESTA_GRILLA;
-        if(this.datos.length!= 0){
-          const obj = this.datos.filter((item) => item.PREGUNTA === "estadoCumplimiento");
-          this.option= obj[0].RESPUESTA;
+    if (this.ParteInteresada.length && this.Necesidad.length && this.Expectativa.length && this.Cumplimiento.length > 0) {
+      const request = {
+        ID_MATRIZ_PARTES_INTERESADAS: Number(0),
+        ID_INTERESADA: Number(ORDEN[this.form.get('interesada').value]),
+        PARTE_INTERESADA: this.ParteInteresada,
+        NECESIDAD: this.Necesidad,
+        EXPECTATIVA: this.Expectativa,
+        ESTADO_DE_CUMPLIMIENTO: this.Cumplimiento,
+        OBSERVACIONES: this.Observaciones,
+        ACCIONES_A_REALIZAR: this.Acciones,
+        RESPONSABLE: String(this.Responsable),
+        ESTADO_ABIERTO_CERRADO: this.Estado,
+        ESTADO_ACTIVO_INACTIVO: Number(1),
+        ID_USUARIO: parseInt(localStorage.getItem("Id")),
+        FECHA_EJECUCION: this.Fecha,
+        MEJORA_CONTINUA: Number(this.mejoraContinua),
+        ID_RNT: String(localStorage.getItem("rnt"))
+      }
+      let messageshow = '';
+      this.ApiService.postMatrizPartesInteresadas(request).subscribe((data) => {
+        //AGREGAR A MEJORA CONTINUA
+        if (this.option != 'cumple' && this.mejoraContinua == 1) {
+          const request2 = {
+            ID_MEJORA_CONTINUA: 0,
+            ID_USUARIO: parseInt(localStorage.getItem("Id")),
+            RESPONSABLE: String(this.Responsable),
+            DESCRIPCION: this.Observaciones,
+            NTC: "string",
+            REQUISITOS: this.Acciones,
+            TIPO: "Matriz Partes Interesadas",
+            ESTADO: this.Estado,
+            FECHA_INICIO: this.Fecha,
+            FECHA_FIN: this.Fecha
+          }
+          this.ApiService.postMejoraContinua(request2).subscribe((data) => {
+            //const title1 = "Registro exitoso";
+            //const message1 = "El registro se ha realizado exitosamente";
+            //this.Message.showModal(title1, message1);
+            messageshow = messageshow + 'Mejora Continua';
+          })
         }
-        this.optionSelected(this.option);
-        this.fnFillData(data.RESPUESTA_GRILLA);
-      })
+        //AGREGAR A PLANIFICACIÓN postNewRecord
+        if (this.option != 'cumple') {
+          const request1 = {
+            FK_ID_USUARIO_PST: parseInt(localStorage.getItem("Id")),
+            FK_ID_RESPONSABLE: parseInt(localStorage.getItem("Id")),
+            TIPO_ACTIVIDAD: "Matriz de partes interesadas",
+            DESCRIPCION: this.Observaciones + ' : ' + this.Acciones,
+            FECHA_INICIO: this.Fecha,
+            FECHA_FIN: this.Fecha,
+            ESTADO_PLANIFICACION: "Programado"
+          }
+          this.ApiService.postNewRecord(request1).subscribe((data) => {
+            //const title2 = "Registro exitoso";
+            //const message2 = "El registro se ha realizado exitosamente";
+            //this.Message.showModal(title2, message2);
+            messageshow = messageshow + ' y Planificacion';
+          })
+        }
+        //
+        this.fnConsultMatrizPartesInteresadas();
+        this.limpiarCampos();
+        this.ParteInteresada = '';
+        this.Necesidad = '';
+        this.Expectativa = '';
+        this.Cumplimiento = '';
+        this.Observaciones = '';
+        this.Acciones = '';
+        this.Fecha = '';
+        this.Responsable = '';
+        this.Estado = '';
+        const title = "Registro exitoso";
+        messageshow = "El registro se ha realizado exitosamente";
+        this.Message.showModal(title, messageshow);
+        this.pages = 1;
+        this.currentPage = 1
+      },
+        (error) => {
+          const title = "Error en la petición";
+          const message = "La parte interesada ya se encuentra registrada y no se permite un doble registro. Seleccione otra opción.";
+          this.Message.showModal(title, message);
+        }
+      );
+    }
+    else {
+      const title = "Registro no exitoso";
+      const message = "Por favor verifique la fecha y complete todo los campos"
+      this.Message.showModal(title, message);
+      //Ya éxiste un registro para esta parte interesada
+    }
   }
+
+  getOption() {
+    this.option = this.form.get('estadoCumplimiento').value;
+  }
+
   ID_RESPUESTA_FORMULARIOS: number;
 
-
-  fnFillData(data: any) {
-    const ordenVariables = {
-      'proveedores': 1,
-      'gubernamentales': 2,
-      'nogubernamentales': 3,
-      'otro': 4,
-    };
-  
-    // Obtener el valor de 'interesada' desde this.datos
-    const getSelectedData = this.datos.find((item) => item.PREGUNTA === 'interesada');
-    const getSelected = getSelectedData ? getSelectedData.RESPUESTA : 'proveedores'; // Valor predeterminado 'proveedores' si no se encuentra 'interesada' en this.datos
-
-    const ordenPregunta = [
-      'interesada',
-      'necesidades',
-      'expectativas',
-      'estadoCumplimiento',
-      'otro',
-      'observaciones',
-      'acciones',
-      'fecha',
-      'responsable',
-      'estado',
-    ];
-  
-    const formFields = {}; // Create an object to store form field names and their values
-    // Inicializar formFields con valores vacíos
-    ordenPregunta.forEach((pregunta) => {
-      const fieldValue = this.form.get(pregunta)?.value || '';
-      formFields[pregunta] = fieldValue; // Save the form field name and its value
-    });
-
-    // Filtrar los campos por el valor seleccionado en this.datos
-    const filterData = this.datos.filter((item) => item.ORDEN === ordenVariables[getSelected]);
-  
-    data.forEach((respuesta: any) => {
-      const pregunta = respuesta.PREGUNTA;
-      const valorRespuesta = respuesta.RESPUESTA;
-      const variable = ordenVariables[respuesta.ORDEN];
-    
-      if (variable) {
-        const fieldName = ordenPregunta[pregunta];
-        const valueToSet = typeof valorRespuesta === 'number' ? valorRespuesta : parseInt(valorRespuesta, 10);
-        this.form.get(fieldName)?.patchValue(valueToSet); // Usamos patchValue para asignar el valor al campo del formulario
-      }
-    });
-   
-
-    this.datafinal = this.datos;
-    // Configurar los campos del formulario con los valores finales
-    
-    filterData.forEach((fieldName, value) => {
-      this.ID_RESPUESTA_FORMULARIOS = fieldName.ID_RESPUESTA_FORMULARIOS;
-     
-      this.form.get(fieldName.PREGUNTA)?.patchValue(fieldName.RESPUESTA);
-  
-      const inputElement = document.getElementById(fieldName);
-      if (inputElement instanceof HTMLInputElement || inputElement instanceof HTMLSelectElement) {
-        inputElement.value = value.toString(); // Cast 'value' to string explicitly
-      }
-    });
-   if(filterData.length > 0){
-    this.generarPDFActivo = true;
-    this.isEditarActivo = false;
-    this.disabledInput()
-   }else{
-    this.isEditarActivo = true;
-   }
-  }
-  
   generatePDF() {
-    this.updateForm();
     const getSelected = this.form.get('interesada')?.value;
     const ordenVariables = {
       'proveedores': 1,
@@ -538,7 +434,7 @@ export class AppMatrizPartesInteresadasComponent implements OnInit {
         filterData.push(dato[0]); // Agregamos el primer elemento de 'dato' a 'filterData'
       }
     });
-
+    const a = this.rolessArray.forEach(dato => { dato.ID_INTERESADA == 2 ? console.log(dato.NECESIDAD) : '-' });
     const pdfDefinition: any = {
       header: {
         table: {
@@ -548,13 +444,14 @@ export class AppMatrizPartesInteresadasComponent implements OnInit {
               { image: this.logo, fit: [50, 50], alignment: 'center', margin: [0, 3, 0, 3], rowSpan: 2 },
               { text: this.pst, alignment: 'center', margin: [0, 21, 0, 21], rowSpan: 2 },
               { text: 'MATRIZ DE PARTES INTERESADAS', alignment: 'center', rowSpan: 2, margin: [0, 9, 0, 9] },
-              { text: 'CÓDIGO:', alignment: 'center' }
+              { text: 'VERSIÓN: 01', alignment: 'center',margin: [0, 21, 0, 21], rowSpan: 2 },
             ],
             [
               {},
               {},
               '',
-              { text: 'VERSIÓN:', alignment: 'center', margin: [0, 12, 0, 12] },
+              {}
+            //  { text: 'VERSIÓN: 01', alignment: 'center', margin: [0, 12, 0, 12] },
             ]
           ]
         },
@@ -586,138 +483,138 @@ export class AppMatrizPartesInteresadasComponent implements OnInit {
               ],
               [
                 { text: 'PROVEEDOR(ES)', style: ['tituloTabla'] },
-                { text: filterData.filter(e => e.ORDEN === 1).length > 0 && filterData[1]?.RESPUESTA || '-' },
-                { text: filterData.filter(e => e.ORDEN === 1).length > 0 && filterData[2]?.RESPUESTA || '-' },
-                { text: filterData.filter(e => e.ORDEN === 1).length > 0 && filterData[3]?.RESPUESTA || '-' },
-                { text: filterData.filter(e => e.ORDEN === 1).length > 0 && filterData[5]?.RESPUESTA || '-' },
-                { text: filterData.filter(e => e.ORDEN === 1).length > 0 && filterData[6]?.RESPUESTA || '-' },
-                { text: filterData.filter(e => e.ORDEN === 1).length > 0 && filterData[7]?.RESPUESTA || '-' },
-                { text: filterData.filter(e => e.ORDEN === 1).length > 0 && filterData[8]?.RESPUESTA || '-' },
-                { text: filterData.filter(e => e.ORDEN === 1).length > 0 && filterData[8]?.RESPUESTA || '-' },
-                { text: filterData.filter(e => e.ORDEN === 1).length > 0 && filterData[9]?.RESPUESTA || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 1).map(dato => dato.NECESIDAD) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 1).map(dato => dato.EXPECTATIVA) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 1).map(dato => dato.ESTADO_DE_CUMPLIMIENTO) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 1).map(dato => dato.OBSERVACIONES) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 1).map(dato => dato.ACCIONES_A_REALIZAR) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 1).map(dato => dato.FECHA_EJECUCION) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 1).map(dato => dato.RESPONSABLE) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 1).map(dato => dato.FECHA_REGISTRO.split(' ')[0]) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 1).map(dato => dato.ESTADO_ABIERTO_CERRADO) || '-' },
               ],
               [
                 { text: 'ORGANIZACIONES GUBERNAMENTALES', style: ['tituloTabla'] },
-                { text: filterData.filter(e => e.ORDEN === 2).length > 0 && filterData[1]?.RESPUESTA || '-' },
-                { text: filterData.filter(e => e.ORDEN === 2).length > 0 && filterData[2]?.RESPUESTA || '-' },
-                { text: filterData.filter(e => e.ORDEN === 2).length > 0 && filterData[3]?.RESPUESTA || '-' },
-                { text: filterData.filter(e => e.ORDEN === 2).length > 0 && filterData[5]?.RESPUESTA || '-' },
-                { text: filterData.filter(e => e.ORDEN === 2).length > 0 && filterData[6]?.RESPUESTA || '-' },
-                { text: filterData.filter(e => e.ORDEN === 2).length > 0 && filterData[7]?.RESPUESTA || '-' },
-                { text: filterData.filter(e => e.ORDEN === 2).length > 0 && filterData[8]?.RESPUESTA || '-' },
-                { text: filterData.filter(e => e.ORDEN === 2).length > 0 && filterData[8]?.RESPUESTA || '-' },
-                { text: filterData.filter(e => e.ORDEN === 2).length > 0 && filterData[9]?.RESPUESTA || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 2).map(dato => dato.NECESIDAD) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 2).map(dato => dato.EXPECTATIVA) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 2).map(dato => dato.ESTADO_DE_CUMPLIMIENTO) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 2).map(dato => dato.OBSERVACIONES) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 2).map(dato => dato.ACCIONES_A_REALIZAR) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 2).map(dato => dato.FECHA_EJECUCION) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 2).map(dato => dato.RESPONSABLE) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 2).map(dato => dato.FECHA_REGISTRO.split(' ')[0]) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 2).map(dato => dato.ESTADO_ABIERTO_CERRADO) || '-' },
               ],
               [
                 { text: 'ORGANIZACIONES NO GUBERNAMENTALES', style: ['tituloTabla'] },
-                { text: filterData.filter(e => e.ORDEN === 3).length > 0 && filterData[1]?.RESPUESTA || '-' },
-                { text: filterData.filter(e => e.ORDEN === 3).length > 0 && filterData[2]?.RESPUESTA || '-' },
-                { text: filterData.filter(e => e.ORDEN === 3).length > 0 && filterData[3]?.RESPUESTA || '-' },
-                { text: filterData.filter(e => e.ORDEN === 3).length > 0 && filterData[5]?.RESPUESTA || '-' },
-                { text: filterData.filter(e => e.ORDEN === 3).length > 0 && filterData[6]?.RESPUESTA || '-' },
-                { text: filterData.filter(e => e.ORDEN === 3).length > 0 && filterData[7]?.RESPUESTA || '-' },
-                { text: filterData.filter(e => e.ORDEN === 3).length > 0 && filterData[8]?.RESPUESTA || '-' },
-                { text: filterData.filter(e => e.ORDEN === 3).length > 0 && filterData[8]?.RESPUESTA || '-' },
-                { text: filterData.filter(e => e.ORDEN === 3).length > 0 && filterData[9]?.RESPUESTA || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 3).map(dato => dato.NECESIDAD) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 3).map(dato => dato.EXPECTATIVA) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 3).map(dato => dato.ESTADO_DE_CUMPLIMIENTO) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 3).map(dato => dato.OBSERVACIONES) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 3).map(dato => dato.ACCIONES_A_REALIZAR) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 3).map(dato => dato.FECHA_EJECUCION) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 3).map(dato => dato.RESPONSABLE) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 3).map(dato => dato.FECHA_REGISTRO.split(' ')[0]) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 3).map(dato => dato.ESTADO_ABIERTO_CERRADO) || '-' },
               ],
               [
                 { text: 'CLIENTE(S)', style: ['tituloTabla'] },
-                {},
-                {},
-                {},
-                {},
-                {},
-                {},
-                {},
-                {},
-                {},
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 4).map(dato => dato.NECESIDAD) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 4).map(dato => dato.EXPECTATIVA) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 4).map(dato => dato.ESTADO_DE_CUMPLIMIENTO) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 4).map(dato => dato.OBSERVACIONES) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 4).map(dato => dato.ACCIONES_A_REALIZAR) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 4).map(dato => dato.FECHA_EJECUCION) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 4).map(dato => dato.RESPONSABLE) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 4).map(dato => dato.FECHA_REGISTRO.split(' ')[0]) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 4).map(dato => dato.ESTADO_ABIERTO_CERRADO) || '-' },
               ],
               [
                 { text: 'HUÉSPEDES', style: ['tituloTabla'] },
-                {},
-                {},
-                {},
-                {},
-                {},
-                {},
-                {},
-                {},
-                {},
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 5).map(dato => dato.NECESIDAD) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 5).map(dato => dato.EXPECTATIVA) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 5).map(dato => dato.ESTADO_DE_CUMPLIMIENTO) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 5).map(dato => dato.OBSERVACIONES) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 5).map(dato => dato.ACCIONES_A_REALIZAR) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 5).map(dato => dato.FECHA_EJECUCION) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 5).map(dato => dato.RESPONSABLE) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 5).map(dato => dato.FECHA_REGISTRO.split(' ')[0]) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 5).map(dato => dato.ESTADO_ABIERTO_CERRADO) || '-' },
               ],
               [
                 { text: 'COLABORADORES (Personal directo y/o indirecto)', style: ['tituloTabla'] },
-                {},
-                {},
-                {},
-                {},
-                {},
-                {},
-                {},
-                {},
-                {},
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 6).map(dato => dato.NECESIDAD) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 6).map(dato => dato.EXPECTATIVA) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 6).map(dato => dato.ESTADO_DE_CUMPLIMIENTO) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 6).map(dato => dato.OBSERVACIONES) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 6).map(dato => dato.ACCIONES_A_REALIZAR) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 6).map(dato => dato.FECHA_EJECUCION) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 6).map(dato => dato.RESPONSABLE) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 6).map(dato => dato.FECHA_REGISTRO.split(' ')[0]) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 6).map(dato => dato.ESTADO_ABIERTO_CERRADO) || '-' },
               ],
               [
                 { text: 'ACCIONISTAS O PROPIETARIOS', style: ['tituloTabla'] },
-                {},
-                {},
-                {},
-                {},
-                {},
-                {},
-                {},
-                {},
-                {},
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 7).map(dato => dato.NECESIDAD) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 7).map(dato => dato.EXPECTATIVA) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 7).map(dato => dato.ESTADO_DE_CUMPLIMIENTO) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 7).map(dato => dato.OBSERVACIONES) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 7).map(dato => dato.ACCIONES_A_REALIZAR) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 7).map(dato => dato.FECHA_EJECUCION) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 7).map(dato => dato.RESPONSABLE) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 7).map(dato => dato.FECHA_REGISTRO.split(' ')[0]) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 7).map(dato => dato.ESTADO_ABIERTO_CERRADO) || '-' },
               ],
               [
                 { text: 'COMUNIDAD ', style: ['tituloTabla'] },
-                {},
-                {},
-                {},
-                {},
-                {},
-                {},
-                {},
-                {},
-                {},
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 8).map(dato => dato.NECESIDAD) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 8).map(dato => dato.EXPECTATIVA) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 8).map(dato => dato.ESTADO_DE_CUMPLIMIENTO) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 8).map(dato => dato.OBSERVACIONES) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 8).map(dato => dato.ACCIONES_A_REALIZAR) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 8).map(dato => dato.FECHA_EJECUCION) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 8).map(dato => dato.RESPONSABLE) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 8).map(dato => dato.FECHA_REGISTRO.split(' ')[0]) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 8).map(dato => dato.ESTADO_ABIERTO_CERRADO) || '-' },
               ],
               [
                 { text: 'COMUNIDAD VULNERABLE', style: ['tituloTabla'] },
-                {},
-                {},
-                {},
-                {},
-                {},
-                {},
-                {},
-                {},
-                {},
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 9).map(dato => dato.NECESIDAD) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 9).map(dato => dato.EXPECTATIVA) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 9).map(dato => dato.ESTADO_DE_CUMPLIMIENTO) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 9).map(dato => dato.OBSERVACIONES) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 9).map(dato => dato.ACCIONES_A_REALIZAR) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 9).map(dato => dato.FECHA_EJECUCION) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 9).map(dato => dato.RESPONSABLE) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 9).map(dato => dato.FECHA_REGISTRO.split(' ')[0]) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 9).map(dato => dato.ESTADO_ABIERTO_CERRADO) || '-' },
               ],
               [
                 { text: 'ATRACTIVOS TURÍSTICOS', style: ['tituloTabla'] },
-                {},
-                {},
-                {},
-                {},
-                {},
-                {},
-                {},
-                {},
-                {},
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 10).map(dato => dato.NECESIDAD) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 10).map(dato => dato.EXPECTATIVA) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 10).map(dato => dato.ESTADO_DE_CUMPLIMIENTO) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 10).map(dato => dato.OBSERVACIONES) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 10).map(dato => dato.ACCIONES_A_REALIZAR) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 10).map(dato => dato.FECHA_EJECUCION) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 10).map(dato => dato.RESPONSABLE) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 10).map(dato => dato.FECHA_REGISTRO.split(' ')[0]) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 10).map(dato => dato.ESTADO_ABIERTO_CERRADO) || '-' },
               ],
               [
                 { 
                   text: `OTRA, ¿CUÁL? : ${filterData.filter(e => e.ORDEN === 4).length > 0 ? filterData[4]?.RESPUESTA : '-'}`,
                   style: ['tituloTabla']
                 },
-                { text: filterData.filter(e => e.ORDEN === 4).length > 0 && filterData[1]?.RESPUESTA || '-' },
-                { text: filterData.filter(e => e.ORDEN === 4).length > 0 && filterData[2]?.RESPUESTA || '-' },
-                { text: filterData.filter(e => e.ORDEN === 4).length > 0 && filterData[3]?.RESPUESTA || '-' },
-                { text: filterData.filter(e => e.ORDEN === 4).length > 0 && filterData[5]?.RESPUESTA || '-' },
-                { text: filterData.filter(e => e.ORDEN === 4).length > 0 && filterData[6]?.RESPUESTA || '-' },
-                { text: filterData.filter(e => e.ORDEN === 4).length > 0 && filterData[7]?.RESPUESTA || '-' },
-                { text: filterData.filter(e => e.ORDEN === 4).length > 0 && filterData[8]?.RESPUESTA || '-' },
-                { text: filterData.filter(e => e.ORDEN === 4).length > 0 && filterData[8]?.RESPUESTA || '-' },
-                { text: filterData.filter(e => e.ORDEN === 4).length > 0 && filterData[9]?.RESPUESTA || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 11).map(dato => dato.NECESIDAD) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 11).map(dato => dato.EXPECTATIVA) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 11).map(dato => dato.ESTADO_DE_CUMPLIMIENTO) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 11).map(dato => dato.OBSERVACIONES) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 11).map(dato => dato.ACCIONES_A_REALIZAR) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 11).map(dato => dato.FECHA_EJECUCION) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 11).map(dato => dato.RESPONSABLE) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 11).map(dato => dato.FECHA_REGISTRO.split(' ')[0]) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 11).map(dato => dato.ESTADO_ABIERTO_CERRADO) || '-' },
               ]
             ],
           },

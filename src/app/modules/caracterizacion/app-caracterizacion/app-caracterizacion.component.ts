@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, CUSTOM_ELEMENTS_SCHEMA, ElementRef, NgModule, OnInit, ViewChild } from '@angular/core';
-import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
+import { FormGroup, FormControl, Validators, FormBuilder, AbstractControl, ValidationErrors } from '@angular/forms';
 import { ApiService } from 'src/app/servicios/api/api.service';
 // import 'core-js/es/object';
 import { Router } from '@angular/router';
@@ -8,7 +8,8 @@ import { Categoria } from '../../../utils/constants';
 import { SpinnerService } from 'src/app/servicios/spinnerService/spinner.service';
 import { NgxSpinnerModule } from 'ngx-spinner'; 
 import { ConditionalExpr } from '@angular/compiler';
-import { ModalService } from 'src/app/messagemodal/messagemodal.component.service'
+import { ModalService } from 'src/app/messagemodal/messagemodal.component.service';
+import { ColorLista } from 'src/app/servicios/api/models/color';
 import { throws } from 'assert';
 
 @Component({
@@ -23,8 +24,21 @@ export class AppCaracterizacionComponent implements OnInit {
   otroControlB: FormControl;
   otroControlC: FormControl;
   otroControlRed: FormControl;
-
-
+  facebook: FormControl;
+  twitter: FormControl;
+  instagram: FormControl;
+  tiktok: FormControl;
+  mostrarInputsRedesSociales: { [key: string]: boolean } = {
+    'FACEBOOK': false,
+    'TWITTER': false,
+    'INSTAGRAM': false,
+    'TIKTOK': false,
+  };
+  concatenacionRedesSociales: any = "";
+  respuestasRedesSociales: { [key: string]: string } = {};
+  seleccionesPorPregunta: { [key: string]: string } = {};
+  opcionesAgrupadas: any[] = [];
+  
   datos: any = [];
   preguntasDesordenadas: any = [];
   preguntasOrdenadas: any = [];
@@ -56,12 +70,14 @@ export class AppCaracterizacionComponent implements OnInit {
   opcionesNorma: any[] = [];
 
   public mostrarMensaje: boolean = false;
-  public templateGenerado: string = ''; // Variable de componente para almacenar el template generado
+  public templateGenerado: string = '';
  
   private emailPattern: any = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   private webPattern: any = /^(http:\/\/www\.|http:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/;
   mostrarContenido: boolean;
   contenidoNTC6502: string;
+  colorTitle:ColorLista;
+  colorWallpaper:ColorLista;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -74,7 +90,9 @@ export class AppCaracterizacionComponent implements OnInit {
 
 ngOnInit(): void { 
   const id = Number(window.localStorage.getItem('Id'));
-  console.log(id + ' id');
+  this.colorTitle = JSON.parse(localStorage.getItem("color")).title;
+  this.colorWallpaper = JSON.parse(localStorage.getItem("color")).wallpaper;
+
   this.ApiService.validateCaracterizacion(id).subscribe((data: any)=>{
     if(data === true){
       this.router.navigate(['/dashboard']);
@@ -90,12 +108,18 @@ ngOnInit(): void {
     }
   })
 
-
- 
   //validar input-otro
   this.otroControlA = new FormControl('', [Validators.required]);
   this.otroControlB = new FormControl('', [Validators.required]);
   this.otroControlC = new FormControl('', [Validators.required]);
+  this.facebook = new FormControl('', [Validators.required]);
+  this.twitter = new FormControl('', [Validators.required]);
+  this.instagram = new FormControl('', [Validators.required]);
+  this.tiktok = new FormControl('', [Validators.required]);
+}
+
+toggleMostrarInputRedesSociales(opcion: string) {
+  this.mostrarInputsRedesSociales[opcion] = !this.mostrarInputsRedesSociales[opcion];
 }
 
 validarCampoOtroA() {
@@ -109,24 +133,13 @@ validarCampoOtroB() {
 validarCampoOtroC() {
   return this.otroControlC.invalid && this.otroControlC.touched;
 }
+
 validarCampoOtroRed() {
-  debugger;
   return  this.otroControlRed.touched;
 }
-// validarCampoOtroA(index: number) {
-//   return this.otroControlA[index].invalid && this.otroControlA[index].touched;
-// }
 
-// validarCampoOtroB(index: number) {
-//   return this.otroControlB[index].invalid && this.otroControlB[index].touched;
-// }
-
-// validarCampoOtroC(index: number) {
-//   return this.otroControlC[index].invalid && this.otroControlC[index].touched;
-// }
 getCaracterizacion(){
   this.ApiService.getData()
-  // this.http.get('assets/datos.json')
   .subscribe((data: any) => {
     this.datos = data;
     this.preguntasDesordenadas = data.CAMPOS;
@@ -136,8 +149,6 @@ getCaracterizacion(){
     
     //Bloquear campos con valor
     this.datos.CAMPOS.forEach((campo:any) => {
-      // campo.nombre !== 'Nombre del líder de sostenibilidad (opcional si es diferente al representante legal)' &&
-      // campo.nombre !== 'Correo electrónico líder (Contacto opcional)' && campo.nombre !== 'Teléfono líder (Contacto opcional)'
       if(campo.VALUES !== null && campo.ID_CARACTERIZACION_DINAMICA !== '29'){
         this.formParent.addControl(campo.NOMBRE, new FormControl({value: campo.VALUES, disabled: true}))
       }
@@ -146,15 +157,8 @@ getCaracterizacion(){
       }
     });
 
-    // for (let campo of this.datos.campos) {
-    //   if (campo.requerido) {
-    //     this.formParent.addControl(campo.nombre, this.formBuilder.control(''));
-    //   }
-    // }
-
     this.createFormControls();
     this.ordenarPreguntas();
-
   });
 }
 
@@ -289,11 +293,38 @@ getControlType(campo: any) {
   }
 }
 
-capturarValor(id: string | number, valor: any, idcaracterizaciondinamica: any) {
+capturarValor(id: string | number, valor: any, idcaracterizaciondinamica: any, opcionNombre: string, nombreCampo: string) {
+  const preguntaId = `${id}_${idcaracterizaciondinamica}`;
+
+  if (nombreCampo === '¿Cuáles redes sociales tiene?') {
+    if (opcionNombre === 'FACEBOOK' || opcionNombre === 'TWITTER' || opcionNombre === 'INSTAGRAM' || opcionNombre === 'TIKTOK') {
+      this.respuestasRedesSociales[opcionNombre] = `${opcionNombre}: ${valor}`;
+
+      const respuestasConcatenadas = [];
+      for (const key in this.respuestasRedesSociales) {
+        if (this.respuestasRedesSociales.hasOwnProperty(key)) {
+          respuestasConcatenadas.push(this.respuestasRedesSociales[key]);
+        }
+      }
+
+      this.concatenacionRedesSociales = respuestasConcatenadas.join(', ');
+      this.opcionesAgrupadas.push(this.concatenacionRedesSociales);
+    }
+  } else {
+    if (valor) {
+      this.seleccionesPorPregunta[preguntaId] = this.seleccionesPorPregunta[preguntaId] ?
+        `${this.seleccionesPorPregunta[preguntaId]}, ${opcionNombre}` : opcionNombre;
+    } else {
+      this.seleccionesPorPregunta[preguntaId] = this.seleccionesPorPregunta[preguntaId]
+        .replace(new RegExp(opcionNombre + ',?'), '');
+    }
+    this.opcionesAgrupadas.push(this.seleccionesPorPregunta);
+  }
+
   const result = this.valoresForm.find((o: any) => o.id === id);
   if (result) {
     result.valor = valor;
-  }else{
+  } else {
     this.valoresForm.push({
       "id": id,
       "valor": valor,
@@ -304,6 +335,7 @@ capturarValor(id: string | number, valor: any, idcaracterizaciondinamica: any) {
   }
 }
 
+
 hasDepency(id: number) {
   const campos = this.datos.campos;
   const dictionay = new Map(campos.map(d => [d.idcaracterizaciondinamica, d]));
@@ -311,28 +343,21 @@ hasDepency(id: number) {
 }
 
 public saveForm(){
-
   const caracterizacionRespuesta = this.valoresForm.map((elemento) => {
     this.idUser =  Number(elemento.idUsuarioPst);
     return { VALOR: elemento.valor.toString(),
       FK_ID_USUARIO:Number(elemento.idUsuarioPst), 
       FK_ID_CATEGORIA_RNT: Number(elemento.idCategoriaRnt),
       FK_ID_CARACTERIZACION_DINAMICA: elemento.id};
-    
   })
 
     this.mostrarMensaje = true;
     if (this.formParent.valid) {
-
       this.ApiService.saveData(caracterizacionRespuesta).subscribe((data: any) => {
-        debugger;
         this.ApiService.getNorma(this.idUser).subscribe(
           (categ: any) => {
-           debugger;
             this.arrNormas = categ;
-            localStorage.setItem(
-              "idCategoria",
-              JSON.stringify(this.arrNormas[0].FK_ID_CATEGORIA_RNT));
+            localStorage.setItem("idCategoria", JSON.stringify(this.arrNormas[0].FK_ID_CATEGORIA_RNT));
         });
           this.ApiService.validateCaracterizacion(this.idUser).subscribe(
             (response) => {
@@ -344,26 +369,17 @@ public saveForm(){
                       data[0].FK_ID_CATEGORIA_RNT === 2
                     ) {
                       this.arrResult = data;
-
-                      localStorage.setItem(
-                        "norma",
-                        JSON.stringify(this.arrResult)
-                      );
-   
+                      localStorage.setItem("norma", JSON.stringify(this.arrResult));
                     } else {
                       this.arrResult = data;
-                      localStorage.setItem(
-                        "norma",
-                        JSON.stringify(this.arrResult)
-                      );
+                      localStorage.setItem("norma", JSON.stringify(this.arrResult));
                       localStorage.setItem("normaSelected", data[0].NORMA);
                       localStorage.setItem("idNormaSelected", data[0].ID_NORMA);
                       if( data[0].ID_NORMA === 1){
                       this.router.navigate(["/dashboard"]);
                       }else{
                         this.router.navigate(["/dashboard"]);
-                      }
-                     
+                      }      
                     }
                   }
                 );
@@ -371,19 +387,15 @@ public saveForm(){
                 this.router.navigate(["/dashboard"]);
               }
             }
-          );
-        
+          );       
         const title = "Se guardó correctamente";
         const message = "El formulario se ha guardado exitosamente"
         this.Message.showModal(title,message);
-        // borrar
-        
-        
-        //
         this.router.navigate(['/dashboard']);
       });
     }
 }
+
 checkMarcadoEnDesplegable(campo:any) {
   return campo.DESPLEGABLE.some(opcion => opcion.checked);
 }

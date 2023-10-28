@@ -1,3 +1,4 @@
+<app-modal></app-modal>
 <app-app-header></app-app-header>
 <div class="controllerEvidencia">  
     <div class="tituloP">
@@ -14,7 +15,13 @@
             <div class="detalle" *ngIf="nivel.Mostrar">
                 <div *ngFor="let elemento of nivel.Elementos, let i=index">
                     <p *ngIf="elemento.Detalle.length == 0"> {{ elemento.Orden.length > 0 ? elemento.Orden + '.' : '' }} {{ elemento.Nombre }} |
-                      <a *ngFor="let item of elemento.Opcion" [routerLink]="item.router.length > 0 ? item.router : '/evidencia/:section'">{{item.Nombre}} |</a>
+                      <ng-container *ngFor="let item of elemento.Opcion" >
+                        <a *ngIf="item.Nombre!='Cargar documento'" [routerLink]="item.router.length > 0 ? item.router : '/evidencia/:section'">{{item.Nombre}} |</a>
+                        <a *ngIf="item.Nombre=='Cargar documento'" (click)="cargarDocumento(elemento)">{{item.Nombre}} |</a>
+                       
+                      </ng-container>
+                      
+                      
                     </p> 
                     <div class="subDetalle" *ngIf="elemento.Detalle.length != 0">
                       <div class="subtitulo" (click)="toggleSubContexts(i,nivel.Nombre )" [ngClass]="{'verde': elemento.Mostrar}">
@@ -25,7 +32,12 @@
                       </div>
                       <div class="subDetalleContext" *ngIf="elemento.Mostrar">
                         <p *ngFor="let subItem of elemento.Detalle"> {{ subItem.Orden ? subItem.Orden + ' .' : '' }} {{ subItem.Nombre }} |
-                          <a *ngFor="let subOpcion of subItem.Opcion"> {{subOpcion.Nombre}} |</a>
+                         <!--<a *ngFor="let subOpcion of subItem.Opcion"> {{subOpcion.Nombre}} |</a> --> 
+                          <ng-container *ngFor="let subOpcion of subItem.Opcion" >
+                            <a *ngIf="subOpcion.Nombre!='Cargar documento' || subOpcion.Nombre!='Cargar Documento' ">{{subOpcion.Nombre}} |</a>
+                            <a *ngIf="subOpcion.Nombre=='Cargar documento' || subOpcion.Nombre=='Cargar Documento'  " (click)="cargarDocumento(subItem)">{{subOpcion.Nombre}} |</a>
+                           
+                          </ng-container>
                         </p> 
                       </div>
                   </div>

@@ -118,19 +118,6 @@
                   <app-app-auditoria-planificacion  (valorEnviadoModal)="recibirValorModal($event)" formControlName="actividadTable"></app-app-auditoria-planificacion>
                  </div>
                 
-                 <div class="forma-campo">
-                  <label class="label-color">Requerimientos</label><br><br>
-                  <ng-multiselect-dropdown formControlName="requerimiento" class="selectMultiple"
-                    [placeholder]="'Seleccionar Requerimientos'" 
-                    [settings]="dropdownSettings" 
-                    [data]="dropdownListNorma"
-                    [ngModel]="selectedItems"
-                    (onSelect)="onItemSelect($event)" 
-                    (onSelectAll)="onSelectAll($event)">
-                  </ng-multiselect-dropdown>
-                </div>
-
-
                 <!-- tabla dinamica -->
                 <table class="table"   id="table_actividad" *ngIf="showTable"
                 style="text-align: center !important;margin-top: 33px;
@@ -232,7 +219,7 @@
     
               <div class="div-guardar"  *ngIf="getRolValue() !== 4 && getRolValue() !== 5">
                 <button type="submit" [disabled]="formParent.invalid" class="btn-guardar">
-                  Guarda
+                  Guardar
                 </button>
               </div>
              </div>

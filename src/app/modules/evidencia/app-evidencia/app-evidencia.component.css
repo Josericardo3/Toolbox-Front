@@ -4,6 +4,7 @@
     align-items: center;
     justify-content: center;
     margin-bottom: 4vh;
+    background-color: var(--color-wallpaper, #f6f8f9);
 }
 .tituloP{
     display: flex;
@@ -15,13 +16,13 @@ h1{
     width: 80vw;
     font-family: 'Montserrat', sans-serif;
     font-weight: bolder;
-    color: #068460;
+    color: var(--color-title, #962d46);
     text-align: center;
     margin: 2vh 2vw;
 }
 .arrow{
     align-self: flex-start;
-    margin: 0 4vw 0 -7vw;
+    margin: 0 4vw 0 -3vw;
 }
 h3{
     font-family: 'Work Sans', sans-serif;
@@ -186,4 +187,37 @@ a{
 }
 .fileBtn:hover {
     background-color: #dddddd;
+}
+@media (max-width: 912px) {
+
+    .evidencia-app-header 
+        .container-pst p {
+            display: none;
+        }
+    
+}
+@media (max-width: 768px) {
+
+    .evidencia-app-header 
+        .container-pst p {
+            display: none;
+        }
+    
+
+    .detalle{
+        width: 84vw;
+    }
+    h1 {
+        font-size: 30px;
+    }
+    .arrow {
+        margin: 0 4vw 0 -2vw;
+    }
+    .subtitulo, .subtituloApoyo, .subtituloEvaluacion, .subtituloPlanificacion{
+        width: 77vw;
+        height: auto;
+    }
+    .subDetalle, .subDetalleContext, .subDetalleApoyo, .subDetalleEvaluacion, .subDetallePlanificacion{
+        width: 77vw;
+    }
 }

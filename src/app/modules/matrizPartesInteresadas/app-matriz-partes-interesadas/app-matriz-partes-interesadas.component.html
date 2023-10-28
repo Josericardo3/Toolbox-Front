@@ -1,82 +1,88 @@
-<app-app-header></app-app-header>
+<app-app-header class="matriz-partes-app-header"></app-app-header>
 <div class="containerMatrizPartesInteresadas">
   <div class="titulo">
     <h1>Matriz de partes interesadas</h1>
     <app-app-header-arrow-left></app-app-header-arrow-left>
   </div>
   <button type="button" class="btnReporte" (click)="generatePDF()" [disabled]="!generarPDFActivo">
-    <i class="fa-solid fa-download" style="color: #ffffff; margin-right: 0.5vw;"></i>Descargar reporte
+    <i class="fa-solid fa-download" style="color: #ffffff; margin-right: 0.5vw;"></i>Visualizar reporte
   </button>
   <div class="form">
     <!--   <h3>Agregue las partes interesadas:</h3> -->
     <!--  <button type="button" class="boton" (click)="mostrarForm()">
          <i class="fa-solid fa-plus" style="color: #ffffff;"></i> Agregar parte interesada
      </button> -->
-    <form [formGroup]="form" class="form" (ngSubmit)="saveForm()">
+    <form [formGroup]="form" class="form" (ngSubmit)="addDatosParteInteresada()">
       <div class="section">
         <div class="section1">
           <label class="adicionarLabel" for="interesada">Seleccione parte interesada</label>
-          <select class="adicionarInputSection" formControlName="interesada" #selectOption (change)="
-                        capturarValor($event, 'interesada'); onSelect(selectOption.value);">
+          <select class="adicionarInputSection" formControlName="interesada" id="interesada" [(ngModel)]="editarCaracteristica.PARTE_INTERESADA">
             <option value="initial" disabled selected hidden>Parte interesada</option>
             <option id=1 value="proveedores">Proveedores</option>
             <option id=2 value="gubernamentales">Organizaciones gubernamentales</option>
             <option id=3 value="nogubernamentales">Organizaciones no gubernamentales</option>
-            <option id=4 value="otro">Otro</option>
+            <option id=4 value="clientes">Clientes</option>
+            <option id=5 value="huespedes">Húespedes</option>
+            <option id=6 value="colaboradores">Colaboradores</option>
+            <option id=7 value="accionistas">Accionistas o Propietarios</option>
+            <option id=8 value="comunidad">Comunidad</option>
+            <option id=9 value="comunidadvulnerable">Comunidad Vulnerable</option>
+            <option id=10 value="atractivos">Atractivos Turísticos</option>
+            <option id=11 value="otro">Otro</option>
           </select>
-          <div id="otrocual" class="changeOtro" *ngIf="otrocual===true || selectedOption === 'otro'">
+          <div id="otrocual" class="changeOtro" *ngIf="otrocual===true">
             <label class="adicionarLabel" for="otro">Otro ¿Cuál?</label>
-            <input type="text" id="5" formControlName="otro" value="" class="adicionarInputSection" appLetras (input)="capturarValor($event,'otro')">
+            <input type="text" id="5" formControlName="otro" value="" class="adicionarInputSection" appLetras>
           </div>
         </div>
         <div class="section2">
           <label class="adicionarLabel" for="necesidades">Necesidades de la parte interesada</label>
-          <input type="text" value="" formControlName="necesidades" class="adicionarInputSection" (input)="capturarValor($event,'necesidades')">
+          <input id="necesidades" type="text" value="" formControlName="necesidades" class="adicionarInputSection" [(ngModel)]="editarCaracteristica.NECESIDAD">
           <label class="adicionarLabel" for="expectativas">Expectativas de la parte interesada</label>
-          <input type="text" value="" formControlName="expectativas" class="adicionarInputSection" (input)="capturarValor($event,'expectativas')">
+          <input id="expectativas" type="text" value="" formControlName="expectativas" class="adicionarInputSection" [(ngModel)]="editarCaracteristica.EXPECTATIVA">
         </div>
       </div>
       <p class="adicionarP">¿La organización cumple con los requisitos de las partes interesadas?</p>
       <div class="containerFormulario">
         <div class="subContainerform">
-          <label for="estadoCumplimiento" class="adicionarLabel">Estado de cumplimiento</label>
+          <label id="estadoCumplimiento" for="estadoCumplimiento" class="adicionarLabel">Estado de cumplimiento</label>
           <select name="estadoCumplimiento" formControlName="estadoCumplimiento" class="adicionarInput"
-                  #select (change)="
-                    capturarValor($event,'estadoCumplimiento');
-                    optionSelected(select.value)">
+                  #select (change)=" getOption();" [(ngModel)]="editarCaracteristica.ESTADO_DE_CUMPLIMIENTO">
             <option value="" selected disabled>Seleccione una opción</option>
             <option value="cumple">Cumple</option>
             <option value="noCumple">No cumple</option>
             <option value="cumpleParcialmente">Cumple parcialmente</option>
           </select>
+          <div *ngIf="option != 'cumple'" class="check-mejora">
+            <input type="checkbox" class="input-check" [checked]="this.editarCaracteristica.MEJORA_CONTINUA == 1" (change)="checkboxChange($event)">
+            <p>Mejora Continua</p>
+          </div>
         </div>
-        <div class="subForm" *ngIf="option === 'noCumple' || option === 'cumpleParcialmente'">
+        <div class="subForm" *ngIf="option != 'cumple'">
           <div class="subContainerform">
             <label for="observaciones" class="adicionarLabel">Observaciones</label>
-            <input type="text" class="adicionarInput" formControlName="observaciones" (input)="capturarValor($event,'observaciones')">
+            <input id="observaciones" type="text" class="adicionarInput" formControlName="observaciones" [(ngModel)]="editarCaracteristica.OBSERVACIONES">
           </div>
           <div class="subContainerform">
             <label for="evidencia" class="adicionarLabel">Acciones a realizar</label>
-            <input type="text" class="adicionarInput" formControlName="acciones" (input)="capturarValor($event,'acciones')">
+            <input id="acciones" type="text" class="adicionarInput" formControlName="acciones" [(ngModel)]="editarCaracteristica.ACCIONES_A_REALIZAR">
           </div>
         </div>
-        <div class="subForm" *ngIf="option === 'noCumple' || option === 'cumpleParcialmente'">
+        <div class="subForm" *ngIf="option != 'cumple'">
           <div class="subContainerform">
             <label class="adicionarLabel">Fecha para la ejecución</label>
-            <input type="date" class="adicionarInput" formControlName="fecha" (input)="capturarValor($event,'fecha')">
+            <input id="fecha" type="date" class="adicionarInput" formControlName="fecha" [(ngModel)]="editarCaracteristica.FECHA_EJECUCION">
           </div>
           <div class="subContainerform">
             <label for="responsable" class="adicionarLabel">Responsable de ejecución</label>
-            <select name="responsable" class="adicionarInput" formControlName="responsable" (change)="
-                        capturarValor($event,'responsable')">
-              <option value="" selected disabled>Seleccione un responsable</option>
-              <option *ngFor="let responsible of responsable" [ngValue]="responsible.ID_USUARIO">{{responsible.NOMBRE | titlecase }}</option>
+            <select id="responsable" name="responsable" class="adicionarInput" formControlName="responsable" [(ngModel)]="editarCaracteristica.RESPONSABLE">
+              <option value="" selected disabled>Seleccione un responsable</option> 
+              <option *ngFor="let responsible of responsable" [ngValue]="responsible.NOMBRE">{{responsible.NOMBRE | titlecase }}</option>
             </select>
           </div>
           <div class="subContainerform">
             <label for="estado" class="adicionarLabel">Estado</label>
-            <select name="estado" class="adicionarInput" formControlName="estado" (change)="
-                        capturarValor($event,'estado')">
+            <select id="estado" name="estado" class="adicionarInput" formControlName="estado" [(ngModel)]="editarCaracteristica.ESTADO_ABIERTO_CERRADO">
               <option value="" selected disabled>Seleccione una opción</option>
               <option value="Abierto">Abierto</option>
               <option value="Cerrado">Cerrado</option>
@@ -85,11 +91,14 @@
         </div>
       </div>
       <div class="containerBtn">
-        <button type="submit" class="botonG" [disabled]="form.invalid">
+        <button type="button" class="botonG" *ngIf="isEditarActivo" [disabled]="form.invalid" (click)="addDatosParteInteresada()">
           <i class="fa-regular fa-floppy-disk" style="color: #fff;"></i> Guardar
         </button>
-        <button type="button" class="botonG" [disabled]="isEditarActivo" (click)=activarCampos()>
+        <button type="button" class="botonG" *ngIf="!isEditarActivo" [disabled]="isEditarActivo" (click)=fnUpdatePartesInteresadas()>
           <i class="fa-solid fa-pen" style="color: white; margin: 0 0.4vw;"></i> Editar
+        </button>
+        <button type="button" class="botonC" *ngIf="!isEditarActivo" (click)="limpiarCampos()">
+          <i class="fa-sharp fa-solid fa-x" style="color: white; margin: 0 0.4vw;"></i> Cancelar
         </button>
       </div>
     </form>
@@ -105,20 +114,31 @@
           <th scope="col">Fecha
           <th scope="col">Responsable</th>
           <th scope="col">Estado</th>
+          <th scope="col" style="text-align: center;">
+            <!--<i class="fa-solid fa-magnifying-glass" (click)="fnFiltro()" title="Buscar" style="cursor: pointer;"></i>-->
+          </th>
         </tr>
       </thead>
       <tbody>
         <tr>
         <tr *ngFor="let user of rolessArray; let i = index;">
-          <td *ngIf="caracteristicaIndice!=i">{{ user?.PARTE_INTERESADA.slice(0,40)| titlecase }}</td>
-          <td *ngIf="caracteristicaIndice!=i">{{ user?.NECESIDAD.slice(0,40)| titlecase }}</td>
-          <td *ngIf="caracteristicaIndice!=i">{{ user?.EXPECTATIVA.slice(0,40)| titlecase }}</td>
-          <td *ngIf="caracteristicaIndice!=i">{{ user?.ESTADO_DE_CUMPLIMIENTO.slice(0,40)| titlecase }}</td>
-          <td *ngIf="caracteristicaIndice!=i">{{ user?.OBSERVACIONES.slice(0,40)| titlecase }}</td>
-          <td *ngIf="caracteristicaIndice!=i">{{ user?.ACCIONES_A_REALIZAR.slice(0,40)| titlecase }}</td>
-          <td *ngIf="caracteristicaIndice!=i">{{ user?.FECHA_EJECUCION.slice(0,40)| titlecase }}</td>
-          <td *ngIf="caracteristicaIndice!=i">{{ user?.RESPONSABLE.slice(0,40)| titlecase }}</td>
-          <td *ngIf="caracteristicaIndice!=i">{{ user?.ESTADO_ABIERTO_CERRADO.slice(0,40)| titlecase }}</td>
+          <td>{{ user?.PARTE_INTERESADA.slice(0,40)| titlecase }}</td>
+          <td>{{ user?.NECESIDAD.slice(0,40)| titlecase }}</td>
+          <td>{{ user?.EXPECTATIVA.slice(0,40)| titlecase }}</td>
+          <td>{{ user?.ESTADO_DE_CUMPLIMIENTO.slice(0,40)| titlecase }}</td>
+          <td>{{ user?.OBSERVACIONES.slice(0,40)| titlecase }}</td>
+          <td>{{ user?.ACCIONES_A_REALIZAR.slice(0,40)| titlecase }}</td>
+          <td>{{ user?.FECHA_EJECUCION.slice(0,40)| titlecase }}</td>
+          <td>{{ user?.RESPONSABLE| titlecase }}</td>
+          <td>{{ user?.ESTADO_ABIERTO_CERRADO.slice(0,40)| titlecase }}</td>
+          <td *ngIf="getRolValue() !== 4 && getRolValue() !== 5">
+            <a title="Editar" (click)="fnMatrizPartesInteresadasEdit(i)">
+              <i class="fa-solid fa-pen" style="color: #06543c;"></i>
+            </a>
+            <a title="Eliminar" (click)="fnEliminarRegistro(i)">
+              <i class="fa-solid fa-trash" style="color: #06543c;"></i>
+            </a>
+          </td>
         </tr>
       </tbody>
     </table>
@@ -151,3 +171,4 @@
   template="<img src='https://www.superiorlawncareusa.com/wp-content/uploads/2020/05/loading-gif-png-5.gif' width='50' height='50'/>"
 >
 </ngx-spinner>
+<app-modal></app-modal>

@@ -16,6 +16,8 @@ import { Store } from "@ngrx/store";
 import { saveDataLogin } from "src/app/state/action/example.action";
 import { HttpErrorResponse, HttpResponse } from "@angular/common/http";
 import { ModalService } from "src/app/messagemodal/messagemodal.component.service";
+import { ColorLista } from "src/app/servicios/api/models/color";
+import { debug } from "console";
 //PG import { TokenStorageService } from '../../../servicios/token/token-storage.service';
 
 @Component({
@@ -30,6 +32,8 @@ export class AppLoginComponent implements OnInit {
   usuario = { registroNacionalDeTurismo: "", pass: "", correo: "" };
   public loginForm!: FormGroup;
   errorMessage!: string;
+  colorTitle:ColorLista;
+  colorWallpaper:ColorLista;
   private emailPattern: any =
     /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
@@ -48,6 +52,10 @@ export class AppLoginComponent implements OnInit {
     localStorage.clear();
     //limpia el storage
     localStorage.removeItem("normaSelected");
+
+    this.ApiService.colorTempo(); 
+    this.colorTitle = JSON.parse(localStorage.getItem("color")).title;
+    this.colorWallpaper = JSON.parse(localStorage.getItem("color")).wallpaper;
     this.loginForm = this.formBuilder.group({
       correo: [
         "",
@@ -75,6 +83,7 @@ export class AppLoginComponent implements OnInit {
     });
   }
   seePassword() {
+
     const passLogin = document.querySelector("#passLogin") as HTMLInputElement;
     const icon = document.querySelector("i") as HTMLElement;
     if (passLogin.type === "password") {
@@ -193,14 +202,19 @@ export class AppLoginComponent implements OnInit {
                         }
                       }
                     );
-                  } else {
-                    if(this.idnorma>0){
+                  
+                  } 
+                  else {
+                    if(this.idnorma>1){
                       this.router.navigate(["/dashboard"]);
                     }
-                    else{
+                    else if(data.body.Grupo[0].TIPO_USUARIO === 1){
                       this.router.navigate(["/caracterizacion"]);
+                    } else{
+                      this.router.navigate(["/dashboard"]);
                     }
                   }
+                  debugger;
                 }
               );
             } else {

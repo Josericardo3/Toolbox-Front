@@ -55,6 +55,13 @@ export class AppColaboradorComponent {
     this.modalRef = this.modalService.show(template);
   }
 
+  recibirNoticias: boolean = false;
+
+  onChangeCheckbox(event: any) {
+    this.recibirNoticias = event.target.checked;
+    
+  }
+
   saveNewColaborador(){
     const closeModalButton = document.getElementById("closeModal");
     closeModalButton.click();
@@ -62,8 +69,10 @@ export class AppColaboradorComponent {
       idUsuario: parseInt(localStorage.getItem('Id')),
       nombre: this.registerNewColaborador.get("responsable")?.value,
       idcargo: parseInt(this.registerNewColaborador.get("roles")?.value),
-      correo: this.registerNewColaborador.get("correo")?.value
+      correo: this.registerNewColaborador.get("correo")?.value,
+      ENVIO_CORREO: this.recibirNoticias
     }
+    
     this.ApiService.postRegisterColaborador(request).subscribe(
       (data) => {
           if(data.StatusCode == 201){

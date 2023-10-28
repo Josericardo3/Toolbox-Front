@@ -1,7 +1,9 @@
 .containerEncuesta{
     display: flex;
     flex-direction: column;
-    margin: 2vh 1vw 0 2vw;
+    /* margin: 2vh 1vw 0 2vw; */
+    background-color: var(--color-wallpaper, #f6f8f9);
+    padding: 2vh 0 0 1.5vw;
 }
 .titulo{
     display: flex;
@@ -12,7 +14,7 @@ h1{
     width: 100%;
     font-family: 'Montserrat', sans-serif;
     font-weight: bolder;
-    color: #068460;
+    color: var(--color-title, #962d46);
     text-align: center;
     margin: 2vh 0;
 }
@@ -22,8 +24,8 @@ h1{
 .compartir{
     margin: 1vh 1vw;
     height: 6vh;
-    width: 180px;
-    padding: 5px;
+    width: auto;
+    padding: 10px;
     background-color: #068460;
     border-radius: 15px;
     color: #FFFFFF;
@@ -43,7 +45,7 @@ h1{
     width: 77vw;
     font-size: 16px;
     font-family: 'Work Sans', sans-serif;
-    min-width: 450px;
+    min-width: auto;
     border: 2px solid #068460; 
     border-left: none;
     border-right: none;
@@ -120,4 +122,162 @@ h1{
 .container-label {
     display: flex;
     align-items: center;
+}
+.resposi-icon {
+    display: none;
+}
+@media (max-width: 970px) {
+
+    /* NOMBRE DE LA CABECERA  */
+    .encuesta-app-header 
+        .container-pst p {
+            display: none;
+        }
+    
+
+    /* MENU */
+
+    button[mat-menu-trigger-for="menu"] {
+        display: block;
+      }
+
+    .menu-corto {
+        display: none
+    }
+     
+
+    .responsi-menu  .linea {
+            width: auto;      
+        }
+
+        .responsi-menu  .td-menu{
+            width: auto;
+        }
+        .responsi-menu   .p-menu {
+            margin: 0.6vh 0.5vw
+    
+}
+   /* .menu-corto {
+        position: absolute;
+        right: 0;
+        top: 5px;
+        width: 27%;
+        height: auto;
+        background-color: #a09a9a;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15)
+    }
+
+    .menu-corto {
+
+        .table-auditoria h3,
+        .linea {
+            display: none
+        }
+
+        .td-menu {
+            width: auto;
+            padding: 2px;
+        }
+
+        .td-menu p,
+        i {
+            color: white;
+            font-size: 15px;
+        }
+    } */
+
+    .resposi-icon {
+        display: flex;
+    }
+
+    .resposi-icon {
+        width: 95%;
+        top: 3px;
+        justify-content: flex-end;
+        display: flex;
+        position: absolute;
+        flex-direction: row;
+    }
+
+    .navbar-toggle {
+        padding: 0;
+        margin-right: 18px;
+        margin-top: 7px;
+        position: relative;
+    }
+     /* REGISTRO ACTIVIDAD */
+    .bodyNuevoregistro{
+        width: 95%;
+     }
+
+    .h1,
+    h1 {
+        font-size: 30px;
+    }
+
+    .titulo {
+        margin: 0;
+    }
+
+    /* FILTROS */
+    .filtros {
+        display: flex;
+        justify-content: flex-start;
+    }
+
+    /* TABLA  */
+    .form {
+        width: 100% !important;
+    }
+
+    .table-gestion {
+        width: auto;
+        margin-top: 4px;
+        margin: 9px;
+        padding: 11px;
+    }
+
+    .table-gestion th,
+    .table-gestion tbody td {
+        padding: 11px;
+    }
+    
+}
+
+@media(max-width: 480px) {
+
+    .h1,
+    h1 {
+        font-size: 22px;
+    }
+
+    .encuesta-alta-gerencia 
+        .table-gestion {
+            font-size: 13px;
+        }
+    
+
+    /* PAGINADO */
+    .page-style {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+    }
+
+    .container-label {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+    }
+
+    /* TABLA */
+    .color-estado {
+        display: none;
+    }
+
+    .table-gestion{
+        
+        font-size: 13px;
+         min-width: 0;
+    }
 }

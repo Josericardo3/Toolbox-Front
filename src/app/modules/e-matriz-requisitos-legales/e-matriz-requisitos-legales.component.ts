@@ -9,6 +9,12 @@ import { Subscription } from 'rxjs';
 import { AppFormularioComponent } from '../formulario/app-formulario/app-formulario.component';
 import { FormService } from 'src/app/servicios/form/form.service';
 import { AUTO_STYLE } from '@angular/animations';
+import { BarOptions } from 'chart.js';
+import { ModalPadreService } from 'src/app/servicios/api/modal.padre.services';
+import { throwToolbarMixedModesError } from '@angular/material/toolbar';
+import { SpinnerService } from 'src/app/servicios/spinnerService/spinner.service';
+import { NgxSpinnerService } from 'ngx-spinner';
+
 (pdfMake as any).vfs = pdfFonts.pdfMake.vfs;
 
 @Component({
@@ -53,9 +59,17 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
   title: '';
   message: '';
 
+  
+  
   //MODAL DEL RESUMEN
 
   showModalResumen: boolean = false;
+  descripcionResumen1: string;
+  descripcionResumen2: string;
+  descripcionResumen3: string;
+  descripcionResumen4: string;
+  descripcionResumen5: string;
+  descripcionResumen6: string;
  
   
   categoria: string;
@@ -108,6 +122,22 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
   // public form!: FormGroup;
   isFormDisabled: boolean = false
   isDisabled: boolean = false;
+
+
+
+  //BOTON MODIFICAR NUEVO
+  disabledModificar: boolean = false;
+
+  disabledTabs1: boolean = false;
+  disabledTabs2: boolean = false;
+  disabledTabs3: boolean = false;
+  disabledTabs4: boolean = false;
+  disabledTabs5: boolean = false;
+  disabledTabs6: boolean = false;
+
+
+
+
   subscriptions: any;
 
   leyesVisibles: boolean[] = [];
@@ -123,7 +153,7 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
   headerEconomico: any;
 
 
-
+  saveForm : FormGroup;
   //modelo
 
   modelo: any = {};
@@ -140,15 +170,30 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
     private router: Router,
     private formBuilder: FormBuilder,
     private Message: ModalService,
-    private formService: FormService
+    private formService: FormService,
+    //SERVICIO PARA COMUNICAR APP-FORMULARIO CON MATRIZ-REQUISITOS-LEGAL
+    private modalPadre: ModalPadreService,
+    private spinnerService: SpinnerService,
+    private spinner: NgxSpinnerService,
   ) {}
 
   ngOnInit() {
     //REMOVER ARRAY TEMPORAL
+    debugger;
+    
+
+
+
+
     localStorage.removeItem('MiArrayTemporal');
     this.getUser();
     this.separarCategoria();
     this.showModal = true;
+
+    //NOS SUSCRIBIMOS AL SERVICIO Y LE PASAMOS LA FUNCION QUE QUEREMOS QUE UTILIZE NUESTRO BOTON EN EL FORMULARIO
+    this.modalPadre.abrirModal$.subscribe(()=>{
+      this.terminarModificarCampos()
+    })
     
 
     this.ApiService.getUsuario()
@@ -162,6 +207,7 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
     .subscribe((data: any) => {
       this.datosHeaderMatriz = data;
       this.headerTurismo = data.find(p => p.CATEGORIA === "Turismo");
+      console.log("asdo",this.headerTurismo);
      
     })
     this.ApiService.getDatosHeaderMatriz()
@@ -254,10 +300,7 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
       //console.log(this.userInfor.LOGO);
     })
   }
-//nueva funcion para que se muestre el modal de guardar resumen
-  fnShowModal() {
-    this.showModalResumen = true;
-  }
+
 
   
   separarCategoria(){
@@ -272,9 +315,11 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
             ...ley,           
             subLeyes: [{
               ESTADO_CUMPLIMIENTO: ley.ESTADO_CUMPLIMIENTO,
+              ID_RESPONSABLE_CUMPLIMIENTO: ley.ID_RESPONSABLE_CUMPLIMIENTO,
               RESPONSABLE_CUMPLIMIENTO: ley.RESPONSABLE_CUMPLIMIENTO,
               DATA_CUMPLIMIENTO: ley.DATA_CUMPLIMIENTO,
               PLAN_ACCIONES_A_REALIZAR: ley.PLAN_ACCIONES_A_REALIZAR,
+              ID_PLAN_RESPONSABLE_CUMPLIMIENTO: ley.ID_PLAN_RESPONSABLE_CUMPLIMIENTO,
               PLAN_RESPONSABLE_CUMPLIMIENTO: ley.PLAN_RESPONSABLE_CUMPLIMIENTO,
               PLAN_FECHA_EJECUCION: ley.PLAN_FECHA_EJECUCION,
               PLAN_ESTADO: ley.PLAN_ESTADO,
@@ -286,8 +331,10 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
           acumulador[clave].subLeyes.push({
             ESTADO_CUMPLIMIENTO: ley.ESTADO_CUMPLIMIENTO,
             RESPONSABLE_CUMPLIMIENTO: ley.RESPONSABLE_CUMPLIMIENTO,
+            ID_RESPONSABLE_CUMPLIMIENTO: ley.ID_RESPONSABLE_CUMPLIMIENTO,
             DATA_CUMPLIMIENTO: ley.DATA_CUMPLIMIENTO,
             PLAN_ACCIONES_A_REALIZAR: ley.PLAN_ACCIONES_A_REALIZAR,
+            ID_PLAN_RESPONSABLE_CUMPLIMIENTO: ley.ID_PLAN_RESPONSABLE_CUMPLIMIENTO,
             PLAN_RESPONSABLE_CUMPLIMIENTO: ley.PLAN_RESPONSABLE_CUMPLIMIENTO,
             PLAN_FECHA_EJECUCION: ley.PLAN_FECHA_EJECUCION,
             PLAN_ESTADO: ley.PLAN_ESTADO,
@@ -306,9 +353,11 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
             ...ley,           
             subLeyes: [{
               ESTADO_CUMPLIMIENTO: ley.ESTADO_CUMPLIMIENTO,
+              ID_RESPONSABLE_CUMPLIMIENTO: ley.ID_RESPONSABLE_CUMPLIMIENTO,
               RESPONSABLE_CUMPLIMIENTO: ley.RESPONSABLE_CUMPLIMIENTO,
               DATA_CUMPLIMIENTO: ley.DATA_CUMPLIMIENTO,
               PLAN_ACCIONES_A_REALIZAR: ley.PLAN_ACCIONES_A_REALIZAR,
+              ID_PLAN_RESPONSABLE_CUMPLIMIENTO: ley.ID_PLAN_RESPONSABLE_CUMPLIMIENTO,
               PLAN_RESPONSABLE_CUMPLIMIENTO: ley.PLAN_RESPONSABLE_CUMPLIMIENTO,
               PLAN_FECHA_EJECUCION: ley.PLAN_FECHA_EJECUCION,
               PLAN_ESTADO: ley.PLAN_ESTADO,
@@ -319,9 +368,11 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
         } else {
           acumulador[clave].subLeyes.push({
             ESTADO_CUMPLIMIENTO: ley.ESTADO_CUMPLIMIENTO,
+            ID_RESPONSABLE_CUMPLIMIENTO: ley.ID_RESPONSABLE_CUMPLIMIENTO,
             RESPONSABLE_CUMPLIMIENTO: ley.RESPONSABLE_CUMPLIMIENTO,
             DATA_CUMPLIMIENTO: ley.DATA_CUMPLIMIENTO,
             PLAN_ACCIONES_A_REALIZAR: ley.PLAN_ACCIONES_A_REALIZAR,
+            ID_PLAN_RESPONSABLE_CUMPLIMIENTO: ley.ID_PLAN_RESPONSABLE_CUMPLIMIENTO,
             PLAN_RESPONSABLE_CUMPLIMIENTO: ley.PLAN_RESPONSABLE_CUMPLIMIENTO,
             PLAN_FECHA_EJECUCION: ley.PLAN_FECHA_EJECUCION,
             PLAN_ESTADO: ley.PLAN_ESTADO,
@@ -341,9 +392,11 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
             ...ley,           
             subLeyes: [{
               ESTADO_CUMPLIMIENTO: ley.ESTADO_CUMPLIMIENTO,
+              ID_RESPONSABLE_CUMPLIMIENTO: ley.ID_RESPONSABLE_CUMPLIMIENTO,
               RESPONSABLE_CUMPLIMIENTO: ley.RESPONSABLE_CUMPLIMIENTO,
               DATA_CUMPLIMIENTO: ley.DATA_CUMPLIMIENTO,
               PLAN_ACCIONES_A_REALIZAR: ley.PLAN_ACCIONES_A_REALIZAR,
+              ID_PLAN_RESPONSABLE_CUMPLIMIENTO: ley.ID_PLAN_RESPONSABLE_CUMPLIMIENTO,
               PLAN_RESPONSABLE_CUMPLIMIENTO: ley.PLAN_RESPONSABLE_CUMPLIMIENTO,
               PLAN_FECHA_EJECUCION: ley.PLAN_FECHA_EJECUCION,
               PLAN_ESTADO: ley.PLAN_ESTADO,
@@ -354,9 +407,11 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
         } else {
           acumulador[clave].subLeyes.push({
             ESTADO_CUMPLIMIENTO: ley.ESTADO_CUMPLIMIENTO,
+            ID_RESPONSABLE_CUMPLIMIENTO: ley.ID_RESPONSABLE_CUMPLIMIENTO,
             RESPONSABLE_CUMPLIMIENTO: ley.RESPONSABLE_CUMPLIMIENTO,
             DATA_CUMPLIMIENTO: ley.DATA_CUMPLIMIENTO,
             PLAN_ACCIONES_A_REALIZAR: ley.PLAN_ACCIONES_A_REALIZAR,
+            ID_PLAN_RESPONSABLE_CUMPLIMIENTO: ley.ID_PLAN_RESPONSABLE_CUMPLIMIENTO,
             PLAN_RESPONSABLE_CUMPLIMIENTO: ley.PLAN_RESPONSABLE_CUMPLIMIENTO,
             PLAN_FECHA_EJECUCION: ley.PLAN_FECHA_EJECUCION,
             PLAN_ESTADO: ley.PLAN_ESTADO,
@@ -376,9 +431,11 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
             ...ley,           
             subLeyes: [{
               ESTADO_CUMPLIMIENTO: ley.ESTADO_CUMPLIMIENTO,
+              ID_RESPONSABLE_CUMPLIMIENTO: ley.ID_RESPONSABLE_CUMPLIMIENTO,
               RESPONSABLE_CUMPLIMIENTO: ley.RESPONSABLE_CUMPLIMIENTO,
               DATA_CUMPLIMIENTO: ley.DATA_CUMPLIMIENTO,
               PLAN_ACCIONES_A_REALIZAR: ley.PLAN_ACCIONES_A_REALIZAR,
+              ID_PLAN_RESPONSABLE_CUMPLIMIENTO: ley.ID_PLAN_RESPONSABLE_CUMPLIMIENTO,
               PLAN_RESPONSABLE_CUMPLIMIENTO: ley.PLAN_RESPONSABLE_CUMPLIMIENTO,
               PLAN_FECHA_EJECUCION: ley.PLAN_FECHA_EJECUCION,
               PLAN_ESTADO: ley.PLAN_ESTADO,
@@ -389,9 +446,11 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
         } else {
           acumulador[clave].subLeyes.push({
             ESTADO_CUMPLIMIENTO: ley.ESTADO_CUMPLIMIENTO,
+            ID_RESPONSABLE_CUMPLIMIENTO: ley.ID_RESPONSABLE_CUMPLIMIENTO,
             RESPONSABLE_CUMPLIMIENTO: ley.RESPONSABLE_CUMPLIMIENTO,
             DATA_CUMPLIMIENTO: ley.DATA_CUMPLIMIENTO,
             PLAN_ACCIONES_A_REALIZAR: ley.PLAN_ACCIONES_A_REALIZAR,
+            ID_PLAN_RESPONSABLE_CUMPLIMIENTO: ley.ID_PLAN_RESPONSABLE_CUMPLIMIENTO,
             PLAN_RESPONSABLE_CUMPLIMIENTO: ley.PLAN_RESPONSABLE_CUMPLIMIENTO,
             PLAN_FECHA_EJECUCION: ley.PLAN_FECHA_EJECUCION,
             PLAN_ESTADO: ley.PLAN_ESTADO,
@@ -411,9 +470,11 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
             ...ley,           
             subLeyes: [{
               ESTADO_CUMPLIMIENTO: ley.ESTADO_CUMPLIMIENTO,
+              ID_RESPONSABLE_CUMPLIMIENTO: ley.ID_RESPONSABLE_CUMPLIMIENTO,
               RESPONSABLE_CUMPLIMIENTO: ley.RESPONSABLE_CUMPLIMIENTO,
               DATA_CUMPLIMIENTO: ley.DATA_CUMPLIMIENTO,
               PLAN_ACCIONES_A_REALIZAR: ley.PLAN_ACCIONES_A_REALIZAR,
+              ID_PLAN_RESPONSABLE_CUMPLIMIENTO: ley.ID_PLAN_RESPONSABLE_CUMPLIMIENTO,
               PLAN_RESPONSABLE_CUMPLIMIENTO: ley.PLAN_RESPONSABLE_CUMPLIMIENTO,
               PLAN_FECHA_EJECUCION: ley.PLAN_FECHA_EJECUCION,
               PLAN_ESTADO: ley.PLAN_ESTADO,
@@ -424,9 +485,11 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
         } else {
           acumulador[clave].subLeyes.push({
             ESTADO_CUMPLIMIENTO: ley.ESTADO_CUMPLIMIENTO,
+            ID_RESPONSABLE_CUMPLIMIENTO: ley.ID_RESPONSABLE_CUMPLIMIENTO,
             RESPONSABLE_CUMPLIMIENTO: ley.RESPONSABLE_CUMPLIMIENTO,
             DATA_CUMPLIMIENTO: ley.DATA_CUMPLIMIENTO,
             PLAN_ACCIONES_A_REALIZAR: ley.PLAN_ACCIONES_A_REALIZAR,
+            ID_PLAN_RESPONSABLE_CUMPLIMIENTO: ley.ID_PLAN_RESPONSABLE_CUMPLIMIENTO,
             PLAN_RESPONSABLE_CUMPLIMIENTO: ley.PLAN_RESPONSABLE_CUMPLIMIENTO,
             PLAN_FECHA_EJECUCION: ley.PLAN_FECHA_EJECUCION,
             PLAN_ESTADO: ley.PLAN_ESTADO,
@@ -448,9 +511,11 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
             ...ley,           
             subLeyes: [{
               ESTADO_CUMPLIMIENTO: ley.ESTADO_CUMPLIMIENTO,
+              ID_RESPONSABLE_CUMPLIMIENTO: ley.ID_RESPONSABLE_CUMPLIMIENTO,
               RESPONSABLE_CUMPLIMIENTO: ley.RESPONSABLE_CUMPLIMIENTO,
               DATA_CUMPLIMIENTO: ley.DATA_CUMPLIMIENTO,
               PLAN_ACCIONES_A_REALIZAR: ley.PLAN_ACCIONES_A_REALIZAR,
+              ID_PLAN_RESPONSABLE_CUMPLIMIENTO: ley.ID_PLAN_RESPONSABLE_CUMPLIMIENTO,
               PLAN_RESPONSABLE_CUMPLIMIENTO: ley.PLAN_RESPONSABLE_CUMPLIMIENTO,
               PLAN_FECHA_EJECUCION: ley.PLAN_FECHA_EJECUCION,
               PLAN_ESTADO: ley.PLAN_ESTADO,
@@ -461,9 +526,11 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
         } else {
           acumulador[clave].subLeyes.push({
             ESTADO_CUMPLIMIENTO: ley.ESTADO_CUMPLIMIENTO,
+            ID_RESPONSABLE_CUMPLIMIENTO: ley.ID_RESPONSABLE_CUMPLIMIENTO,
             RESPONSABLE_CUMPLIMIENTO: ley.RESPONSABLE_CUMPLIMIENTO,
             DATA_CUMPLIMIENTO: ley.DATA_CUMPLIMIENTO,
             PLAN_ACCIONES_A_REALIZAR: ley.PLAN_ACCIONES_A_REALIZAR,
+            ID_PLAN_RESPONSABLE_CUMPLIMIENTO: ley.ID_PLAN_RESPONSABLE_CUMPLIMIENTO,
             PLAN_RESPONSABLE_CUMPLIMIENTO: ley.PLAN_RESPONSABLE_CUMPLIMIENTO,
             PLAN_FECHA_EJECUCION: ley.PLAN_FECHA_EJECUCION,
             PLAN_ESTADO: ley.PLAN_ESTADO,
@@ -481,6 +548,7 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
 
   cambiarTab(tab: string) {
     this.tabActual = tab;
+    this.separarCategoria();
     // Actualiza divs para que muestre los divs específicos del tab seleccionado
     if (tab === 'tab1') {
       this.divs = this.divsTab1;
@@ -595,7 +663,7 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
     // const tipoNormatividad = this.selectedOption === 'otro' ? (document.querySelector('#otroInput') as HTMLInputElement).value : this.selectedOption;
     // this.tipoNormatividad = this.selectedOption === 'otro' ? this.otroValor : this.selectedOption;
     this.tipoNormatividad = this.selectedOption === 'otro' ? this.otroValor : this.selectedOption;
-    debugger
+    
     if (this.tipoNormatividad === 'otro') {
       this.tipoNormatividad = this.otroValor;
     }
@@ -608,7 +676,10 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
   				ANIO: anio,
   				EMISOR: emisor,
   				DESCRIPCION: descripcion,
-  				DOCS_ESPECIFICOS: secciones
+  				DOCS_ESPECIFICOS: secciones,
+          //AGREGAR ES FIJO
+          ES_FIJO: 0,
+          ID_USUARIO_REG: localStorage.getItem('Id')
 
     };
 
@@ -639,31 +710,7 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
     this.tab5Form.reset();
     this.tab6Form.reset();
     
-  }  
-  texto: any;
-  saveForm: FormGroup;
-  guardarResumen(){
-    // const textAreaModal = document.getElementById("textAreaModal") as HTMLTextAreaElement
-    // this.texto = textAreaModal.value;
-    // //this.showModalResumen = true;
-    // console.log("asd", this.texto);
-    // const title = "Guardado exitoso";
-    // const message = "Se a guardado correctamente"
-    // this.Message.showModal(title,message);
-    var matriz:any;
-    var datosLocalStorage=localStorage.getItem('MiArrayTemporal');
-    if(datosLocalStorage){
-          matriz = datosLocalStorage
-    }
-    this.modelo.ID_MATRICES= matriz;
-    console.log("aaa", this.modelo);
-    
-    const title = "Guardado exitoso";
-    const message = "Se a guardado correctamente"
-    this.Message.showModal(title,message);
-
-
-  }
+  }   
 
   eliminarDivAdd() {
     const divAdd = document.getElementById('divAdd');
@@ -681,14 +728,37 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
           }
       });
   }
+  actualizarHeader(){
+    this.ApiService.getDatosHeaderMatriz()
+    .subscribe((data: any) => {
+      this.datosHeaderMatriz = data;
+      this.headerTurismo = data.find(p => p.CATEGORIA === "Turismo");
+      this.headerAmbiental = data.find(p => p.CATEGORIA === "Ambiental");
+      this.headerLaboral = data.find(p => p.CATEGORIA === "Laboral y SGSST");
+      this.headerEconomico = data.find(p => p.CATEGORIA === "Economico");
+      this.headerSocial = data.find(p => p.CATEGORIA === "Social");
+      console.log("datita",data);
+      console.log("asdo2",this.headerTurismo); 
+      console.log("asd3",this.headerAmbiental);
+    })
+    
+  }
   
-  generateReporteTurismo(){
+  generateReporteTurismo(){   
+
+    this.actualizarHeader();   
+     
     this.ApiService.gertArchivoMatriz()
     .subscribe((data: any) => {
+      debugger
       this.datosReporte = data;
       this.gruposTurismoReporte = this.datosReporte.filter((ley) => ley.CATEGORIA === 'Turismo')  
+  
       //CAMBIOS RADICALES
+      
+      
       let bodyContent;
+      
       //SI USERINFOR.LOGO ES NULO CAMBIA EL FORMATO DEL PDF A TIPO TEXT
       if(this.userInfor.LOGO == null){
         bodyContent = {
@@ -808,7 +878,7 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
               body: [
                 [     
                   { text: 'BREVE RESUMEN DE NORMATIVIDAD QUE SE ACTUALIZA', style: ['tituloTabla'], margin:[ 0, 36, 0, 36 ] },
-                  {}
+                  { text: this.headerTurismo?.RESUMEN, alignment: 'center',rowSpan: 1 }
                 ]
               ]
             },
@@ -947,15 +1017,18 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
           },
         }
       }      
-      pdfMake.createPdf(pdfDefinition).download('Reporte_Turismo.pdf');
+      pdfMake.createPdf(pdfDefinition).open();
       const title = "Se descargó correctamente";
       const message = "La descarga se ha realizado exitosamente"
       this.Message.showModal(title, message);
       
+      
     });
+    
   }
 
   generateReporteAmbiental(){
+    this.actualizarHeader();
     this.ApiService.gertArchivoMatriz()
     .subscribe((data: any) => {
       this.datosReporte = data;
@@ -1080,7 +1153,7 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
               body: [
                 [     
                   { text: 'BREVE RESUMEN DE NORMATIVIDAD QUE SE ACTUALIZA', style: ['tituloTabla'], margin:[ 0, 36, 0, 36 ] },
-                  {}
+                  { text: this.headerAmbiental?.RESUMEN, alignment: 'center',rowSpan: 1 }
                 ]
               ]
             },
@@ -1222,12 +1295,13 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
       const title = "Se descargó correctamente";
       const message = "La descarga se ha realizado exitosamente"
       this.Message.showModal(title, message);
-      pdfMake.createPdf(pdfDefinition).download('Reporte_Ambiental.pdf');
+      pdfMake.createPdf(pdfDefinition).open();
       
     });
   }
 
   generateReporteLaboral(){
+    this.actualizarHeader();
     this.ApiService.gertArchivoMatriz()
     .subscribe((data: any) => {
       this.datosReporte = data;
@@ -1352,7 +1426,7 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
               body: [
                 [     
                   { text: 'BREVE RESUMEN DE NORMATIVIDAD QUE SE ACTUALIZA', style: ['tituloTabla'], margin:[ 0, 36, 0, 36 ] },
-                  {}
+                  { text: this.headerLaboral?.RESUMEN, alignment: 'center',rowSpan: 1 }
                 ]
               ]
             },
@@ -1499,6 +1573,7 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
   }
 
   generateReporteSocial(){
+    this.actualizarHeader();
     this.ApiService.gertArchivoMatriz()
     .subscribe((data: any) => {
       this.datosReporte = data;
@@ -1623,7 +1698,7 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
               body: [
                 [     
                   { text: 'BREVE RESUMEN DE NORMATIVIDAD QUE SE ACTUALIZA', style: ['tituloTabla'], margin:[ 0, 36, 0, 36 ] },
-                  {}
+                  { text: this.headerSocial?.RESUMEN, alignment: 'center',rowSpan: 1 }
                 ]
               ]
             },
@@ -1770,6 +1845,7 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
   }
 
   generateReporteEconomico(){
+    this.actualizarHeader();
     this.ApiService.gertArchivoMatriz()
     .subscribe((data: any) => {
       this.datosReporte = data;
@@ -1894,7 +1970,7 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
               body: [
                 [     
                   { text: 'BREVE RESUMEN DE NORMATIVIDAD QUE SE ACTUALIZA', style: ['tituloTabla'], margin:[ 0, 36, 0, 36 ] },
-                  {}
+                  { text: this.headerEconomico?.RESUMEN, alignment: 'center',rowSpan: 1 }
                 ]
               ]
             },
@@ -2167,7 +2243,7 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
               body: [
                 [     
                   { text: 'BREVE RESUMEN DE NORMATIVIDAD QUE SE ACTUALIZA', style: ['tituloTabla'], margin:[ 0, 36, 0, 36 ] },
-                  {}
+                  { text: this.descripcionResumen6, alignment: 'center',rowSpan: 1 }
                 ]
               ]
             },
@@ -2320,4 +2396,126 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
     }
     return 0;
   }
+
+  modificarBloquearCampos(){
+    this.disabledModificar = !this.disabledModificar;
+  
+    if(this.tabActual == 'tab1'){
+      this.disabledTabs2 = !this.disabledTabs2;
+      this.disabledTabs3 = !this.disabledTabs3;
+      this.disabledTabs4 = !this.disabledTabs4;
+      this.disabledTabs5 = !this.disabledTabs5;
+      this.disabledTabs6 = !this.disabledTabs6;
+    }
+    if(this.tabActual == 'tab2'){
+      this.disabledTabs1 = !this.disabledTabs1;
+      this.disabledTabs3 = !this.disabledTabs3;
+      this.disabledTabs4 = !this.disabledTabs4;
+      this.disabledTabs5 = !this.disabledTabs5;
+      this.disabledTabs6 = !this.disabledTabs6;
+    }
+    if(this.tabActual == 'tab3'){
+      this.disabledTabs2 = !this.disabledTabs2;
+      this.disabledTabs1 = !this.disabledTabs1;
+      this.disabledTabs4 = !this.disabledTabs4;
+      this.disabledTabs5 = !this.disabledTabs5;
+      this.disabledTabs6 = !this.disabledTabs6;
+    }
+    if(this.tabActual == 'tab4'){
+      this.disabledTabs2 = !this.disabledTabs2;
+      this.disabledTabs3 = !this.disabledTabs3;
+      this.disabledTabs1 = !this.disabledTabs1;
+      this.disabledTabs5 = !this.disabledTabs5;
+      this.disabledTabs6 = !this.disabledTabs6;
+    }
+    if(this.tabActual == 'tab5'){
+      this.disabledTabs2 = !this.disabledTabs2;
+      this.disabledTabs3 = !this.disabledTabs3;
+      this.disabledTabs4 = !this.disabledTabs4;
+      this.disabledTabs1 = !this.disabledTabs1;
+      this.disabledTabs6 = !this.disabledTabs6;
+    }
+    if(this.tabActual == 'tab6'){
+      this.disabledTabs2 = !this.disabledTabs2;
+      this.disabledTabs3 = !this.disabledTabs3;
+      this.disabledTabs4 = !this.disabledTabs4;
+      this.disabledTabs5 = !this.disabledTabs5;
+      this.disabledTabs1 = !this.disabledTabs1;
+    }
+  }
+
+  //GUARDA DATOS INTRODUCIDOS EN EL TEXT AREA
+  terminarModificarCampos(){
+    this.modificarBloquearCampos();
+    var arrayMatrices: any=[];
+    arrayMatrices = localStorage.getItem('MiArrayTemporal');
+
+    if(arrayMatrices != null){
+      this.showModalResumen=!this.showModalResumen;
+    }
+
+    
+
+  }
+  guardarTextArea(){
+    // const textAreaModal = document.getElementById("textAreaModal") as HTMLTextAreaElement
+    // this.texto = textAreaModal.value;
+    // console.log("asd", this.texto);
+    
+    const descripcion = this.saveForm.value.descripcionNoticia;
+     // if(this.tabActual == 'tab1'){
+    //   this.descripcionResumen1 = descripcion;
+    //   console.log(this.descripcionResumen1)
+    // }
+    // if(this.tabActual == 'tab2'){
+    //   this.descripcionResumen2 = descripcion;
+    //   console.log(this.descripcionResumen2)
+    // }
+    // if(this.tabActual == 'tab3'){
+    //   this.descripcionResumen3 = descripcion;
+    //   console.log(this.descripcionResumen3)
+    // }
+    // if(this.tabActual == 'tab4'){
+    //   this.descripcionResumen4 = descripcion;
+    // }
+    // if(this.tabActual == 'tab5'){
+    //   this.descripcionResumen5 = descripcion;
+    // }
+    if(this.tabActual == 'tab6'){
+      this.descripcionResumen6 = descripcion;
+    }  
+    var datosLocalStorage=localStorage.getItem('MiArrayTemporal');
+    var arrayID = datosLocalStorage.split(',');
+    arrayID.forEach(element => {
+      const data = {
+        FK_ID_USUARIO: window.localStorage.getItem('Id'),
+        FK_ID_MATRIZ_LEGAL: element,
+        RESUMEN: descripcion
+      }
+      this.ApiService.saveRespuestaMatrizResumen(data).subscribe((x:any)=>{
+        console.log('Se guardó correctamente: 2', x);
+      })
+      
+    });
+    
+
+
+    
+    
+    this.showModalResumen=!this.showModalResumen;
+    const title = "Guardado exitoso";
+    const message = "Se ha guardado correctamente"
+    this.Message.showModal(title,message);
+    //remover array
+    localStorage.removeItem('MiArrayTemporal');
+
+
+    //BORRA EL CONTENIDO DEL TEXT AREA AL SER CONSULTADO POR 2DA VEZ EN LA MISMA SESION
+    this.saveForm.reset();
+    
+    
+
+  }
+
+  
 }

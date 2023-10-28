@@ -1,4 +1,4 @@
-import { Component, Injectable, OnInit } from '@angular/core'
+import { Component, Injectable, NgModule, OnInit } from '@angular/core'
 import { Router } from '@angular/router'
 import { selectFeatureCount } from '../../../state/selectors/items.selectors'
 import { Observable } from 'rxjs'
@@ -8,9 +8,9 @@ import { AppState } from 'src/app/state/selectors/app.state'
 import { ModalService } from 'src/app/messagemodal/messagemodal.component.service'
 import { ApiService } from 'src/app/servicios/api/api.service';
 import { debounce } from 'lodash'
+import { IndicadorService } from '../../../servicios/kpis/indicador.service';
+import { ColorLista } from 'src/app/servicios/api/models/color'
 
-
-//@Injectable()
 
 @Component({
   selector: 'app-app-dashboard',
@@ -52,7 +52,7 @@ export class AppDashboardComponent implements OnInit {
   datosTarjetaActividad: any[] = [];
   datosTarjetaNoticia: any[] = [];
   showimagen: any;
-
+  colorWallpaper:ColorLista;
   result: boolean = false;
   resultNoticia: boolean = false;
   
@@ -69,17 +69,31 @@ export class AppDashboardComponent implements OnInit {
   AccesoKpi : boolean = true; 
   AccesoMejora : boolean = true; 
   AccesoMonitorizacion : boolean = true;
-
+//indicadores
+filter:any={ID_USUARIO:localStorage.getItem('Id')}
+resultInicadores: boolean = false;
+listaIndicadores:any=[];
   constructor(
     //PG private store: Store<{ initialState:any }>,
     private router: Router,
     private Message: ModalService,
     private ApiService: ApiService,
+    private IndicadorService:IndicadorService,
   ) {//PG this.counter$= store.select('initialState')
   }
   normaDiadnostico: any = {};
+  applyStyle: boolean = false;
+  adminTes: boolean = false;
+  pst:boolean=false; 
   ngOnInit(): void {
+    if (localStorage.getItem('rol') == "4" || 4 ||"3"|| 3) {
+      this.applyStyle = true;
+      this.adminTes  = true; 
 
+      }
+      
+    this.ApiService.colorTempo();
+    this.colorWallpaper = JSON.parse(localStorage.getItem("color")).wallpaper;
     this.ApiService.getUsuarioPermisoPerfil(this.userRol).subscribe(dataPermiso => {
 
       if(dataPermiso[0].PLANIFICACION_DIAGNOSTICO === "x"){
@@ -126,11 +140,17 @@ export class AppDashboardComponent implements OnInit {
     this.validateDiagnostico.subscribe((data: any) =>
       this.normaDiadnostico = data);
 
+ 
     let normaSelected = localStorage.getItem("normaSelected");
     //prueba global selectFeatureCount
     // this.getNombreUsuario();
     this.getContenidoTarjeta();
+    this.getRecordatorioIndicador();
   }
+
+  mostrarNotificacion : boolean = false;
+  isCollapsed = true;
+
   etapaShowInicio: boolean = false;
   etapaShowIntermedio: boolean = false;
   etapaShowFinal: boolean = false;
@@ -230,6 +250,25 @@ export class AppDashboardComponent implements OnInit {
     });
 
   }
+  getRecordatorioIndicador(){
+    this.IndicadorService.obtnerRecordatorioNoticia(this.filter).subscribe({
+      next: (x) => {
+        if (x.Confirmacion) {
+          this.listaIndicadores=x.Data;
+          if(x.Total>0){
+            this.resultInicadores=true;
+          }else{
+            this.resultInicadores=false;
+          }
+        } else {
+          this.resultInicadores=false;
+        }
+      },
+      error: (e) => {
+        this.resultInicadores=false;
+      },
+    });
+  }
 
   validateRol(evt: any) {
     const menuResult = this.rolList.map(
@@ -246,7 +285,6 @@ export class AppDashboardComponent implements OnInit {
   }
 
   menuFilter(evt: any) { //redireccionar
-  
     if (this.validateRol(evt)) {// condicional cuando sí tiene acceso
       evt.target.src = '../../../../assets/img-dashboard/' + evt.target.id + '-3.svg';
       switch (evt.target.id) {
@@ -380,7 +418,10 @@ export class AppDashboardComponent implements OnInit {
     this.ApiService.postMonitorizacionUsuario(request).subscribe();
     this.router.navigate(['/planificacion'], { state: { idActividad: index, dato: dato } });
   }
-
+  indexReminderIndicador() {
+    
+    this.router.navigate(['/evaluaciones']);
+  }
   getRolValue(): number {
     // Obtener el valor del rol almacenado en el Local Storage
     const rol = localStorage.getItem('rol');

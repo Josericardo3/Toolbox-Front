@@ -75,6 +75,14 @@ h3, h2, .parrafo, .estado{
     background-color: #f5f5f5 !important;
     color: #999999 !important;
   }
+
+  :disabled{
+    background-color: #737373;
+}
+
+  .checkbox-desactivado {
+    color: #999999 !important;
+  }
   /*modal boton guardar*/
   .modal-background {
     display: flex;
@@ -154,4 +162,68 @@ h3, h2, .parrafo, .estado{
     cursor: pointer;
     align-self: center;
   } */
+
+  /*SWITCH MEJORA CONTINUA*/
+  .checkbox-label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+  }
+  
+  .checkbox-container {
+    display: flex;
+    align-items: center;
+    padding-left: 10px;
+    cursor: pointer;
+  }
+  
+  .checkbox-container input {
+    display: none;
+  }
+  
+  .checkmark {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 20px;
+    height: 20px;
+    border: 1px solid #ccc;
+    border-radius: 50%;
+    background-color: #fff;
+    margin-right: 10px;
+    transition: background-color 0.2s;
+  }
+  
+  /* Estilos cuando el checkbox está marcado (activo) */
+  .checkbox-container input:checked + .checkmark {
+    background-color: #4caf50; /* Color verde cuando está activo */
+  }
+  
+  .label-text {
+    font-size: 16px;
+  }
+  
+  /* Estilos para el checkmark (marca) */
+  .checkmark:after {
+    content: "";
+    display: none;
+  }
+  
+  .checkbox-container input:checked + .checkmark:after {
+    display: block;
+    content: "\2714"; /* Símbolo de marca de verificación */
+    font-size: 16px;
+    color: white;
+  }
+  
+  .containerMejoraContinua{
+    font-family: Arial, sans-serif;
+  display: flex;
+  align-items: center;
+  
+  height: 2vh;
+  width: 15vw;
+  margin: 0;
+  }
   

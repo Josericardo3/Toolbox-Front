@@ -13,11 +13,13 @@
             </div>
             <div class="subContainerform">
                 <label for="responsable" class="estado">Responsable de dar cumplimiento</label>
-                <select name="responsable" id="responsable" formControlName="responsable" class="estadoForm" 
+                <select   name="responsable" id="responsable" formControlName="responsable" class="estadoForm" 
                 [attr.disabled]="isDisabled ? 'disabled' : null" [ngClass]="{'campo-desactivado': isDisabled}">
-                    <option value="" disabled [selected]="true">Seleccione una opción</option>
-                    <option value="ResponsableA" [selected]="form.get('responsable').value === 'ResponsableA'">Responsable de dar cumplimiento</option>
-                    <option value="ResponsableB" [selected]="form.get('responsable').value === 'ResponsableB'">Responsable</option>
+                    
+                    <option value="" disabled>Selecciona una opción</option>
+                    <option *ngFor="let responsible of arrayListResponsible" [value]="responsible.ID_USUARIO">
+                      {{ responsible.NOMBRE | titlecase }}
+                    </option>
                 </select>
             </div>
             <div class="subContainerformMain">        
@@ -40,14 +42,26 @@
                     <label for="acciones" class="estado">Acciones a realizar</label>
                     <textarea name="acciones" id="acciones" formControlName="acciones" placeholder="Acciones" class="estadoFormB" 
                     [attr.disabled]="isDisabled ? 'disabled' : null" [ngClass]="{'campo-desactivado': isDisabled}"></textarea>
+                    <div class="containerMejoraContinua" [attr.disabled]="isDisabled ? 'disabled' : null"
+                    [ngClass]="{'checkbox-desactivado': isDisabled}" *ngIf ="showCheckbox">
+                        <label class="checkbox-container" >
+                            <input type="checkbox" id="myCheckbox" [attr.disabled]="isDisabled ? 'disabled' : null"
+                            [ngClass]="{'checkbox-desactivado': isDisabled}" (change)="toggleCheckbox()" />
+                            <span class="checkmark"></span>
+                          </label>
+                          <p>MEJORA CONTINUA</p>
+                    </div>
+                    
                 </div>
                 <div class="subContainerformB">
                     <label for="responsableCumplimiento" class="estado">Responsable de dar cumplimiento</label>
                     <select name="responsableCumplimiento" id="responsableCumplimiento" formControlName="responsableCumplimiento" class="estadoFormB" 
                     [attr.disabled]="isDisabled ? 'disabled' : null" [ngClass]="{'campo-desactivado': isDisabled}">
-                        <option value="" disabled [selected]="true">Seleccione una opción</option>
-                        <option value="ResponsableC" [selected]="form.get('responsableCumplimiento').value === 'ResponsableC'">Responsable de dar cumplimiento</option>
-                        <option value="ResponsableD" [selected]="form.get('responsableCumplimiento').value === 'ResponsableD'">Responsable</option>
+                        <option value="" disabled>Selecciona una opción</option>
+                        <option *ngFor="let responsible of arrayListResponsible" [value]="responsible.ID_USUARIO">
+                          {{ responsible.NOMBRE | titlecase }}
+                        </option>
+
                     </select>
                 </div>
                 <div class="subContainerformB">
@@ -67,10 +81,13 @@
             </div>
         </div>          
         <div class="containerBtn" *ngIf="getRolValue() !== 4 && getRolValue()!==5 && getRolValue()!==7">
-            <button type="submit" class="btnGuardar" [disabled]="isDisabled" (click)="showModal = true">
+            <button type="Submit" class="btnGuardar" [disabled]="isDisabled" *ngIf="showGuardar==true && showBotones==true" >
                 <i class="fa-solid fa-floppy-disk" style="color: white; margin: 0 0.5vw;"></i>Guardar</button>
-            <button type="button" class="btnGuardar" (click)="activarCampos(true)"> 
+            <button type="button" class="btnGuardar" (click)="activarCampos(true)" *ngIf="showGuardar==false && showBotones==true"> 
                 <i class="fa-solid fa-pen" style="color: white; margin: 0 0.4vw;"></i> Editar</button>
+            <button type="button" class="btnGuardar" *ngIf="showBotones==true" [disabled]="disableModificar" (click)="terminarModificarCampos2()"> 
+                Terminar Modificacion</button>
+            
         </div>
         
     </form>
@@ -101,4 +118,5 @@
         </div>
 
     </div> -->
+    
     

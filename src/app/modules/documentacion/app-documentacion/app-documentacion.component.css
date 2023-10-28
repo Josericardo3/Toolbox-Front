@@ -1,34 +1,40 @@
-.controllerDoc{
+.controllerDoc {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     margin-bottom: 4vh;
+    background-color: var(--color-wallpaper, #f6f8f9);
 }
-.tituloP{
+
+.tituloP {
     display: flex;
     justify-content: center;
     flex-direction: row-reverse;
     margin: 2vh 0;
-  }
-  h1{
+}
+
+h1 {
     width: 80vw;
     font-family: 'Montserrat', sans-serif;
     font-weight: bolder;
-    color: #068460;
+    color: var(--color-title, #962d46);
     text-align: center;
     margin: 2vh 2vw;
-  }
-  .arrow{
+}
+
+.arrow {
     align-self: flex-start;
-    margin: 0 4vw 0 -7vw;
-  }
-h3{
+    margin: 0 4vw 0 -4vw;
+}
+
+h3 {
     font-family: 'Work Sans', sans-serif;
     font-size: 19px;
     font-weight: lighter;
 }
-.div{
+
+.div {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -37,20 +43,24 @@ h3{
     width: 90vw;
     height: auto;
 }
-i{
+
+i {
     cursor: pointer;
 }
+
 .iconos {
     position: absolute;
     right: 0;
     margin: -4.5vh 5vw;
 }
-.subIconos{
+
+.subIconos {
     position: absolute;
     right: 0;
     margin: -4.5vh 8vw;
 }
-.titulo{
+
+.titulo {
     display: flex;
     align-items: center;
     border: 1px solid lightgray;
@@ -59,10 +69,11 @@ i{
     padding: 10px;
     cursor: pointer;
 }
+
 .subtitulo,
 .subtituloPlanificacion,
 .subtituloApoyo,
-.subtituloEvaluacion{
+.subtituloEvaluacion {
     display: flex;
     align-items: center;
     border: 1px solid lightgray;
@@ -72,10 +83,12 @@ i{
     margin-top: 15px;
     cursor: pointer;
 }
-.subtituloPlanificacion{
+
+.subtituloPlanificacion {
     margin-top: 0;
 }
-.detalle{
+
+.detalle {
     display: flex;
     align-items: flex-start;
     border: 1px solid lightgray;
@@ -84,13 +97,15 @@ i{
     padding: 15px 0 10px 20px;
     flex-direction: column;
 }
-.guia{
+
+.guia {
     font-weight: bold;
 }
+
 .subDetalleContext,
 .subDetallePlanificacion,
 .subDetalleApoyo,
-.subDetalleEvaluacion{
+.subDetalleEvaluacion {
     display: flex;
     flex-direction: column;
     width: 81vw;
@@ -99,17 +114,21 @@ i{
     height: auto;
     padding: 15px 0 10px 20px;
 }
-p, a{
+
+p,
+a {
     margin: 10px 0;
     font-family: 'Work Sans', sans-serif;
     font-size: 17px;
     color: #474749;
     margin: 5px 0 5px 0;
 }
-a{
+
+a {
     color: rgb(14, 14, 232) !important;
 }
-.btn{
+
+.btn {
     margin: 10vh 0 5vh 0;
     height: 40px;
     width: 200px;
@@ -122,17 +141,38 @@ a{
     border: none;
     cursor: pointer;
 }
+
 .verde {
     background-color: #068460;
     color: #FFFFFF;
     font-family: 'Work Sans', sans-serif;
     font-size: 20px;
     font-weight: bold;
-  }
+}
+
 .verde p {
     background-color: #068460;
     color: #FFFFFF;
     font-family: 'Work Sans', sans-serif;
     font-size: 19px;
     font-weight: lighter;
+}
+
+@media (max-width: 615px) {
+    .detalle{
+        width: 84vw;
+    }
+    h1 {
+        font-size: 24px;
+    }
+    .arrow {
+        margin: 0 4vw 0 -2vw;
+    }
+    .subtitulo, .subtituloApoyo, .subtituloEvaluacion, .subtituloPlanificacion{
+        width: 77vw;
+        height: auto;
+    }
+    .subDetalle, .subDetalleContext, .subDetalleApoyo, .subDetalleEvaluacion, .subDetallePlanificacion{
+        width: 77vw;
+    }
 }

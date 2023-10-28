@@ -1,0 +1,50 @@
+
+.menu-container {
+  width: 100%;
+  font-family: 'Work Sans', sans-serif;
+  padding: 16px;
+}
+
+mat-nav-list {
+  padding: 0;
+}
+
+h3 {
+  font-size: 20px;
+  margin-bottom: 16px;
+}
+
+mat-divider {
+  margin: 16px 0;
+}
+
+mat-list-item {
+  display: flex;
+  align-items: center;
+  font-family: 'Work Sans', sans-serif !important;
+  
+
+}
+
+
+
+mat-icon {
+  margin-right: 16px;
+  font-size: 20px;
+}
+
+.mat-list-item-content {
+  font-size: 16px;
+  font-family: 'Work Sans', sans-serif !important;
+}
+
+
+mat-list-item:hover mat-icon {
+  color: #068460; /* Cambia el color del ícono cuando se pasa el mouse (verde en este ejemplo) */
+}
+mat-list-item:hover span {
+  color: #068460; /* Cambia el color del ícono cuando se pasa el mouse (verde en este ejemplo) */
+}
+mat-list-item span{
+  margin-bottom: 10rem;
+}

@@ -1,7 +1,9 @@
 .containerResultadosEncuestas{
     display: flex;
     flex-direction: column;
-    margin: 2vh 0 0 1.5vw;
+    /* margin: 2vh 0 0 1.5vw; */
+    background-color: var(--color-wallpaper, #f6f8f9);
+    padding: 2vh 0 0 1.5vw;
 }
 .titulo{
     display: flex;
@@ -12,7 +14,7 @@ h1{
     width: 100%;
     font-family: 'Montserrat', sans-serif;
     font-weight: bolder;
-    color: #068460;
+    color: var(--color-title, #962d46);
     text-align: center;
     margin: 2vh 0;
 }
@@ -122,3 +124,91 @@ h1{
     flex-direction: column;
     width: 100%;
 }
+@media (max-width: 970px) {
+
+    /* NOMBRE DE LA CABECERA  */
+    .resultados-app-header 
+        .container-pst p {
+            display: none;
+        }
+    
+    
+    /* MENU */
+      
+      .menu-alta-gerencia {
+        display: none;
+    }
+
+    .responsi-gerencia-menu .linea {
+            width: auto;      
+        }
+        .responsi-gerencia-menu   .td-menu{
+            width: auto;
+        }
+    
+
+    .resposi-icon {
+        display: flex;
+    }
+
+    .resposi-icon {
+        width: 95%;
+        top: 3px;
+        justify-content: flex-end;
+        display: flex;
+        position: absolute;
+        flex-direction: row;
+    }
+
+    .navbar-toggle {
+        padding: 0;
+        margin-right: 15px;
+        margin-top: 0;
+        position: relative;
+    }
+      /* TABLA DE RESULTADOS DE ENCUESTAS */
+      .form {
+        width: 100% !important;
+    }
+
+    .table-gestion {
+        width: auto;
+    }
+}
+    @media(max-width: 480px) {
+
+        .h1,
+        h1 {
+            font-size: 22px;
+        }
+
+        .menu-alta-gerencia 
+            .table-gestion {
+                font-size: 13px;
+            }
+        
+
+        /* PAGINADO */
+        .page-style {
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        .container-label {
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        /* TABLA */
+        .color-estado {
+            display: none;
+        }
+
+        .table-gestion{
+            
+            font-size: 13px;
+             min-width: 0;
+        }
+    }

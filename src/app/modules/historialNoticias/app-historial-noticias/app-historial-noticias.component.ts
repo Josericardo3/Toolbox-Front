@@ -36,8 +36,9 @@ export class AppHistorialNoticiasComponent implements OnInit{
        //paginado
        const totalPag = data.length;
        this.totalPaginas = Math.ceil(totalPag / 6) ;
-       if(this.totalPaginas== 0) this.totalPaginas = 1;
-      
+       if (isNaN(this.totalPaginas) || this.totalPaginas === 0) {
+        this.totalPaginas = 1;
+      }
        this.datatotal = this.dataInitial.length;
        this.datos = this.dataInitial.slice(0, 6);
        this.contentArray = data;

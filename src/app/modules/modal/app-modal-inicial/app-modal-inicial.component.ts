@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 export class AppModalInicialComponent implements OnInit {
 isOpen = true;
 data= JSON.parse(localStorage.getItem('norma') || '');
+
   constructor(
     private router: Router,
   ) {
@@ -32,6 +33,7 @@ data= JSON.parse(localStorage.getItem('norma') || '');
 
   closeModal() {
     this.isOpen = false;
+    location.reload();
   }
 }
 

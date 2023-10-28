@@ -42,6 +42,13 @@ import { AppResultEncuestasPreguntasComponent } from './modules/resultEncuestasP
 import { AppEncuestaCreadaComponent } from './modules/encuestaCreada/app-encuesta-creada/app-encuesta-creada.component';
 import { AppTablaEncuestasComponent } from './modules/tablaEncuestas/app-tabla-encuestas/app-tabla-encuestas.component';
 import { AppMonitorizacionComponent } from './modules/monitorizacion/app-monitorizacion/app-monitorizacion.component';
+import { MedicionKpisComponent } from './modules/medicion-kpis/medicion-kpis.component';
+import { IndicadoresKpisComponent } from './modules/medicion-kpis/indicadores-kpis/indicadores-kpis.component';
+import { ObjetivosKpisComponent } from './modules/medicion-kpis/objetivos-kpis/objetivos-kpis.component';
+import { PaquetesComponent } from './modules/medicion-kpis/paquetes/paquetes.component';
+import { RegistroEvaluacionIndicadorComponent } from './modules/medicion-kpis/registro-evaluacion-indicador/registro-evaluacion-indicador.component';
+import { RecordatoriosKpisComponent } from './modules/medicion-kpis/recordatorios-kpis/recordatorios-kpis.component';
+import { RecoveryFormularioComponent } from './recovery/app-recovery/recoveryformulario/recoveryformulario.component';
 
 
 const routes: Routes = [
@@ -57,6 +64,7 @@ const routes: Routes = [
   {path: 'evidencia/:section', component: AppEvidenciaComponent},
   {path: 'evidencia/:section/:subSection', component: AppEvidenciaComponent },
   {path: 'recovery', component: RecoveryComponent},
+  {path: 'recoveryformulario', component: RecoveryFormularioComponent},
   {path: 'auditoria', component: AppAuditoriaInternaComponent},
   {path: 'EMatrizRequisitosLegales', component: EMatrizRequisitosLegalesComponent},
   {path: 'nuevoPlanDeAuditoria', component: AppNuevoPlanDeAuditoriaComponent},
@@ -84,7 +92,13 @@ const routes: Routes = [
   {path: 'resultadosEncuestasPreguntas', component: AppResultEncuestasPreguntasComponent},
   {path: 'encuestaCreada/:id', component: AppEncuestaCreadaComponent},
   {path: 'tablaEncuestas', component: AppTablaEncuestasComponent},
-  {path: 'monitorizacion', component:AppMonitorizacionComponent }
+  {path: 'monitorizacion', component:AppMonitorizacionComponent },
+  {path:'kpis',component:MedicionKpisComponent},
+  {path:'indicadores',component:IndicadoresKpisComponent},
+  {path:'objetivos',component:ObjetivosKpisComponent},
+  {path:'paquetes',component:PaquetesComponent},
+  {path:'evaluaciones',component:RegistroEvaluacionIndicadorComponent},
+  {path:'recordatorios',component:RecordatoriosKpisComponent}
 ];
 
 @NgModule({

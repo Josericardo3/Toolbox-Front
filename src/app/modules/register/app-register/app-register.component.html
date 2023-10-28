@@ -198,9 +198,11 @@
       <label>Identificación del Representante Legal</label>
       <input
         type="text"
+        size="12"
         placeholder="Identificación del Representante Legal"
         formControlName="identificacionDelRepresentanteLegal"
         [ngClass]="{ 'dark-input': accionDisabled  }"
+        (input)="inputsize($event)"
       />
       <div class="selectDepar select-botton">
         <div class="select-value">

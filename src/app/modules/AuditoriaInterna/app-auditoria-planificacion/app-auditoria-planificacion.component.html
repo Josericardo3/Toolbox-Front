@@ -24,9 +24,9 @@
             <section class="container-date">
               <div>
                 <label class="label-auditor">Fecha</label>
-                <input bsDatepicker appFwCalendario  type="text" maxlength="10" placement="bottom"
+                <input bsDatepicker appFwCalendario (ngModelChange)="onDateChange($event)" type="text" maxlength="10" placement="bottom"
                   class="forma-input" #dp2="bsDatepicker" placeholder="DD-MM-YYYY" title="Inicio de actividad"
-                  formControlName="fecha" fw_calendario ui-date-mask
+                   formControlName="fecha" fw_calendario ui-date-mask
                   style="width:100px;margin-right: 0px; margin-left: 7px;border: 1px solid #068460;border-radius:3px; padding: 3px;height: 22px;"
                   [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY',adaptivePosition: true, isAnimated: true, containerClass: 'theme-green'}" />
                 <i (click)="dp2.show()" class="fa-solid fa-calendar-days"
@@ -47,8 +47,8 @@
 
 
             </section>
-            <section>
-              <div  style="display: flex;margin-top: 6px;align-items: baseline;border-radius:5px">
+            <section class="container-planificacion">
+              <div class="planificacion-auditoria-interna">
                 <label class="label-auditor-cargo">Nombre y cargo del auditado (s)</label>
                 <div>
                   <select class="select-cargo" formControlName="auditados">
@@ -88,21 +88,29 @@
           <tabset>
           <tab (click)="tabOption('norma')">
             <ng-template tabHeading>
-              <span class="mi-encabezado-tab">Norma</span>
+              <span class="mi-encabezado-tab">Norma</span>                      
             </ng-template>
-            <input type="text" value="" class="actividad" placeholder="Norma" formControlName="norma">
+            <select class="select-process" id="norma" formControlName="norma" (ngModelChange)="onNormaSelect()">
+              <option value="">Seleccionar</option>
+              <option *ngFor="let norma of normas" [ngValue]="norma">{{ norma.NORMA }}</option>
+            </select>
+                    
           </tab>
           <tab (click)="tabOption('requisito')">
             <ng-template tabHeading>
               <span class="mi-encabezado-tab">Requisito a auditar</span>
             </ng-template>
-            <select class="select-process" id="selectNorma" formControlName="requisito">
-              <option value="" disabled selected>Seleccionar</option>
-              <option value="Requisito 1">Requisito 1</option>
-              <option value="Requisito 2">Requisito 2</option>
-              <option value="Requisito 3">Requisito 3</option>
-            </select>
-          </tab>
+            <ng-multiselect-dropdown
+              formControlName="normaTeam"
+              class="selectMultiple"
+              [placeholder]="'Seleccionar requerimientos'"
+              [settings]="dropdownSettings"
+              [data]="dropdownList"
+              [ngModel]="selectedItems"
+              (onSelect)="onItemSelect($event)"
+              (onSelectAll)="onSelectAll($event)">
+            </ng-multiselect-dropdown>
+          </tab>          
         </tabset>
           <div class="div-guardar" >
             <button type="submit" [disabled]="formParent.invalid" class="btn-guardar">

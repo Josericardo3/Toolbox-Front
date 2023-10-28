@@ -1,0 +1,48 @@
+<app-modal></app-modal>
+<div class="card">
+  <div mat-dialog-content class="contenedor">
+    <form action="" #formPaquete="ngForm">
+      <div class="ms-2">
+        <h1 class="text-center" *ngIf="numero == 1">
+          <strong> Nuevo Paquete</strong>
+        </h1>
+        <h1 class="text-center" *ngIf="numero == 2">
+          <strong> Actualizar Paquete</strong>
+        </h1>
+      </div>
+      <hr />
+      <app-formulario-paquete-kpi
+        [model]="model"
+        (requiredValidityChange)="onRequiredFieldsValidityChange($event)"
+      ></app-formulario-paquete-kpi>
+    </form>
+    <br />
+    <div
+      mat-dialog-actions
+      class="d-flex justify-content-center align-items-center"
+    >
+      <button mat-raised-button color="warn" (click)="cerrarDialog(2)">
+        Cancelar
+      </button>
+      <button
+        *ngIf="numero == 1"
+        mat-raised-button
+        style="background-color: #068460; color: aliceblue"
+        (click)="registrar()"
+        [disabled]="!formPaquete.valid || !requiredFieldsValid"
+      >
+        Registrar
+      </button>
+
+      <button
+        *ngIf="numero == 2"
+        mat-raised-button
+        style="background-color: #068460; color: aliceblue"
+        (click)="actualizar()"
+        [disabled]="!formPaquete.valid || !requiredFieldsValid"
+      >
+        Actualizar
+      </button>
+    </div>
+  </div>
+</div>

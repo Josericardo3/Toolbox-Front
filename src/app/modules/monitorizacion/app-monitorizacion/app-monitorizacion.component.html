@@ -1,4 +1,4 @@
-<app-app-header></app-app-header>
+<app-app-header class="monitorizacion-app-header"></app-app-header>
 <div class="containerMonitorizacion">
   <div class="titulo">
     <h1>Monitorización</h1>
@@ -60,6 +60,7 @@
       </div>
     </div>
     <!-- *** SECCIÓN DE LA TABLA DE CONTENIDO DE LAS ACTIVIDADES ***-->
+    <div class="table-container">
     <table class="table-gestion" style="margin-top: 8px;">
       <thead>
         <tr>
@@ -82,6 +83,7 @@
         </tr>
       </tbody>
     </table>
+  </div>
     <p *ngIf="result"  style="text-align: center;margin-top: 10px; font-size: 19px; font-family: 'Work Sans', sans-serif;" >
       No hay resultado para la búsqueda
     </p>

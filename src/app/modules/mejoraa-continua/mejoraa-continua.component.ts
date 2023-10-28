@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { ChangeDetectorRef } from '@angular/core';
 import { ApiService } from 'src/app/servicios/api/api.service';
+import { ColorLista } from 'src/app/servicios/api/models/color';
 
 @Component({
   selector: 'app-mejoraa-continua',
@@ -9,7 +10,7 @@ import { ApiService } from 'src/app/servicios/api/api.service';
   styleUrls: ['./mejoraa-continua.component.css']
 })
 export class MejoraaContinuaComponent {
-  idrol:number;
+
   rolessArray: any = [];
   dataInitial: any = [];
   totalPaginas: number = 0;
@@ -22,15 +23,29 @@ export class MejoraaContinuaComponent {
   filter: string = '';
   showfilter: boolean = false;
   result: boolean = false;
+  idrol:number;
+  colorWallpaper: ColorLista;
+  colorTitle: ColorLista;
+  isCollapsed = true;
+  mostrarNotificacion: boolean = false;
 
   constructor(
     public ApiService: ApiService,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private router: Router,
+
   ) { }
   ngOnInit() {
+    this.ApiService.colorTempo();
+    this.colorWallpaper = JSON.parse(localStorage.getItem("color")).wallpaper;
+    this.colorTitle = JSON.parse(localStorage.getItem("color")).title;
+    
+    if(Number(localStorage.getItem('rol'))=== 7){
+      this.router.navigate(['/tablaEncuestas']);
+    }
     this.fnConsultMejoraContinua();
-    //this.fnActivityEditarCancelar();
   }  
+  
   fnConsultMejoraContinua() {
     this.ApiService.getMejoraContinua().subscribe((data) => {
       this.rolessArray = data;
@@ -41,7 +56,7 @@ export class MejoraaContinuaComponent {
       if (this.totalPaginas == 0) this.totalPaginas = 1;
       
       this.datatotal = this.dataInitial.length;
-      //this.rolesArray = this.dataInitial.slice(0, 7);
+      this.rolessArray = this.dataInitial.slice(0, 7);
       this.contentArray = data;
       this.currentPage = 1
       if (this.datatotal >= 7) {
@@ -74,8 +89,9 @@ export class MejoraaContinuaComponent {
 
   fnFiltro() {
     this.showfilter = !this.showfilter;
-    //this.crearNuevoRegistro = false;
   }
+  //fecini: string;
+  //fecfin: string;
 
   filterResult() {
     this.result = false;
@@ -98,7 +114,18 @@ export class MejoraaContinuaComponent {
         (item.DESCRIPCION.toUpperCase().includes(this.filter.trim().toUpperCase()) || this.filter.trim().toUpperCase() == '')
         || (item.NTC.trim().toUpperCase().includes(this.filter.trim().toUpperCase()) || this.filter.trim().toUpperCase() == '')
         || (item.REQUISITOS.trim().toUpperCase().includes(this.filter.trim().toUpperCase()) || this.filter.trim().toUpperCase() == '')
+        || (item.TIPO.trim().toUpperCase().includes(this.filter.trim().toUpperCase()) || this.filter.trim().toUpperCase() == '')
+        || (item.FECHA_INICIO.trim().toUpperCase().includes(this.filter.trim().toUpperCase()) || this.filter.trim().toUpperCase() == '')
+        || (item.FECHA_FIN.trim().toUpperCase().includes(this.filter.trim().toUpperCase()) || this.filter.trim().toUpperCase() == '')
+        || (item.ESTADO.trim().toUpperCase().includes(this.filter.trim().toUpperCase()) || this.filter.trim().toUpperCase() == '')
       )
+      //this.fecfin = this.form.get('fechafin').value;
+      //this.fecini = this.form.get('fechainicio').value;
+
+      //let arrayTemp = this.dataInitial.filter((item) =>
+      //  (item.FECHA_INICIO >= this.fecini && item.FECHA_FIN <= this.fecfin)
+      //)
+      //console.log(arrayTemp);
       this.contentArray = [];
       this.rolessArray = arrayTemp;
       //para el paginado

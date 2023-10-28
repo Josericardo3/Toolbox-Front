@@ -1,0 +1,78 @@
+<app-modal></app-modal>
+<div mat-dialog-content class="container">
+  <div>
+    <a title="Cancelar" id="cerrarModal" style="display: flex; justify-content: flex-end; align-items: center;" data-dismiss="modal" aria-label="Close">
+      <i class="fa-solid fa-circle-xmark" style="color: #06543c;font-size: 25px;" (click)="cerrarDialog(2)"></i>
+    </a>
+  </div>
+  <h1 class="text-center">
+    <strong> Gráfico {{ data.NOMBRE_INDICADOR }}</strong>
+  </h1>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="procesos">Procesos</label>
+          <mat-select
+            [(ngModel)]="filterGrafico.ID_PROCESO"
+            name="procesos"
+            class="form-control"
+            (selectionChange)="obtener()"
+          >
+            <mat-option id="todos" [value]="0"> TODOS LOS PROCESOS </mat-option>
+            <mat-option
+              *ngFor="let item of procesos; let index = index"
+              id="ID_PERIODO_MEDICION-{{ index }}"
+              [value]="item.Id"
+            >
+              {{ item.Nombre }}
+            </mat-option>
+          </mat-select>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="form-group">
+          <label for="anios">Año</label>
+          <mat-select
+            [(ngModel)]="filterGrafico.ANIO"
+            name="anios"
+            class="form-control"
+            (selectionChange)="obtener()"
+          >
+           
+            <mat-option
+              *ngFor="let item of anios; let index = index"
+              id="anio-{{ index }}"
+              [value]="item.Id"
+            >
+              {{ item.Nombre }}
+            </mat-option>
+          </mat-select>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-12">
+      <div class="row">
+        <div
+          class="col-md-6"
+          *ngFor="let proceso of data.PROCESOS_EVALUACION; let index = index"
+        >
+          <div *ngIf="proceso.EVALUACIONES.length > 0">
+            <h3>{{ proceso.NOMBRE_PROCESO }}</h3>
+            <canvas [id]="'myChart-' + index"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+  mat-dialog-actions
+  class="d-flex justify-content-center align-items-center"
+  style="text-align: end"
+>
+  <button mat-raised-button color="warn" (click)="cerrarDialog(2)">
+    Cancelar
+  </button>
+</div>
+</div>
+

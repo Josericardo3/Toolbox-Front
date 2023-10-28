@@ -3,6 +3,7 @@ import { ChangeDetectorRef, Component } from '@angular/core';
 import { using } from 'rxjs';
 import { ModalService } from 'src/app/messagemodal/messagemodal.component.service';
 import { ApiService } from 'src/app/servicios/api/api.service';
+import { ColorLista } from 'src/app/servicios/api/models/color';
 
 
 @Component({
@@ -47,6 +48,10 @@ export class AppActividadesComponent {
   ngSelectActividad = 1;
   ngSelectEstado = 1;
   ngSelectResponsable = 1;
+  colorWallpaper: ColorLista;
+  colorTitle: ColorLista;
+  isCollapsed = true;
+  mostrarNotificacion: boolean = false;
 
 
   constructor(
@@ -57,6 +62,10 @@ export class AppActividadesComponent {
   ) { }
 
   ngOnInit() {
+    this.ApiService.colorTempo();
+    this.colorWallpaper = JSON.parse(localStorage.getItem("color")).wallpaper;
+    this.colorTitle = JSON.parse(localStorage.getItem("color")).title;
+
     this.fnConsultActivities();
     this.fnListResponsible();
     this.fnStatusList();
@@ -217,6 +226,12 @@ export class AppActividadesComponent {
       this.arrayStatus = data.filter((e: any) => e.ITEM != 0);
     })
   }
+  recibirNoticias: boolean = false;
+
+  onChangeCheckbox(event: any) {
+    this.recibirNoticias = event.target.checked;
+    
+  }
 
   //**NUEVO REGISTRO**
   fnNewRecord() {
@@ -246,7 +261,8 @@ export class AppActividadesComponent {
         FECHA_INICIO: this.inicioActivity,
         FECHA_FIN: this.finActivity,
         TIPO_ACTIVIDAD: this.activityType || "Mejora Continua",
-        ESTADO_PLANIFICACION: this.selectedState
+        ESTADO_PLANIFICACION: this.selectedState, 
+        ENVIO_CORREO: this.recibirNoticias
       }
 
       this.ApiService.postNewRecord(request).subscribe((data) => {

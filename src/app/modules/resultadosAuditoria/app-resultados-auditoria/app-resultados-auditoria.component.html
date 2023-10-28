@@ -1,11 +1,19 @@
-<app-app-header></app-app-header>
+<app-app-header class="resultados-app-header"></app-app-header>
 <div class="containerResultadosAuditoria">
     <div class="titulo">
         <h1>Resultados de auditoría</h1>
         <app-app-header-arrow-left [redirectToDashboard]="true"></app-app-header-arrow-left>
     </div>
     <div class="resultados">
-        <app-app-menu-alta-gerencia></app-app-menu-alta-gerencia>
+        <app-app-menu-alta-gerencia class="menu-alta-gerencia" ></app-app-menu-alta-gerencia>
+        <mat-menu #menu="matMenu">
+            <app-app-menu-alta-gerencia class="responsi-gerencia-menu"></app-app-menu-alta-gerencia>
+          </mat-menu>
+        <div class="resposi-icon">
+            <button mat-icon-button [matMenuTriggerFor]="menu" style="color: #ffffff;">
+                <i class="fa-solid fa-bars" style="font-size: 20px;"></i>
+              </button>
+        </div>
         <div class="form">
             <!--*** BLOQUE DE BUSQUEDA  ***-->
             <div class="buscar">            
@@ -18,7 +26,7 @@
                         <th scope="col">Responsable</th>
                         <th scope="col">Alcance</th>
                         <th scope="col">Estado</th>
-                        <th scope="col"></th>
+                        <th scope="col" class="color-estado"></th>
                         <th scope="col" style="text-align: center;" (click)="mostrarBuscador = !mostrarBuscador">
                           <i class="fa-solid fa-magnifying-glass" title="Buscar" style="cursor: pointer;"></i>
                         </th>
@@ -29,7 +37,7 @@
                         <td>{{ item.AUDITOR_LIDER }}</td>
                         <td>{{ datos2[item.ID_AUDITORIA]?.ALCANCE }}</td>
                         <td>{{ item.ESTADO_AUDITORIA }}</td>
-                        <td><i class="fa fa-circle" [ngStyle]="{'color': item.statecolor}"></i></td>
+                        <td class="color-estado"><i class="fa fa-circle" [ngStyle]="{'color': item.statecolor}"></i></td>
                         <td *ngIf="getRolValue() !== 4 && getRolValue() !==5">
                             <a title="Editar" routerLink="/listaDeVerificacion" routerLinkActive="activebutton">
                                 <i class="fa-solid fa-pen" style="color: #06543c;"></i>

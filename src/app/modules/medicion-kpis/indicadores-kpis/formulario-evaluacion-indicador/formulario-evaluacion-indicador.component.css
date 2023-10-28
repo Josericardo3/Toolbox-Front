@@ -1,0 +1,30 @@
+.matForm {
+  width: 100%; /* Ajusta el ancho del mat-form-field según tus necesidades */
+}
+.matForm input {
+  font-size: 14px; /* Ajusta el tamaño de fuente del input según tus necesidades */
+}
+::ng-deep .mat-mdc-form-field-infix {
+  padding: 0.1px;
+}
+.custom-input {
+  border: none; /* Elimina el borde del input */
+  box-shadow: none; /* Elimina la sombra */
+  background-color: transparent; /* Fondo transparente */
+  outline: none; /* Elimina el contorno de foco */
+  width: 100%; /* Ajusta el ancho al 100% del contenedor */
+}
+.contedit {
+  height: 5rem;
+}
+
+.matForm textarea:disabled,
+input:disabled {
+  text-align: left;
+  color: black;
+  font-size: 14px;
+}
+label {
+  color: black !important;
+  font-size: 13px;
+}

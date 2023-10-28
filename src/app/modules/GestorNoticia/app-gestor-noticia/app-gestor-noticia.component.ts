@@ -8,6 +8,7 @@ import { debug, log } from 'console';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { ModalService } from 'src/app/messagemodal/messagemodal.component.service'
 import { DomSanitizer } from '@angular/platform-browser';
+import { ColorLista } from 'src/app/servicios/api/models/color';
 
 @Component({
   selector: 'app-app-gestor-noticia',
@@ -91,6 +92,10 @@ export class AppGestorNoticiaComponent implements OnInit {
   dropdownListSubCategoria: any[] = [];
   selectedItemsSubCategoria: any[] = [];
   dropdownSettingsSubCategoria: IDropdownSettings;
+  colorWallpaper: ColorLista;
+  colorTitle: ColorLista;
+  arrayLista: any[] = [];
+  arrayListaPst: any[] = [];
 
   constructor(
     private http: HttpClient,
@@ -101,14 +106,19 @@ export class AppGestorNoticiaComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.caracteristicaIndice = -1;
+    this.api.colorTempo();
+    this.colorWallpaper = JSON.parse(localStorage.getItem("color")).wallpaper;
+    this.colorTitle = JSON.parse(localStorage.getItem("color")).title;
 
+    this.caracteristicaIndice = -1;
     this.getTableData();
     this.getSelectMultiplePST();
     this.getSelectMultipleColaboradores();
     this.getSelectMultipleNorma();
     this.getSelectMultipleCategoria();
     this.getSelectMultipleSubCategoria();
+    this.listarCategorias();
+    this.listarPst(); 
 
     this.editarNoticiaForm = this.formBuilder.group({
       usuario: [{ value: '', disabled: true }],
@@ -127,7 +137,7 @@ export class AppGestorNoticiaComponent implements OnInit {
       imagenNoticia: [null, Validators.nullValidator]
     });
   }
-  
+
   getTableData() {
     this.api.getTablaNoticias()
       .subscribe(data => {
@@ -193,7 +203,7 @@ export class AppGestorNoticiaComponent implements OnInit {
     this.noticiaIndice = index;
     this.caracteristicaIndiceEliminar = index;
     this.editarCaracteristica = {};
-    Object.assign(this.editarCaracteristica,  this.filterArray[index]);
+    Object.assign(this.editarCaracteristica, this.filterArray[index]);
     this.editarCaracteristica.idUsuario = this.editarCaracteristica.idResponsable;
   }
 
@@ -233,53 +243,52 @@ export class AppGestorNoticiaComponent implements OnInit {
   //   return
   // }
 
-  descripcionNormas:any;
-  datosIndexListaDestinatario : any= [];
-  datosLista:any; 
-  fnShowModalLista(index: number){
-    this.datosIndexListaDestinatario=[];
+  descripcionNormas: any;
+  datosIndexListaDestinatario: any = [];
+  datosLista: any;
+  fnShowModalLista(index: number) {
+    this.datosIndexListaDestinatario = [];
     let IdTipoUsuario = Number(localStorage.getItem('rol'));
     this.showModalLista = true;
 
-if (IdTipoUsuario == 4 || 3) {
-    this.datosIndexListaDestinatario.push(this.datos[index]); 
-    const listaTempo = this.datosIndexListaDestinatario.map((elemento)=>{
-      return{
-        NOMBRE_DESTINATARIO: elemento.NOMBRE_DESTINATARIO,
-        CATEGORIAS: elemento.CATEGORIAS,
-        SUB_CATEGORIAS: elemento.SUB_CATEGORIAS
+    if (IdTipoUsuario == 4 || 3) {
+      this.datosIndexListaDestinatario.push(this.datos[index]);
+      const listaTempo = this.datosIndexListaDestinatario.map((elemento) => {
+        return {
+          NOMBRE_DESTINATARIO: elemento.NOMBRE_DESTINATARIO,
+          CATEGORIAS: elemento.CATEGORIAS,
+          SUB_CATEGORIAS: elemento.SUB_CATEGORIAS
+        }
+      })
+      this.datosLista = listaTempo;
+
+      this.descripcionNormas = this.datos[index].NORMAS;
+      const tempo = this.descripcionNormas.split(', ');
+
+      const arrayConNorma = tempo.map((elemento) => {
+        return { NORMA: elemento };
+      });
+      this.descripcionNormas = arrayConNorma;
+    }
+    else {
+
+      const nombreLista = this.datos[index].NOMBRE_DESTINATARIO;
+      const tempo = nombreLista?.split(', ');
+
+      if (tempo) {
+        const arrayConNorma = tempo.map((elemento) => {
+          return { NOMBRE_DESTINATARIO: elemento };
+        });
+        this.datosLista = arrayConNorma;
       }
-    })
-    this.datosLista= listaTempo;
-   
-    this.descripcionNormas =  this.datos[index].NORMAS;
-    const tempo = this.descripcionNormas.split(', ');
-
-    const arrayConNorma = tempo.map((elemento) => {
-      return { NORMA: elemento };
-    });
-    this.descripcionNormas = arrayConNorma;
-  }
-else{
-
- const nombreLista = this.datos[index].NOMBRE_DESTINATARIO;
-  const tempo = nombreLista?.split(', ');
-
-  if (tempo) {
-    const arrayConNorma = tempo.map((elemento) => {
-      return { NOMBRE_DESTINATARIO: elemento };
-    });
-    this.datosLista = arrayConNorma;
-  }
-}
+    }
 
   }
 
-  filtrarDatos(){
+  filtrarDatos() {
     this.result = false;
     if (!this.busqueda) {
       this.datos = this.dataInitial;
-      console.log( this.datos,2222);
       this.updatePaginado(this.dataInitial);
     }
     else {
@@ -288,10 +297,10 @@ else{
         (campo.NOMBRE && campo.NOMBRE.toLowerCase().includes(terminoBusqueda)) ||
         (campo.NORMA && campo.NORMA.toLowerCase().includes(terminoBusqueda)) ||
         (campo.TITULO && campo.TITULO.toLowerCase().includes(terminoBusqueda)) ||
-        (campo.DESCRIPCION && campo.DESCRIPCION.toLowerCase().includes(terminoBusqueda)) 
-             );
+        (campo.DESCRIPCION && campo.DESCRIPCION.toLowerCase().includes(terminoBusqueda))
+      );
       this.datos = filter;
-      console.log( this.datos,3333);
+
       this.updatePaginado(filter);
       // Verificar si se encontraron resultados
       if (filter.length === 0) {
@@ -322,28 +331,35 @@ else{
     this.filterArray = this.datos.slice(startItem, endItem)
     this.totalRegistros = this.filterArray.length;
   }
-  
+
+  recibirNoticias: boolean = false;
+  onChangeCheckbox(event: any) {
+    this.recibirNoticias = event.target.checked;
+  }
 
   saveModal() {
-    try {
+   try {
       const id = localStorage.getItem('Id');
       const selectedNormas = this.selectedNormas;
       const selectedCategoria = this.selectedCategorias;
       const selectedSubCategoria = this.selectedSubCategorias;
-      const destinatario = this.selectedAdmin.length > 0 ? this.selectedAdmin : this.selectedPst;
+      const destinatario = this.selectedPst;
+      const destinatariopst = this.selectedAdmin;
       const titulo = this.saveForm.value.tituloNoticia;
       const descripcion = this.saveForm.value.descripcionNoticia;
       const imagen = this.imagen ? this.imagen : '';
-
+      debugger;
       const data = {
         FK_ID_USUARIO: id,
         FK_ID_NORMA: selectedNormas,
         FK_ID_CATEGORIA: selectedCategoria,
         FK_ID_SUB_CATEGORIA: selectedSubCategoria,
         FK_ID_DESTINATARIO: destinatario,
+        FK_ID_PST_DESTINATARIO : destinatariopst,
         TITULO: titulo,
         DESCRIPCION: descripcion,
-        IMAGEN: imagen
+        IMAGEN: imagen,
+        ENVIO_CORREO: this.recibirNoticias
       };
       var formData = new FormData();
       for (const key in data) {
@@ -361,7 +377,7 @@ else{
           const title = "Noticia creada";
           const message = "Noticia creada exitosamente";
 
-      this.Message.showModal(title, message);
+          this.Message.showModal(title, message);
           this.getTableData();
         },
         (error) => {
@@ -382,41 +398,142 @@ else{
     this.files = []
   }
 
+  listarCategorias() {
+    this.api.getListarCategoria().subscribe((data: any) => {
+      this.arrayLista = data;
+    })
+  }
+
+  listarPst() {
+    this.api.getListarPst().subscribe((data: any) => {
+      this.arrayListaPst = data;
+    })
+  }
+
   onItemSelect(item: any, dropdownId: string) {
     if (item && item.id && dropdownId === 'admin') {
       this.selectedAdmin.push(item.id);
-     
+
     } else if (item && item.id && dropdownId === 'norma') {
       this.selectedNormas.push(item.id);
+
+      const arrayFilter = this.arrayLista.filter((element: any) => {
+        return element.ID_NORMAS.some((norma: any) => this.selectedNormas.includes(norma.ID_NORMA));
+      });
+      this.dropdownListCategoria = arrayFilter.map(item => {
+        return {
+          id: item.ID_CATEGORIA_RNT,
+          nombre: item.CATEGORIA_RNT
+        };
+      });
+
+      //para los repetidos solo mostrar uno
+      const uniqueItems = this.dropdownListCategoria.reduce((accumulator, current) => {
+        const exists = accumulator.some(item => item.nombre === current.nombre);
+        if (!exists) {
+          accumulator.push(current);
+        }
+        return accumulator;
+      }, []);
+
+      this.dropdownListCategoria = uniqueItems;
+
+      ///SUBCATEGORIA
+
+      this.dropdownListSubCategoria = arrayFilter.map(item => {
+        return {
+          id: item.ID_CATEGORIA_RNT,
+          nombre: item.SUB_CATEGORIA_RNT
+        };
+      });
+
+   
+      /// PST
+
+      const arrayFilterPst = this.arrayListaPst.filter((element: any) => {
+        return element.ID_NORMAS.some((pst: any) => this.selectedNormas.includes(pst));
+      });
+    
       
+      this.dropdownListPst = arrayFilterPst.map(item => {
+        return {
+          id: item.ID_PST,
+          nombre: item.NOMBRE_PST
+        };
+      });
+
     } else if (item && item.id && dropdownId === 'categoria') {
       this.selectedCategorias.push(item.id);
-   
+
     } else if (item && item.id && dropdownId === 'subcategoria') {
       this.selectedSubCategorias.push(item.id);
-      
+
     } else if (item && item.id && dropdownId === 'pst') {
       this.selectedPst.push(item.id);
-    
+
     }
   }
 
   onSelectAll(items: any[], dropdownId: string) {
     if (dropdownId === 'admin') {
       this.selectedAdmin = items.map((item: any) => item.id);
-      
+
     } else if (dropdownId === 'norma') {
       this.selectedNormas = items.map((item: any) => item.id);
+
+      const arrayFilter = this.arrayLista.filter((element: any) => {
+        return element.ID_NORMAS.some((norma: any) => this.selectedNormas.includes(norma.ID_NORMA));
+      });
      
+      this.dropdownListCategoria = arrayFilter.map(item => {
+        return {
+          id: item.ID_CATEGORIA_RNT,
+          nombre: item.CATEGORIA_RNT
+        };
+      });
+
+       //para los repetidos solo mostrar uno
+       const uniqueItems = this.dropdownListCategoria.reduce((accumulator, current) => {
+        const exists = accumulator.some(item => item.nombre === current.nombre);
+        if (!exists) {
+          accumulator.push(current);
+        }
+        return accumulator;
+      }, []);
+
+      this.dropdownListCategoria = uniqueItems;
+
+      // SUBCATEGORIA
+      this.dropdownListSubCategoria = arrayFilter.map(item => {
+        return {
+          id: item.ID_CATEGORIA_RNT,
+          nombre: item.SUB_CATEGORIA_RNT
+        };
+      });
+
+   /// PST
+
+   const arrayFilterPst = this.arrayListaPst.filter((element: any) => {
+    return element.ID_NORMAS.some((pst: any) => this.selectedNormas.includes(pst));
+  });
+
+  
+  this.dropdownListPst = arrayFilterPst.map(item => {
+    return {
+      id: item.ID_PST,
+      nombre: item.NOMBRE_PST
+    };
+  });  
+    
     } else if (dropdownId === 'categoria') {
       this.selectedCategorias = items.map((item: any) => item.id);
-      
+
     } else if (dropdownId === 'subcategoria') {
       this.selectedSubCategorias = items.map((item: any) => item.id);
-     
+
     } else if (dropdownId === 'pst') {
       this.selectedPst = items.map((item: any) => item.id);
-     
+
     }
   }
 
@@ -425,8 +542,46 @@ else{
       const index = this.selectedAdmin.indexOf(item.id);
       this.selectedAdmin.splice(index, 1);
     } else if (item && item.id && dropdownId === 'norma') {
+      
       const index = this.selectedNormas.indexOf(item.id);
       this.selectedNormas.splice(index, 1);
+      const arrayFilter = this.arrayLista.filter((element: any) => {
+        return element.ID_NORMAS.some((norma: any) => this.selectedNormas.includes(norma.ID_NORMA));
+      });
+      this.dropdownListCategoria = arrayFilter.map(item => {
+        return {
+          id: item.ID_CATEGORIA_RNT,
+          nombre: item.CATEGORIA_RNT
+        };
+      });
+
+      //para los repetidos solo mostrar uno
+      const uniqueItems = this.dropdownListCategoria.reduce((accumulator, current) => {
+        const exists = accumulator.some(item => item.nombre === current.nombre);
+        if (!exists) {
+          accumulator.push(current);
+        }
+        return accumulator;
+      }, []);
+
+      this.dropdownListCategoria = uniqueItems;
+
+      ///SUBCATEGORIA
+
+      this.dropdownListSubCategoria = arrayFilter.map(item => {
+        return {
+          id: item.ID_CATEGORIA_RNT,
+          nombre: item.SUB_CATEGORIA_RNT
+        };
+      });
+
+   
+      /// PST
+
+      const arrayFilterPst = this.arrayListaPst.filter((element: any) => {
+        return element.ID_NORMAS.some((pst: any) => this.selectedNormas.includes(pst));
+      });
+
     } else if (item && item.id && dropdownId === 'categoria') {
       const index = this.selectedCategorias.indexOf(item.id);
       this.selectedCategorias.splice(index, 1);
@@ -444,6 +599,9 @@ else{
       this.selectedAdmin = [];
     } else if (dropdownId === 'norma') {
       this.selectedNormas = [];
+      this.saveForm.get('selectMultipleCategoria').reset([]); // Reinicia a un arreglo vacío
+      this.saveForm.get('selectMultipleSubCategoria').reset([]);
+      this.saveForm.get('selectMultipleAdmin').reset([]);
     } else if (dropdownId === 'categoria') {
       this.selectedCategorias = [];
     } else if (dropdownId === 'subcategoria') {
@@ -472,15 +630,15 @@ else{
 
     this.api.saveNoticiaEditar(formData)
       .subscribe(res => {
-         this.filterArray[this.caracteristicaIndice].NOMBRE = this.editarCaracteristica.NOMBRE;
-         this.filterArray[this.caracteristicaIndice].TITULO = this.editarCaracteristica.TITULO;
-         this.filterArray[this.caracteristicaIndice].DESCRIPCION = this.editarCaracteristica.DESCRIPCION;
+        this.filterArray[this.caracteristicaIndice].NOMBRE = this.editarCaracteristica.NOMBRE;
+        this.filterArray[this.caracteristicaIndice].TITULO = this.editarCaracteristica.TITULO;
+        this.filterArray[this.caracteristicaIndice].DESCRIPCION = this.editarCaracteristica.DESCRIPCION;
         this.showModalEditar = false;
         this.getTableData()
         this.fnCancelar(this.caracteristicaIndice);
       });
   }
-  
+
   captureImage(event: any) {
     const archivoSeleccionado = this.archivo.nativeElement.files[0];
     const nombreArchivo = document.querySelector('#nombre') as HTMLElement;
@@ -534,9 +692,9 @@ else{
             const resizedImage = new File([blob], archivoSeleccionado.name, { type: blob.type });
 
             this.imagen = resizedImage;
-            
+
             this.files.push(this.imagen);
-          
+
           }, archivoSeleccionado.type);
         };
 
@@ -553,14 +711,14 @@ else{
   getSelectMultiplePST() {
     this.api.getPSTSelect()
       .subscribe(data => {
-        this.dropdownListPst = data;
-        this.dropdownListPst = data.map(item => {
-          return {
-            id: item.ID_USUARIO,
-            idpst: item.ID_PST,
-            nombre: item.NOMBRE_PST
-          };
-        });
+        // this.dropdownListPst = data;
+        // this.dropdownListPst = data.map(item => {
+        //   return {
+        //     id: item.ID_USUARIO,
+        //     idpst: item.ID_PST,
+        //     nombre: item.NOMBRE_PST
+        //   };
+        // });
       });
     this.dropdownSettings = {
       singleSelection: false,
@@ -573,6 +731,7 @@ else{
       allowSearchFilter: true
     };
   }
+
   getSelectMultipleColaboradores() {
     this.api.getListResponsible()
       .subscribe(data => {
@@ -595,6 +754,7 @@ else{
       allowSearchFilter: true
     };
   }
+
   getSelectMultipleNorma() {
     this.api.getNormaSelect()
       .subscribe(data => {
@@ -606,6 +766,7 @@ else{
           };
         });
       });
+
     // Configura las opciones del dropdown
     this.dropdownSettingsNorma = {
       singleSelection: false,
@@ -622,13 +783,13 @@ else{
   getSelectMultipleCategoria() {
     this.api.getCategoriaSelect()
       .subscribe(data => {
-        this.dropdownListCategoria = data;
-        this.dropdownListCategoria = data.map(item => {
-          return {
-            id: item.ID,
-            nombre: item.CATEGORIA_RNT
-          };
-        });
+        //   this.dropdownListCategoria = data;
+        //   this.dropdownListCategoria = data.map(item => {
+        //     return {
+        //       id: item.ID,
+        //       nombre: item.CATEGORIA_RNT
+        //     };
+        //   });
       });
     this.dropdownSettingsCategoria = {
       singleSelection: false,
@@ -645,13 +806,13 @@ else{
   getSelectMultipleSubCategoria() {
     this.api.getCategoriaSelect()
       .subscribe(data => {
-        this.dropdownListSubCategoria = data;
-        this.dropdownListSubCategoria = data.map(item => {
-          return {
-            id: item.ID,
-            nombre: item.SUB_CATEGORIA_RNT
-          };
-        });
+        // this.dropdownListSubCategoria = data;
+        // this.dropdownListSubCategoria = data.map(item => {
+        //   return {
+        //     id: item.ID,
+        //     nombre: item.SUB_CATEGORIA_RNT
+        //   };
+        // });
       });
     this.dropdownSettingsSubCategoria = {
       singleSelection: false,
@@ -674,7 +835,7 @@ else{
   }
 
   fnShowModal(index: number) {
-    this.descripcion =  this.filterArray[index].DESCRIPCION;
+    this.descripcion = this.filterArray[index].DESCRIPCION;
     this.showModalNoticia = true;
   }
 

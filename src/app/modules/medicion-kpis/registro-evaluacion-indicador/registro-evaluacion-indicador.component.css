@@ -1,0 +1,224 @@
+.matForm {
+    width: 100%;
+    
+  }
+  .containerResultadosAuditoria{
+      display: flex;
+      flex-direction: column;
+      margin: 2vh 0 0 1.5vw;
+  }
+  .titulo{
+      display: flex;
+      flex-direction: row-reverse;
+      margin: 2vh 0;
+  }
+  h1{
+      width: 100%;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: bolder;
+      color: #068460;
+      text-align: center;
+      margin: 2vh 0;
+  }
+  .resultados{
+      display: flex;
+  }
+  .form{
+      display: flex;
+      flex-direction: column;
+      margin: 1vh 0.5vw;
+  }
+  .table-gestion {
+      width: 75vw;
+      font-size: 16px;
+      font-family: 'Work Sans', sans-serif;
+      min-width: 450px;
+      border: 2px solid #068460; 
+      border-left: none;
+      border-right: none;
+      border-bottom: none;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+      text-align: center;
+      margin: 0 0.5vw 3vh 2vw;
+  }
+  .table-gestion thead tr {
+      background-color: #068460;
+      color: #ffffff;
+      font-family: 'Work Sans', sans-serif;
+  }
+  .table-gestion th,
+  .table-gestion tbody td {
+      padding: 10px;
+  }
+  .table-gestion tbody tr {
+      border-bottom: 1px solid white;
+  }
+  .table-gestion tr th{
+      text-align: center !important;
+  }
+  .buscar{
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-end;
+  }
+  .buscador{
+      margin: 2vh 0.5vw 3vh 0;
+      background: #FFFFFF;
+      border: 2px solid #068460;
+      border-radius: 10px;
+      height: 40px;
+      padding: 5px;
+      width: 30vw;
+      font-family: 'Work Sans', sans-serif;
+      font-size: 14px;
+      color: #000000;
+      align-self: flex-end;
+  }
+  /* pagination */
+  .page-style {
+      display: flex;
+      justify-content: flex-end;
+  }
+  .paginas {
+      display: inline-block;
+      max-width: 100%;
+      margin: 10px;
+      font-weight: 700;
+      font-size: 14px;
+      font-family: 'Work Sans', sans-serif;
+  }
+  .container-label {
+      display: flex;
+      align-items: center;
+  }
+  /*Acordion Styles*/
+  .example-accordion {
+      display: block;
+      max-width: 100%;
+    }
+    
+    .example-accordion-item {
+      display: block;
+      border: solid 1px #ccc;
+    }
+    
+    .example-accordion-item + .example-accordion-item {
+      border-top: none;
+    }
+    
+    .example-accordion-item-header {
+      display: flex;
+      align-content: center;
+      justify-content: space-between;
+    }
+    
+    .example-accordion-item-description {
+      font-size: 0.85em;
+      color: #999;
+    }
+    
+    .example-accordion-item-header,
+    .example-accordion-item-body {
+      padding: 16px;
+    }
+    
+    .example-accordion-item-header:hover {
+      cursor: pointer;
+      background-color: #eee;
+    }
+    
+    .example-accordion-item:first-child {
+      border-top-left-radius: 4px;
+      border-top-right-radius: 4px;
+    }
+    
+    .example-accordion-item:last-child {
+      border-bottom-left-radius: 4px;
+      border-bottom-right-radius: 4px;
+    }
+  
+    .mat-header-row {
+      background-color: #068460;
+      color: #fff !important;
+    }
+    th{
+      color: #fff;
+    }
+    /*menu*/
+@media (max-width: 970px) {
+  /* NOMBRE DE LA CABECERA  */
+
+  .indicadores-app-header 
+    .container-pst p {
+      display: none;
+    }
+  
+
+  /* MENU */
+
+  .menu-oculto {
+    display: none;
+  }
+  .responsi-gerencia-menu 
+    .linea {
+      width: auto;
+    }
+    .responsi-gerencia-menu .td-menu {
+      width: auto;
+    }
+  
+  .resposi-icon {
+    display: flex;
+  }
+
+  .resposi-icon {
+    width: 95%;
+
+    top: 3px;
+
+    justify-content: flex-end;
+
+    display: flex;
+
+    position: absolute;
+
+    flex-direction: row;
+  }
+}
+/**********/
+td,th
+{
+  font-size: 16px; /* Ajusta el tamaño de fuente del input según tus necesidades */
+  font-family: 'Work Sans', sans-serif;
+}
+th{
+  font-weight: bold;
+}
+label {
+  color: black !important;
+  font-size: 13px;
+}
+/*estilos buscador select*/
+select option {
+    
+  font-family: "Work Sans", sans-serif;
+}
+
+.dot-green, .dot-yellow, .dot-red {
+  display: inline-block;
+  width: 10px; /* Tamaño de la bolita */
+  height: 10px;
+  border-radius: 50%; /* Forma redonda */
+  margin-right: 5px; /* Espacio entre la bolita y el texto */
+}
+.dot-green {
+  background-color: green;
+}
+
+.dot-yellow {
+  background-color: yellow;
+}
+
+.dot-red {
+  background-color: red;
+}

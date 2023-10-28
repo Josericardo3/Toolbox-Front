@@ -1,25 +1,30 @@
-.containerGestorNoticia{
+.containerGestorNoticia {
     display: flex;
     flex-direction: column;
-    margin: 2vh 5vw;
+    padding: 2vh 5vw;
+    background-color: var(--color-wallpaper, #f6f8f9);
 }
-.titulo{
+
+.titulo {
     display: flex;
     flex-direction: row-reverse;
     margin: 3vh 0 2vh 0;
 }
-h1, h2 {
+
+h1,
+h2 {
     width: 100%;
     font-family: 'Montserrat', sans-serif;
     font-weight: bolder;
-    color: #068460;
+    color: var(--color-title, #962d46);
     text-align: center;
 }
+
 .btn {
     background: #068460;
     color: white;
     border-radius: 10px;
-    height:40px;
+    height: 40px;
     width: 165px;
     border: none;
     cursor: pointer;
@@ -27,46 +32,56 @@ h1, h2 {
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
     align-self: flex-end;
 }
+
 tr th {
     text-align: center !important;
 }
+
 .table-gestion {
+    min-width: 100%;
     width: 100%;
     font-size: 16px;
     font-family: 'Work Sans', sans-serif;
     min-width: 450px;
-    border: 2px solid #068460; 
+    border: 2px solid #068460;
     border-left: none;
     border-right: none;
     border-bottom: none;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
     text-align: center;
 }
+
 .table-gestion thead tr {
     background-color: #068460;
     color: #ffffff;
     font-family: 'Work Sans', sans-serif;
 }
+
 .table-gestion th,
 .table-gestion tbody td {
     padding: 15px;
 }
+
 .table-gestion tbody tr {
     border-bottom: 1px solid white;
 }
+
 .page-style {
     display: flex;
     justify-content: flex-end;
     margin: 2vh 0 0 0;
 }
+
 .container-label {
     display: flex;
     align-items: center;
 }
+
 ::placeholder {
     color: black;
     font-size: 12px;
-  }
+}
+
 .paginas {
     display: inline-block;
     max-width: 100%;
@@ -75,6 +90,7 @@ tr th {
     font-size: 14px;
     font-family: 'Work Sans', sans-serif;
 }
+
 .modal-background {
     background-color: rgba(0, 0, 0, 0.5);
     position: fixed;
@@ -86,7 +102,8 @@ tr th {
     align-items: center;
     justify-content: center;
 }
-.modal-content{
+
+.modal-content {
     display: flex;
     align-items: center;
     flex-direction: column;
@@ -99,30 +116,37 @@ tr th {
     justify-content: flex-start;
     overflow: auto;
 }
+
 .modal-title,
-.modal-title-editar{
+.modal-title-editar {
     display: flex;
     align-items: center;
-    justify-content:center;
+    justify-content: center;
     flex-direction: column;
     width: 45vw;
     margin: 1vh 0 2vh 0;
 }
+
 .modal-content::-webkit-scrollbar {
     width: 8px;
 }
+
 .modal-content::-webkit-scrollbar-track {
     background-color: #dddddd;
 }
+
 .modal-content::-webkit-scrollbar-thumb {
     background-color: #888888;
 }
-.linea{
-    border-top: 2px solid  rgb(168, 168, 168);;
+
+.linea {
+    border-top: 2px solid rgb(168, 168, 168);
+    ;
     width: 45vw;
     padding: 0;
 }
-.botonG{
+
+.botonG {
     margin: 3vh 0 2vh 0;
     height: 40px;
     width: 200px;
@@ -136,11 +160,14 @@ tr th {
     cursor: pointer;
     align-self: center;
 }
-.botonG:disabled{
+
+.botonG:disabled {
     background-color: #7cc4af;
     color: #000000;
 }
-input, textarea{ 
+
+input,
+textarea {
     background: #FFFFFF;
     border: 1px solid #adadad;
     border-radius: 4px;
@@ -148,60 +175,72 @@ input, textarea{
     padding: 10px;
     width: 45.3vw;
 }
-textarea{
+
+textarea {
     height: 100px !important;
 }
-.x{
+
+.x {
     align-self: flex-end;
 }
-.form{
+
+.form {
     display: flex;
     flex-direction: column;
     width: 100%;
 }
-.containerFile{
+
+.containerFile {
     display: flex;
     flex-direction: row;
     align-items: center;
 }
-.file{
+
+.file {
     display: none;
 }
-.file + label{
+
+.file+label {
     display: flex;
     flex: 1;
 }
+
 .fileName,
-.fileBtn{
+.fileBtn {
     padding: 5px 10px;
     font-family: 'Work Sans', sans-serif;
     font-size: 12px;
     margin: 0.5vh 0;
 }
-.fileBtn{
+
+.fileBtn {
     background: #f9f9f9;
     border: 1px solid #adadad;
     border-radius: 4px;
     flex: 1;
     cursor: pointer;
 }
+
 .fileBtn:hover {
     background-color: #dddddd;
 }
-.buscador{
+
+.buscador {
     margin: 2vh 2vw 3vh 0;
     background: #FFFFFF;
     border: 2px solid #068460;
     border-radius: 10px;
     height: 40px;
     padding: 5px;
-    width: 30vw;
+    width: 100%;
+    /* width: 30vw; */
     font-family: 'Work Sans', sans-serif;
     font-size: 14px;
     color: #000000;
     align-self: flex-end;
 }
-.divTop{
+
+.divTop {
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
@@ -212,8 +251,18 @@ span{
     color: red;
     margin: 0 0 2vh 0;
 }
+
+.notificacion-noticias{
+    display: flex;
+    align-items: center;
+}
+.notificacion-noticias input{
+    width: 21px;
+    margin: 3px;
+}
+
 :host ::ng-deep .multiselect-dropdown .dropdown-btn {
-  
+
     color: #000000 !important;
     display: inline-block;
     border: 1px solid #adadad !important;
@@ -229,4 +278,117 @@ span{
     background-image: none;
     border-radius: 4px !important;
     margin-top: 0;
+}
+
+/* Estilos para pantallas pequeñas (menos de 970px de ancho) */
+@media (max-width: 970px) {
+    .noticias-app-header 
+        .container-pst p {
+            display: none;
+        }
+    
+
+    h1 {
+        font-size: 30px;
+    }
+
+    .modal-dialog {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    .modal-dialog .modal-content,
+    .modal-contedor {
+        width: auto;
+    }
+
+    /* MODAL DE DESCRIPCIÓN */
+    .modal-content div a {
+        padding-right: 0px !important;
+        padding-top: 2px !important;
+    }
+
+    .table-gestion {
+        min-width: 100% !important;
+        font-size: 13px;
+        text-align: center;
+    }
+
+    /* MODAL DE AGREGAR NOTICIAS */
+    .modal-content {
+        width: 56%;
+        height: auto
+    }
+
+    .modal-title h2 {
+        font-size: 20px;
+    }
+
+    /* MODAL DE EDITAR NOTICIAS */
+    .modal-title-editar h2 {
+        font-size: 20px;
+    }
+
+    .form input {
+        width: 100%;
+    }
+
+    footer {
+        width: 100%;
+    }
+
+    .input-field {
+        width: 100%;
+    }
+
+    .buscador {
+        width: 100%;
+    }
+
+    img {
+        max-width: 100%;
+        height: auto;
+        /* Mantiene la proporción de la imagen */
+    }
+    .notificacion-noticias input{
+        width: 21px;
+        margin: 3px;
+    }
+}
+
+@media (max-width: 420px) {
+    h1 {
+        font-size: 27px;
+    }
+
+    /* MODAL DE AGREGAR NOTICIAS */
+    .modal-content {
+        width: 80%;
+        height: auto
+    }
+
+    .modal-title h2 {
+        font-size: 20px;
+    }
+
+    .container-label {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+    }
+
+    footer .ls-pagina pagination {
+        font-size: 12px;
+    }
+
+    table .title-tabla {
+        display: none;
+    }
+
+    table .inf-tabla {
+        display: none;
+    }
+
 }

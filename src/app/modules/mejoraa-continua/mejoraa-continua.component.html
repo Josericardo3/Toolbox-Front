@@ -1,76 +1,69 @@
-<app-app-header></app-app-header>
+<app-app-header class="mejora-app-header"></app-app-header>
 <div class="containerMejoraContinua">
-  <div class="titulo">
-    <h1>Mejora contínua</h1>
-    <app-app-header-arrow-left [redirectToDashboard]="true"></app-app-header-arrow-left>
-  </div>
-  <div class="mejora">
-    <app-menu-corto></app-menu-corto>
-    <div class="form">
-      <div class="filtros">
-        <div class="section">
-          <label>Selecciona la fecha de inicio</label>
-          <input type="date" class="date">
-        </div>
-        <div class="section">
-          <label>Selecciona la fecha de fin</label>
-          <input type="date" class="date">
-        </div>
-      </div>
-      <input type="text" placeholder="Buscar..." class="buscador" [(ngModel)]="filter" (input)="filterResult()">
-      <table class="table-gestion" style="margin-top: 8px;">
-        <thead>
-          <tr>
-            <th scope="col">Descripción</th>
-            <th scope="col">NTC</th>
-            <th scope="col">Requisitos</th>
-            <th scope="col">Acción</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-          <tr *ngFor="let user of rolessArray; let i = index;">
-            <td *ngIf="caracteristicaIndice!=i">{{ user?.DESCRIPCION.slice(0,40)| titlecase }}</td>
-            <!-- **cuando edita** -->
-            <!--<td *ngIf="caracteristicaIndice==i">
-              <textarea rows="4"
-                        cols="20"
-                        class="input"
-                        maxlength="300"
-                        title="Hasta 300 caracteres"
-                        [(ngModel)]="editarCaracteristica.DESCRIPCION">
-            </textarea>
-            </td>-->
-            <td *ngIf="caracteristicaIndice!=i">{{ user?.NTC.slice(0,40)| titlecase }}</td>
-            <!-- **cuando edita** -->
-            <!--<td *ngIf="caracteristicaIndice==i">
-              <textarea rows="4"
-                        cols="20"
-                        class="input"
-                        maxlength="300"
-                        title="Hasta 300 caracteres"
-                        [(ngModel)]="editarCaracteristica.DESCRIPCION">
-              </textarea>
-            </td>-->
-            <td *ngIf="caracteristicaIndice!=i">{{ user?.REQUISITOS.slice(0,40)| titlecase }}</td>
-            <!-- **cuando edita** -->
-            <!--<td *ngIf="caracteristicaIndice==i">
-              <textarea rows="4"
-                        cols="20"
-                        class="input"
-                        maxlength="300"
-                        title="Hasta 300 caracteres"
-                        [(ngModel)]="editarCaracteristica.DESCRIPCION">
-              </textarea>
-            </td>-->
-            <td><a>Acción</a></td>
-          </tr>
-        </tbody>
-      </table>
+    <div class="titulo">
+        <h1>Mejora contínua</h1>
+        <app-app-header-arrow-left [redirectToDashboard]="true"></app-app-header-arrow-left>
     </div>
-  </div>
+    <div class="mejora">
+        <app-menu-corto  class="menu-corto"></app-menu-corto>
+        <mat-menu #menu="matMenu">
+            <app-menu-corto class="responsi-menu" ></app-menu-corto>
+          </mat-menu>
+        <div class="resposi-icon">
+            <button mat-icon-button [matMenuTriggerFor]="menu" style="color: #ffffff;">
+                <i class="fa-solid fa-bars" style="font-size: 20px;"></i>
+              </button>
+        </div>
+        <div class="form">
+            <!--<div class="filtros">
+                <div class="section">
+                    <label>Selecciona la fecha de inicio</label>
+                    <input type="date" class="date">
+                </div>
+                <div class="section">
+                    <label>Selecciona la fecha de fin</label>
+                    <input type="date" class="date">
+                </div>
+            </div>-->
+            <input type="text" placeholder="Buscar..." class="buscador" [(ngModel)]="filter" (input)="filterResult()">
+            <table class="table-gestion" style="margin-top: 8px;">
+              <thead>
+                <tr>
+                  <th scope="col">Responsable</th>
+                  <th scope="col">Descripción</th>
+                  <th scope="col">NTC</th>
+                  <th scope="col">Requisitos</th>
+                  <th scope="col">Tipo</th>
+                  <th scope="col">Fecha Inicio</th>
+                  <th scope="col">Fecha Fin</th>
+                  <th scope="col">Estado</th>
+                  <th scope="col">Acción</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                <tr *ngFor="let user of rolessArray; let i = index;">
+                  <td *ngIf="caracteristicaIndice!=i">{{ user?.RESPONSABLE.slice(0,40)| titlecase }}</td>
+                  <td *ngIf="caracteristicaIndice!=i">{{ user?.DESCRIPCION.slice(0,40)| titlecase }}</td>
+                  <td *ngIf="caracteristicaIndice!=i">{{ user?.NTC.slice(0,40)| titlecase }}</td>
+                  <td *ngIf="caracteristicaIndice!=i">{{ user?.REQUISITOS.slice(0,40)| titlecase }}</td>
+                  <td *ngIf="caracteristicaIndice!=i">{{ user?.TIPO.slice(0,40)| titlecase }}</td>
+                  <td *ngIf="caracteristicaIndice!=i">{{ user?.FECHA_INICIO.slice(0,10)| titlecase }}</td>
+                  <td *ngIf="caracteristicaIndice!=i">{{ user?.FECHA_FIN.slice(0,10)| titlecase }}</td>
+                  <td *ngIf="caracteristicaIndice!=i">{{ user?.ESTADO.slice(0,40)| titlecase }}</td>
+                  <td><a>Acción</a></td>
+                </tr>
+              </tbody>
+            </table>
+        </div>
+     
+      </div>
+     
+    </div>
+  
+
   <!-- paginacion -->
-  <footer class="page-style">
+    <footer class="page-style">
     <div class="container-label">
       <label class="paginas">  Página: {{ pages }} / {{ totalPaginas }} Mostrando: {{ totalRegistros }}  Registros: {{ datatotal }} </label>
       <div class="ls-pagina ">
@@ -90,7 +83,7 @@
       </div>
     </div>
   </footer>
-</div>
+
 <app-app-footer></app-app-footer>
 <ngx-spinner
   bdColor="rgba(0, 0, 0, 0.5)"

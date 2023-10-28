@@ -1,17 +1,26 @@
-<app-app-header></app-app-header>
+<app-app-header class="matriz-partes-app-header"></app-app-header>
 <div class="containerPartesInteresadas">
     <div class="titulo">
         <h1>Matriz de partes interesadas</h1>
         <app-app-header-arrow-left [redirectToDashboard]="true"></app-app-header-arrow-left>
     </div>
     <div class="resultados">
-        <app-app-menu-alta-gerencia></app-app-menu-alta-gerencia>
+        <app-app-menu-alta-gerencia class="menu-alta-gerencia "  [ngClass]="{ 'mostrar-notificaciones': mostrarNotificacion }"[collapse]="isCollapsed"></app-app-menu-alta-gerencia>
+        <mat-menu #menu="matMenu">
+            <app-app-menu-alta-gerencia class="responsi-gerencia-menu"></app-app-menu-alta-gerencia>
+          </mat-menu>
+        <div class="resposi-icon">
+            <button mat-icon-button [matMenuTriggerFor]="menu" style="color: #ffffff;">
+                <i class="fa-solid fa-bars" style="font-size: 20px;"></i>
+              </button>
+        </div>
         <div class="form">
             <button type="button" class="btnReporte" routerLink="/partesInteresadas" routerLinkActive="activebutton">
                 <i class="fa-solid fa-pen" style="color: #ffffff; margin-right: 10px;"></i>Editar matriz
             </button>
             <!--*** SECCIÓN DE LA TABLA ***-->
-            <table class="table-gestion" style="margin-top: 8px;">
+            <div class="table-container">
+            <table class="table-gestion responsive-table" style="margin-top: 8px;">
                 <thead>
                     <tr>
                         <th scope="col">PARTE INTERESADA PERTENECIENTE AL SGS</th>
@@ -61,49 +70,49 @@
                             <td>{{accion}}</td>
                         </ng-container>
                     </tr>
-                    <tr>
+                    <tr *ngIf="orden === 'clientes'">
                         <th>CLIENTE(S)</th>
                         <td></td>
                         <td></td>
                         <td></td>
                     </tr>
-                    <tr>
+                    <tr *ngIf="orden === 'huespedes'">
                         <th>HUÉSPEDES</th>
                         <td></td>
                         <td></td>
                         <td></td>
                     </tr>
-                    <tr>
+                    <tr *ngIf="orden === 'colaboradores'">
                         <th>COLABORADORES (Personal directo y/o indirecto)</th>
                         <td></td>
                         <td></td>
                         <td></td>
                     </tr>
-                    <tr>
+                    <tr *ngIf="orden === 'accionista'">
                         <th>ACCIONISTAS O PROPIETARIOS</th>
                         <td></td>
                         <td></td>
                         <td></td>
                     </tr>
-                    <tr>
+                    <tr *ngIf="orden === 'comunidad'">
                         <th>COMUNIDAD</th>
                         <td></td>
                         <td></td>
                         <td></td>
                     </tr>
-                    <tr>
+                    <tr *ngIf="orden === 'comunidadVulnerable'">
                         <th>COMUNIDAD VULNERABLE </th>
                         <td></td>
                         <td></td>
                         <td></td>
                     </tr>
-                    <tr>
+                    <tr *ngIf="orden === 'atractivos'">
                         <th>ATRACTIVOS TURÍSTICOS</th>
                         <td></td>
                         <td></td>
                         <td></td>
                     </tr>
-                    <tr>
+                    <tr *ngIf="orden === 'otra'">
                         <th>OTRA, ¿CUÁL?</th>
                         <td></td>
                         <td></td>
@@ -111,6 +120,7 @@
                     </tr>
                 </tbody>
             </table>
+        </div>
         </div>
     </div>
 </div>

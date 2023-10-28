@@ -1,12 +1,9 @@
 import { Component, TemplateRef } from '@angular/core';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { ApiService } from 'src/app/servicios/api/api.service'
-// import { AppDeleteActivitiesComponent } from '../app-delete-activities/app-delete-activities.component';
 import { ModalService } from 'src/app/messagemodal/messagemodal.component.service';
-import { HttpClient } from '@angular/common/http';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ChangeDetectorRef } from '@angular/core';
-import { Console, debug } from 'console';
+import { ColorLista } from 'src/app/servicios/api/models/color';
 
 @Component({
   selector: 'app-app-planificacion',
@@ -38,7 +35,11 @@ export class AppPlanificacionComponent {
   idResponsable!: number;
   descripcion!: string;
   pages = 1;
-
+  colorTitle:ColorLista;
+  colorWallpaper:ColorLista;
+  isCollapsed = true;
+  mostrarNotificacion: boolean = false;
+  
   constructor(
     public ApiService: ApiService,
     private modalService: BsModalService,
@@ -48,6 +49,10 @@ export class AppPlanificacionComponent {
   ) { }
 
   ngOnInit() {
+    this.ApiService.colorTempo(); 
+    this.colorTitle = JSON.parse(localStorage.getItem("color")).title;
+    this.colorWallpaper = JSON.parse(localStorage.getItem("color")).wallpaper;
+
     this.caracteristicaIndice = -1;
     this.caracteristicaIndiceEliminar = -1;
     this.showModal = false;
@@ -143,6 +148,7 @@ export class AppPlanificacionComponent {
           this.rolesArraytemp[i].statecolor = '#068460';
         }
       }
+  
       this.rolesArray = this.rolesArraytemp;
 
       //paginado
@@ -206,7 +212,11 @@ export class AppPlanificacionComponent {
   }
   startActivityDateTemp: any;
   endtActivityDateTemp: any;
+  recibirNoticias: boolean = false;
 
+  onChangeCheckbox(event: any) {
+    this.recibirNoticias = event.target.checked;
+  }
   fnNewRecord() {
 
     if (typeof (this.startActivityDate) == 'object' && typeof (this.endtActivityDate) == 'object') {
@@ -214,7 +224,7 @@ export class AppPlanificacionComponent {
       const finValue = new Date(this.endtActivityDate);
       const now = new Date();  
       const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-      debugger;
+  
       if (finValue < inicioValue) {
         const title = "Registro no exitoso";
         const message = "Por favor verifique la fecha";
@@ -243,7 +253,8 @@ export class AppPlanificacionComponent {
         DESCRIPCION: this.description,
         FECHA_INICIO: this.startActivityDate,
         FECHA_FIN: this.endtActivityDate,
-        ESTADO_PLANIFICACION: this.selectedState
+        ESTADO_PLANIFICACION: this.selectedState,
+        ENVIO_CORREO: this.recibirNoticias
       };
       this.ApiService.postNewRecord(request).subscribe((data) => {
         this.fnConsultActivities();

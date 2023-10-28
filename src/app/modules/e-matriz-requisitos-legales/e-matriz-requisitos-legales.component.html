@@ -13,19 +13,22 @@
 <input type="text" [(ngModel)]="busqueda" (input)="buscarTitulos()" placeholder="Buscar..." class="buscador">
   <div class="containerTabs">
     <div class="tabs">
-        <div class="tab" (click)="cambiarTab('tab1')" [ngClass]="{ 'active': tabActual === 'tab1' }">Turismo</div>
-        <div class="tab" (click)="cambiarTab('tab2')" [ngClass]="{ 'active': tabActual === 'tab2' }">Ambiental</div>
-        <div class="tab" (click)="cambiarTab('tab3')" [ngClass]="{ 'active': tabActual === 'tab3' }">Laboral SGSST</div>
-        <div class="tab" (click)="cambiarTab('tab4')" [ngClass]="{ 'active': tabActual === 'tab4' }">Social</div>
-        <div class="tab" (click)="cambiarTab('tab5')" [ngClass]="{ 'active': tabActual === 'tab5' }">Económico</div>
-        <div class="tab" (click)="cambiarTab('tab6')" [ngClass]="{ 'active': tabActual === 'tab6' }">Particular de Norma</div>
+        <div class="tab" (click)="disabledTabs1 ? null : cambiarTab('tab1')" [ngClass]="{ 'active': tabActual === 'tab1','bloqueado': disabledTabs1 }" [attr.disabled]="disabledTabs1 ? 'disabled' : null">Turismo</div>
+        <div class="tab" (click)="disabledTabs2 ? null : cambiarTab('tab2')" [ngClass]="{ 'active': tabActual === 'tab2','bloqueado': disabledTabs2 }" [attr.disabled]="disabledTabs2 ? 'disabled' : null">Ambiental</div>
+        <div class="tab" (click)="disabledTabs3 ? null : cambiarTab('tab3')" [ngClass]="{ 'active': tabActual === 'tab3','bloqueado': disabledTabs3 }" [attr.disabled]="disabledTabs3 ? 'disabled' : null">Laboral SGSST</div>
+        <div class="tab" (click)="disabledTabs4 ? null : cambiarTab('tab4')" [ngClass]="{ 'active': tabActual === 'tab4','bloqueado': disabledTabs4 }" [attr.disabled]="disabledTabs4 ? 'disabled' : null">Social</div>
+        <div class="tab" (click)="disabledTabs5 ? null : cambiarTab('tab5')" [ngClass]="{ 'active': tabActual === 'tab5','bloqueado': disabledTabs5 }" [attr.disabled]="disabledTabs5 ? 'disabled' : null">Económico</div>
+        <div class="tab" (click)="disabledTabs6 ? null : cambiarTab('tab6')" [ngClass]="{ 'active': tabActual === 'tab6','bloqueado': disabledTabs6 }" [attr.disabled]="disabledTabs6 ? 'disabled' : null">Particular de Norma</div>
     </div>
     <div [ngSwitch]="tabActual" class="contenidoTabs">
         <div *ngSwitchCase="'tab1'">
             <div class="containerTabActual">              
                 <div class="reporte">
-                    <button type="button" class="btnReporte" (click)="generateReporteTurismo()">Descargar reporte</button>
+                    <button type="button" class="btnModificar" (click)="modificarBloquearCampos()" *ngIf="disabledModificar==false && getRolValue() !== 4 && getRolValue()!==5 && getRolValue()!==7">Modificar Reporte</button>
+                    <button type="button" class="btnModificar" (click)="terminarModificarCampos()" *ngIf="disabledModificar==true">Terminar Modificación</button>
+                    <button type="button" class="btnReporte" (click)="generateReporteTurismo()" [attr.disabled]="disabledModificar ? 'disabled' : null">Descargar reporte</button>
                 </div>
+                
                 
                 <div class="div" *ngFor="let campo of leyesTurismo; let i = index">
                     <div class="titulo" (click)="toggleSectionLey('primeraLey', i, campo.ID_MATRIZ)" [ngClass]="{'verde': isLeyVisible(i)}">
@@ -43,7 +46,8 @@
                                 <p class="parrafo">{{campo.DESCRIPCION}}</p>
                                 <h4 style="font-weight: bolder;" class="parrafo">ARTÍCULOS / SECCIONES / REQUISITOS ESPECÍFICOS QUE APLICAN</h4>
                                 <p class="parrafo">{{ subCampo.DOCS_ESPECIFICOS}}</p>
-                                <app-app-formulario [selectedMatrizId]="subCampo.ID_MATRIZ" [data]="subCampo" [idMatriz]="idMatriz"></app-app-formulario>
+                                <app-app-formulario [selectedMatrizId]="subCampo.ID_MATRIZ" [data]="subCampo" [idMatriz]="idMatriz" [showBotones]="disabledModificar"></app-app-formulario>
+                                
                             </div>
                         </ng-container>
                     </div>
@@ -65,11 +69,12 @@
                                     <h4 style="font-weight: bolder;" class="parrafo">ARTÍCULOS / SECCIONES / REQUISITOS ESPECÍFICOS QUE APLICAN</h4>
                                     <p class="parrafo">{{ div.DESCRIPCION }}</p>
                                     <p class="parrafo">{{ div.SECCIONES }}</p>
-                                    <app-app-formulario></app-app-formulario>
+                                    <app-app-formulario></app-app-formulario> 
                                 </div> 
                         </div>  
                     </div>
                 </div>
+                
                   
                 <ng-template #inputTemplate>
                     <div>
@@ -82,8 +87,8 @@
                 </ng-template>
 
                 <div id="ContainerdetalleAdicionar">
-                    <div class="adicionar" (click)="toggleSection('adicionarTurismo')" *ngIf="getRolValue() !== 4 && getRolValue()!==5 && getRolValue()!==7">
-                        <button class="adicionarBtn" id="adicionarRequisitoTurismo">Adicionar requisito legal +</button>
+                    <div class="adicionar" (click)="toggleSection('adicionarTurismo')" *ngIf="getRolValue() !== 4 && getRolValue()!==5 && getRolValue()!==7" >
+                        <button class="adicionarBtn" id="adicionarRequisitoTurismo" [disabled]="disabledModificar==true">Adicionar requisito legal +</button>
                     </div>
                     <div class="detalleAdicionar" id="detalleAdicionarRequisito" *ngIf="adicionarVisibleTurismo">
                         <form [formGroup]="tab1Form" >
@@ -123,10 +128,15 @@
                 </div>
             </div>
         </div>
+        
         <div *ngSwitchCase="'tab2'">    
             <div class="containerTabActual">
                 <div class="reporte">
-                    <button type="submit" class="btnReporte" (click)="generateReporteAmbiental()">Descargar reporte</button>
+                    <div class="reporte">
+                        <button type="button" class="btnModificar" (click)="modificarBloquearCampos()" *ngIf="disabledModificar==false && getRolValue() !== 4 && getRolValue()!==5 && getRolValue()!==7">Modificar Reporte</button>
+                        <button type="button" class="btnModificar" (click)="terminarModificarCampos()" *ngIf="disabledModificar==true">Terminar Modificación</button>
+                        <button type="button" class="btnReporte" (click)="generateReporteAmbiental()" [attr.disabled]="disabledModificar ? 'disabled' : null">Descargar reporte</button>
+                    </div>
                 </div>
                 <div class="div" *ngFor="let campo of leyesAmbiental; let i = index">
                     <div class="titulo" (click)="toggleSectionLey('primeraLey', i, campo.ID_MATRIZ)" [ngClass]="{'verde': isLeyVisible(i)}">
@@ -144,7 +154,7 @@
                                 <p class="parrafo">{{campo.DESCRIPCION}}</p>
                                 <h4 style="font-weight: bolder;" class="parrafo">ARTÍCULOS / SECCIONES / REQUISITOS ESPECÍFICOS QUE APLICAN</h4>
                                 <p class="parrafo">{{ subCampo.DOCS_ESPECIFICOS}}</p>
-                                <app-app-formulario [selectedMatrizId]="subCampo.ID_MATRIZ" [data]="subCampo" [idMatriz]="idMatriz"></app-app-formulario>
+                                <app-app-formulario [selectedMatrizId]="subCampo.ID_MATRIZ" [data]="subCampo" [idMatriz]="idMatriz" [showBotones]="disabledModificar"></app-app-formulario>
                             </div>
                         </ng-container>       
                     </div>
@@ -184,7 +194,7 @@
                              
                 <div id="ContainerdetalleAdicionar">
                     <div class="adicionar" (click)="toggleSection('adicionarAmbiental')" *ngIf="getRolValue() !== 4 && getRolValue()!==5 && getRolValue()!==7">
-                        <button class="adicionarBtn" id="adicionarRequisitoTurismo">Adicionar requisito legal +</button>
+                        <button class="adicionarBtn" id="adicionarRequisitoTurismo" [disabled]="disabledModificar==true">Adicionar requisito legal +</button>
                     </div>
                     <div class="detalleAdicionar" id="detalleAdicionarRequisito" *ngIf="adicionarVisibleAmbiental">
                         <form [formGroup]="tab2Form">
@@ -226,7 +236,9 @@
         <div *ngSwitchCase="'tab3'">
             <div class="containerTabActual">
                 <div class="reporte">
-                    <button type="submit" class="btnReporte" (click)="generateReporteLaboral()">Descargar reporte</button>
+                    <button type="button" class="btnModificar" (click)="modificarBloquearCampos()" *ngIf="disabledModificar==false && getRolValue() !== 4 && getRolValue()!==5 && getRolValue()!==7">Modificar Reporte</button>
+                    <button type="button" class="btnModificar" (click)="terminarModificarCampos()" *ngIf="disabledModificar==true">Terminar Modificación</button>
+                    <button type="button" class="btnReporte" (click)="generateReporteLaboral()" [attr.disabled]="disabledModificar ? 'disabled' : null">Descargar reporte</button>
                 </div>
                 <div class="div" *ngFor="let campo of leyesLaboral; let i = index">
                     <div class="titulo" (click)="toggleSectionLey('primeraLey', i, campo.ID_MATRIZ)" [ngClass]="{'verde': isLeyVisible(i)}">
@@ -244,7 +256,7 @@
                                 <p class="parrafo">{{campo.DESCRIPCION}}</p>
                                 <h4 style="font-weight: bolder;" class="parrafo">ARTÍCULOS / SECCIONES / REQUISITOS ESPECÍFICOS QUE APLICAN</h4>
                                 <p class="parrafo">{{ subCampo.DOCS_ESPECIFICOS}}</p>
-                                <app-app-formulario [selectedMatrizId]="subCampo.ID_MATRIZ" [data]="subCampo" [idMatriz]="idMatriz"></app-app-formulario>
+                                <app-app-formulario [selectedMatrizId]="subCampo.ID_MATRIZ" [data]="subCampo" [idMatriz]="idMatriz" [showBotones]="disabledModificar"></app-app-formulario>
                             </div>
                         </ng-container>       
                     </div>
@@ -284,7 +296,7 @@
                              
                 <div id="ContainerdetalleAdicionar">
                     <div class="adicionar" (click)="toggleSection('adicionarLaboral')" *ngIf="getRolValue() !== 4 && getRolValue()!==5 && getRolValue()!==7">
-                        <button class="adicionarBtn" id="adicionarRequisitoTurismo">Adicionar requisito legal +</button>
+                        <button class="adicionarBtn" id="adicionarRequisitoTurismo" [disabled]="disabledModificar==true">Adicionar requisito legal +</button>
                     </div>
                     <div class="detalleAdicionar" id="detalleAdicionarRequisito" *ngIf="adicionarVisibleLaboral">
                         <form [formGroup]="tab3Form">
@@ -327,7 +339,9 @@
         <div *ngSwitchCase="'tab4'">
             <div class="containerTabActual">
                 <div class="reporte">
-                    <button type="submit" class="btnReporte" (click)="generateReporteSocial()">Descargar reporte</button>
+                    <button type="button" class="btnModificar" (click)="modificarBloquearCampos()" *ngIf="disabledModificar==false && getRolValue() !== 4 && getRolValue()!==5 && getRolValue()!==7">Modificar Reporte</button>
+                    <button type="button" class="btnModificar" (click)="terminarModificarCampos()" *ngIf="disabledModificar==true">Terminar Modificación</button>
+                    <button type="button" class="btnReporte" (click)="generateReporteSocial()" [attr.disabled]="disabledModificar ? 'disabled' : null">Descargar reporte</button>
                 </div>
                 <div class="div" *ngFor="let campo of leyesSocial; let i = index">
                     <div class="titulo" (click)="toggleSectionLey('primeraLey', i, campo.ID_MATRIZ)" [ngClass]="{'verde': isLeyVisible(i)}">
@@ -345,7 +359,7 @@
                                 <p class="parrafo">{{campo.DESCRIPCION}}</p>
                                 <h4 style="font-weight: bolder;" class="parrafo">ARTÍCULOS / SECCIONES / REQUISITOS ESPECÍFICOS QUE APLICAN</h4>
                                 <p class="parrafo">{{ subCampo.DOCS_ESPECIFICOS}}</p>
-                                <app-app-formulario [selectedMatrizId]="subCampo.ID_MATRIZ" [data]="subCampo" [idMatriz]="idMatriz"></app-app-formulario>
+                                <app-app-formulario [selectedMatrizId]="subCampo.ID_MATRIZ" [data]="subCampo" [idMatriz]="idMatriz" [showBotones]="disabledModificar"></app-app-formulario>
                             </div>
                         </ng-container>    
                     </div>
@@ -385,7 +399,7 @@
                              
                 <div id="ContainerdetalleAdicionar">
                     <div class="adicionar" (click)="toggleSection('adicionarSocial')" *ngIf="getRolValue() !== 4 && getRolValue()!==5 && getRolValue()!==7">
-                        <button class="adicionarBtn" id="adicionarRequisitoTurismo">Adicionar requisito legal +</button>
+                        <button class="adicionarBtn" id="adicionarRequisitoTurismo" [disabled]="disabledModificar==true">Adicionar requisito legal +</button>
                     </div>
                     <div class="detalleAdicionar" id="detalleAdicionarRequisito" *ngIf="adicionarVisibleSocial">
                         <form [formGroup]="tab4Form">
@@ -427,7 +441,9 @@
         <div *ngSwitchCase="'tab5'">
             <div class="containerTabActual">
                 <div class="reporte">
-                    <button type="submit" class="btnReporte" (click)="generateReporteEconomico()">Descargar reporte</button>
+                    <button type="button" class="btnModificar" (click)="modificarBloquearCampos()" *ngIf="disabledModificar==false && getRolValue() !== 4 && getRolValue()!==5 && getRolValue()!==7">Modificar Reporte</button>
+                    <button type="button" class="btnModificar" (click)="terminarModificarCampos()" *ngIf="disabledModificar==true">Terminar Modificación</button>
+                    <button type="button" class="btnReporte" (click)="generateReporteEconomico()" [attr.disabled]="disabledModificar ? 'disabled' : null">Descargar reporte</button>
                 </div>
                 <div class="div" *ngFor="let campo of leyesEconomico; let i = index">
                     <div class="titulo" (click)="toggleSectionLey('primeraLey', i, campo.ID_MATRIZ)" [ngClass]="{'verde': isLeyVisible(i)}">
@@ -445,7 +461,7 @@
                                 <p class="parrafo">{{campo.DESCRIPCION}}</p>
                                 <h4 style="font-weight: bolder;" class="parrafo">ARTÍCULOS / SECCIONES / REQUISITOS ESPECÍFICOS QUE APLICAN</h4>
                                 <p class="parrafo">{{ subCampo.DOCS_ESPECIFICOS}}</p>
-                                <app-app-formulario [selectedMatrizId]="subCampo.ID_MATRIZ" [data]="subCampo" [idMatriz]="idMatriz"></app-app-formulario>
+                                <app-app-formulario [selectedMatrizId]="subCampo.ID_MATRIZ" [data]="subCampo" [idMatriz]="idMatriz" [showBotones]="disabledModificar"></app-app-formulario>
                             </div>
                         </ng-container>           
                     </div>
@@ -485,7 +501,7 @@
                              
                 <div id="ContainerdetalleAdicionar">
                     <div class="adicionar" (click)="toggleSection('adicionarEconomico')" *ngIf="getRolValue() !== 4 && getRolValue()!==5 && getRolValue()!==7">
-                        <button class="adicionarBtn" id="adicionarRequisitoTurismo">Adicionar requisito legal +</button>
+                        <button class="adicionarBtn" id="adicionarRequisitoTurismo" [disabled]="disabledModificar==true">Adicionar requisito legal +</button>
                     </div>
                     <div class="detalleAdicionar" id="detalleAdicionarRequisito" *ngIf="adicionarVisibleEconomico">
                         <form [formGroup]="tab5Form">
@@ -528,7 +544,9 @@
         <div *ngSwitchCase="'tab6'">
             <div class="containerTabActual">
                 <div class="reporte">
-                    <button type="submit" class="btnReporte" (click)="generateReporteParticular()">Descargar reporte</button>
+                    <button type="button" class="btnModificar" (click)="modificarBloquearCampos()" *ngIf="disabledModificar==false && getRolValue() !== 4 && getRolValue()!==5 && getRolValue()!==7">Modificar Reporte</button>
+                    <button type="button" class="btnModificar" (click)="terminarModificarCampos()" *ngIf="disabledModificar==true">Terminar Modificación</button>
+                    <button type="button" class="btnReporte" (click)="generateReporteParticular()" [attr.disabled]="disabledModificar ? 'disabled' : null">Descargar reporte</button>
                 </div>
                 <div class="div" *ngFor="let campo of leyesParticular; let i = index">
                     <div class="titulo" (click)="toggleSectionLey('primeraLey', i, campo.ID_MATRIZ)" [ngClass]="{'verde': isLeyVisible(i)}">
@@ -546,7 +564,7 @@
                                 <p class="parrafo">{{campo.DESCRIPCION}}</p>
                                 <h4 style="font-weight: bolder;" class="parrafo">ARTÍCULOS / SECCIONES / REQUISITOS ESPECÍFICOS QUE APLICAN</h4>
                                 <p class="parrafo">{{ subCampo.DOCS_ESPECIFICOS}}</p>
-                                <app-app-formulario [selectedMatrizId]="subCampo.ID_MATRIZ" [data]="subCampo" [idMatriz]="idMatriz"></app-app-formulario>
+                                <app-app-formulario [selectedMatrizId]="subCampo.ID_MATRIZ" [data]="subCampo" [idMatriz]="idMatriz" [showBotones]="disabledModificar"></app-app-formulario>
                             </div>
                         </ng-container>  
                     </div>
@@ -586,7 +604,7 @@
                              
                 <div id="ContainerdetalleAdicionar">
                     <div class="adicionar" (click)="toggleSection('adicionarParticular')" *ngIf="getRolValue() !== 4 && getRolValue()!==5 && getRolValue()!==7">
-                        <button class="adicionarBtn" id="adicionarRequisitoTurismo">Adicionar requisito legal +</button>
+                        <button class="adicionarBtn" id="adicionarRequisitoTurismo" [disabled]="disabledModificar==true">Adicionar requisito legal +</button>
                     </div>
                     <div class="detalleAdicionar" id="detalleAdicionarRequisito" *ngIf="adicionarVisibleParticular">
                         <form [formGroup]="tab6Form">
@@ -629,6 +647,32 @@
     </div>
   </div>
 </div>
+<!-- Modal Agregar Noticia -->
+<div class="modal-background" id="modal-success" *ngIf="showModalResumen">
+    <div class="modal-content">
+        <div class="modal-title">
+            <!-- <a title="Cerrar" data-dismiss="modal" aria-label="Close" class="x">
+                <i id="botonX" class="fa-solid fa-circle-xmark" style="color: #06543c;font-size: 25px;"
+                    (click)="showModal = false;"></i>
+            </a> -->
+            <h2 class="modalResumen">Agregar Resumen</h2>
+            <div class="linea"></div>
+        </div>
+        <form [formGroup]="saveForm" class="form" (ngSubmit)="guardarTextArea()">
+            
+            <label for="">Descripción de modificaciones realizadas</label>
+            <!-- <angular-editor placeholder="Agregar una descripción" formControlName="descripcionNoticia"
+                id="descripcionNoticia" style="margin-top:2vh;"></angular-editor> -->
+            <textarea id="textAreaModal" class="textAreaModal" formControlName="descripcionNoticia"></textarea>
+            
+            <button type="submit" class="botonG"
+                [disabled]="!saveForm.controls.descripcionNoticia.value">
+                <i id="idBotonResumen" class="fa-regular fa-floppy-disk" style="color: #fff;"></i>
+                Guardar Resumen</button>
+        </form>
+    </div>
+</div>
+
 
 
 <app-modal></app-modal>

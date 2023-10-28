@@ -1,53 +1,70 @@
-.container-form-informe-auditoria{
+.container-form-informe-auditoria {
     width: 100%;
     overflow: hidden;
     display: flex;
+    background-color: var(--color-wallpaper, #f6f8f9);
     /* justify-content: space-between; m*/
 }
- /* stylos del titulo vista general*/
- 
- .titulo{
+
+.componente-global {
+    background-color: var(--color-wallpaper, #f6f8f9);
+
+}
+
+/* stylos del titulo vista general*/
+h1 {
+    color: var(--color-title, #962d46);
+}
+
+.titulo {
     display: flex;
     flex-direction: row-reverse;
     margin: 2vh 0 2vh 0;
 }
-.titulo-nav{
+
+.titulo-nav {
     width: 100%;
     font-family: 'Montserrat', sans-serif;
     font-weight: bolder;
-    color: #068460;
+    color: var(--color-title, #962d46);
     text-align: center;
 }
-.componente-global{
+
+.componente-global {
     display: flex;
     justify-content: center;
     flex-direction: column;
     /* margin: 2vh 2vw; k*/
 }
-.row{
+
+.row {
     /* display: flex;
     flex-direction: column;k */
     margin: 0;
     /* padding: 10px;k */
     width: 100%;
 }
-.container{
+
+.container {
     align-items: center;
     width: 100%;
 }
-.contenedor-arrow{
+
+.contenedor-arrow {
     margin-top: 10px;
-    margin-left: 31px;   
+    margin-left: 31px;
 }
+
 /* stylos de el titulo del formulario */
- .sub-titulo{
+.sub-titulo {
     font-family: 'Montserrat', sans-serif;
     font-size: 25px;
-    color: #068460;
+    color: var(--color-title, #962d46);
     align-self: flex-start;
     /* margin: 1vh 0 2vh 0; k*/
 }
-.sub-titulo-plan{
+
+.sub-titulo-plan {
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -57,48 +74,55 @@
     color: #068460;
     /* margin: 1vh 0 0 0; k*/
 }
+
 /* stylos del formulario cabecera */
-.container-form{
+.container-form {
     width: 100%;
     display: inline-block;
     vertical-align: top;
 }
-.controller-auditoria{
+
+.controller-auditoria {
     display: flex;
     align-items: center;
     justify-content: flex-start;
     flex-direction: column;
     width: 100%;
 }
+
 /* stylos de los label */
-.select-auditor{
+.select-auditor {
     border-radius: 8px;
     height: 5vh;
     width: 25vw;
     padding: 3px;
-    border: 1px solid #068460; 
+    border: 1px solid #068460;
     font-size: 14px;
     font-family: 'Work Sans', sans-serif;
 }
-.label-color{
+
+.label-color {
     font-size: 16px;
     font-family: 'Work Sans', sans-serif;
     text-align: left;
     align-self: flex-start;
 }
-.plan-auditoria{
+
+.plan-auditoria {
     display: flex;
     width: 100%;
 }
-.rp-btn{
-    margin: 0 0 0 50vw; 
+
+.rp-btn {
+    margin: 0 0 0 50vw;
 }
+
 /* stylos del select multiple */
- .multiselect-dropdown .dropdown-btn {
-    display: flex!important;
-    width: 25vw!important;
-    padding: 5px!important;
-    margin-bottom: 0!important;
+.multiselect-dropdown .dropdown-btn {
+    display: flex !important;
+    width: 25vw !important;
+    padding: 5px !important;
+    margin-bottom: 0 !important;
     font-family: 'Work Sans', sans-serif !important;
     /* font-size: 12px !important;
     font-weight: 400!important;
@@ -106,10 +130,10 @@
     border: 1px solid #068460 !important;
     /* text-align: left!important;
     vertical-align: middle!important; */
-    cursor: pointer!important;
-    background-image: none!important;
-    border-radius: 8px!important;
-    height: 5vh!important;
+    cursor: pointer !important;
+    background-image: none !important;
+    border-radius: 8px !important;
+    height: 5vh !important;
     margin-top: -6vh;
 }
 
@@ -118,7 +142,7 @@
     left: 302px;
 }
 
-.dropdown-list{
+.dropdown-list {
     position: absolute;
     padding-top: 6px;
     width: 100% !important;
@@ -129,46 +153,58 @@
     font-family: 'Work Sans', sans-serif !important;
 }
 
+/*TABLA DINAMICA */
+.table {
+    text-align: center !important;
+    margin-top: 33px;
+    max-width: 97% !important;
+}
+
 /* stylos del textarea */
-.forma-campo input{
+.forma-campo input {
     border-radius: 8px;
     height: 5vh;
     width: 25vw;
     padding: 3px;
-    border: 1px solid #068460; 
+    border: 1px solid #068460;
     font-size: 14px;
     font-family: 'Work Sans', sans-serif;
 }
-.obs{
+
+.obs {
     border-radius: 8px;
     height: 11vh;
     width: 25vw;
     padding: 3px;
-    border: 1px solid #068460; 
+    border: 1px solid #068460;
     font-size: 14px;
     font-family: 'Work Sans', sans-serif;
 }
-.container-textarea{
-    margin-top: -9px; 
+
+.container-textarea {
+    margin-top: -9px;
 }
 
 /* stylos de input calendario */
-.selectMultiple{
+.selectMultiple {
     width: 25vw;
 }
-.forma-campo{
+
+.forma-campo {
     display: flex;
     align-items: flex-start;
     flex-direction: column;
     height: auto;
     margin: 1vh 0;
 }
-.forma-campo p{
+
+.forma-campo p {
     font-size: 16px;
     font-family: 'Work Sans', sans-serif;
     margin-bottom: 10px;
 }
-.container-section{
+
+.container-section {
     padding: 5px;
     width: 50%;
     display: flex;
@@ -176,16 +212,19 @@
     align-items: flex-start;
     flex-direction: column;
 }
-.obs-titulo{
+
+.obs-titulo {
     font-weight: bold;
     font-size: 16px;
     font-family: 'Work Sans', sans-serif;
     color: #474749;
 }
-.divHora{
+
+.divHora {
     display: flex;
 }
-.obs-final{
+
+.obs-final {
     background: #FFFFFF;
     border: 2px solid #068460;
     border-radius: 10px;
@@ -197,23 +236,26 @@
     height: 15vh;
     margin-top: 3px;
 }
-.obs-titulo-final{
+
+.obs-titulo-final {
     font-weight: bold;
     font-size: 16px;
     font-family: 'Work Sans', sans-serif;
 }
-.container-final{
+
+.container-final {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: flex-start;
     width: 100%;
 }
-label{
+
+label {
     margin-bottom: 12px;
 }
 
-.input-alcance{
+.input-alcance {
     background: #FFFFFF;
     border-radius: 6px;
     height: 4vh;
@@ -222,7 +264,8 @@ label{
     font-family: 'Work Sans', sans-serif;
     font-size: 14px;
 }
-.forma-input-cierre{
+
+.forma-input-cierre {
     background: #FFFFFF;
     border-radius: 6px;
     height: 20px;
@@ -234,7 +277,8 @@ label{
     font-size: 14px;
     margin-top: 0px;
 }
-.forma-input-calendario{
+
+.forma-input-calendario {
     background: #FFFFFF;
     border-radius: 6px;
     height: 22px;
@@ -246,40 +290,45 @@ label{
     font-size: 14px;
     margin-left: 10px;
 }
+
 .label-auditor {
     font-weight: bold;
     font-size: 16px;
     font-family: 'Work Sans', sans-serif;
-    color: #474749;  
+    color: #474749;
 }
-.label-auditor-selec{
+
+.label-auditor-selec {
     font-weight: bold;
     margin: 5px;
     font-size: 16px;
     font-family: 'Work Sans', sans-serif;
-    color: #474749;     
+    color: #474749;
 }
-.forma-hora{
+
+.forma-hora {
     margin-left: 3px;
     font-weight: bold;
     font-size: 16px;
     font-family: 'Work Sans', sans-serif;
     color: #474749;
 }
-.label-auditor-cargo{
+
+.label-auditor-cargo {
     margin-left: 3px;
     font-weight: bold;
     font-size: 16px;
     font-family: 'Work Sans', sans-serif;
-    color: #474749; 
+    color: #474749;
 }
-.div-guardar{
+
+.div-guardar {
     display: flex;
-    justify-content: center; 
+    justify-content: center;
     margin-bottom: 2vh;
 }
 
-.btn-guardar{
+.btn-guardar {
     display: flex;
     justify-content: space-around;
     margin: 31px 0 3px 0;
@@ -294,7 +343,8 @@ label{
     border: none;
     cursor: pointer;
 }
-.btn-guardar:disabled{
+
+.btn-guardar:disabled {
     background-color: #999999;
     color: #000000;
 }
@@ -304,19 +354,21 @@ label{
 input.ng-invalid.ng-touched {
     border: solid 2px tomato !important;
     border-radius: 10px;
-  }
-  textarea.ng-invalid.ng-touched {
+}
+
+textarea.ng-invalid.ng-touched {
     border: solid 2px tomato !important;
     border-radius: 10px;
-  }
+}
 
-  input.ng-valid,select.ng-valid{
+input.ng-valid,
+select.ng-valid {
     border: solid 2px #068460 !important;
     border-radius: 10px;
-  }
+}
 
-  /* stylos del input hora  */
-  .input-hora{
+/* stylos del input hora  */
+.input-hora {
     background: #FFFFFF;
     border-radius: 6px;
     height: 4vh;
@@ -325,25 +377,26 @@ input.ng-invalid.ng-touched {
     font-family: 'Work Sans', sans-serif;
     font-size: 14px;
     padding: 5px;
-  }
-  
-  .select-process{
+}
+
+.select-process {
     border-radius: 5px;
     margin-left: 6px;
     height: 27px;
     margin: 0px;
-    border: 1px solid#068460; 
+    border: 1px solid#068460;
     font-size: 14px;
     font-family: 'Work Sans', sans-serif;
 }
 
 
 /* stylos del primer formulario */
-.contenedor-1form{
-    display: flex; 
+.contenedor-1form {
+    display: flex;
     width: 100%;
 }
-.sub-menu-form1{
+
+.sub-menu-form1 {
     display: flex;
     width: 100%;
     justify-content: center;
@@ -354,7 +407,7 @@ input.ng-invalid.ng-touched {
 }
 
 /* stylos de tabla de actividades */
-.tr-table{
+.tr-table {
     background: #068460;
     color: white;
     font-family: 'Work Sans', sans-serif;
@@ -366,7 +419,7 @@ input.ng-invalid.ng-touched {
     border-bottom: 2px solid #ddd;
 }
 
-.obs-acti-editar{
+.obs-acti-editar {
     background: #FFFFFF;
     border: 2px solid #068460;
     border-radius: 10px;
@@ -378,7 +431,7 @@ input.ng-invalid.ng-touched {
     color: #000000;
 }
 
-.select-auditor-acti{
+.select-auditor-acti {
     border-radius: 5px;
     height: 4vh;
     width: 122px;
@@ -387,31 +440,35 @@ input.ng-invalid.ng-touched {
     font-family: 'Work Sans', sans-serif;
 }
 
-.forma-input-acti{
+.forma-input-acti {
     width: 100px;
     border: 1px solid #068460;
     border-radius: 3px;
     padding: 3px;
     height: 22px;
 }
-  /* paginado */
-.page-style{
+
+/* paginado */
+.page-style {
     display: flex;
     justify-content: flex-end;
 }
-.container-label{
+
+.container-label {
     display: flex;
     align-items: center;
 }
-.paginas{
+
+.paginas {
     display: inline-block;
     max-width: 100%;
     margin: 10px;
     font-weight: 700;
     font-size: 14px;
-    font-family:'Work Sans', sans-serif;
+    font-family: 'Work Sans', sans-serif;
 }
-.planificacion{
+
+.planificacion {
     display: flex;
     justify-content: center;
     align-items: flex-start;
@@ -419,60 +476,299 @@ input.ng-invalid.ng-touched {
     margin: 2vh 0 0 0;
     width: 100%;
 }
-.linea{
-    border-top: 2px solid  rgb(168, 168, 168);;
+
+.linea {
+    border-top: 2px solid rgb(168, 168, 168);
+    ;
     width: 65vw;
     padding: 0;
     margin: 1vh 0;
 }
-.rp-calendar{
+
+.rp-calendar {
     width: 1.4vw;
     height: 3.5vh;
     margin: 0.5vh 0 0 0.3vw;
 }
+
 /* responsive */
+.container-header {
+    display: none;
+}
+
+/* Estilos para pantallas pequeñas (menos de 970px de ancho) */
+/* @media (max-width: 970px) {
+    .auditoria-app-header {
+        .container-pst p {
+            display: none;
+        }
+    }
+    button[mat-menu-trigger-for="menu"] {
+        display: block;
+      }
+} */
+
+@media (max-width: 990px) {
+
+   
+    .auditoria-app-header 
+        .container-pst p {
+            display: none;
+        }
+    
+
+    .titulo {
+        position: absolute;
+        top: 32px;
+        width: 100%;
+    }
+
+    h1 {
+        font-size: 30px;
+    }
+
+    /* CONTAINER */
+    .container {
+        padding-right: 0px !important;
+        padding-left: 0px !important;
+        margin-right: 0px !important;
+        margin-left: 0px !important;
+    }
+
+    /* icono del menu responsivo */
+    button[mat-menu-trigger-for="menu"] {
+        display: block;
+      }
+    .container-header {
+        width: 95%;
+        top: 3px;
+        justify-content: flex-end;
+        display: flex;
+        position: absolute;
+        flex-direction: row;
+    }
+
+    /* ocultar menu */
+    .menu {
+        display: none;
+
+    }
+
+    .container-menu {
+        /* background-color: red; */
+        /* position: none !important; */
+        position: relative;
+        /* Establece una posición relativa en el menú */
+        z-index: 1;
+    }
+
+    .col-md-3,
+    .col-sm-12 {
+        position: relative;
+    }
+
+    .col-sm-6 {
+        width: 50%;
+        margin-top: 56px;
+        /* top: 56px; */
+        float: left;
+    }
+
+    .my-conte {
+        margin-top: 83px !important;
+    }
+
+    /* ICONO DEL CALENDARIO */
+    .rp-calendar {
+        width: 2.4vw;
+        height: 3.5vh;
+        margin: 1vw 0 0 1.3vw;
+    }
+
+    .menu .table-auditoria h3,
+    .menu .table-auditoria .linea {
+        display: none;
+    }
+    
+    .menu .dropdown .td-menu {
+        padding: 1px 4px 5px;
+    }
+    
+    .menu .dropdown .p-menu {
+        font-size: 14px;
+        color: white;
+    }
+    
+    .menu .table-auditoria {
+        position: absolute;
+        background-color: #a09a9a;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+        height: auto !important;
+        top: 0px;
+        left: 384px !important;
+    }
+    
+    /*
+    .menu .dropdown {
+        background: red;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end !important;
+        position: absolute;
+        right: 0;
+        width: 51%;
+        height: auto;
+        background-color: #a09a9a;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+    }
+    */
+
+}
+
+
+
+
 @media(max-width: 480px) {
-    .select-auditor{
-       width: 79vw;
+
+    h1 {
+        font-size: 27px;
     }
-    .obs{
-        width: 79vw;   
+
+    .container {
+        padding-right: 0;
     }
-    .forma-campo input{
-        width: 79vw;   
+
+
+    /* TABLA  */
+    .table-container {
+        max-width: 361px;
+        overflow-y: auto;
+
     }
-    .rp-calendar{
+
+    table .table {
+        width: 100%;
+        font-size: 11px;
+        margin-top: 0;
+    }
+
+    /* MENU  */
+    .menu 
+        .table-auditoria {
+
+            left: 76px !important;
+        }
+    
+
+    .col-sm-6 {
+        width: 100%;
+        margin-top: 46px;
+        /* top: 56px; */
+    }
+
+    .my-conte {
+        margin-top: 18px !important;
+    }
+
+    /* MODAL DE PLANIFICACION */
+
+    .auditoria-planificacion .modal-contedor .modal-body {
+        padding: 6px;
+    }
+    
+    .auditoria-planificacion .container-date {
+        display: flex;
+        align-items: flex-start;
+        flex-wrap: nowrap;
+        flex-direction: column;
+        font-size: 12px;
+    }
+    
+    .auditoria-planificacion .container-planificacion {
+        margin-top: 15px;
+    }
+    
+    .auditoria-planificacion .planificacion-auditoria-interna {
+        width: 291px;
+        align-items: stretch !important;
+    }
+    
+    .auditoria-planificacion .cancelar {
+        margin: 0px 10px 5px !important;
+    }
+    
+    /* .auditoria-planificacion .nav {
+        margin-left: 24px !important;
+    } */
+    
+    .auditoria-planificacion .actividad {
+        width: 80% !important;
+    }
+
+    .select-auditor {
+        width: 79vw;
+    }
+
+    .obs {
+        width: 79vw;
+    }
+
+    .forma-campo input {
+        width: 79vw;
+    }
+
+    .rp-calendar {
         width: 3.4vw;
         height: 3.5vh;
         margin: 1vw 0 0 1.3vw;
     }
-    .linea{
+
+    .linea {
         width: 79vw;
     }
-    .planificacion{
+
+    .planificacion {
         margin: 2vh 0 0 14px;
     }
-    .rp-btn{
+
+    .rp-btn {
         margin: 5px 4px 5px 95px;
     }
-    .obs-titulo-final{
+
+    .obs-titulo-final {
         margin-left: 16px;
         margin-top: 25px;
     }
-    .obs-final{
+
+    .obs-final {
         width: 79.2vw;
         margin-left: 15px;
     }
-    .multiselect-dropdown .dropdown-btn{
-        width: 79vw!important;
+
+    .multiselect-dropdown .dropdown-btn {
+        width: 79vw !important;
     }
 
-    .multiselect-dropdown .dropdown-btn .dropdown-multiselect__caret{
-        left: 323px !important; 
+    .multiselect-dropdown .dropdown-btn .dropdown-multiselect__caret {
+        left: 323px !important;
     }
 
-    .dropdown-list{
+    .dropdown-list {
         width: 317% !important;
     }
-   
+
+
+    /* PAGINADO */
+    .page-style {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+    }
+
+    .container-label {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+    }
+
 }

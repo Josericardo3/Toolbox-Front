@@ -46,7 +46,7 @@ h2{
     height: auto;
     position: relative;
 }
-i:not(#boton-x){
+i:not(#idBotonResumen){
     cursor: pointer;
     position: absolute;
     top: 50%;
@@ -125,12 +125,28 @@ i:not(#boton-x){
     border: none;
     cursor: pointer;
 }
+.btnModificar{
+    margin: 10vh 3vw 5vh 3vw;
+    height: 40px;
+    width: 230px;
+    padding: 5px;
+    background-color: #068460;
+    border-radius: 100px;
+    color: #FFFFFF;
+    font-family: 'Work Sans', sans-serif;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+}
 .btnAdd{
     margin: 3vh 0 !important;
     cursor: pointer !important;
 }
 .btnReporte{
     margin: 2vh 0 3vh 0 !important;
+}
+.btnModificar{
+    margin: 2vh 100vh 3vh 0 !important;
 }
 .reporte{
     display: flex;
@@ -247,14 +263,23 @@ input[type=number] {
         background-color: #f2f2f2; /* Cambia el color de fondo a gris */
         color: #000; /* Cambia el color del texto a negro (opcional) */
   }
-  /*modal resumen*/
-  .modal-contenedor-general{
-    display: flex;
-    flex-direction: column;
-    margin: 0vh 32vw;
-
-  }
-  .modal-background {
+  
+  /*CSS MODAL TEXT AREA(RESUMEN)*/
+.modalResumen {
+    width: 100%;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: bolder;
+    color: var(--color-title, #962d46);
+    text-align: center;
+}
+label {
+    display: inline-block;
+    max-width: 100%;
+    margin-bottom: 5px;
+    font-weight: 700;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+.modal-background {
     background-color: rgba(0, 0, 0, 0.5);
     position: fixed;
     top: 0;
@@ -264,40 +289,39 @@ input[type=number] {
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 999;
 }
-  
-  .modal-content {
-    
-
+.modal-content {
     display: flex;
     align-items: center;
     flex-direction: column;
-    
     width: 51vw;
-    height: 78vh;
+    height: 39vh;
     padding: 2vh 2.5vw;
     background-color: white;
-    z-index: 999;
     border-radius: 15px;
     position: initial;
     justify-content: flex-start;
     overflow: auto;
-  
-  }
-  .modal-title{
+}
+.modal-title{
     display: flex;
     align-items: center;
-    justify-content:center;
+    justify-content: center;
     flex-direction: column;
     width: 45vw;
     margin: 1vh 0 2vh 0;
-  }
-  .modal-btn{
-    margin: 10vh 3vw 5vh 3vw;
+}
+.linea {
+    border-top: 2px solid rgb(168, 168, 168);
+    ;
+    width: 45vw;
+    padding: 0;
+}
+.botonG {
+    margin: 3vh 0 2vh 0;
     height: 40px;
     width: 200px;
-    padding: 5px;
+    padding: 10px;
     background-color: #068460;
     border-radius: 100px;
     color: #FFFFFF;
@@ -305,37 +329,48 @@ input[type=number] {
     font-size: 16px;
     border: none;
     cursor: pointer;
-  }
-
-  /* .modal-body {
-
-    
-    background-color: #fff;
-  
-    border-radius: 5px;
-  
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
-  
-    padding: 25px;
-  
-    max-width: 600px;
-  
-    text-align: center;
-  
-    position: relative;
-  
-  } */
-.linea{
-    border-top: 2px solid  rgb(168, 168, 168);;
-    width: 45vw;
-    padding: 0;
+    align-self: center;
 }
-.form{
+
+.botonG:disabled {
+    background-color: #7cc4af;
+    color: #000000;
+}
+textarea {
+    background: #FFFFFF;
+    border: 1px solid #adadad;
+    border-radius: 4px;
+    height: 30px;
+    padding: 10px;
+    width: 45.3vw;
+}
+
+textarea {
+    height: 100px !important;
+}
+
+.x {
+    align-self: flex-end;
+}
+.form {
     display: flex;
     flex-direction: column;
     width: 100%;
 }
-.x{
-    align-self: flex-end;
-  }
+
   
+
+
+  :disabled{
+    background-color: #737373;
+}
+.tab:disabled{
+  
+    background-color: #737373;
+
+}
+
+.bloqueado {
+  cursor: not-allowed;
+  background-color: #ccc; /* Cambia el color de fondo según tus preferencias */
+}
