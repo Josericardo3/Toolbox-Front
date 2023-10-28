@@ -9,11 +9,13 @@ import { ApiService } from 'src/app/servicios/api/api.service';
 import { ChangeDetectorRef } from '@angular/core';
 import { ModalService } from 'src/app/messagemodal/messagemodal.component.service';
 import { debug } from 'util';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-app-matriz-partes-interesadas',
   templateUrl: './app-matriz-partes-interesadas.component.html',
-  styleUrls: ['./app-matriz-partes-interesadas.component.css']
+  styleUrls: ['./app-matriz-partes-interesadas.component.css'],
+  providers: [DatePipe]
 })
 export class AppMatrizPartesInteresadasComponent implements OnInit {
   valoresForm: any[] = [];
@@ -73,12 +75,14 @@ export class AppMatrizPartesInteresadasComponent implements OnInit {
   indiceAEliminar: number = -1;
   isChecked: boolean = false;
   mejoraContinua: number;
+  id_colab_number: number;
 
   constructor(
     private api: ApiService,
     private fb: FormBuilder,
     public ApiService: ApiService,
     private cd: ChangeDetectorRef,
+    private datePipe: DatePipe,
     private Message: ModalService,
   ) { }
 
@@ -185,13 +189,18 @@ export class AppMatrizPartesInteresadasComponent implements OnInit {
       this.fnConsultMatrizPartesInteresadas();
     })
   }
-  //AGREGAR PARTE INTERESADA
+  //EDITAR PARTE INTERESADA
   fnMatrizPartesInteresadasEdit(indice: number) {
     this.caracteristicaIndice = indice;
     this.editarCaracteristica = {};
-    this.isChecked = true;
+    //this.isChecked = true;
     Object.assign(this.editarCaracteristica, this.rolessArray[indice]);
     this.fnChangeEditarStatus(false);
+    if (this.editarCaracteristica.MEJORA_CONTINUA == 1)
+      this.isChecked == true;
+    else
+      this.isChecked == false;
+    //this.editarCaracteristica.FECHA_EJECUCION = this.datePipe.transform(this.editarCaracteristica.FECHA_EJECUCION, 'yyyy-MM-dd');
     this.form.get('interesada').disable();
     this.option = this.editarCaracteristica.ESTADO_DE_CUMPLIMIENTO;
   }
@@ -217,6 +226,10 @@ export class AppMatrizPartesInteresadasComponent implements OnInit {
     this.fnChangeEditarStatus(true);
     this.editarCaracteristica.MEJORA_CONTINUA = 0;
     this.isChecked = false;
+    //for (var i = 0; i < this.editarCaracteristica.length; i++) {
+    //  this.editarCaracteristica.pop();
+    //}
+    //console.log(this.editarCaracteristica);
   }
   fnUpdatePartesInteresadas() {
     this.editarCaracteristica.NECESIDAD = this.form.get('necesidades').value;
@@ -243,6 +256,10 @@ export class AppMatrizPartesInteresadasComponent implements OnInit {
       this.limpiarCampos();
     })
   }
+  //getIdnumberResponsable(num: number) {
+  //  this.id_colab_number = num;
+  //  console.log(this.id_colab_number);
+  //}
   addDatosParteInteresada() {
     this.ParteInteresada = this.form.get('interesada').value;
     this.Necesidad = this.form.get('necesidades').value;
@@ -253,6 +270,7 @@ export class AppMatrizPartesInteresadasComponent implements OnInit {
     this.Fecha = this.form.get('fecha').value;
     this.Responsable = this.form.get('responsable').value;
     this.Estado = this.form.get('estado').value;
+    //this.Fecha = this.datePipe.transform(this.Fecha, 'dd-MM-yyyy');
 
     if (this.option == 'cumple') {
       this.Observaciones = '-';
@@ -288,14 +306,56 @@ export class AppMatrizPartesInteresadasComponent implements OnInit {
         ESTADO_DE_CUMPLIMIENTO: this.Cumplimiento,
         OBSERVACIONES: this.Observaciones,
         ACCIONES_A_REALIZAR: this.Acciones,
-        RESPONSABLE: this.Responsable,
+        RESPONSABLE: String(this.Responsable),
         ESTADO_ABIERTO_CERRADO: this.Estado,
         ESTADO_ACTIVO_INACTIVO: Number(1),
         ID_USUARIO: parseInt(localStorage.getItem("Id")),
         FECHA_EJECUCION: this.Fecha,
-        MEJORA_CONTINUA: Number(this.mejoraContinua)
+        MEJORA_CONTINUA: Number(this.mejoraContinua),
+        ID_RNT: String(localStorage.getItem("rnt"))
       }
+      let messageshow = '';
       this.ApiService.postMatrizPartesInteresadas(request).subscribe((data) => {
+        //AGREGAR A MEJORA CONTINUA
+        if (this.option != 'cumple' && this.mejoraContinua == 1) {
+          const request2 = {
+            ID_MEJORA_CONTINUA: 0,
+            ID_USUARIO: parseInt(localStorage.getItem("Id")),
+            RESPONSABLE: String(this.Responsable),
+            DESCRIPCION: this.Observaciones,
+            NTC: "string",
+            REQUISITOS: this.Acciones,
+            TIPO: "Matriz Partes Interesadas",
+            ESTADO: this.Estado,
+            FECHA_INICIO: this.Fecha,
+            FECHA_FIN: this.Fecha
+          }
+          this.ApiService.postMejoraContinua(request2).subscribe((data) => {
+            //const title1 = "Registro exitoso";
+            //const message1 = "El registro se ha realizado exitosamente";
+            //this.Message.showModal(title1, message1);
+            messageshow = messageshow + 'Mejora Continua';
+          })
+        }
+        //AGREGAR A PLANIFICACIÓN postNewRecord
+        if (this.option != 'cumple') {
+          const request1 = {
+            FK_ID_USUARIO_PST: parseInt(localStorage.getItem("Id")),
+            FK_ID_RESPONSABLE: parseInt(localStorage.getItem("Id")),
+            TIPO_ACTIVIDAD: "Matriz de partes interesadas",
+            DESCRIPCION: this.Observaciones + ' : ' + this.Acciones,
+            FECHA_INICIO: this.Fecha,
+            FECHA_FIN: this.Fecha,
+            ESTADO_PLANIFICACION: "Programado"
+          }
+          this.ApiService.postNewRecord(request1).subscribe((data) => {
+            //const title2 = "Registro exitoso";
+            //const message2 = "El registro se ha realizado exitosamente";
+            //this.Message.showModal(title2, message2);
+            messageshow = messageshow + ' y Planificacion';
+          })
+        }
+        //
         this.fnConsultMatrizPartesInteresadas();
         this.limpiarCampos();
         this.ParteInteresada = '';
@@ -308,8 +368,8 @@ export class AppMatrizPartesInteresadasComponent implements OnInit {
         this.Responsable = '';
         this.Estado = '';
         const title = "Registro exitoso";
-        const message = "El registro se ha realizado exitosamente";
-        this.Message.showModal(title, message);
+        messageshow = "El registro se ha realizado exitosamente";
+        this.Message.showModal(title, messageshow);
         this.pages = 1;
         this.currentPage = 1
       },
@@ -384,13 +444,14 @@ export class AppMatrizPartesInteresadasComponent implements OnInit {
               { image: this.logo, fit: [50, 50], alignment: 'center', margin: [0, 3, 0, 3], rowSpan: 2 },
               { text: this.pst, alignment: 'center', margin: [0, 21, 0, 21], rowSpan: 2 },
               { text: 'MATRIZ DE PARTES INTERESADAS', alignment: 'center', rowSpan: 2, margin: [0, 9, 0, 9] },
-              { text: 'CÓDIGO:', alignment: 'center' }
+              { text: 'VERSIÓN: 01', alignment: 'center',margin: [0, 21, 0, 21], rowSpan: 2 },
             ],
             [
               {},
               {},
               '',
-              { text: 'VERSIÓN:', alignment: 'center', margin: [0, 12, 0, 12] },
+              {}
+            //  { text: 'VERSIÓN: 01', alignment: 'center', margin: [0, 12, 0, 12] },
             ]
           ]
         },

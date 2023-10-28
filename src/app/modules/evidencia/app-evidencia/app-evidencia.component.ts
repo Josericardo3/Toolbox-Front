@@ -8,6 +8,9 @@ import { ActivatedRoute } from '@angular/router';
 import { Injectable } from '@angular/core';
 import { ColorLista } from 'src/app/servicios/api/models/color';
 import { ApiService } from 'src/app/servicios/api/api.service';
+import { MatDialog } from '@angular/material/dialog';
+import { CargarDocumentoComponent } from '../cargar-documento/cargar-documento.component';
+import { ModalService } from 'src/app/messagemodal/messagemodal.component.service';
 
 
 @Component({
@@ -83,6 +86,8 @@ export class AppEvidenciaComponent implements OnInit{
     private router: Router,
     private route: ActivatedRoute,
     private ApiService: ApiService,
+    private _dialog: MatDialog,
+    private modalService: ModalService
   ) {}
 
   ngOnInit(): void { 
@@ -290,5 +295,21 @@ export class AppEvidenciaComponent implements OnInit{
     }
     return 0;
   }
+  cargarDocumento(element){
+    var dialogRef = this._dialog.open(CargarDocumentoComponent, {
+      data: [
+        element
+      ],
+      disableClose: true,
+    });
 
+    dialogRef.afterClosed().subscribe((result: any) => {
+      console.log("resultado guardado",result)
+      if (result.opcion == 1) {
+        this.modalService.showModal(result.title, result.mensaje);
+        console.log("resultado guardado",result)
+      } else {
+      }
+    });
+  }
 }

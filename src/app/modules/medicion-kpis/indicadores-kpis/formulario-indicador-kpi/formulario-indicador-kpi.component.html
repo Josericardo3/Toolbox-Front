@@ -1,0 +1,300 @@
+<form action="" #formObjetivo="ngForm">
+  <div class="row">
+    <div class="col-md-4">
+      <!--
+<mat-form-field appearance="outline" class="matForm">
+        
+        <mat-select
+          [(ngModel)]="model.ID_PAQUETE"
+          name="paquete"
+          (ngModelChange)="submitForm(formObjetivo)"
+          disabled
+          required
+        >
+          <mat-option
+            *ngFor="let paquete of paquetes; let index = index"
+            id="paquete-{{ index }}"
+            [value]="paquete.Id"
+          >
+            {{ paquete.Nombre }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+     -->
+
+      <div class="form-group">
+        <label for="paquete">Paquete</label>
+        <select
+          class="form-control"
+          name="paquete"
+          [(ngModel)]="model.ID_PAQUETE"
+          (ngModelChange)="submitForm(formObjetivo)"
+          disabled
+          required
+        >
+          <option *ngFor="let paquete of paquetes" [value]="paquete.Id">
+            {{ paquete.Nombre }}
+          </option>
+        </select>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="form-group">
+        <label for="TITULO">Título</label>
+
+        <textarea
+          #TITULO
+          matInput
+          [(ngModel)]="model.TITULO"
+          name="TITULO"
+          required
+          class="form-control"
+          [ngClass]="{
+            'required-field-error':
+              formObjetivo.controls.TITULO?.invalid &&
+              formObjetivo.controls.TITULO?.touched
+          }"
+          row="3"
+          (ngModelChange)="submitForm(formObjetivo)"
+        ></textarea>
+      </div>
+      
+      <!--
+<mat-form-field appearance="outline" class="matForm">
+        <mat-label>Título</mat-label>
+        <textarea
+          matInput
+          placeholder=""
+          required
+          name="TITULO"
+          [(ngModel)]="model.TITULO"
+          (ngModelChange)="submitForm(formObjetivo)"
+        ></textarea>
+      </mat-form-field>
+     -->
+    </div>
+    <div class="col-md-4">
+      <div class="form-group">
+        <label for="DESCRIPCION">Descripción</label>
+
+        <textarea
+          #DESCRIPCION
+          matInput
+          [(ngModel)]="model.DESCRIPCION"
+          name="DESCRIPCION"
+          class="form-control"
+          row="3"
+          (ngModelChange)="submitForm(formObjetivo)"
+        ></textarea>
+      </div>
+     
+
+      <!--<mat-form-field  class="custom-outlined-text-field" appearance="outline" class="matForm">
+        <mat-label>Descripción</mat-label>
+        <textarea
+          matInput
+          type="text"
+          placeholder=""
+          name="DESCRIPCION"
+          [(ngModel)]="model.DESCRIPCION"
+          (ngModelChange)="submitForm(formObjetivo)"
+        ></textarea>
+      </mat-form-field>-->
+    </div>
+
+    <div class="col-md-4">
+      <div class="form-group">
+        <label for="ID_PERIODO_MEDICION">Periodo Medición</label>
+
+        <mat-select
+        matNativeControl
+          [(ngModel)]="model.ID_PERIODO_MEDICION"
+          name="ID_PERIODO_MEDICION"
+          (ngModelChange)="submitForm(formObjetivo)"
+          required
+          [ngClass]="{
+            'required-field-error':
+              formObjetivo.controls.ID_PERIODO_MEDICION?.invalid &&
+              formObjetivo.controls.ID_PERIODO_MEDICION?.touched
+          }"
+          class="form-control custom-select "
+        >
+          <mat-option>
+            <ngx-mat-select-search
+              (ngModelChange)="onSearchInputChange(3, $event)"
+              [formControl]="tipoFilterCtrl"
+              [placeholderLabel]="'Buscar'"
+              [noEntriesFoundLabel]="'No se encontraron resultados'"
+            ></ngx-mat-select-search>
+          </mat-option>
+          <mat-option
+            *ngFor="let item of filterPeriodos; let index = index"
+            id="ID_PERIODO_MEDICION-{{ index }}"
+            [value]="item.Id"
+          >
+            {{ item.Nombre }}
+          </mat-option>
+        </mat-select>
+      </div>
+      
+    </div>
+
+    <div class="col-md-4">
+     <div class="form-group">
+      <label for="objetivos"> Objetivos </label>
+
+      <mat-select
+        [(ngModel)]="model.ID_OBJETIVO"
+        name="objetivos"
+        [multiple]="false"
+        required
+        class="form-control"
+        (ngModelChange)="submitForm(formObjetivo)"
+        [ngClass]="{
+          'required-field-error':
+            formObjetivo.controls.objetivos?.invalid &&
+            formObjetivo.controls.objetivos?.touched
+        }"
+      >
+        <mat-option>
+          <ngx-mat-select-search
+          
+            (ngModelChange)="onSearchInputChange(4, $event)"
+            [formControl]="tipoFilterCtrl"
+            [placeholderLabel]="'Buscar'"
+            [noEntriesFoundLabel]="'No se encontraron resultados'"
+          ></ngx-mat-select-search>
+        </mat-option>
+        <!--<mat-option value="Todo" (change)="seleccionarTodo($event)" ></mat-option> -->
+        <mat-option
+        
+          *ngFor="let item of filterObjetivos; let index = index"
+          [value]="item.Id"
+          id="objetivos-{{ index }}"
+        >
+          {{ item.Nombre }}
+        </mat-option>
+      </mat-select>
+     </div>
+      
+    </div>
+
+    <div class="col-md-12">
+      <mat-label>
+        <h3 class="formato-texto" style="margin-bottom: -2rem">
+          Cálculo
+        </h3></mat-label
+      >
+      <br />
+      <div class="col-md-4">
+        <label for="">Variables</label>
+
+        <mat-select
+          [(ngModel)]="selectedElement"
+          name="variable"
+          class="form-control"
+          (selectionChange)="addElement(selectedElement, $event)"
+        >
+          <mat-option>
+            <ngx-mat-select-search
+              (ngModelChange)="onSearchInputChange(2, $event)"
+              [formControl]="tipoFilterCtrl"
+              [placeholderLabel]="'Buscar'"
+              [noEntriesFoundLabel]="'No se encontraron resultados'"
+            ></ngx-mat-select-search>
+          </mat-option>
+          <mat-option
+            *ngFor="let variable of filterVariables; let index = index"
+            id="variable-{{ index }}"
+            [value]="variable.Id"
+          >
+            {{ variable.Nombre }}
+          </mat-option>
+        </mat-select>
+      </div>
+      <div class="slider-container">
+        <div class="col-md-8" style="margin-bottom: 2%; margin-top: 2%">
+          <div class="buttons">
+            <button
+              value="("
+              class="btn btn-success m-2"
+              style="margin-right: 1rem"
+              (click)="addElement('(', undefined); modelo()"
+            >
+              (
+            </button>
+            <button
+              value=")"
+              class="btn btn-success m-2"
+              style="margin-right: 1rem"
+              (click)="addElement(')', undefined); modelo()"
+            >
+              )
+            </button>
+            <button
+              value="+"
+              class="btn btn-success m-2"
+              style="margin-right: 1rem"
+              (click)="addElement('+', undefined); modelo()"
+            >
+              +
+            </button>
+            <button
+              value="-"
+              class="btn btn-success m-2"
+              style="margin-right: 1rem"
+              (click)="addElement('-', undefined); modelo()"
+            >
+              -
+            </button>
+            <button
+              value="*"
+              class="btn btn-success m-2"
+              style="margin-right: 1rem"
+              (click)="addElement('*', undefined); modelo()"
+            >
+              *
+            </button>
+            <button
+              value="/"
+              class="btn btn-success m-2"
+              style="margin-right: 1rem"
+              (click)="addElement('/', undefined); modelo()"
+            >
+              /
+            </button>
+
+            <button class="btn btn-danger m-2" (click)="clearDisplay()">
+              C
+            </button>
+          </div>
+
+          <!-- 
+                     <select class="form-control"  name="select1" [(ngModel)]="selectedElement" (change)="addElement(selectedElement,$event); modelo() "  style="width: 15rem;">
+                      <option value="item.Id"  name="item.Id"  [ngValue]="item.Nombre" *ngFor="let item of variables">{{item.Nombre}}</option>
+                    </select>  
+
+                    <button value="prom" class="btn btn-success  m-2" style="margin-right: 1rem;" (click)="addElement('prom',undefined); modelo()">Prom</button>
+                      -->
+        </div>
+        <div class="col-md-12">
+          <h3 class="formato-texto">Fórmula</h3>
+          <div
+            class="form-control display contedit"
+            name="formula"
+            id="formula"
+            contenteditable="true"
+            (input)="onInputChange($event)"
+            #divEditable
+            style="
+              width: 100%;
+              max-width: 100%;
+              height: auto;
+              white-space: normal;
+            "
+          ></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

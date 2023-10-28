@@ -250,6 +250,26 @@ export class AppPoliticaDesarrolloSostenibleComponent implements OnInit {
     this.api.saveForms(preguntasRequest)
       .subscribe((data: any) => {
         if (data.StatusCode === 200) {
+          //
+          //const responseGrilla = preguntasRequest;
+
+          console.log(preguntasRequest);
+          //const request1 = {
+          //  FK_ID_USUARIO_PST: parseInt(localStorage.getItem("Id")),
+          //  FK_ID_RESPONSABLE: parseInt(localStorage.getItem("Id")),
+          //  TIPO_ACTIVIDAD: "Taller de Política de Desarrollo Sostenibles",
+          //  DESCRIPCION: this.Observaciones + ' : ' + this.Acciones,
+          //  FECHA_INICIO: this.Fecha,
+          //  FECHA_FIN: this.Fecha,
+          //  ESTADO_PLANIFICACION: "Programado"
+          //}
+          //this.ApiService.postNewRecord(request1).subscribe((data) => {
+          //  //const title2 = "Registro exitoso";
+          //  //const message2 = "El registro se ha realizado exitosamente";
+          //  //this.Message.showModal(title2, message2);
+          //  messageshow = messageshow + ' y Planificacion';
+          //})
+
           this.disablePDF = false;
           this.botonCancelar = false;
           this.botonOcultar = true;
@@ -457,13 +477,15 @@ export class AppPoliticaDesarrolloSostenibleComponent implements OnInit {
               { image: this.logo, fit: [50, 50], alignment: 'center', margin: [0, 3, 0, 3], rowSpan: 2 },
               { text: this.pst, alignment: 'center', margin: [0, 21, 0, 21], rowSpan: 2 },
               { text: 'TALLER POLÍTICA DE DESARROLLO SOSTENIBLE', alignment: 'center', rowSpan: 2, margin: [0, 9, 0, 9] },
-              { text: 'CÓDIGO:', alignment: 'center' }
+             // { text: 'CÓDIGO:', alignment: 'center' }
+              { text: 'VERSIÓN: 01', alignment: 'center',margin: [0, 21, 0, 21], rowSpan: 2 },
             ],
             [
               {},
               {},
               '',
-              { text: 'VERSIÓN: 01', alignment: 'center', margin: [0, 12, 0, 12] },
+              {},
+             // { text: 'VERSIÓN: 01', alignment: 'center', margin: [0, 12, 0, 12] },
             ]
           ]
         },

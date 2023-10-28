@@ -13,11 +13,13 @@
             </div>
             <div class="subContainerform">
                 <label for="responsable" class="estado">Responsable de dar cumplimiento</label>
-                <select name="responsable" id="responsable" formControlName="responsable" class="estadoForm" 
+                <select   name="responsable" id="responsable" formControlName="responsable" class="estadoForm" 
                 [attr.disabled]="isDisabled ? 'disabled' : null" [ngClass]="{'campo-desactivado': isDisabled}">
-                    <option value="" disabled [selected]="true">Seleccione una opción</option>
-                    <option value="ResponsableA" [selected]="form.get('responsable').value === 'ResponsableA'">Responsable de dar cumplimiento</option>
-                    <option value="ResponsableB" [selected]="form.get('responsable').value === 'ResponsableB'">Responsable</option>
+                    
+                    <option value="" disabled>Selecciona una opción</option>
+                    <option *ngFor="let responsible of arrayListResponsible" [value]="responsible.ID_USUARIO">
+                      {{ responsible.NOMBRE | titlecase }}
+                    </option>
                 </select>
             </div>
             <div class="subContainerformMain">        
@@ -55,9 +57,11 @@
                     <label for="responsableCumplimiento" class="estado">Responsable de dar cumplimiento</label>
                     <select name="responsableCumplimiento" id="responsableCumplimiento" formControlName="responsableCumplimiento" class="estadoFormB" 
                     [attr.disabled]="isDisabled ? 'disabled' : null" [ngClass]="{'campo-desactivado': isDisabled}">
-                        <option value="" disabled [selected]="true">Seleccione una opción</option>
-                        <option value="ResponsableC" [selected]="form.get('responsableCumplimiento').value === 'ResponsableC'">Responsable de dar cumplimiento</option>
-                        <option value="ResponsableD" [selected]="form.get('responsableCumplimiento').value === 'ResponsableD'">Responsable</option>
+                        <option value="" disabled>Selecciona una opción</option>
+                        <option *ngFor="let responsible of arrayListResponsible" [value]="responsible.ID_USUARIO">
+                          {{ responsible.NOMBRE | titlecase }}
+                        </option>
+
                     </select>
                 </div>
                 <div class="subContainerformB">

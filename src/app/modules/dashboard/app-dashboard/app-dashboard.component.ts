@@ -8,6 +8,7 @@ import { AppState } from 'src/app/state/selectors/app.state'
 import { ModalService } from 'src/app/messagemodal/messagemodal.component.service'
 import { ApiService } from 'src/app/servicios/api/api.service';
 import { debounce } from 'lodash'
+import { IndicadorService } from '../../../servicios/kpis/indicador.service';
 import { ColorLista } from 'src/app/servicios/api/models/color'
 
 
@@ -68,12 +69,16 @@ export class AppDashboardComponent implements OnInit {
   AccesoKpi : boolean = true; 
   AccesoMejora : boolean = true; 
   AccesoMonitorizacion : boolean = true;
-
+//indicadores
+filter:any={ID_USUARIO:localStorage.getItem('Id')}
+resultInicadores: boolean = false;
+listaIndicadores:any=[];
   constructor(
     //PG private store: Store<{ initialState:any }>,
     private router: Router,
     private Message: ModalService,
     private ApiService: ApiService,
+    private IndicadorService:IndicadorService,
   ) {//PG this.counter$= store.select('initialState')
   }
   normaDiadnostico: any = {};
@@ -140,6 +145,7 @@ export class AppDashboardComponent implements OnInit {
     //prueba global selectFeatureCount
     // this.getNombreUsuario();
     this.getContenidoTarjeta();
+    this.getRecordatorioIndicador();
   }
 
   mostrarNotificacion : boolean = false;
@@ -244,6 +250,25 @@ export class AppDashboardComponent implements OnInit {
     });
 
   }
+  getRecordatorioIndicador(){
+    this.IndicadorService.obtnerRecordatorioNoticia(this.filter).subscribe({
+      next: (x) => {
+        if (x.Confirmacion) {
+          this.listaIndicadores=x.Data;
+          if(x.Total>0){
+            this.resultInicadores=true;
+          }else{
+            this.resultInicadores=false;
+          }
+        } else {
+          this.resultInicadores=false;
+        }
+      },
+      error: (e) => {
+        this.resultInicadores=false;
+      },
+    });
+  }
 
   validateRol(evt: any) {
     const menuResult = this.rolList.map(
@@ -260,7 +285,6 @@ export class AppDashboardComponent implements OnInit {
   }
 
   menuFilter(evt: any) { //redireccionar
-  
     if (this.validateRol(evt)) {// condicional cuando sí tiene acceso
       evt.target.src = '../../../../assets/img-dashboard/' + evt.target.id + '-3.svg';
       switch (evt.target.id) {
@@ -394,7 +418,10 @@ export class AppDashboardComponent implements OnInit {
     this.ApiService.postMonitorizacionUsuario(request).subscribe();
     this.router.navigate(['/planificacion'], { state: { idActividad: index, dato: dato } });
   }
-
+  indexReminderIndicador() {
+    
+    this.router.navigate(['/evaluaciones']);
+  }
   getRolValue(): number {
     // Obtener el valor del rol almacenado en el Local Storage
     const rol = localStorage.getItem('rol');

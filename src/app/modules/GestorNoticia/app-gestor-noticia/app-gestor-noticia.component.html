@@ -97,25 +97,20 @@
                 <div class="linea"></div>
             </div>
             <form [formGroup]="saveForm" class="form" (ngSubmit)="saveModal()">
-                <ng-multiselect-dropdown *ngIf="getRolValue() === 3  || getRolValue() === 4"
-                    formControlName="selectMultipleAdmin" [placeholder]="'Seleccione un prestador de servicios'"
-                    [settings]="dropdownSettings" [data]="dropdownListPst" [ngModel]="selectedItems"
-                    (onSelect)="onItemSelect($event, 'admin')" (onSelectAll)="onSelectAll($event, 'admin')"
-                    (onDeSelect)="onDeSelect($event, 'admin')"
-                    (onDeSelectAll)="onDeSelectAll($event, 'admin')"></ng-multiselect-dropdown>
+               
                 <ng-multiselect-dropdown *ngIf="getRolValue() === 3 || getRolValue() === 4"
                     formControlName="selectMultipleNorma" [placeholder]="'Seleccione una norma'"
                     [settings]="dropdownSettingsNorma" [data]="dropdownListNorma" [ngModel]="selectedItemsNorma"
                     (onSelect)="onItemSelect($event, 'norma')" (onSelectAll)="onSelectAll($event, 'norma')"
                     (onDeSelect)="onDeSelect($event, 'norma')" (onDeSelectAll)="onDeSelectAll($event, 'norma')"
-                    style="margin-top:2vh;"></ng-multiselect-dropdown>
+                    ></ng-multiselect-dropdown>
                 <ng-multiselect-dropdown *ngIf="getRolValue() === 3 || getRolValue() === 4"
                     formControlName="selectMultipleCategoria" [placeholder]="'Seleccione una categoría'"
                     [settings]="dropdownSettingsCategoria" [data]="dropdownListCategoria"
                     [ngModel]="selectedItemsCategoria" (onSelect)="onItemSelect($event, 'categoria')"
                     (onSelectAll)="onSelectAll($event, 'categoria')" (onDeSelect)="onDeSelect($event, 'categoria')"
                     (onDeSelectAll)="onDeSelectAll($event, 'categoria')"
-                    style="margin-top:2vh;"></ng-multiselect-dropdown>
+                    style="margin-top:2vh;" ></ng-multiselect-dropdown>
                 <ng-multiselect-dropdown *ngIf="getRolValue() === 3 || getRolValue() === 4"
                     formControlName="selectMultipleSubCategoria" [placeholder]="'Seleccione una sub categoría'"
                     [settings]="dropdownSettingsSubCategoria" [data]="dropdownListSubCategoria"
@@ -124,6 +119,12 @@
                     (onDeSelect)="onDeSelect($event, 'subcategoria')"
                     (onDeSelectAll)="onDeSelectAll($event, 'subcategoria')"
                     style="margin-top:2vh;"></ng-multiselect-dropdown>
+                    <ng-multiselect-dropdown *ngIf="getRolValue() === 3  || getRolValue() === 4"
+                    formControlName="selectMultipleAdmin" [placeholder]="'Seleccione un prestador de servicios'"
+                    [settings]="dropdownSettings" [data]="dropdownListPst" [ngModel]="selectedItems"
+                    (onSelect)="onItemSelect($event, 'admin')" (onSelectAll)="onSelectAll($event, 'admin')"
+                    (onDeSelect)="onDeSelect($event, 'admin')"
+                    (onDeSelectAll)="onDeSelectAll($event, 'admin')"  style="margin-top:2vh;"></ng-multiselect-dropdown>
                 <ng-multiselect-dropdown *ngIf="getRolValue() === 1 || getRolValue() === 6 "
                     formControlName="selectMultiplePST" [placeholder]="'Seleccione un colaborador'"
                     [settings]="dropdownSettings" [data]="dropdownList" [ngModel]="selectedItems"
@@ -141,6 +142,11 @@
                     <label id="nombre" class="fileName">Ningún archivo seleccionado</label>
                 </div>
                 <span>Las dimensiones de la imagen no deben exceder el máximo de 760 x 760 píxeles.</span>
+                <div>
+                    <label class="notificacion-noticias">
+                        <input type="checkbox" name="recibirNoticias"  [checked]="recibirNoticias" (change)="onChangeCheckbox($event)"> Deseo recibir noticias por correo electrónico.
+                    </label>
+                </div>
                 <button type="submit" class="botonG"
                     [disabled]=" ( (saveForm.controls.selectMultipleAdmin?.value?.length||0) === 0 && (saveForm.controls.selectMultipleNorma?.value?.length||0) === 0  && (saveForm.controls.selectMultipleCategoria.value?.length||0) === 0 && (saveForm.controls.selectMultipleSubCategoria.value?.length||0) === 0 && (saveForm.controls.selectMultiplePST.value?.length||0) === 0 )|| !saveForm.controls.tituloNoticia.value || !saveForm.controls.descripcionNoticia.value">
                     <i class="fa-regular fa-floppy-disk" style="color: #fff;"></i>

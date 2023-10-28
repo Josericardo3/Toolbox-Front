@@ -1,0 +1,92 @@
+.titulo {
+  display: flex;
+  flex-direction: row-reverse;
+  margin: 2vh 0;
+}
+h1 {
+  width: 100%;
+  font-family: "Montserrat", sans-serif;
+  font-weight: bolder;
+  color: #068460;
+  text-align: center;
+  margin: 2vh 0;
+}
+/* pagination */
+.page-style {
+  display: flex;
+  justify-content: flex-end;
+}
+.paginas {
+  display: inline-block;
+  max-width: 100%;
+  margin: 10px;
+  font-weight: 700;
+  font-size: 14px;
+  font-family: "Work Sans", sans-serif;
+}
+.container-label {
+  display: flex;
+  align-items: center;
+}
+.mat-header-row {
+  background-color: #068460;
+  color: #fff !important;
+}
+th {
+  color: #fff;
+}
+/*menu*/
+@media (max-width: 970px) {
+  /* NOMBRE DE LA CABECERA  */
+
+  .indicadores-app-header 
+    .container-pst p {
+      display: none;
+    }
+  
+
+  /* MENU */
+
+  .menu-oculto {
+    display: none;
+  }
+  .responsi-gerencia-menu 
+    .linea {
+      width: auto;
+    }
+    .responsi-gerencia-menu 
+    .td-menu {
+      width: auto;
+    }
+  
+  .resposi-icon {
+    display: flex;
+  }
+
+  .resposi-icon {
+    width: 95%;
+
+    top: 3px;
+
+    justify-content: flex-end;
+
+    display: flex;
+
+    position: absolute;
+
+    flex-direction: row;
+  }
+}
+/**********/
+td,th
+{
+  font-size: 16px; /* Ajusta el tamaño de fuente del input según tus necesidades */
+  font-family: 'Work Sans', sans-serif;
+}
+th{
+  font-weight: bold;
+}
+label {
+  color: black !important;
+  font-size: 13px;
+}

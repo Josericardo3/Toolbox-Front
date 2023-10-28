@@ -1,0 +1,484 @@
+<form action="" #formObjetivo="ngForm">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-6 ">
+              <div class="form-group">
+                <label for="indicador">Indicador</label>
+                <textarea
+                  matInput
+                  [(ngModel)]="model.TITULO"
+                  name="indicador"
+                  required
+                  disabled
+                  class="form-control"
+                  row="3"
+                  [ngClass]="{
+                    'required-field-error':
+                      formObjetivo.controls.indicador?.invalid &&
+                      formObjetivo.controls.indicador?.touched
+                  }"
+                  (ngModelChange)="submitForm(formObjetivo)"
+                ></textarea>
+              </div>
+              <!--<mat-form-field appearance="outline" class="matForm">
+                <mat-label>Indicador</mat-label>
+                <textarea
+                  matInput
+                  [(ngModel)]="model.TITULO"
+                  name="indicador"
+                  required
+                  disabled
+                  cdkTextareaAutosize
+                  #autosize="cdkTextareaAutosize"
+                  cdkAutosizeMinRows="1"
+                  cdkAutosizeMaxRows="5"
+                ></textarea>
+              </mat-form-field>-->
+            </div>
+            <div class="col-md-6 ">
+              <div class="form-group">
+                <label for="NOMBRE_PERIODO_MEDICION">Periodo</label>
+                <input
+                  matInput
+                  disabled
+                  type="text"
+                  placeholder=""
+                  class="form-control"
+                  name="NOMBRE_PERIODO_MEDICION"
+                  [(ngModel)]="model.FECHA_PERIODO"
+                  (ngModelChange)="submitForm(formObjetivo)"
+                />
+              </div>
+             <!-- 
+              <mat-form-field appearance="outline" class="matForm">
+                <mat-label>Periodo</mat-label>
+                <input
+                  matInput
+                  disabled
+                  type="text"
+                  placeholder=""
+                  name="NOMBRE_PERIODO_MEDICION"
+                  [(ngModel)]="model.FECHA_PERIODO"
+                  (ngModelChange)="submitForm(formObjetivo)"
+                />
+              </mat-form-field>
+             --> 
+            </div>
+
+            <div class="col-md-12">
+              <h3>RESULTADO</h3>
+              <div class="card-header text-bold">
+              <label for="">Cálculo: {{ model.FORMULA_TEXT }}</label>  
+              </div>
+              
+              <div>
+                <span class="dot-green"></span> >={{model.META}}  <span style="color:green">BUENO</span><br>
+                <span class="dot-yellow"></span> >={{model.SEMAFORIZACION}}  <span style="color:yellow">REGULAR</span><br>
+                <span class="dot-red"></span> <={{model.SEMAFORIZACION}}  <span style="color:red">MALO</span><br>
+              </div>
+              <br />
+              <div
+                class="col-md-2"
+                *ngFor="let item of model.VARIABLES_EVALUACION"
+              >
+              <div class="form-group">
+                  <label for="item.ID">{{ item.NOMBRE }}</label>
+                  <input
+                    matInput
+                    type="text"
+                    class="form-control"
+                    placeholder=""
+                    name="item.ID"
+                    [(ngModel)]="item.VALOR"
+                    (ngModelChange)="submitForm(formObjetivo)"
+                  />
+              </div>
+               <!--
+                <mat-form-field appearance="outline" class="matForm">
+                  <mat-label>{{ item.NOMBRE }}</mat-label>
+                  <input
+                    matInput
+                    type="text"
+                    placeholder=""
+                    name="item.ID"
+                    [(ngModel)]="item.VALOR"
+                    (ngModelChange)="submitForm(formObjetivo)"
+                  />
+                </mat-form-field>
+
+               --> 
+              </div>
+              <div class="col-md-3">
+                <button
+                  class="btn-nuevo"
+                  style="margin-bottom: 2rem"
+                  (click)="calcular(); submitForm(formObjetivo)"
+                  
+                  data-toggle="modal"
+                  data-target="#exampleModal"
+                >
+                  Calcular
+                </button>
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="col-md-3 ">
+                <div class="form-group">
+                  <label for="RESULTADO"></label>
+                  <input
+                    matInput
+                    disabled
+                    type="text"
+                    placeholder=""
+                    class="form-control"
+                    name="RESULTADO"
+                    [(ngModel)]="model.RESULTADO"
+                    (ngModelChange)="submitForm(formObjetivo)"
+                  />
+                </div>
+                <!--<mat-form-field appearance="outline" class="matForm">
+                  <mat-label>Resultado</mat-label>
+                  <input
+                    matInput
+                    disabled
+                    type="text"
+                    placeholder=""
+                    name="RESULTADO"
+                    [(ngModel)]="model.RESULTADO"
+                    (ngModelChange)="submitForm(formObjetivo)"
+                  />
+                </mat-form-field>-->
+              </div>
+              <div class="col-md-3 ">
+                <div class="from-group">
+                  <label for="META"></label>
+                  <input
+                  matInput
+                  disabled
+                  type="text"
+                  placeholder=""
+                  name="META"
+                  [(ngModel)]="model.META"
+                  class="form-control"
+                  (ngModelChange)="submitForm(formObjetivo)"
+                />
+                </div>
+                <!--<mat-form-field appearance="outline" class="matForm">
+                  <mat-label>Meta (%)</mat-label>
+                  <input
+                    matInput
+                    disabled
+                    type="text"
+                    placeholder=""
+                    name="META"
+                    [(ngModel)]="model.META"
+                    (ngModelChange)="submitForm(formObjetivo)"
+                  />
+                </mat-form-field>-->
+              </div>
+              <div class="col-md-3 interlineado">
+                <div class="form-group">
+                  <label for="ESTADO"></label>
+                  <input
+                  matInput
+                  disabled
+                  type="text"
+                  placeholder=""
+                  name="ESTADO"
+                  [(ngModel)]="model.ESTADO"
+                  class="form-control"
+                  (ngModelChange)="submitForm(formObjetivo)"
+                />
+                </div>
+                <!--<mat-form-field appearance="outline" class="matForm">
+                  <mat-label>Estado </mat-label>
+                  <input
+                    matInput
+                    disabled
+                    type="text"
+                    placeholder=""
+                    name="ESTADO"
+                    [(ngModel)]="model.ESTADO"
+                    (ngModelChange)="submitForm(formObjetivo)"
+                  />
+                </mat-form-field>-->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header text-bold">
+          <h3>Análisis</h3>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-4 ">
+              <div class="form-group">
+                <label for="ANALISIS">Análisis</label>
+                <textarea
+                matInput
+                [(ngModel)]="model.ANALISIS"
+                name="ANALISIS"
+                [required]="habilitaCampo"
+                rows="3"
+                class="form-control"
+                (ngModelChange)="submitForm(formObjetivo)"
+                [ngClass]="{
+                  'required-field-error':
+                    formObjetivo.controls.ANALISIS?.invalid &&
+                    formObjetivo.controls.ANALISIS?.touched
+                }"
+              ></textarea>
+              </div>
+             <!--
+              <mat-form-field appearance="outline" class="matForm">
+                <mat-label>Análisis</mat-label>
+                <textarea
+                  matInput
+                  [(ngModel)]="model.ANALISIS"
+                  name="ANALISIS"
+                  [required]="habilitaCampo"
+                  (ngModelChange)="submitForm(formObjetivo)"
+                ></textarea>
+              </mat-form-field>
+             --> 
+            </div>
+
+            <div class="col-md-4 ">
+              <div class="form-group">
+                <label for="accionCorrectiva">Acción Correctiva</label>
+                <mat-select
+                [(ngModel)]="model.ID_ACCION"
+                name="accionCorrectiva"
+                class="form-control"
+                (ngModelChange)="submitForm(formObjetivo)"
+                required
+                [ngClass]="{
+                  'required-field-error':
+                    formObjetivo.controls.accionCorrectiva?.invalid &&
+                    formObjetivo.controls.accionCorrectiva?.touched
+                }"
+              >
+                <mat-option
+                  *ngFor="let item of acciones; let index = index"
+                  id="ID_PERIODO_MEDICION-{{ index }}"
+                  [value]="item.Id"
+                >
+                  {{ item.Nombre }}
+                </mat-option>
+              </mat-select>
+              </div>
+              <!--
+                <mat-form-field appearance="outline" class="matForm">
+                <mat-label>Acción Correctiva</mat-label>
+                <mat-select
+                  [(ngModel)]="model.ID_ACCION"
+                  name="accionCorrectiva"
+                  (ngModelChange)="submitForm(formObjetivo)"
+                  required
+                >
+                  <mat-option
+                    *ngFor="let item of acciones; let index = index"
+                    id="ID_PERIODO_MEDICION-{{ index }}"
+                    [value]="item.Id"
+                  >
+                    {{ item.Nombre }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>-->
+            </div>
+            <!--
+<div class="col-md-4 interlineado">
+              <mat-form-field appearance="outline" class="matForm">
+                <mat-label>ENLACE</mat-label>
+                <input
+                  matInput
+                  disabled
+                  type="text"
+                  placeholder=""
+                  name="ENLACE"
+                  [(ngModel)]="model.ENLACE"
+                  (ngModelChange)="submitForm(formObjetivo)"
+                />
+              </mat-form-field>
+            </div>
+            -->
+            
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--<div class="container">
+    <table  class="mat-elevation-z8 table-responsive text-center  mt-1" mat-table [dataSource]="dataSource">
+        <ng-container matColumnDef="PERIODO">
+          <th mat-header-cell *matHeaderCellDef class="text-center">PERIODO</th>
+          <td mat-cell *matCellDef="let item">
+            <mat-form-field appearance="outline" class="matForm">
+               
+                <input
+                  matInput
+                  type="text"
+                  placeholder=""
+                  required
+                  name="TITULO"
+                  [(ngModel)]="model.FECHA_PERIODO"
+                  
+                />
+                
+              </mat-form-field>
+        
+        </td>
+        </ng-container>
+        <ng-container *ngFor="let variable of model.VARIABLES_EVALUACION" [matColumnDef]="variable.NOMBRE">
+          <th mat-header-cell *matHeaderCellDef>{{ variable.NOMBRE }}</th>
+          <td mat-cell *matCellDef="let item">{{ item[variable.NOMBRE] }}
+    
+          
+                
+                  <mat-form-field appearance="outline" class="matForm">
+                     
+                      <input
+                        matInput
+                        type="text"
+                        placeholder=""
+                        required
+                        name="item[variable.NOMBRE]"
+                        [(ngModel)]="model.VALOR"
+                        
+                      />
+                      
+                    </mat-form-field>
+              
+             
+              
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="RESULTADO">
+            <th mat-header-cell *matHeaderCellDef>RESULTADO</th>
+            <td mat-cell *matCellDef="let item">
+              <mat-form-field appearance="outline" class="matForm">
+                 
+                  <input
+                    matInput
+                    type="text"
+                    placeholder=""
+                    required
+                    name="RESULTADO"
+                    [(ngModel)]="model.RESULTADO"
+                    
+                  />
+                  
+                </mat-form-field>
+          
+          </td>
+          </ng-container>
+          <ng-container matColumnDef="META">
+            <th mat-header-cell *matHeaderCellDef>META</th>
+            <td mat-cell *matCellDef="let item">
+              <mat-form-field appearance="outline" class="matForm">
+                 
+                  <input
+                    matInput
+                    type="text"
+                    placeholder=""
+                    required
+                    name="RESULTADO"
+                    [(ngModel)]="model.RESULTADO"
+                    
+                  />
+                  
+                </mat-form-field>
+          
+          </td>
+          </ng-container>
+          <ng-container matColumnDef="ESTADO">
+            <th mat-header-cell *matHeaderCellDef>ESTADO</th>
+            <td mat-cell *matCellDef="let item">
+              <mat-form-field appearance="outline" class="matForm">
+                 
+                  <input
+                    matInput
+                    type="text"
+                    placeholder=""
+                    required
+                    name="ESTADO"
+                    [(ngModel)]="model.ESTADO"
+                    
+                  />
+                  
+                </mat-form-field>
+          
+          </td>
+          </ng-container>
+          <ng-container matColumnDef="ANALISIS">
+            <th mat-header-cell *matHeaderCellDef>ANÁLISIS</th>
+            <td mat-cell *matCellDef="let item">
+              <mat-form-field appearance="outline" class="matForm">
+                 
+                  <input
+                    matInput
+                    type="text"
+                    placeholder=""
+                    required
+                    name="ANALISIS"
+                    [(ngModel)]="model.ANALISIS"
+                    
+                  />
+                  
+                </mat-form-field>
+          
+          </td>
+          </ng-container>
+          <ng-container matColumnDef="ACCION">
+            <th mat-header-cell *matHeaderCellDef>ACCION</th>
+            <td mat-cell *matCellDef="let item">
+              <mat-form-field appearance="outline" class="matForm">
+                 
+                  <input
+                    matInput
+                    type="text"
+                    placeholder=""
+                    required
+                    name="ACCION"
+                    [(ngModel)]="model.ACCION"
+                    
+                  />
+                  
+                </mat-form-field>
+          
+          </td>
+          </ng-container>
+          <ng-container matColumnDef="OPCION">
+            <th mat-header-cell *matHeaderCellDef>OPCION</th>
+            <td mat-cell *matCellDef="let item">
+              <mat-form-field appearance="outline" class="matForm">
+                 
+                  <input
+                    matInput
+                    type="text"
+                    placeholder=""
+                    required
+                    name="OPCION"
+                    [(ngModel)]="model.OPCION"
+                    
+                  />
+                  
+                </mat-form-field>
+          
+          </td>
+          </ng-container>
+      
+        <tr mat-header-row *matHeaderRowDef="columns" class="text-center"></tr>
+        <tr mat-row *matRowDef="let row; columns: columns" class="text-center"></tr>
+      </table>
+</div>
+-->
+  </div>
+</form>

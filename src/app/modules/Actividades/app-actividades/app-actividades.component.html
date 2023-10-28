@@ -27,6 +27,11 @@
             <!--*** SECCION NUEVO REGISTRO DE ACTIVIDAD  *** -->
             <div class="bodyNuevoregistro" *ngIf="crearNuevoRegistro">
                 <p>Nuevo registro</p>
+                <div>
+                  <label class="notificacion-actividades">
+                      <input type="checkbox" name="recibirNoticias"  [checked]="recibirNoticias" (change)="onChangeCheckbox($event)"> Deseo recibir noticias por correo electrónico.
+                  </label>
+              </div>  
                 <div class="items">
                   <div class="containerSection">
                     <div class="section">

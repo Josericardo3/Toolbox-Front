@@ -1,0 +1,354 @@
+<form action="" #formObjetivo="ngForm">
+  <div class="row">
+    <div class="col-md-6 mb-0">
+      <div class="col-md-12 interlineado">
+        <div class="form-group">
+          <label for="TITULO">Indicador</label>
+
+          <textarea
+            #TITULO
+            [(ngModel)]="model.TITULO"
+            name="TITULO"
+            required
+            class="form-control"
+            disabled
+            [ngClass]="{
+              'required-field-error':
+                formObjetivo.controls.TITULO?.invalid &&
+                formObjetivo.controls.TITULO?.touched
+            }"
+            row="3"
+            (ngModelChange)="submitForm(formObjetivo)"
+          ></textarea>
+        </div>
+        <!--
+<mat-form-field appearance="outline" class="matForm">
+          <mat-label>Indicador</mat-label>
+          <textarea
+            matInput
+            [(ngModel)]="model.TITULO"
+            name="indicador"
+            required
+            disabled
+            cdkTextareaAutosize
+            #autosize="cdkTextareaAutosize"
+            cdkAutosizeMinRows="1"
+            cdkAutosizeMaxRows="5"
+          ></textarea>
+        </mat-form-field>
+       -->
+      </div>
+      <div class="col-md-12">
+        <div class="form-group">
+          <label for="formula">Fórmula</label>
+          <textarea
+            #formula
+            [(ngModel)]="model.FORMULA_TEXT"
+            name="formula"
+            disabled
+            required
+            class="form-control"
+            row="3"
+            (ngModelChange)="submitForm(formObjetivo)"
+          ></textarea>
+        </div>
+        <!--
+<mat-form-field appearance="outline" class="matForm">
+          <mat-label>Fórmula</mat-label>
+          <textarea
+            matInput
+            [(ngModel)]="model.FORMULA_TEXT"
+            name="formula"
+            disabled
+            required
+            cdkTextareaAutosize
+            #autosize="cdkTextareaAutosize"
+            cdkAutosizeMinRows="1"
+            cdkAutosizeMaxRows="5"
+          ></textarea>
+        </mat-form-field>
+
+       -->
+      </div>
+      <div class="col-md-12">
+        <div class="form-group">
+          <label for="objetivo">Objetivo</label>
+          <textarea
+            matInput
+            [(ngModel)]="model.TITULO_OBJETIVO"
+            name="objetivo"
+            disabled
+            required
+            class="form-control"
+            row="3"
+            (ngModelChange)="submitForm(formObjetivo)"
+          ></textarea>
+        </div>
+        <!--
+<mat-form-field appearance="outline" class="matForm">
+          <mat-label>Objetivo</mat-label>
+          <textarea
+            matInput
+            [(ngModel)]="model.TITULO_OBJETIVO"
+            name="objetivo"
+            required
+            disabled
+            cdkTextareaAutosize
+            #autosize="cdkTextareaAutosize"
+            cdkAutosizeMinRows="1"
+            cdkAutosizeMaxRows="5"
+          ></textarea>
+        </mat-form-field>
+       -->
+      </div>
+      <div class="col-md-12">
+        <div class="form-group">
+          <label for="META">Meta %</label>
+          <input
+            #META
+            autocomplete="off"
+            matInput
+            type="text"
+            placeholder=""
+            name="META"
+            [(ngModel)]="model.META"
+            (ngModelChange)="submitForm(formObjetivo)"
+            class="form-control"
+            [ngClass]="{
+              'required-field-error':
+                formObjetivo.controls.META?.invalid &&
+                formObjetivo.controls.META?.touched
+            }"
+          />
+        </div>
+        <!--
+<mat-form-field appearance="outline" class="matForm" style="size: 1rem">
+          <mat-label>Meta %</mat-label>
+          <input
+            autocomplete="off"
+            matInput
+            type="text"
+            placeholder=""
+            name="META"
+            [(ngModel)]="model.META"
+            (ngModelChange)="submitForm(formObjetivo)"
+          />
+        </mat-form-field>
+       -->
+      </div>
+      <div class="col-md-12 interlineado">
+        <div class="form-group">
+          <label for="NOMBRE_PERIODO_MEDICION">Frecuencia de Medición</label>
+          <input
+            matInput
+            #NOMBRE_PERIODO_MEDICION
+            disabled
+            type="text"
+            placeholder=""
+            name="NOMBRE_PERIODO_MEDICION"
+            [(ngModel)]="model.NOMBRE_PERIODO"
+            (ngModelChange)="submitForm(formObjetivo)"
+            class="form-control"
+            [ngClass]="{
+              'required-field-error':
+                formObjetivo.controls.NOMBRE_PERIODO_MEDICION?.invalid &&
+                formObjetivo.controls.NOMBRE_PERIODO_MEDICION?.touched
+            }"
+          />
+        </div>
+        <!--
+<mat-form-field appearance="outline" class="matForm">
+          <mat-label>FRECUENCIA DE MEDICIÓN</mat-label>
+          <input
+            matInput
+            disabled
+            type="text"
+            placeholder=""
+            name="NOMBRE_PERIODO_MEDICION"
+            [(ngModel)]="model.NOMBRE_PERIODO"
+            (ngModelChange)="submitForm(formObjetivo)"
+          />
+        </mat-form-field>
+      --></div>
+      <div class="col-md-12 interlineado">
+        <div class="form-group">
+          <label for="fuente">Fuente de datos</label>
+          <mat-select
+            #fuente
+            [(ngModel)]="model.ID_FUENTE_DATO"
+            name="fuente"
+            (ngModelChange)="submitForm(formObjetivo)"
+            class="form-control"
+            required
+            [ngClass]="{
+              'required-field-error':
+                formObjetivo.controls.fuente?.invalid &&
+                formObjetivo.controls.fuente?.touched
+            }"
+          >
+            <mat-option>
+              <ngx-mat-select-search
+                (ngModelChange)="onSearchInputChange(1, $event)"
+                [formControl]="tipoFilterCtrl"
+                [placeholderLabel]="'Buscar'"
+                [noEntriesFoundLabel]="'No se encontraron resultados'"
+              ></ngx-mat-select-search>
+            </mat-option>
+            <mat-option
+              *ngFor="let fuente of filterFuenteDatos; let index = index"
+              id="fuente-{{ index }}"
+              [value]="fuente.Id"
+            >
+              {{ fuente.Nombre }}
+            </mat-option>
+          </mat-select>
+        </div>
+        <!--
+<mat-form-field appearance="outline" class="matForm">
+          <mat-label>FUENTE DE DATOS</mat-label>
+          <mat-select [(ngModel)]="model.ID_FUENTE_DATO" name="fuente" (ngModelChange)="submitForm(formObjetivo)" required>
+            <mat-option>
+              <ngx-mat-select-search
+                (ngModelChange)="onSearchInputChange(1, $event)"
+                [formControl]="tipoFilterCtrl"
+                [placeholderLabel]="'Buscar'"
+                [noEntriesFoundLabel]="'No se encontraron resultados'"
+              ></ngx-mat-select-search>
+            </mat-option>
+            <mat-option
+              *ngFor="let fuente of filterFuenteDatos; let index = index"
+              id="fuente-{{ index }}"
+              [value]="fuente.Id"
+            >
+              {{ fuente.Nombre }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+       -->
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="col-md-12 interlineado">
+        <div class="form-group">
+          <label for="procesos">Procesos</label>
+          <mat-select
+            [(ngModel)]="model.PROCESOSR"
+            name="procesos"
+            (ngModelChange)="submitForm(formObjetivo)"
+            (selectionChange)="cambioProcesos($event)"
+            class="form-control"
+            multiple
+            required
+            [ngClass]="{
+              'required-field-error':
+                formObjetivo.controls.procesos?.invalid &&
+                formObjetivo.controls.procesos?.touched
+            }"
+          >
+            <mat-option id="todos" [value]="0"> TODOS LOS PROCESOS </mat-option>
+            <mat-option
+              *ngFor="let item of procesos; let index = index"
+              id="ID_PERIODO_MEDICION-{{ index }}"
+              [value]="item.Id"
+              [disabled]="disableOptions"
+            >
+              {{ item.Nombre }}
+            </mat-option>
+          </mat-select>
+        </div>
+        <!--
+<mat-form-field appearance="outline" class="matForm">
+          <mat-label>Procesos</mat-label>
+          <mat-select
+            [(ngModel)]="model.PROCESOSR"
+            name="procesos"
+            (ngModelChange)="submitForm(formObjetivo)"
+            (selectionChange)="cambioProcesos($event)"
+           
+            multiple
+            required
+          >
+          <mat-option id="todos" [value]="0">
+            TODOS LOS PROCESOS
+          </mat-option>
+            <mat-option
+              *ngFor="let item of procesos; let index = index"
+              id="ID_PERIODO_MEDICION-{{ index }}"
+              [value]="item.Id"
+              [disabled]="disableOptions"
+            >
+              {{ item.Nombre }}
+            </mat-option>
+           
+          </mat-select>
+        </mat-form-field>
+       -->
+      </div>
+      <div
+        class="col-md-12"
+        *ngFor="let itemR of arrayInputResponsable; let i = index"
+      >
+        <div class="form-group">
+          <label for="variableperiodo-{{ i }}-{{ itemR.ID_USUARIO_ASIGNADO }}"
+            >Responsable de: {{ itemR.NOMBRE_PROCESO }}</label
+          >
+          <mat-select
+            class="form-control"
+            [(ngModel)]="itemR.ID_USUARIO_ASIGNADO"
+            name="variableperiodo-{{ i }}-{{ itemR.ID_USUARIO_ASIGNADO }}"
+            (ngModelChange)="submitForm(formObjetivo)"
+            required
+            [ngClass]="{
+              'required-field-error':
+                formObjetivo.invalid && formObjetivo.touched
+            }"
+          >
+            <mat-option>
+              <ngx-mat-select-search
+                (ngModelChange)="onSearchInputChange(2, $event)"
+                [formControl]="tipoFilterCtrl"
+                [placeholderLabel]="'Buscar'"
+                [noEntriesFoundLabel]="'No se encontraron resultados'"
+              ></ngx-mat-select-search>
+            </mat-option>
+            <mat-option
+              *ngFor="let item of filterResponsables; let index = index"
+              id="ID_USUARIO-{{ index }}-{{ itemR.ID_USUARIO }}"
+              [value]="item.ID_USUARIO"
+            >
+              {{ item.NOMBRE }}
+            </mat-option>
+          </mat-select>
+        </div>
+
+        <!--
+<mat-form-field appearance="outline" class="matForm">
+          <mat-label>Responsable de: {{ itemR.NOMBRE_PROCESO }}</mat-label>
+          <mat-select
+            [(ngModel)]="itemR.ID_USUARIO_ASIGNADO"
+            name="variableperiodo-{{ i }}-{{ itemR.ID_USUARIO_ASIGNADO }}"
+            (ngModelChange)="submitForm(formObjetivo)"
+            required
+          >
+            <mat-option>
+              <ngx-mat-select-search
+                (ngModelChange)="onSearchInputChange(2, $event)"
+                [formControl]="tipoFilterCtrl"
+                [placeholderLabel]="'Buscar'"
+                [noEntriesFoundLabel]="'No se encontraron resultados'"
+              ></ngx-mat-select-search>
+            </mat-option>
+            <mat-option
+              *ngFor="let item of filterResponsables; let index = index"
+              id="ID_USUARIO-{{ index }}-{{ itemR.ID_USUARIO }}"
+              [value]="item.ID_USUARIO"
+            >
+              {{ item.NOMBRE }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+       -->
+      </div>
+    </div>
+  </div>
+</form>

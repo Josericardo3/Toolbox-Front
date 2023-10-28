@@ -148,7 +148,7 @@ export class AppPlanificacionComponent {
           this.rolesArraytemp[i].statecolor = '#068460';
         }
       }
-      debugger;
+  
       this.rolesArray = this.rolesArraytemp;
 
       //paginado
@@ -212,7 +212,11 @@ export class AppPlanificacionComponent {
   }
   startActivityDateTemp: any;
   endtActivityDateTemp: any;
+  recibirNoticias: boolean = false;
 
+  onChangeCheckbox(event: any) {
+    this.recibirNoticias = event.target.checked;
+  }
   fnNewRecord() {
 
     if (typeof (this.startActivityDate) == 'object' && typeof (this.endtActivityDate) == 'object') {
@@ -220,7 +224,7 @@ export class AppPlanificacionComponent {
       const finValue = new Date(this.endtActivityDate);
       const now = new Date();  
       const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-      debugger;
+  
       if (finValue < inicioValue) {
         const title = "Registro no exitoso";
         const message = "Por favor verifique la fecha";
@@ -249,7 +253,8 @@ export class AppPlanificacionComponent {
         DESCRIPCION: this.description,
         FECHA_INICIO: this.startActivityDate,
         FECHA_FIN: this.endtActivityDate,
-        ESTADO_PLANIFICACION: this.selectedState
+        ESTADO_PLANIFICACION: this.selectedState,
+        ENVIO_CORREO: this.recibirNoticias
       };
       this.ApiService.postNewRecord(request).subscribe((data) => {
         this.fnConsultActivities();

@@ -1,3 +1,4 @@
+import { formatDate } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormGroup, Validators, FormBuilder,FormControl } from '@angular/forms';
 import { debug } from 'console';
@@ -34,7 +35,12 @@ export class AppFormularioComponent implements OnInit{
 
   estadoFormulario: any;
 
-  //array
+  //ARRAY DE RESPONSABLES
+
+
+  arrayListResponsible: any = [];
+
+  //ARRAYS TEMPORALES QUE GUARDAN MATRICES MODIFICADAS
 
   arrayIdMatriz: any = [];
   arrayTemporal:any=[];
@@ -55,22 +61,24 @@ export class AppFormularioComponent implements OnInit{
   ) {}
 
   ngOnInit() {
+    
     this.estadoFormulario = this.formService.obtenerEstadoFormulario(this.selectedMatrizId);  
     // //REMOVER ARRAY TEMPORAL
     localStorage.removeItem('MiArrayTemporal');
- 
+ debugger;
     this.form = this.formBuilder.group({
       estadoCumplimiento:[this.estadoFormulario?.ESTADO_CUMPLIMIENTO ||''],
-      responsable:[this.estadoFormulario?.RESPONSABLE || ''],
+      responsable:[this.estadoFormulario?.ID_RESPONSABLE || ''],
       evidencia:[this.estadoFormulario?.EVIDENCIA || ''],
       observaciones:[this.estadoFormulario?.OBSERVACIONES || ''],
       acciones:[this.estadoFormulario?.ACCIONES || ''],
-      responsableCumplimiento:[this.estadoFormulario?.RESPONSABLE_CUMPLIMIENTO || ''],
+      responsableCumplimiento:[this.estadoFormulario?.ID_RESPONSABLE_CUMPLIMIENTO || ''],
       fecha:[this.estadoFormulario?.FECHA || ''],
       estado:[this.estadoFormulario?.ESTADO || ''],
     });  
     
     this.setSelectedValues();
+    this.fnListResponsible();
     
     this.setFormDisabledState();
     this.restaurarForm();
@@ -78,16 +86,18 @@ export class AppFormularioComponent implements OnInit{
   }
   //VALORES POR DEFECTO EN LOS CAMPOS DEL FORMULARIO(ULTIMA MODIFICACION DE DATOS EN LA BD)
   restaurarForm(){
+    debugger;
     this.form = this.formBuilder.group({
       estadoCumplimiento: [{ value: this.data?.ESTADO_CUMPLIMIENTO || this.estadoFormulario?.ESTADO_CUMPLIMIENTO || '', disabled: true }],
-      responsable: [{ value: this.data?.RESPONSABLE_CUMPLIMIENTO || this.estadoFormulario?.RESPONSABLE || '', disabled: true}],
+      responsable: [{value: this.data?.ID_RESPONSABLE_CUMPLIMIENTO || this.estadoFormulario?.ID_RESPONSABLE || '',disabled: true,}],
       evidencia: [{ value: this.data?.DATA_CUMPLIMIENTO || this.estadoFormulario?.EVIDENCIA || '', disabled: true }],
       observaciones: [{ value: this.data?.DATA_CUMPLIMIENTO || this.estadoFormulario?.OBSERVACIONES || '', disabled: true }],
       acciones: [{ value: this.data?.PLAN_ACCIONES_A_REALIZAR || this.estadoFormulario?.ACCIONES || '', disabled: true }],
-      responsableCumplimiento: [{ value: this.data?.PLAN_RESPONSABLE_CUMPLIMIENTO || this.estadoFormulario?.RESPONSABLE_CUMPLIMIENTO || '', disabled: true }],
+      responsableCumplimiento: [{ value: this.data?.ID_PLAN_RESPONSABLE_CUMPLIMIENTO || this.estadoFormulario?.ID_RESPONSABLE_CUMPLIMIENTO || '', disabled: true }],
       fecha: [{ value: this.data?.PLAN_FECHA_EJECUCION || this.estadoFormulario?.FECHA || '', disabled: true }],
       estado: [{ value: this.data?.PLAN_ESTADO || this.estadoFormulario?.ESTADO || '', disabled: true }],
     });
+    
   }
 
   
@@ -129,23 +139,39 @@ export class AppFormularioComponent implements OnInit{
     this.setSelectedValues();
     this.isDisabled = true;
     const estadoCumplimiento = this.form.get('estadoCumplimiento')?.value.toString();
-    const responsableCumplimiento = this.form.get('responsable')?.value.toString();
+    const IDresponsableCumplimiento = this.form.get('responsable')?.value.toString();
+    
     const evidencia = this.form.get('evidencia')?.value.toString();
     const observaciones = this.form.get('observaciones')?.value.toString();
     const acciones = this.form.get('acciones')?.value.toString();
-    const responsablePlanCumplimiento = this.form.get('responsableCumplimiento')?.value.toString();
+    const IDresponsablePlanCumplimiento = this.form.get('responsableCumplimiento')?.value.toString();
     const fechaEjecucion = this.form.get('fecha')?.value.toString();
     const estado = this.form.get('estado')?.value.toString();
     const checkbox = this.isCheckboxOn;
+
+    const cont = this.arrayListResponsible.length
+    let nombreCumplimiento = '';
+    let nombrePlanCumplimiento = '';
+
+    for(let index=0; index<cont ;index++){
+      if(IDresponsableCumplimiento == this.arrayListResponsible[index].ID_USUARIO){
+          nombreCumplimiento = this.arrayListResponsible[index].NOMBRE
+        }      
+    }
+    for(let index=0; index<cont ;index++){
+      if(IDresponsablePlanCumplimiento == this.arrayListResponsible[index].ID_USUARIO){
+          nombrePlanCumplimiento = this.arrayListResponsible[index].NOMBRE
+        }      
+    }
   //RESUMEN 
     
     console.log(
       estadoCumplimiento,
-      responsableCumplimiento,
+      IDresponsableCumplimiento,
       evidencia,
       observaciones,
       acciones,
-      responsablePlanCumplimiento,
+      IDresponsablePlanCumplimiento,
       fechaEjecucion,
       estado,
       this.selectedMatrizId,
@@ -156,14 +182,16 @@ export class AppFormularioComponent implements OnInit{
       FK_ID_USUARIO: window.localStorage.getItem('Id'),
       FK_ID_MATRIZ_LEGAL: this.selectedMatrizId,
       ESTADO_CUMPLIMIENTO: estadoCumplimiento,
-      RESPONSABLE_CUMPLIMIENTO: responsableCumplimiento,
+      ID_RESPONSABLE_CUMPLIMIENTO: IDresponsableCumplimiento,
+      RESPONSABLE_CUMPLIMIENTO: nombreCumplimiento,
       DATA_CUMPLIMIENTO: estadoCumplimiento === 'Si' ? evidencia : observaciones,
       PLAN_INTERVENCION: [
         {
-          PLAN_ACCIONES_A_REALIZAR: acciones,
-          PLAN_RESPONSABLE_CUMPLIMIENTO: responsablePlanCumplimiento,
-          PLAN_FECHA_EJECUCION: fechaEjecucion,
-          PLAN_ESTADO: estado,
+          PLAN_ACCIONES_A_REALIZAR: acciones || null,
+          ID_PLAN_RESPONSABLE_CUMPLIMIENTO : IDresponsablePlanCumplimiento || null,
+          PLAN_RESPONSABLE_CUMPLIMIENTO: nombrePlanCumplimiento || null,
+          PLAN_FECHA_EJECUCION: fechaEjecucion  || null,
+          PLAN_ESTADO: estado  || null,
         }
       ]
     };   
@@ -193,6 +221,26 @@ export class AppFormularioComponent implements OnInit{
         
         //console.log("indicador", this.arrayIdMatriz);
       });
+    }
+    if(estadoCumplimiento =="No" || estadoCumplimiento == "En proceso"){
+      const fechaCorregida = formatDate(fechaEjecucion, 'dd-MM-yyyy', 'en-US');
+      
+      const data3 = {
+        
+          FK_ID_USUARIO_PST: window.localStorage.getItem('Id'),
+          FK_ID_RESPONSABLE: IDresponsablePlanCumplimiento,
+          TIPO_ACTIVIDAD: "Matriz Requisitos Legales",
+          DESCRIPCION: acciones,
+          FECHA_INICIO: fechaCorregida,
+          FECHA_FIN: fechaCorregida,
+          ESTADO_PLANIFICACION: "Programado",
+          ENVIO_CORREO: false
+        
+      }
+      this.ApiService.postNewRecord(data3).subscribe((savedData3:any)=>{
+        console.log('Se guardo correctamente : 3', savedData3);
+      })
+
     }
     this.showGuardar=!this.showGuardar
     this.disableModificar=!this.disableModificar
@@ -275,6 +323,12 @@ export class AppFormularioComponent implements OnInit{
     this.modalPadre.abrirModal();
     
 
+  }
+
+  fnListResponsible() {
+    this.ApiService.getListResponsible().subscribe((data) => {
+      this.arrayListResponsible = data;
+    })
   }
   
   

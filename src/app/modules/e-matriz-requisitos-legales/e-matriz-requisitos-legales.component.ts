@@ -179,6 +179,7 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
 
   ngOnInit() {
     //REMOVER ARRAY TEMPORAL
+    debugger;
     
 
 
@@ -314,9 +315,11 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
             ...ley,           
             subLeyes: [{
               ESTADO_CUMPLIMIENTO: ley.ESTADO_CUMPLIMIENTO,
+              ID_RESPONSABLE_CUMPLIMIENTO: ley.ID_RESPONSABLE_CUMPLIMIENTO,
               RESPONSABLE_CUMPLIMIENTO: ley.RESPONSABLE_CUMPLIMIENTO,
               DATA_CUMPLIMIENTO: ley.DATA_CUMPLIMIENTO,
               PLAN_ACCIONES_A_REALIZAR: ley.PLAN_ACCIONES_A_REALIZAR,
+              ID_PLAN_RESPONSABLE_CUMPLIMIENTO: ley.ID_PLAN_RESPONSABLE_CUMPLIMIENTO,
               PLAN_RESPONSABLE_CUMPLIMIENTO: ley.PLAN_RESPONSABLE_CUMPLIMIENTO,
               PLAN_FECHA_EJECUCION: ley.PLAN_FECHA_EJECUCION,
               PLAN_ESTADO: ley.PLAN_ESTADO,
@@ -328,8 +331,10 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
           acumulador[clave].subLeyes.push({
             ESTADO_CUMPLIMIENTO: ley.ESTADO_CUMPLIMIENTO,
             RESPONSABLE_CUMPLIMIENTO: ley.RESPONSABLE_CUMPLIMIENTO,
+            ID_RESPONSABLE_CUMPLIMIENTO: ley.ID_RESPONSABLE_CUMPLIMIENTO,
             DATA_CUMPLIMIENTO: ley.DATA_CUMPLIMIENTO,
             PLAN_ACCIONES_A_REALIZAR: ley.PLAN_ACCIONES_A_REALIZAR,
+            ID_PLAN_RESPONSABLE_CUMPLIMIENTO: ley.ID_PLAN_RESPONSABLE_CUMPLIMIENTO,
             PLAN_RESPONSABLE_CUMPLIMIENTO: ley.PLAN_RESPONSABLE_CUMPLIMIENTO,
             PLAN_FECHA_EJECUCION: ley.PLAN_FECHA_EJECUCION,
             PLAN_ESTADO: ley.PLAN_ESTADO,
@@ -348,9 +353,11 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
             ...ley,           
             subLeyes: [{
               ESTADO_CUMPLIMIENTO: ley.ESTADO_CUMPLIMIENTO,
+              ID_RESPONSABLE_CUMPLIMIENTO: ley.ID_RESPONSABLE_CUMPLIMIENTO,
               RESPONSABLE_CUMPLIMIENTO: ley.RESPONSABLE_CUMPLIMIENTO,
               DATA_CUMPLIMIENTO: ley.DATA_CUMPLIMIENTO,
               PLAN_ACCIONES_A_REALIZAR: ley.PLAN_ACCIONES_A_REALIZAR,
+              ID_PLAN_RESPONSABLE_CUMPLIMIENTO: ley.ID_PLAN_RESPONSABLE_CUMPLIMIENTO,
               PLAN_RESPONSABLE_CUMPLIMIENTO: ley.PLAN_RESPONSABLE_CUMPLIMIENTO,
               PLAN_FECHA_EJECUCION: ley.PLAN_FECHA_EJECUCION,
               PLAN_ESTADO: ley.PLAN_ESTADO,
@@ -361,9 +368,11 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
         } else {
           acumulador[clave].subLeyes.push({
             ESTADO_CUMPLIMIENTO: ley.ESTADO_CUMPLIMIENTO,
+            ID_RESPONSABLE_CUMPLIMIENTO: ley.ID_RESPONSABLE_CUMPLIMIENTO,
             RESPONSABLE_CUMPLIMIENTO: ley.RESPONSABLE_CUMPLIMIENTO,
             DATA_CUMPLIMIENTO: ley.DATA_CUMPLIMIENTO,
             PLAN_ACCIONES_A_REALIZAR: ley.PLAN_ACCIONES_A_REALIZAR,
+            ID_PLAN_RESPONSABLE_CUMPLIMIENTO: ley.ID_PLAN_RESPONSABLE_CUMPLIMIENTO,
             PLAN_RESPONSABLE_CUMPLIMIENTO: ley.PLAN_RESPONSABLE_CUMPLIMIENTO,
             PLAN_FECHA_EJECUCION: ley.PLAN_FECHA_EJECUCION,
             PLAN_ESTADO: ley.PLAN_ESTADO,
@@ -383,9 +392,11 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
             ...ley,           
             subLeyes: [{
               ESTADO_CUMPLIMIENTO: ley.ESTADO_CUMPLIMIENTO,
+              ID_RESPONSABLE_CUMPLIMIENTO: ley.ID_RESPONSABLE_CUMPLIMIENTO,
               RESPONSABLE_CUMPLIMIENTO: ley.RESPONSABLE_CUMPLIMIENTO,
               DATA_CUMPLIMIENTO: ley.DATA_CUMPLIMIENTO,
               PLAN_ACCIONES_A_REALIZAR: ley.PLAN_ACCIONES_A_REALIZAR,
+              ID_PLAN_RESPONSABLE_CUMPLIMIENTO: ley.ID_PLAN_RESPONSABLE_CUMPLIMIENTO,
               PLAN_RESPONSABLE_CUMPLIMIENTO: ley.PLAN_RESPONSABLE_CUMPLIMIENTO,
               PLAN_FECHA_EJECUCION: ley.PLAN_FECHA_EJECUCION,
               PLAN_ESTADO: ley.PLAN_ESTADO,
@@ -396,9 +407,11 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
         } else {
           acumulador[clave].subLeyes.push({
             ESTADO_CUMPLIMIENTO: ley.ESTADO_CUMPLIMIENTO,
+            ID_RESPONSABLE_CUMPLIMIENTO: ley.ID_RESPONSABLE_CUMPLIMIENTO,
             RESPONSABLE_CUMPLIMIENTO: ley.RESPONSABLE_CUMPLIMIENTO,
             DATA_CUMPLIMIENTO: ley.DATA_CUMPLIMIENTO,
             PLAN_ACCIONES_A_REALIZAR: ley.PLAN_ACCIONES_A_REALIZAR,
+            ID_PLAN_RESPONSABLE_CUMPLIMIENTO: ley.ID_PLAN_RESPONSABLE_CUMPLIMIENTO,
             PLAN_RESPONSABLE_CUMPLIMIENTO: ley.PLAN_RESPONSABLE_CUMPLIMIENTO,
             PLAN_FECHA_EJECUCION: ley.PLAN_FECHA_EJECUCION,
             PLAN_ESTADO: ley.PLAN_ESTADO,
@@ -418,9 +431,11 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
             ...ley,           
             subLeyes: [{
               ESTADO_CUMPLIMIENTO: ley.ESTADO_CUMPLIMIENTO,
+              ID_RESPONSABLE_CUMPLIMIENTO: ley.ID_RESPONSABLE_CUMPLIMIENTO,
               RESPONSABLE_CUMPLIMIENTO: ley.RESPONSABLE_CUMPLIMIENTO,
               DATA_CUMPLIMIENTO: ley.DATA_CUMPLIMIENTO,
               PLAN_ACCIONES_A_REALIZAR: ley.PLAN_ACCIONES_A_REALIZAR,
+              ID_PLAN_RESPONSABLE_CUMPLIMIENTO: ley.ID_PLAN_RESPONSABLE_CUMPLIMIENTO,
               PLAN_RESPONSABLE_CUMPLIMIENTO: ley.PLAN_RESPONSABLE_CUMPLIMIENTO,
               PLAN_FECHA_EJECUCION: ley.PLAN_FECHA_EJECUCION,
               PLAN_ESTADO: ley.PLAN_ESTADO,
@@ -431,9 +446,11 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
         } else {
           acumulador[clave].subLeyes.push({
             ESTADO_CUMPLIMIENTO: ley.ESTADO_CUMPLIMIENTO,
+            ID_RESPONSABLE_CUMPLIMIENTO: ley.ID_RESPONSABLE_CUMPLIMIENTO,
             RESPONSABLE_CUMPLIMIENTO: ley.RESPONSABLE_CUMPLIMIENTO,
             DATA_CUMPLIMIENTO: ley.DATA_CUMPLIMIENTO,
             PLAN_ACCIONES_A_REALIZAR: ley.PLAN_ACCIONES_A_REALIZAR,
+            ID_PLAN_RESPONSABLE_CUMPLIMIENTO: ley.ID_PLAN_RESPONSABLE_CUMPLIMIENTO,
             PLAN_RESPONSABLE_CUMPLIMIENTO: ley.PLAN_RESPONSABLE_CUMPLIMIENTO,
             PLAN_FECHA_EJECUCION: ley.PLAN_FECHA_EJECUCION,
             PLAN_ESTADO: ley.PLAN_ESTADO,
@@ -453,9 +470,11 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
             ...ley,           
             subLeyes: [{
               ESTADO_CUMPLIMIENTO: ley.ESTADO_CUMPLIMIENTO,
+              ID_RESPONSABLE_CUMPLIMIENTO: ley.ID_RESPONSABLE_CUMPLIMIENTO,
               RESPONSABLE_CUMPLIMIENTO: ley.RESPONSABLE_CUMPLIMIENTO,
               DATA_CUMPLIMIENTO: ley.DATA_CUMPLIMIENTO,
               PLAN_ACCIONES_A_REALIZAR: ley.PLAN_ACCIONES_A_REALIZAR,
+              ID_PLAN_RESPONSABLE_CUMPLIMIENTO: ley.ID_PLAN_RESPONSABLE_CUMPLIMIENTO,
               PLAN_RESPONSABLE_CUMPLIMIENTO: ley.PLAN_RESPONSABLE_CUMPLIMIENTO,
               PLAN_FECHA_EJECUCION: ley.PLAN_FECHA_EJECUCION,
               PLAN_ESTADO: ley.PLAN_ESTADO,
@@ -466,9 +485,11 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
         } else {
           acumulador[clave].subLeyes.push({
             ESTADO_CUMPLIMIENTO: ley.ESTADO_CUMPLIMIENTO,
+            ID_RESPONSABLE_CUMPLIMIENTO: ley.ID_RESPONSABLE_CUMPLIMIENTO,
             RESPONSABLE_CUMPLIMIENTO: ley.RESPONSABLE_CUMPLIMIENTO,
             DATA_CUMPLIMIENTO: ley.DATA_CUMPLIMIENTO,
             PLAN_ACCIONES_A_REALIZAR: ley.PLAN_ACCIONES_A_REALIZAR,
+            ID_PLAN_RESPONSABLE_CUMPLIMIENTO: ley.ID_PLAN_RESPONSABLE_CUMPLIMIENTO,
             PLAN_RESPONSABLE_CUMPLIMIENTO: ley.PLAN_RESPONSABLE_CUMPLIMIENTO,
             PLAN_FECHA_EJECUCION: ley.PLAN_FECHA_EJECUCION,
             PLAN_ESTADO: ley.PLAN_ESTADO,
@@ -490,9 +511,11 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
             ...ley,           
             subLeyes: [{
               ESTADO_CUMPLIMIENTO: ley.ESTADO_CUMPLIMIENTO,
+              ID_RESPONSABLE_CUMPLIMIENTO: ley.ID_RESPONSABLE_CUMPLIMIENTO,
               RESPONSABLE_CUMPLIMIENTO: ley.RESPONSABLE_CUMPLIMIENTO,
               DATA_CUMPLIMIENTO: ley.DATA_CUMPLIMIENTO,
               PLAN_ACCIONES_A_REALIZAR: ley.PLAN_ACCIONES_A_REALIZAR,
+              ID_PLAN_RESPONSABLE_CUMPLIMIENTO: ley.ID_PLAN_RESPONSABLE_CUMPLIMIENTO,
               PLAN_RESPONSABLE_CUMPLIMIENTO: ley.PLAN_RESPONSABLE_CUMPLIMIENTO,
               PLAN_FECHA_EJECUCION: ley.PLAN_FECHA_EJECUCION,
               PLAN_ESTADO: ley.PLAN_ESTADO,
@@ -503,9 +526,11 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
         } else {
           acumulador[clave].subLeyes.push({
             ESTADO_CUMPLIMIENTO: ley.ESTADO_CUMPLIMIENTO,
+            ID_RESPONSABLE_CUMPLIMIENTO: ley.ID_RESPONSABLE_CUMPLIMIENTO,
             RESPONSABLE_CUMPLIMIENTO: ley.RESPONSABLE_CUMPLIMIENTO,
             DATA_CUMPLIMIENTO: ley.DATA_CUMPLIMIENTO,
             PLAN_ACCIONES_A_REALIZAR: ley.PLAN_ACCIONES_A_REALIZAR,
+            ID_PLAN_RESPONSABLE_CUMPLIMIENTO: ley.ID_PLAN_RESPONSABLE_CUMPLIMIENTO,
             PLAN_RESPONSABLE_CUMPLIMIENTO: ley.PLAN_RESPONSABLE_CUMPLIMIENTO,
             PLAN_FECHA_EJECUCION: ley.PLAN_FECHA_EJECUCION,
             PLAN_ESTADO: ley.PLAN_ESTADO,
@@ -523,6 +548,7 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
 
   cambiarTab(tab: string) {
     this.tabActual = tab;
+    this.separarCategoria();
     // Actualiza divs para que muestre los divs específicos del tab seleccionado
     if (tab === 'tab1') {
       this.divs = this.divsTab1;
@@ -637,7 +663,7 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
     // const tipoNormatividad = this.selectedOption === 'otro' ? (document.querySelector('#otroInput') as HTMLInputElement).value : this.selectedOption;
     // this.tipoNormatividad = this.selectedOption === 'otro' ? this.otroValor : this.selectedOption;
     this.tipoNormatividad = this.selectedOption === 'otro' ? this.otroValor : this.selectedOption;
-    debugger
+    
     if (this.tipoNormatividad === 'otro') {
       this.tipoNormatividad = this.otroValor;
     }
@@ -650,7 +676,10 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
   				ANIO: anio,
   				EMISOR: emisor,
   				DESCRIPCION: descripcion,
-  				DOCS_ESPECIFICOS: secciones
+  				DOCS_ESPECIFICOS: secciones,
+          //AGREGAR ES FIJO
+          ES_FIJO: 0,
+          ID_USUARIO_REG: localStorage.getItem('Id')
 
     };
 
@@ -988,7 +1017,7 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
           },
         }
       }      
-      pdfMake.createPdf(pdfDefinition).download('Reporte_Turismo.pdf');
+      pdfMake.createPdf(pdfDefinition).open();
       const title = "Se descargó correctamente";
       const message = "La descarga se ha realizado exitosamente"
       this.Message.showModal(title, message);
@@ -1266,7 +1295,7 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
       const title = "Se descargó correctamente";
       const message = "La descarga se ha realizado exitosamente"
       this.Message.showModal(title, message);
-      pdfMake.createPdf(pdfDefinition).download('Reporte_Ambiental.pdf');
+      pdfMake.createPdf(pdfDefinition).open();
       
     });
   }

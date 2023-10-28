@@ -5,6 +5,7 @@ import { environment } from 'src/environments/environment.prod'
 import { LoginI } from '../../models/loginInterface'
 import { ResponseI } from '../../models/responseInterface'
 import { mergeMap } from 'rxjs/operators';
+import { forEach } from 'lodash'
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -398,7 +399,7 @@ export class ApiService {
     return this.http.get<any>(list)
   }
 
-  postMejoraContinua(request: any){
+  postMejoraContinua(request: any) {
     const list = `${this.apiURLNuevo}/api/MejoraContinua`;
     return this.http.post<any>(list, request)
   }
@@ -419,7 +420,18 @@ export class ApiService {
   //Get Normas
   getDatosNormas(id: any) {
     let list = `${this.apiURLNuevo}/api/RequisitosNormas/requisitos/${id}`
-    console.log(list);
+    return this.http.get<any>(list)
+  }
+
+  // LISTAR CATEGORIA
+  getListarCategoria(){
+    let list = `${this.apiURLNuevo}/api/General/ListarCategorias`
+    return this.http.get<any>(list)
+  }
+
+  // LISTAR PST
+  getListarPst(){
+    let list = `${this.apiURLNuevo}/api/General/ListarPst`
     return this.http.get<any>(list)
   }
 
@@ -461,7 +473,7 @@ export class ApiService {
     return this.http.post<any>(assign, request)
   }
   postRegisterColaborador(request: any) {
-    let assign = `${this.apiURLNuevo}/api/Usuario/registrarEmpleadoPst?id=${request.idUsuario}&nombre=${request.nombre}&idcargo=${request.idcargo}&correo=${request.correo}`
+    let assign = `${this.apiURLNuevo}/api/Usuario/registrarEmpleadoPst?id=${request.idUsuario}&nombre=${request.nombre}&idcargo=${request.idcargo}&correo=${request.correo}&ENVIO_CORREO=${request.ENVIO_CORREO}`
     return this.http.post<any>(assign, null)
   }
   putAvatar(request: any) {
@@ -503,8 +515,8 @@ export class ApiService {
 
   //actualizar formulario
   getDataParteInteresada() {
-    const id = localStorage.getItem("Id");
-    let list = `${this.apiURLNuevo}/api/MatrizPartesInteresadas/${id}`
+    const rnt = localStorage.getItem("rnt");
+    let list = `${this.apiURLNuevo}/api/MatrizPartesInteresadas/${rnt}`
     console.log(list);
     return this.http.get<any>(list)
   }
@@ -557,6 +569,10 @@ export class ApiService {
   getEncuestasRespuesta(id: any){
     let lista = `${this.apiURLNuevo}/api/Encuesta/Preguntas?IdEncuesta=${id}`
     return this.http.get<any>(lista)
+  }
+  saveEncuestaRespuesta(request: any){
+    const encuesta = `${this.apiURLNuevo}/api/Encuesta/respuestas`;
+    return this.http.post<any>(encuesta, request)
   }
 
   //REQUISITOS NORMAS

@@ -1,0 +1,54 @@
+<app-modal></app-modal>
+<div class="card">
+  
+   
+ 
+  <div mat-dialog-content class="contenedor">
+    <a title="Cancelar" id="cerrarModal" style="display: flex; justify-content: flex-end; align-items: center;" data-dismiss="modal" aria-label="Close" >
+      <i class="fa-solid fa-circle-xmark" style="color: #06543c;font-size: 25px;" (click)="cerrarDialog(2)"></i>
+    </a>
+    <form action="" #formObjetivo="ngForm">
+      <div class="ms-2">
+        <h1 class="text-center" *ngIf="numero == 1">
+          <strong> Nuevo Objetivo</strong>
+        </h1>
+        <h1 class="text-center" *ngIf="numero == 2">
+          <strong> Actualizar Objetivo</strong>
+        </h1>
+      </div>
+      <hr />
+      <app-formulario-objetivo-kpi
+        [model]="model"
+        (requiredValidityChange)="onRequiredFieldsValidityChange($event)"
+      ></app-formulario-objetivo-kpi>
+    </form>
+    <br />
+    <div
+      mat-dialog-actions
+      class="d-flex justify-content-center align-items-center"
+    >
+      <button mat-raised-button color="warn" (click)="cerrarDialog(2)">
+        Cancelar
+      </button>
+      <button
+        *ngIf="numero == 1"
+        mat-raised-button
+        style="background-color: #068460; color: aliceblue"
+        (click)="registrar()"
+        [disabled]="!formObjetivo.valid || !requiredFieldsValid"
+      >
+        Registrar
+      </button>
+
+      <button
+        *ngIf="numero == 2"
+        mat-raised-button
+        style="background-color: #068460; color: aliceblue"
+        (click)="actualizar()"
+        [disabled]="!formObjetivo.valid || !requiredFieldsValid"
+      >
+        Actualizar
+      </button>
+    </div>
+  </div>
+</div>

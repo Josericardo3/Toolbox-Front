@@ -12,6 +12,14 @@ import { ApiService } from 'src/app/servicios/api/api.service';
 export class AppAgregarRequisitoComponent {
   modalRef: BsModalRef;
   formParent!: FormGroup;
+  CODIGO: string;
+  EQUIPO_AUDITOR: string;
+  ALCANCE: string;
+  HORA_REUNION_APERTURA: string;
+  FECHA_REUNION_CIERRE: string;
+  HORA_REUNION_CIERRE: string;
+  FECHA_REUNION_APERTURA: string;
+  PROCESOS: any[];
   @Output() valorEnviadoModal = new EventEmitter<object>();
 
   openModal(template: any) {
@@ -34,6 +42,7 @@ export class AppAgregarRequisitoComponent {
       PREGUNTA: ['']
 
     });
+    
   }
 
   addRequest(evt: any) {
@@ -41,6 +50,32 @@ export class AppAgregarRequisitoComponent {
 
   }
   saveForm() {
+    const audit = window.localStorage.getItem('ID_AUDITORIA');
+    
+    const data = this.ApiService.getAuditorias(audit)
+    .subscribe((data:any) => {
+        this.CODIGO = data.CODIGO;
+        this.EQUIPO_AUDITOR = data.AUDITOR_LIDER;
+        this.ALCANCE = data.ALCANCE;
+        this.HORA_REUNION_APERTURA = data.HORA_REUNION_APERTURA;
+        this.FECHA_REUNION_CIERRE = data.FECHA_REUNION_CIERRE;
+        this.HORA_REUNION_CIERRE = data.HORA_REUNION_CIERRE;
+        this.FECHA_REUNION_APERTURA = data.FECHA_REUNION_APERTURA;
+        this.PROCESOS = data.PROCESOS;
+      },
+      error => {
+        console.error(error);
+      }
+    );
+
+
+
+    const valor = this.formParent.get('HALLAZGO').value;
+    const DESCRIPCION = this.formParent.get('OBSERVACION').value;
+    const REQUISITOS = this.formParent.get('REQUISITO').value;
+  
+    console.log(DESCRIPCION);
+    console.log(REQUISITOS);
     this.valorEnviadoModal.emit(this.formParent.value);
     this.formParent.reset();
     const formPreguntasArray = this.formParent.get('formPreguntas') as FormArray;
@@ -48,6 +83,55 @@ export class AppAgregarRequisitoComponent {
     const closeModalButton = document.getElementById("closeModal");
     closeModalButton.click();
     this.arrayTemp=[];
+
+    debugger;
+    if(valor == "C" || valor == "NC"){
+
+    this.ApiService.getAuditorias(audit).subscribe((data: any) => {
+      this.CODIGO = data.CODIGO;
+      this.EQUIPO_AUDITOR = data.AUDITOR_LIDER;
+      this.ALCANCE = data.ALCANCE;
+      this.HORA_REUNION_APERTURA = data.HORA_REUNION_APERTURA;
+      this.FECHA_REUNION_CIERRE = data.FECHA_REUNION_CIERRE;
+      this.HORA_REUNION_CIERRE = data.HORA_REUNION_CIERRE;
+      this.FECHA_REUNION_APERTURA = data.FECHA_REUNION_APERTURA;
+      this.PROCESOS = data.PROCESOS;
+    },
+    error => {
+      console.error(error);
+    });
+
+
+    const ID_USUARIO = window.localStorage.getItem('Id');
+    const RESPONSABLE = this.EQUIPO_AUDITOR;
+    const TIPO = valor;
+    const ESTADO = 'ABIERTO';
+    const FECHA_INICIO = this.FECHA_REUNION_APERTURA;
+    const FECHA_FIN = this.FECHA_REUNION_CIERRE;
+    const NTC = window.localStorage.getItem('normaSelected');
+
+  
+    const request = {
+      ID_USUARIO: ID_USUARIO,
+      RESPONSABLE: RESPONSABLE,
+      DESCRIPCION: DESCRIPCION,
+      REQUISITOS: REQUISITOS,
+      TIPO: TIPO,
+      ESTADO: ESTADO,
+      FECHA_INICIO : FECHA_INICIO,
+      FECHA_FIN : FECHA_FIN,
+      NTC : NTC
+    };
+
+      this.ApiService.postMejoraContinua(request)
+      .subscribe(
+        response => {
+
+        },
+        error => {
+        }
+      );
+    }
 
   }
   preguntasArr: any;
@@ -59,12 +143,16 @@ export class AppAgregarRequisitoComponent {
     this.mostrarInputPregunta = !this.mostrarInputPregunta
   }
   guardarPregunta() {
+    debugger;
     const preguntaValor = this.formParent.get('PREGUNTA')?.value;
     if (preguntaValor != '' && preguntaValor != null) {
       const formPreguntasArray = this.formParent.get('formPreguntas') as FormArray;
       formPreguntasArray.push(this.formBuilder.control(this.formParent.get('PREGUNTA')?.value));
       this.mostrarInputPregunta = false;
     }
+    
+
+    
 
     this.arrayTemp = this.formParent.value;
     this.arrayTemp = this.arrayTemp.formPreguntas;
@@ -82,4 +170,7 @@ export class AppAgregarRequisitoComponent {
     }
     return 0;
   }
+
+
+  
 }

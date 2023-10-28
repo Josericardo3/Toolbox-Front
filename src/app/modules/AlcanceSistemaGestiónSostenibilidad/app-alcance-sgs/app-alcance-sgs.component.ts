@@ -82,6 +82,7 @@ export class AppAlcanceSGSComponent implements OnInit {
 
           let temporal = data.find(item => item.PREGUNTA === requisitosNoAplica);
           const temporalValue = this.separateCheckboxValues(temporal.RESPUESTA);
+          debugger;
           for (let i = 0; i < this.NormasArray.length; i++) {
             if (temporalValue[i] == undefined)
               this.selectedCheckboxes[i] = i + ';f';
@@ -125,6 +126,7 @@ export class AppAlcanceSGSComponent implements OnInit {
           }
         }
       })
+      console.log("asd",this.selectedCheckboxes);
     this.api.getDatosNormas(localStorage.getItem('idNormaSelected'))
       .subscribe((response: any) => {
         this.NormasArray = response;
@@ -243,6 +245,7 @@ export class AppAlcanceSGSComponent implements OnInit {
     for (let i = 0; i < trueNumbers.length; i++) {
       normaspdf.push(this.NormasArray[trueNumbers[i]].TITULO)
     }
+    console.log("normas", normaspdf);
     return normaspdf;
   }
 
@@ -251,7 +254,7 @@ export class AppAlcanceSGSComponent implements OnInit {
     let response = '';
     for (const cadena of arreglo) {
       // Utilizamos una expresión regular para buscar los numerales en varios formatos
-      const regex = /(\d+(\.\d+)*)|([A-Za-z]\.\d+(\.\d+)*)/g;
+      const regex = /(\d+(\.\d+)?\b)|([A-Z]\.(\d+(\.\d+)?\b)?)/g;
       const numeralesEncontradosEnCadena = cadena.match(regex);
 
       if (numeralesEncontradosEnCadena) {
@@ -270,6 +273,7 @@ export class AppAlcanceSGSComponent implements OnInit {
   generatePDF() {
     const respuesta = this.estructura.sostenibilidad.RESPUESTA;
     this.RespuestaRequisitos = this.obtenerNormaNoAplica(respuesta);
+    console.log(respuesta);
     const pdfDefinition: any = {
       pageOrientation: 'portrait', // 'portrait' indica orientación vertical (predeterminado)
       pageMargins: [30, 30, 30, 30],

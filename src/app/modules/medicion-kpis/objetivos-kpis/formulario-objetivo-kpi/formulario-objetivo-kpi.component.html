@@ -1,0 +1,52 @@
+<form action="" #formObjetivo="ngForm">
+  <div class="row">
+    <div class="col-md-12">
+      <label for="indicador">Título</label>
+
+      <textarea
+        #indicador
+        matInput
+        [(ngModel)]="model.TITULO"
+        name="indicador"
+        required
+        class="form-control"
+        [ngClass]="{
+          'required-field-error': formObjetivo?.invalid && formObjetivo?.touched
+        }"
+        row="3"
+        (ngModelChange)="submitForm(formObjetivo)"
+      ></textarea>
+    </div>
+    <div class="col-md-12">
+      <label for="descripcion">Descripción</label>
+      <textarea
+        #descripcion
+        matInput
+        [(ngModel)]="model.DESCRIPCION"
+        name="descripcion"
+        class="form-control"
+        row="3"
+        (ngModelChange)="submitForm(formObjetivo)"
+      ></textarea>
+    </div>
+    <div class="col-md-12">
+      
+        <label for="VAL_CUMPLIMIENTO"  
+          >Valor de Cumplimiento: {{ model.VAL_CUMPLIMIENTO }}%</label
+        >
+        <input
+          name="VAL_CUMPLIMIENTO"
+          id="VAL_CUMPLIMIENTO"
+          type="range"
+          [(ngModel)]="model.VAL_CUMPLIMIENTO"
+          [min]="0"
+          [max]="100"
+          [step]="5"
+          class="range hand-pointer"
+          (ngModelChange)="submitForm(formObjetivo)"
+          (input)="onSliderChange($event)"
+        />
+      
+    </div>
+  </div>
+</form>

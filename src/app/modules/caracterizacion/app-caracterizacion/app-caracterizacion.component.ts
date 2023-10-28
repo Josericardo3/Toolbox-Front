@@ -34,7 +34,11 @@ export class AppCaracterizacionComponent implements OnInit {
     'INSTAGRAM': false,
     'TIKTOK': false,
   };
-
+  concatenacionRedesSociales: any = "";
+  respuestasRedesSociales: { [key: string]: string } = {};
+  seleccionesPorPregunta: { [key: string]: string } = {};
+  opcionesAgrupadas: any[] = [];
+  
   datos: any = [];
   preguntasDesordenadas: any = [];
   preguntasOrdenadas: any = [];
@@ -129,13 +133,13 @@ validarCampoOtroB() {
 validarCampoOtroC() {
   return this.otroControlC.invalid && this.otroControlC.touched;
 }
+
 validarCampoOtroRed() {
   return  this.otroControlRed.touched;
 }
 
 getCaracterizacion(){
   this.ApiService.getData()
-  // this.http.get('assets/datos.json')
   .subscribe((data: any) => {
     this.datos = data;
     this.preguntasDesordenadas = data.CAMPOS;
@@ -145,8 +149,6 @@ getCaracterizacion(){
     
     //Bloquear campos con valor
     this.datos.CAMPOS.forEach((campo:any) => {
-      // campo.nombre !== 'Nombre del líder de sostenibilidad (opcional si es diferente al representante legal)' &&
-      // campo.nombre !== 'Correo electrónico líder (Contacto opcional)' && campo.nombre !== 'Teléfono líder (Contacto opcional)'
       if(campo.VALUES !== null && campo.ID_CARACTERIZACION_DINAMICA !== '29'){
         this.formParent.addControl(campo.NOMBRE, new FormControl({value: campo.VALUES, disabled: true}))
       }
@@ -291,11 +293,38 @@ getControlType(campo: any) {
   }
 }
 
-capturarValor(id: string | number, valor: any, idcaracterizaciondinamica: any) {
+capturarValor(id: string | number, valor: any, idcaracterizaciondinamica: any, opcionNombre: string, nombreCampo: string) {
+  const preguntaId = `${id}_${idcaracterizaciondinamica}`;
+
+  if (nombreCampo === '¿Cuáles redes sociales tiene?') {
+    if (opcionNombre === 'FACEBOOK' || opcionNombre === 'TWITTER' || opcionNombre === 'INSTAGRAM' || opcionNombre === 'TIKTOK') {
+      this.respuestasRedesSociales[opcionNombre] = `${opcionNombre}: ${valor}`;
+
+      const respuestasConcatenadas = [];
+      for (const key in this.respuestasRedesSociales) {
+        if (this.respuestasRedesSociales.hasOwnProperty(key)) {
+          respuestasConcatenadas.push(this.respuestasRedesSociales[key]);
+        }
+      }
+
+      this.concatenacionRedesSociales = respuestasConcatenadas.join(', ');
+      this.opcionesAgrupadas.push(this.concatenacionRedesSociales);
+    }
+  } else {
+    if (valor) {
+      this.seleccionesPorPregunta[preguntaId] = this.seleccionesPorPregunta[preguntaId] ?
+        `${this.seleccionesPorPregunta[preguntaId]}, ${opcionNombre}` : opcionNombre;
+    } else {
+      this.seleccionesPorPregunta[preguntaId] = this.seleccionesPorPregunta[preguntaId]
+        .replace(new RegExp(opcionNombre + ',?'), '');
+    }
+    this.opcionesAgrupadas.push(this.seleccionesPorPregunta);
+  }
+
   const result = this.valoresForm.find((o: any) => o.id === id);
   if (result) {
     result.valor = valor;
-  }else{
+  } else {
     this.valoresForm.push({
       "id": id,
       "valor": valor,
@@ -305,6 +334,7 @@ capturarValor(id: string | number, valor: any, idcaracterizaciondinamica: any) {
     });
   }
 }
+
 
 hasDepency(id: number) {
   const campos = this.datos.campos;
@@ -319,21 +349,15 @@ public saveForm(){
       FK_ID_USUARIO:Number(elemento.idUsuarioPst), 
       FK_ID_CATEGORIA_RNT: Number(elemento.idCategoriaRnt),
       FK_ID_CARACTERIZACION_DINAMICA: elemento.id};
-    
   })
 
     this.mostrarMensaje = true;
     if (this.formParent.valid) {
-
       this.ApiService.saveData(caracterizacionRespuesta).subscribe((data: any) => {
-        debugger;
         this.ApiService.getNorma(this.idUser).subscribe(
           (categ: any) => {
-           debugger;
             this.arrNormas = categ;
-            localStorage.setItem(
-              "idCategoria",
-              JSON.stringify(this.arrNormas[0].FK_ID_CATEGORIA_RNT));
+            localStorage.setItem("idCategoria", JSON.stringify(this.arrNormas[0].FK_ID_CATEGORIA_RNT));
         });
           this.ApiService.validateCaracterizacion(this.idUser).subscribe(
             (response) => {
@@ -345,26 +369,17 @@ public saveForm(){
                       data[0].FK_ID_CATEGORIA_RNT === 2
                     ) {
                       this.arrResult = data;
-
-                      localStorage.setItem(
-                        "norma",
-                        JSON.stringify(this.arrResult)
-                      );
-   
+                      localStorage.setItem("norma", JSON.stringify(this.arrResult));
                     } else {
                       this.arrResult = data;
-                      localStorage.setItem(
-                        "norma",
-                        JSON.stringify(this.arrResult)
-                      );
+                      localStorage.setItem("norma", JSON.stringify(this.arrResult));
                       localStorage.setItem("normaSelected", data[0].NORMA);
                       localStorage.setItem("idNormaSelected", data[0].ID_NORMA);
                       if( data[0].ID_NORMA === 1){
                       this.router.navigate(["/dashboard"]);
                       }else{
                         this.router.navigate(["/dashboard"]);
-                      }
-                     
+                      }      
                     }
                   }
                 );
@@ -372,15 +387,10 @@ public saveForm(){
                 this.router.navigate(["/dashboard"]);
               }
             }
-          );
-        
+          );       
         const title = "Se guardó correctamente";
         const message = "El formulario se ha guardado exitosamente"
         this.Message.showModal(title,message);
-        // borrar
-        
-        
-        //
         this.router.navigate(['/dashboard']);
       });
     }

@@ -56,6 +56,11 @@
     <div class="container-new-register">
    <table class="body-new-register">
     <caption >Nuevo registro</caption>
+    <div>
+      <label class="notificacion-planificación">
+          <input type="checkbox" name="recibirNoticias"  [checked]="recibirNoticias" (change)="onChangeCheckbox($event)"> Deseo recibir noticias por correo electrónico.
+      </label>
+  </div>
     <tr >
      <thead>
       <tr>

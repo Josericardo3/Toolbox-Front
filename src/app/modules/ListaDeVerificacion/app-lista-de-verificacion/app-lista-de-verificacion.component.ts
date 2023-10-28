@@ -572,6 +572,7 @@ export class AppListaDeVerificacionComponent {
     this.indexDetalle = valor.index; 
     this.ApiService.getAuditorias(valor.ID_AUDITORIA)
       .subscribe((data: any) => {
+        localStorage.setItem('ID_AUDITORIA',valor.ID_AUDITORIA);
         const tableAudit = document.querySelector('#table_audit') as HTMLInputElement;
         const tableListaDeVerificacion = document.querySelector('#formListaDeVerficacion') as HTMLInputElement;
         tableAudit.style.display = "none";

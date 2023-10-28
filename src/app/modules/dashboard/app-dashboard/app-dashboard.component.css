@@ -131,7 +131,7 @@
 }
 
 .mainContainer {
-  /*background-color: var(--color-wallpaper, #f6f8f9);*/
+  /* background-color: var(--color-wallpaper, #f6f8f9); */
   display: flex;
   width: 100vw;
   height: 91vh;
@@ -404,7 +404,12 @@ label {
 .oculto {
   display: none;
 }
-
+h4 {
+  color: white;
+  font-weight: bold;
+  font-size: 14px;
+  margin: 1vh 0 0.5vh 0
+}
 .close {
   display: none;
 }

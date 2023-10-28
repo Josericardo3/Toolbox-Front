@@ -68,7 +68,8 @@ export class AppTarjetasComponent implements OnInit, AfterViewInit {
   completarFormulario() { 
     let valor = '';
     let tipo = '';
-  
+    let otroValor = '';
+    
     if (this.selectedOption.value === 'respuestaCorta') {
       valor = this.form.get('respuestaCorta').value.toString();
       tipo = 'respuestaCorta';
@@ -77,45 +78,43 @@ export class AppTarjetasComponent implements OnInit, AfterViewInit {
       tipo = 'respuestaLarga';
     } else if (this.selectedOption.value === 'radioButton') {
       const opcion1Radio = this.form.get('opcion1Radio').value.toString();
-      const otroRadio = this.form.get('otroRadio').value.toString();
       const opcionesRadioArray = this.form.get('opcionesRadio') as FormArray;
       const opcionesValores = opcionesRadioArray.controls.map(control => control.value.toString());  
-      
+  
       // Verificar si la primera opción está vacía antes de concatenar
       if (opcion1Radio) {
         valor = opcion1Radio;
       }
-      if (otroRadio) {
-        valor += ';' + otroRadio;
+      if (this.showOtro) {
+        otroValor = 'otroRadio';
       }
       if (opcionesValores.length > 0) {
         valor += ';' + opcionesValores.join(';');
       }
-      
+        
       tipo = 'radioButton';
     } else if (this.selectedOption.value === 'checkbox') {
       const opcion1Checkbox = this.form.get('opcion1Checkbox').value.toString();
-      const otroCheckbox = this.form.get('otroCheckbox').value.toString();
       const opcionesCheckboxArray = this.form.get('opcionesCheckbox') as FormArray;
       const opcionesValores = opcionesCheckboxArray.controls.map(control => control.value.toString());  
-      
+  
       // Verificar si la primera opción está vacía antes de concatenar
       if (opcion1Checkbox) {
         valor = opcion1Checkbox;
       }
-      if (otroCheckbox) {
-        valor += ';' + otroCheckbox;
+      if (this.showOtro) {
+        otroValor = 'otroCheckbox';
       }
       if (opcionesValores.length > 0) {
         valor += ';' + opcionesValores.join(';');
       }
-      
+        
       tipo = 'checkbox';
     } else if (this.selectedOption.value === 'desplegable') {
       const desplegableOpcion1 = this.form.get('desplegableOpcion1').value.toString();
       const opcionesDesplegableArray = this.form.get('opcionesDesplegable') as FormArray;
       const opcionesValores = opcionesDesplegableArray.controls.map(control => control.value.toString());  
-      
+  
       // Verificar si la primera opción está vacía antes de concatenar
       if (desplegableOpcion1) {
         valor = desplegableOpcion1;
@@ -123,69 +122,23 @@ export class AppTarjetasComponent implements OnInit, AfterViewInit {
       if (opcionesValores.length > 0) {
         valor += ';' + opcionesValores.join(';');
       }
-      
+        
       tipo = 'desplegable';
     }
+  
+    const finalValor = valor + (valor && otroValor ? ';' : '') + otroValor;
   
     return {
         "ID_MAE_ENCUESTA_PREGUNTA": 0,
         "FK_MAE_ENCUESTA": 0,
         "DESCRIPCION": this.form.get('pregunta').value.toString(),
         "TIPO": tipo.toString(),
-        "VALOR": valor,
+        "VALOR": finalValor,
         "OBLIGATORIO": this.form.get('obligatorio').value,
     };
   }
-    
-
-  // completarFormulario() { 
-  //   let valor = '';
-  //   let tipo = '';
-
-  //   if (this.selectedOption.value === 'respuestaCorta') {
-  //     valor = this.form.get('respuestaCorta').value.toString();
-  //     tipo = 'respuestaCorta';
-  //   } else if (this.selectedOption.value === 'respuestaLarga') {
-  //     valor = this.form.get('respuestaLarga').value.toString();
-  //     tipo = 'respuestaLarga';
-  //   } else if (this.selectedOption.value === 'radioButton') {
-  //     const opcion1Radio = this.form.get('opcion1Radio').value.toString();
-  //     const otroRadio = this.form.get('otroRadio').value.toString();
-  //     const opcionesRadioArray = this.form.get('opcionesRadio') as FormArray;
-  //     const opcionesValores = opcionesRadioArray.controls.map(control => control.value.toString());  
-  //     valor = [opcion1Radio, otroRadio, ...opcionesValores].join(';');
-  //     tipo = 'radioButton';
-  //   } else if (this.selectedOption.value === 'checkbox') {
-  //     const opcion1Checkbox = this.form.get('opcion1Checkbox').value.toString();
-  //     const otroCheckbox = this.form.get('otroCheckbox').value.toString();
-  //     const opcionesCheckboxArray = this.form.get('opcionesCheckbox') as FormArray;
-  //     const opcionesValores = opcionesCheckboxArray.controls.map(control => control.value.toString());  
-  //     valor = [opcion1Checkbox, otroCheckbox, ...opcionesValores].join(';');
-  //     tipo = 'checkbox';
-  //   } else if (this.selectedOption.value === 'desplegable') {
-  //     const desplegableOpcion1 = this.form.get('desplegableOpcion1').value.toString();
-  //     const opcionesDesplegableArray = this.form.get('opcionesDesplegable') as FormArray;
-  //     const opcionesValores = opcionesDesplegableArray.controls.map(control => control.value.toString());  
-  //     valor = [desplegableOpcion1, ...opcionesValores].join(';');
-  //     tipo = 'desplegable';
-  //   }
-
-  //   return {
-  //       "ID_MAE_ENCUESTA_PREGUNTA": 0,
-  //       "FK_MAE_ENCUESTA": 0,
-  //       "DESCRIPCION": this.form.get('pregunta').value.toString(),
-  //       "TIPO": tipo.toString(),
-  //       "VALOR": valor,
-  //       "OBLIGATORIO": this.form.get('obligatorio').value,
-  //   };
-  // }
-
-  eliminarInput(controlName: string, index: number) {
-    const controlArray = this.form.get(controlName) as FormArray;
-    controlArray.removeAt(index);
-
-  }
   
+
   toggleOptions() {
     this.showOptions = !this.showOptions;
   }
@@ -209,6 +162,29 @@ export class AppTarjetasComponent implements OnInit, AfterViewInit {
   agregarOtro(){
     this.showOtro = !this.showOtro;
   }
+  // agregarOtro() {
+  //   this.showOtro = true;
+  // }
+  
+  // agregarOtro() {
+  //   if (this.selectedOption.value === 'radioButton') {
+  //     this.showOtroRadio = true;
+  //     // this.form.get('otroRadio').setValue('otroRadio');
+  //   } else if (this.selectedOption.value === 'checkbox') {
+  //     this.showOtroCheckbox = true;
+  //     // this.form.get('otroCheckbox').setValue('otroCheckbox');
+  //   }
+  // }
+  
+  removeOtro(optionType: string) {
+    if (optionType === 'radioButton') {
+        this.form.get('otroRadio').setValue('');
+        this.showOtro = false;
+    } else if (optionType === 'checkbox') {
+        this.form.get('otroCheckbox').setValue('');
+        this.showOtro = false;
+    }
+}
 
   get opcionesRadio(): FormArray {
     return this.form.get('opcionesRadio') as FormArray;

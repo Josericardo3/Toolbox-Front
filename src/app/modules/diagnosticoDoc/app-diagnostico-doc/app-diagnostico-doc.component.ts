@@ -307,7 +307,7 @@ export class AppDiagnosticoDocComponent implements OnInit {
                 foundObject.CUMPLE_PARCIAL = values.CP;
                 foundObject.NO_APLICA = values.NA;
                 var sumaTotal = values.C + values.NC + values.CP + values.NA;
-                var sumaCumple = values.C + values.CP;
+                var sumaCumple = values.C ;
                 var porctotal = (sumaCumple / sumaTotal) * 100;
                 foundObject.PORC_CUMPLE = porctotal.toFixed(2);
                 count++;
@@ -726,7 +726,7 @@ export class AppDiagnosticoDocComponent implements OnInit {
                 { text: item.NO_CUMPLE, alignment: 'center' },
                 { text: item.CUMPLE_PARCIAL, alignment: 'center' },
                 { text: item.CUMPLE, alignment: 'center' },
-                { text: item.PORC_CUMPLE, alignment: 'center' }
+                { text: item.PORC_CUMPLE+"%", alignment: 'center' }
               ]),
               [
                 { text: 'TOTAL', style: ['tituloDinamico'] },
@@ -734,7 +734,7 @@ export class AppDiagnosticoDocComponent implements OnInit {
                 { text: this.totales.NO_CUMPLE.toFixed(0), alignment: 'center' },
                 { text: this.totales.CUMPLE_PARCIAL.toFixed(0), alignment: 'center' },
                 { text: this.totales.CUMPLE.toFixed(0), alignment: 'center' },
-                { text: ((this.totales.CUMPLE + this.totales.CUMPLE_PARCIAL) / (this.totales.NO_APLICA + this.totales.NO_CUMPLE + this.totales.CUMPLE + this.totales.CUMPLE_PARCIAL)).toFixed(0) + '%', alignment: 'center' }
+                { text: ((this.totales.CUMPLE)*100 / (this.totales.NO_APLICA + this.totales.NO_CUMPLE + this.totales.CUMPLE + this.totales.CUMPLE_PARCIAL)).toFixed(0) + '%', alignment: 'center' }
               ]
             ],
           },

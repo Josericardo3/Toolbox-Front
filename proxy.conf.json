@@ -1,6 +1,6 @@
 {
     "/api/*":{
-    "target":"https://cajadeherramientasqaapi.mincit.gov.co",
+    "target":"https://cajadeherramientasqa.mincit.gov.co/api",
     "secure":false,
     "logLevel":"debug"
     }

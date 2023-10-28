@@ -226,6 +226,12 @@ export class AppActividadesComponent {
       this.arrayStatus = data.filter((e: any) => e.ITEM != 0);
     })
   }
+  recibirNoticias: boolean = false;
+
+  onChangeCheckbox(event: any) {
+    this.recibirNoticias = event.target.checked;
+    
+  }
 
   //**NUEVO REGISTRO**
   fnNewRecord() {
@@ -255,7 +261,8 @@ export class AppActividadesComponent {
         FECHA_INICIO: this.inicioActivity,
         FECHA_FIN: this.finActivity,
         TIPO_ACTIVIDAD: this.activityType || "Mejora Continua",
-        ESTADO_PLANIFICACION: this.selectedState
+        ESTADO_PLANIFICACION: this.selectedState, 
+        ENVIO_CORREO: this.recibirNoticias
       }
 
       this.ApiService.postNewRecord(request).subscribe((data) => {

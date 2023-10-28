@@ -52,7 +52,7 @@ export class RecoveryComponent implements OnInit {
     if(!!this.correo){
       this.ApiService.sendEmailRecovery(this.correo).subscribe(
         (data: any) => {
-          this.mostrarFormulario2 = true;
+          this.router.navigate(['/recoveryformulario']);
         }
       )
     }else{

@@ -26,7 +26,7 @@
                   <div >
                     <!-- *ngFor="let requisito of requisitos; let i=index" [formGroupName]="i" -->
                     <label for="titulo" class="label-auditor">Requisito *:</label>
-                    <input required appLetras type="text" id="responsable" class="form-control"  style="font-family:Arial,FontAwesome" formControlName="REQUISITO" placeholder="&#xf06e; Evidencia">
+                    <input required appLetras type="text" id="requisito" class="form-control"  style="font-family:Arial,FontAwesome" formControlName="REQUISITO" placeholder="&#xf06e; Evidencia">
                
                     <label for="titulo" class="label-auditor">Posible evidencia *:</label>
                     <input required appLetras type="text" id="responsable" class="form-control" formControlName="EVIDENCIA"  style="font-family:Arial,FontAwesome" placeholder="&#xf303; Posible evidencia">
@@ -41,7 +41,7 @@
                       <option value="C">Conforme</option>
                     </select>
                     <label for="descripcion" class="label-auditor">Observaciones/Comentarios/Notas de auditor :</label>
-                    <textarea type="text" style="height: 61px" class="form-control"  style="font-family:Arial,FontAwesome" placeholder="&#xf328; Escriba su observación"
+                    <textarea id="observacion" type="text" style="height: 61px" class="form-control"  style="font-family:Arial,FontAwesome" placeholder="&#xf328; Escriba su observación"
                     formControlName="OBSERVACION"></textarea>
                   </div >
                 </div >

@@ -251,6 +251,16 @@ span{
     color: red;
     margin: 0 0 2vh 0;
 }
+
+.notificacion-noticias{
+    display: flex;
+    align-items: center;
+}
+.notificacion-noticias input{
+    width: 21px;
+    margin: 3px;
+}
+
 :host ::ng-deep .multiselect-dropdown .dropdown-btn {
 
     color: #000000 !important;
@@ -341,6 +351,10 @@ span{
         max-width: 100%;
         height: auto;
         /* Mantiene la proporción de la imagen */
+    }
+    .notificacion-noticias input{
+        width: 21px;
+        margin: 3px;
     }
 }
 
