@@ -12,6 +12,7 @@ import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { ApiService } from 'src/app/servicios/api/api.service';
 import { ModalService } from 'src/app/messagemodal/messagemodal.component.service';
 import { ColorLista } from 'src/app/servicios/api/models/color';
+import { Console } from 'console';
 
 @Component({
   selector: 'app-app-lista-de-verificacion',
@@ -145,9 +146,10 @@ export class AppListaDeVerificacionComponent {
   }
 
   recibirValorModal(valor: any) {
-
     this.showTable = true; // Mostrar tabla
     this.valueRequired.push(valor);
+
+
     for (let i = 0; i < this.valueRequired.length; i++) {
       if (this.valueRequired[i].HALLAZGO === "OBS") {
         this.valueRequired[i].HALLAZGO = 'Observación';
@@ -350,7 +352,6 @@ export class AppListaDeVerificacionComponent {
   }
 
   saveFormVerificacion() {
-
     for (let i = 0; i < this.valueRequired.length; i++) {
       this.valueRequired[i].fK_ID_PROCESO = this.idProceso;
       this.valueRequired[i].PREGUNTA = this.valueRequired[i].formPreguntas.toString();
@@ -398,7 +399,7 @@ export class AppListaDeVerificacionComponent {
   }
 
   generateListaDeAuditoria(request) {
-
+    console.log(request);
     const docDefinition: any = {
       pageMargins: [30, 30, 30, 30],
       content: [
@@ -434,13 +435,13 @@ export class AppListaDeVerificacionComponent {
                 { text: 'Fecha de auditoría', style: ['tituloDinamico'] },
                 { text: this.selectedAuditoria?.FECHA_AUDITORIA, colSpan: 1, },
                 { text: 'Norma(s) a auditar' },
-                { text: this.selectedAuditoria.PROCESOS[this.indexDetalle].NORMAS_DESCRIPCION},
+                { text: localStorage.getItem('normaSelected')},
               ],
               [
                 { text: 'Nombre auditor', style: ['tituloDinamico'] },
                 { text: this.selectedAuditoria.AUDITOR_LIDER, colSpan: 1, },
                 { text: 'Proceso(s) / Actividad / Requisito a auditar ' },
-                { text: this.selectedAuditoria.PROCESOS[this.indexDetalle].PROCESO_DESCRIPCION },
+                { text: request.REQUISITOS[this.indexDetalle].REQUISITO.TITULO },
               ],
               [
                 { text: 'Nombre líder(es) de proceso(s) a auditar ', style: ['tituloDinamico'] },
@@ -506,7 +507,7 @@ export class AppListaDeVerificacionComponent {
               ],
               ...this.valueRequired.map(requisito =>
                 [
-                  { text: requisito.REQUISITO, style: ['columna'] },
+                  { text: request.REQUISITOS[this.indexDetalle].REQUISITO.TITULO, style: ['columna'] },
                   { text: requisito.formPreguntas.flatMap(e => e).toString(), style: ['columna'] },
                   { text: requisito.EVIDENCIA, style: ['columna'] },
                   { text: requisito?.HALLAZGO == 'NC' ? 'X' : '', style: ['columna'] },
@@ -567,7 +568,6 @@ export class AppListaDeVerificacionComponent {
   //Detalle
    indexDetalle: number;
    recibirValorDetalle(valor) {
- 
     // indice del proceso seleccionado enviado del modal del detalle 
     this.indexDetalle = valor.index; 
     this.ApiService.getAuditorias(valor.ID_AUDITORIA)

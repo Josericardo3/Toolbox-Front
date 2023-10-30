@@ -71,7 +71,7 @@
         <div class="subForm" *ngIf="option != 'cumple'">
           <div class="subContainerform">
             <label class="adicionarLabel">Fecha para la ejecución</label>
-            <input id="fecha" type="date" class="adicionarInput" formControlName="fecha" [(ngModel)]="editarCaracteristica.FECHA_EJECUCION">
+            <input id="fecha" type="date" class="adicionarInput" formControlName="fecha" [(ngModel)]="editarCaracteristica.FECHA_EJECUCION" [min]="minDate">
           </div>
           <div class="subContainerform">
             <label for="responsable" class="adicionarLabel">Responsable de ejecución</label>

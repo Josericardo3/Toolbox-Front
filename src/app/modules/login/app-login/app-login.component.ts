@@ -214,7 +214,6 @@ export class AppLoginComponent implements OnInit {
                       this.router.navigate(["/dashboard"]);
                     }
                   }
-                  debugger;
                 }
               );
             } else {

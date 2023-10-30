@@ -50,6 +50,7 @@ export class MejoraaContinuaComponent {
     this.ApiService.getMejoraContinua().subscribe((data) => {
       this.rolessArray = data;
       this.dataInitial = data;
+      this.rolessArray.reverse();
       //paginado
       const totalPag = data.length;
       this.totalPaginas = Math.ceil(totalPag / 7);

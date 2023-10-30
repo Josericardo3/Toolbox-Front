@@ -16,6 +16,7 @@ export class AppMapaColombiaComponent implements OnInit {
   selectedItems: any[] = [];
   dropdownSettings: IDropdownSettings;
   searchText: string = '';
+  dropdownListCategoria: any[] = [];
 
   dropdownListNorma: any[] = [];
   selectedItemsNorma: any[] = [];
@@ -23,6 +24,7 @@ export class AppMapaColombiaComponent implements OnInit {
 
   selectedAdmin: number[] = [];
   selectedNormas: number[] = [];
+  arrayListaCategoria: any[] = [];
 
   constructor(private api: ApiService) {}
 
@@ -30,6 +32,7 @@ export class AppMapaColombiaComponent implements OnInit {
     this.dibujarMapa();
     this.getSelectMultiplePST();
     this.getSelectMultipleNorma();
+    this.listarCategorias();
   }
 
   getFillColor(depto: string): string {
@@ -37,11 +40,13 @@ export class AppMapaColombiaComponent implements OnInit {
     if (firstLetter >= 'a' && firstLetter <= 'd') {
       return '#068460'; // Color para departamentos de la A a la D
     } else if (firstLetter >= 'e' && firstLetter <= 'm') {
-      return '#55B855'; // Color para departamentos de la E a la M
-    } else if (firstLetter >= 'n' && firstLetter <= 'z') {
-      return '#83D083'; // Color para departamentos de la N a la Z
-    } else {
-      return '#A1E8A1'; // Color por defecto para otros departamentos
+      return '#FFA500'; // Color para departamentos de la E a la M
+    } else if (firstLetter >= 'n' && firstLetter <= 'p') {
+      return '#FFFF00'; // Color para departamentos de la N a la Z
+    } else if ( firstLetter >= 'p' && firstLetter <= 'z') {
+      return '#FF0000'; // Color por defecto para otros departamentos
+    } else{
+      return '';
     }
   }
 
@@ -56,7 +61,7 @@ export class AppMapaColombiaComponent implements OnInit {
 
     const projection = d3
       .geoMercator()
-      .center([-74, 4])
+      .center([-75, 4])
       .scale(1700)
       .translate([width / 2, height / 2]);
 
@@ -117,9 +122,9 @@ export class AppMapaColombiaComponent implements OnInit {
           .style('fill', 'black')
           .style('pointer-events', 'none');
         const legendData = [
-          { label: 'Bajo', color: '#A1E8A1', min: 0, max: 100 },
-          { label: 'Medio', color: '#83D083', min: 101, max: 500 },
-          { label: 'Alto', color: '#55B855', min: 501, max: 1000 },
+          { label: 'Bajo', color: '#FF0000', min: 0, max: 100 },
+          { label: 'Medio', color: '#FFA500', min: 101, max: 500 },
+          { label: 'Alto', color: '#FFFF00', min: 501, max: 1000 },
           { label: 'Muy Alto', color: '#068460', min: 1001, max: 2000 }
         ];
         this.dibujarLeyenda(legendData);
@@ -183,11 +188,12 @@ export class AppMapaColombiaComponent implements OnInit {
 
   getSelectMultipleNorma() {
     this.api.getNormaSelect().subscribe((data) => {
-      this.dropdownListNorma = data;
-      this.dropdownListNorma = data.map((item) => {
+      this.dropdownListNorma = data.filter((item, index, self) =>
+        self.findIndex((i) => i.NORMA === item.NORMA) === index
+      ).map((item) => {
         return {
-          id: item.ID_NORMA, // Campo único de cada elemento
-          nombre: item.NORMA, // Campo que se mostrará en el dropdown
+          id: item.ID_NORMA,
+          nombre: item.NORMA,
         };
       });
     });
@@ -203,6 +209,11 @@ export class AppMapaColombiaComponent implements OnInit {
       allowSearchFilter: true,
     };
   }
+  listarCategorias() {
+    this.api.getListarCategoria().subscribe((data: any) => {
+      this.arrayListaCategoria = data;
+    })
+  }
 
   onItemSelect(item: any, dropdownId: string) {
     if (item && item.id && dropdownId === 'pst') {
@@ -212,6 +223,28 @@ export class AppMapaColombiaComponent implements OnInit {
       this.selectedNormas.push(item.id);
       console.log(item, this.selectedNormas);
     }
+    console.log(this.arrayListaCategoria);
+    const arrayFilter = this.arrayListaCategoria.filter((element: any) => {
+      return element.ID_NORMAS.some((norma: any) => this.selectedNormas.includes(norma.ID_NORMA));
+    });
+    this.dropdownListCategoria = arrayFilter.map(item => {
+      return {
+        id: item.ID_CATEGORIA_RNT,
+        nombre: item.CATEGORIA_RNT
+      };
+    });
+
+    //para los repetidos solo mostrar uno
+    const uniqueItems = this.dropdownListCategoria.reduce((accumulator, current) => {
+      const exists = accumulator.some(item => item.nombre === current.nombre);
+      if (!exists) {
+        accumulator.push(current);
+      }
+      return accumulator;
+    }, []);
+
+    this.dropdownListCategoria = uniqueItems;
+
   }
 
   onSelectAll(items: any[], dropdownId: string) {

@@ -52,7 +52,7 @@ export class AppAuditoriaPlanificacionComponent {
       auditor: ["", Validators.required],
       auditados: ["", Validators.required],
       observacion: [""],
-      normaTeam: ["", Validators.required],
+      requisito: ["", Validators.required],
       hora: ["", Validators.required],
       //tabs 1
       proceso: ["", Validators.required],
@@ -102,14 +102,14 @@ export class AppAuditoriaPlanificacionComponent {
  
   onNormaSelect() {
     let constante = this.formParent.get('norma').value;
+    let normaNombre = constante.NORMA
+    localStorage.setItem("NormaRequisito", normaNombre);
     const idNorma = constante ? constante.ID_NORMA : null;
     this.getRequerimientosNormas(idNorma);
   }
   
   saveForm() {
-  
     this.valueFormParent = this.formParent.value
-   
       for (let i = 0; i < this.valueFormParent.length; i++) {
       if(this.valueFormParent[i].proceso!='' && this.valueFormParent[i].proceso != undefined ){
           this.valueFormParent[i].TIPO_PROCESO = this.tipoProceso;
@@ -122,15 +122,13 @@ export class AppAuditoriaPlanificacionComponent {
           this.valueFormParent[i].TIPO_NORMA = this.tipoNorma;
           this.valueFormParent[i].NORMAS_DESCRIPCION = this.valueFormParent[i].norma;
          
-        } else{
-          this.valueFormParent[i].NORMAS_DESCRIPCION = this.valueFormParent[i].requisito;
-        }
+        } 
         if(this.valueFormParent[i].observacion){
           this.valueFormParent[i].OBSERVACION_PROCESO = this.valueFormParent[i].observacion;
         } else {
            this.valueFormParent[i].OBSERVACION_PROCESO = ''
         }
-       
+
       }
  
     //para enviar valor al padre 
@@ -177,7 +175,6 @@ export class AppAuditoriaPlanificacionComponent {
   
   
   onDateChange(event: any) {
-    debugger;
     const dateInitValue = this.formParent.get('fecha').value;    
     if (dateInitValue) {
       const inicioValue = new Date(dateInitValue);

@@ -1,10 +1,12 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { forEach } from 'lodash';
 import { getDate } from 'ngx-bootstrap/chronos/utils/date-getters';
 import * as pdfMake from 'pdfmake/build/pdfmake';
 import { ModalService } from 'src/app/messagemodal/messagemodal.component.service';
 import { ApiService } from 'src/app/servicios/api/api.service';
+import { AppListaDeVerificacionComponent } from '../../ListaDeVerificacion/app-lista-de-verificacion/app-lista-de-verificacion.component';
 
 
 class Pregunta {
@@ -33,6 +35,7 @@ export class AppPoliticaDesarrolloSostenibleComponent implements OnInit {
   showInput: boolean = false;
   quienComunica: any = [];
   preguntasRespuestasArray: any[] = []
+  minDate: string;
 
   constructor(
     private Message: ModalService,
@@ -52,6 +55,13 @@ export class AppPoliticaDesarrolloSostenibleComponent implements OnInit {
     this.fnListResponsible();
     this.usuario();
     this.getDataFor();
+
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = today.getMonth() + 1; // Los meses comienzan en 0
+    const day = today.getDate();
+
+    this.minDate = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
   }
 
   datosUsuario: any = [];
@@ -89,6 +99,8 @@ export class AppPoliticaDesarrolloSostenibleComponent implements OnInit {
   disablePDF: boolean = false;
   ubicación: string = '';
   idFormulario: number = 3;
+  dataGrilla: any;
+
   getDataFor() {
     this.api.getDataForm(this.idFormulario)
       .subscribe((response: any) => {
@@ -118,7 +130,9 @@ export class AppPoliticaDesarrolloSostenibleComponent implements OnInit {
               orden: Number(orden),
               preguntas: datosAgrupados[orden].map((e: any) => {
                 if (e.PREGUNTA === "¿Cuándo?") {
-                  e.RESPUESTA = e.RESPUESTA.trim() == "" ? "" : new Date(e.RESPUESTA);
+                  //e.RESPUESTA = e.RESPUESTA.trim() == "" ? "" : new Date(e.RESPUESTA);
+                  e.RESPUESTA = e.RESPUESTA;
+                  console.log(e.RESPUESTA);
                 }
                 return e;
               })
@@ -154,6 +168,10 @@ export class AppPoliticaDesarrolloSostenibleComponent implements OnInit {
               if (valor.RESPUESTA !== 'Página web' && valor.RESPUESTA !== 'Redes sociales') valor.OTRO_VALOR = valor.RESPUESTA;
               return valor;
             })
+            
+            this.dataGrilla = response.RESPUESTA_GRILLA;
+            //this.printCampos(this.dataGrilla);
+            //console.log(this.dataGrilla);
           });
         }
         else {  //no existe registro previo  "NUEVO"
@@ -194,6 +212,35 @@ export class AppPoliticaDesarrolloSostenibleComponent implements OnInit {
 
         }
       })
+  }
+
+  value1: string;
+  value2: string;
+  value3: string;
+  value4: string;
+
+  printCampos(data: any) {
+    let ordenPregunta1 = "¿Cómo se comunica la política?";
+    let ordenPregunta2 = "¿Quién comunica?";
+    let ordenPregunta3 = "¿Cuándo?";
+    let ordenPregunta4 = "¿Dónde estará disponible?";
+    let ind = 1;
+    
+    data.forEach(item => {
+      if (item.ORDEN > ind) ind = item.ORDEN;
+    })
+
+    let temporal1 = data.find(item => (item.PREGUNTA === ordenPregunta1 && item.ORDEN == ind));
+    let temporal2 = data.find(item => (item.PREGUNTA === ordenPregunta2 && item.ORDEN == ind));
+    let temporal3 = data.find(item => (item.PREGUNTA === ordenPregunta3 && item.ORDEN == ind));
+    let temporal4 = data.find(item => (item.PREGUNTA === ordenPregunta4 && item.ORDEN == ind));
+    this.value1 = temporal1.RESPUESTA;
+    this.value2 = temporal2.RESPUESTA;
+    this.value3 = temporal3.RESPUESTA;
+    this.value4 = temporal4.RESPUESTA;
+
+    console.log(ind);
+    //console.log(this.value1);
   }
 
   fnListResponsible() {
@@ -247,28 +294,27 @@ export class AppPoliticaDesarrolloSostenibleComponent implements OnInit {
         indice++;
       });
     });
+    let messageshow = '';
     this.api.saveForms(preguntasRequest)
       .subscribe((data: any) => {
         if (data.StatusCode === 200) {
-          //
-          //const responseGrilla = preguntasRequest;
-
-          console.log(preguntasRequest);
-          //const request1 = {
-          //  FK_ID_USUARIO_PST: parseInt(localStorage.getItem("Id")),
-          //  FK_ID_RESPONSABLE: parseInt(localStorage.getItem("Id")),
-          //  TIPO_ACTIVIDAD: "Taller de Política de Desarrollo Sostenibles",
-          //  DESCRIPCION: this.Observaciones + ' : ' + this.Acciones,
-          //  FECHA_INICIO: this.Fecha,
-          //  FECHA_FIN: this.Fecha,
-          //  ESTADO_PLANIFICACION: "Programado"
-          //}
-          //this.ApiService.postNewRecord(request1).subscribe((data) => {
-          //  //const title2 = "Registro exitoso";
-          //  //const message2 = "El registro se ha realizado exitosamente";
-          //  //this.Message.showModal(title2, message2);
-          //  messageshow = messageshow + ' y Planificacion';
-          //})
+          //console.log(preguntasRequest);
+          this.printCampos(this.dataGrilla);
+          const request1 = {
+            FK_ID_USUARIO_PST: parseInt(localStorage.getItem("Id")),
+            FK_ID_RESPONSABLE: parseInt(localStorage.getItem("Id")),
+            TIPO_ACTIVIDAD: "Taller de Política de Desarrollo Sostenibles",
+            DESCRIPCION: this.value1 + ' : ' + this.value4,
+            FECHA_INICIO: "10-08-2023",
+            FECHA_FIN: "10-08-2023",
+            ESTADO_PLANIFICACION: "En Proceso"
+          }
+          this.ApiService.postNewRecord(request1).subscribe((data) => {
+            //const title2 = "Registro exitoso";
+            //const message2 = "El registro se ha realizado exitosamente";
+            //this.Message.showModal(title2, message2);
+            messageshow = messageshow + ' y Planificacion';
+          })
 
           this.disablePDF = false;
           this.botonCancelar = false;

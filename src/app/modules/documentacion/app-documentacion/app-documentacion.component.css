@@ -68,6 +68,7 @@ i {
     width: 85vw;
     padding: 10px;
     cursor: pointer;
+    flex-direction: row !important;
 }
 
 .subtitulo,

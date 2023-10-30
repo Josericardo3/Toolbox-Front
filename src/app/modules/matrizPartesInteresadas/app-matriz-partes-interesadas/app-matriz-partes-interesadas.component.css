@@ -133,11 +133,11 @@ a {
 .subContainerform .adicionarInputSection{
     width: 30vw !important;
 }
-input.ng-invalid.ng-touched,
+/*input.ng-invalid.ng-touched,
 select.ng-invalid.ng-touched {
     border: solid 2px tomato !important;
     border-radius: 10px;
-  }
+  }*/
 
 tr th {
   text-align: center !important;

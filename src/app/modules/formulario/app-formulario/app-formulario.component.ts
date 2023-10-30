@@ -23,6 +23,7 @@ export class AppFormularioComponent implements OnInit{
   public form: FormGroup;
   selectedTabIndex: number = -1;
   isDisabled: boolean = true;
+  minDate: string;
 
   
   
@@ -83,6 +84,13 @@ export class AppFormularioComponent implements OnInit{
     this.setFormDisabledState();
     this.restaurarForm();
     this.isDisabled = true;
+
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = today.getMonth() + 1; // Los meses comienzan en 0
+    const day = today.getDate();
+    this.minDate = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+
   }
   //VALORES POR DEFECTO EN LOS CAMPOS DEL FORMULARIO(ULTIMA MODIFICACION DE DATOS EN LA BD)
   restaurarForm(){
@@ -233,7 +241,7 @@ export class AppFormularioComponent implements OnInit{
           DESCRIPCION: acciones,
           FECHA_INICIO: fechaCorregida,
           FECHA_FIN: fechaCorregida,
-          ESTADO_PLANIFICACION: "Programado",
+          ESTADO_PLANIFICACION: "En Proceso",
           ENVIO_CORREO: false
         
       }

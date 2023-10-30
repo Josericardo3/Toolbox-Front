@@ -8,18 +8,19 @@
         <div class="containerFiltros">
             <h4>Filtrar por:</h4>
             <div class="filtros">
-                <div class="select">
-                    <ng-multiselect-dropdown [placeholder]="'Seleccione por tipo de PST'" [settings]="dropdownSettings" 
-                    [data]="dropdownList" [ngModel]="selectedItems" (onSelect)="onItemSelect($event, 'pst')"
-                    (onSelectAll)="onSelectAll($event, 'pst')" (onDeSelect)="onDeSelect($event, 'pst')" 
-                    (onDeSelectAll)="onDeSelectAll($event, 'pst')"></ng-multiselect-dropdown>
-                </div>
-                <div class="select">
+                 <div class="select">
                     <ng-multiselect-dropdown [placeholder]="'Seleccione por norma'" [settings]="dropdownSettingsNorma" 
                     [data]="dropdownListNorma" [ngModel]="selectedItemsNorma" (onSelect)="onItemSelect($event, 'norma')"
                     (onSelectAll)="onSelectAll($event, 'norma')" (onDeSelect)="onDeSelect($event, 'norma')" 
                     (onDeSelectAll)="onDeSelectAll($event, 'norma')" style="margin-top:2vh;"></ng-multiselect-dropdown>
                 </div>
+                <div class="select">
+                    <ng-multiselect-dropdown [placeholder]="'Seleccione por Categoria'" [settings]="dropdownSettings" 
+                    [data]="dropdownListCategoria" [ngModel]="selectedItems" (onSelect)="onItemSelect($event, 'pst')"
+                    (onSelectAll)="onSelectAll($event, 'pst')" (onDeSelect)="onDeSelect($event, 'pst')" 
+                    (onDeSelectAll)="onDeSelectAll($event, 'pst')"></ng-multiselect-dropdown>
+                </div>
+               
             </div>
         </div>
         <svg id="mapa-colombia"></svg>

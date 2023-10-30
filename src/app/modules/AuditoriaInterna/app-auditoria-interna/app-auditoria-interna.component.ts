@@ -121,7 +121,6 @@ export class AppAuditoriaInternaComponent {
       const finValue = new Date(dateEndValue);
       const now = new Date();  
       const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-      debugger;
       if (finValue < inicioValue) {
         const title = "Registro no exitoso";
         const message = "Por favor verifique la fecha";
@@ -271,6 +270,7 @@ export class AppAuditoriaInternaComponent {
       criterio: this.formParent.get("criterioAuditoria")?.value,
       fechA_REUNION_APERTURA: this.formantDate(new Date(this.formParent.get("dateInit")?.value)),
       horA_REUNION_APERTURA: this.formParent.get("startTime")?.value,
+
       fechA_REUNION_CIERRE: this.formantDate(new Date(this.formParent.get("dateEnd")?.value)),
       horA_REUNION_CIERRE: this.formParent.get("endTime")?.value,
       fechA_AUDITORIA: this.getActualDate(),
@@ -297,6 +297,7 @@ export class AppAuditoriaInternaComponent {
   }
 
   generatePlanDeAuditoria(request) {
+    console.log(request);
     const docDefinition: any = {
       pageMargins: [30, 30, 30, 30],
       content: [
@@ -421,7 +422,7 @@ export class AppAuditoriaInternaComponent {
                   { text: requisito.fecha, style: ['columna'] },
                   { text: requisito.hora, style: ['columna'] },
                   { text: requisito.proceso? requisito.proceso : requisito.actividad, style: ['columna'] },
-                  { text: requisito.norma? requisito.norma: requisito.requisito, style: ['columna'] },
+                  { text: requisito.norma? requisito.norma: window.localStorage.getItem('NormaRequisito') + " " + requisito.requisito, style: ['columna'] },
                   { text: requisito.auditor, style: ['columna'] },
                   { text: requisito.auditados, style: ['columna'] }
                 ]
@@ -586,6 +587,7 @@ export class AppAuditoriaInternaComponent {
 
   newArray: any = [];
   recibirValor(valor: number) {
+    debugger;
     if (valor == - 1) {
       this.newArray = this.valueAuditoria.filter((element: any) => {
         return element !== this.indiceAEliminarAuditoria;

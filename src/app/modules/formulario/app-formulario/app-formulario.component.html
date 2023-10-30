@@ -67,8 +67,9 @@
                 <div class="subContainerformB">
                     <label class="estado">Fecha para la ejecución</label>
                     <input type="date" id="fecha" formControlName="fecha" class="estadoFormB" [attr.disabled]="isDisabled ? 'disabled' : null"
-                    [ngClass]="{'campo-desactivado': isDisabled}">
+                    [ngClass]="{'campo-desactivado': isDisabled}" [min]="minDate">
                 </div>
+            
                 <div class="subContainerformB">
                     <label class="estado">Estado</label>
                     <select name="estado" id="estado" formControlName="estado" class="estadoFormB" [attr.disabled]="isDisabled ? 'disabled' : null"
