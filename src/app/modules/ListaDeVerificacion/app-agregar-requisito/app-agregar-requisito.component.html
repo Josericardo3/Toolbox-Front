@@ -25,9 +25,13 @@
                     <!-- formArrayName="formRequisitos" -->
                   <div >
                     <!-- *ngFor="let requisito of requisitos; let i=index" [formGroupName]="i" -->
+                    
                     <label for="titulo" class="label-auditor">Requisito *:</label>
-                    <input required appLetras type="text" id="requisito" class="form-control"  style="font-family:Arial,FontAwesome" formControlName="REQUISITO" placeholder="&#xf06e; Evidencia">
-               
+                    <select class="select-process" id="requisito" formControlName="REQUISITO" style="width: 60%;">
+                      <option value="">Seleccionar</option>
+                      <option *ngFor="let requisito of requisitos" [value]="requisito.TITULO">{{ requisito.TITULO }}</option>
+                    </select>
+                    <br/>
                     <label for="titulo" class="label-auditor">Posible evidencia *:</label>
                     <input required appLetras type="text" id="responsable" class="form-control" formControlName="EVIDENCIA"  style="font-family:Arial,FontAwesome" placeholder="&#xf303; Posible evidencia">
      

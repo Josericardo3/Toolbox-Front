@@ -40,7 +40,6 @@ export class ModalDetalleComponent implements OnInit{
         this.HORA_REUNION_CIERRE = data.HORA_REUNION_CIERRE;
         this.FECHA_REUNION_APERTURA = data.FECHA_REUNION_APERTURA;
         this.PROCESOS = data.PROCESOS;
-        console.log(data, this.ALCANCE, data.ALCANCE, data.alcance)
       },
       error => {
         console.error(error);

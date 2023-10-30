@@ -63,13 +63,15 @@
                     ¿Cuándo?
                   </p>
                   <input bsDatepicker appFwCalendario type="text" maxlength="10" placement="bottom" class=" date-conte"
-                    #dp3="bsDatepicker" placeholder="DD-MM-YYYY" title="Inicio de actividad"
-                    fw_calendario ui-date-mask
-                    [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY',adaptivePosition: true, isAnimated: true, containerClass: 'theme-green'}"
-                    [(ngModel)]="pregunta.RESPUESTA" (ngModelChange)="dateInputChange(pregunta, $event)"  [disabled]="accionActivo!='guardar'"/>
+                         #dp3="bsDatepicker" placeholder="DD-MM-YYYY" title="Inicio de actividad"
+                         fw_calendario ui-date-mask
+                         [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY',adaptivePosition: true, isAnimated: true, containerClass: 'theme-green'}"
+                         [(ngModel)]="pregunta.RESPUESTA" (ngModelChange)="dateInputChange(pregunta, $event)" [disabled]="accionActivo!='guardar'" />
                   <i (click)="dp3.show()" class="fa-solid fa-calendar-days"
-                    style="color: #06543c;font-size: 22px;padding: 8px;" [attr.aria-expanded]="dp3.isOpen" >
+                     style="color: #06543c;font-size: 22px;padding: 8px;" [attr.aria-expanded]="dp3.isOpen">
                   </i>
+                  <!--<input id="fecha" type="date" class=" date-conte" formControlName="fecha" (ngModelChange)="dateInputChange(pregunta, $event)" [(ngModel)]="pregunta.RESPUESTA" [min]="minDate" [disabled]="accionActivo!='guardar'">-->
+
                   <p class="info">Responda según desee implementar.</p>
                 </div>
     

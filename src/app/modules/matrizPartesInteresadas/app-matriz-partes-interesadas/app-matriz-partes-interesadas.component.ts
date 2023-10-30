@@ -76,6 +76,7 @@ export class AppMatrizPartesInteresadasComponent implements OnInit {
   isChecked: boolean = false;
   mejoraContinua: number;
   id_colab_number: number;
+  minDate: string;
 
   constructor(
     private api: ApiService,
@@ -105,6 +106,13 @@ export class AppMatrizPartesInteresadasComponent implements OnInit {
     this.fnConsultMatrizPartesInteresadas();
     this.isEditarActivo = true;
     this.generarPDFActivo = true;
+
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = today.getMonth() + 1; // Los meses comienzan en 0
+    const day = today.getDate();
+
+    this.minDate = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
   }
   fnChangeEditarStatus(val: boolean) {
     this.isEditarActivo = val;
@@ -346,7 +354,7 @@ export class AppMatrizPartesInteresadasComponent implements OnInit {
             DESCRIPCION: this.Observaciones + ' : ' + this.Acciones,
             FECHA_INICIO: this.Fecha,
             FECHA_FIN: this.Fecha,
-            ESTADO_PLANIFICACION: "Programado"
+            ESTADO_PLANIFICACION: "En Proceso"
           }
           this.ApiService.postNewRecord(request1).subscribe((data) => {
             //const title2 = "Registro exitoso";

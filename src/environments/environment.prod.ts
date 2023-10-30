@@ -15,6 +15,5 @@ export const environment = {
   apiChart: 'https://quickchart.io/chart',
   // apiURL:'http://10.4.3.140:8050',
   // apiURL: 'https://www.toolbox.somee.com'
-  PageSizeOptions: [8, 16, 24],
-  PageSize: 8,
-}
+
+};

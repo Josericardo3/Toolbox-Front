@@ -93,11 +93,11 @@ ngOnInit(): void {
   this.colorTitle = JSON.parse(localStorage.getItem("color")).title;
   this.colorWallpaper = JSON.parse(localStorage.getItem("color")).wallpaper;
 
-  this.ApiService.validateCaracterizacion(id).subscribe((data: any)=>{
-    if(data === true){
-      this.router.navigate(['/dashboard']);
-    }
-    else{
+   this.ApiService.validateCaracterizacion(id).subscribe((data: any)=>{
+     if(data === true){
+       this.router.navigate(['/dashboard']);
+     }
+   else{
       this.formParent = this.formBuilder.group({});
       this.getCaracterizacion();
       this.getPreguntasOrdenadas();

@@ -126,7 +126,6 @@ export class AppAlcanceSGSComponent implements OnInit {
           }
         }
       })
-      console.log("asd",this.selectedCheckboxes);
     this.api.getDatosNormas(localStorage.getItem('idNormaSelected'))
       .subscribe((response: any) => {
         this.NormasArray = response;

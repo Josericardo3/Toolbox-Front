@@ -92,7 +92,7 @@ export class AppAvatarComponent {
     const idUsuario = window.localStorage.getItem('Id');
     this.ApiService.getUserAvatar(idUsuario).subscribe((data: any) => {
       this.userAvatar = data.FK_ID_TIPO_AVATAR;
-      this.userAvatarValue = this.userAvatar.toString();
+      this.userAvatarValue = this.userAvatar?.toString();
 
     })
   }
