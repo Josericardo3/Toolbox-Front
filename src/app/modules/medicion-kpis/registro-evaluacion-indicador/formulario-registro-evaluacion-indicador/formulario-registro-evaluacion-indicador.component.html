@@ -77,21 +77,26 @@
               <div>
                 <span class="dot-green"></span> >={{model.META}}  <span style="color:green">BUENO</span><br>
                 <span class="dot-yellow"></span> >={{model.SEMAFORIZACION}}  <span style="color:yellow">REGULAR</span><br>
-                <span class="dot-red"></span> <={{model.SEMAFORIZACION}}  <span style="color:red">MALO</span><br>
+                <span class="dot-red"></span> <{{model.SEMAFORIZACION}}  <span style="color:red">MALO</span><br>
               </div>
-              <br />
+              <h3>Variables</h3>
+            
               <div
                 class="col-md-2"
-                *ngFor="let item of model.VARIABLES_EVALUACION"
+                *ngFor="let item of model.VARIABLES_EVALUACION,let index=index"
               >
-              <div class="form-group">
-                  <label for="item.ID">{{ item.NOMBRE }}</label>
+              <div class="form-group" >
+                  <label for="item.ID_VARIABLE" class="truncated-text" [matTooltip]="item.NOMBRE">{{ item.NOMBRE }}</label>
+                  
                   <input
                     matInput
+                    
+                    [disabled]="item.NOMBRE=='100'?true:false"
+                    id="item.ID_VARIABLE_EVALUACION_INDICADOR-{{index}}"
                     type="text"
-                    class="form-control"
+                    class="form-control "
                     placeholder=""
-                    name="item.ID"
+                    name="item.ID_VARIABLE_EVALUACION_INDICADOR-{{index}}"
                     [(ngModel)]="item.VALOR"
                     (ngModelChange)="submitForm(formObjetivo)"
                   />
@@ -127,7 +132,7 @@
             <div class="col-md-12">
               <div class="col-md-3 ">
                 <div class="form-group">
-                  <label for="RESULTADO"></label>
+                  <label for="RESULTADO">Resultado</label>
                   <input
                     matInput
                     disabled
@@ -154,7 +159,7 @@
               </div>
               <div class="col-md-3 ">
                 <div class="from-group">
-                  <label for="META"></label>
+                  <label for="META">Meta </label>
                   <input
                   matInput
                   disabled
@@ -181,7 +186,7 @@
               </div>
               <div class="col-md-3 interlineado">
                 <div class="form-group">
-                  <label for="ESTADO"></label>
+                  <label for="ESTADO">Estado</label>
                   <input
                   matInput
                   disabled

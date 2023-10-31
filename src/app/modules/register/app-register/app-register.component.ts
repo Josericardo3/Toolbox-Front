@@ -124,7 +124,7 @@ export class AppRegisterComponent implements OnInit {
         validator: CustomValidators.comparePassword,
       },
     )
-    this.deshabilitarCampos(true);
+    this.deshabilitarCampos(false);
 
   }
   deshabilitarCampos(deshabilitar: boolean) {
@@ -320,7 +320,7 @@ export class AppRegisterComponent implements OnInit {
 
           this.registerForm.get('departamento').setValue('');
           this.registerForm.get('municipio').setValue('');
-          this.deshabilitarCampos(true);
+          this.deshabilitarCampos(false);
         }
         else {
           this.datosRnt = data;
@@ -410,11 +410,12 @@ export class AppRegisterComponent implements OnInit {
       FK_ID_TIPO_AVATAR: 1,
     }
     localStorage.setItem("newUser", 'yes')
-    const title = "Registro exitoso";
-    const message = "El registro se ha realizado exitosamente"
-    this.Message.showModal(title, message);
+
     return this.ApiService.createUser(request).subscribe((data: any) => {
       if (data.StatusCode === 201) {
+        const title = "Registro exitoso";
+        const message = "El registro se ha realizado exitosamente"
+        this.Message.showModal(title, message);
         this.router.navigate(['/']);      
       }
     })

@@ -6,6 +6,7 @@ import { ModalService } from 'src/app/messagemodal/messagemodal.component.servic
 import { ApiService } from 'src/app/servicios/api/api.service';
 import { ModalPadreService } from 'src/app/servicios/api/modal.padre.services';
 import { FormService } from 'src/app/servicios/form/form.service';
+import { EMatrizRequisitosLegalesComponent } from '../../e-matriz-requisitos-legales/e-matriz-requisitos-legales.component';
 
 @Component({
   selector: 'app-app-formulario',
@@ -19,12 +20,15 @@ export class AppFormularioComponent implements OnInit{
   @Input() data: any;
   //PARA QUE SE MUESTREN LOS BOTONES DE EDITAR Y MODIFICAR
   @Input() showBotones: boolean = false;
+  @Input() showBotonEliminar: boolean = false;
   datos: any = [];
   public form: FormGroup;
   selectedTabIndex: number = -1;
   isDisabled: boolean = true;
   minDate: string;
 
+  //BOTON ELIMINAR
+  matrizAEliminar: number;
   
   
 
@@ -58,14 +62,17 @@ export class AppFormularioComponent implements OnInit{
     private Message: ModalService,
     private formService: FormService,
     private modalPadre: ModalPadreService,
+    private EMatrizRequisitosLegales: EMatrizRequisitosLegalesComponent,
 
   ) {}
 
   ngOnInit() {
     
     this.estadoFormulario = this.formService.obtenerEstadoFormulario(this.selectedMatrizId);  
+    
     // //REMOVER ARRAY TEMPORAL
     localStorage.removeItem('MiArrayTemporal');
+    ;
  debugger;
     this.form = this.formBuilder.group({
       estadoCumplimiento:[this.estadoFormulario?.ESTADO_CUMPLIMIENTO ||''],
@@ -84,13 +91,14 @@ export class AppFormularioComponent implements OnInit{
     this.setFormDisabledState();
     this.restaurarForm();
     this.isDisabled = true;
-
+    console.log("gian2", this.data);
+    console.log("giancito", this.selectedMatrizId);
     const today = new Date();
     const year = today.getFullYear();
     const month = today.getMonth() + 1; // Los meses comienzan en 0
     const day = today.getDate();
-    this.minDate = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
 
+    this.minDate = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
   }
   //VALORES POR DEFECTO EN LOS CAMPOS DEL FORMULARIO(ULTIMA MODIFICACION DE DATOS EN LA BD)
   restaurarForm(){
@@ -112,6 +120,8 @@ export class AppFormularioComponent implements OnInit{
 
 
   onSubmit(idMatriz: number,event:any) {  
+    console.log("yaaaa", idMatriz)
+    console.log("felix", this.selectedMatrizId);
     var array:any=[];
     var datosLocalStorage=localStorage.getItem('MiArrayTemporal');
     if(datosLocalStorage){
@@ -212,15 +222,16 @@ export class AppFormularioComponent implements OnInit{
       const data2 ={
         
         ID_USUARIO: window.localStorage.getItem('Id'),
+        RESPONSABLE: nombrePlanCumplimiento,
         DESCRIPCION: acciones,
         NTC: "",
         REQUISITOS: "",
         TIPO: "Matriz Legal",
         ESTADO: estado,
         FECHA_INICIO: fechaEjecucion,
-        FECHA_FIN: "",
+        FECHA_FIN: fechaEjecucion
       }
-      console.log(data2)
+      console.log("esto se envia a la API MEJORA: ", data2);
       this.ApiService.postMejoraContinua(data2).subscribe((savedData2: any) => {
         console.log('Se guardó correctamente: 2', savedData2);
         // Update the form values with the latest data
@@ -266,6 +277,76 @@ export class AppFormularioComponent implements OnInit{
     });
     
   }
+
+  eliminarLey(idMatriz: number,event:any){
+    
+    console.log("MATRIZ A BORRAR: ", this.selectedMatrizId);
+    console.log("MATRIZ A BORRAR: ", idMatriz);
+    this.matrizAEliminar = this.selectedMatrizId;
+    console.log("primer guardado: ", this.matrizAEliminar)
+    console.log("yaaaa", idMatriz)
+    console.log("felix", this.selectedMatrizId);
+    var array:any=[];
+    var datosLocalStorage=localStorage.getItem('MiArrayTemporalELIMINAR');
+    if(datosLocalStorage){
+        this.arrayIdMatriz.push(idMatriz);
+  
+        array=datosLocalStorage.split(',');
+  
+  
+        array.push(idMatriz);
+        localStorage.setItem('MiArrayTemporalELIMINAR', array);
+        console.log('arayyy2', array);
+    }
+    else{
+      this.arrayIdMatriz.push(idMatriz);
+      localStorage.setItem('MiArrayTemporalELIMINAR', this.arrayIdMatriz);
+      array.push(idMatriz);
+      console.log('arayyy1', array);
+    }
+    
+  }
+  
+  confirmDelete(){
+    
+    console.log("segundo guardado: ", this.matrizAEliminar)
+    var datosLocalStorage=localStorage.getItem('MiArrayTemporalELIMINAR');
+    var arrayID = datosLocalStorage.split(',');
+    arrayID.forEach(element => {
+
+      this.ApiService.deleteLey(element).subscribe((dataLey)=>{
+        console.log("element: ", element);
+          const title = "Eliminación exitosa";
+          const message = "El registro se ha eliminado exitosamente"
+          this.Message.showModal(title, message);
+          this.EMatrizRequisitosLegales.separarCategoria();
+          
+      
+      console.log("MATRIZ A BORRAR: THIS.SELECTEDMATRIZ ", this.selectedMatrizId);
+      
+    })
+      
+      
+      })
+      
+    
+      localStorage.removeItem('MiArrayTemporalELIMINAR');
+
+    
+
+  }
+  cancelDelete(){
+    localStorage.removeItem('MiArrayTemporalELIMINAR');
+    
+
+  }
+
+
+
+
+
+
+
 
   llenar(idMatriz:any){
     this.arrayIdMatriz.push(idMatriz);
@@ -338,6 +419,7 @@ export class AppFormularioComponent implements OnInit{
       this.arrayListResponsible = data;
     })
   }
+  
   
   
 }

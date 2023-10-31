@@ -121,6 +121,7 @@ export class AppMatrizPartesInteresadasComponent implements OnInit {
     this.ApiService.getDataParteInteresada().subscribe((data) => {
       this.rolessArray = data;
       this.dataInitial = data;
+      this.rolessArray.reverse();
       //paginado
       const totalPag = data.length;
       this.totalPaginas = Math.ceil(totalPag / 7);
@@ -243,16 +244,27 @@ export class AppMatrizPartesInteresadasComponent implements OnInit {
     this.editarCaracteristica.NECESIDAD = this.form.get('necesidades').value;
     this.editarCaracteristica.EXPECTATIVA = this.form.get('expectativas').value;
     this.editarCaracteristica.ESTADO_DE_CUMPLIMIENTO = this.form.get('estadoCumplimiento').value;
-    this.editarCaracteristica.OBSERVACIONES = this.form.get('observaciones').value;
-    this.editarCaracteristica.ACCIONES_A_REALIZAR = this.form.get('acciones').value;
-    this.editarCaracteristica.RESPONSABLE = this.form.get('responsable').value;
-    this.editarCaracteristica.ESTADO_ABIERTO_CERRADO = this.form.get('estado').value;
-    this.editarCaracteristica.FECHA_EJECUCION = this.form.get('fecha').value;
+    if (this.option == "cumple") {
+      this.editarCaracteristica.OBSERVACIONES = '-';
+      this.editarCaracteristica.ACCIONES_A_REALIZAR = '-';
+      this.editarCaracteristica.RESPONSABLE = '-';
+      this.editarCaracteristica.ESTADO_ABIERTO_CERRADO = '-';
+      this.editarCaracteristica.FECHA_EJECUCION = '-';
+    }
+    else {
+      this.editarCaracteristica.OBSERVACIONES = this.form.get('observaciones').value;
+      this.editarCaracteristica.ACCIONES_A_REALIZAR = this.form.get('acciones').value;
+      this.editarCaracteristica.RESPONSABLE = this.form.get('responsable').value;
+      this.editarCaracteristica.ESTADO_ABIERTO_CERRADO = this.form.get('estado').value;
+      this.editarCaracteristica.FECHA_EJECUCION = this.form.get('fecha').value;
+    }
     if (this.isChecked==true)
       this.editarCaracteristica.MEJORA_CONTINUA = 1;
     else
       this.editarCaracteristica.MEJORA_CONTINUA = 0;
+
     
+
     this.ApiService.putMatrizPartesInteresadas(this.editarCaracteristica).subscribe((data) => {
       const title = "Actualizacion exitosa.";
       const message = "El registro se ha realizado exitosamente";

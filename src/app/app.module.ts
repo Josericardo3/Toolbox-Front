@@ -130,8 +130,9 @@ import { DetalleRegistroEvaluacionIndicadorComponent } from "./modules/medicion-
 import { GraficoIndicadoresEvaluacionComponent } from "./modules/medicion-kpis/indicadores-kpis/grafico-indicadores-evaluacion/grafico-indicadores-evaluacion.component";
 import { RecordatoriosKpisComponent } from "./modules/medicion-kpis/recordatorios-kpis/recordatorios-kpis.component";
 import { FormularioRecordatorioKpisComponent } from "./modules/medicion-kpis/recordatorios-kpis/formulario-recordatorio-kpis/formulario-recordatorio-kpis.component";
-import { CargarDocumentoComponent } from "./modules/evidencia/cargar-documento/cargar-documento.component";
+import { AppDeleteLeyComponent } from "./modules/e-matriz-requisitos-legales/app-delete-ley/app-delete-ley.component";
 import { RecoveryFormularioComponent } from "./recovery/app-recovery/recoveryformulario/recoveryformulario.component";
+import { CargarDocumentoComponent } from "./modules/evidencia/cargar-documento/cargar-documento.component";
 
 @NgModule({
   declarations: [
@@ -155,6 +156,8 @@ import { RecoveryFormularioComponent } from "./recovery/app-recovery/recoveryfor
     RecoveryFormularioComponent,
     ModalComponent,
     EMatrizRequisitosLegalesComponent,
+    //DELETE LEY
+    AppDeleteLeyComponent,
     AppAuditoriaInternaComponent,
     AppNuevoPlanDeAuditoriaComponent,
     AppListaDeVerificacionComponent,

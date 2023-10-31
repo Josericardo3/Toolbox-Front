@@ -5,7 +5,7 @@
         <h1>Evidencia e Implementación</h1>
         <app-app-header-arrow-left class="arrow"></app-app-header-arrow-left>
     </div>
-        <div class="div" *ngFor="let nivel of jsonData.Niveles">
+        <div class="div" *ngFor="let nivel of jsonData?.Niveles">
             <div class="titulo" (click)="toggleSection(nivel.Nombre)"  [ngClass]="{'verde': nivel.Mostrar}">
                 <h3>{{ nivel.Orden.length > 0 ? nivel.Orden + '.' : '' }} {{ nivel.Nombre }}</h3>
                 <div class="iconos">
@@ -34,7 +34,7 @@
                         <p *ngFor="let subItem of elemento.Detalle"> {{ subItem.Orden ? subItem.Orden + ' .' : '' }} {{ subItem.Nombre }} |
                          <!--<a *ngFor="let subOpcion of subItem.Opcion"> {{subOpcion.Nombre}} |</a> --> 
                           <ng-container *ngFor="let subOpcion of subItem.Opcion" >
-                            <a *ngIf="subOpcion.Nombre!='Cargar documento' || subOpcion.Nombre!='Cargar Documento' ">{{subOpcion.Nombre}} |</a>
+                            <a *ngIf="subOpcion.Nombre!='Cargar documento' && subOpcion.Nombre!='Cargar Documento' ">{{subOpcion.Nombre}} |</a>
                             <a *ngIf="subOpcion.Nombre=='Cargar documento' || subOpcion.Nombre=='Cargar Documento'  " (click)="cargarDocumento(subItem)">{{subOpcion.Nombre}} |</a>
                            
                           </ng-container>

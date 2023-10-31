@@ -18,7 +18,7 @@ export class AppTablaPartesInteresadasComponent {
   accion: string;
   colorWallpaper: ColorLista;
   colorTitle: ColorLista;
-  isCollapsed = true;
+  isCollapsed = false;
   mostrarNotificacion: boolean = false;
 
   constructor(

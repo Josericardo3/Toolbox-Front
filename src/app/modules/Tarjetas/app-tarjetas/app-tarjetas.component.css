@@ -13,6 +13,7 @@
     border-top: none !important;
     border-left: 10px solid #068460;
     margin: 3vh 2vw !important;
+    background-color: white
 }
 .select-header{
     background: #FFFFFF;
@@ -142,13 +143,13 @@
 }
 .toggle-label {
     display: inline-block;
-    width: 9.5%;
-    padding: 2% 2%;
+    width: 5%;
+    padding: 1.1% 1.1%;
     background-color: #ccc;
-    border-radius: 10px;
+    border-radius: 20px;
     position: relative;
     cursor: pointer;
-    margin: 0 2%;
+    margin: 0 1%;
 } 
 .toggle-label::before {
     content: "";

@@ -67,3 +67,9 @@ height: 5rem;
   .dot-red {
     background-color: red;
   }
+  .truncated-text {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; /* Agrega puntos suspensivos (...) al final del texto */
+    width: 100%; /* Opcional, para asegurarse de que ocupe todo el ancho disponible */
+  }

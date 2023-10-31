@@ -34,7 +34,7 @@ export class RegistroEvaluacionIndicadorComponent {
     'paquete',
     'proceso',
     'nombre',
-    'descripcion',
+    /*'descripcion',*/
     'calculo',
     'meta',
     'periodo',
