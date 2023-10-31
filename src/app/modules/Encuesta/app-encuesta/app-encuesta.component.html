@@ -1,28 +1,29 @@
 <app-app-header class="encuesta-app-header"></app-app-header>
 <div class="containerEncuesta">
     <div class="titulo">
-        <h1>Crear encuesta</h1>
+        <h1>{{ editandoEncuesta ? 'Actualizar encuesta' : 'Crear encuesta' }}</h1>
         <app-app-header-arrow-left></app-app-header-arrow-left>
     </div>
     <div class="encuesta">
-        <!-- <app-menu-corto class="menu"></app-menu-corto> -->
-        <app-menu-corto  class="menu-corto menu collapse navbar-collapse"  [ngClass]="{ 'mostrar-notificaciones': mostrarNotificacion }"[collapse]="isCollapsed"></app-menu-corto>
+        <!-- <app-menu-corto  class="menu-corto menu collapse navbar-collapse"  [ngClass]="{ 'mostrar-notificaciones': mostrarNotificacion }"[collapse]="isCollapsed"></app-menu-corto>
         <div class="resposi-icon">
             <i class="fa-solid fa-bars navbar-toggle collapsed" style="color: #ffffff;font-size: 20px;" (click)="isCollapsed = !isCollapsed"></i>
-          </div>
-        <div class="form">
+        </div> -->
+        <app-menu-corto class="menu"></app-menu-corto>
+        <div class="form" [formGroup]="formEncuesta">
         <!--<app-menu-corto class="menu"></app-menu-corto>
         <div class="form" [formGroup]="formEncuesta">-->
             <button class="compartir" (click)="compartirEncuesta()">
                 <i class="fa-solid fa-share-nodes" style="color: #ffffff;"></i> Compartir encuesta
             </button>            
-            <p class="p">Ingresar los datos para crear una encuesta nueva</p>
+            <p class="p">{{ editandoEncuesta ? 'Ingresa los datos para actualizar la encuesta' : 'Ingresa los datos para crear una encuesta nueva'}}</p>
             <div class="encabezado">
                 <input type="text" class="tituloInput" placeholder="Título de la encuesta" formControlName="tituloEncuesta">
                 <input type="text" class="descripcion" placeholder="Descripción de la encuesta" formControlName="descripcionEncuesta">
             </div>
             <div class="containerTarjetas">
-                <app-app-tarjetas [id]="0" (tarjetaCompletada)="guardarRespuesta($event, 0)"></app-app-tarjetas>
+                <app-app-tarjetas [id]="0" (tarjetaCompletada)="guardarRespuesta($event, 0)" [editandoEncuesta]="editandoEncuesta"
+                [valoresPreguntas]="valoresPreguntas" [datosPreguntaEncuesta]="datosPreguntaEncuesta"></app-app-tarjetas>
                 <div class="botones">
                     <button class="agregar" id="agregarTarjetaPrimera" (click)="agregarTarjeta()">
                        <i class="fa-solid fa-plus" style="color: #068460;"></i> Agregar
@@ -30,8 +31,9 @@
                </div>
             </div>
             <div class="containerTarjetas" *ngFor="let tarjeta of tarjetas; let i = index">
-                <!-- <app-app-tarjetas [id]="tarjeta.id" [index]="i" (eliminarTarjeta)="eliminarTarjeta(i)" (tarjetaClicada)="agregarTarjeta(i)"></app-app-tarjetas> -->
-                <app-app-tarjetas [id]="tarjeta.id" [index]="i+1" (eliminarTarjeta)="eliminarTarjeta(i)" (tarjetaClicada)="agregarTarjeta(i)" (tarjetaCompletada)="guardarRespuesta($event, i+1)"></app-app-tarjetas>
+                <app-app-tarjetas [id]="tarjeta.id" [index]="i+1" (eliminarTarjeta)="eliminarTarjeta(i)" (tarjetaClicada)="agregarTarjeta(i)" 
+                (tarjetaCompletada)="guardarRespuesta($event, i+1)" [valoresPreguntas]="valoresPreguntas" 
+                [editandoEncuesta]="editandoEncuesta" [datosPreguntaEncuesta]="datosPreguntaEncuesta"></app-app-tarjetas>
                 <div class="botones">
                     <button class="agregar" (click)="eliminarTarjeta(i)">
                         <i class="fa-solid fa-trash" style="color: #068460;"></i> Eliminar
@@ -41,9 +43,10 @@
                     </button> 
                 </div>
             </div>
-            <button class="btn" type="submit" (click)="saveEncuesta()">
-                <i class="fa-solid fa-floppy-disk" style="color: #ffffff;"></i> Guardar
-            </button> 
+            <button class="btn" type="submit" (click)="editandoEncuesta ? actualizarEncuesta() : saveEncuesta()">
+                <i class="fa-solid fa-floppy-disk" style="color: #ffffff;"></i>
+                {{ editandoEncuesta ? 'Actualizar' : 'Guardar' }}
+            </button>              
         </div>
     </div>
 </div>

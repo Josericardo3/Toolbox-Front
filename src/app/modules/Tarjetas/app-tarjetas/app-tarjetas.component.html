@@ -1,86 +1,178 @@
-<form [formGroup]="form" class="tarjetas">
-    <div class="section">
-        <input type="text" class="pregunta" placeholder="Ingrese su pregunta" id="pregunta" formControlName="pregunta">
-        <div class="select-wrapper">
-            <div class="select-header" (click)="toggleOptions()">
-              <span id="selectedOption">
-                <i [ngClass]="selectedOption.icon"></i> {{ selectedOption.label }}
-              </span>
-              <i class="fa-solid fa-angle-down"></i>
+<div *ngIf="!editandoEncuesta">
+    <form [formGroup]="form" class="tarjetas">
+        <div class="section">
+            <input type="text" class="pregunta" placeholder="Ingrese su pregunta" id="pregunta" formControlName="pregunta">
+            <div class="select-wrapper">
+                <div class="select-header" (click)="toggleOptions()">
+                  <span id="selectedOption">
+                    <i [ngClass]="selectedOption.icon"></i> {{ selectedOption.label }}
+                  </span>
+                  <i class="fa-solid fa-angle-down"></i>
+                </div>
+                <ul id="optionsContainer" class="options-container" [ngStyle]="{'display': showOptions ? 'block' : 'none'}">
+                  <li *ngFor="let option of options" (click)="selectOption(option)">
+                    <i [ngClass]="option.icon"></i> {{ option.label }}
+                  </li>
+                </ul>
             </div>
-            <ul id="optionsContainer" class="options-container" [ngStyle]="{'display': showOptions ? 'block' : 'none'}">
-              <li *ngFor="let option of options" (click)="selectOption(option)">
-                <i [ngClass]="option.icon"></i> {{ option.label }}
-              </li>
-            </ul>
+                <input *ngIf="selectedOption.value === 'respuestaCorta'" type="text" class="respuesta"  placeholder="Respuesta corta" formControlName="respuestaCorta" appNoPuntoycoma>
+                <textarea *ngIf="selectedOption.value === 'respuestaLarga'" style="height: 50px;" class="respuestaTextarea" placeholder="Respuesta larga" formControlName="respuestaLarga" appNoPuntoycoma></textarea>
+                <div *ngIf="selectedOption.value === 'radioButton'" class="radioButton">
+                    <input type="text" class="respuesta" placeholder="Opción 1" formControlName="opcion1Radio" appNoPuntoycoma>
+                    <span>
+                        <span type="text" class="respuestaSpan" (click)="agregarInputRadio()">Añadir opción</span> o 
+                        <span class="spanOtro" (click)="agregarOtro()">Añadir respuesta 'Otro'</span>
+                    </span>           
+                    <div class="respuestaRadio" formArrayName="opcionesRadio">
+                        <ng-container *ngFor="let control of opcionesRadio.controls; let i = index">
+                            <div class="eliminar">
+                                <input type="text" class="respuesta" [placeholder]="'Opción ' + (i + 2)" [formControlName]="i" appNoPuntoycoma>
+                                <span (click)="removeRadioOption(i)" class="x">
+                                    <i class="fa-solid fa-xmark" style="color: #8c8c8c;"></i>
+                                </span>
+                            </div>
+                        </ng-container>
+                    </div>
+                    <div class="eliminar">
+                        <input type="text" class="respuesta" placeholder="Otro" *ngIf="showOtro" [readonly]="showOtro" formControlName="otroRadio" appNoPuntoycoma>
+                        <span (click)="removeOtro('radioButton')" class="x" *ngIf="showOtro">
+                            <i class="fa-solid fa-xmark" style="color: #8c8c8c;"></i>
+                        </span>
+                    </div>
+                </div>
+                <div *ngIf="selectedOption.value === 'checkbox'" class="radioButton">
+                    <input type="text" class="respuesta" formControlName="checkbox" placeholder="1. Opción 1" formControlName="opcion1Checkbox" appNoPuntoycoma>
+                    <span>
+                        <span type="text" class="respuestaSpan" (click)="agregarInputCheckbox()">Añadir opción</span> o 
+                        <span class="spanOtro" (click)="agregarOtro()">Añadir respuesta "Otro"</span>
+                    </span>              
+                    <div class="respuestaRadio" formArrayName="opcionesCheckbox">
+                        <ng-container *ngFor="let control of opcionesCheckbox.controls; let i = index">
+                            <div class="eliminar">
+                                <input type="text" class="respuesta" [placeholder]="'Opción ' + (i + 2)" [formControlName]="i" appNoPuntoycoma>
+                                <span (click)="removeRadioOption(i)" class="x">
+                                    <i class="fa-solid fa-xmark" style="color: #8c8c8c;"></i>
+                                </span>
+                            </div>
+                        </ng-container>
+                    </div>
+                    <div class="eliminar">
+                        <input type="text" class="respuesta" placeholder="Otro" *ngIf="showOtro" [readonly]="showOtro" formControlName="otroCheckbox" appNoPuntoycoma>
+                        <span (click)="removeOtro('checkbox')" class="x" *ngIf="showOtro">
+                            <i class="fa-solid fa-xmark" style="color: #8c8c8c;"></i>
+                        </span>
+                    </div>
+                </div>
+                <div *ngIf="selectedOption.value === 'desplegable'" class="radioButton">
+                    <input type="text" class="respuesta" placeholder="1. Opción 1" formControlName="desplegableOpcion1" appNoPuntoycoma>
+                    <span type="text" class="respuestaSpan2" (click)="agregarInputDesplegable()">Añadir opción</span>
+                    <div class="respuestaRadio" formArrayName="opcionesDesplegable">
+                        <ng-container *ngFor="let control of opcionesDesplegable.controls; let i = index">
+                            <div class="eliminar">
+                                <input type="text" class="respuesta" [placeholder]="(i + 2) + '. Opción ' + (i + 2)" [formControlName]="i" appNoPuntoycoma>
+                                <span (click)="removeRadioOption(i)" class="x">
+                                    <i class="fa-solid fa-xmark" style="color: #8c8c8c;"></i>
+                                </span>
+                            </div>
+                        </ng-container>
+                    </div>
+                </div>
         </div>
-            <input *ngIf="selectedOption.value === 'respuestaCorta'" type="text" class="respuesta"  placeholder="Respuesta corta" formControlName="respuestaCorta" appNoPuntoycoma>
-            <textarea *ngIf="selectedOption.value === 'respuestaLarga'" style="height: 50px;" class="respuestaTextarea" placeholder="Respuesta larga" formControlName="respuestaLarga" appNoPuntoycoma></textarea>
-            <div *ngIf="selectedOption.value === 'radioButton'" class="radioButton">
-                <input type="text" class="respuesta" placeholder="Opción 1" formControlName="opcion1Radio" appNoPuntoycoma>
-                <span>
-                    <span type="text" class="respuestaSpan" (click)="agregarInputRadio()">Añadir opción</span> o 
-                    <span class="spanOtro" (click)="agregarOtro()">Añadir respuesta 'Otro'</span>
-                </span>           
-                <div class="respuestaRadio" formArrayName="opcionesRadio">
-                    <ng-container *ngFor="let control of opcionesRadio.controls; let i = index">
-                        <div class="eliminar">
-                            <input type="text" class="respuesta" [placeholder]="'Opción ' + (i + 2)" [formControlName]="i" appNoPuntoycoma>
-                            <span (click)="removeRadioOption(i)" class="x">
-                                <i class="fa-solid fa-xmark" style="color: #8c8c8c;"></i>
-                            </span>
-                        </div>
-                    </ng-container>
+        <div class="linea"></div>
+        <div class="footer">
+            <p class="obligatorio">Obligatorio</p>
+            <input type="checkbox" [id]="'toggleButton' + index" class="toggle-input" formControlName="obligatorio">
+            <label [for]="'toggleButton' + index" class="toggle-label"></label>                       
+        </div>
+    </form>
+</div>
+<div *ngIf="editandoEncuesta">
+    <div *ngFor="let pregunta of valoresPreguntass; let i = index">
+    <form [formGroup]="formEditar" class="tarjetas">
+            <div class="section">
+                <input type="text" class="pregunta" [id]="'pregunta_' + i" [formControlName]="'preguntaEditar_' + pregunta.ID_MAE_ENCUESTA_PREGUNTA"> 
+                <div class="select-wrapper" [id]="i">
+                    <div class="select-header" (click)="toggleOptionsEditar(i)">
+                      <span [id]="'selectedOptions[i].id' + i">
+                        <i [ngClass]="selectedOptions[i]?.icon"></i> {{ selectedOptions[i]?.label }}
+                      </span>
+                      <i class="fa-solid fa-angle-down"></i>
+                    </div>
+                    <ul [id]="'optionsContainer_' + i" class="options-container" [ngStyle]="{'display': showOptionEditar[i] ? 'block' : 'none'}">
+                      <li *ngFor="let option of options" (click)="selectOptionEditar(option, i)">
+                        <i [ngClass]="option.icon"></i> {{ option.label }}
+                      </li>
+                    </ul>
                 </div>
-                <div class="eliminar">
-                    <input type="text" class="respuesta" placeholder="Otro" *ngIf="showOtro" [readonly]="showOtro" formControlName="otroRadio" appNoPuntoycoma>
-                    <span (click)="removeOtro('radioButton')" class="x" *ngIf="showOtro">
-                        <i class="fa-solid fa-xmark" style="color: #8c8c8c;"></i>
-                    </span>
+                <input *ngIf="selectedOptions[i].value === 'respuestaCorta'" type="text" class="respuesta" [formControlName]="'respuestaCortaEditar_' + pregunta.ID_MAE_ENCUESTA_PREGUNTA" appNoPuntoycoma>
+                <textarea *ngIf="selectedOptions[i].value === 'respuestaLarga'" style="height: 50px;" class="respuestaTextarea" [formControlName]="'respuestaLargaEditar_' + pregunta.ID_MAE_ENCUESTA_PREGUNTA" appNoPuntoycoma></textarea>
+                <div *ngIf="selectedOptions[i].value === 'radioButton'">
+                    <input type="text" class="respuesta" [formControlName]="'opcion1RadioEditar_' + pregunta.ID_MAE_ENCUESTA_PREGUNTA" appNoPuntoycoma>
+                    <span>
+                        <span type="text" class="respuestaSpan" (click)="agregarInputRadio()">Añadir opción</span> o 
+                        <span class="spanOtro" (click)="agregarOtro()">Añadir respuesta 'Otro'</span>
+                    </span>           
+                    <div class="respuestaRadio" formArrayName="'opcionesRadioEditar_' + pregunta.ID_MAE_ENCUESTA_PREGUNTA">
+                        <ng-container *ngFor="let control of 'opcionesRadioEditar_' + pregunta.ID_MAE_ENCUESTA_PREGUNTA.controls; let i = index">
+                            <div class="eliminar">
+                                <input type="text" class="respuesta" [placeholder]="'Opción ' + (i + 2)" [formControlName]="i" appNoPuntoycoma>
+                                <span (click)="removeRadioOption(i)" class="x">
+                                    <i class="fa-solid fa-xmark" style="color: #8c8c8c;"></i>
+                                </span>
+                            </div>
+                        </ng-container>
+                    </div>
+                    <div class="eliminar">
+                        <input type="text" class="respuesta" *ngIf="showOtro" [readonly]="showOtro" [formControlName]="'otroRadioEditar_' + pregunta.ID_MAE_ENCUESTA_PREGUNTA" appNoPuntoycoma>
+                        <span (click)="removeOtro('radioButton')" class="x" *ngIf="showOtro">
+                            <i class="fa-solid fa-xmark" style="color: #8c8c8c;"></i>
+                        </span>
+                    </div>
+                </div>
+                <div *ngIf="selectedOptions[i].value === 'checkbox'" class="radioButton">
+                    <input type="text" class="respuesta" placeholder="1. Opción 1" appNoPuntoycoma>
+                    <span>
+                        <span type="text" class="respuestaSpan" (click)="agregarInputCheckbox()">Añadir opción</span> o 
+                        <span class="spanOtro" (click)="agregarOtro()">Añadir respuesta "Otro"</span>
+                    </span>              
+                    <div class="respuestaRadio">
+                        <ng-container *ngFor="let control of opcionesCheckbox.controls; let i = index">
+                            <div class="eliminar">
+                                <input type="text" class="respuesta" [placeholder]="'Opción ' + (i + 2)" appNoPuntoycoma>
+                                <span (click)="removeRadioOption(i)" class="x">
+                                    <i class="fa-solid fa-xmark" style="color: #8c8c8c;"></i>
+                                </span>
+                            </div>
+                        </ng-container>
+                    </div>
+                    <div class="eliminar">
+                        <input type="text" class="respuesta" placeholder="Otro" *ngIf="showOtro" [readonly]="showOtro" appNoPuntoycoma>
+                        <span (click)="removeOtro('checkbox')" class="x" *ngIf="showOtro">
+                            <i class="fa-solid fa-xmark" style="color: #8c8c8c;"></i>
+                        </span>
+                    </div>
+                </div>
+                <div *ngIf="selectedOptions[i].value === 'desplegable'" class="radioButton">
+                    <input type="text" class="respuesta" placeholder="1. Opción 1" [formControlName]="'desplegable_' + pregunta.ID_MAE_ENCUESTA_PREGUNTA" appNoPuntoycoma>
+                    <span type="text" class="respuestaSpan2" (click)="agregarInputDesplegableEditar()">Añadir opción</span>
+                    <div class="respuestaRadio" formArrayName="opcionesDesplegableEditar">
+                        <ng-container *ngFor="let control of opcionesDesplegableEditar.controls; let i = index">
+                            <div class="eliminar">
+                                <input type="text" class="respuesta" [placeholder]="(i + 2) + '. Opción ' + (i + 2)" [formControlName]="i" appNoPuntoycoma>
+                                <span (click)="removeRadioOption(i)" class="x">
+                                    <i class="fa-solid fa-xmark" style="color: #8c8c8c;"></i>
+                                </span>
+                            </div>
+                        </ng-container>
+                    </div>
                 </div>
             </div>
-            <div *ngIf="selectedOption.value === 'checkbox'" class="radioButton">
-                <input type="text" class="respuesta" formControlName="checkbox" placeholder="1. Opción 1" formControlName="opcion1Checkbox" appNoPuntoycoma>
-                <span>
-                    <span type="text" class="respuestaSpan" (click)="agregarInputCheckbox()">Añadir opción</span> o 
-                    <span class="spanOtro" (click)="agregarOtro()">Añadir respuesta "Otro"</span>
-                </span>              
-                <div class="respuestaRadio" formArrayName="opcionesCheckbox">
-                    <ng-container *ngFor="let control of opcionesCheckbox.controls; let i = index">
-                        <div class="eliminar">
-                            <input type="text" class="respuesta" [placeholder]="'Opción ' + (i + 2)" [formControlName]="i" appNoPuntoycoma>
-                            <span (click)="removeRadioOption(i)" class="x">
-                                <i class="fa-solid fa-xmark" style="color: #8c8c8c;"></i>
-                            </span>
-                        </div>
-                    </ng-container>
-                </div>
-                <div class="eliminar">
-                    <input type="text" class="respuesta" placeholder="Otro" *ngIf="showOtro" [readonly]="showOtro" formControlName="otroCheckbox" appNoPuntoycoma>
-                    <span (click)="removeOtro('checkbox')" class="x" *ngIf="showOtro">
-                        <i class="fa-solid fa-xmark" style="color: #8c8c8c;"></i>
-                    </span>
-                </div>
+            <div class="linea"></div>
+            <div class="footer">
+                <p class="obligatorio">Obligatorio</p>
+                <input type="checkbox" [id]="'toggleButton' + index" class="toggle-input" [value]="pregunta.OBLIGATORIO" [checked]="pregunta.OBLIGATORIO">
+                <label [for]="'toggleButton' + index" class="toggle-label"></label>                       
             </div>
-            <div *ngIf="selectedOption.value === 'desplegable'" class="radioButton">
-                <input type="text" class="respuesta" placeholder="1. Opción 1" formControlName="desplegableOpcion1" appNoPuntoycoma>
-                <span type="text" class="respuestaSpan2" (click)="agregarInputDesplegable()">Añadir opción</span>
-                <div class="respuestaRadio" formArrayName="opcionesDesplegable">
-                    <ng-container *ngFor="let control of opcionesDesplegable.controls; let i = index">
-                        <div class="eliminar">
-                            <input type="text" class="respuesta" [placeholder]="(i + 2) + '. Opción ' + (i + 2)" [formControlName]="i" appNoPuntoycoma>
-                            <span (click)="removeRadioOption(i)" class="x">
-                                <i class="fa-solid fa-xmark" style="color: #8c8c8c;"></i>
-                            </span>
-                        </div>
-                    </ng-container>
-                </div>
-            </div>
-    </div>
-    <div class="linea"></div>
-    <div class="footer">
-        <p class="obligatorio">Obligatorio</p>
-        <input type="checkbox" [id]="'toggleButton' + index" class="toggle-input" formControlName="obligatorio">
-        <label [for]="'toggleButton' + index" class="toggle-label"></label>                       
-    </div>
-</form>
+    </form>
+</div>
+</div>

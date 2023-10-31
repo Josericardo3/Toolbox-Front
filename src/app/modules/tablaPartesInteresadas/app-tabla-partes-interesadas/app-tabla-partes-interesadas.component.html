@@ -8,12 +8,12 @@
         <app-app-menu-alta-gerencia class="menu-alta-gerencia "  [ngClass]="{ 'mostrar-notificaciones': mostrarNotificacion }"[collapse]="isCollapsed"></app-app-menu-alta-gerencia>
         <mat-menu #menu="matMenu">
             <app-app-menu-alta-gerencia class="responsi-gerencia-menu"></app-app-menu-alta-gerencia>
-          </mat-menu>
-        <div class="resposi-icon">
+        </mat-menu>
+      <!--  <div class="resposi-icon">
             <button mat-icon-button [matMenuTriggerFor]="menu" style="color: #ffffff;">
                 <i class="fa-solid fa-bars" style="font-size: 20px;"></i>
               </button>
-        </div>
+        </div>-->
         <div class="form">
             <button type="button" class="btnReporte" routerLink="/partesInteresadas" routerLinkActive="activebutton">
                 <i class="fa-solid fa-pen" style="color: #ffffff; margin-right: 10px;"></i>Editar matriz
@@ -70,54 +70,97 @@
                             <td>{{accion}}</td>
                         </ng-container>
                     </tr>
-                    <tr *ngIf="orden === 'clientes'">
+          
+                   <tr>
                         <th>CLIENTE(S)</th>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                         <ng-container *ngIf="orden === 'clientes'">
+
+                            <td>{{necesidades}}</td>
+                            <td>{{expectativa}}</td>
+                            <td>{{estadoC}}</td>
+                            <td>{{observacion}}</td>
+                            <td>{{accion}}</td>
+                        </ng-container>
                     </tr>
-                    <tr *ngIf="orden === 'huespedes'">
-                        <th>HUÉSPEDES</th>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr *ngIf="orden === 'colaboradores'">
+                    
+                   <tr>
+                    <th>HUÉSPEDES</th>
+                     <ng-container *ngIf="orden === 'huespedes'">
+
+                        <td>{{necesidades}}</td>
+                        <td>{{expectativa}}</td>
+                        <td>{{estadoC}}</td>
+                        <td>{{observacion}}</td>
+                        <td>{{accion}}</td>
+                    </ng-container>
+                     </tr>
+                     <tr>
                         <th>COLABORADORES (Personal directo y/o indirecto)</th>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr *ngIf="orden === 'accionista'">
-                        <th>ACCIONISTAS O PROPIETARIOS</th>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr *ngIf="orden === 'comunidad'">
-                        <th>COMUNIDAD</th>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr *ngIf="orden === 'comunidadVulnerable'">
-                        <th>COMUNIDAD VULNERABLE </th>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr *ngIf="orden === 'atractivos'">
-                        <th>ATRACTIVOS TURÍSTICOS</th>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr *ngIf="orden === 'otra'">
-                        <th>OTRA, ¿CUÁL?</th>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
+                         <ng-container *ngIf="orden === 'colaboradores'">
+    
+                            <td>{{necesidades}}</td>
+                            <td>{{expectativa}}</td>
+                            <td>{{estadoC}}</td>
+                            <td>{{observacion}}</td>
+                            <td>{{accion}}</td>
+                        </ng-container>
+                         </tr>
+                         <tr>
+                            <th>ACCIONISTAS O PROPIETARIOS</th>
+                             <ng-container *ngIf="orden === 'accionista'">
+        
+                                <td>{{necesidades}}</td>
+                                <td>{{expectativa}}</td>
+                                <td>{{estadoC}}</td>
+                                <td>{{observacion}}</td>
+                                <td>{{accion}}</td>
+                            </ng-container>
+                             </tr>
+                             <tr>
+                                <th>COMUNIDAD</th>
+                                 <ng-container *ngIf="orden === 'comunidad'">
+            
+                                    <td>{{necesidades}}</td>
+                                    <td>{{expectativa}}</td>
+                                    <td>{{estadoC}}</td>
+                                    <td>{{observacion}}</td>
+                                    <td>{{accion}}</td>
+                                </ng-container>
+                                 </tr>
+                                 <tr>
+                                    <th>COMUNIDAD VULNERABLE</th>
+                                     <ng-container *ngIf="orden === 'comunidadVulnerable'">
+                
+                                        <td>{{necesidades}}</td>
+                                        <td>{{expectativa}}</td>
+                                        <td>{{estadoC}}</td>
+                                        <td>{{observacion}}</td>
+                                        <td>{{accion}}</td>
+                                    </ng-container>
+                                     </tr>
+                                     <tr>
+                                        <th>ATRACTIVOS TURÍSTICOS</th>
+                                         <ng-container *ngIf="orden === 'atractivos'">
+                    
+                                            <td>{{necesidades}}</td>
+                                            <td>{{expectativa}}</td>
+                                            <td>{{estadoC}}</td>
+                                            <td>{{observacion}}</td>
+                                            <td>{{accion}}</td>
+                                        </ng-container>
+                                         </tr>
+                                         <tr>
+                                            <th>OTRA, ¿CUÁL?</th>
+                                             <ng-container *ngIf="orden === 'otra'">
+                        
+                                                <td>{{necesidades}}</td>
+                                                <td>{{expectativa}}</td>
+                                                <td>{{estadoC}}</td>
+                                                <td>{{observacion}}</td>
+                                                <td>{{accion}}</td>
+                                            </ng-container>
+                                             </tr>
+             
                 </tbody>
             </table>
         </div>

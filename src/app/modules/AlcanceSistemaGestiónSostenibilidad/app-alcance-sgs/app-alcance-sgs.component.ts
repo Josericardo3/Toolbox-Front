@@ -262,7 +262,7 @@ export class AppAlcanceSGSComponent implements OnInit {
     }
     for (let i = 0; i < numeralesEncontrados.length; i++) {
       if (i != numeralesEncontrados.length-1)
-        response = response + numeralesEncontrados[i] + ', ';
+        response = response + numeralesEncontrados[i] + '\n';
       else
         response = response + numeralesEncontrados[i];
     }
@@ -330,7 +330,7 @@ export class AppAlcanceSGSComponent implements OnInit {
                 { text: this.arrayAdicionalesServicio.length > 0 ? this.estructura.servicios.RESPUESTA + ' ' + this.arrayAdicionalesServicio.map(tab => tab.RESPUESTA).join(' ') : this.estructura.servicios.RESPUESTA, style: ['columna'] },
                 { text: this.ubicación, style: ['columna'] },
                 { text: this.caracterizacion, style: ['columna'] },
-                { text: this.obtenerNumeralesEnArreglo(this.RespuestaRequisitos) + '. Justificación: ' + this.estructura.justificacion.RESPUESTA, style: ['columna'] }
+                { text: this.obtenerNumeralesEnArreglo(this.RespuestaRequisitos) + ' \nJustificación: ' + this.estructura.justificacion.RESPUESTA, style: ['columna'] }
               ]
             ],
           },
@@ -393,7 +393,7 @@ export class AppAlcanceSGSComponent implements OnInit {
                     '\n\n', // Salto de línea
                     '-Nos encontramos ubicados en: dirección, ' + this.ubicación + '. En zona rural y en zona natural.',
                     '-Se excluyen los siguientes numerales de la NTC',
-                    this.obtenerNumeralesEnArreglo(this.RespuestaRequisitos) + ' Requisitos legales. Porque ' + this.estructura.justificacion.RESPUESTA
+                    this.obtenerNumeralesEnArreglo(this.RespuestaRequisitos) + ' \nRequisitos legales. Porque ' + this.estructura.justificacion.RESPUESTA
                   ],
                   alignment: 'justify',
                   fontSize: 12,

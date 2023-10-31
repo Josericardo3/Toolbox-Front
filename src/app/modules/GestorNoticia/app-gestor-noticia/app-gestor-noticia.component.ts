@@ -727,7 +727,7 @@ export class AppGestorNoticiaComponent implements OnInit {
       selectAllText: 'Seleccionar todo',
       unSelectAllText: 'Deseleccionar todo',
       searchPlaceholderText: 'Buscar',
-      itemsShowLimit: 100,
+      itemsShowLimit: 2,
       allowSearchFilter: true
     };
   }
@@ -750,7 +750,7 @@ export class AppGestorNoticiaComponent implements OnInit {
       selectAllText: 'Seleccionar todo',
       unSelectAllText: 'Deseleccionar todo',
       searchPlaceholderText: 'Buscar',
-      itemsShowLimit: 100,
+      itemsShowLimit: 2,
       allowSearchFilter: true
     };
   }
@@ -775,7 +775,7 @@ export class AppGestorNoticiaComponent implements OnInit {
       selectAllText: 'Seleccionar todo',
       unSelectAllText: 'Deseleccionar todo',
       searchPlaceholderText: 'Buscar',
-      itemsShowLimit: 100,
+      itemsShowLimit: 2,
       allowSearchFilter: true
     };
   }
@@ -798,7 +798,7 @@ export class AppGestorNoticiaComponent implements OnInit {
       selectAllText: 'Seleccionar todo',
       unSelectAllText: 'Deseleccionar todo',
       searchPlaceholderText: 'Buscar',
-      itemsShowLimit: 100,
+      itemsShowLimit: 2,
       allowSearchFilter: true
     };
   }
@@ -821,7 +821,7 @@ export class AppGestorNoticiaComponent implements OnInit {
       selectAllText: 'Seleccionar todo',
       unSelectAllText: 'Deseleccionar todo',
       searchPlaceholderText: 'Buscar',
-      itemsShowLimit: 100,
+      itemsShowLimit: 2,
       allowSearchFilter: true
     };
   }

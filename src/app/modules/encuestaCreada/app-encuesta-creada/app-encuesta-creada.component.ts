@@ -1,5 +1,5 @@
 import { AfterContentChecked, ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { ApiService } from 'src/app/servicios/api/api.service';
 
@@ -14,8 +14,6 @@ export class AppEncuestaCreadaComponent implements OnInit, AfterContentChecked{
   datosPreguntaEncuesta: any = []
   id: any;
   public form: FormGroup;
-  public otroControlRadio: FormControl = this.formBuilder.control({value: '', disabled: true});
-  public otroControlCheckbox: FormControl = this.formBuilder.control({value: '', disabled: true}, Validators.required);
 
   constructor(
     private route: ActivatedRoute,
@@ -37,27 +35,23 @@ export class AppEncuestaCreadaComponent implements OnInit, AfterContentChecked{
   }
 
   formulario(){
-    this.datosPreguntaEncuesta.MAE_ENCUESTA_PREGUNTAS.forEach((pregunta, index) => {
+    this.datosPreguntaEncuesta.MAE_ENCUESTA_PREGUNTAS.forEach((pregunta) => {
       if (pregunta.TIPO === 'respuestaCorta') {
-        this.form.addControl(`respuestaCorta_${index}`, this.formBuilder.control(''));
+        this.form.addControl(`respuestaCorta_${pregunta.ID_MAE_ENCUESTA_PREGUNTA}`, this.formBuilder.control('', [Validators.required]));
       } else if (pregunta.TIPO === 'respuestaLarga') {
-        this.form.addControl(`respuestaLarga_${index}`, this.formBuilder.control(''));
+        this.form.addControl(`respuestaLarga_${pregunta.ID_MAE_ENCUESTA_PREGUNTA}`, this.formBuilder.control('', [Validators.required]));
       } else if (pregunta.TIPO === 'radioButton') {
-        pregunta.VALOR.split(';').forEach((opcion, i) => {
-          this.form.addControl(`radioButton_${i}`, this.formBuilder.control(''));
-        });
-        if (pregunta.VALOR.includes('otroRadio')) {
-          this.form.addControl(`otroControlRadio_${index}`, this.otroControlRadio);
-        }
+        this.form.addControl(`radioButton_${pregunta.ID_MAE_ENCUESTA_PREGUNTA}`, this.formBuilder.control(''));
+        this.form.addControl(`radioButtonOtro_${pregunta.ID_MAE_ENCUESTA_PREGUNTA}`, this.formBuilder.control(''));
+        pregunta.mostrarOtroRadio = false;
       } else if (pregunta.TIPO === 'checkbox') {
-        pregunta.VALOR.split(';').forEach((opcion, i) => {
-          this.form.addControl(`checkbox_${i}`, this.formBuilder.control(false));
+        pregunta.VALOR.split(';').forEach((opcion) => {
+          this.form.addControl(`checkbox_${pregunta.ID_MAE_ENCUESTA_PREGUNTA}`, this.formBuilder.control(''));
         });
-        // if (pregunta.VALOR.includes('otroCheckbox')) {
-        //   this.form.addControl(`otroControlCheckbox_${index}`, this.otroControlCheckbox);
-        // }
+        this.form.addControl(`checkboxOtro_${pregunta.ID_MAE_ENCUESTA_PREGUNTA}`, this.formBuilder.control(''));
+        pregunta.mostrarOtroCheckbox = false;
       } else if (pregunta.TIPO === 'desplegable') {
-        this.form.addControl(`desplegable_${index}`, this.formBuilder.control(''));
+        this.form.addControl(`desplegable_${pregunta.ID_MAE_ENCUESTA_PREGUNTA}`, this.formBuilder.control('', [Validators.required]));
       }
     });
   }
@@ -83,84 +77,83 @@ export class AppEncuestaCreadaComponent implements OnInit, AfterContentChecked{
     });
   }
 
-  toggleOtroRadioInput(index: number) {
-    const otroRadio = document.getElementById('otroRadio_' + index) as HTMLInputElement;
-    if (otroRadio) {
-        if (otroRadio.checked) {
-          this.otroControlRadio.enable({ emitEvent: false });
-        } else {
-          this.otroControlRadio.disable({ emitEvent: false });
+  toggleOtroRadio(pregunta, opcionSeleccionada) {
+    if (opcionSeleccionada === 'Otro') {
+      pregunta.mostrarOtroRadio = true;
+    } else {
+      pregunta.mostrarOtroRadio = false;
+      this.form.get(`radioButtonOtro_${pregunta.ID_MAE_ENCUESTA_PREGUNTA}`).setValue('');
+    }
+  }
+
+  toggleOtroCheckbox(pregunta, opcionSeleccionada) {
+    if (opcionSeleccionada === 'Otro') {
+        pregunta.mostrarOtroCheckbox = !pregunta.mostrarOtroCheckbox;
+        if (!pregunta.mostrarOtroCheckbox) {
+            this.form.get(`checkboxOtro_${pregunta.ID_MAE_ENCUESTA_PREGUNTA}`).setValue('');
         }
     }
-  }
+}
   
-  toggleOtroCheckboxInput(index: number) {
-    const otroCheck = document.getElementById('otroCheckbox_' + index) as HTMLInputElement;
-    if (otroCheck) {
-      if (otroCheck.checked) {
-        this.otroControlCheckbox.enable({ emitEvent: false });
-        this.otroControlCheckbox.setValidators(Validators.required);
-        this.otroControlCheckbox.updateValueAndValidity();
-      } else {
-        this.otroControlCheckbox.disable({ emitEvent: false });
-        this.otroControlCheckbox.clearValidators();
-        this.otroControlCheckbox.updateValueAndValidity();
-      }
-    }
-  }
-  
-  
-  enviarFormulario(){
+  enviarFormulario() {
     const respuestas = [];
-
+  
     this.datosPreguntaEncuesta.MAE_ENCUESTA_PREGUNTAS.forEach((pregunta, index) => {
       const tipo = pregunta.TIPO;
       let respuesta = '';
   
       if (tipo === 'respuestaCorta') {
-        respuesta = this.form.get(`respuestaCorta_${index}`).value || '';
+        respuesta = this.form.get(`respuestaCorta_${pregunta.ID_MAE_ENCUESTA_PREGUNTA}`).value || '';
       } else if (tipo === 'respuestaLarga') {
-        respuesta = this.form.get(`respuestaLarga_${index}`).value || '';
+        respuesta = this.form.get(`respuestaLarga_${pregunta.ID_MAE_ENCUESTA_PREGUNTA}`).value || '';
       } else if (tipo === 'radioButton') {
         pregunta.VALOR.split(';').forEach((opcion, i) => {
-          const valor = this.form.get(`radioButton_${i}`).value;
-          if (valor) {
+          const valor = this.form.get(`radioButton_${pregunta.ID_MAE_ENCUESTA_PREGUNTA}`).value;
+          if (valor === opcion) {
             respuesta = valor;
           }
-        })
-        if (pregunta.VALOR.includes('otroRadio')) {
-          const otroRadioValor = this.otroControlRadio.value;
-          if (otroRadioValor) {
-            respuesta = otroRadioValor;
+        });
+        if (pregunta.mostrarOtroRadio) {
+          const valorOtro = this.form.get(`radioButtonOtro_${pregunta.ID_MAE_ENCUESTA_PREGUNTA}`).value;
+          if (valorOtro) {
+            respuesta = valorOtro;
           }
         }
       } else if (tipo === 'checkbox') {
-        const opcionesSeleccionadas = [];
+        const opcionesSeleccionadas = pregunta.VALOR.split(';').filter((opcion, i) => {
+          const isChecked = this.form.get(`checkbox_${pregunta.ID_MAE_ENCUESTA_PREGUNTA}`).value;
+          return isChecked;
+        });
 
-        pregunta.VALOR.split(';').forEach((opcion, i) => {
-          const isChecked = this.form.get(`checkbox_${i}`).value;
-          if (isChecked) {
-            opcionesSeleccionadas.push(opcion);
-          }
-          respuesta = opcionesSeleccionadas.join(', ');
-        }); 
+        if (opcionesSeleccionadas.length > 0) {
+            respuesta = opcionesSeleccionadas.join(', ');
+        }
+
+        if (pregunta.mostrarOtroCheckbox) {
+            const valorOtro = this.form.get(`checkboxOtro_${pregunta.ID_MAE_ENCUESTA_PREGUNTA}`).value;
+            if (valorOtro) {
+                respuesta += (respuesta ? ', ' : '') + valorOtro;
+            }
+        }
       } else if (tipo === 'desplegable') {
-        respuesta = this.form.get(`desplegable_${index}`).value || '';
+        respuesta = this.form.get(`desplegable_${pregunta.ID_MAE_ENCUESTA_PREGUNTA}`).value || '';
       }
   
       if (respuesta) {
         const respuestaFormato = {
-          FK_ID_MAE_ENCUESTA_PREGUNTA: index,
+          FK_ID_MAE_ENCUESTA_PREGUNTA: pregunta.ID_MAE_ENCUESTA_PREGUNTA,
           RESPUESTA: respuesta.toString()
         };
         respuestas.push(respuestaFormato);
       }
     });
-
+  
     console.log(respuestas);
     this.ApiService.saveEncuestaRespuesta(respuestas)
       .subscribe(data => {
-        console.log(data)
+        console.log(data);
+      }, error => {
+        console.error('Error al enviar respuestas:', error);
       });
   }
 }

@@ -270,6 +270,11 @@ export class ApiService {
     let direccion = `${this.apiURLNuevo}/api/MatrizLegal/DataHeaderMatrizLegal?RNT=${rnt}`;
     return this.http.get<any>(direccion)
   }
+
+  deleteLey(id: any) {
+    let ley = `${this.apiURLNuevo}/api/MatrizLegal/DeleteLey?id=${id}`
+    return this.http.delete<any>(ley)
+  }
   //INSERTA EL RESUMEN EN LA MATRIZ CORRESPONDIENTE
   saveRespuestaMatrizResumen(request:any){
     const resumen = `${this.apiURLNuevo}/api/MatrizLegal/RespuestaMatrizLegalResumen`;
@@ -573,6 +578,10 @@ export class ApiService {
   saveEncuestaRespuesta(request: any){
     const encuesta = `${this.apiURLNuevo}/api/Encuesta/respuestas`;
     return this.http.post<any>(encuesta, request)
+  }
+  saveEncuestaEditar(request: any) {
+    const encuestaEditar = `${this.apiURLNuevo}/api/Encuesta/`;
+    return this.http.put<any>(encuestaEditar, request)
   }
 
   //REQUISITOS NORMAS

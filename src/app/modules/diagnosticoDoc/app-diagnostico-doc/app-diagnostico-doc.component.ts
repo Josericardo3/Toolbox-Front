@@ -285,7 +285,8 @@ export class AppDiagnosticoDocComponent implements OnInit {
                   "color": "black",
                   "font": {
                     "weight": "normal"
-                  }
+                  },
+                  
                 }
               }
             },
@@ -414,8 +415,10 @@ export class AppDiagnosticoDocComponent implements OnInit {
               "enabled": false
             },
             "datalabels": {
-              "display": true,
-              "formatter": function(value, context) {
+              "display": function(context) {
+                return context.dataset.data[context.dataIndex] / context.dataset.data.reduce((a, b) => a + b, 0) * 100 > 0;
+              },
+                "formatter": function(value, context) {
                 var dataset = context.dataset;
                 var data = dataset.data;
                 var total = data.reduce(function(sum, current) {
@@ -753,7 +756,7 @@ export class AppDiagnosticoDocComponent implements OnInit {
                 {}
               ],
               [
-                { image: this.chartImage.changingThisBreaksApplicationSecurity, width: 500, alignment: 'center', colSpan: 5 },
+                {image: this.chartImage ? this.chartImage.changingThisBreaksApplicationSecurity : '',width: 500, alignment: 'center', colSpan: 5 },
                 {},
                 {},
                 {},
@@ -776,7 +779,7 @@ export class AppDiagnosticoDocComponent implements OnInit {
                 {}
               ],
               [
-                { image: this.imgTotalBar.changingThisBreaksApplicationSecurity, alignment: 'center', colSpan: 5 },
+                { image: this.imgTotalBar? this.imgTotalBar.changingThisBreaksApplicationSecurity: '', alignment: 'center', colSpan: 5 },
                 {},
                 {},
                 {},
@@ -893,7 +896,7 @@ export class AppDiagnosticoDocComponent implements OnInit {
         });
         pdfDefinition.content[5].table.body.push([
           {
-            image: this.graficosimg[obj.NUMERAL_PRINCIPAL].changingThisBreaksApplicationSecurity,
+            image: this.graficosimg[obj.NUMERAL_PRINCIPAL]? this.graficosimg[obj.NUMERAL_PRINCIPAL].changingThisBreaksApplicationSecurity : '',
             alignment: 'center',
             colSpan: 5,
             fit: [300, 180] // Especifica las dimensiones deseadas [ancho, alto]

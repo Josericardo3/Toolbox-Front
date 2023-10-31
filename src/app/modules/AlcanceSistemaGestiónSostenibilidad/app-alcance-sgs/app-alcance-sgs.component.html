@@ -28,13 +28,10 @@
           ¿Requisitos de la norma que no aplican?
         </p>
         <div *ngFor="let norma of NormasArray; let i = index;" class="container-check">
-          <input type="checkbox" class="input-check" [checked]="selectedCheckboxes[i] === i + ';t'" (change)="checkboxChange($event, i)"  [disabled]="accionActivo!='guardar'">
-          <p>{{ norma.TITULO }}</p>
-          <!-- 
-            [disabled]="accionActivo!='guardar'" -->
+          <input type="checkbox" class="input-check" *ngIf="norma.TITULO!=''" [checked]="selectedCheckboxes[i] === i + ';t'" (change)="checkboxChange($event, i)"  [disabled]="accionActivo!='guardar'">
+          <p *ngIf="norma.TITULO!=''">{{ norma.TITULO }}</p>
         </div>
         <p class="info">Seleccione aquellos que no aplican para su organización.</p>
-        <!-- -->
         <textarea name="" id="" cols="30" rows="10" [(ngModel)]="estructura.justificacion.RESPUESTA" [disabled]="accionActivo!='guardar'"></textarea>
         <p class="info">Justifique por qué no aplican.</p>
       </div>

@@ -19,7 +19,7 @@
                 <div class="buscar">            
                     <input type="text" placeholder="Buscar..." class="buscador" [(ngModel)]="busqueda" *ngIf="mostrarBuscador" (input)="filtrarDatos()">
                 </div>
-                <button class="compartir" routerLink="/encuesta" routerLinkActive="activebutton"  *ngIf="getRolValue() !== 4 && getRolValue() !== 5 &&  getRolValue() !== 7 " >
+                <button class="compartir" routerLink="/encuesta/crear" routerLinkActive="activebutton"  *ngIf="getRolValue() !== 4 && getRolValue() !== 5 &&  getRolValue() !== 7 " >
                     <i class="fa-regular fa-rectangle-list" style="color: #ffffff; margin-right: 0.5vw;"></i>Crear encuesta
                 </button>
             </div>
@@ -38,7 +38,7 @@
                         <td>{{campo.TITULO}}</td>
                         <td>{{campo.NUM_ENCUESTADOS}}</td>
                         <td *ngIf="getRolValue() !== 4 && getRolValue() !== 5 &&  getRolValue() !== 7">
-                            <a title="Editar">
+                            <a title="Editar" (click)="editarEncuesta(campo.ID_MAE_ENCUESTA)">
                                 <i class="fa-solid fa-pen" style="color: #06543c;"></i>
                             </a>
                             <app-app-eliminar-encuesta [indice]="indiceAEliminar" (click)="eliminarEncuesta(campo.ID_MAE_ENCUESTA)" 

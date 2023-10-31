@@ -125,6 +125,8 @@ export class AppAuditoriaInternaComponent {
         const title = "Registro no exitoso";
         const message = "Por favor verifique la fecha";
         this.Message.showModal(title, message);
+        this.formParent.get('dateInit').setValue('');
+        this.formParent.get('dateEnd').setValue('');
         return;
       }
        else if(inicioValue< today || finValue < today){

@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
+import { ModalService } from 'src/app/messagemodal/messagemodal.component.service';
 
 @Component({
   selector: 'app-formulario-registro-evaluacion-indicador',
@@ -34,7 +35,7 @@ export class FormularioRegistroEvaluacionIndicadorComponent {
     ];
   }
   @ViewChild('formObjetivo') formObjetivo: NgForm;
-  constructor() {
+  constructor(private modalService: ModalService,) {
     this.dataSource.push(this.model);
   }
 
@@ -83,13 +84,18 @@ const variables = this.model.VARIABLES_EVALUACION;
     ultimoVarEsOperador = true;
   }
     }
-console.log("sss",formulaConNumero)
+
     const resultado = eval(formulaConNumero);
 
     const result: any = parseFloat(resultado.toFixed(2)).toFixed(2);
-    this.model.RESULTADO = result * 100;
+    if(result=='NaN' || result=='Infinity'){
+      this.modalService.showModal("Alerta", 'La operación no puede ser procesada');
+      return;
+    }
+    console.log("sss",result)
+    this.model.RESULTADO = result;
 
-    if (resultado * 100 >= this.model.META) {
+    if (resultado >= this.model.META) {
       this.habilitaCampo = false;
       this.model.ESTADO = 'CUMPLE';
       this.requiredValidityChange.emit(true);

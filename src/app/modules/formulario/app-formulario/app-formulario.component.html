@@ -86,12 +86,37 @@
                 <i class="fa-solid fa-floppy-disk" style="color: white; margin: 0 0.5vw;"></i>Guardar</button>
             <button type="button" class="btnGuardar" (click)="activarCampos(true)" *ngIf="showGuardar==false && showBotones==true"> 
                 <i class="fa-solid fa-pen" style="color: white; margin: 0 0.4vw;"></i> Editar</button>
-            <button type="button" class="btnGuardar" *ngIf="showBotones==true" [disabled]="disableModificar" (click)="terminarModificarCampos2()"> 
+            <button type="button" class="btnGuardar" *ngIf="showBotones==true" [disabled]="disableModificar" (click)="terminarModificarCampos2()">
                 Terminar Modificacion</button>
+            <button type="button" class="btnGuardar"  data-toggle="modal" data-target="#deleteModal" (click)="eliminarLey(selectedMatrizId,$event)" *ngIf="showBotonEliminar == true"> 
+                <i class="fa-solid fa-trash" style="color: white; margin: 0 0.4vw;"></i> Eliminar</button>    
             
         </div>
-        
     </form>
+    
+        
+    
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" >
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-contedor" >
+            <div >
+              <a title="Cancelar" id="cerrarModal" style="display: flex; justify-content: flex-end; align-items: center;" data-dismiss="modal" aria-label="Close">
+                <i class="fa-solid fa-circle-xmark" style="color: #06543c;font-size: 25px;"></i>
+              </a>
+              <h4  id="myModalLabel">Confirmar Eliminación</h4>
+            </div>
+            <div class="modal-body">
+              <p>¿Estás seguro de que deseas eliminar este elemento?</p>
+            </div>
+            <div style="text-align: center;">
+              <button type="button" style="margin-right: 9px;" class="btn btn-default"  (click)="cancelDelete()" data-dismiss="modal" >Cancelar</button>
+              <button type="button" class="btn btn-danger" (click)="confirmDelete()" data-dismiss="modal">Eliminar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+    
     <!-- <div class="modal-background" id="modal-success" *ngIf="showModal">
 
         <div class="modal-content">

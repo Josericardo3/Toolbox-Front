@@ -1,7 +1,7 @@
 import { Component, OnInit, QueryList, TemplateRef, ViewChild, ViewChildren, ViewContainerRef} from '@angular/core';
 import { ApiService } from 'src/app/servicios/api/api.service';
 import { Router } from '@angular/router';
-import { FormGroup, Validators, FormBuilder,FormControl, NgForm } from '@angular/forms'
+import { FormGroup, Validators, FormBuilder,FormControl, NgForm, AbstractControl } from '@angular/forms'
 import * as pdfMake from 'pdfmake/build/pdfmake';
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';
 import { ModalService } from 'src/app/messagemodal/messagemodal.component.service'
@@ -53,6 +53,8 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
   adicionarVisibleSocial = false;
   adicionarVisibleEconomico = false;
   adicionarVisibleParticular = false;
+
+  entroAlPadre: boolean = false;
 
 //agregando nuevo
   showModal: boolean = false;
@@ -136,6 +138,10 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
   disabledTabs6: boolean = false;
 
 
+  //BOTON ELIMINAR LEY
+  disabledEliminar: boolean = false;
+
+
 
 
   subscriptions: any;
@@ -163,7 +169,8 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
   pst: any;
   logo: any;
   estadoFormulario: any;
-  public idMatriz: number | null = null;
+  public idMatriz: number| null = null;
+
 
   constructor(
     private ApiService: ApiService,
@@ -179,8 +186,8 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
 
   ngOnInit() {
     //REMOVER ARRAY TEMPORAL
-    debugger;
     
+    localStorage.removeItem('MiArrayTemporalELIMINAR')
 
 
 
@@ -193,6 +200,7 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
     //NOS SUSCRIBIMOS AL SERVICIO Y LE PASAMOS LA FUNCION QUE QUEREMOS QUE UTILIZE NUESTRO BOTON EN EL FORMULARIO
     this.modalPadre.abrirModal$.subscribe(()=>{
       this.terminarModificarCampos()
+      // this.entroAlPadre = !this.entroAlPadre;
     })
     
 
@@ -237,50 +245,67 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
 
     this.tab1Form = this.formBuilder.group({
       tipoNormatividad: ['', Validators.required],
+      otroValor: [''],
       numero: ['', Validators.required],
       anio: ['', Validators.required],
       descripcion: ['', Validators.required],
       secciones: ['', Validators.required]
+    }, {
+      validators: this.customValidation // Agrega la función de validación personalizada
     });
 
     this.tab2Form = this.formBuilder.group({
       tipoNormatividad: ['', Validators.required],
+      otroValor: [''],
       numero: ['', Validators.required],
       anio: ['', Validators.required],
       descripcion: ['', Validators.required],
-      secciones: ['', Validators.required],
+      secciones: ['', Validators.required]
+    }, {
+      validators: this.customValidation 
     });
 
     this.tab3Form = this.formBuilder.group({
       tipoNormatividad: ['', Validators.required],
+      otroValor: [''],
       numero: ['', Validators.required],
       anio: ['', Validators.required],
       descripcion: ['', Validators.required],
-      secciones: ['', Validators.required],
+      secciones: ['', Validators.required]
+    }, {
+      validators: this.customValidation 
     });
 
     this.tab4Form = this.formBuilder.group({
       tipoNormatividad: ['', Validators.required],
+      otroValor: [''],
       numero: ['', Validators.required],
       anio: ['', Validators.required],
       descripcion: ['', Validators.required],
-      secciones: ['', Validators.required],
+      secciones: ['', Validators.required]
+    }, {
+      validators: this.customValidation 
     });
 
     this.tab5Form = this.formBuilder.group({
       tipoNormatividad: ['', Validators.required],
+      otroValor: [''],
       numero: ['', Validators.required],
       anio: ['', Validators.required],
       descripcion: ['', Validators.required],
-      secciones: ['', Validators.required],
+      secciones: ['', Validators.required]
+    }, {
+      validators: this.customValidation 
     });
-
     this.tab6Form = this.formBuilder.group({
       tipoNormatividad: ['', Validators.required],
+      otroValor: [''],
       numero: ['', Validators.required],
       anio: ['', Validators.required],
       descripcion: ['', Validators.required],
-      secciones: ['', Validators.required],
+      secciones: ['', Validators.required]
+    }, {
+      validators: this.customValidation 
     });
     //SAVEFORM DEL MODAL RESUMEN
     this.saveForm = this.formBuilder.group({
@@ -299,6 +324,15 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
       
       //console.log(this.userInfor.LOGO);
     })
+  }
+
+  customValidation(control: AbstractControl) {
+    if (control.get('tipoNormatividad').value === 'otro') {
+      if (!control.get('otroValor').value) {
+        return { customError: true };
+      }
+    }
+    return null;
   }
 
 
@@ -324,7 +358,9 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
               PLAN_FECHA_EJECUCION: ley.PLAN_FECHA_EJECUCION,
               PLAN_ESTADO: ley.PLAN_ESTADO,
               ID_MATRIZ: ley.ID_MATRIZ,
+              DESCRIPCION: ley.DESCRIPCION,
               DOCS_ESPECIFICOS: ley.DOCS_ESPECIFICOS,
+              ES_FIJO: ley.ES_FIJO,
             }],
           };
         } else {
@@ -339,12 +375,15 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
             PLAN_FECHA_EJECUCION: ley.PLAN_FECHA_EJECUCION,
             PLAN_ESTADO: ley.PLAN_ESTADO,
             ID_MATRIZ: ley.ID_MATRIZ,
+            DESCRIPCION: ley.DESCRIPCION,
             DOCS_ESPECIFICOS: ley.DOCS_ESPECIFICOS,
+            ES_FIJO: ley.ES_FIJO,
           });
         }
         return acumulador;
       }, {});
       this.leyesTurismo = Object.values(gruposTurismo);
+      console.log("GAAAAA", this.leyesTurismo);
       const gruposAmbiental = this.datos.filter((ley) => ley.CATEGORIA === 'Ambiental' || ley.CATEGORIA === 'NTC 6496 Ambiental')
       .reduce((acumulador, ley) => {
         const clave = ley.TIPO_NORMATIVIDAD + ley.NUMERO + ley.ANIO;
@@ -363,6 +402,7 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
               PLAN_ESTADO: ley.PLAN_ESTADO,
               ID_MATRIZ: ley.ID_MATRIZ,
               DOCS_ESPECIFICOS: ley.DOCS_ESPECIFICOS,
+              ES_FIJO: ley.ES_FIJO,
             }],
           };
         } else {
@@ -378,6 +418,7 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
             PLAN_ESTADO: ley.PLAN_ESTADO,
             ID_MATRIZ: ley.ID_MATRIZ,
             DOCS_ESPECIFICOS: ley.DOCS_ESPECIFICOS,
+            ES_FIJO: ley.ES_FIJO,
           });
         }
         return acumulador;
@@ -402,6 +443,7 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
               PLAN_ESTADO: ley.PLAN_ESTADO,
               ID_MATRIZ: ley.ID_MATRIZ,
               DOCS_ESPECIFICOS: ley.DOCS_ESPECIFICOS,
+              ES_FIJO: ley.ES_FIJO,
             }],
           };
         } else {
@@ -417,6 +459,7 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
             PLAN_ESTADO: ley.PLAN_ESTADO,
             ID_MATRIZ: ley.ID_MATRIZ,
             DOCS_ESPECIFICOS: ley.DOCS_ESPECIFICOS,
+            ES_FIJO: ley.ES_FIJO,
           });
         }
         return acumulador;
@@ -441,6 +484,7 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
               PLAN_ESTADO: ley.PLAN_ESTADO,
               ID_MATRIZ: ley.ID_MATRIZ,
               DOCS_ESPECIFICOS: ley.DOCS_ESPECIFICOS,
+              ES_FIJO: ley.ES_FIJO,
             }],
           };
         } else {
@@ -456,6 +500,7 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
             PLAN_ESTADO: ley.PLAN_ESTADO,
             ID_MATRIZ: ley.ID_MATRIZ,
             DOCS_ESPECIFICOS: ley.DOCS_ESPECIFICOS,
+            ES_FIJO: ley.ES_FIJO,
           });
         }
         return acumulador;
@@ -480,6 +525,7 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
               PLAN_ESTADO: ley.PLAN_ESTADO,
               ID_MATRIZ: ley.ID_MATRIZ,
               DOCS_ESPECIFICOS: ley.DOCS_ESPECIFICOS,
+              ES_FIJO: ley.ES_FIJO,
             }],
           };
         } else {
@@ -495,6 +541,7 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
             PLAN_ESTADO: ley.PLAN_ESTADO,
             ID_MATRIZ: ley.ID_MATRIZ,
             DOCS_ESPECIFICOS: ley.DOCS_ESPECIFICOS,
+            ES_FIJO: ley.ES_FIJO,
           });
         }
         return acumulador;
@@ -502,7 +549,7 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
       this.leyesEconomico = Object.values(gruposEconomico);
 
       const gruposParticular = this.datos.filter((ley) => ley.CATEGORIA === 'NTC 6496 General' || ley.CATEGORIA === 'NTC 6487' || 
-      ley.CATEGORIA === 'NTC 6503' || ley.CATEGORIA === 'NTC 6503 Economico' || ley.CATEGORIA === 'NTC 6504' || ley.CATEGORIA === 'NTC 6505'
+      ley.CATEGORIA === 'NTC 6503' || ley.CATEGORIA === 'NTC 6503adicionar requisito Economico' || ley.CATEGORIA === 'NTC 6504' || ley.CATEGORIA === 'NTC 6505'
       || ley.CATEGORIA === 'NTC 6505 Ambiental' || ley.CATEGORIA === 'NTC 6502' || ley.CATEGORIA === 'NTC 6506' || ley.CATEGORIA === 'NTC 6507' || ley.categoria === 'NTC 6523')
       .reduce((acumulador, ley) => {
         const clave = ley.TIPO_NORMATIVIDAD + ley.NUMERO + ley.ANIO;
@@ -521,6 +568,7 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
               PLAN_ESTADO: ley.PLAN_ESTADO,
               ID_MATRIZ: ley.ID_MATRIZ,
               DOCS_ESPECIFICOS: ley.DOCS_ESPECIFICOS,
+              ES_FIJO: ley.ES_FIJO,
             }],
           };
         } else {
@@ -536,6 +584,7 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
             PLAN_ESTADO: ley.PLAN_ESTADO,
             ID_MATRIZ: ley.ID_MATRIZ,
             DOCS_ESPECIFICOS: ley.DOCS_ESPECIFICOS,
+            ES_FIJO: ley.ES_FIJO,
           });
         }
         return acumulador;
@@ -566,21 +615,42 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
   }
 
   toggleSectionLey(section, index, idMatriz: number) {
-  // Obtén el estado del formulario desde el servicio
-  this.estadoFormulario = this.formService.obtenerEstadoFormulario(idMatriz);
+    
+      // Obtén el estado del formulario desde el servicio
+    this.estadoFormulario = this.formService.obtenerEstadoFormulario(idMatriz);
     this.idMatriz = idMatriz;
-      if (section === 'primeraLey') {
+    if (section === 'primeraLey') {
       this.leyesVisibles[index] = !this.leyesVisibles[index];
     }
 
-    // Cierra el div abierto si se hace clic en otro div
-    if (this.lastVisible && this.lastVisible.section !== section) {
+  // Cierra el div abierto si se hace clic en otro div
+      if (this.lastVisible && this.lastVisible.section !== section) {
         if (this.lastVisible.section === 'primeraLey') {
           this.leyesVisibles[this.lastVisible.index] = false;
+        }
       }
-    }
-    this.lastVisible = { section, index };
-  }
+      this.lastVisible = { section, index };
+
+    
+    //   if(ES_FIJO == 0){
+    //     this.estadoFormulario = this.formService.obtenerEstadoFormulario(idMatriz);
+    // this.idMatriz = idMatriz;
+    // if (section === 'primeraLey') {
+    //   this.leyesVisibles[index] = !this.leyesVisibles[index];
+    // }
+
+    // // Cierra el div abierto si se hace clic en otro div
+    // if (this.lastVisible && this.lastVisible.section !== section) {
+    //     if (this.lastVisible.section === 'primeraLey') {
+    //       this.leyesVisibles[this.lastVisible.index] = false;
+    //     }
+    // }
+    // this.lastVisible = { section, index };
+    //   }
+      
+  
+    
+}
 
   toggleSectionDivAdd(section, index) {
     if (section === 'divAdd') {
@@ -639,6 +709,7 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
   }
 
   onSelect(value: string) {
+    console.log(value)
     this.selectedOption = value;
   }
 
@@ -646,6 +717,7 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
     const inputElement = event.target as HTMLInputElement;
     this.otroValor = inputElement.value;
   }
+  
 
   agregarDiv() {
     const tipoNormatividad = this.tab1Form.value.tipoNormatividad;
@@ -682,6 +754,7 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
           ID_USUARIO_REG: localStorage.getItem('Id')
 
     };
+    console.log("YONI TEST: ", this.nuevoDiv);
 
     
     
@@ -2442,6 +2515,14 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
       this.disabledTabs5 = !this.disabledTabs5;
       this.disabledTabs1 = !this.disabledTabs1;
     }
+    // if(this.disabledModificar == true){
+    //   this.showModal = true;
+    //     const title = "Modificar Reporte";
+    //     const message = "Despliegue una de las leyes y proceda a editar";
+    //     this.Message.showModal(title, message);
+
+    // }
+    
   }
 
   //GUARDA DATOS INTRODUCIDOS EN EL TEXT AREA
@@ -2515,6 +2596,63 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
     
     
 
+  }
+
+
+  eliminarBloquearCampos(){
+    this.disabledEliminar = !this.disabledEliminar;
+  
+    if(this.tabActual == 'tab1'){
+      this.disabledTabs2 = !this.disabledTabs2;
+      this.disabledTabs3 = !this.disabledTabs3;
+      this.disabledTabs4 = !this.disabledTabs4;
+      this.disabledTabs5 = !this.disabledTabs5;
+      this.disabledTabs6 = !this.disabledTabs6;
+    }
+    if(this.tabActual == 'tab2'){
+      this.disabledTabs1 = !this.disabledTabs1;
+      this.disabledTabs3 = !this.disabledTabs3;
+      this.disabledTabs4 = !this.disabledTabs4;
+      this.disabledTabs5 = !this.disabledTabs5;
+      this.disabledTabs6 = !this.disabledTabs6;
+    }
+    if(this.tabActual == 'tab3'){
+      this.disabledTabs2 = !this.disabledTabs2;
+      this.disabledTabs1 = !this.disabledTabs1;
+      this.disabledTabs4 = !this.disabledTabs4;
+      this.disabledTabs5 = !this.disabledTabs5;
+      this.disabledTabs6 = !this.disabledTabs6;
+    }
+    if(this.tabActual == 'tab4'){
+      this.disabledTabs2 = !this.disabledTabs2;
+      this.disabledTabs3 = !this.disabledTabs3;
+      this.disabledTabs1 = !this.disabledTabs1;
+      this.disabledTabs5 = !this.disabledTabs5;
+      this.disabledTabs6 = !this.disabledTabs6;
+    }
+    if(this.tabActual == 'tab5'){
+      this.disabledTabs2 = !this.disabledTabs2;
+      this.disabledTabs3 = !this.disabledTabs3;
+      this.disabledTabs4 = !this.disabledTabs4;
+      this.disabledTabs1 = !this.disabledTabs1;
+      this.disabledTabs6 = !this.disabledTabs6;
+    }
+    if(this.tabActual == 'tab6'){
+      this.disabledTabs2 = !this.disabledTabs2;
+      this.disabledTabs3 = !this.disabledTabs3;
+      this.disabledTabs4 = !this.disabledTabs4;
+      this.disabledTabs5 = !this.disabledTabs5;
+      this.disabledTabs1 = !this.disabledTabs1;
+    }
+    if(this.disabledEliminar == true){
+
+      this.showModal = true;
+        const title = "Eliminar Requisito Legal";
+        const message = "Despliegue una de las leyes habilitadas y proceda a eliminar";
+        this.Message.showModal(title, message);
+
+    }
+    
   }
 
   

@@ -5,6 +5,7 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { ModalService } from 'src/app/messagemodal/messagemodal.component.service';
 import { ApiService } from 'src/app/servicios/api/api.service';
 
+
 @Component({
   selector: 'app-app-auditoria-planificacion',
   templateUrl: './app-auditoria-planificacion.component.html',
@@ -19,6 +20,7 @@ export class AppAuditoriaPlanificacionComponent {
   dropdownSettings: IDropdownSettings;
   dropdownList = [];
   selectedItems = [];
+  minDate: string;
 
   @Output() valorEnviadoModal = new EventEmitter<object>();
 
@@ -62,6 +64,12 @@ export class AppAuditoriaPlanificacionComponent {
     });
     this.fnListResponsible();
     this.getNormas(); 
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = today.getMonth() + 1; // Los meses comienzan en 0
+    const day = today.getDate();
+
+    this.minDate = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
   }
   listAuditor: any = [];
   equipoAuditor: any = [];
@@ -79,6 +87,7 @@ export class AppAuditoriaPlanificacionComponent {
   tipoProceso: string ='';
   tipoNorma: string = '';
   tabOption(value: string) {
+    console.log(value);
     if (value === 'proceso') {
       this.formParent.get('proceso').enable();
       this.formParent.get('actividad').disable();
@@ -168,28 +177,11 @@ export class AppAuditoriaPlanificacionComponent {
       textField: 'item_text',
       selectAllText: 'Seleccionar todos',
       unSelectAllText: 'Deseleccionar todo',
-      itemsShowLimit: 3,
+      itemsShowLimit: 1,
       allowSearchFilter: true
     };
   }
-  
-  
-  onDateChange(event: any) {
-    const dateInitValue = this.formParent.get('fecha').value;    
-    if (dateInitValue) {
-      const inicioValue = new Date(dateInitValue);
-      const now = new Date();  
-      const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-       if(inicioValue< today){
-        const title = "Registro no exitoso";
-        const message = "Por favor la fecha no puede ser menor a la fecha actual";
-        this.Message.showModal(title, message);
-        this.formParent.get('fecha').setValue('');
-        return;
-      }
-    }
-  }
-  
+
   
   
   

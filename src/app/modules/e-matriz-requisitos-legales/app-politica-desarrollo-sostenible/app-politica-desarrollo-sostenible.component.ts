@@ -132,7 +132,7 @@ export class AppPoliticaDesarrolloSostenibleComponent implements OnInit {
                 if (e.PREGUNTA === "¿Cuándo?") {
                   //e.RESPUESTA = e.RESPUESTA.trim() == "" ? "" : new Date(e.RESPUESTA);
                   e.RESPUESTA = e.RESPUESTA;
-                  console.log(e.RESPUESTA);
+                  //console.log(e.RESPUESTA);
                 }
                 return e;
               })
@@ -170,7 +170,7 @@ export class AppPoliticaDesarrolloSostenibleComponent implements OnInit {
             })
             
             this.dataGrilla = response.RESPUESTA_GRILLA;
-            //this.printCampos(this.dataGrilla);
+            this.printCampos(this.dataGrilla);
             //console.log(this.dataGrilla);
           });
         }
@@ -239,10 +239,17 @@ export class AppPoliticaDesarrolloSostenibleComponent implements OnInit {
     this.value3 = temporal3.RESPUESTA;
     this.value4 = temporal4.RESPUESTA;
 
-    console.log(ind);
-    //console.log(this.value1);
+    //console.log(ind);
+    //console.log(this.value3.slice(0,10));
+    this.fnReordenarFecha("2023-10-25");
   }
-
+  fnReordenarFecha (fec: string):string {
+    const partesFecha: string[] = fec.split('-');
+    const fechaFormateada: string = partesFecha[2] + '-' + partesFecha[1] + '-' + partesFecha[0];
+    
+    console.log(fechaFormateada);
+    return fechaFormateada;
+  }
   fnListResponsible() {
     const idPerfil = this.getRolValue();
     if (idPerfil == 3) {
@@ -305,9 +312,9 @@ export class AppPoliticaDesarrolloSostenibleComponent implements OnInit {
             FK_ID_RESPONSABLE: parseInt(localStorage.getItem("Id")),
             TIPO_ACTIVIDAD: "Taller de Política de Desarrollo Sostenibles",
             DESCRIPCION: this.value1 + ' : ' + this.value4,
-            FECHA_INICIO: "10-08-2023",
-            FECHA_FIN: "10-08-2023",
-            ESTADO_PLANIFICACION: "En Proceso"
+            FECHA_INICIO: this.fnReordenarFecha(this.value3.slice(0, 10)),
+            FECHA_FIN: this.fnReordenarFecha(this.value3.slice(0, 10)),
+            ESTADO_PLANIFICACION: "Programado"
           }
           this.ApiService.postNewRecord(request1).subscribe((data) => {
             //const title2 = "Registro exitoso";

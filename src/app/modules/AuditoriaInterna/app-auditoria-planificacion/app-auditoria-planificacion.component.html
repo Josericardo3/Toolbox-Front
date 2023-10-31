@@ -24,14 +24,13 @@
             <section class="container-date">
               <div>
                 <label class="label-auditor">Fecha</label>
-                <input bsDatepicker appFwCalendario (ngModelChange)="onDateChange($event)" type="text" maxlength="10" placement="bottom"
-                  class="forma-input" #dp2="bsDatepicker" placeholder="DD-MM-YYYY" title="Inicio de actividad"
-                   formControlName="fecha" fw_calendario ui-date-mask
-                  style="width:100px;margin-right: 0px; margin-left: 7px;border: 1px solid #068460;border-radius:3px; padding: 3px;height: 22px;"
-                  [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY',adaptivePosition: true, isAnimated: true, containerClass: 'theme-green'}" />
-                <i (click)="dp2.show()" class="fa-solid fa-calendar-days"
-                  style="color: #06543c;font-size: 22px;padding: 8px;" [attr.aria-expanded]="dp2.isOpen">
-                </i>
+
+                <input  type="date" maxlength="10" placement="bottom"
+                  class="forma-input" placeholder="DD-MM-YYYY" title="Inicio de actividad"
+                   formControlName="fecha" [min]="minDate"
+                  style="width:auto ;margin-right: 0px; margin-left: 7px;border: 1px solid #068460;border-radius:3px; padding: 3px;height: 22px;"
+                  />
+
               </div>
               <br>
               <div class="select-botton-grup" >
@@ -66,9 +65,9 @@
             <br>
           </div>
           <tabset>
-            <tab (click)="tabOption('proceso')">
-              <ng-template tabHeading>
-                <span class="mi-encabezado-tab">Proceso</span>
+            <tab >
+              <ng-template tabHeading >
+                <span (click)="tabOption('proceso')" class="mi-encabezado-tab">Proceso</span>
               </ng-template> 
               <select class="select-process"  *ngIf="activeTab === 'proceso' " id="selectProcess" formControlName="proceso">
                 <option value="" disabled selected>Seleccionar</option>
@@ -77,18 +76,18 @@
                 <option value="Proceso 3">Proceso 3</option>
               </select>
             </tab>
-            <tab  (click)="tabOption('actividad')">
-              <ng-template tabHeading>
-                <span class="mi-encabezado-tab">Actividad</span>
+            <tab >
+              <ng-template tabHeading >
+                <span  (click)="tabOption('actividad')" class="mi-encabezado-tab">Actividad</span>
               </ng-template>
               <input type="text" value="" class="actividad" placeholder="Actividad" formControlName="actividad">
             </tab>
           </tabset>
           <div style="height: 20px;"></div>
           <tabset>
-          <tab (click)="tabOption('norma')">
-            <ng-template tabHeading>
-              <span class="mi-encabezado-tab">Norma</span>                      
+          <tab>
+            <ng-template tabHeading >
+              <span (click)="tabOption('norma')" class="mi-encabezado-tab">Norma</span>                      
             </ng-template>
             <select class="select-process" id="norma" formControlName="norma" (ngModelChange)="onNormaSelect()">
               <option value="">Seleccionar</option>
@@ -96,9 +95,9 @@
             </select>
                     
           </tab>
-          <tab (click)="tabOption('requisito')">
-            <ng-template tabHeading>
-              <span class="mi-encabezado-tab">Requisito a auditar</span>
+          <tab >
+            <ng-template tabHeading >
+              <span (click)="tabOption('requisito')" class="mi-encabezado-tab">Requisito a auditar</span>
             </ng-template>
             <ng-multiselect-dropdown
               formControlName="requisito"

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../servicios/api/api.service';
+import { Router } from '@angular/router';
 import { ColorLista } from 'src/app/servicios/api/models/color';
 
 @Component({
@@ -22,7 +23,8 @@ export class AppTablaEncuestasComponent implements OnInit{
   caracteristicaIndiceEliminar: number = -1;
 
   constructor(
-    public api: ApiService
+    public api: ApiService,
+    private router: Router
   ) {}
 
   ngOnInit(){
@@ -60,4 +62,8 @@ export class AppTablaEncuestasComponent implements OnInit{
     if (valor == -2) this.fnListEncuestas();
   }
 
+  editarEncuesta(id: any) {
+    this.router.navigate(['/encuesta', 'editar', id]);
+  }
+  
 }

@@ -11,54 +11,44 @@
                 <label class="descripcion">{{pregunta.DESCRIPCION}}
                     <span *ngIf="pregunta.OBLIGATORIO == true" style="color: tomato;">*</span>
                 </label>
-                <input type="text" placeholder="Ingresar respuesta corta" class="respuestaCorta" [formControlName]="'respuestaCorta_' + i"  [required]="pregunta.OBLIGATORIO">
+                <input type="text" placeholder="Ingresar respuesta corta" class="respuestaCorta" [formControlName]="'respuestaCorta_' + pregunta.ID_MAE_ENCUESTA_PREGUNTA"  [required]="pregunta.OBLIGATORIO">
             </div>
             <div *ngIf="pregunta.TIPO === 'respuestaLarga'" class="tipoDiv">
                 <label class="descripcion">{{pregunta.DESCRIPCION}}
                     <span *ngIf="pregunta.OBLIGATORIO == true" style="color: tomato;">*</span>
                 </label>
-                <textarea placeholder="Ingresar respuesta larga" class="respuestaLarga" [formControlName]="'respuestaLarga_' + i" 
+                <textarea placeholder="Ingresar respuesta larga" class="respuestaLarga" [formControlName]="'respuestaLarga_' + pregunta.ID_MAE_ENCUESTA_PREGUNTA" 
                 [required]="pregunta.OBLIGATORIO"></textarea>
             </div>
             <div *ngIf="pregunta.TIPO === 'radioButton'" class="tipoDiv">
                 <label class="descripcion">{{pregunta.DESCRIPCION}}
-                    <span *ngIf="pregunta.OBLIGATORIO == true" style="color: tomato;">*</span>
+                  <span *ngIf="pregunta.OBLIGATORIO == true" style="color: tomato;">*</span>
                 </label>
-                <ng-container *ngFor="let opcion of pregunta.VALOR.split(';')">
-                    <ng-container *ngIf="opcion !== 'otroRadio'">
-                        <label>
-                            <input type="radio" [required]="pregunta.OBLIGATORIO" [value]="opcion"
-                            [formControlName]="'radioButton_' + i" (change)="toggleOtroRadioInput(i)">{{opcion}}
-                        </label>
-                    </ng-container>
-                </ng-container>
-                <label>
-                    <input type="radio" [id]="'otroRadio_' + i" [formControlName]="'radioButton_' + i" (change)="toggleOtroRadioInput(i)">Otro:
-                    <input *ngIf="pregunta.VALOR.includes('otroRadio')" type="text" [formControl]="otroControlRadio">
-                </label>
-            </div>                                
+                <div *ngFor="let opcion of pregunta.VALOR.split(';')">
+                  <label>
+                        <input type="radio" [required]="pregunta.OBLIGATORIO" [value]="opcion" [formControlName]="'radioButton_' + pregunta.ID_MAE_ENCUESTA_PREGUNTA"
+                        (change)="toggleOtroRadio(pregunta, opcion)"> {{opcion}}
+                  </label>
+                </div>
+                <input *ngIf="pregunta.mostrarOtroRadio" type="text" placeholder="Otro" [formControlName]="'radioButtonOtro_' + pregunta.ID_MAE_ENCUESTA_PREGUNTA">
+            </div>                                   
             <div *ngIf="pregunta.TIPO === 'checkbox'" class="tipoDiv">
                 <label class="descripcion">{{pregunta.DESCRIPCION}}
                     <span *ngIf="pregunta.OBLIGATORIO == true" style="color: tomato;">*</span>
                 </label>
-                <ng-container *ngFor="let opcion of pregunta.VALOR.split(';'); let i = index">
-                    <ng-container *ngIf="opcion !== 'otroCheckbox'">
-                        <label>
-                            <input type="checkbox" [required]="pregunta.OBLIGATORIO" [formControlName]="'checkbox_' + i"
-                            (change)="toggleOtroCheckboxInput(i)">{{opcion}}
-                        </label>
-                    </ng-container>
-                </ng-container>
-                <label>
-                    <input type="checkbox" [id]="'otroCheckbox_' + i" (change)="toggleOtroCheckboxInput(i)">Otro:
-                    <input *ngIf="pregunta.VALOR.includes('otroCheckbox')" type="text" [formControl]="otroControlCheckbox">
-                </label>
+                <div *ngFor="let opcion of pregunta.VALOR.split(';')">
+                    <label>
+                        <input type="checkbox" [required]="pregunta.OBLIGATORIO" [value]="opcion" [formControlName]="'checkbox_' + pregunta.ID_MAE_ENCUESTA_PREGUNTA"
+                        (change)="toggleOtroCheckbox(pregunta, opcion)">{{opcion}}
+                    </label>
+                </div>
+                <input *ngIf="pregunta.mostrarOtroCheckbox" type="text" placeholder="Otro" [formControlName]="'checkboxOtro_' + pregunta.ID_MAE_ENCUESTA_PREGUNTA">
             </div>
             <div *ngIf="pregunta.TIPO === 'desplegable'" class="tipoDiv">
                 <label class="descripcion">{{pregunta.DESCRIPCION}}
                     <span *ngIf="pregunta.OBLIGATORIO == true" style="color: tomato;">*</span>
                 </label>
-                <select [formControlName]="'desplegable_' + i" class="select" [required]="pregunta.OBLIGATORIO">
+                <select [formControlName]="'desplegable_' + pregunta.ID_MAE_ENCUESTA_PREGUNTA" class="select" [required]="pregunta.OBLIGATORIO">
                     <option value="" selected disabled>Seleccione una opción</option>
                     <option *ngFor="let opcion of pregunta.VALOR.split(';'); let i = index" [value]="opcion">{{opcion}}</option>
                 </select>
