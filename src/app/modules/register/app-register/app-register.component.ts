@@ -378,7 +378,7 @@ export class AppRegisterComponent implements OnInit {
 
   saveUser() {
     const request = {
-      NIT: this.registerForm.get("numeroDeIdentificacionTributaria")?.value,
+      NIT: this.registerForm.get("numeroDeIdentificacionTributaria")?.value.toString(),
       RNT: this.registerForm.get("registroNacionalDeTurismo")?.value,
       FK_ID_CATEGORIA_RNT: this.registerForm.get("categoriaRnt")?.value.id,
       FK_ID_SUB_CATEGORIA_RNT: this.registerForm.get("subcategoriaRnt")?.value.id,
@@ -410,7 +410,7 @@ export class AppRegisterComponent implements OnInit {
       FK_ID_TIPO_AVATAR: 1,
     }
     localStorage.setItem("newUser", 'yes')
-
+    debugger;
     return this.ApiService.createUser(request).subscribe((data: any) => {
       if (data.StatusCode === 201) {
         const title = "Registro exitoso";
