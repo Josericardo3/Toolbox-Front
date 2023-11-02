@@ -1,4 +1,4 @@
-import { Component, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { ModalService } from 'src/app/messagemodal/messagemodal.component.service'
 import { ApiService } from 'src/app/servicios/api/api.service';
 import { ColorLista } from 'src/app/servicios/api/models/color';
@@ -19,7 +19,8 @@ interface Option {
 })
 
 export class AppEncuestaComponent implements OnInit{
-
+  tituloEditar:any = "";
+ descripcionEditar:any = "";
   @ViewChildren(AppTarjetasComponent) tarjetasComponent: QueryList<AppTarjetasComponent>;
 
   tarjetas: any[] = [];
@@ -160,5 +161,12 @@ export class AppEncuestaComponent implements OnInit{
 
   actualizarEncuesta() {
     // Lógica para actualizar una encuesta existente
+  }
+  Obtenertitulo(evento:any){
+    const titulo = this.formEncuesta.get('tituloEncuesta')?.value.toString();
+    this.tituloEditar=titulo;
+    console.log("eventooooo", titulo)
+    const descripcion = this.formEncuesta.get('descripcionEncuesta')?.value.toString();
+    this.descripcionEditar=descripcion;
   }
 }

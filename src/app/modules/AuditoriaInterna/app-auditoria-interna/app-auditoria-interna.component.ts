@@ -589,7 +589,6 @@ export class AppAuditoriaInternaComponent {
 
   newArray: any = [];
   recibirValor(valor: number) {
-    debugger;
     if (valor == - 1) {
       this.newArray = this.valueAuditoria.filter((element: any) => {
         return element !== this.indiceAEliminarAuditoria;

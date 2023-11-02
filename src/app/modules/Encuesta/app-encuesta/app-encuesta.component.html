@@ -18,23 +18,23 @@
             </button>            
             <p class="p">{{ editandoEncuesta ? 'Ingresa los datos para actualizar la encuesta' : 'Ingresa los datos para crear una encuesta nueva'}}</p>
             <div class="encabezado">
-                <input type="text" class="tituloInput" placeholder="Título de la encuesta" formControlName="tituloEncuesta">
-                <input type="text" class="descripcion" placeholder="Descripción de la encuesta" formControlName="descripcionEncuesta">
+                <input type="text" class="tituloInput" (ngModelChange)="Obtenertitulo($event)" placeholder="Título de la encuesta" formControlName="tituloEncuesta">
+                <input type="text" class="descripcion"  (ngModelChange)="Obtenertitulo($event)" placeholder="Descripción de la encuesta" formControlName="descripcionEncuesta">
             </div>
             <div class="containerTarjetas">
-                <app-app-tarjetas [id]="0" (tarjetaCompletada)="guardarRespuesta($event, 0)" [editandoEncuesta]="editandoEncuesta"
+                <app-app-tarjetas  [tituloEditar]="tituloEditar" [descripcionEditar]="descripcionEditar"  [id]="0"  (tarjetaCompletada)="guardarRespuesta($event, 0)" [editandoEncuesta]="editandoEncuesta"
                 [valoresPreguntas]="valoresPreguntas" [datosPreguntaEncuesta]="datosPreguntaEncuesta"></app-app-tarjetas>
-                <div class="botones">
+                <div class="botones" *ngIf="!editandoEncuesta">
                     <button class="agregar" id="agregarTarjetaPrimera" (click)="agregarTarjeta()">
                        <i class="fa-solid fa-plus" style="color: #068460;"></i> Agregar
                    </button> 
                </div>
             </div>
             <div class="containerTarjetas" *ngFor="let tarjeta of tarjetas; let i = index">
-                <app-app-tarjetas [id]="tarjeta.id" [index]="i+1" (eliminarTarjeta)="eliminarTarjeta(i)" (tarjetaClicada)="agregarTarjeta(i)" 
+                <app-app-tarjetas [tituloEditar]="tituloEditar" [descripcionEditar]="descripcionEditar" [id]="tarjeta.id" [index]="i+1" (eliminarTarjeta)="eliminarTarjeta(i)" (tarjetaClicada)="agregarTarjeta(i)" 
                 (tarjetaCompletada)="guardarRespuesta($event, i+1)" [valoresPreguntas]="valoresPreguntas" 
                 [editandoEncuesta]="editandoEncuesta" [datosPreguntaEncuesta]="datosPreguntaEncuesta"></app-app-tarjetas>
-                <div class="botones">
+                <div class="botones" *ngIf="!editandoEncuesta">
                     <button class="agregar" (click)="eliminarTarjeta(i)">
                         <i class="fa-solid fa-trash" style="color: #068460;"></i> Eliminar
                     </button>
@@ -43,9 +43,8 @@
                     </button> 
                 </div>
             </div>
-            <button class="btn" type="submit" (click)="editandoEncuesta ? actualizarEncuesta() : saveEncuesta()">
-                <i class="fa-solid fa-floppy-disk" style="color: #ffffff;"></i>
-                {{ editandoEncuesta ? 'Actualizar' : 'Guardar' }}
+            <button class="btn" type="submit" (click)="saveEncuesta()" *ngIf="!editandoEncuesta">
+                <i class="fa-solid fa-floppy-disk" style="color: #ffffff;"></i> Guardar
             </button>              
         </div>
     </div>

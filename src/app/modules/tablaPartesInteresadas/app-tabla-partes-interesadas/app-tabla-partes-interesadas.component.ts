@@ -9,17 +9,12 @@ ApiService
   styleUrls: ['./app-tabla-partes-interesadas.component.css']
 })
 export class AppTablaPartesInteresadasComponent {
-  datos: any = [];
-  orden: string;
-  necesidades: string;
-  expectativa: string;
-  estadoC: string;
-  observacion: string;
-  accion: string;
   colorWallpaper: ColorLista;
   colorTitle: ColorLista;
   isCollapsed = false;
   mostrarNotificacion: boolean = false;
+  //
+  rolessArray: any = [];
 
   constructor(
     public api: ApiService
@@ -29,66 +24,64 @@ export class AppTablaPartesInteresadasComponent {
     this.api.colorTempo();
     this.colorWallpaper = JSON.parse(localStorage.getItem("color")).wallpaper;
     this.colorTitle = JSON.parse(localStorage.getItem("color")).title;
-
-    this.getTable();
-
-    this.api.getFormsParteInteresada()
-      .subscribe((data: any) => {
-        this.datos = data.RESPUESTA_GRILLA;
-        if (this.datos.length != 0) {
-          const obj = this.datos.filter((item) => item.PREGUNTA === "interesada");
-          this.orden = obj[0].RESPUESTA;
-          const necesidad = this.datos.filter((item) => item.PREGUNTA === "necesidades");
-          this.necesidades = necesidad[0].RESPUESTA;
-          const expectativa = this.datos.filter((item) => item.PREGUNTA === "expectativas");
-          this.expectativa = expectativa[0].RESPUESTA;
-          const estadoC = this.datos.filter((item) => item.PREGUNTA === "estadoCumplimiento");
-          this.estadoC = estadoC[0].RESPUESTA;
-          const observacion = this.datos.filter((item) => item.PREGUNTA === "observaciones");
-          this.observacion = observacion[0].RESPUESTA;
-          const accion = this.datos.filter((item) => item.PREGUNTA === "acciones");
-          this.accion = accion[0].RESPUESTA;
-        }
-      })
-
-
+    this.fnConsultMatrizPartesInteresadas();
   }
 
-  getTable() {
-    this.api.getFormsParteInteresada()
-      .subscribe(data => {
-        this.datos = data.RESPUESTA_GRILLA;
-        const imprimirRespuesta = {
-          'necesidades': 'proveedores-necesidades',
-          'expectativas': 'proveedores-expectativas',
-          'estadoCumplimiento': 'proveedores-requisitos',
-          'observaciones': 'proveedores-observaciones',
-          'acciones': 'proveedores-acciones'
+  fnConsultMatrizPartesInteresadas() {
+    this.api.getDataParteInteresada().subscribe((data) => {
+      this.rolessArray = data;
+      function compararPorIDInteresada(a: any, b: any) {
+        const idA = a.ID_INTERESADA;
+        const idB = b.ID_INTERESADA;
+
+        if (idA < idB) {
+          return -1;
+        } else if (idA > idB) {
+          return 1;
+        } else {
+          return 0;
         }
-        this.datos.forEach((item: any) => {
-          if (item.ORDEN === 1 && imprimirRespuesta[item.PREGUNTA]) {
-            const respuesta = imprimirRespuesta[item.PREGUNTA];
-            const element = document.getElementById(respuesta);
-            if (element) {
-              element.textContent = item.RESPUESTA;
-            }
-            // if (item.PREGUNTA === 'necesidades') {
-            //   document.getElementById('proveedores-necesidades').textContent = item.RESPUESTA;
-            // }
-            // if (item.PREGUNTA === 'expectativas') {
-            //   document.getElementById('proveedores-expectativas').textContent = item.RESPUESTA;
-            // }
-            // if (item.PREGUNTA === 'estadoCumplimiento') {
-            //   document.getElementById('proveedores-requisitos').textContent = item.RESPUESTA;
-            // }
-            // if (item.PREGUNTA === 'observaciones') {
-            //   document.getElementById('proveedores-observaciones').textContent = item.RESPUESTA;
-            // }
-            // if (item.PREGUNTA === 'acciones') {
-            //   document.getElementById('proveedores-acciones').textContent = item.RESPUESTA;
-            // }
-          }
-        });
-      })
+      }
+      this.rolessArray.sort(compararPorIDInteresada);
+      //
+      this.rolessArray.forEach(val => {
+        switch (val.ID_INTERESADA) {
+          case 1:
+            val.TITULO = 'PROVEEDOR(ES)';
+            break;
+          case 2:
+            val.TITULO = 'ORGANIZACIONES GUBERNAMENTALES';
+            break;
+          case 3:
+            val.TITULO = 'ORGANIZACIONES NO GUBERNAMENTALES';
+            break;
+          case 4:
+            val.TITULO = 'CLIENTE(S)';
+            break;
+          case 5:
+            val.TITULO = 'HUÉSPEDES';
+            break;
+          case 6:
+            val.TITULO = 'COLABORADORES (Personal directo y/o indirecto)';
+            break;
+          case 7:
+            val.TITULO = 'ACCIONISTAS O PROPIETARIOS';
+            break;
+          case 8:
+            val.TITULO = 'COMUNIDAD';
+            break;
+          case 9:
+            val.TITULO = 'COMUNIDAD VULNERABLE';
+            break;
+          case 10:
+            val.TITULO = 'ATRACTIVOS TURÍSTICOS';
+            break;
+          case 11:
+            val.TITULO = 'OTRA, ¿CUÁL?';
+            break;
+          default:
+        }
+        })
+    })
   }
 }

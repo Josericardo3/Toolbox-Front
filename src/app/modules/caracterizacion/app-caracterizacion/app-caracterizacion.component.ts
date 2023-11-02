@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, CUSTOM_ELEMENTS_SCHEMA, ElementRef, NgModule, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, CUSTOM_ELEMENTS_SCHEMA, ElementRef, NgModule, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder, AbstractControl, ValidationErrors } from '@angular/forms';
 import { ApiService } from 'src/app/servicios/api/api.service';
 // import 'core-js/es/object';
@@ -11,6 +11,7 @@ import { ConditionalExpr } from '@angular/compiler';
 import { ModalService } from 'src/app/messagemodal/messagemodal.component.service';
 import { ColorLista } from 'src/app/servicios/api/models/color';
 import { throws } from 'assert';
+import { log } from 'console';
 
 @Component({
   selector: 'app-app-caracterizacion',
@@ -24,16 +25,16 @@ export class AppCaracterizacionComponent implements OnInit {
   otroControlB: FormControl;
   otroControlC: FormControl;
   otroControlRed: FormControl;
-  facebook: FormControl;
-  twitter: FormControl;
-  instagram: FormControl;
-  tiktok: FormControl;
-  mostrarInputsRedesSociales: { [key: string]: boolean } = {
-    'FACEBOOK': false,
-    'TWITTER': false,
-    'INSTAGRAM': false,
-    'TIKTOK': false,
-  };
+  // facebook: FormControl;
+  // twitter: FormControl;
+  // instagram: FormControl;
+  // tiktok: FormControl;
+  // mostrarInputsRedesSociales: { [key: string]: boolean } = {
+  //   'FACEBOOK': false,
+  //   'TWITTER': false,
+  //   'INSTAGRAM': false,
+  //   'TIKTOK': false,
+  // };
   concatenacionRedesSociales: any = "";
   respuestasRedesSociales: { [key: string]: string } = {};
   seleccionesPorPregunta: { [key: string]: string } = {};
@@ -60,7 +61,7 @@ export class AppCaracterizacionComponent implements OnInit {
   mostrarInput = false;
   idCaracterizacionDinamicaCondicion!: any;
   categoriaRNTValues: string;
-  valoresForm: any = [];
+  valoresForm: any[] = [];
   numOfFields!: number;
   selectedOption: string;
   selectedOptions: string[] = [];
@@ -86,8 +87,12 @@ export class AppCaracterizacionComponent implements OnInit {
     private router: Router,
     private spinnerService: SpinnerService,
     private Message: ModalService,
-  ) {}
+    private cdref: ChangeDetectorRef 
+  ) {
+    this.cargaInicial=true;
+  }
 
+cargaInicial: boolean;
 ngOnInit(): void { 
   const id = Number(window.localStorage.getItem('Id'));
   this.colorTitle = JSON.parse(localStorage.getItem("color")).title;
@@ -112,15 +117,15 @@ ngOnInit(): void {
   this.otroControlA = new FormControl('', [Validators.required]);
   this.otroControlB = new FormControl('', [Validators.required]);
   this.otroControlC = new FormControl('', [Validators.required]);
-  this.facebook = new FormControl('', [Validators.required]);
-  this.twitter = new FormControl('', [Validators.required]);
-  this.instagram = new FormControl('', [Validators.required]);
-  this.tiktok = new FormControl('', [Validators.required]);
+  // this.facebook = new FormControl('', [Validators.required]);
+  // this.twitter = new FormControl('', [Validators.required]);
+  // this.instagram = new FormControl('', [Validators.required]);
+  // this.tiktok = new FormControl('', [Validators.required]);
 }
 
-toggleMostrarInputRedesSociales(opcion: string) {
-  this.mostrarInputsRedesSociales[opcion] = !this.mostrarInputsRedesSociales[opcion];
-}
+// toggleMostrarInputRedesSociales(opcion: string) {
+//   this.mostrarInputsRedesSociales[opcion] = !this.mostrarInputsRedesSociales[opcion];
+// }
 
 validarCampoOtroA() {
   return this.otroControlA.invalid && this.otroControlA.touched;
@@ -137,6 +142,16 @@ validarCampoOtroC() {
 validarCampoOtroRed() {
   return  this.otroControlRed.touched;
 }
+validarCampoInput(opcion: any){
+  let ver=false;
+  if(opcion.valorUrl!==undefined){
+    if(opcion.valorUrl.trim()!=""){
+      ver=true;
+    }
+  }
+  return ver;
+}
+
 
 getCaracterizacion(){
   this.ApiService.getData()
@@ -168,7 +183,6 @@ getPreguntasOrdenadas(){
   .subscribe((data: any) => {
     this.preguntasOrdenadas = data.CAMPOS;
     this.ordenarPreguntas();
-
   });
 }
 
@@ -183,6 +197,31 @@ ordenarPreguntas() {
       };
     }).sort((a: any, b: any) => a.ID_ORDEN - b.ID_ORDEN);
   }
+
+  this.preguntasOrdenadas = this.preguntasOrdenadas.map((e:any)=>{
+    e.esCargarInicial=true;
+    return e;
+  })
+
+  //inicializar el saveform
+
+  this.preguntasOrdenadas.forEach(element => {
+    if(element.TIPO_DE_DATO =="checkbox" || element.TIPO_DE_DATO == "radio"    ){
+      this.valoresForm.push({
+        "id": 0,
+        "valor": '',
+        "idUsuarioPst": localStorage.getItem('Id'),
+        "idCategoriaRnt": localStorage.getItem('idCategoria'),
+        "idCaracterizacion": element.ID_CARACTERIZACION_DINAMICA,
+        "tipoDato": element.TIPO_DE_DATO,
+        "requerido": element.REQUERIDO,
+        "seleccionCheckValido": false,
+        "seleccionInputCheckValido": false
+      });
+    }
+  
+  });
+
 }
 
 onChangeAventuraSeleccionada(value: boolean) {
@@ -190,7 +229,7 @@ onChangeAventuraSeleccionada(value: boolean) {
   
     if (this.aventuraSeleccionada) {
       // Si se seleccionó "SI", se muestra solo la norma que comienza con "NTC 6502"
-      debugger;
+     
       this.opcionesNorma = this.dataNorma.filter(
         opcion => opcion.NORMA && opcion.NORMA.startsWith('NTC 6502') ||
         opcion.NORMA.startsWith('NTC ISO 21101') ||
@@ -293,69 +332,172 @@ getControlType(campo: any) {
   }
 }
 
-capturarValor(id: string | number, valor: any, idcaracterizaciondinamica: any, opcionNombre: string, nombreCampo: string) {
-  const preguntaId = `${id}_${idcaracterizaciondinamica}`;
 
-  if (nombreCampo === '¿Cuáles redes sociales tiene?') {
-    if (opcionNombre === 'FACEBOOK' || opcionNombre === 'TWITTER' || opcionNombre === 'INSTAGRAM' || opcionNombre === 'TIKTOK') {
-      this.respuestasRedesSociales[opcionNombre] = `${opcionNombre}: ${valor}`;
-
-      const respuestasConcatenadas = [];
-      for (const key in this.respuestasRedesSociales) {
-        if (this.respuestasRedesSociales.hasOwnProperty(key)) {
-          respuestasConcatenadas.push(this.respuestasRedesSociales[key]);
+// toggleCampoRedSocial(index: number) {
+//   this.mostrarCampoRedSocial[index] = !this.mostrarCampoRedSocial[index];
+// }
+habilitarInputPorCheck(opcion: any): boolean{
+  let ver=false;
+  const result = this.preguntasOrdenadas.find((o: any) => o.ID_CARACTERIZACION_DINAMICA === opcion.FK_ID_CARACTERIZACION_DINAMICA);
+  if(result){
+    if(result.NOMBRE=="¿Cuáles redes sociales tiene?"){
+      if(opcion.check!==undefined){
+        ver=opcion.check;
+      }
+    }
+    else{
+      if(opcion.NOMBRE=="OTROS"){
+        if(opcion.check!==undefined){
+          ver=opcion.check;
         }
       }
+    }
+  }
+  return ver;
+}
 
-      this.concatenacionRedesSociales = respuestasConcatenadas.join(', ');
-      this.opcionesAgrupadas.push(this.concatenacionRedesSociales);
+
+
+existeUnoSeleccionado(grupoPregunta: any): boolean{
+  let alMenosUnCheck=false;
+  if (grupoPregunta.DESPLEGABLE.some(elemento => elemento.check === true)) {
+     alMenosUnCheck = true;
+  }
+  return alMenosUnCheck;
+}
+
+
+
+  capturarValor(id: string | number, valor: any, campo: any,opcionNombre?: string, nombreCampo?: string) {
+
+
+    const result = this.valoresForm.find((o: any) => o.idCaracterizacion === campo.ID_CARACTERIZACION_DINAMICA);
+    //cambios 30.10.2023 
+    let valorTemp ="";
+    let hayVacios=true;
+    if(campo.TIPO_DE_DATO == "checkbox"){
+      let arrayTempDesplegable = campo.DESPLEGABLE.filter((e: any) => e.check === true );
+      valorTemp = arrayTempDesplegable.map(item => {
+
+        const valorUrl = item.valorUrl || ""; // Usar '' si no hay valorUrl
+        if((valorUrl.trim() == "" && campo.ID_CARACTERIZACION_DINAMICA == 18) ||
+           (valorUrl.trim() == "" && campo.ID_CARACTERIZACION_DINAMICA != 18 && item.NOMBRE == 'OTROS')
+        ){
+            hayVacios=false;
+          }
+       
+
+        return `${item.NOMBRE};${valorUrl}`;
+      }).join('|');
+
+      
+      if(arrayTempDesplegable.length>0) campo.haySeleccionGrupoCheck=true;
+      else  campo.haySeleccionGrupoCheck=false;
+      campo.esCargarInicial=false;
     }
-  } else {
-    if (valor) {
-      this.seleccionesPorPregunta[preguntaId] = this.seleccionesPorPregunta[preguntaId] ?
-        `${this.seleccionesPorPregunta[preguntaId]}, ${opcionNombre}` : opcionNombre;
-    } else {
-      this.seleccionesPorPregunta[preguntaId] = this.seleccionesPorPregunta[preguntaId]
-        .replace(new RegExp(opcionNombre + ',?'), '');
+    else if(campo.TIPO_DE_DATO == "radio") {
+      valorTemp =campo.valorSeleccionadoRadio;
     }
-    this.opcionesAgrupadas.push(this.seleccionesPorPregunta);
+    else{
+      valorTemp=valor;
+    }
+    //fin 
+      if (result) {
+        result.valor = valorTemp;
+        if(campo.TIPO_DE_DATO == "checkbox") {
+          result.seleccionCheckValido = campo.haySeleccionGrupoCheck;
+          result.seleccionInputCheckValido = hayVacios;
+        }
+      } else {
+        this.valoresForm.push({
+          "id": id,
+          "valor": valorTemp,
+          "idUsuarioPst": localStorage.getItem('Id'),
+          "idCategoriaRnt": localStorage.getItem('idCategoria'),
+          "idCaracterizacion": campo.ID_CARACTERIZACION_DINAMICA,
+          "tipoDato": campo.TIPO_DE_DATO,
+          "requerido": campo.REQUERIDO,
+          "seleccionCheckValido": campo.TIPO_DE_DATO == "checkbox" ?  campo.haySeleccionGrupoCheck : false,
+          "seleccionInputCheckValido": campo.TIPO_DE_DATO == "checkbox" ?  hayVacios: true
+        });
+      }
+      this.cdref.detectChanges();
+      this.cargaInicial=false;
   }
 
-  const result = this.valoresForm.find((o: any) => o.id === id);
-  if (result) {
-    result.valor = valor;
-  } else {
-    this.valoresForm.push({
-      "id": id,
-      "valor": valor,
-      "idUsuarioPst": localStorage.getItem('Id'),
-      "idCategoriaRnt": localStorage.getItem('idCategoria'),
-      "idCaracterizacion": idcaracterizaciondinamica
-    });
-  }
+  
+requiredCheckbox(){
+  return false
+}
+campoNombre(nombre: string){
+  console.log(nombre);
 }
 
 
 hasDepency(id: number) {
-  const campos = this.datos.campos;
-  const dictionay = new Map(campos.map(d => [d.idcaracterizaciondinamica, d]));
+  const campos = this.datos.CAMPOS;
+  const dictionay = new Map(campos.map(d => [d.ID_CARACTERIZACION_DINAMICA, d]));
   return dictionay.has(+id);
 }
 
-public saveForm(){
-  const caracterizacionRespuesta = this.valoresForm.map((elemento) => {
-    this.idUser =  Number(elemento.idUsuarioPst);
-    return { VALOR: elemento.valor.toString(),
-      FK_ID_USUARIO:Number(elemento.idUsuarioPst), 
-      FK_ID_CATEGORIA_RNT: Number(elemento.idCategoriaRnt),
-      FK_ID_CARACTERIZACION_DINAMICA: elemento.id};
-  })
+valorSeleccionadoRadio: string = '';
+validateCampo(valoresForm: any){
+  let ver=true;
+    let temporal =  valoresForm.filter((elemento: any)=>
+    elemento.tipoDato == "checkbox" 
+    && elemento.idCaracterizacion != 21
+    && (!elemento.seleccionCheckValido || !elemento.seleccionInputCheckValido )
+    )
 
+   if(valoresForm.filter((e:any)=>e.tipoDato == "radio" && e.valor=="").length>0){
+    ver = false;
+   }
+   else if(valoresForm.filter((e:any)=>e.tipoDato == "radio" && e.valor=="SI").length>0){
+      let temporal2 =  valoresForm.filter((elemento: any)=>
+      elemento.tipoDato == "checkbox" 
+      && elemento.idCaracterizacion == 21
+      && (!elemento.seleccionCheckValido || !elemento.seleccionInputCheckValido )
+      )
+      if(temporal2.length>0){
+        ver = false;
+       }
+   }
+
+   if(temporal.length>0){
+    ver = false;
+   }
+
+   return ver;
+
+}
+
+public saveForm(){
+  let validate = this.validateCampo(this.valoresForm);
+
+  if(validate){
+  
+    let seleccionOpcionRadio= this.valoresForm.filter((e:any)=>e.tipoDato == "radio" && e.valor=="NO");
+
+    let caracterizacionRespuesta: any = this.valoresForm.map((elemento) => {
+      this.idUser =  Number(elemento.idUsuarioPst);
+      return { VALOR: elemento.valor?.toString(),
+        FK_ID_USUARIO:Number(elemento.idUsuarioPst), 
+        FK_ID_CATEGORIA_RNT: Number(elemento.idCategoriaRnt),
+        FK_ID_CARACTERIZACION_DINAMICA: elemento.idCaracterizacion};
+    })
+
+    if(seleccionOpcionRadio.length>0){
+      caracterizacionRespuesta = caracterizacionRespuesta.filter((e:any)=>e.FK_ID_CARACTERIZACION_DINAMICA!=21)
+    }
+
+ 
     this.mostrarMensaje = true;
     if (this.formParent.valid) {
       this.ApiService.saveData(caracterizacionRespuesta).subscribe((data: any) => {
+    
         this.ApiService.getNorma(this.idUser).subscribe(
           (categ: any) => {
+      
             this.arrNormas = categ;
             localStorage.setItem("idCategoria", JSON.stringify(this.arrNormas[0].FK_ID_CATEGORIA_RNT));
         });
@@ -394,9 +536,17 @@ public saveForm(){
         this.router.navigate(['/dashboard']);
       });
     }
+  }
+  else{
+    alert(777)
+         const title = "Registro no exitoso";
+        const message = "Por favor verifique las respuestas";
+        this.Message.showModal(title,message);
+  }
 }
 
 checkMarcadoEnDesplegable(campo:any) {
   return campo.DESPLEGABLE.some(opcion => opcion.checked);
 }
 }
+
