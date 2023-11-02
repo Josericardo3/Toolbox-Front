@@ -62,12 +62,12 @@ export class AppAgregarRequisitoComponent {
 
   }
   saveForm() {
+    debugger;
     let audit = Number(window.localStorage.getItem('ID_AUDITORIA'));
     const valor = this.formParent.get('HALLAZGO').value;
     const DESCRIPCION = this.formParent.get('OBSERVACION').value;
     const REQUISITOS = this.formParent.get('REQUISITO').value;
     const formPreguntasArray = this.formParent.get('formPreguntas') as FormArray;
-    formPreguntasArray.clear()
     const closeModalButton = document.getElementById("closeModal");
     closeModalButton.click();
     this.arrayTemp=[];

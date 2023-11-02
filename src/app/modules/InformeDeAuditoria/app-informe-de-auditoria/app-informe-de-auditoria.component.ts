@@ -196,7 +196,8 @@ export class AppInformeDeAuditoriaComponent {
 
     })
     this.ApiService.UpdateAuditoriaEstadoTerminado(this.idInformeAuditoria).subscribe();
-  return this.generateInformeDeAuditoria(request);
+    return this.generateInformeDeAuditoria(request);
+    
    }}
 
    generateInformeDeAuditoria(request) {

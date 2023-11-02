@@ -99,18 +99,20 @@ ngOnInit(): void {
   this.colorWallpaper = JSON.parse(localStorage.getItem("color")).wallpaper;
 
    this.ApiService.validateCaracterizacion(id).subscribe((data: any)=>{
-     if(data === true){
-       this.router.navigate(['/dashboard']);
-     }
-   else{
+    if(data === true){
+      this.router.navigate(['/dashboard']);
+    }
+  else{
       this.formParent = this.formBuilder.group({});
       this.getCaracterizacion();
       this.getPreguntasOrdenadas();
       this.http.get('https://www.datos.gov.co/resource/gdxc-w37w.json')
       .subscribe((data: any[]) => {
         this.municipios = data;
+        console.log( this.municipios);
+        
       });  
-    }
+   }
   })
 
   //validar input-otro
@@ -370,6 +372,7 @@ existeUnoSeleccionado(grupoPregunta: any): boolean{
 
   capturarValor(id: string | number, valor: any, campo: any,opcionNombre?: string, nombreCampo?: string) {
 
+    //console.log(this.selectedOption + ':::::::: valor');
 
     const result = this.valoresForm.find((o: any) => o.idCaracterizacion === campo.ID_CARACTERIZACION_DINAMICA);
     //cambios 30.10.2023 
@@ -429,10 +432,6 @@ existeUnoSeleccionado(grupoPregunta: any): boolean{
 requiredCheckbox(){
   return false
 }
-campoNombre(nombre: string){
-  console.log(nombre);
-}
-
 
 hasDepency(id: number) {
   const campos = this.datos.CAMPOS;
@@ -475,10 +474,9 @@ public saveForm(){
   let validate = this.validateCampo(this.valoresForm);
 
   if(validate){
-  
     let seleccionOpcionRadio= this.valoresForm.filter((e:any)=>e.tipoDato == "radio" && e.valor=="NO");
-
     let caracterizacionRespuesta: any = this.valoresForm.map((elemento) => {
+    if(elemento.idCaracterizacion== 16 && elemento.tipoDato == "option") elemento.valor = this.selectedOptions
       this.idUser =  Number(elemento.idUsuarioPst);
       return { VALOR: elemento.valor?.toString(),
         FK_ID_USUARIO:Number(elemento.idUsuarioPst), 
@@ -489,10 +487,9 @@ public saveForm(){
     if(seleccionOpcionRadio.length>0){
       caracterizacionRespuesta = caracterizacionRespuesta.filter((e:any)=>e.FK_ID_CARACTERIZACION_DINAMICA!=21)
     }
-
- 
     this.mostrarMensaje = true;
     if (this.formParent.valid) {
+
       this.ApiService.saveData(caracterizacionRespuesta).subscribe((data: any) => {
     
         this.ApiService.getNorma(this.idUser).subscribe(
@@ -538,13 +535,12 @@ public saveForm(){
     }
   }
   else{
-    alert(777)
          const title = "Registro no exitoso";
         const message = "Por favor verifique las respuestas";
         this.Message.showModal(title,message);
   }
-}
 
+}
 checkMarcadoEnDesplegable(campo:any) {
   return campo.DESPLEGABLE.some(opcion => opcion.checked);
 }

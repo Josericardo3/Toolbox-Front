@@ -70,6 +70,10 @@ export class AppAuditoriaPlanificacionComponent {
     const day = today.getDate();
 
     this.minDate = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+
+    this.formParent.get('proceso').enable();
+    this.formParent.get('actividad').disable();
+    this.tipoProceso = 'Proceso';
   }
   listAuditor: any = [];
   equipoAuditor: any = [];
@@ -87,7 +91,6 @@ export class AppAuditoriaPlanificacionComponent {
   tipoProceso: string ='';
   tipoNorma: string = '';
   tabOption(value: string) {
-    console.log(value);
     if (value === 'proceso') {
       this.formParent.get('proceso').enable();
       this.formParent.get('actividad').disable();
@@ -116,9 +119,10 @@ export class AppAuditoriaPlanificacionComponent {
     const idNorma = constante ? constante.ID_NORMA : null;
     this.getRequerimientosNormas(idNorma);
   }
-  
   saveForm() {
+
     this.valueFormParent = this.formParent.value
+    
       for (let i = 0; i < this.valueFormParent.length; i++) {
       if(this.valueFormParent[i].proceso!='' && this.valueFormParent[i].proceso != undefined ){
           this.valueFormParent[i].TIPO_PROCESO = this.tipoProceso;
@@ -137,6 +141,7 @@ export class AppAuditoriaPlanificacionComponent {
         } else {
            this.valueFormParent[i].OBSERVACION_PROCESO = ''
         }
+
 
       }
  
