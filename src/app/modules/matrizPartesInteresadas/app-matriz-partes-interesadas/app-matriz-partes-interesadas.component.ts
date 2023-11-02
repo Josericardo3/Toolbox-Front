@@ -290,7 +290,7 @@ export class AppMatrizPartesInteresadasComponent implements OnInit {
     this.Fecha = this.form.get('fecha').value;
     this.Responsable = this.form.get('responsable').value;
     this.Estado = this.form.get('estado').value;
-    //this.Fecha = this.datePipe.transform(this.Fecha, 'dd-MM-yyyy');
+    this.Fecha = this.datePipe.transform(this.Fecha, 'dd-MM-yyyy');
 
     if (this.option == 'cumple') {
       this.Observaciones = '-';

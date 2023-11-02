@@ -410,7 +410,6 @@ export class AppRegisterComponent implements OnInit {
       FK_ID_TIPO_AVATAR: 1,
     }
     localStorage.setItem("newUser", 'yes')
-    debugger;
     return this.ApiService.createUser(request).subscribe((data: any) => {
       if (data.StatusCode === 201) {
         const title = "Registro exitoso";

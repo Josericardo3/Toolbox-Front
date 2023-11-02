@@ -82,7 +82,6 @@ export class AppAlcanceSGSComponent implements OnInit {
 
           let temporal = data.find(item => item.PREGUNTA === requisitosNoAplica);
           const temporalValue = this.separateCheckboxValues(temporal.RESPUESTA);
-          debugger;
           for (let i = 0; i < this.NormasArray.length; i++) {
             if (temporalValue[i] == undefined)
               this.selectedCheckboxes[i] = i + ';f';

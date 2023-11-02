@@ -72,8 +72,8 @@ export class AppFormularioComponent implements OnInit{
     
     // //REMOVER ARRAY TEMPORAL
     localStorage.removeItem('MiArrayTemporal');
-    ;
- debugger;
+    
+
     this.form = this.formBuilder.group({
       estadoCumplimiento:[this.estadoFormulario?.ESTADO_CUMPLIMIENTO ||''],
       responsable:[this.estadoFormulario?.ID_RESPONSABLE || ''],
@@ -102,7 +102,7 @@ export class AppFormularioComponent implements OnInit{
   }
   //VALORES POR DEFECTO EN LOS CAMPOS DEL FORMULARIO(ULTIMA MODIFICACION DE DATOS EN LA BD)
   restaurarForm(){
-    debugger;
+  
     this.form = this.formBuilder.group({
       estadoCumplimiento: [{ value: this.data?.ESTADO_CUMPLIMIENTO || this.estadoFormulario?.ESTADO_CUMPLIMIENTO || '', disabled: true }],
       responsable: [{value: this.data?.ID_RESPONSABLE_CUMPLIMIENTO || this.estadoFormulario?.ID_RESPONSABLE || '',disabled: true,}],

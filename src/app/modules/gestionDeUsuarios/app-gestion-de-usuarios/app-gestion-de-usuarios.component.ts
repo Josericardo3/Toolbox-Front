@@ -89,7 +89,6 @@ export class AppGestionDeUsuariosComponent {
   }
 
   linkToDashboard(user: any) {
-    debugger;
     localStorage.setItem('Id', user.FK_ID_USUARIO);
     localStorage.setItem('rol', '1');
     localStorage.setItem('TIPO_USUARIO','1');
@@ -168,7 +167,6 @@ export class AppGestionDeUsuariosComponent {
       this.dataTotal = data.length;
       const totalPag = data.length
       this.filtroTable.TotalPaginas = Math.ceil(totalPag / 7) ;;
-      debugger;
       return this.dataUser
     })
   }

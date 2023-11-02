@@ -146,7 +146,7 @@
                       <td  *ngIf="caracteristicaIndice==i">
                         <select class="select-auditor-acti" style="margin-top: 6px;height: 26px;" formControlName="auditor" [(ngModel)]="editarCaracteristica.auditor">
                           <option value="" disabled selected>Seleccionar</option>
-                          <option *ngFor="let auditor of listAuditor" [value]="auditor.NOMBRE">{{auditor.NOMBRE}}
+                          <option *ngFor="let auditor of arrayListResponsible" [value]="auditor.NOMBRE">{{auditor.NOMBRE}}
                           </option>
                         </select>
                       </td>

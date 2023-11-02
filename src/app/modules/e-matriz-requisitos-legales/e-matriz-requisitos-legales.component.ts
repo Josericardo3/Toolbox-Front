@@ -823,7 +823,7 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
      
     this.ApiService.gertArchivoMatriz()
     .subscribe((data: any) => {
-      debugger
+      
       this.datosReporte = data;
       this.gruposTurismoReporte = this.datosReporte.filter((ley) => ley.CATEGORIA === 'Turismo')  
   

@@ -348,7 +348,6 @@ export class AppGestorNoticiaComponent implements OnInit {
       const titulo = this.saveForm.value.tituloNoticia;
       const descripcion = this.saveForm.value.descripcionNoticia;
       const imagen = this.imagen ? this.imagen : '';
-      debugger;
       const data = {
         FK_ID_USUARIO: id,
         FK_ID_NORMA: selectedNormas,

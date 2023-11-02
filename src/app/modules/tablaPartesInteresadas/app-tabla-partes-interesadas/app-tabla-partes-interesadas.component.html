@@ -32,135 +32,14 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <th>PROVEEDOR(ES)</th>
-                        <ng-container *ngIf="orden === 'proveedores'">
-
-                        <td id="proveedores-necesidades">{{necesidades}}</td>
-                        <td id="proveedores-expectativas">{{expectativa}}</td>
-                        <td id="proveedores-requisitos">{{estadoC}}</td>
-                        <td id="proveedores-observaciones">{{observacion}}</td>
-                        <td id="proveedores-acciones">{{accion}}</td>
-                    </ng-container>
-
-                    </tr>
-
-                    <tr>
-                        <th>ORGANIZACIONES GUBERNAMENTALES</th>
-                        <ng-container *ngIf="orden === 'gubernamentales'">
-
-                        <td>{{necesidades}}</td>
-                        <td>{{expectativa}}</td>
-                        <td>{{estadoC}}</td>
-                        <td>{{observacion}}</td>
-                        <td>{{accion}}</td>
-
-                    </ng-container>
-
-                    </tr>
-
-                    <tr>
-                        <th>ORGANIZACIONES NO GUBERNAMENTALES</th>
-                        <ng-container *ngIf="orden === 'nogubernamentales'">
-
-                            <td>{{necesidades}}</td>
-                            <td>{{expectativa}}</td>
-                            <td>{{estadoC}}</td>
-                            <td>{{observacion}}</td>
-                            <td>{{accion}}</td>
-                        </ng-container>
-                    </tr>
-          
-                   <tr>
-                        <th>CLIENTE(S)</th>
-                         <ng-container *ngIf="orden === 'clientes'">
-
-                            <td>{{necesidades}}</td>
-                            <td>{{expectativa}}</td>
-                            <td>{{estadoC}}</td>
-                            <td>{{observacion}}</td>
-                            <td>{{accion}}</td>
-                        </ng-container>
-                    </tr>
-                    
-                   <tr>
-                    <th>HUÉSPEDES</th>
-                     <ng-container *ngIf="orden === 'huespedes'">
-
-                        <td>{{necesidades}}</td>
-                        <td>{{expectativa}}</td>
-                        <td>{{estadoC}}</td>
-                        <td>{{observacion}}</td>
-                        <td>{{accion}}</td>
-                    </ng-container>
-                     </tr>
-                     <tr>
-                        <th>COLABORADORES (Personal directo y/o indirecto)</th>
-                         <ng-container *ngIf="orden === 'colaboradores'">
-    
-                            <td>{{necesidades}}</td>
-                            <td>{{expectativa}}</td>
-                            <td>{{estadoC}}</td>
-                            <td>{{observacion}}</td>
-                            <td>{{accion}}</td>
-                        </ng-container>
-                         </tr>
-                         <tr>
-                            <th>ACCIONISTAS O PROPIETARIOS</th>
-                             <ng-container *ngIf="orden === 'accionista'">
-        
-                                <td>{{necesidades}}</td>
-                                <td>{{expectativa}}</td>
-                                <td>{{estadoC}}</td>
-                                <td>{{observacion}}</td>
-                                <td>{{accion}}</td>
-                            </ng-container>
-                             </tr>
-                             <tr>
-                                <th>COMUNIDAD</th>
-                                 <ng-container *ngIf="orden === 'comunidad'">
-            
-                                    <td>{{necesidades}}</td>
-                                    <td>{{expectativa}}</td>
-                                    <td>{{estadoC}}</td>
-                                    <td>{{observacion}}</td>
-                                    <td>{{accion}}</td>
-                                </ng-container>
-                                 </tr>
-                                 <tr>
-                                    <th>COMUNIDAD VULNERABLE</th>
-                                     <ng-container *ngIf="orden === 'comunidadVulnerable'">
-                
-                                        <td>{{necesidades}}</td>
-                                        <td>{{expectativa}}</td>
-                                        <td>{{estadoC}}</td>
-                                        <td>{{observacion}}</td>
-                                        <td>{{accion}}</td>
-                                    </ng-container>
-                                     </tr>
-                                     <tr>
-                                        <th>ATRACTIVOS TURÍSTICOS</th>
-                                         <ng-container *ngIf="orden === 'atractivos'">
-                    
-                                            <td>{{necesidades}}</td>
-                                            <td>{{expectativa}}</td>
-                                            <td>{{estadoC}}</td>
-                                            <td>{{observacion}}</td>
-                                            <td>{{accion}}</td>
-                                        </ng-container>
-                                         </tr>
-                                         <tr>
-                                            <th>OTRA, ¿CUÁL?</th>
-                                             <ng-container *ngIf="orden === 'otra'">
-                        
-                                                <td>{{necesidades}}</td>
-                                                <td>{{expectativa}}</td>
-                                                <td>{{estadoC}}</td>
-                                                <td>{{observacion}}</td>
-                                                <td>{{accion}}</td>
-                                            </ng-container>
-                                             </tr>
-             
+                  <tr *ngFor="let user of rolessArray; let i = index;">
+                    <th>{{ user?.TITULO }}</th>
+                    <td>{{ user?.NECESIDAD| titlecase }}</td>
+                    <td>{{ user?.EXPECTATIVA| titlecase }}</td>
+                    <td>{{ user?.ESTADO_DE_CUMPLIMIENTO| titlecase }}</td>
+                    <td>{{ user?.OBSERVACIONES| titlecase }}</td>
+                    <td>{{ user?.ACCIONES_A_REALIZAR| titlecase }}</td>
+                  </tr>
                 </tbody>
             </table>
         </div>

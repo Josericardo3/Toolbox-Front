@@ -124,7 +124,6 @@ export class AppAgregarRequisitoComponent {
     this.mostrarInputPregunta = !this.mostrarInputPregunta
   }
   guardarPregunta() {
-    debugger;
     const preguntaValor = this.formParent.get('PREGUNTA')?.value;
     if (preguntaValor != '' && preguntaValor != null) {
       const formPreguntasArray = this.formParent.get('formPreguntas') as FormArray;
