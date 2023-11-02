@@ -146,6 +146,8 @@ export class AppListaDeVerificacionComponent {
   }
 
   recibirValorModal(valor: any) {
+    debugger;
+    console.log(valor);
     this.showTable = true; // Mostrar tabla
     this.valueRequired.push(valor);
 

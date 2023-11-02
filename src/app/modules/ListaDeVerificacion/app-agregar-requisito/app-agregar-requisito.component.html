@@ -74,7 +74,7 @@
                 <div>
                   <label for="descripcion" class="label-auditor">Pregunta: </label>
                   <button class="button-mas" style="margin-left: 5px;" (click)="mostrarInput()" title="Presiona para agregar otra pregunta"> +</button>
-                  <input type="text" class="form-control" *ngIf="mostrarInputPregunta"
+                  <input type="text" formControlName="formPreguntas"  class="form-control" *ngIf="mostrarInputPregunta"
                     (change)="guardarPregunta()" formControlName="PREGUNTA" style="font-family:Arial,FontAwesome"
                     placeholder="&#xf059; Escribe tu pregunta">
 

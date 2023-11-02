@@ -14,6 +14,7 @@ import { registerLocaleData } from '@angular/common';
 import localeEsPE from '@angular/common/locales/es-PE';
 import { ModalService } from 'src/app/messagemodal/messagemodal.component.service';
 import { ColorLista } from 'src/app/servicios/api/models/color';
+
 registerLocaleData(localeEsPE, 'es-PE');
 
 @Injectable({
@@ -285,7 +286,13 @@ export class AppAuditoriaInternaComponent {
     this.ApiService.insertAuditoria(request)
       .subscribe((data: any) => {
       })
+
+    if(this.ApiService.insertAuditoria.length >= 1){
+      this.Message.showModal("Registro Exitoso","Se registró la Auditoría Exitosamente");
+      this.router.navigate(['/listaDeVerificacion'])
+    }
     return this.generatePlanDeAuditoria(request);
+
   }
   userInfor: any = {};
   getUser() {
