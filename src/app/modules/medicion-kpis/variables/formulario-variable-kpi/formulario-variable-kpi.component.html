@@ -1,0 +1,24 @@
+<form action="" #formObjetivo="ngForm">
+    <div class="row">
+      <div class="col-md-12">
+        <label for="NOMBRE">Nombre</label>
+  
+        <textarea
+          #NOMBRE
+          matInput
+          [(ngModel)]="model.NOMBRE"
+          name="NOMBRE"
+          required
+          class="form-control"
+          [ngClass]="{
+                     'required-field-error': formObjetivo.controls.indicador?.invalid && formObjetivo.controls.indicador?.touched
+                   }"
+          row="4"
+          (ngModelChange)="submitForm(formObjetivo)"
+        ></textarea>
+      </div>
+      
+      
+    </div>
+  </form>
+  

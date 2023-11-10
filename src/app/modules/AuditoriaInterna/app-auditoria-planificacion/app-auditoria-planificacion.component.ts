@@ -95,26 +95,28 @@ export class AppAuditoriaPlanificacionComponent {
       this.formParent.get('proceso').enable();
       this.formParent.get('actividad').disable();
       this.tipoProceso = 'Proceso';
-    } else if (value === 'actividad') {
+    } 
+    else if (value === 'actividad') {
       this.formParent.get('actividad').enable();
       this.formParent.get('proceso').disable();
       this.tipoProceso = 'Actividad';
-    } else if (value === 'norma') {
-      this.formParent.get('norma').enable();
-      this.formParent.get('requisito').disable();
-      this.tipoNorma='Norma';
-    } else if (value === 'requisito') {
-      this.formParent.get('requisito').enable();
-      this.formParent.get('norma').disable();
-      this.onNormaSelect();
-      this.tipoNorma='requisito';
     }
+     //else if (value === 'norma') {
+    //   this.formParent.get('norma').enable();
+    //   this.formParent.get('requisito').disable();
+    //   this.tipoNorma='Norma';
+    // } else if (value === 'requisito') {
+    //   this.formParent.get('requisito').enable();
+    //   this.formParent.get('norma').disable();
+    //   this.onNormaSelect();
+    //   this.tipoNorma='requisito';
+    // }
   }
   auditeeCharge:any = ''; 
  
   onNormaSelect() {
     let constante = this.formParent.get('norma').value;
-    let normaNombre = constante.NORMA
+    let normaNombre = constante?.NORMA
     localStorage.setItem("NormaRequisito", normaNombre);
     const idNorma = constante ? constante.ID_NORMA : null;
     this.getRequerimientosNormas(idNorma);
@@ -141,10 +143,11 @@ export class AppAuditoriaPlanificacionComponent {
         } else {
            this.valueFormParent[i].OBSERVACION_PROCESO = ''
         }
-
-
       }
- 
+
+    if(this.valueFormParent.proceso)this.valueFormParent.PROCESO_DESCRIPCION = this.valueFormParent.proceso;
+    if(this.valueFormParent.actividad)this.valueFormParent.PROCESO_DESCRIPCION = this.valueFormParent.actividad;
+     if(this.valueFormParent.norma)this.valueFormParent.NORMAS_DESCRIPCION = this.valueFormParent.norma;
     //para enviar valor al padre 
     this.valorEnviadoModal.emit(this.valueFormParent);
     //para cerrar el modal 
@@ -168,8 +171,16 @@ export class AppAuditoriaPlanificacionComponent {
 
   getNormas() {
     this.ApiService.getNormaList().subscribe((data: any) => {
-      this.normas = data;
+      this.normas =  data.filter((item, index, self) =>
+      self.findIndex((i) => i.NORMA === item.NORMA) === index
+    ).map((item) => {
+      return {
+        ID_NORMA: item.ID_NORMA,
+        NORMA: item.NORMA,
+      };
     });
+    });
+
   }
 
   getRequerimientosNormas(id: any) {

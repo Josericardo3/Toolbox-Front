@@ -4,6 +4,10 @@ import * as d3Tip from 'd3-tip';
 import * as d3Geo from 'd3-geo';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { ApiService } from 'src/app/servicios/api/api.service';
+import {MatCardModule} from '@angular/material/card';
+import { debug } from 'console';
+import { ALL } from 'dns';
+import { data } from 'jquery';
 
 @Component({
   selector: 'app-app-mapa-colombia',
@@ -25,29 +29,79 @@ export class AppMapaColombiaComponent implements OnInit {
   selectedAdmin: number[] = [];
   selectedNormas: number[] = [];
   arrayListaCategoria: any[] = [];
+  datamapa: any;
+  datamapafilter: any;
+  showdepartamentoSeleccionado: boolean = false; 
+  departamentoSeleccionado: string; 
+  tarjetaTop: string = '0px';
+  tarjetaLeft: string = '0px';
+  booltest:boolean = false;
+  valor1: any;
+  valor2: any;
+  valor3: any;
+  valor4: any;
+  valor5: any;
 
   constructor(private api: ApiService) {}
 
   ngOnInit() {
-    this.dibujarMapa();
+    this.getDataMapa();
+    //this.dibujarMapa();
     this.getSelectMultiplePST();
     this.getSelectMultipleNorma();
     this.listarCategorias();
   }
+  getDataMapa(){
+    this.api.getMonitorizacionMapa().subscribe((data)=>{
+      this.datamapa = data;
+      
+      this.datamapa.forEach((departamento) => {
+        const sumaCantidades = departamento.PSTs.reduce((total, pst) => total + pst.CANTIDAD_CONEXIONES, 0);
+        departamento.CANT = sumaCantidades;
+      });
+      this.dibujarMapa();
+      return;
+    });
+  }
 
   getFillColor(depto: string): string {
-    const firstLetter = depto.charAt(0).toLowerCase();
-    if (firstLetter >= 'a' && firstLetter <= 'd') {
-      return '#068460'; // Color para departamentos de la A a la D
-    } else if (firstLetter >= 'e' && firstLetter <= 'm') {
-      return '#FFA500'; // Color para departamentos de la E a la M
-    } else if (firstLetter >= 'n' && firstLetter <= 'p') {
-      return '#FFFF00'; // Color para departamentos de la N a la Z
-    } else if ( firstLetter >= 'p' && firstLetter <= 'z') {
-      return '#FF0000'; // Color por defecto para otros departamentos
-    } else{
-      return '';
+    debugger;
+    const departamento = this.datamapa?.find((data) => data.DEPARTAMENTO === depto);
+   // this.datamapa = this.datamapa?.filter((data)=> data.CATEGORIA === )
+    const cantidades = this.datamapa?.map((departamento) => departamento.CANT);
+
+    if (departamento) {
+      const cantidadConexiones = departamento.CANT;
+  
+      this.valor1 = Math.min(...cantidades);
+      this.valor5 = Math.max(...cantidades);
+      this.valor2 = (this.valor5 - this.valor1)/4+ this.valor1;
+      this.valor3 = (this.valor5 - this.valor1)*2/4+ this.valor1;
+      this.valor4 = (this.valor5 - this.valor1)*3/4+ this.valor1;
+
+      this.valor1 = Math.round(this.valor1);
+      this.valor2 = Math.round(this.valor2);
+      this.valor3 = Math.round(this.valor3);
+      this.valor4 = Math.round(this.valor4);
+      this.valor5 = Math.round(this.valor5);
+      var color;
+        if (cantidadConexiones >= this.valor1 && cantidadConexiones < this.valor2) {
+          color= '#FF0000'; 
+        } else if (cantidadConexiones >= this.valor2 && cantidadConexiones < this.valor3) {
+          color= '#FFA500'; 
+        } else if (cantidadConexiones >= this.valor3 && cantidadConexiones < this.valor4) {
+          color= '#FFFF00';
+        } else if ( cantidadConexiones >= this.valor4 && cantidadConexiones <= this.valor5) {
+          color= '#068460'; 
+        } else{
+          color= '#808080'; 
+        }
+        return color;
+
+    }else{
+      return '#808080';
     }
+
   }
 
   dibujarMapa(): void {
@@ -66,10 +120,12 @@ export class AppMapaColombiaComponent implements OnInit {
       .translate([width / 2, height / 2]);
 
     const path = d3.geoPath().projection(projection);
-
+    const mapaContainer = document.getElementById('mapa-colombia');
+    const areaFueraDelMapa = document.getElementById('area-fuera-del-mapa');
+  
     //PARA EL CUADRO INFORMATIVO(tooltip)
     let tip = d3Tip.default();
-
+    var self = this;
     d3.json('/assets/Colombia_departamentos_poblacion.geojson').then(
       (data: any) => {
         // Crear la leyenda y otros elementos aquí...
@@ -94,20 +150,28 @@ export class AppMapaColombiaComponent implements OnInit {
           .attr('stroke', '#fff')
           .attr('stroke-width', 0.5)
           .on('mouseover', function (event, d) {
+          
             tip
               .attr('class', 'd3-tip')
               .html((d: any) => `<strong>${d.properties.DPTO_CNMBR}</strong>`);
             svg.call(tip);
             tip.show(d, this);
+
           })
           .on('mouseout', () => {
             tip.hide();
+
           })
           .on('click', function (event, d) {
+              self.getTarjetaMapa(d.properties.DPTO_CNMBR);
+        
             console.log(d.properties.DPTO_CNMBR);
+
           });
+          
 
         // Agregar etiquetas de texto con los nombres de los departamentos
+        debugger;
         svg
           .selectAll('.departamento-label')
           .data(data.features)
@@ -122,10 +186,10 @@ export class AppMapaColombiaComponent implements OnInit {
           .style('fill', 'black')
           .style('pointer-events', 'none');
         const legendData = [
-          { label: 'Bajo', color: '#FF0000', min: 0, max: 100 },
-          { label: 'Medio', color: '#FFA500', min: 101, max: 500 },
-          { label: 'Alto', color: '#FFFF00', min: 501, max: 1000 },
-          { label: 'Muy Alto', color: '#068460', min: 1001, max: 2000 }
+          { label: 'Bajo', color: '#FF0000', min: this.valor1, max: this.valor2-1 },
+          { label: 'Medio', color: '#FFA500', min: this.valor2, max: this.valor3-1 },
+          { label: 'Alto', color: '#FFFF00', min: this.valor3, max: this.valor4-1 },
+          { label: 'Muy Alto', color: '#068460', min: this.valor4, max: this.valor5 }
         ];
         this.dibujarLeyenda(legendData);
       }
@@ -181,7 +245,7 @@ export class AppMapaColombiaComponent implements OnInit {
       selectAllText: 'Seleccionar todo',
       unSelectAllText: 'Deseleccionar todo',
       searchPlaceholderText: 'Buscar',
-      itemsShowLimit: 100,
+      itemsShowLimit: 3,
       allowSearchFilter: true,
     };
   }
@@ -205,7 +269,7 @@ export class AppMapaColombiaComponent implements OnInit {
       selectAllText: 'Seleccionar todo',
       unSelectAllText: 'Deseleccionar todo',
       searchPlaceholderText: 'Buscar',
-      itemsShowLimit: 100,
+      itemsShowLimit: 3,
       allowSearchFilter: true,
     };
   }
@@ -215,15 +279,17 @@ export class AppMapaColombiaComponent implements OnInit {
     })
   }
 
+  
   onItemSelect(item: any, dropdownId: string) {
-    if (item && item.id && dropdownId === 'pst') {
+    if (item && item.id && dropdownId === 'categoria') {
       this.selectedAdmin.push(item.id);
-      console.log(item, this.selectedAdmin);
+      console.log(this.arrayListaCategoria);
+
     } else if (item && item.id && dropdownId === 'norma') {
       this.selectedNormas.push(item.id);
       console.log(item, this.selectedNormas);
     }
-    console.log(this.arrayListaCategoria);
+    
     const arrayFilter = this.arrayListaCategoria.filter((element: any) => {
       return element.ID_NORMAS.some((norma: any) => this.selectedNormas.includes(norma.ID_NORMA));
     });
@@ -233,6 +299,19 @@ export class AppMapaColombiaComponent implements OnInit {
         nombre: item.CATEGORIA_RNT
       };
     });
+    
+    this.valor2 = 3; // Asegúrate de te ner los nuevos datos
+
+// 2. Limpia el mapa existente
+d3.select('#mapa-colombia').selectAll('*').remove();
+
+// 3. Dibuja el mapa nuevamente
+// Coloca aquí tu código para dibujar el mapa según los nuevos datos
+
+// 4. Manejo de datos dinámicos
+// Si tus datos cambian con el tiempo, puedes establecer un mecanismo para redibujar el mapa automáticamente.
+// Por ejemplo, puedes usar un temporizador para verificar y actualizar los datos periódicamente.
+  this.dibujarMapa(); // Una función que redibuja el mapa con los nuevos datos
 
     //para los repetidos solo mostrar uno
     const uniqueItems = this.dropdownListCategoria.reduce((accumulator, current) => {
@@ -244,34 +323,150 @@ export class AppMapaColombiaComponent implements OnInit {
     }, []);
 
     this.dropdownListCategoria = uniqueItems;
-
+    console.log("dropdowncat",this.dropdownListCategoria);
   }
-
+ 
   onSelectAll(items: any[], dropdownId: string) {
-    if (dropdownId === 'pst') {
+    debugger;
+    if (dropdownId === 'categoria') {
       this.selectedAdmin = items.map((item: any) => item.id);
+
+
       console.log(this.selectedAdmin);
     } else if (dropdownId === 'norma') {
       this.selectedNormas = items.map((item: any) => item.id);
       console.log(this.selectedNormas);
+      
     }
+    const arrayFilter = this.arrayListaCategoria.filter((element: any) => {
+      return element.ID_NORMAS.some((norma: any) => this.selectedNormas.includes(norma.ID_NORMA));
+    });
+    debugger;
+    this.dropdownListCategoria = arrayFilter.map(item => {
+      return {
+        id: item.ID_CATEGORIA_RNT,
+        nombre: item.CATEGORIA_RNT
+      };
+    });
+
+    const uniqueItems = this.dropdownListCategoria.reduce((accumulator, current) => {
+      const exists = accumulator.some(item => item.nombre === current.nombre);
+      if (!exists) {
+        accumulator.push(current);
+      }
+      return accumulator;
+    }, []);
+
+    this.dropdownListCategoria = uniqueItems;
   }
 
   onDeSelect(item: any, dropdownId: string) {
-    if (item && item.id && dropdownId === 'pst') {
+    if (item && item.id && dropdownId === 'categoria') {
+      const index = this.selectedAdmin.indexOf(item.id);
+      if (index !== -1) {
+        this.selectedAdmin.splice(index, 1);
+      }
+    } else if (item && item.id && dropdownId === 'norma') {
+      const index = this.selectedNormas.indexOf(item.id);
+      if (index !== -1) {
+        this.selectedNormas.splice(index, 1);
+      }
+      const arrayFilter = this.arrayListaCategoria.filter((element: any) => {
+        return element.ID_NORMAS.some((norma: any) => this.selectedNormas.includes(norma.ID_NORMA));
+      });
+      
+      this.dropdownListCategoria = arrayFilter.map(item => {
+        return {
+          id: item.ID_CATEGORIA_RNT,
+          nombre: item.CATEGORIA_RNT
+        };
+      });
+
+      const uniqueItems = this.dropdownListCategoria.reduce((accumulator, current) => {
+        const exists = accumulator.some(item => item.nombre === current.nombre);
+        if (!exists) {
+          accumulator.push(current);
+        }
+        return accumulator;
+      }, []);
+
+      this.dropdownListCategoria = uniqueItems;
+      this.selectedItems = this.dropdownListCategoria.map(item => {
+        return {
+          id: item.id,
+          nombre: item.nombre
+        };
+      });
+
+    }
+  }
+  /*
+  onDeSelect(item: any, dropdownId: string) {
+    if (item && item.id && dropdownId === 'categoria') {
       const index = this.selectedAdmin.indexOf(item.id);
       this.selectedAdmin.splice(index, 1);
     } else if (item && item.id && dropdownId === 'norma') {
+      debugger;
       const index = this.selectedNormas.indexOf(item.id);
       this.selectedNormas.splice(index, 1);
+
     }
-  }
+  }*/
 
   onDeSelectAll(items: any[], dropdownId: string) {
-    if (dropdownId === 'pst') {
+    debugger;
+    if (dropdownId === 'categoria') {
       this.selectedAdmin = [];
     } else if (dropdownId === 'norma') {
       this.selectedNormas = [];
+      this.selectedAdmin = [];
+      this.dropdownListCategoria = [];
+      this.selectedItems = [];
+
+    }
+
+  }
+
+  onMapClick(event: MouseEvent) {
+    const mapaContainer = document.querySelector('.mapa-container') as HTMLElement;
+
+    const x = event.clientX - mapaContainer.getBoundingClientRect().left;
+    const y = event.clientY - mapaContainer.getBoundingClientRect().top;
+    if(this.showdepartamentoSeleccionado === true){
+      this.tarjetaTop = `${y+100}px`;
+      this.tarjetaLeft = `${x}px`;  
+    }
+
+  }
+  getTarjetaMapa(nameDpto : string){
+  
+    const dataSeleccionado = this.datamapa.find((data) => data.DEPARTAMENTO === nameDpto);
+
+    this.datamapafilter = dataSeleccionado;
+    if (dataSeleccionado) {
+
+   this.showdepartamentoSeleccionado = true; 
+   this.departamentoSeleccionado = nameDpto;
+
+    } else{
+      this.datamapafilter = {
+        DEPARTAMENTO: nameDpto,
+        PSTs:[
+          {
+            CANTIDAD_CONEXIONES:0
+          }
+        ]
+      };
+      this.departamentoSeleccionado = nameDpto;
+      this.showdepartamentoSeleccionado = true; 
+
     }
   }
+
+  cerrarTarjeta() {
+    this.showdepartamentoSeleccionado = false;
+    this.departamentoSeleccionado = '';
+
+  }
+
 }

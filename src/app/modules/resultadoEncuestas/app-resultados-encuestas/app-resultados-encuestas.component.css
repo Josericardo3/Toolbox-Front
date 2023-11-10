@@ -124,6 +124,26 @@ h1{
     flex-direction: column;
     width: 100%;
 }
+/* pagination */
+.page-style {
+    display: flex;
+    justify-content: flex-end;
+}
+.paginas {
+    display: inline-block;
+    max-width: 100%;
+    margin: 10px;
+    font-weight: 700;
+    font-size: 14px;
+    font-family: 'Work Sans', sans-serif;
+}
+.container-label {
+    display: flex;
+    align-items: center;
+}
+.resposi-icon {
+    display: none;
+}
 @media (max-width: 970px) {
 
     /* NOMBRE DE LA CABECERA  */

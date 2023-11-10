@@ -14,7 +14,6 @@ import { registerLocaleData } from '@angular/common';
 import localeEsPE from '@angular/common/locales/es-PE';
 import { ModalService } from 'src/app/messagemodal/messagemodal.component.service';
 import { ColorLista } from 'src/app/servicios/api/models/color';
-
 registerLocaleData(localeEsPE, 'es-PE');
 
 @Injectable({
@@ -126,8 +125,6 @@ export class AppAuditoriaInternaComponent {
         const title = "Registro no exitoso";
         const message = "Por favor verifique la fecha";
         this.Message.showModal(title, message);
-        this.formParent.get('dateInit').setValue('');
-        this.formParent.get('dateEnd').setValue('');
         return;
       }
        else if(inicioValue< today || finValue < today){
@@ -255,13 +252,39 @@ export class AppAuditoriaInternaComponent {
   startTime: string;
   endTime: string;
   saveForm() {
+    const idPst = localStorage.getItem('Id')
 
     for (let i = 0; i < this.valueAuditoria.length; i++) {
-      if (this.valueAuditoria[i].fecha) {
-        this.valueAuditoria[i].fecha = this.formantDate(new Date(this.valueAuditoria[i].fecha))
+      if (this.valueAuditoria[i].norma) {
+        this.valueAuditoria[i].NORMAS_DESCRIPCION = this.valueAuditoria[i].norma.NORMA;
       }
+      if (this.valueAuditoria[i].requisito) {
+        this.valueAuditoria[i].TIPO_NORMA = this.valueAuditoria[i].requisito.toString();
+      }
+      debugger;
+      const actividad = {
+        FK_ID_RESPONSABLE : Number(idPst),
+        TIPO_ACTIVIDAD : "Planificación Auditoria Interna",
+        DESCRIPCION : this.valueAuditoria[i].actividad,
+        FECHA_INICIO : this.valueAuditoria[i].fecha, 
+        FECHA_FIN : this.valueAuditoria[i].fecha, 
+        ESTADO_PLANIFICACION : "Programado"
+      };
+
+      console.log(actividad);
+
+      this.ApiService.postNewRecord(actividad)
+      .subscribe((data : any )=>{
+        if(data.StatusCode == 201){
+          console.log("insertado");
+        }else{
+          console.log("no insertado");
+        }
+      })
+
+
+      
     }
-    const idPst = localStorage.getItem('Id')
 
     const request = {
       iD_AUDITORIA: 0,
@@ -273,26 +296,25 @@ export class AppAuditoriaInternaComponent {
       criterio: this.formParent.get("criterioAuditoria")?.value,
       fechA_REUNION_APERTURA: this.formantDate(new Date(this.formParent.get("dateInit")?.value)),
       horA_REUNION_APERTURA: this.formParent.get("startTime")?.value,
-
       fechA_REUNION_CIERRE: this.formantDate(new Date(this.formParent.get("dateEnd")?.value)),
       horA_REUNION_CIERRE: this.formParent.get("endTime")?.value,
       fechA_AUDITORIA: this.getActualDate(),
       observaciones: this.formParent.get("observacion")?.value,
       conformidades: [],
       procesos: this.valueAuditoria
-    }
-      ;      
+    };
 
     this.ApiService.insertAuditoria(request)
       .subscribe((data: any) => {
+        if(data.StatusCode == 201){
+          const title = "Actualizacion exitosa.";
+          const message = "El registro se ha realizado exitosamente";
+          this.Message.showModal(title, message);
+          this.router.navigate(['/listaDeVerificacion'], { queryParams: { } });
+          return this.generatePlanDeAuditoria(request);
+        } 
+       
       })
-
-    if(this.ApiService.insertAuditoria.length >= 1){
-      this.Message.showModal("Registro Exitoso","Se registró la Auditoría Exitosamente");
-      this.router.navigate(['/listaDeVerificacion'])
-    }
-    return this.generatePlanDeAuditoria(request);
-
   }
   userInfor: any = {};
   getUser() {
@@ -306,7 +328,8 @@ export class AppAuditoriaInternaComponent {
   }
 
   generatePlanDeAuditoria(request) {
-    console.log(request);
+    const temporalEquipoAuditor = request.equipO_AUDITOR.split(',')
+    const temporalEqupioAuditorString = temporalEquipoAuditor.join(',  ');
     const docDefinition: any = {
       pageMargins: [30, 30, 30, 30],
       content: [
@@ -337,7 +360,6 @@ export class AppAuditoriaInternaComponent {
         '\n',
         {
           table: {
-
             widths: [150, '*', '*', '*', '*',],
             body: [
               [
@@ -357,7 +379,7 @@ export class AppAuditoriaInternaComponent {
               ],
               [
                 { text: 'Equipo auditor', style: ['tituloDinamico'] },
-                { text: request.equipO_AUDITOR, colSpan: 4, },
+                { text: temporalEqupioAuditorString, colSpan: 4, },
                 { text: '' },
                 { text: '' },
                 { text: '' },
@@ -427,11 +449,11 @@ export class AppAuditoriaInternaComponent {
               ],
               ...this.valueAuditoria.map(requisito =>
                 [
-
+                  
                   { text: requisito.fecha, style: ['columna'] },
                   { text: requisito.hora, style: ['columna'] },
-                  { text: requisito.proceso? requisito.proceso : requisito.actividad, style: ['columna'] },
-                  { text: requisito.norma? requisito.norma: window.localStorage.getItem('NormaRequisito') + " " + requisito.requisito, style: ['columna'] },
+                  { text: requisito.PROCESO_DESCRIPCION, style: ['columna'] },
+                  { text: requisito.NORMAS_DESCRIPCION? requisito.NORMAS_DESCRIPCION: window.localStorage.getItem('NormaRequisito') + " " + requisito?.TIPO_NORMA, style: ['columna'] },
                   { text: requisito.auditor, style: ['columna'] },
                   { text: requisito.auditados, style: ['columna'] }
                 ]

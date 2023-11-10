@@ -53,10 +53,6 @@
             <option value="noCumple">No cumple</option>
             <option value="cumpleParcialmente">Cumple parcialmente</option>
           </select>
-          <div *ngIf="option != 'cumple'" class="check-mejora">
-            <input type="checkbox" class="input-check" [checked]="this.editarCaracteristica.MEJORA_CONTINUA == 1" (change)="checkboxChange($event)">
-            <p>Mejora Continua</p>
-          </div>
         </div>
         <div class="subForm" *ngIf="option != 'cumple'">
           <div class="subContainerform">
@@ -66,6 +62,10 @@
           <div class="subContainerform">
             <label for="evidencia" class="adicionarLabel">Acciones a realizar</label>
             <input id="acciones" type="text" class="adicionarInput" formControlName="acciones" [(ngModel)]="editarCaracteristica.ACCIONES_A_REALIZAR">
+          </div>
+          <div *ngIf="option != 'cumple'" class="check-mejora">
+            <input type="checkbox" class="input-check" [checked]="this.isChecked == true" (change)="checkboxChange($event)">
+            <p>Mejora Continua</p>
           </div>
         </div>
         <div class="subForm" *ngIf="option != 'cumple'">

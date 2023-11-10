@@ -1,4 +1,9 @@
-h1 {
+.titulo {
+    display: flex;
+    flex-direction: row-reverse;
+    margin: 2vh 0;
+  }
+  h1 {
     width: 100%;
     font-family: "Montserrat", sans-serif;
     font-weight: bolder;
@@ -6,29 +11,8 @@ h1 {
     text-align: center;
     margin: 2vh 0;
   }
-  .titulo {
-    display: flex;
-    flex-direction: row-reverse;
-    margin: 2vh 0;
-  }
-  .mat-header-row {
-    background-color: #068460;
-    color: #fff !important;
-  }
-  th {
-    color: #fff;
-  
-    font-size: 14px;
-  }
-  .container-header {
-    width: 50%;
-  }
-  app-app-header {
-    width: 50%; /* Otra forma de hacer que el componente ocupe todo el ancho del contenedor padre */
-    background-color: lightblue; /* Un ejemplo de estilo adicional */
-  }
-/* pagination */
-.page-style {
+  /* pagination */
+  .page-style {
     display: flex;
     justify-content: flex-end;
   }
@@ -44,13 +28,18 @@ h1 {
     display: flex;
     align-items: center;
   }
-
-  
-/*menu*/
-.resposi-icon {
-  display: none;
-}
-@media (max-width: 970px) {
+  .mat-header-row {
+    background-color: #068460;
+    color: #fff !important;
+  }
+  th {
+    color: #fff;
+  }
+  /*menu*/
+  .resposi-icon {
+    display: none;
+  }
+  @media (max-width: 970px) {
     /* NOMBRE DE LA CABECERA  */
   
     .indicadores-app-header 
@@ -69,14 +58,12 @@ h1 {
         width: auto;
       }
       .responsi-gerencia-menu 
-        .td-menu {
+      .td-menu {
         width: auto;
       }
     
     .resposi-icon {
       display: flex;
-      
-      
     }
   
     .resposi-icon {
@@ -93,6 +80,7 @@ h1 {
       flex-direction: row;
     }
   }
+  /**********/
   td,th
   {
     font-size: 16px; /* Ajusta el tamaño de fuente del input según tus necesidades */
@@ -104,8 +92,4 @@ h1 {
   label {
     color: black !important;
     font-size: 13px;
-  }
-  select option {
-    
-    font-family: "Work Sans", sans-serif;
   }

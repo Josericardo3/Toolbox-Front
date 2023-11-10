@@ -109,8 +109,6 @@ ngOnInit(): void {
       this.http.get('https://www.datos.gov.co/resource/gdxc-w37w.json')
       .subscribe((data: any[]) => {
         this.municipios = data;
-        console.log( this.municipios);
-        
       });  
    }
   })
@@ -372,8 +370,6 @@ existeUnoSeleccionado(grupoPregunta: any): boolean{
 
   capturarValor(id: string | number, valor: any, campo: any,opcionNombre?: string, nombreCampo?: string) {
 
-    //console.log(this.selectedOption + ':::::::: valor');
-
     const result = this.valoresForm.find((o: any) => o.idCaracterizacion === campo.ID_CARACTERIZACION_DINAMICA);
     //cambios 30.10.2023 
     let valorTemp ="";
@@ -388,8 +384,6 @@ existeUnoSeleccionado(grupoPregunta: any): boolean{
         ){
             hayVacios=false;
           }
-       
-
         return `${item.NOMBRE};${valorUrl}`;
       }).join('|');
 
@@ -421,7 +415,8 @@ existeUnoSeleccionado(grupoPregunta: any): boolean{
           "tipoDato": campo.TIPO_DE_DATO,
           "requerido": campo.REQUERIDO,
           "seleccionCheckValido": campo.TIPO_DE_DATO == "checkbox" ?  campo.haySeleccionGrupoCheck : false,
-          "seleccionInputCheckValido": campo.TIPO_DE_DATO == "checkbox" ?  hayVacios: true
+          "seleccionInputCheckValido": campo.TIPO_DE_DATO == "checkbox" ?  hayVacios: true,
+          "mensaje": campo.MENSAJE
         });
       }
       this.cdref.detectChanges();
@@ -476,7 +471,7 @@ public saveForm(){
   if(validate){
     let seleccionOpcionRadio= this.valoresForm.filter((e:any)=>e.tipoDato == "radio" && e.valor=="NO");
     let caracterizacionRespuesta: any = this.valoresForm.map((elemento) => {
-    if(elemento.idCaracterizacion== 16 && elemento.tipoDato == "option") elemento.valor = this.selectedOptions
+    if( elemento.mensaje == "municipios") elemento.valor = this.selectedOptions
       this.idUser =  Number(elemento.idUsuarioPst);
       return { VALOR: elemento.valor?.toString(),
         FK_ID_USUARIO:Number(elemento.idUsuarioPst), 
@@ -489,12 +484,10 @@ public saveForm(){
     }
     this.mostrarMensaje = true;
     if (this.formParent.valid) {
-
       this.ApiService.saveData(caracterizacionRespuesta).subscribe((data: any) => {
     
         this.ApiService.getNorma(this.idUser).subscribe(
           (categ: any) => {
-      
             this.arrNormas = categ;
             localStorage.setItem("idCategoria", JSON.stringify(this.arrNormas[0].FK_ID_CATEGORIA_RNT));
         });

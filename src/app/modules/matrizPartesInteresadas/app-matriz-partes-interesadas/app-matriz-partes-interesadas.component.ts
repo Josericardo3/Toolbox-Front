@@ -138,9 +138,9 @@ export class AppMatrizPartesInteresadasComponent implements OnInit {
       }
     })
   }
-  fnActivityEditarCancelar() {
-    this.caracteristicaIndice = -1;
-  }
+  //fnActivityEditarCancelar() {
+  //  this.caracteristicaIndice = -1;
+  //}
 
   pageChanged(event: any): void {
     this.pages = event.page;
@@ -189,9 +189,22 @@ export class AppMatrizPartesInteresadasComponent implements OnInit {
     }
     return 0;
   }
+
+  mejoraDelete: number;
+  PlanificacionDelete: number;
+
   fnEliminarRegistro(indice: number) {
     this.indiceAEliminar = this.rolessArray[indice].ID_MATRIZ_PARTES_INTERESADAS;
-    this.ApiService.deleteMatrizPartesInteresadas(this.indiceAEliminar).subscribe((data:any) => {
+    this.mejoraDelete = this.rolessArray[indice].FK_ID_MEJORA_CONTINUA;
+    this.PlanificacionDelete = this.rolessArray[indice].FK_ID_ACTIVIDAD;
+
+    this.ApiService.deleteMatrizPartesInteresadas(this.indiceAEliminar).subscribe((data: any) => {
+      this.ApiService.deleteActivities(this.PlanificacionDelete).subscribe((data: any) => {
+        console.log(this.PlanificacionDelete);
+      })
+      this.ApiService.deleteMejoraContinua(this.mejoraDelete).subscribe((data: any) => {
+        console.log(this.mejoraDelete);
+      })
       const title = "Eliminación exitosa";
       const message = "El registro se ha eliminado exitosamente";
       this.Message.showModal(title, message);
@@ -199,17 +212,42 @@ export class AppMatrizPartesInteresadasComponent implements OnInit {
     })
   }
   //EDITAR PARTE INTERESADA
+  arrayMejora: any = [];
+  arrayPlanificacion: any = [];
+  editarMejora: any = {};
+  editarPlanificacion: any = {};
+
   fnMatrizPartesInteresadasEdit(indice: number) {
-    this.caracteristicaIndice = indice;
+    //this.caracteristicaIndice = indice;
     this.editarCaracteristica = {};
-    //this.isChecked = true;
     Object.assign(this.editarCaracteristica, this.rolessArray[indice]);
     this.fnChangeEditarStatus(false);
     if (this.editarCaracteristica.MEJORA_CONTINUA == 1)
-      this.isChecked == true;
+      this.isChecked = true;
     else
-      this.isChecked == false;
-    //this.editarCaracteristica.FECHA_EJECUCION = this.datePipe.transform(this.editarCaracteristica.FECHA_EJECUCION, 'yyyy-MM-dd');
+      this.isChecked = false;
+
+    //console.log(this.isChecked);
+    //console.log(this.editarCaracteristica.MEJORA_CONTINUA);
+    //MEJORA CONTINUA
+    this.ApiService.getMejoraContinua().subscribe((data) => {
+      this.arrayMejora = data;
+      this.arrayMejora.forEach(val => {
+        if (val.ID_MEJORA_CONTINUA == this.editarCaracteristica.FK_ID_MEJORA_CONTINUA) {
+          this.editarMejora = val;
+        }
+      })
+    })
+    //PLANIFICACION
+    this.ApiService.getActivities().subscribe((data) => {
+      this.arrayPlanificacion = data;
+      this.arrayPlanificacion.forEach(val => {
+        if (val.ID_ACTIVIDAD == this.editarCaracteristica.FK_ID_ACTIVIDAD) {
+          this.editarPlanificacion = val;
+        }
+      })
+    })
+
     this.form.get('interesada').disable();
     this.option = this.editarCaracteristica.ESTADO_DE_CUMPLIMIENTO;
   }
@@ -232,54 +270,56 @@ export class AppMatrizPartesInteresadasComponent implements OnInit {
     this.form.get('responsable')?.setValue('');
     this.form.get('estado')?.setValue('');
     this.form.get('interesada').enable();
-    this.fnChangeEditarStatus(true);
-    this.editarCaracteristica.MEJORA_CONTINUA = 0;
+    //this.editarCaracteristica.MEJORA_CONTINUA = 0;
     this.isChecked = false;
-    //for (var i = 0; i < this.editarCaracteristica.length; i++) {
-    //  this.editarCaracteristica.pop();
-    //}
-    //console.log(this.editarCaracteristica);
+    this.fnChangeEditarStatus(true);
   }
   fnUpdatePartesInteresadas() {
     this.editarCaracteristica.NECESIDAD = this.form.get('necesidades').value;
     this.editarCaracteristica.EXPECTATIVA = this.form.get('expectativas').value;
     this.editarCaracteristica.ESTADO_DE_CUMPLIMIENTO = this.form.get('estadoCumplimiento').value;
-    if (this.option == "cumple") {
-      this.editarCaracteristica.OBSERVACIONES = '-';
-      this.editarCaracteristica.ACCIONES_A_REALIZAR = '-';
-      this.editarCaracteristica.RESPONSABLE = '-';
-      this.editarCaracteristica.ESTADO_ABIERTO_CERRADO = '-';
-      this.editarCaracteristica.FECHA_EJECUCION = '-';
-    }
-    else {
-      this.editarCaracteristica.OBSERVACIONES = this.form.get('observaciones').value;
-      this.editarCaracteristica.ACCIONES_A_REALIZAR = this.form.get('acciones').value;
-      this.editarCaracteristica.RESPONSABLE = this.form.get('responsable').value;
-      this.editarCaracteristica.ESTADO_ABIERTO_CERRADO = this.form.get('estado').value;
-      this.editarCaracteristica.FECHA_EJECUCION = this.form.get('fecha').value;
-    }
-    if (this.isChecked==true)
+    this.editarCaracteristica.OBSERVACIONES = this.form.get('observaciones').value;
+    this.editarCaracteristica.ACCIONES_A_REALIZAR = this.form.get('acciones').value;
+    this.editarCaracteristica.RESPONSABLE = this.form.get('responsable').value;
+    this.editarCaracteristica.ESTADO_ABIERTO_CERRADO = this.form.get('estado').value;
+    this.editarCaracteristica.FECHA_EJECUCION = this.form.get('fecha').value;
+    //UPDATE MEJORA CONTINUA
+    this.editarMejora.DESCRIPCION = this.form.get('observaciones').value;
+    //this.editarMejora.REQUISITOS = this.form.get('acciones').value;
+    this.editarMejora.ESTADO = this.form.get('estado').value;
+    this.editarMejora.FECHA_INICIO = this.form.get('fecha').value;
+    this.editarMejora.FECHA_FIN = this.form.get('fecha').value;
+    //UPDATE ACTIVIDADES - PLANIFICACION
+    this.editarPlanificacion.DESCRIPCION = this.form.get('observaciones').value + ' : ' + this.form.get('acciones').value;
+    this.editarPlanificacion.FECHA_INICIO = this.form.get('fecha').value;
+    this.editarPlanificacion.FECHA_FIN = this.form.get('fecha').value;
+
+    if (this.isChecked == true)
       this.editarCaracteristica.MEJORA_CONTINUA = 1;
     else
       this.editarCaracteristica.MEJORA_CONTINUA = 0;
 
     
-
     this.ApiService.putMatrizPartesInteresadas(this.editarCaracteristica).subscribe((data) => {
+      this.ApiService.putMejoraContinua(this.editarMejora).subscribe((data) => {
+        let msg = "exitoso";
+        console.log(msg);
+      })
+      this.ApiService.putActivities(this.editarPlanificacion).subscribe((data) => {
+        let msg = "exitoso";
+        console.log(msg);
+      })
       const title = "Actualizacion exitosa.";
       const message = "El registro se ha realizado exitosamente";
       this.Message.showModal(title, message);
 
-      this.fnChangeEditarStatus(true);
       this.fnConsultMatrizPartesInteresadas();
-      this.caracteristicaIndice = -1;
+      //this.caracteristicaIndice = -1;
       this.limpiarCampos();
+      this.fnChangeEditarStatus(true);
     })
   }
-  //getIdnumberResponsable(num: number) {
-  //  this.id_colab_number = num;
-  //  console.log(this.id_colab_number);
-  //}
+
   addDatosParteInteresada() {
     this.ParteInteresada = this.form.get('interesada').value;
     this.Necesidad = this.form.get('necesidades').value;
@@ -300,7 +340,10 @@ export class AppMatrizPartesInteresadasComponent implements OnInit {
       this.Estado = '-';
       this.mejoraContinua = 0;
     }
-    else { this.mejoraContinua = 1; }
+    else {
+      if (this.isChecked == true) this.mejoraContinua = 1;
+      else this.mejoraContinua = 0;
+    }
 
     const ORDEN = {
       proveedores: 1,
@@ -332,50 +375,47 @@ export class AppMatrizPartesInteresadasComponent implements OnInit {
         ID_USUARIO: parseInt(localStorage.getItem("Id")),
         FECHA_EJECUCION: this.Fecha,
         MEJORA_CONTINUA: Number(this.mejoraContinua),
-        ID_RNT: String(localStorage.getItem("rnt"))
+        ID_RNT: String(localStorage.getItem("rnt")),
       }
       let messageshow = '';
+
+      //AGREGAR A PLANIFICACIÓN postNewRecord
+      if (this.option != 'cumple') {
+        const request1 = {
+          FK_ID_USUARIO_PST: parseInt(localStorage.getItem("Id")),
+          FK_ID_RESPONSABLE: parseInt(localStorage.getItem("Id")),
+          TIPO_ACTIVIDAD: "Matriz de partes interesadas",
+          DESCRIPCION: this.Observaciones + ' : ' + this.Acciones,
+          FECHA_INICIO: this.Fecha,
+          FECHA_FIN: this.Fecha,
+          ESTADO_PLANIFICACION: "En Proceso"
+        }
+        this.ApiService.postNewRecord(request1).subscribe((data) => {
+          messageshow = messageshow + ' y Planificacion';
+        })
+      }
+
+      //AGREGAR A MEJORA CONTINUA
+      if (this.option != 'cumple' && this.mejoraContinua == 1) {
+        const request2 = {
+          ID_MEJORA_CONTINUA: 0,
+          ID_USUARIO: parseInt(localStorage.getItem("Id")),
+          RESPONSABLE: String(this.Responsable),
+          DESCRIPCION: this.Observaciones,
+          NTC: '',
+          REQUISITOS: '',
+          TIPO: "Matriz Partes Interesadas",
+          ESTADO: this.Estado,
+          FECHA_INICIO: this.Fecha,
+          FECHA_FIN: this.Fecha
+        }
+        this.ApiService.postMejoraContinua(request2).subscribe((data) => {
+          messageshow = messageshow + 'Mejora Continua';
+          //this.isChecked = false;
+        })
+      }
+
       this.ApiService.postMatrizPartesInteresadas(request).subscribe((data) => {
-        //AGREGAR A MEJORA CONTINUA
-        if (this.option != 'cumple' && this.mejoraContinua == 1) {
-          const request2 = {
-            ID_MEJORA_CONTINUA: 0,
-            ID_USUARIO: parseInt(localStorage.getItem("Id")),
-            RESPONSABLE: String(this.Responsable),
-            DESCRIPCION: this.Observaciones,
-            NTC: "string",
-            REQUISITOS: this.Acciones,
-            TIPO: "Matriz Partes Interesadas",
-            ESTADO: this.Estado,
-            FECHA_INICIO: this.Fecha,
-            FECHA_FIN: this.Fecha
-          }
-          this.ApiService.postMejoraContinua(request2).subscribe((data) => {
-            //const title1 = "Registro exitoso";
-            //const message1 = "El registro se ha realizado exitosamente";
-            //this.Message.showModal(title1, message1);
-            messageshow = messageshow + 'Mejora Continua';
-          })
-        }
-        //AGREGAR A PLANIFICACIÓN postNewRecord
-        if (this.option != 'cumple') {
-          const request1 = {
-            FK_ID_USUARIO_PST: parseInt(localStorage.getItem("Id")),
-            FK_ID_RESPONSABLE: parseInt(localStorage.getItem("Id")),
-            TIPO_ACTIVIDAD: "Matriz de partes interesadas",
-            DESCRIPCION: this.Observaciones + ' : ' + this.Acciones,
-            FECHA_INICIO: this.Fecha,
-            FECHA_FIN: this.Fecha,
-            ESTADO_PLANIFICACION: "En Proceso"
-          }
-          this.ApiService.postNewRecord(request1).subscribe((data) => {
-            //const title2 = "Registro exitoso";
-            //const message2 = "El registro se ha realizado exitosamente";
-            //this.Message.showModal(title2, message2);
-            messageshow = messageshow + ' y Planificacion';
-          })
-        }
-        //
         this.fnConsultMatrizPartesInteresadas();
         this.limpiarCampos();
         this.ParteInteresada = '';
@@ -404,7 +444,6 @@ export class AppMatrizPartesInteresadasComponent implements OnInit {
       const title = "Registro no exitoso";
       const message = "Por favor verifique la fecha y complete todo los campos"
       this.Message.showModal(title, message);
-      //Ya éxiste un registro para esta parte interesada
     }
   }
 

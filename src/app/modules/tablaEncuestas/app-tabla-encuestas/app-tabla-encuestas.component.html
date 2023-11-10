@@ -8,7 +8,7 @@
         <app-menu-corto  class="menu-corto menu"></app-menu-corto>
         <mat-menu #menu="matMenu">
             <app-menu-corto class="responsi-menu" ></app-menu-corto>
-          </mat-menu>
+        </mat-menu>
         <div class="resposi-icon">
             <button mat-icon-button [matMenuTriggerFor]="menu" style="color: #ffffff;">
                 <i class="fa-solid fa-bars" style="font-size: 20px;"></i>
@@ -34,7 +34,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let campo of arrayEncuestas;let i = index">
+                    <tr *ngFor="let campo of datos;let i = index">
                         <td>{{campo.TITULO}}</td>
                         <td>{{campo.NUM_ENCUESTADOS}}</td>
                         <td *ngIf="getRolValue() !== 4 && getRolValue() !== 5 &&  getRolValue() !== 7">
@@ -47,6 +47,25 @@
                     </tr>
                 </tbody>
             </table>
+            <p *ngIf="result"
+            style="text-align: center;margin-top: 3vh; font-size: 19px; font-family: 'Work Sans', sans-serif;">
+            No hay resultado para la búsqueda
+            </p>
+            <!-- Paginacion -->
+            <footer class="page-style">
+                <div class="container-label">
+                    <label class="paginas">
+                        Página: {{ pages }} / {{ totalPaginas }} Mostrando: {{ totalRegistros }} Registros: {{ datatotal }}
+                    </label>
+                    <div class="ls-pagina ">
+                        <pagination lastText="&raquo;" nextText="&rsaquo;" firstText="&laquo;" previousText="&lsaquo;"
+                            [maxSize]="3" [itemsPerPage]="7" [boundaryLinks]="true" [(ngModel)]="currentPage"
+                            [ngClass]="{'page-item': true}" [totalItems]="contentArray.length"
+                            (pageChanged)="pageChanged($event)">
+                        </pagination>
+                    </div>
+                </div>
+            </footer>
         </div>
     </div>
 </div>

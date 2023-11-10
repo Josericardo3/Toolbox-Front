@@ -126,9 +126,9 @@ i:not(#idBotonResumen){
     cursor: pointer;
 }
 .btnModificar{
-    margin: 10vh 3vw 5vh 3vw;
+    margin-right: auto;
     height: 40px;
-    width: 230px;
+    width: 200px;
     padding: 5px;
     background-color: #068460;
     border-radius: 100px;
@@ -146,11 +146,11 @@ i:not(#idBotonResumen){
     margin: 2vh 0 3vh 0 !important;
 }
 .btnModificar{
-    margin: 2vh 100vh 3vh 0 !important;
+    margin: 2vh 0 3vh 0 !important;
 }
 .reporte{
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
     width: 83vw;
 }
 .adicionarBtn{

@@ -1,17 +1,58 @@
 <app-app-header></app-app-header>
 <div class="containerNoticia">
+  <div class="barra-header">
+    <div class="img-container">
+      <img class="img-header" src="https://upload.wikimedia.org/wikipedia/commons/3/30/LOGO_PLAN_DE_DESARROLLO_COLOMBIA_POTENCIA_DE_LA_VIDA_2022-2026.png"/>
+      <img class="img-header" src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/Logo_Ministerio_de_Comercio_Industria_y_Turismo_2022-2026.png/1200px-Logo_Ministerio_de_Comercio_Industria_y_Turismo_2022-2026.png"/>
+    </div>
+  </div>
   <div class="titulo">
     <h1>Noticia</h1>
     <app-app-header-arrow-left></app-app-header-arrow-left>
   </div>
-  <div *ngIf="datosNoticia" class="datosNoticia">
+
+  <div class="noticia-content">
+    <div class="info-view">
+      <div class="titulo-not">
+        <h2 class="titu-noticia">{{this.noticiaSelected.TITULO}}</h2>
+      </div>
+      <hr>
+      <div class="descripcion-noticia">
+        <img class="img-noticiaaa" src="https://www.dzoom.org.es/wp-content/uploads/2017/07/seebensee-2384369-810x540.jpg"/>
+        <p class="descrip-noticia">
+          {{this.noticiaSelected.DESCRIPCION}}
+        </p>
+      </div>
+      <hr>
+      <div class="share-noticia">
+        <p>Comparta esta publicación</p>
+        <i class="fi fi-brands-facebook"></i>
+        <i class="fi fi-brands-instagram"></i>
+        <i class="fi fi-brands-youtube"></i>
+        <i class="fi fi-brands-whatsapp"></i>
+      </div>
+      <hr>
+    </div>
+    <div class="btn-view">
+      <button class="btn-crear">EDITAR NUEVA NOTICIA&emsp;<i class="fi fi-rr-arrow-circle-right"></i></button>
+    </div>
+    <div class="barra-final">
+      <div class="img-container-final">
+          <p class="ejecutado-por">EJECUTADO POR: </p>
+          <img class="img-header" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQEsHzxTrRb-PWp5RSTU86xdutn0Ta3lTbklA&usqp=CAU"/>
+          <img class="img-header" src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/Logo_Ministerio_de_Comercio_Industria_y_Turismo_2022-2026.png/1200px-Logo_Ministerio_de_Comercio_Industria_y_Turismo_2022-2026.png"/>
+      </div>
+  </div>
+  </div>
+
+  <!--<div *ngIf="datosNoticia" class="datosNoticia">
     <p class="fecha"><span><i class="fas fa-light fa-clock"></i></span>
       {{datosNoticia.NOMBRE }} | {{datosNoticia.FECHA_ACT | date: 'dd/MM/yyyy' }}
      </p>
     <h2>{{datosNoticia.TITULO | uppercase }}</h2>
     <img *ngIf="imagen" [src]="imagen">
     <p class="descripcion" [innerHTML]="sanitizer.bypassSecurityTrustHtml(datosNoticia.DESCRIPCION)"></p>
-  </div>
+  </div>-->
 </div>
 <app-app-footer></app-app-footer>
 <ngx-spinner

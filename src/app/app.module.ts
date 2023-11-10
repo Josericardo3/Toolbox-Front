@@ -133,6 +133,9 @@ import { FormularioRecordatorioKpisComponent } from "./modules/medicion-kpis/rec
 import { AppDeleteLeyComponent } from "./modules/e-matriz-requisitos-legales/app-delete-ley/app-delete-ley.component";
 import { RecoveryFormularioComponent } from "./recovery/app-recovery/recoveryformulario/recoveryformulario.component";
 import { CargarDocumentoComponent } from "./modules/evidencia/cargar-documento/cargar-documento.component";
+import { VariablesComponent } from "./modules/medicion-kpis/variables/variables.component";
+import { GestionVariableKpiComponent } from "./modules/medicion-kpis/variables/gestion-variable-kpi/gestion-variable-kpi.component";
+import { FormularioVariableKpiComponent } from "./modules/medicion-kpis/variables/formulario-variable-kpi/formulario-variable-kpi.component";
 
 @NgModule({
   declarations: [
@@ -222,7 +225,10 @@ import { CargarDocumentoComponent } from "./modules/evidencia/cargar-documento/c
     GraficoIndicadoresEvaluacionComponent,
     RecordatoriosKpisComponent,
     FormularioRecordatorioKpisComponent,
-    CargarDocumentoComponent
+    CargarDocumentoComponent,
+    VariablesComponent,
+    GestionVariableKpiComponent,
+    FormularioVariableKpiComponent
     
   ],
   imports: [

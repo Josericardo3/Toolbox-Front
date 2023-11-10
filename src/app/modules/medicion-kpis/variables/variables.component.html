@@ -2,7 +2,7 @@
 <app-modal></app-modal>
 <div class="container-fluid">
   <div class="titulo">
-    <h1>Paquetes</h1>
+    <h1>Variables</h1>
     <app-app-header-arrow-left
       [redirectToDashboard]="true"
     ></app-app-header-arrow-left>
@@ -24,7 +24,8 @@
       </button>
     </div>
     <div class="col-md-9">
-      <div class="col-md-2"></div>
+        <div class="row">
+            <div class="col-md-2"></div>
             <div class="col-md-6 col-sm-12 col-xs-12 text-center">
              
               <div class="form-group alinear-buscador" appearance="outline" >
@@ -41,22 +42,25 @@
                   [(ngModel)]="filter.search"
                   class="form-control borde-input"
                   
-                  placeholder="Ingresar nombre o descripcion del paquete"
+                  placeholder="Ingresar nombre de la variable"
                 />
                 
               </div>
             </div>
-      <div style="text-align: right" class="mb-4">
-        <button
-          class="btn-nuevo"
-          (click)="aniadirPaquete(1, undefined)"
-          data-toggle="modal"
-          data-target="#exampleModal"
-        >
-          Nuevo Paquete
-          <i class="fa-solid fa-plus" style="color: #fff"></i>
-        </button>
-      </div>
+            <div class="col-md-4">
+              <div style="text-align: right">
+                <button
+                  class="btn-nuevo"
+                  (click)="aniadirVariable(1, undefined)"
+                  data-toggle="modal"
+                  data-target="#exampleModal"
+                >
+                  Nueva Variable
+                  <i class="fa-solid fa-plus" style="color: #fff"></i>
+                </button>
+              </div>
+            </div>
+          </div>
       <br />
       <div class="mat-elevation-z8 table-responsive text-center mt-1">
         <table mat-table [dataSource]="dataSource">
@@ -67,12 +71,7 @@
             </td>
           </ng-container>
 
-          <ng-container matColumnDef="descripcion">
-            <th mat-header-cell *matHeaderCellDef>Descripción</th>
-            <td mat-cell *matCellDef="let element">
-              {{ element.DESCRIPCION }}
-            </td>
-          </ng-container>
+         
 
           <ng-container matColumnDef="opciones">
             <th class="text-center" mat-header-cell *matHeaderCellDef>
@@ -84,7 +83,7 @@
                 style="color: #068460"
                 class="text-warning margen iconos hand-pointer"
                 fontIcon="edit"
-                (click)="aniadirPaquete(2, element)"
+                (click)="aniadirVariable(2, element)"
               ></mat-icon>
               <mat-icon
                 matTooltip="Borrar"
@@ -104,17 +103,7 @@
           <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
         </table>
       </div>
-      <!--
-<mat-paginator
-        [pageSizeOptions]="pageSizeOptions"
-        showFirstLastButtons
-        (page)="cambioPagina($event)"
-        [length]="totalItems"
-        [pageIndex]="pageIndex"
-        [pageSize]="pageSize"
-      >
-      </mat-paginator>
-        -->
+
       <footer class="page-style">
         <div class="container-label">
           <label class="paginas">

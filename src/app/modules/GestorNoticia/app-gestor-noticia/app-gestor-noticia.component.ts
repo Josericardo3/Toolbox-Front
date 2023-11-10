@@ -9,6 +9,7 @@ import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { ModalService } from 'src/app/messagemodal/messagemodal.component.service'
 import { DomSanitizer } from '@angular/platform-browser';
 import { ColorLista } from 'src/app/servicios/api/models/color';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-app-gestor-noticia',
@@ -33,7 +34,7 @@ export class AppGestorNoticiaComponent implements OnInit {
   datatotal: number = 0;
   contentArray: any = [];
   currentPage: number = 1
-
+  arrayCategorias: any = [];
   filtro: string = '';
   datos: any = [];
   delete: any = [];
@@ -48,7 +49,7 @@ export class AppGestorNoticiaComponent implements OnInit {
   mostrarBuscador: boolean = false;
   busqueda: string = '';
   dataInitial: any = [];
-
+  dataContador: any = [];
   files: any = []
   valoresModal: any;
   tituloNoticia: string;
@@ -61,7 +62,7 @@ export class AppGestorNoticiaComponent implements OnInit {
   caracteristicaIndice: number;
   noticiaIndice: number;
   editarCaracteristica: any = {};
-
+  CategoriaNoticia: number;
   selectedAdmin: number[] = [];
   selectedNormas: number[] = [];
   selectedCategorias: number[] = [];
@@ -99,6 +100,7 @@ export class AppGestorNoticiaComponent implements OnInit {
 
   constructor(
     private http: HttpClient,
+    private router: Router,
     private formBuilder: FormBuilder,
     private api: ApiService,
     private Message: ModalService,
@@ -119,6 +121,7 @@ export class AppGestorNoticiaComponent implements OnInit {
     this.getSelectMultipleSubCategoria();
     this.listarCategorias();
     this.listarPst(); 
+    this.getListCategorias();
 
     this.editarNoticiaForm = this.formBuilder.group({
       usuario: [{ value: '', disabled: true }],
@@ -133,17 +136,60 @@ export class AppGestorNoticiaComponent implements OnInit {
       selectMultipleSubCategoria: [[]],
       selectMultiplePST: ['', Validators.required],
       tituloNoticia: ['', Validators.required],
+      CategoriaNoticia: ['', Validators.required],
       descripcionNoticia: ['', Validators.required],
       imagenNoticia: [null, Validators.nullValidator]
     });
   }
-
+  getListCategorias(){
+    this.api.getNoticiaCategorias().subscribe(data => {
+      this.arrayCategorias=data;
+      this.updateContadorCategorias();
+    });
+  }
+  formatFechaText(fecha: string): string {
+    const meses = [
+      "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+      "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+    ];
+  
+    const fechaOriginal = new Date(fecha);
+    const dia = fechaOriginal.getDate();
+    const mes = meses[fechaOriginal.getMonth()];
+    const año = fechaOriginal.getFullYear();
+  
+    const fechaFormateada = `${dia} de ${mes} del ${año}`;
+  
+    return fechaFormateada;
+  }
+  updateContadorCategorias(){
+    this.arrayCategorias.forEach(val=>{
+      let i=0;
+      this.dataContador.forEach(v=>{
+        if(v.FK_ID_CATEGORIAAA==val.ID_CATEGORIA){
+          i++;
+        }
+      })
+      val.N_REGISTROS=i;
+    })
+  }
+  
+  idNoticia!: number;
+  
+  indexCard(val: any){
+    this.idNoticia = val;
+    this.router.navigate(['/noticia'], { state: { idNoticiaa: this.idNoticia } });
+  }
   getTableData() {
     this.api.getTablaNoticias()
       .subscribe(data => {
         this.datos = data;
-        this.filterArray = this.datos
+        this.dataContador = data;
+        //console.log(this.dataContador);
+        this.filterArray = this.datos;
         this.dataInitial = data;
+        this.getListCategorias();
+        this.updateContadorCategorias();
         for (let i = 0; i < this.dataInitial.length; i++) {
           if (this.dataInitial[i].COD_IMAGEN != null || this.dataInitial[i].COD_IMAGEN != undefined) {
             this.imagenNoticia = 'data:image/png;base64,' + this.dataInitial[i].COD_IMAGEN
@@ -151,18 +197,17 @@ export class AppGestorNoticiaComponent implements OnInit {
             this.imagenNoticia = null
           }
         }
-
         //paginado
         const totalPag = data.length;
-        this.totalPaginas = Math.ceil(totalPag / 7);
+        this.totalPaginas = Math.ceil(totalPag / 6);
         if (this.totalPaginas == 0) this.totalPaginas = 1;
 
         this.datatotal = this.dataInitial.length;
-        this.filterArray = this.dataInitial.slice(0, 7);
+        this.filterArray = this.dataInitial.slice(0, 6);
         this.contentArray = data;
         this.currentPage = 1
-        if (this.datatotal >= 7) {
-          this.totalRegistros = 7;
+        if (this.datatotal >= 6) {
+          this.totalRegistros = 6;
         } else {
           this.totalRegistros = this.dataInitial.length;
         }
@@ -212,36 +257,6 @@ export class AppGestorNoticiaComponent implements OnInit {
       this.edicionIndices = this.edicionIndices.filter(i => i !== index);
     }
   }
-
-  // descripcionListaDestinatario:any;
-  // fnShowModalLista(index: number){
-
-  //   let IdTipoUsuario = Number(localStorage.getItem('rol'));
-  //   let ArrayLista = []
-  //   //console.log(typeof(idrol)+ ' IdTipoUsuario');
-  //   debugger
-  //   if(IdTipoUsuario== 4 || 3){
-  //     ArrayLista = this.datos[index].map((elemento) => {
-  //       return { NOMBRE_DESTINATARIO: elemento.NOMBRE_DESTINATARIO , };
-  //     });
-
-
-
-  //   }
-
-
-  //   this.descripcionListaDestinatario =  this.datos[index].NOMBRE_DESTINATARIO;
-  //   const tempo = this.descripcionListaDestinatario?.split(', ');
-
-  //   if(tempo){
-  //     const arrayConNorma = tempo.map((elemento) => {
-  //       return { NOMBRE_DESTINATARIO: elemento };
-  //     });
-  //     this.descripcionListaDestinatario = arrayConNorma;
-  //   }
-  //   this.showModalLista = true
-  //   return
-  // }
 
   descripcionNormas: any;
   datosIndexListaDestinatario: any = [];
@@ -313,13 +328,13 @@ export class AppGestorNoticiaComponent implements OnInit {
     ///para el paginado
     this.pages = 1;
     const totalPag = filter.length;
-    this.totalPaginas = Math.ceil(totalPag / 7);
+    this.totalPaginas = Math.ceil(totalPag / 6);
     if (this.totalPaginas == 0) this.totalPaginas = 1;
     this.contentArray = filter;
     this.totalRegistros = filter.length;
     this.datatotal = filter.length;
-    if (this.totalRegistros == this.datatotal && this.totalRegistros >= 7) this.totalRegistros = 7;
-    filter = filter.slice(0, 7);
+    if (this.totalRegistros == this.datatotal && this.totalRegistros >= 6) this.totalRegistros = 6;
+    filter = filter.slice(0, 6);
     this.filterArray = filter;
     // return this.filterArray.length > 0 ? this.filterArray : this.result = true;
   }
@@ -327,7 +342,9 @@ export class AppGestorNoticiaComponent implements OnInit {
   pageChanged(event: any): void {
     this.pages = event.page;
     const startItem = (event.page - 1) * event.itemsPerPage
+    console.log(startItem);
     const endItem = event.page * event.itemsPerPage;
+    console.log(endItem);
     this.filterArray = this.datos.slice(startItem, endItem)
     this.totalRegistros = this.filterArray.length;
   }
@@ -348,6 +365,7 @@ export class AppGestorNoticiaComponent implements OnInit {
       const titulo = this.saveForm.value.tituloNoticia;
       const descripcion = this.saveForm.value.descripcionNoticia;
       const imagen = this.imagen ? this.imagen : '';
+      const id_categoria = this.saveForm.value.CategoriaNoticia;
       const data = {
         FK_ID_USUARIO: id,
         FK_ID_NORMA: selectedNormas,
@@ -358,8 +376,10 @@ export class AppGestorNoticiaComponent implements OnInit {
         TITULO: titulo,
         DESCRIPCION: descripcion,
         IMAGEN: imagen,
+        FK_ID_CATEGORIAAA: id_categoria,
         ENVIO_CORREO: this.recibirNoticias
       };
+      console.log ("GIAN NOTICIA: ", data)
       var formData = new FormData();
       for (const key in data) {
         if (key != 'IMAGEN') {
@@ -711,13 +731,6 @@ export class AppGestorNoticiaComponent implements OnInit {
     this.api.getPSTSelect()
       .subscribe(data => {
         // this.dropdownListPst = data;
-        // this.dropdownListPst = data.map(item => {
-        //   return {
-        //     id: item.ID_USUARIO,
-        //     idpst: item.ID_PST,
-        //     nombre: item.NOMBRE_PST
-        //   };
-        // });
       });
     this.dropdownSettings = {
       singleSelection: false,

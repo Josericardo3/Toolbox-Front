@@ -9,6 +9,10 @@ import {
 import { helpers } from '../../../Helpers/helpers';
 import { FormControl } from '@angular/forms';
 import { MatSelect } from '@angular/material/select';
+import { GestionVariableKpiComponent } from '../../variables/gestion-variable-kpi/gestion-variable-kpi.component';
+import { MatDialog } from '@angular/material/dialog';
+import { VariableService } from 'src/app/servicios/kpis/variable.service';
+import { ModalService } from 'src/app/messagemodal/messagemodal.component.service';
 
 @Component({
   selector: 'app-formulario-indicador-kpi',
@@ -23,9 +27,10 @@ export class FormularioIndicadorKpiComponent {
   @Input() variables: any = [];
   @Input() paquetes: any = [];
   @Input() objetivos: any = [];
-
+  dataEnvio:any={}
   filterVariables: any;
   filterObjetivos: any;
+  filter:any={}
   filterPeriodos: any;
   tipoFilterCtrl: FormControl = new FormControl();
   variablesT: any = [];
@@ -36,7 +41,9 @@ export class FormularioIndicadorKpiComponent {
   @ViewChild('divEditable', { static: true }) divEditable!: ElementRef;
   @ViewChild(MatSelect) matSelect: MatSelect;
   selectedElement: string = 'boton';
-  constructor(private helper: helpers) {}
+  constructor( private variableService: VariableService,
+    private _dialog: MatDialog,
+    private modalService: ModalService) {}
   ngOnInit() {
     this.filterObjetivos = this.objetivos;
     this.filterPeriodos = this.periodos;
@@ -83,7 +90,7 @@ export class FormularioIndicadorKpiComponent {
       var objt:any={ID:select.value,NOMBRE:sele}
       this.variablesTemporales.push(objt)
     }
-    console.log("seleccionado",this.variablesTemporales);
+    
     const newElement = document.createElement('button');
     if (sele == 'prom') {
       sele == 'avg';
@@ -177,7 +184,7 @@ export class FormularioIndicadorKpiComponent {
     const variablesEnvio = variables.filter((element) => !operadoresExclusion.includes(element));
     this.model.formula=formulaConNumero;
     this.model.VARIABLES=variablesEnvio;
-    console.log("variablesssss",variablesEnvio)
+    
   }
   modelo() {}
   clearDisplay() {
@@ -196,4 +203,41 @@ export class FormularioIndicadorKpiComponent {
   }
   seleccionar(event: any) {}
   addElementVariable(selectedElement, event: any) {}
+
+  aniadirVariable(numero: number, info: any) {
+    if (numero == 1) {
+      this.dataEnvio = { numero: numero, VAL_CUMPLIMIENTO: 0 };
+    } else {
+      info.numero = numero;
+      this.dataEnvio = info;
+    }
+    this.abrirDialog();
+  }
+  abrirDialog() {
+    
+    var dialogRef = this._dialog.open(GestionVariableKpiComponent, {
+      data: [this.dataEnvio],
+      disableClose: true,
+    });
+
+    dialogRef.afterClosed().subscribe((result: any) => {
+      if (result.opcion == 1) {
+        this.modalService.showModal(result.title, result.mensaje);
+        this.obtenerComboVariables();
+      } else {
+        //this.dataSource = temp;
+      }
+    });
+  }
+  obtenerComboVariables() {
+    this.variableService.obtenerCombo(this.filter).subscribe({
+      next: (x) => {
+        if (x.Confirmacion) {
+          this.variables = x.Data;
+        } else {
+        }
+      },
+      error: (e) => {},
+    });
+  }
 }

@@ -118,10 +118,10 @@ export class RecordatoriosKpisComponent {
   }
   cambiarNorma(event: any) {
     this.dataEnvio.ID_NORMA = event.value;
-    //this.buscar();
+    this.buscar();
   }
   cambiarPaquete(event: any) {
-    console.log(event)
+  
     this.dataEnvio.ID_PAQUETE = event.value;
     this.dataEnvio.ID_PAQUETE = event.target.value;
     this.buscar();

@@ -1,7 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ModalService } from 'src/app/messagemodal/messagemodal.component.service';
-import { log } from 'console';
+
 import { IndicadorService } from '../../../../servicios/kpis/indicador.service';
 import { helpers } from 'src/app/modules/Helpers/helpers';
 
@@ -20,6 +20,7 @@ export class GestionIndicadorKpiComponent {
   objetivos: any = [];
   respuesta: any = {};
   paqueteId: any;
+  userInfo:any;
   constructor(
     private _dialog: MatDialogRef<GestionIndicadorKpiComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -32,7 +33,7 @@ export class GestionIndicadorKpiComponent {
     this.paquetes = data[3];
     this.objetivos = data[4];
     this.numero = data[0].numero;
-
+    this.userInfo=data[5];
     if (this.numero != 3) {
       this.model = data[0];
       this.paqueteId = this.model.ID_PAQUETE;
@@ -49,7 +50,7 @@ export class GestionIndicadorKpiComponent {
     this._dialog.close(opcion);
   }
   registrar() {
-    console.log("ssss",this.model)
+    
     //var formula=eval()
    /* Try (!this.helper.esOperacionMatematicaValida(this.model.formula)) {
       this.modalService.showModal('Alerta', 'Ingrese Fórmula Correctamente');
@@ -59,7 +60,6 @@ export class GestionIndicadorKpiComponent {
       const formula = this.model.formula;
       const resultado = eval(formula);
      
-      console.log("La fórmula es válida y el resultado es:", resultado);
   } catch (error) {
     this.modalService.showModal('Alerta', 'Ingrese Fórmula Correctamente');
      return;
