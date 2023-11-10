@@ -16,14 +16,30 @@
                 </div>
                 <div class="select">
                     <ng-multiselect-dropdown [placeholder]="'Seleccione por Categoria'" [settings]="dropdownSettings" 
-                    [data]="dropdownListCategoria" [ngModel]="selectedItems" (onSelect)="onItemSelect($event, 'pst')"
-                    (onSelectAll)="onSelectAll($event, 'pst')" (onDeSelect)="onDeSelect($event, 'pst')" 
-                    (onDeSelectAll)="onDeSelectAll($event, 'pst')"></ng-multiselect-dropdown>
+                    [data]="dropdownListCategoria" [ngModel]="selectedItems" (onSelect)="onItemSelect($event, 'categoria')"
+                    (onSelectAll)="onSelectAll($event, 'categoria')" (onDeSelect)="onDeSelect($event, 'categoria')" 
+                    (onDeSelectAll)="onDeSelectAll($event, 'categoria')"></ng-multiselect-dropdown>
                 </div>
                
             </div>
         </div>
-        <svg id="mapa-colombia"></svg>
+        <div class="mapa-container" >
+            <div id="area-fuera-del-mapa"></div>
+            <svg id="mapa-colombia" (click)="onMapClick($event)"></svg>
+        </div>
+
+        <div class="tarjeta" *ngIf="showdepartamentoSeleccionado" [style.top]="tarjetaTop" [style.left]="tarjetaLeft">
+            <button class="cerrar-tarjeta" (click)="cerrarTarjeta()">X</button>
+                <h2>{{departamentoSeleccionado}}
+                    <p>Total de Conexiones: {{ datamapafilter.CANT }}</p>
+
+                </h2>
+                <span *ngFor="let pst of datamapafilter.PSTs ,let i= index">
+                    <h3 *ngIf="pst.RAZON_SOCIAL_PST">PST: {{ pst.RAZON_SOCIAL_PST }}</h3>
+                    <p>Cantidad de Conexiones: {{ pst.CANTIDAD_CONEXIONES }}</p>
+                </span>
+        </div>
+
     </div>
 </div>
 <app-app-footer></app-app-footer>

@@ -1,9 +1,72 @@
 <app-app-header class="noticias-app-header"></app-app-header>
 <div class="containerGestorNoticia">
+    <div class="barra-header">
+        <div class="img-container">
+          <img class="img-header" src="https://upload.wikimedia.org/wikipedia/commons/3/30/LOGO_PLAN_DE_DESARROLLO_COLOMBIA_POTENCIA_DE_LA_VIDA_2022-2026.png"/>
+          <img class="img-header" src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/Logo_Ministerio_de_Comercio_Industria_y_Turismo_2022-2026.png/1200px-Logo_Ministerio_de_Comercio_Industria_y_Turismo_2022-2026.png"/>
+        </div>
+    </div>
     <div class="titulo">
-        <h1> Gestor de noticias </h1>
+        <h1> NOTICIAS </h1>
         <app-app-header-arrow-left></app-app-header-arrow-left>
     </div>
+
+    <div class="noticia-content">
+        <div class="cards-view">
+                <a class="card-noticia" *ngFor="let val of filterArray; let i = index" (click)="indexCard(val.ID_NOTICIA)">
+                    <div class="img-noticia">
+                        <img class="img-noticiaaa" src="https://www.dzoom.org.es/wp-content/uploads/2017/07/seebensee-2384369-810x540.jpg"/>
+                    </div>
+                    <div class="categoria-noticia">
+                        <div class="borde-cat"><p class="nombre-categoria">{{val.DESCRIPCION_CAT}}</p></div>
+                    </div>
+                    <div class="descripcion-noticia">
+                        <p class="titulo-noticia">{{val.TITULO}}</p>
+                        <p class="fecha-noticia">{{formatFechaText(val.FECHA_REG)}}</p>
+                        <p class="descripcion">{{val.DESCRIPCION.slice(0,320)}}</p>
+                    </div>
+                </a>
+            <!-- Paginacion -->
+    <footer class="page-style">
+        <hr>
+        <div class="container-label">
+            <label class="paginas">
+                Página: {{ pages }} / {{ totalPaginas }} Mostrando: {{ totalRegistros }} Registros: {{ datatotal }}
+            </label>
+            <div class="ls-pagina ">
+                <pagination lastText="&raquo;" nextText="&rsaquo;" firstText="&laquo;" previousText="&lsaquo;"
+                    [maxSize]="3" [itemsPerPage]="6" [boundaryLinks]="true" [(ngModel)]="currentPage"
+                    [ngClass]="{'page-item': true}" [totalItems]="contentArray.length"
+                    (pageChanged)="pageChanged($event)">
+                </pagination>
+            </div>
+        </div>
+    </footer>
+        </div>
+        <div class="categorizacion-view">
+            <div class="categorias">
+                <div class="val-cat" *ngFor="let val of arrayCategorias; let i = index">
+                    <div class="cat-n">
+                        <i class="fi fi-sr-angle-right"></i>
+                        <p class="cat-notica">{{val.DESCRIPCION}}</p>
+                    </div>
+                    <p class="contador">{{val.N_REGISTROS}}</p>
+                </div>
+            </div>
+            <div class="btn-noticia">
+                <button class="btn-crear" (click)="showModal = true" *ngIf="getRolValue() !== 5 && getRolValue() !== 7">CREAR NUEVA NOTICIA&emsp;<i class="fi fi-rr-arrow-circle-right"></i></button>
+            </div>
+        </div>
+    </div>
+    <div class="barra-final">
+        <div class="img-container-final">
+            <p class="ejecutado-por">EJECUTADO POR: </p>
+            <img class="img-header" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQEsHzxTrRb-PWp5RSTU86xdutn0Ta3lTbklA&usqp=CAU"/>
+            <img class="img-header" src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/Logo_Ministerio_de_Comercio_Industria_y_Turismo_2022-2026.png/1200px-Logo_Ministerio_de_Comercio_Industria_y_Turismo_2022-2026.png"/>
+        </div>
+    </div>
+
+    <!--TABLA-FILTRO
     <div class="divTop">
         <input type="text" placeholder="Buscar..." class="buscador" [(ngModel)]="busqueda" *ngIf="mostrarBuscador"
             (input)="filtrarDatos()">
@@ -12,7 +75,7 @@
         </button>
     </div>
 
-    <!--CONTENIDO DE LA TABLA-->
+    CONTENIDO DE LA TABLA
     <section>
         <table class="table-gestion" style="margin-top: 8px;">
             <thead>
@@ -70,7 +133,7 @@
             No hay resultado para la búsqueda
         </p>
     </section>
-    <!-- Paginacion -->
+    Paginacion 
     <footer class="page-style">
         <div class="container-label">
             <label class="paginas">
@@ -78,13 +141,13 @@
             </label>
             <div class="ls-pagina ">
                 <pagination lastText="&raquo;" nextText="&rsaquo;" firstText="&laquo;" previousText="&lsaquo;"
-                    [maxSize]="3" [itemsPerPage]="7" [boundaryLinks]="true" [(ngModel)]="currentPage"
+                    [maxSize]="3" [itemsPerPage]="6" [boundaryLinks]="true" [(ngModel)]="currentPage"
                     [ngClass]="{'page-item': true}" [totalItems]="contentArray.length"
                     (pageChanged)="pageChanged($event)">
                 </pagination>
             </div>
         </div>
-    </footer>
+    </footer>-->
     <!-- Modal Agregar Noticia -->
     <div class="modal-background" id="modal-success" *ngIf="showModal">
         <div class="modal-content">
@@ -97,7 +160,6 @@
                 <div class="linea"></div>
             </div>
             <form [formGroup]="saveForm" class="form" (ngSubmit)="saveModal()">
-               
                 <ng-multiselect-dropdown *ngIf="getRolValue() === 3 || getRolValue() === 4"
                     formControlName="selectMultipleNorma" [placeholder]="'Seleccione una norma'"
                     [settings]="dropdownSettingsNorma" [data]="dropdownListNorma" [ngModel]="selectedItemsNorma"
@@ -133,6 +195,10 @@
                     style="margin-top:2vh;"></ng-multiselect-dropdown>
                 <input type="text" placeholder="Agregar un título" formControlName="tituloNoticia" id="tituloNoticia"
                     style="margin-top:2vh;">
+                <select id="CategoriaNoticia" name="CategoriaNoticia" formControlName="CategoriaNoticia" class="list-categorias">
+                    <option value="">Seleccione una categoría</option>
+                    <option *ngFor="let val of arrayCategorias; let i = index" [ngValue]="val.ID_CATEGORIA">{{val.DESCRIPCION}}</option>
+                </select>
                 <angular-editor placeholder="Agregar una descripción" formControlName="descripcionNoticia"
                     id="descripcionNoticia" style="margin-top:2vh;"></angular-editor>
                 <div class="containerFile" style="margin-top:2vh;">

@@ -41,13 +41,11 @@ export class AppInformeDeAuditoriaComponent {
   ) { 
     this.formParent = this.formBuilder.group({
       conclusiones:["",Validators.required],
-      // procesoOrActividad: ["",Validators.required],
       formRequisitos: this.formBuilder.array([
       ])
     })
    }
   
-
   ngOnInit(): void {
    this.dataDinamica();
    this.getUser();
@@ -63,8 +61,6 @@ export class AppInformeDeAuditoriaComponent {
     this.mostrarMenu = false;
   }
   
-
-
   nuevoProceso:any;
   selectAudit(audit){
     this.ApiService.getAuditorias(audit.ID_AUDITORIA)
@@ -96,7 +92,6 @@ export class AppInformeDeAuditoriaComponent {
         this.totalRegistros = data.PROCESOS.map((req,index) =>req.REQUISITOS)[0].length;
         this.contentArrayReq = data.PROCESOS.map((req,index) =>req.REQUISITOS)[0];
       }
-
       //this.arrProceso= data.procesos.map(proc) => proc
     })
   }
@@ -107,15 +102,12 @@ export class AppInformeDeAuditoriaComponent {
     .subscribe((data:any)=> {
       this.procesoFinal= data;
       this.dataInitial = data;
-   
-
       //paginado
       this.procesoFinal= this.dataInitial.slice(0, 6);
       const totalPag = data.length;
       this.totalPaginas = Math.trunc(totalPag / 6) + 1;
       this.totalRegistros = data.length;
       this.contentArray = data;
-
     })
   
   }
@@ -201,9 +193,7 @@ export class AppInformeDeAuditoriaComponent {
    }}
 
    generateInformeDeAuditoria(request) {
-
     const newFormantRequisito = this.arrRequisito.map(req =>  {
-
      return{
       numeracion:req.NUMERACION,
       requisito:req.REQUISITO,
@@ -211,7 +201,7 @@ export class AppInformeDeAuditoriaComponent {
       hallazgo: req.HALLAZGO,
      }
     })
-    
+    console.log(this.selectedProceso);
     const docDefinition:any = {
       pageMargins: [ 30, 30, 30, 30 ],
       content: [
@@ -241,7 +231,6 @@ export class AppInformeDeAuditoriaComponent {
         '\n',  
         {
           table: {
-  
             widths: [150, '*' ,'*','*' ,'*', ],
             body: [
               [
@@ -250,8 +239,6 @@ export class AppInformeDeAuditoriaComponent {
                 {},
                 {},
                 {},
-                
-  
               ],
               [
                 {text: 'Procesos / Actividad Auditadas ', style: ['tituloDinamico']},

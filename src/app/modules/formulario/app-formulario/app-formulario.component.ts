@@ -7,6 +7,7 @@ import { ApiService } from 'src/app/servicios/api/api.service';
 import { ModalPadreService } from 'src/app/servicios/api/modal.padre.services';
 import { FormService } from 'src/app/servicios/form/form.service';
 import { EMatrizRequisitosLegalesComponent } from '../../e-matriz-requisitos-legales/e-matriz-requisitos-legales.component';
+import { throwToolbarMixedModesError } from '@angular/material/toolbar';
 
 @Component({
   selector: 'app-app-formulario',
@@ -22,10 +23,12 @@ export class AppFormularioComponent implements OnInit{
   @Input() showBotones: boolean = false;
   @Input() showBotonEliminar: boolean = false;
   datos: any = [];
+  datosLey: any = [];
   public form: FormGroup;
   selectedTabIndex: number = -1;
   isDisabled: boolean = true;
   minDate: string;
+  data1: any = [];
 
   //BOTON ELIMINAR
   matrizAEliminar: number;
@@ -39,6 +42,12 @@ export class AppFormularioComponent implements OnInit{
   isCheckboxOn: boolean = false;
 
   estadoFormulario: any;
+
+  //VINCULAR CON MEJORA CONTINUA
+
+  data2: any = [];
+  ID_MEJORA: number;
+  ID_ACTIVIDAD: number;
 
   //ARRAY DE RESPONSABLES
 
@@ -73,7 +82,6 @@ export class AppFormularioComponent implements OnInit{
     // //REMOVER ARRAY TEMPORAL
     localStorage.removeItem('MiArrayTemporal');
     
-
     this.form = this.formBuilder.group({
       estadoCumplimiento:[this.estadoFormulario?.ESTADO_CUMPLIMIENTO ||''],
       responsable:[this.estadoFormulario?.ID_RESPONSABLE || ''],
@@ -141,7 +149,6 @@ export class AppFormularioComponent implements OnInit{
       console.log('arayyy1', array);
     }
 
- 
   //   // Guarda el estado del formulario en el servicio
   //       var arrayIdMatrices: number[] = []; // Declaración local del array
   //       arrayIdMatrices = this.arrayIdMatriz;
@@ -181,7 +188,6 @@ export class AppFormularioComponent implements OnInit{
           nombrePlanCumplimiento = this.arrayListResponsible[index].NOMBRE
         }      
     }
-  //RESUMEN 
     
     console.log(
       estadoCumplimiento,
@@ -193,10 +199,12 @@ export class AppFormularioComponent implements OnInit{
       fechaEjecucion,
       estado,
       this.selectedMatrizId,
+      // this.ID_MEJORA,
+      // this.ID_ACTIVIDAD,
       checkbox
     );
 
-    const data = {
+    this.data1 = {
       FK_ID_USUARIO: window.localStorage.getItem('Id'),
       FK_ID_MATRIZ_LEGAL: this.selectedMatrizId,
       ESTADO_CUMPLIMIENTO: estadoCumplimiento,
@@ -211,62 +219,16 @@ export class AppFormularioComponent implements OnInit{
           PLAN_FECHA_EJECUCION: fechaEjecucion  || null,
           PLAN_ESTADO: estado  || null,
         }
-      ]
+      ],
+      // FK_ID_MEJORA_CONTINUA: this.ID_MEJORA,
+      // FK_ID_ACTIVIDAD: this.ID_ACTIVIDAD,
+      ENVIO_MEJORA_CONTINUA: checkbox
     };   
-    console.log("gagaaaaa",data);
+    
 
-    // const textAreaModal = document.getElementById("textAreaModal") as HTMLTextAreaElement
-    // this.texto = textAreaModal.value;
-    // console.log("asd", this.texto);
-    if(checkbox){
-      const data2 ={
-        
-        ID_USUARIO: window.localStorage.getItem('Id'),
-        RESPONSABLE: nombrePlanCumplimiento,
-        DESCRIPCION: acciones,
-        NTC: "",
-        REQUISITOS: "",
-        TIPO: "Matriz Legal",
-        ESTADO: estado,
-        FECHA_INICIO: fechaEjecucion,
-        FECHA_FIN: fechaEjecucion
-      }
-      console.log("esto se envia a la API MEJORA: ", data2);
-      this.ApiService.postMejoraContinua(data2).subscribe((savedData2: any) => {
-        console.log('Se guardó correctamente: 2', savedData2);
-        // Update the form values with the latest data
-        // this.data = savedData;
-        
-        
-        //console.log("indicador", this.arrayIdMatriz);
-      });
-    }
-    if(estadoCumplimiento =="No" || estadoCumplimiento == "En proceso"){
-      const fechaCorregida = formatDate(fechaEjecucion, 'dd-MM-yyyy', 'en-US');
-      
-      const data3 = {
-        
-          FK_ID_USUARIO_PST: window.localStorage.getItem('Id'),
-          FK_ID_RESPONSABLE: IDresponsablePlanCumplimiento,
-          TIPO_ACTIVIDAD: "Matriz Requisitos Legales",
-          DESCRIPCION: acciones,
-          FECHA_INICIO: fechaCorregida,
-          FECHA_FIN: fechaCorregida,
-          ESTADO_PLANIFICACION: "En Proceso",
-          ENVIO_CORREO: false
-        
-      }
-      this.ApiService.postNewRecord(data3).subscribe((savedData3:any)=>{
-        console.log('Se guardo correctamente : 3', savedData3);
-      })
+    console.log("gagaaaaa",this.data1);
 
-    }
-    this.showGuardar=!this.showGuardar
-    this.disableModificar=!this.disableModificar
-
-
-
-    return this.ApiService.saveLey(data)
+    this.ApiService.saveLey(this.data1)
     .subscribe((savedData: any) => {
       console.log('Se guardó correctamente:', savedData);
       // Update the form values with the latest data
@@ -275,7 +237,9 @@ export class AppFormularioComponent implements OnInit{
       
       //console.log("indicador", this.arrayIdMatriz);
     });
-    
+
+    this.showGuardar=!this.showGuardar
+    this.disableModificar=!this.disableModificar
   }
 
   eliminarLey(idMatriz: number,event:any){

@@ -111,6 +111,9 @@ th {
   color: #fff;
 }
 /*menu*/
+.resposi-icon {
+  display: none;
+}
 @media (max-width: 970px) {
   /* NOMBRE DE LA CABECERA  */
 

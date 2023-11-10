@@ -163,4 +163,15 @@ export class IndicadorService {
         })
       );
   }
+  obtenerComboAnios(model: any): Observable<any> {
+    return this.http
+      .post<any>(`${this.myUrl}${this.myAppUrl}/Combo/Anios`, model)
+      .pipe(
+        catchError((error) => {
+          return throwError(() =>
+            console.error('Error api', JSON.stringify(error))
+          );
+        })
+      );
+  }
 }

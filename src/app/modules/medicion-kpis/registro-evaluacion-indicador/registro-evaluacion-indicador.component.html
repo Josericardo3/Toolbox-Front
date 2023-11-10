@@ -195,6 +195,7 @@
             <th mat-header-cell *matHeaderCellDef>Título</th>
             <td mat-cell *matCellDef="let element">
               {{ element.TITULO }}
+              
             </td>
           </ng-container>
 
@@ -220,6 +221,8 @@
             <th mat-header-cell *matHeaderCellDef>Periodo Medición</th>
             <td mat-cell *matCellDef="let element">
               {{ element.NOMBRE_PERIODO }}
+              <br>
+             <small>{{element.FECHA_PERIODO_SMALL}} </small> 
             </td>
           </ng-container>
           <ng-container matColumnDef="sem">

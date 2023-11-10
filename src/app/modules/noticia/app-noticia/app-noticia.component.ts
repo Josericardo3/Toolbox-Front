@@ -11,10 +11,10 @@ export class AppNoticiaComponent implements OnInit {
   
   dato!: string; 
   datosNoticia: any;
-  idActividad: number; 
+  idActividad: number;
   idNoticia: number;
   imagen: any;
-  
+
   constructor(
     private api: ApiService,
     public sanitizer: DomSanitizer
@@ -22,7 +22,8 @@ export class AppNoticiaComponent implements OnInit {
 
   ngOnInit() {
     this.dato = history.state.dato;
-    this.idNoticia = history.state.idNoticia;
+    this.idNoticia = history.state.idNoticiaa;
+    console.log(this.idNoticia);
     this.idActividad = history.state.idActividad;
     if (this.dato == 'Noticia' && this.idNoticia != undefined ) {
       this.getDataNoticia();
@@ -30,6 +31,22 @@ export class AppNoticiaComponent implements OnInit {
     if (this.dato == 'Actividad' && this.idActividad != undefined ) {
       this.getDataActividad();
     }
+    this.getTableData();
+  }
+
+  datos: any=[];
+  noticiaSelected: any={};
+
+  getTableData() {
+    this.api.getTablaNoticias()
+      .subscribe(data => {
+        this.datos = data;
+        this.datos.forEach(val=>{
+          if(val.ID_NOTICIA == this.idNoticia)
+          this.noticiaSelected=val;
+        })
+        console.log(this.noticiaSelected);
+      })
   }
 
   getDataNoticia(){

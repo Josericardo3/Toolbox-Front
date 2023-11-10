@@ -34,12 +34,17 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
   datosReporte: any = [];
 
   leyesTurismo: any[] = [];
+  dataLeyesTurismo: any[]= [];
   leyesAmbiental: any[] = [];
+  dataLeyesAmbiental: any[]= [];
   leyesLaboral: any[] = [];
+  dataLeyesLaboral: any[]= [];
   leyesSocial: any[] = [];
+  dataLeyesSocial: any[]= [];
   leyesEconomico: any[] = [];
+  dataLeyesEconomico: any[]= [];
   leyesParticular: any[] = [];
-
+  dataLeyesParticular: any[]= [];
   detalles: any[] = [];
   showAdd = false;
 
@@ -53,6 +58,8 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
   adicionarVisibleSocial = false;
   adicionarVisibleEconomico = false;
   adicionarVisibleParticular = false;
+
+  disabledAgregar: boolean = false;
 
   entroAlPadre: boolean = false;
 
@@ -199,8 +206,8 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
 
     //NOS SUSCRIBIMOS AL SERVICIO Y LE PASAMOS LA FUNCION QUE QUEREMOS QUE UTILIZE NUESTRO BOTON EN EL FORMULARIO
     this.modalPadre.abrirModal$.subscribe(()=>{
-      this.terminarModificarCampos()
-      // this.entroAlPadre = !this.entroAlPadre;
+      this.terminarModificarCampos2()
+      // this.entroAlPadre = false;
     })
     
 
@@ -253,6 +260,8 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
     }, {
       validators: this.customValidation // Agrega la función de validación personalizada
     });
+    //agregado 
+    
 
     this.tab2Form = this.formBuilder.group({
       tipoNormatividad: ['', Validators.required],
@@ -307,6 +316,7 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
     }, {
       validators: this.customValidation 
     });
+    
     //SAVEFORM DEL MODAL RESUMEN
     this.saveForm = this.formBuilder.group({
       descripcionNoticia: ['', Validators.required],
@@ -383,6 +393,7 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
         return acumulador;
       }, {});
       this.leyesTurismo = Object.values(gruposTurismo);
+      this.dataLeyesTurismo = Object.values(gruposTurismo);
       console.log("GAAAAA", this.leyesTurismo);
       const gruposAmbiental = this.datos.filter((ley) => ley.CATEGORIA === 'Ambiental' || ley.CATEGORIA === 'NTC 6496 Ambiental')
       .reduce((acumulador, ley) => {
@@ -424,7 +435,7 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
         return acumulador;
       }, {});
       this.leyesAmbiental = Object.values(gruposAmbiental);
-
+      this.dataLeyesAmbiental = Object.values(gruposAmbiental);
       const gruposLaboral = this.datos.filter((ley) => ley.CATEGORIA === 'Laboral y SGSST')
       .reduce((acumulador, ley) => {
         const clave = ley.TIPO_NORMATIVIDAD + ley.NUMERO + ley.ANIO;
@@ -465,7 +476,7 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
         return acumulador;
       }, {});
       this.leyesLaboral = Object.values(gruposLaboral);
-
+      this.dataLeyesLaboral = Object.values(gruposLaboral);
       const gruposSocial = this.datos.filter((ley) => ley.CATEGORIA === 'Social')
       .reduce((acumulador, ley) => {
         const clave = ley.TIPO_NORMATIVIDAD + ley.NUMERO + ley.ANIO;
@@ -506,7 +517,7 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
         return acumulador;
       }, {});
       this.leyesSocial = Object.values(gruposSocial);
-
+      this.dataLeyesSocial = Object.values(gruposSocial);
       const gruposEconomico = this.datos.filter((ley) => ley.CATEGORIA === 'Economico')
       .reduce((acumulador, ley) => {
         const clave = ley.TIPO_NORMATIVIDAD + ley.NUMERO + ley.ANIO;
@@ -547,7 +558,7 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
         return acumulador;
       }, {});
       this.leyesEconomico = Object.values(gruposEconomico);
-
+      this.dataLeyesEconomico = Object.values(gruposEconomico);
       const gruposParticular = this.datos.filter((ley) => ley.CATEGORIA === 'NTC 6496 General' || ley.CATEGORIA === 'NTC 6487' || 
       ley.CATEGORIA === 'NTC 6503' || ley.CATEGORIA === 'NTC 6503adicionar requisito Economico' || ley.CATEGORIA === 'NTC 6504' || ley.CATEGORIA === 'NTC 6505'
       || ley.CATEGORIA === 'NTC 6505 Ambiental' || ley.CATEGORIA === 'NTC 6502' || ley.CATEGORIA === 'NTC 6506' || ley.CATEGORIA === 'NTC 6507' || ley.categoria === 'NTC 6523')
@@ -590,6 +601,7 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
         return acumulador;
       }, {});
       this.leyesParticular = Object.values(gruposParticular);
+      this.dataLeyesParticular = Object.values(gruposParticular);
       // this.leyesParticular = this.datos.filter((ley) => ley.categoria === 'Turismo'); // ¿cuál es la categoría?
       
      });
@@ -680,6 +692,7 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
     } else if (section === 'adicionarParticular') {
       this.adicionarVisibleParticular = !this.adicionarVisibleParticular
     }
+    
 
     // Cierra el div abierto si se hace clic en otro div
     if (this.lastVisible && this.lastVisible !== section) {
@@ -707,10 +720,12 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
   isDivAddVisible(index){
     return this.divAddVisible[index]
   }
-
+selectValue: any
   onSelect(value: string) {
     console.log(value)
     this.selectedOption = value;
+    this.selectValue = value;
+
   }
 
   onOtroInputChange(event: Event) {
@@ -791,16 +806,83 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
   }
 
   buscarTitulos(): void {
-      const titulos = document.querySelectorAll('.titulo h3');
-      titulos.forEach((titulo) => {
-          const tituloString = titulo.textContent.toLowerCase();
-          if (tituloString.includes(this.busqueda.toLowerCase())) {
-              titulo.parentElement.parentElement.style.display = 'block';
-          } else {
-              titulo.parentElement.parentElement.style.display = 'none';
-          }
-      });
+    
+    if (this.tabActual === 'tab1') {
+      let arrayTemp = this.dataLeyesTurismo.map((item: any) => {
+        item.leyesTexto = `${item.TIPO_NORMATIVIDAD} ${item.NUMERO} de ${item.ANIO}`
+        return item;
+      })
+      arrayTemp = this.dataLeyesTurismo.filter((item: any) =>
+        (item.leyesTexto.toUpperCase().includes(this.busqueda.trim().toUpperCase()) || this.busqueda.trim().toUpperCase() == '')
+      )
+      this.leyesTurismo = arrayTemp;
+    } 
+    else if (this.tabActual === 'tab2') {
+      let arrayTemp = this.dataLeyesAmbiental.map((item: any) => {
+        item.leyesTexto = `${item.TIPO_NORMATIVIDAD} ${item.NUMERO} de ${item.ANIO}`
+        return item;
+      })
+      arrayTemp = this.dataLeyesAmbiental.filter((item: any) =>
+        (item.leyesTexto.toUpperCase().includes(this.busqueda.trim().toUpperCase()) || this.busqueda.trim().toUpperCase() == '')
+      )
+      this.leyesAmbiental = arrayTemp;
+    
+    } 
+    else if (this.tabActual === 'tab3') {
+      let arrayTemp = this.dataLeyesLaboral.map((item: any) => {
+        item.leyesTexto = `${item.TIPO_NORMATIVIDAD} ${item.NUMERO} de ${item.ANIO}`
+        return item;
+      })
+      arrayTemp = this.dataLeyesLaboral.filter((item: any) =>
+        (item.leyesTexto.toUpperCase().includes(this.busqueda.trim().toUpperCase()) || this.busqueda.trim().toUpperCase() == '')
+      )
+      this.leyesLaboral = arrayTemp;
+    } 
+    else if (this.tabActual === 'tab4') {
+      let arrayTemp = this.dataLeyesSocial.map((item: any) => {
+        item.leyesTexto = `${item.TIPO_NORMATIVIDAD} ${item.NUMERO} de ${item.ANIO}`
+        return item;
+      })
+      arrayTemp = this.dataLeyesSocial.filter((item: any) =>
+        (item.leyesTexto.toUpperCase().includes(this.busqueda.trim().toUpperCase()) || this.busqueda.trim().toUpperCase() == '')
+      )
+      this.leyesSocial = arrayTemp;
+    } 
+    else if (this.tabActual === 'tab5') {
+      let arrayTemp = this.dataLeyesEconomico.map((item: any) => {
+        item.leyesTexto = `${item.TIPO_NORMATIVIDAD} ${item.NUMERO} de ${item.ANIO}`
+        return item;
+      })
+      arrayTemp = this.dataLeyesEconomico.filter((item: any) =>
+        (item.leyesTexto.toUpperCase().includes(this.busqueda.trim().toUpperCase()) || this.busqueda.trim().toUpperCase() == '')
+      )
+      this.leyesEconomico = arrayTemp;
+    } 
+    else if (this.tabActual === 'tab6') {
+      let arrayTemp = this.dataLeyesParticular.map((item: any) => {
+        item.leyesTexto = `${item.TIPO_NORMATIVIDAD} ${item.NUMERO} de ${item.ANIO}`
+        return item;
+      })
+      arrayTemp = this.dataLeyesParticular.filter((item: any) =>
+        (item.leyesTexto.toUpperCase().includes(this.busqueda.trim().toUpperCase()) || this.busqueda.trim().toUpperCase() == '')
+      )
+      this.leyesParticular = arrayTemp;
+    }
+
   }
+
+  // buscarTitulos(): void {
+  //     const titulos = document.querySelectorAll('.titulo h3');
+  //     titulos.forEach((titulo) => {
+  //         const tituloString = titulo.textContent.toLowerCase();
+  //         if (tituloString.includes(this.busqueda.toLowerCase())) {
+  //             titulo.parentElement.parentElement.style.display = 'block';
+  //         } else {
+  //             titulo.parentElement.parentElement.style.display = 'none';
+  //         }
+  //     });
+  // }
+  
   actualizarHeader(){
     this.ApiService.getDatosHeaderMatriz()
     .subscribe((data: any) => {
@@ -1026,8 +1108,8 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
           item.DOCUMENTO.map((documento: any) => {
             const aplicaPlanIntervencion = documento.RESPUESTAS[0].APLICA_PLAN_INTERVENCION;
             
-            let siValue = '';
-            let noValue = '';
+            let siValue = 'No aplica';
+            let noValue = 'No aplica';
             
   
             if (aplicaPlanIntervencion === 'Si') {
@@ -1301,8 +1383,8 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
           item.DOCUMENTO.map((documento: any) => {
             const aplicaPlanIntervencion = documento.RESPUESTAS[0].APLICA_PLAN_INTERVENCION;
             
-            let siValue = '';
-            let noValue = '';
+            let siValue = 'No aplica';
+            let noValue = 'No aplica';
             
   
             if (aplicaPlanIntervencion === 'Si') {
@@ -1574,8 +1656,8 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
           item.DOCUMENTO.map((documento: any) => {
             const aplicaPlanIntervencion = documento.RESPUESTAS[0].APLICA_PLAN_INTERVENCION;
             
-            let siValue = '';
-            let noValue = '';
+            let siValue = 'No aplica';
+            let noValue = 'No aplica';
             
   
             if (aplicaPlanIntervencion === 'Si') {
@@ -1846,8 +1928,8 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
           item.DOCUMENTO.map((documento: any) => {
             const aplicaPlanIntervencion = documento.RESPUESTAS[0].APLICA_PLAN_INTERVENCION;
             
-            let siValue = '';
-            let noValue = '';
+            let siValue = 'No aplica';
+            let noValue = 'No aplica';
             
   
             if (aplicaPlanIntervencion === 'Si') {
@@ -2118,8 +2200,8 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
           item.DOCUMENTO.map((documento: any) => {
             const aplicaPlanIntervencion = documento.RESPUESTAS[0].APLICA_PLAN_INTERVENCION;
             
-            let siValue = '';
-            let noValue = '';
+            let siValue = 'No aplica';
+            let noValue = 'No aplica';
             
   
             if (aplicaPlanIntervencion === 'Si') {
@@ -2391,8 +2473,8 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
           item.DOCUMENTO.map((documento: any) => {
             const aplicaPlanIntervencion = documento.RESPUESTAS[0].APLICA_PLAN_INTERVENCION;
             
-            let siValue = '';
-            let noValue = '';
+            let siValue = 'No aplica';
+            let noValue = 'No aplica';
             
   
             if (aplicaPlanIntervencion === 'Si') {
@@ -2470,9 +2552,7 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
     return 0;
   }
 
-  modificarBloquearCampos(){
-    this.disabledModificar = !this.disabledModificar;
-  
+  disabletabsModificar(){
     if(this.tabActual == 'tab1'){
       this.disabledTabs2 = !this.disabledTabs2;
       this.disabledTabs3 = !this.disabledTabs3;
@@ -2515,27 +2595,44 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
       this.disabledTabs5 = !this.disabledTabs5;
       this.disabledTabs1 = !this.disabledTabs1;
     }
-    // if(this.disabledModificar == true){
-    //   this.showModal = true;
-    //     const title = "Modificar Reporte";
-    //     const message = "Despliegue una de las leyes y proceda a editar";
-    //     this.Message.showModal(title, message);
-
-    // }
-    
   }
 
-  //GUARDA DATOS INTRODUCIDOS EN EL TEXT AREA
-  terminarModificarCampos(){
-    this.modificarBloquearCampos();
-    var arrayMatrices: any=[];
+  modificarBloquearCampos(){
+    
+      this.disabledModificar = !this.disabledModificar;
+      this.disabletabsModificar();   
+    if(this.disabledModificar == true ){
+      this.showModal = true;
+        const title = "Modificar Reporte";
+        const message = "Despliegue una de las leyes y proceda a editar";
+        this.Message.showModal(title, message);
+
+    }
+    
+  }
+  modificarBloquearCampos2(){
+    
+    this.disabledModificar = !this.disabledModificar;
+    this.disabletabsModificar(); 
+  
+}
+guardaMatrizModificada(){
+  var arrayMatrices: any=[];
     arrayMatrices = localStorage.getItem('MiArrayTemporal');
 
     if(arrayMatrices != null){
       this.showModalResumen=!this.showModalResumen;
     }
 
-    
+}
+
+terminarModificarCampos(){
+    this.modificarBloquearCampos();
+    this.guardaMatrizModificada();
+  }
+  terminarModificarCampos2(){
+    this.modificarBloquearCampos2();
+   this.guardaMatrizModificada();
 
   }
   guardarTextArea(){
@@ -2608,6 +2705,10 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
       this.disabledTabs4 = !this.disabledTabs4;
       this.disabledTabs5 = !this.disabledTabs5;
       this.disabledTabs6 = !this.disabledTabs6;
+      if(this.adicionarVisibleTurismo == true){
+        this.toggleSection('adicionarTurismo');
+      }
+      
     }
     if(this.tabActual == 'tab2'){
       this.disabledTabs1 = !this.disabledTabs1;
@@ -2615,6 +2716,9 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
       this.disabledTabs4 = !this.disabledTabs4;
       this.disabledTabs5 = !this.disabledTabs5;
       this.disabledTabs6 = !this.disabledTabs6;
+      if(this.adicionarVisibleAmbiental == true){
+        this.toggleSection('adicionarAmbiental');
+      }
     }
     if(this.tabActual == 'tab3'){
       this.disabledTabs2 = !this.disabledTabs2;
@@ -2622,6 +2726,9 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
       this.disabledTabs4 = !this.disabledTabs4;
       this.disabledTabs5 = !this.disabledTabs5;
       this.disabledTabs6 = !this.disabledTabs6;
+      if(this.adicionarVisibleLaboral == true){
+        this.toggleSection('adicionarLaboral');
+      }
     }
     if(this.tabActual == 'tab4'){
       this.disabledTabs2 = !this.disabledTabs2;
@@ -2629,6 +2736,9 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
       this.disabledTabs1 = !this.disabledTabs1;
       this.disabledTabs5 = !this.disabledTabs5;
       this.disabledTabs6 = !this.disabledTabs6;
+      if(this.adicionarVisibleSocial == true){
+        this.toggleSection('adicionarSocial');
+      }
     }
     if(this.tabActual == 'tab5'){
       this.disabledTabs2 = !this.disabledTabs2;
@@ -2636,6 +2746,9 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
       this.disabledTabs4 = !this.disabledTabs4;
       this.disabledTabs1 = !this.disabledTabs1;
       this.disabledTabs6 = !this.disabledTabs6;
+      if(this.adicionarVisibleEconomico == true){
+        this.toggleSection('adicionarEconomico');
+      }
     }
     if(this.tabActual == 'tab6'){
       this.disabledTabs2 = !this.disabledTabs2;
@@ -2643,6 +2756,9 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
       this.disabledTabs4 = !this.disabledTabs4;
       this.disabledTabs5 = !this.disabledTabs5;
       this.disabledTabs1 = !this.disabledTabs1;
+      if(this.adicionarVisibleParticular == true){
+        this.toggleSection('adicionarParticular');
+      }
     }
     if(this.disabledEliminar == true){
 

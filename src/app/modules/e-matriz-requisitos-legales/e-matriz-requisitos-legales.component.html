@@ -26,7 +26,7 @@
                 <div class="reporte">
                     <button type="button" class="btnModificar" (click)="modificarBloquearCampos()" *ngIf="disabledModificar==false && getRolValue() !== 4 && getRolValue()!==5 && getRolValue()!==7" [disabled]="disabledEliminar == true ">Modificar Reporte</button>
                     <button type="button" class="btnModificar" (click)="terminarModificarCampos()" *ngIf="disabledModificar==true">Terminar Modificación</button>
-                    <button type="button" class="btnReporte" (click)="generateReporteTurismo()" [attr.disabled]="disabledModificar ? 'disabled' : null" [disabled]="disabledEliminar == true ">Descargar reporte</button>
+                    <button type="button" class="btnReporte" (click)="generateReporteTurismo()" [attr.disabled]="disabledModificar ? 'disabled' : null" [disabled]="disabledEliminar == true ">Visualizar reporte</button>
                 </div>
                 
                 
@@ -108,8 +108,6 @@
                         </div>  
                     </div>
                 </div>
-                
-                  
                 <ng-template #inputTemplate>
                     <div>
                       <input type="text" [(ngModel)]="nuevoDiv.anio">
@@ -118,7 +116,7 @@
                       <textarea [(ngModel)]="nuevoDiv.secciones"></textarea>
                       <input type="text" [(ngModel)]="nuevoDiv.tipoNormatividad">
                     </div>
-                </ng-template>
+                </ng-template>                
 
                 <div id="ContainerdetalleAdicionar">
                     <div class="adicionar"  *ngIf="getRolValue() !== 4 && getRolValue()!==5 && getRolValue()!==7" >
@@ -127,15 +125,15 @@
                         <button class="eliminarBtn" (click)="eliminarBloquearCampos()" id="eliminarRequisitoTurismo"  *ngIf = "disabledEliminar == true">Salir del modo Eliminar</button>
                     </div>
                     <div class="detalleAdicionar" id="detalleAdicionarRequisito" *ngIf="adicionarVisibleTurismo">
-                        <form [formGroup]="tab1Form" >
+                        <form [formGroup]="tab1Form" (ngSubmit) ="agregarDiv()" >
 
                             <label class="adicionarLabel">Categoría</label>
                             <input type="text" class="adicionarInput" id="categoriaInput" formControlName="categoria" value ="Turismo" readonly appLetras> 
 
                             <label class="adicionarLabel">Tipo de normatividad</label>
                             <select class="adicionarInput" id="tipoNormatividadSelect" #selectOption (change)="onSelect(selectOption.value)"
-                            formControlName="tipoNormatividad">
-                                <option value="" disabled selected hidden>Seleccione una opción</option>
+                            formControlName="tipoNormatividad" [(ngModel)]="selectValue">
+                                <option value="" disabled >Seleccione una opción</option>
                                 <option value="Ley">Ley</option>
                                 <option value="Decreto">Decreto</option>
                                 <!-- <option value="Decreto Ley">Decreto Ley</option> -->
@@ -159,7 +157,7 @@
                             <label class="adicionarLabel">Artículos / Secciones / Requisitos específicos que aplican</label>
                             <textarea style="height: 100px" class="adicionarInput" id="seccionesTextAreaAdd" formControlName="secciones"></textarea>
                                 
-                            <button type="submit" class="btnAdd" (click)="agregarDiv()" [disabled]="tab1Form.invalid || tab1Form.hasError('customError')">Agregar</button>
+                            <button type="submit" class="btnAdd" [disabled]="tab1Form.invalid || tab1Form.hasError('customError') || tab1Form.pristine">Agregar</button>
                         </form>
                     </div>
                 </div>
@@ -172,7 +170,7 @@
                     <div class="reporte">
                         <button type="button" class="btnModificar" (click)="modificarBloquearCampos()" *ngIf="disabledModificar==false && getRolValue() !== 4 && getRolValue()!==5 && getRolValue()!==7" [disabled]="disabledEliminar == true ">Modificar Reporte</button>
                         <button type="button" class="btnModificar" (click)="terminarModificarCampos()" *ngIf="disabledModificar==true">Terminar Modificación</button>
-                        <button type="button" class="btnReporte" (click)="generateReporteAmbiental()" [attr.disabled]="disabledModificar ? 'disabled' : null" [disabled]="disabledEliminar == true ">Descargar reporte</button>
+                        <button type="button" class="btnReporte" (click)="generateReporteAmbiental()" [attr.disabled]="disabledModificar ? 'disabled' : null" [disabled]="disabledEliminar == true ">Visualizar reporte</button>
                     </div>
                 </div>
                 <div class="div" *ngFor="let campo of leyesAmbiental; let i = index">
@@ -278,7 +276,7 @@
                 <div class="reporte">
                     <button type="button" class="btnModificar" (click)="modificarBloquearCampos()" *ngIf="disabledModificar==false && getRolValue() !== 4 && getRolValue()!==5 && getRolValue()!==7" [disabled]="disabledEliminar == true ">Modificar Reporte</button>
                     <button type="button" class="btnModificar" (click)="terminarModificarCampos()" *ngIf="disabledModificar==true">Terminar Modificación</button>
-                    <button type="button" class="btnReporte" (click)="generateReporteLaboral()" [attr.disabled]="disabledModificar ? 'disabled' : null" [disabled]="disabledEliminar == true ">Descargar reporte</button>
+                    <button type="button" class="btnReporte" (click)="generateReporteLaboral()" [attr.disabled]="disabledModificar ? 'disabled' : null" [disabled]="disabledEliminar == true ">Visualizar reporte</button>
                 </div>
                 <div class="div" *ngFor="let campo of leyesLaboral; let i = index">
                     <div class="titulo" (click)="toggleSectionLey('primeraLey', i, campo.ID_MATRIZ)" [ngClass]="{'gris': disabledEliminar == true && campo.ES_FIJO == 1}">
@@ -384,7 +382,7 @@
                 <div class="reporte">
                     <button type="button" class="btnModificar" (click)="modificarBloquearCampos()" *ngIf="disabledModificar==false && getRolValue() !== 4 && getRolValue()!==5 && getRolValue()!==7" [disabled]="disabledEliminar == true ">Modificar Reporte</button>
                     <button type="button" class="btnModificar" (click)="terminarModificarCampos()" *ngIf="disabledModificar==true">Terminar Modificación</button>
-                    <button type="button" class="btnReporte" (click)="generateReporteSocial()" [attr.disabled]="disabledModificar ? 'disabled' : null" [disabled]="disabledEliminar == true ">Descargar reporte</button>
+                    <button type="button" class="btnReporte" (click)="generateReporteSocial()" [attr.disabled]="disabledModificar ? 'disabled' : null" [disabled]="disabledEliminar == true ">Visualizar reporte</button>
                 </div>
                 <div class="div" *ngFor="let campo of leyesSocial; let i = index">
                     <div class="titulo" (click)="toggleSectionLey('primeraLey', i, campo.ID_MATRIZ)" [ngClass]="{'gris': disabledEliminar == true && campo.ES_FIJO == 1}">
@@ -489,7 +487,7 @@
                 <div class="reporte">
                     <button type="button" class="btnModificar" (click)="modificarBloquearCampos()" *ngIf="disabledModificar==false && getRolValue() !== 4 && getRolValue()!==5 && getRolValue()!==7" [disabled]="disabledEliminar == true ">Modificar Reporte</button>
                     <button type="button" class="btnModificar" (click)="terminarModificarCampos()" *ngIf="disabledModificar==true">Terminar Modificación</button>
-                    <button type="button" class="btnReporte" (click)="generateReporteEconomico()" [attr.disabled]="disabledModificar ? 'disabled' : null" [disabled]="disabledEliminar == true ">Descargar reporte</button>
+                    <button type="button" class="btnReporte" (click)="generateReporteEconomico()" [attr.disabled]="disabledModificar ? 'disabled' : null" [disabled]="disabledEliminar == true ">Visualizar reporte</button>
                 </div>
                 <div class="div" *ngFor="let campo of leyesEconomico; let i = index">
                     <div class="titulo" (click)="toggleSectionLey('primeraLey', i, campo.ID_MATRIZ)" [ngClass]="{'gris': disabledEliminar == true && campo.ES_FIJO == 1}">
@@ -595,7 +593,7 @@
                 <div class="reporte">
                     <button type="button" class="btnModificar" (click)="modificarBloquearCampos()" *ngIf="disabledModificar==false && getRolValue() !== 4 && getRolValue()!==5 && getRolValue()!==7" [disabled]="disabledEliminar == true ">Modificar Reporte</button>
                     <button type="button" class="btnModificar" (click)="terminarModificarCampos()" *ngIf="disabledModificar==true">Terminar Modificación</button>
-                    <button type="button" class="btnReporte" (click)="generateReporteParticular()" [attr.disabled]="disabledModificar ? 'disabled' : null" [disabled]="disabledEliminar == true ">Descargar reporte</button>
+                    <button type="button" class="btnReporte" (click)="generateReporteParticular()" [attr.disabled]="disabledModificar ? 'disabled' : null" [disabled]="disabledEliminar == true ">Visualizar reporte</button>
                 </div>
                 <div class="div" *ngFor="let campo of leyesParticular; let i = index">
                     <div class="titulo" (click)="toggleSectionLey('primeraLey', i, campo.ID_MATRIZ)" [ngClass]="{'gris': disabledEliminar == true && campo.ES_FIJO == 1}">

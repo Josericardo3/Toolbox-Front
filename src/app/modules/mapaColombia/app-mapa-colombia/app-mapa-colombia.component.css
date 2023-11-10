@@ -53,3 +53,47 @@ h4{
   width: 50%;
   margin: 0 3vw 0 0;
 }
+
+.tarjeta {
+  position: absolute;
+ 
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  max-width: 240px; /* Establece el ancho máximo de la tarjeta */
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+  font-size: 14px; /* Tamaño de fuente más pequeño */
+  max-height: 300px; /* Ajusta esto según tus necesidades */
+
+  /* Habilita el scroll vertical si el contenido excede la altura máxima */
+  overflow-y: auto;
+}
+.mapa-container {
+  position: relative;
+  /* Otros estilos del contenedor del mapa */
+}
+
+
+.tarjeta h2 {
+  font-size: 16px; /* Tamaño de fuente para el encabezado más grande */
+}
+
+.tarjeta p {
+  margin-top: 5px;
+}
+
+.cerrar-tarjeta {
+  position: absolute;
+  top: 5px; 
+  right: 5px; 
+  background: none;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  color: #ccc;
+}
+
+.cerrar-tarjeta:hover {
+  color: black; 
+}

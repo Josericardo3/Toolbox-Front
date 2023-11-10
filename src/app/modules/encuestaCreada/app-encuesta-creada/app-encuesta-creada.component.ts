@@ -1,6 +1,7 @@
 import { AfterContentChecked, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { ModalService } from 'src/app/messagemodal/messagemodal.component.service'
 import { ApiService } from 'src/app/servicios/api/api.service';
 
 @Component({
@@ -20,6 +21,7 @@ export class AppEncuestaCreadaComponent implements OnInit, AfterContentChecked{
     private ApiService: ApiService,
     private formBuilder: FormBuilder,
     private cd: ChangeDetectorRef,
+    private Message: ModalService,
     ) {}
 
   ngAfterContentChecked() : void {
@@ -150,10 +152,10 @@ export class AppEncuestaCreadaComponent implements OnInit, AfterContentChecked{
   
     console.log(respuestas);
     this.ApiService.saveEncuestaRespuesta(respuestas)
-      .subscribe(data => {
-        console.log(data);
-      }, error => {
-        console.error('Error al enviar respuestas:', error);
+      .subscribe((data) => {
+        const title = "ENCUESTA COMPLETADA";
+        const message = "Se completó la encuesta correctamente"
+        this.Message.showModal(title, message);
       });
   }
 }

@@ -101,7 +101,6 @@ export class AppEncuestaComponent implements OnInit{
 
   eliminarTarjeta(index?: number) {
     this.tarjetas.splice(index, 1);
-
     this.tarjetasData.splice(index, 1);
   }
   
@@ -148,6 +147,7 @@ export class AppEncuestaComponent implements OnInit{
     const data = {
       "ID_MAE_ENCUESTA": 0,
       "TITULO": titulo,
+      "FK_ID_USUARIO": localStorage.getItem('Id'),
       "DESCRIPCION": descripcion,
       "MAE_ENCUESTA_PREGUNTAS": formDataForAllTarjetas
     };
@@ -155,17 +155,15 @@ export class AppEncuestaComponent implements OnInit{
 
     this.ApiService.saveEncuesta(data)
     .subscribe( (d) => {
-      console.log(d)
+      const title = "ENCUESTA CREADA";
+      const message = "Se creó la encuesta correctamente"
+      this.Message.showModal(title, message);
     });
   }
 
-  actualizarEncuesta() {
-    // Lógica para actualizar una encuesta existente
-  }
   Obtenertitulo(evento:any){
     const titulo = this.formEncuesta.get('tituloEncuesta')?.value.toString();
     this.tituloEditar=titulo;
-    console.log("eventooooo", titulo)
     const descripcion = this.formEncuesta.get('descripcionEncuesta')?.value.toString();
     this.descripcionEditar=descripcion;
   }

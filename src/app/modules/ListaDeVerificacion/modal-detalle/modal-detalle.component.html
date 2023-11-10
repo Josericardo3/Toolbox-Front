@@ -57,7 +57,7 @@
                       <td>{{ proceso.LIDER_PROCESO}}</td>
                       <td class="normas-descripcion">{{ proceso.NORMAS_DESCRIPCION }}</td>
                       <td class="otros-auditados">{{ proceso.OTROS_AUDITADOS }}</td>
-                      <td class="tipo-norma">{{ proceso.TIPO_NORMA }}</td>
+                      <td class="tipo-norma">{{ proceso.TIPO_NORMA | slice:0:50 }}{{ proceso.TIPO_NORMA.length > 50 ? '...' : '' }}</td>
                       <td class="tipo-proceso">{{ proceso.TIPO_PROCESO}}</td>
                       <td> 
                         <a (click)="enviarValor(proceso.ID_PROCESO_AUDITORIA, index);showModal = false;" title="Seleccionar">

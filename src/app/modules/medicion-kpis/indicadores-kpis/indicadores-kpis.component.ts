@@ -48,6 +48,7 @@ export class IndicadoresKpisComponent {
   filterObjetivo: any = { search: '' };
   filterProceso: any = { search: '' };
   filterFuenteDato: any = { search: '' };
+  filterAnios: any = { search: '' };
   listaIndicadores: any = [];
   dataPeriodo: any = [];
   dataVariable: any = [];
@@ -72,6 +73,8 @@ export class IndicadoresKpisComponent {
   dataProcesos: any = [];
   dataResponsables: any = [];
   dataFuenteDatos: any = [];
+  dataAnios: any = [];
+  userInfor:any;
   constructor(
     private objetivoService: ObjetivoService,
     private procesoService: ProcesoService,
@@ -87,7 +90,7 @@ export class IndicadoresKpisComponent {
     this.obtenerResponsabels();
   }
   ngOnInit(): void {
-
+    this.obtenerAnios();
     this.obtenerComboPeriodoMedicion();
     this.obtenerComboVariables();
     this.obtenerComboPaquetes();
@@ -95,6 +98,7 @@ export class IndicadoresKpisComponent {
     this.obtenerComboProcesos();
     
     this.obtenerComboFuentesDatos();
+    this.getUser();
     this.ID_USUARIO = localStorage.getItem('Id');
     this.normas = JSON.parse(localStorage.getItem('norma'));
     this.normaSelected = localStorage.getItem('normaSelected');
@@ -108,6 +112,23 @@ export class IndicadoresKpisComponent {
   }
   buscar() {
     this.obtenerTabla();
+  }
+  getUser() {
+    const idUsuario = window.localStorage.getItem('Id');
+    this.apiService.getUser(idUsuario).subscribe((data: any) => {
+      this.userInfor = data;
+    })
+  }
+  obtenerAnios() {
+    this.indicadorService.obtenerComboAnios(this.filterAnios).subscribe({
+      next: (x) => {
+        if (x.Confirmacion) {
+          this.dataAnios = x.Data;
+        } else {
+        }
+      },
+      error: (e) => {},
+    });
   }
   obtenerComboFuentesDatos() {
     this.fuenteDatoService.obtenerCombo(this.filterFuenteDato).subscribe({
@@ -257,6 +278,7 @@ export class IndicadoresKpisComponent {
         this.dataVariable,
         this.dataPaquete,
         this.dataObjetivos,
+        this.userInfor
       ],
       disableClose: true,
     });
@@ -337,6 +359,7 @@ export class IndicadoresKpisComponent {
         this.dataProcesos,
         this.dataResponsables,
         this.dataFuenteDatos,
+        
       ],
       disableClose: true,
     });
@@ -357,7 +380,7 @@ export class IndicadoresKpisComponent {
 
     var dialogRef = this._dialog.open(GraficoIndicadoresEvaluacionComponent, {
       data: [
-        info,this.dataProcesos
+        info,this.dataProcesos,this.dataAnios
       ],
       disableClose: true,
     });

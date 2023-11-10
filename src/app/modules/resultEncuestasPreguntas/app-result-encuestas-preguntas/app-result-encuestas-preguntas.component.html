@@ -6,14 +6,14 @@
     </div>
     <div class="resultados">
         <app-app-menu-alta-gerencia></app-app-menu-alta-gerencia>
-        <div class="form">
+        <div class="form" *ngFor="let dato of datos">
             <div class="encabezado">
-                <h3>Título de la encuesta</h3>
+                <h3>{{dato.TITULO}}</h3>
             </div>
-            <div class="ContainerRespuesta">
-                <p>Primera pregunta</p>
+            <div class="ContainerRespuesta" *ngFor="let campo of dato.RESPUESTA">
+                <p>{{campo.DESCRIPCION_PREGUNTA}}</p>
                 <div class="respuestas">
-                    <p> Primera respuesta</p>
+                    <p>{{campo.RESPUESTA}}</p>
                 </div>
             </div>
         </div>

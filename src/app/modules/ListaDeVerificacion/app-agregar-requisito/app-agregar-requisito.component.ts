@@ -3,6 +3,7 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { ModalService } from 'src/app/messagemodal/messagemodal.component.service';
 import { ApiService } from 'src/app/servicios/api/api.service';
+import { Auditoria } from 'src/app/servicios/api/models/color';
 
 @Component({
   selector: 'app-app-agregar-requisito',
@@ -34,6 +35,7 @@ export class AppAgregarRequisitoComponent {
     private formBuilder: FormBuilder,
     public ApiService: ApiService,
   ) { }
+  audit = Number(window.localStorage.getItem('ID_AUDITORIA'));
 
   ngOnInit(): void {
     this.formParent = this.formBuilder.group({
@@ -46,6 +48,7 @@ export class AppAgregarRequisitoComponent {
       PREGUNTA: ['']
 
     });
+
 
     this.getRequisitos();
 
@@ -62,8 +65,7 @@ export class AppAgregarRequisitoComponent {
 
   }
   saveForm() {
-    debugger;
-    let audit = Number(window.localStorage.getItem('ID_AUDITORIA'));
+    
     const valor = this.formParent.get('HALLAZGO').value;
     const DESCRIPCION = this.formParent.get('OBSERVACION').value;
     const REQUISITOS = this.formParent.get('REQUISITO').value;
@@ -73,44 +75,47 @@ export class AppAgregarRequisitoComponent {
     this.arrayTemp=[];
     if(valor == "C" || valor == "NC"){
     
-    this.ApiService.getAuditorias(audit).subscribe((data: any) => {
-      this.EQUIPO_AUDITOR = data.AUDITOR_LIDER;
-      this.ALCANCE = data.ALCANCE;
-      this.HORA_REUNION_APERTURA = data.HORA_REUNION_APERTURA;
-      this.FECHA_REUNION_CIERRE = data.FECHA_REUNION_CIERRE;
-      this.HORA_REUNION_CIERRE = data.HORA_REUNION_CIERRE;
-      this.FECHA_REUNION_APERTURA = data.FECHA_REUNION_APERTURA;
-    },
-    error => {
-      console.error(error);
-    });
-
-    const ID_USUARIO = window.localStorage.getItem('Id');
-    const RESPONSABLE = this.EQUIPO_AUDITOR;
-    const TIPO = valor;
-    const ESTADO = 'EN PROCESO';
-    const FECHA_INICIO = this.FECHA_REUNION_APERTURA;
-    const FECHA_FIN = this.FECHA_REUNION_CIERRE;
-    const NTC = window.localStorage.getItem('normaSelected');
-    const request = {
-      ID_USUARIO: ID_USUARIO,
-      RESPONSABLE: RESPONSABLE,
-      DESCRIPCION: DESCRIPCION,
-      REQUISITOS: REQUISITOS,
-      TIPO: TIPO,
-      ESTADO: ESTADO,
-      FECHA_INICIO : FECHA_INICIO,
-      FECHA_FIN : FECHA_FIN,
-      NTC : NTC,
-    };
-      this.ApiService.postMejoraContinua(request)
-      .subscribe(
-        response => {
-
+      const auditoriaSubscription = this.ApiService.getAuditoria(this.audit).subscribe(
+        (data: Auditoria) => {
+          console.log(data);
+          this.EQUIPO_AUDITOR = data.EQUIPO_AUDITOR;
+          this.FECHA_REUNION_CIERRE = data.FECHA_REUNION_CIERRE;
+          this.FECHA_REUNION_APERTURA = data.FECHA_REUNION_APERTURA;
+      
+          const ID_USUARIO = window.localStorage.getItem('Id');
+          const RESPONSABLE = this.EQUIPO_AUDITOR;
+          const TIPO = valor;
+          const ESTADO = 'EN PROCESO';
+          const FECHA_INICIO = this.FECHA_REUNION_APERTURA;
+          const FECHA_FIN = this.FECHA_REUNION_CIERRE;
+ 
+          const NTC = window.localStorage.getItem('normaSelected');
+      
+          const request = {
+            ID_USUARIO: ID_USUARIO,
+            RESPONSABLE: RESPONSABLE,
+            TIPO: TIPO,
+            ESTADO: ESTADO,
+            FECHA_INICIO: FECHA_INICIO,
+            FECHA_FIN: FECHA_FIN,
+            NTC: NTC,
+            DESCRIPCION : DESCRIPCION,
+            REQUISITOS : REQUISITOS
+          };
+      
+          this.ApiService.postMejoraContinua(request).subscribe(
+            response => {
+            },
+            error => {
+              console.error(error);
+            }
+          );
         },
         error => {
+          console.error(error);
         }
       );
+      
     }
 
     this.valorEnviadoModal.emit(this.formParent.value);

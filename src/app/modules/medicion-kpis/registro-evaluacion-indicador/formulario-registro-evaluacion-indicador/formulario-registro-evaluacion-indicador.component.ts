@@ -43,7 +43,7 @@ export class FormularioRegistroEvaluacionIndicadorComponent {
     this.requiredFieldsValid =
       formObjetivo.form.status === 'INVALID' ? false : true;
     this.requiredValidityChange.emit(this.requiredFieldsValid);
-    console.log("dddd",formObjetivo,"requiredddd::::",this.requiredFieldsValid)
+    
   }
   calcular() {
     this.requiredFieldsValid=false;
@@ -59,7 +59,7 @@ export class FormularioRegistroEvaluacionIndicadorComponent {
     var ultimoVarEsOperador = true; // Inicializado en true para evitar un operador al principio
     let variablesEnFila = 0; // Contador de variables en la fila
 const variables = this.model.VARIABLES_EVALUACION;
-    console.log("sdddddd",filtroFormula)
+    
     for (let j = 0; j < filtroFormula.length; j++) {
       const variableNombre = filtroFormula[j];
 
@@ -92,7 +92,7 @@ const variables = this.model.VARIABLES_EVALUACION;
       this.modalService.showModal("Alerta", 'La operación no puede ser procesada');
       return;
     }
-    console.log("sss",result)
+    
     this.model.RESULTADO = result;
 
     if (resultado >= this.model.META) {

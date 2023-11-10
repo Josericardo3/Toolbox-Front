@@ -6,6 +6,8 @@ import { LoginI } from '../../models/loginInterface'
 import { ResponseI } from '../../models/responseInterface'
 import { mergeMap } from 'rxjs/operators';
 import { forEach } from 'lodash'
+import { Auditoria } from './models/color'
+
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -337,7 +339,7 @@ export class ApiService {
     return this.http.get<any>(direccion)
   }
 
-  //NOTIFICACIONES
+  //NOTIFICACIONES 57213
   getTarjeta() {
     const id = localStorage.getItem('Id');
     let direccion = `${this.apiURLNuevo}/api/Noticia/notificacionesusuario/${id}`
@@ -382,6 +384,11 @@ export class ApiService {
     return this.http.get<any>(endpointListAuditor, id)
   }
 
+  getAuditoria(id: any): Observable<Auditoria> {
+    let endpointListAuditor = `${this.apiURLNuevo}/api/Auditoria/AuditoriaNuevo/${id}`;
+    return this.http.get<Auditoria>(endpointListAuditor);
+  }
+
   updateAuditoria(resquest) {
     let assign = `${this.apiURLNuevo}/api/Auditoria/UpdateVerificacionAuditoria`
     return this.http.put<any>(assign, resquest)
@@ -407,6 +414,14 @@ export class ApiService {
   postMejoraContinua(request: any) {
     const list = `${this.apiURLNuevo}/api/MejoraContinua`;
     return this.http.post<any>(list, request)
+  }
+  putMejoraContinua(request: any) {
+    let assign = `${this.apiURLNuevo}/api/MejoraContinua`;
+    return this.http.put<any>(assign, request)
+  }
+  deleteMejoraContinua(id: any) {
+    let assign = `${this.apiURLNuevo}/api/MejoraContinua/${id}`
+    return this.http.delete<any>(assign)
   }
   //Matriz Partes Interesadas
   postMatrizPartesInteresadas(request: any) {
@@ -466,7 +481,7 @@ export class ApiService {
   }
 
   deleteActivities(id: any) {
-    let assign = `${this.apiURLNuevo}/api/Actividad/actividades?id=${id}`
+    let assign = `${this.apiURLNuevo}/api/Actividad/${id}`
     return this.http.delete<any>(assign)
   }
   putActivities(request: any) {
@@ -542,6 +557,10 @@ export class ApiService {
     let lista = `${this.apiURLNuevo}/api/Monitorizacion/MonitorizacionIndicador`
     return this.http.get<any>(lista)
   }
+  getMonitorizacionMapa() {
+    let lista = `${this.apiURLNuevo}/api/Monitorizacion/GetContadorMonitorizacion`
+    return this.http.get<any>(lista)
+  }
 
   UpdateAuditoriaEstadoTerminado(id: any) {
     let assign = `${this.apiURLNuevo}/api/Auditoria/UpdateEstadoTerminadoAuditoria?idAuditoria=${id}`
@@ -564,7 +583,8 @@ export class ApiService {
     return response;
   }
   getEncuestas(){
-    let lista = `${this.apiURLNuevo}/api/Encuesta`
+    const idUsuarioPst = window.localStorage.getItem('Id');
+    let lista = `${this.apiURLNuevo}/api/Encuesta?idusuario=${idUsuarioPst}`
     return this.http.get<any>(lista)
   }
   deleteEncuesta(idDelete: any){
@@ -583,6 +603,10 @@ export class ApiService {
     const encuestaEditar = `${this.apiURLNuevo}/api/Encuesta/`;
     return this.http.put<any>(encuestaEditar, request)
   }
+  getEncuestasResultados(id: any){
+    let lista = `${this.apiURLNuevo}/api/Encuesta/Respuestas?idEncuesta=${id}`
+    return this.http.get<any>(lista)
+  }
 
   //REQUISITOS NORMAS
   getRequerimientosNormas(id: any){
@@ -595,4 +619,21 @@ export class ApiService {
     return this.http.get<any>(lista)
   }
 
+    //CATEGORIAS NOTICIA
+    getNoticiaCategorias() {
+      let list = `${this.apiURLNuevo}/api/NoticiaCategorias`
+      return this.http.get<any>(list)
+    }
+    postNoticiaCategorias(request: any) {
+      const list = `${this.apiURLNuevo}/api/NoticiaCategorias`;
+      return this.http.post<any>(list, request)
+    }
+    putNoticiaCategorias(request: any) {
+      let assign = `${this.apiURLNuevo}/api/NoticiaCategorias`;
+      return this.http.put<any>(assign, request)
+    }
+    deleteNoticiaCategorias(id: any) {
+      let assign = `${this.apiURLNuevo}/api/NoticiaCategorias/${id}`
+      return this.http.delete<any>(assign)
+    }
 }

@@ -12,7 +12,6 @@ import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { ApiService } from 'src/app/servicios/api/api.service';
 import { ModalService } from 'src/app/messagemodal/messagemodal.component.service';
 import { ColorLista } from 'src/app/servicios/api/models/color';
-import { Console } from 'console';
 
 @Component({
   selector: 'app-app-lista-de-verificacion',
@@ -87,6 +86,7 @@ export class AppListaDeVerificacionComponent {
   showTable: boolean = false;
   valueRequired: any = [];
   caracteristicaIndice: number = -1;
+  audit = Number(window.localStorage.getItem('ID_AUDITORIA'));
 
   fnPlanificacionEliminar(indice: any) {
     this.indiceAEliminarAuditoria = this.valueRequired[indice];
@@ -146,8 +146,6 @@ export class AppListaDeVerificacionComponent {
   }
 
   recibirValorModal(valor: any) {
-    debugger;
-    console.log(valor);
     this.showTable = true; // Mostrar tabla
     this.valueRequired.push(valor);
 
@@ -231,6 +229,9 @@ export class AppListaDeVerificacionComponent {
     if (this.valueRequired[indice].HALLAZGO === "C") {
       this.valueRequired[indice].HALLAZGO = 'Conforme';
     }
+
+
+
     const title = "Actualizacion exitosa.";
     const message = "El registro se ha realizado exitosamente";
     this.Message.showModal(title, message);
@@ -401,7 +402,7 @@ export class AppListaDeVerificacionComponent {
   }
 
   generateListaDeAuditoria(request) {
-    console.log(request);
+  
     const docDefinition: any = {
       pageMargins: [30, 30, 30, 30],
       content: [
@@ -443,7 +444,7 @@ export class AppListaDeVerificacionComponent {
                 { text: 'Nombre auditor', style: ['tituloDinamico'] },
                 { text: this.selectedAuditoria.AUDITOR_LIDER, colSpan: 1, },
                 { text: 'Proceso(s) / Actividad / Requisito a auditar ' },
-                { text: request.REQUISITOS[this.indexDetalle].REQUISITO.TITULO },
+                { text: this.nuevoProceso },
               ],
               [
                 { text: 'Nombre líder(es) de proceso(s) a auditar ', style: ['tituloDinamico'] },
@@ -507,9 +508,11 @@ export class AppListaDeVerificacionComponent {
                 'C',
                 { text: '', border: [true, false, true, true] },
               ],
-              ...this.valueRequired.map(requisito =>
+              ...this.valueRequired.map(requisito => 
+                
                 [
-                  { text: request.REQUISITOS[this.indexDetalle].REQUISITO.TITULO, style: ['columna'] },
+                  { text: requisito.REQUISITO, style: ['columna'] },
+                 // { text: request.REQUISITOS[this.indexDetalle].REQUISITO.TITULO, style: ['columna'] },
                   { text: requisito.formPreguntas.flatMap(e => e).toString(), style: ['columna'] },
                   { text: requisito.EVIDENCIA, style: ['columna'] },
                   { text: requisito?.HALLAZGO == 'NC' ? 'X' : '', style: ['columna'] },

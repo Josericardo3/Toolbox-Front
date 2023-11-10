@@ -16,9 +16,9 @@
           </li>
         </ul>
       </div>
-      <input *ngIf="selectedOption.value === 'respuestaCorta'" type="text" class="respuesta"
+      <input *ngIf="selectedOption.value === 'respuestaCorta'" type="text" class="respuesta" [readonly]="true"
         placeholder="Respuesta corta" formControlName="respuestaCorta" appNoPuntoycoma />
-      <textarea *ngIf="selectedOption.value === 'respuestaLarga'" style="height: 50px" class="respuestaTextarea"
+      <textarea *ngIf="selectedOption.value === 'respuestaLarga'" style="height: 50px" class="respuestaTextarea" [readonly]="true"
         placeholder="Respuesta larga" formControlName="respuestaLarga" appNoPuntoycoma></textarea>
       <div *ngIf="selectedOption.value === 'radioButton'" class="radioButton">
         <input type="text" class="respuesta" placeholder="Opción 1" formControlName="opcion1Radio" appNoPuntoycoma />
@@ -118,9 +118,9 @@
             </li>
           </ul>
         </div>
-        <input *ngIf="pregunta.TIPO === 'respuestaCorta'" type="text" class="respuesta" [(ngModel)]="pregunta.VALOR"
+        <input *ngIf="pregunta.TIPO === 'respuestaCorta'" type="text" class="respuesta" [(ngModel)]="pregunta.VALOR" [readonly]="true"
           name="respuesta{{i}}-{{pregunta.TIPO}}" id="respuesta{{i}}-{{pregunta.TIPO}}" placeholder="Respuesta corta" appNoPuntoycoma/>
-        <textarea *ngIf="pregunta.TIPO === 'respuestaLarga'" style="height: 50px" class="respuestaTextarea"
+        <textarea *ngIf="pregunta.TIPO === 'respuestaLarga'" style="height: 50px" class="respuestaTextarea" [readonly]="true"
           [(ngModel)]="pregunta.VALOR" name="respuesta-TEXTAREA{{i}}" placeholder="Respuesta larga" appNoPuntoycoma></textarea>
         <div *ngIf="pregunta.TIPO === 'radioButton'" class="radioButton">
           <!-- <div class="respuestaRadio"> -->

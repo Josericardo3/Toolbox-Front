@@ -34,7 +34,7 @@ export class GraficoIndicadoresEvaluacionComponent {
     this.filterGrafico.ID_PAQUETE =datos[0].ID_PAQUETE;
      this.procesos=datos[1];
      const currentYear = new Date().getFullYear();
-     this.anios=helper.obtenerArrayAnios();
+     this.anios=datos[2];
     }
   
    ngOnInit(): void{
@@ -68,11 +68,11 @@ obtenerGrafico(){
     this.char.destroy(); // Destruye el gráfico anterior si existe
   }
   for (let index = 0; index < this.data.PROCESOS_EVALUACION.length; index++) {
-    console.log("entraaaaaaaa");
+    
     const element = this.data.PROCESOS_EVALUACION[index].EVALUACIONES;
-    console.log("elemte",element);
+    
     if(element.length<1){
-      return;
+      continue;
     }
     const periodos = element.map(item => item.PERIODO);
     const resultados = element.map(item => item.RESULTADO);

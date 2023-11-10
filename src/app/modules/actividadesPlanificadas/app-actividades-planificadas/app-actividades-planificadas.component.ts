@@ -94,6 +94,7 @@ export class AppActividadesPlanificadasComponent implements OnInit{
       this.estadoArray = this.dataInitial;
       this.updatePaginado(this.dataInitial);
     }
+
     this.estadoArray = this.dataInitial.filter(item =>
       item.NOMBRE_RESPONSABLE.toLowerCase().includes(this.busqueda.toLowerCase()) ||
       item.DESCRIPCION.toLowerCase().includes(this.busqueda.toLowerCase()) ||

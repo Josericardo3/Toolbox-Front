@@ -49,7 +49,7 @@ import { PaquetesComponent } from './modules/medicion-kpis/paquetes/paquetes.com
 import { RegistroEvaluacionIndicadorComponent } from './modules/medicion-kpis/registro-evaluacion-indicador/registro-evaluacion-indicador.component';
 import { RecordatoriosKpisComponent } from './modules/medicion-kpis/recordatorios-kpis/recordatorios-kpis.component';
 import { RecoveryFormularioComponent } from './recovery/app-recovery/recoveryformulario/recoveryformulario.component';
-
+import { VariablesComponent } from './modules/medicion-kpis/variables/variables.component';
 
 const routes: Routes = [
   {path: '', component: AppLoginComponent},
@@ -57,7 +57,6 @@ const routes: Routes = [
   {path: 'dashboard', component: AppDashboardComponent},
   {path: 'caracterizacion', component: AppCaracterizacionComponent},
   {path: 'diagnostico', component: AppDiagnosticoComponent},
-  // {path: 'header', component: AppHeaderComponent},
   {path: 'diagnosticoDoc', component: AppDiagnosticoDocComponent},
   {path: 'documentacion', component: AppDocumentacionComponent},
   {path: 'gestionUsuario', component: AppGestionDeUsuariosComponent},
@@ -89,16 +88,16 @@ const routes: Routes = [
   {path: 'resultadosAuditoria', component: AppResultadosAuditoriaComponent},
   {path: 'tablaPartesInteresadas', component: AppTablaPartesInteresadasComponent},
   {path: 'actividadesPlanificadas', component: AppActividadesPlanificadasComponent},
-  {path: 'resultadosEncuestasPreguntas', component: AppResultEncuestasPreguntasComponent},
+  {path: 'resultadosEncuestasPreguntas/:id/:numEncuestado', component: AppResultEncuestasPreguntasComponent},
   {path: 'encuestaCreada/:id', component: AppEncuestaCreadaComponent},
   {path: 'tablaEncuestas', component: AppTablaEncuestasComponent},
   {path: 'monitorizacion', component:AppMonitorizacionComponent },
-  {path:'kpis',component:MedicionKpisComponent},
-  {path:'indicadores',component:IndicadoresKpisComponent},
-  {path:'objetivos',component:ObjetivosKpisComponent},
-  {path:'paquetes',component:PaquetesComponent},
-  {path:'evaluaciones',component:RegistroEvaluacionIndicadorComponent},
-  {path:'recordatorios',component:RecordatoriosKpisComponent}
+  {path: 'kpis',component:MedicionKpisComponent},
+  {path: 'indicadores',component:IndicadoresKpisComponent},
+  {path: 'objetivos',component:ObjetivosKpisComponent},
+  {path: 'paquetes',component:PaquetesComponent},
+  {path: 'evaluaciones',component:RegistroEvaluacionIndicadorComponent},
+  {path: 'recordatorios',component:RecordatoriosKpisComponent}
 ];
 
 @NgModule({
