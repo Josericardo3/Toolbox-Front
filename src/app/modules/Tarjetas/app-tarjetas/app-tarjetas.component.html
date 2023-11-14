@@ -2,7 +2,7 @@
 <div *ngIf="!editandoEncuesta">
   <form [formGroup]="form" class="tarjetas">
     <div class="section">
-      <input type="text" class="pregunta" placeholder="Ingrese su pregunta" id="pregunta" formControlName="pregunta" />
+      <input type="text" class="pregunta" placeholder="Ingrese su pregunta" id="pregunta" formControlName="pregunta" (input)="onInputChange()"/>
       <div class="select-wrapper">
         <div class="select-header" (click)="toggleOptions()">
           <span id="selectedOption">
@@ -193,7 +193,7 @@
       <button class="agregarEditar" (click)="agregarotro(i) ">
         <i class="fa-solid fa-plus" style="color: #068460;"></i> Agregar
       </button>
-      <button class="agregarEditar" (click)="eliminar(i) " *ngIf="i!=0">
+      <button class="agregarEditar" (click)="eliminar(i,pregunta) " *ngIf="i!=0">
         <i class="fa-solid fa-trash" style="color: #068460;"></i> Eliminar
       </button>
     </div>

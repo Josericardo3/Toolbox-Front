@@ -9,11 +9,13 @@ import { ApiService } from 'src/app/servicios/api/api.service';
   templateUrl: './app-encuesta-creada.component.html',
   styleUrls: ['./app-encuesta-creada.component.css']
 })
+
 export class AppEncuestaCreadaComponent implements OnInit, AfterContentChecked{
-  encuestaId: string;
+  encuestaId: any;
   datosEncuesta: any = [];
   datosPreguntaEncuesta: any = []
   id: any;
+  mostrarFormulario = true;
   public form: FormGroup;
 
   constructor(
@@ -31,17 +33,18 @@ export class AppEncuestaCreadaComponent implements OnInit, AfterContentChecked{
   ngOnInit() {
     this.route.params.subscribe(params => {
       this.encuestaId = params['id']
+      this.getDataEncuesta(this.encuestaId);
     });
     this.form = this.formBuilder.group({})
-    this.getDataEncuesta();
+    
   }
 
   formulario(){
     this.datosPreguntaEncuesta.MAE_ENCUESTA_PREGUNTAS.forEach((pregunta) => {
       if (pregunta.TIPO === 'respuestaCorta') {
-        this.form.addControl(`respuestaCorta_${pregunta.ID_MAE_ENCUESTA_PREGUNTA}`, this.formBuilder.control('', [Validators.required]));
+        this.form.addControl(`respuestaCorta_${pregunta.ID_MAE_ENCUESTA_PREGUNTA}`, this.formBuilder.control(''));
       } else if (pregunta.TIPO === 'respuestaLarga') {
-        this.form.addControl(`respuestaLarga_${pregunta.ID_MAE_ENCUESTA_PREGUNTA}`, this.formBuilder.control('', [Validators.required]));
+        this.form.addControl(`respuestaLarga_${pregunta.ID_MAE_ENCUESTA_PREGUNTA}`, this.formBuilder.control(''));
       } else if (pregunta.TIPO === 'radioButton') {
         this.form.addControl(`radioButton_${pregunta.ID_MAE_ENCUESTA_PREGUNTA}`, this.formBuilder.control(''));
         this.form.addControl(`radioButtonOtro_${pregunta.ID_MAE_ENCUESTA_PREGUNTA}`, this.formBuilder.control(''));
@@ -53,30 +56,30 @@ export class AppEncuestaCreadaComponent implements OnInit, AfterContentChecked{
         this.form.addControl(`checkboxOtro_${pregunta.ID_MAE_ENCUESTA_PREGUNTA}`, this.formBuilder.control(''));
         pregunta.mostrarOtroCheckbox = false;
       } else if (pregunta.TIPO === 'desplegable') {
-        this.form.addControl(`desplegable_${pregunta.ID_MAE_ENCUESTA_PREGUNTA}`, this.formBuilder.control('', [Validators.required]));
+        this.form.addControl(`desplegable_${pregunta.ID_MAE_ENCUESTA_PREGUNTA}`, this.formBuilder.control(''));
       }
     });
   }
 
-  getDataEncuesta(){
-    this.ApiService.getEncuestas()
-    .subscribe(data => {
-      this.datosEncuesta = data
-      this.datosEncuesta.sort((a, b) => b.ID_MAE_ENCUESTA - a.ID_MAE_ENCUESTA);
+  getDataEncuesta(id: number){
+    // this.ApiService.getEncuestas()
+    // .subscribe(data => {
+    //   this.datosEncuesta = data
+      // this.datosEncuesta.sort((a, b) => b.ID_MAE_ENCUESTA - a.ID_MAE_ENCUESTA);
 
       // Obtiene el último ID_MAE_ENCUESTA
-      if (this.datosEncuesta.length > 0) {
-        this.id = this.datosEncuesta[0].ID_MAE_ENCUESTA;
-        console.log('ID_MAE_ENCUESTA:', this.id);
-        this.ApiService.getEncuestasRespuesta(this.id)
+      // if (this.datosEncuesta.length > 0) {
+        // this.id = this.datosEncuesta[0].ID_MAE_ENCUESTA;
+        console.log('ID_MAE_ENCUESTA:', id);
+        this.ApiService.getEncuestasRespuesta(id)
         .subscribe(respuesta => {
           this.datosPreguntaEncuesta = respuesta;
           this.formulario();
         })
-      } else {
-        console.log('No se encontraron encuestas.');
-      }
-    });
+      // } else {
+      //   console.log('No se encontraron encuestas.');
+      // }
+    // });
   }
 
   toggleOtroRadio(pregunta, opcionSeleccionada) {
@@ -153,9 +156,11 @@ export class AppEncuestaCreadaComponent implements OnInit, AfterContentChecked{
     console.log(respuestas);
     this.ApiService.saveEncuestaRespuesta(respuestas)
       .subscribe((data) => {
+        this.mostrarFormulario = false;
         const title = "ENCUESTA COMPLETADA";
         const message = "Se completó la encuesta correctamente"
         this.Message.showModal(title, message);
+        
       });
   }
 }

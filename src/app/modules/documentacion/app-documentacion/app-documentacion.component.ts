@@ -151,7 +151,7 @@ export class AppDocumentacionComponent implements OnInit {
     const link = document.createElement('a');
     link.setAttribute('target', '_blank');
     link.setAttribute('href', pdfUrl);
-    link.setAttribute('download', pdfName);
+    //link.setAttribute('download', pdfName);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);

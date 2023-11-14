@@ -5,6 +5,9 @@
         <app-app-header-arrow-left></app-app-header-arrow-left>
     </div>
     <div class="monitorizacion">
+        <div class="container-btn">
+            <button class="btn-monitorizacion" (click)="buscarRuta('monitorizacion')">Ver tabla de Monitorización</button>
+        </div>
         <div class="containerFiltros">
             <h4>Filtrar por:</h4>
             <div class="filtros">
@@ -23,12 +26,13 @@
                
             </div>
         </div>
-        <div class="mapa-container" >
+        <div class="mapa-container"  id="mapa-container" >
             <div id="area-fuera-del-mapa"></div>
             <svg id="mapa-colombia" (click)="onMapClick($event)"></svg>
         </div>
-
-        <div class="tarjeta" *ngIf="showdepartamentoSeleccionado" [style.top]="tarjetaTop" [style.left]="tarjetaLeft">
+        <div class="container-tarjeta" *ngIf="showdepartamentoSeleccionado"  >
+            <!-- [style.top]="tarjetaTop" [style.left]="tarjetaLeft" style="    position: absolute;" -->
+        <div class="tarjeta" >
             <button class="cerrar-tarjeta" (click)="cerrarTarjeta()">X</button>
                 <h2>{{departamentoSeleccionado}}
                     <p>Total de Conexiones: {{ datamapafilter.CANT }}</p>
@@ -39,7 +43,7 @@
                     <p>Cantidad de Conexiones: {{ pst.CANTIDAD_CONEXIONES }}</p>
                 </span>
         </div>
-
+    </div>
     </div>
 </div>
 <app-app-footer></app-app-footer>

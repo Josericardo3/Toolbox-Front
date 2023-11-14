@@ -19,10 +19,11 @@ interface Option {
 })
 
 export class AppEncuestaComponent implements OnInit{
-  tituloEditar:any = "";
- descripcionEditar:any = "";
+
   @ViewChildren(AppTarjetasComponent) tarjetasComponent: QueryList<AppTarjetasComponent>;
 
+  tituloEditar:any = "";
+  descripcionEditar:any = "";
   tarjetas: any[] = [];
   tarjetaActivaIndex: number | null = null;
   encuestaId: string;
@@ -31,25 +32,19 @@ export class AppEncuestaComponent implements OnInit{
   colorTitle: ColorLista;
   isCollapsed = true;
   mostrarNotificacion: boolean = false;
-
-
-  /*ngOnInit(){
-    this.api.colorTempo();
-    this.colorWallpaper = JSON.parse(localStorage.getItem("color")).wallpaper;
-    this.colorTitle = JSON.parse(localStorage.getItem("color")).title;
-  }*/
   idCounter: number = 2;
   public formEncuesta: FormGroup;
   formulariosTarjetas: any[] = [];
-
   public tarjetasData: any[] = [];
-
   editandoEncuesta: boolean = false;
   encuestaData: any;
   datosEncuesta: any = [];
   id: any;
   datosPreguntaEncuesta: any = []
   valoresPreguntas: any[] = []; 
+  ultimoID: any;
+  encuestaUrlEditar: string;
+  idEncuestaEditar: any;
 
   constructor(
     private Message: ModalService,
@@ -61,17 +56,17 @@ export class AppEncuestaComponent implements OnInit{
   ngOnInit() {
     this.tarjetasData = Array(this.tarjetas.length).fill({});
 
-    this.formEncuesta = this.formBuilder.group( {
+    this.formEncuesta = this.formBuilder.group({
       tituloEncuesta: ['', Validators.required],
-      descripcionEncuesta: ['', Validators.required]
-    })
+      descripcionEncuesta: ['', Validators.required],
+    });
 
    this.activatedRoute.params.subscribe(params => {
       if (params['id']) {
+        this.idEncuestaEditar = params['id'];
         this.editandoEncuesta = true;
         console.log(this.editandoEncuesta)
         this.obtenerDatosEncuesta(params['id']);
-        // this.valoresPreguntas = this.datosPreguntaEncuesta?.MAE_ENCUESTA_PREGUNTAS.map(pregunta => pregunta.VALOR) || [];
       }
     });
   }
@@ -96,7 +91,6 @@ export class AppEncuestaComponent implements OnInit{
     if (this.tarjetasComponent.length > 0) {
       this.tarjetasComponent.last.completarFormulario();
     }
-      console.log('agregado');
   }
 
   eliminarTarjeta(index?: number) {
@@ -105,9 +99,13 @@ export class AppEncuestaComponent implements OnInit{
   }
   
   compartirEncuesta(){
-    const encuestaId = '1';
-    this.encuestaUrl = window.location.origin + `/encuestaCreada/${encuestaId}`;
+    this.encuestaUrl = window.location.origin + `/encuestaCreada/${this.ultimoID}`;
     this.copyToClipboard(this.encuestaUrl);
+  }
+
+  compartirEncuestaEditar(){
+    this.encuestaUrlEditar = window.location.origin + `/encuestaCreada/${this.idEncuestaEditar}`;
+    this.copyToClipboard(this.encuestaUrlEditar);
   }
 
   copyToClipboard(text: string) {
@@ -124,14 +122,21 @@ export class AppEncuestaComponent implements OnInit{
 
     // alert('Enlace de la encuesta copiado');
   }
-  
+
   onTarjetaCompletada(tarjetaData: any) {
     this.tarjetasData.push(tarjetaData);
     console.log(this.tarjetasData)
   }
-
+  
+  tarjetaCompleta: boolean = false;
   guardarRespuesta(respuesta: any, index: number) {
     this.tarjetasData[index] = respuesta;
+    this.verificarTarjetasCompletas();
+  }
+  
+  verificarTarjetasCompletas() {
+    // Verifica si todas las tarjetas están completas y el formulario es válido
+    this.tarjetaCompleta = this.tarjetasData.every(tarjeta => tarjeta !== undefined && tarjeta !== null) && this.formEncuesta.valid;
   }
 
   saveEncuesta(){
@@ -158,6 +163,19 @@ export class AppEncuestaComponent implements OnInit{
       const title = "ENCUESTA CREADA";
       const message = "Se creó la encuesta correctamente"
       this.Message.showModal(title, message);
+
+      this.ApiService.getEncuestas()
+      .subscribe(response => {
+        console.log(response)
+        const encuestas = response as Array<any>;
+
+        if (encuestas.length > 0) {
+          this.ultimoID = encuestas[encuestas.length - 1].ID_MAE_ENCUESTA;
+          console.log('Último ID_MAE_ENCUESTA:', this.ultimoID);
+        } else {
+          console.log('No hay encuestas disponibles');
+        }
+      })
     });
   }
 

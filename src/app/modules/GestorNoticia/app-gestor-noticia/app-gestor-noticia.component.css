@@ -550,5 +550,43 @@ hr{
     table .inf-tabla {
         display: none;
     }
-
+    .noticia-content{
+        width: 100%;
+        height: auto;
+        display: flex;
+    }
+    .categorizacion-view{
+        display: none;
+    }
+    .cards-view{
+        width: 95%;
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-evenly;
+        flex-wrap: wrap;
+        /*border-bottom: 1px solid #418B3B;*/
+    }
+    .card-noticia{
+        width: 80%;
+        height: auto;
+        display: block;
+        align-items: center;
+        justify-content: center;
+        margin: 10px;
+        margin-bottom: 30px;
+        text-decoration: none;
+        color: #000000;
+        transition: all 300ms ease;
+    }
+    .img-container-final{
+        width: 500px;
+        height: auto;
+        display: block;
+        align-items: center;
+        justify-content: center;
+    }
+    .img-container-final p{
+        font-size: small;
+        text-align: center;
+    }
 }

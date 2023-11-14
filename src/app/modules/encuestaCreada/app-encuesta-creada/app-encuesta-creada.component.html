@@ -1,4 +1,4 @@
-<div class="containerEncuesta">
+<div class="containerEncuesta" *ngIf="mostrarFormulario">
     <form [formGroup]="form" class="form" (ngSubmit)="enviarFormulario()">
         <div class="encabezado">
             <h1>{{datosPreguntaEncuesta.TITULO}}</h1>
@@ -58,6 +58,12 @@
             <i class="fa-solid fa-floppy-disk" style="color: #ffffff;"></i> Enviar
         </button> 
     </form>
+</div>
+<div class="containerEncuesta" *ngIf="!mostrarFormulario">
+    <div class="agradecimiento">
+        <h1>{{datosPreguntaEncuesta.TITULO}}</h1>
+        <p class="descripcion mt-1">Gracias por tomarse el tiempo para completar la encuesta. Se han registrado sus respuestas.</p>
+    </div>
 </div>
 <ngx-spinner
   bdColor="rgba(0, 0, 0, 0.5)"

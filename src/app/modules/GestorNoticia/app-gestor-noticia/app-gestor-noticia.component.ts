@@ -10,6 +10,7 @@ import { ModalService } from 'src/app/messagemodal/messagemodal.component.servic
 import { DomSanitizer } from '@angular/platform-browser';
 import { ColorLista } from 'src/app/servicios/api/models/color';
 import { Router } from '@angular/router';
+import { forEach } from 'lodash';
 
 @Component({
   selector: 'app-app-gestor-noticia',
@@ -185,11 +186,14 @@ export class AppGestorNoticiaComponent implements OnInit {
       .subscribe(data => {
         this.datos = data;
         this.dataContador = data;
-        //console.log(this.dataContador);
         this.filterArray = this.datos;
         this.dataInitial = data;
         this.getListCategorias();
         this.updateContadorCategorias();
+        this.filterArray.forEach(val=>{
+          val.RUTA_IMAGEN = 'data:image/png;base64,' + val.COD_IMAGEN;
+        })
+        console.log(this.filterArray);
         for (let i = 0; i < this.dataInitial.length; i++) {
           if (this.dataInitial[i].COD_IMAGEN != null || this.dataInitial[i].COD_IMAGEN != undefined) {
             this.imagenNoticia = 'data:image/png;base64,' + this.dataInitial[i].COD_IMAGEN

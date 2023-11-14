@@ -212,6 +212,7 @@ export class AppListaDeVerificacionComponent {
   fnRequirementUpdate(indice: number) {
     this.caracteristicaIndice = -1;
     this.editarCaracteristica.formPreguntas[this.indiceFormPreguntas] = this.editarCaracteristica.formPreguntasSelect;
+    console.log(this.editarCaracteristica.formPreguntasSelect);
     Object.assign(this.valueRequired[indice], this.editarCaracteristica);
 
     if (this.valueRequired[indice].HALLAZGO === "OBS") {
@@ -229,12 +230,13 @@ export class AppListaDeVerificacionComponent {
     if (this.valueRequired[indice].HALLAZGO === "C") {
       this.valueRequired[indice].HALLAZGO = 'Conforme';
     }
-
-
+    this.ApiService.putRequisitosNormas(this.editarCaracteristica).subscribe((data: any) => {
+    })
 
     const title = "Actualizacion exitosa.";
     const message = "El registro se ha realizado exitosamente";
     this.Message.showModal(title, message);
+
   }
 
   fnRequirementEditarCancelar() {
