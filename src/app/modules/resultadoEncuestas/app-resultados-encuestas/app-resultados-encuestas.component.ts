@@ -68,6 +68,29 @@ export class AppResultadosEncuestasComponent {
     })
   }
 
+  fnConsultActivities(){
+    this.ApiService.getEncuestas().subscribe((data) => {
+      this.datos = data;
+      this.dataInitial= data;
+      
+      // Paginado inicial
+      const totalPag = data.length;
+      this.totalPaginas = Math.ceil(totalPag / 7);
+      if (isNaN(this.totalPaginas) || this.totalPaginas === 0) {
+        this.totalPaginas = 1;
+      }
+      this.datatotal = this.dataInitial.length;
+      this.datos = this.dataInitial.slice(0, 7);
+      this.contentArray = data;
+      this.currentPage = 1;
+      if (this.datatotal >= 7) {
+        this.totalRegistros = 7;
+      } else {
+        this.totalRegistros = this.dataInitial.length;
+      }
+    })
+  }
+  
   pageChanged(event: any): void {
     this.pages = event.page;
     const startItem = (event.page - 1) * 7;

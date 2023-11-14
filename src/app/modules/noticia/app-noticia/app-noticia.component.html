@@ -18,33 +18,37 @@
       </div>
       <hr>
       <div class="descripcion-noticia">
-        <img class="img-noticiaaa" src="https://www.dzoom.org.es/wp-content/uploads/2017/07/seebensee-2384369-810x540.jpg"/>
-        <p class="descrip-noticia">
+        <img class="img-noticiaaa" [src]="this.imagen"/>
+        <p class="descrip-noticia" [innerHTML]="this.noticiaSelected.DESCRIPCION">
           {{this.noticiaSelected.DESCRIPCION}}
         </p>
       </div>
       <hr>
       <div class="share-noticia">
         <p>Comparta esta publicación</p>
-        <i class="fi fi-brands-facebook"></i>
-        <i class="fi fi-brands-instagram"></i>
-        <i class="fi fi-brands-youtube"></i>
-        <i class="fi fi-brands-whatsapp"></i>
+        <div class="iconos-share">
+          <i class="fi fi-brands-facebook"></i>
+          <i class="fi fi-brands-instagram"></i>
+          <i class="fi fi-brands-youtube"></i>
+          <i class="fi fi-brands-whatsapp"></i>
+        </div>
       </div>
       <hr>
     </div>
-    <div class="btn-view">
-      <button class="btn-crear">EDITAR NUEVA NOTICIA&emsp;<i class="fi fi-rr-arrow-circle-right"></i></button>
-    </div>
-    <div class="barra-final">
-      <div class="img-container-final">
-          <p class="ejecutado-por">EJECUTADO POR: </p>
-          <img class="img-header" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQEsHzxTrRb-PWp5RSTU86xdutn0Ta3lTbklA&usqp=CAU"/>
-          <img class="img-header" src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/Logo_Ministerio_de_Comercio_Industria_y_Turismo_2022-2026.png/1200px-Logo_Ministerio_de_Comercio_Industria_y_Turismo_2022-2026.png"/>
+    <div class="categorizacion-view">
+      <div class="btn-noticia">
+        <button class="btn-crear" (click)="showModalEditar = true" *ngIf="getRolValue() !== 5 && getRolValue() !== 7">EDITAR NOTICIA&emsp;<i class="fi fi-rr-arrow-circle-right"></i></button>
+        <button class="btn-delete" (click)="deleteNoticia()" *ngIf="getRolValue() !== 5 && getRolValue() !== 7">ELIMINAR NOTICIA&emsp;<i class="fi fi-rr-arrow-circle-right"></i></button>
       </div>
+    </div>
   </div>
+  <div class="barra-final">
+    <div class="img-container-final">
+        <p class="ejecutado-por">EJECUTADO POR: </p>
+        <img class="img-header" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQEsHzxTrRb-PWp5RSTU86xdutn0Ta3lTbklA&usqp=CAU"/>
+        <img class="img-header" src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/Logo_Ministerio_de_Comercio_Industria_y_Turismo_2022-2026.png/1200px-Logo_Ministerio_de_Comercio_Industria_y_Turismo_2022-2026.png"/>
+    </div>
   </div>
-
   <!--<div *ngIf="datosNoticia" class="datosNoticia">
     <p class="fecha"><span><i class="fas fa-light fa-clock"></i></span>
       {{datosNoticia.NOMBRE }} | {{datosNoticia.FECHA_ACT | date: 'dd/MM/yyyy' }}
@@ -53,8 +57,43 @@
     <img *ngIf="imagen" [src]="imagen">
     <p class="descripcion" [innerHTML]="sanitizer.bypassSecurityTrustHtml(datosNoticia.DESCRIPCION)"></p>
   </div>-->
+
+  <!-- Modal Editar Noticia -->
+  <div class="modal-background" id="modal-success" *ngIf="showModalEditar">
+    <div class="modal-content">
+        <div class="modal-title-editar">
+            <a title="Cerrar" data-dismiss="modal" aria-label="Close" class="x">
+                <i class="fa-solid fa-circle-xmark" style="color: #06543c;font-size: 25px;"
+                    (click)="showModalEditar = false"></i>
+            </a>
+            <h2>Editar noticia</h2>
+            <div class="linea"></div>
+        </div>
+        <form [formGroup]="editarNoticiaForm" (ngSubmit)="saveModalEditar()" class="form">
+            <label for="">Usuario</label>
+            <input type="text" id="usuario" formControlName="usuario" [(ngModel)]="noticiaSelected.NOMBRE"
+                [disabled]="true"><br>
+            <label for="">Título de la noticia</label>
+            <input type="text" id="titulo" formControlName="titulo" [(ngModel)]="noticiaSelected.TITULO" ><br>
+            <label for="">Descripción de la noticia</label>
+            <angular-editor placeholder="Agregar una descripción" formControlName="descripcion"
+                style="margin-top:2vh;" id="descripcion"
+                [(ngModel)]="noticiaSelected.DESCRIPCION"></angular-editor>
+            <div class="containerFile" style="margin-top:2vh;">
+                <input type="file" (change)="captureImage($event)" class="file" id="archivo" #archivo>
+                <label for="archivo" class="fileBtn">Seleccionar imagen</label>
+                <label id="nombre" class="fileName">Ningún archivo seleccionado</label>
+            </div><br>
+            <button class="botonG" type="submit" [disabled]="noticiaSelected.invalid">
+                <i class="fa-regular fa-floppy-disk" style="color: #fff;"></i>
+                Editar noticia
+            </button>
+        </form>
+    </div>
+  </div>
 </div>
 <app-app-footer></app-app-footer>
+<app-modal></app-modal>
 <ngx-spinner
   bdColor="rgba(0, 0, 0, 0.5)"
   size="small"

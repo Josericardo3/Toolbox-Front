@@ -582,13 +582,17 @@ export class ApiService {
     let response = this.http.get<any>(validate);
     return response;
   }
-  getEncuestas(){
+  getEncuestas() {
     const idUsuarioPst = window.localStorage.getItem('Id');
     let lista = `${this.apiURLNuevo}/api/Encuesta?idusuario=${idUsuarioPst}`
     return this.http.get<any>(lista)
   }
   deleteEncuesta(idDelete: any){
     let validate = `${this.apiURLNuevo}/api/Encuesta/DeleteEncuesta?idEncuesta=${idDelete}`
+    return this.http.delete<any>(validate)
+  }
+  deletePregunta(id: any) {
+    let validate = `${this.apiURLNuevo}/api/Encuesta/DeletePregunta?idPregunta=${id}`
     return this.http.delete<any>(validate)
   }
   getEncuestasRespuesta(id: any){
@@ -612,6 +616,11 @@ export class ApiService {
   getRequerimientosNormas(id: any){
     let lista = `${this.apiURLNuevo}/api/RequisitosNormas/requisitos/${id}`
     return this.http.get<any>(lista)
+  }
+
+  putRequisitosNormas(request: any){
+    const encuestaEditar = `${this.apiURLNuevo}/api/RequisitosNormas`;
+    return this.http.put<any>(encuestaEditar, request)
   }
 
   getNormaList(){

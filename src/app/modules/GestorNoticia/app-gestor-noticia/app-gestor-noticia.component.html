@@ -15,7 +15,7 @@
         <div class="cards-view">
                 <a class="card-noticia" *ngFor="let val of filterArray; let i = index" (click)="indexCard(val.ID_NOTICIA)">
                     <div class="img-noticia">
-                        <img class="img-noticiaaa" src="https://www.dzoom.org.es/wp-content/uploads/2017/07/seebensee-2384369-810x540.jpg"/>
+                        <img class="img-noticiaaa" [src]="val.RUTA_IMAGEN"/>
                     </div>
                     <div class="categoria-noticia">
                         <div class="borde-cat"><p class="nombre-categoria">{{val.DESCRIPCION_CAT}}</p></div>
@@ -23,7 +23,7 @@
                     <div class="descripcion-noticia">
                         <p class="titulo-noticia">{{val.TITULO}}</p>
                         <p class="fecha-noticia">{{formatFechaText(val.FECHA_REG)}}</p>
-                        <p class="descripcion">{{val.DESCRIPCION.slice(0,320)}}</p>
+                        <p class="descripcion" [innerHTML]="val.DESCRIPCION.slice(0,320)">{{val.DESCRIPCION.slice(0,320)}}</p>
                     </div>
                 </a>
             <!-- Paginacion -->

@@ -10,42 +10,47 @@
             <i class="fa-solid fa-bars navbar-toggle collapsed" style="color: #ffffff;font-size: 20px;" (click)="isCollapsed = !isCollapsed"></i>
         </div> -->
         <app-menu-corto class="menu"></app-menu-corto>
-        <div class="form" [formGroup]="formEncuesta">
-        <!--<app-menu-corto class="menu"></app-menu-corto>
-        <div class="form" [formGroup]="formEncuesta">-->
-            <button class="compartir" (click)="compartirEncuesta()">
+        <div class="row containerForm">
+            <button class="compartir" (click)="compartirEncuesta()" *ngIf="!editandoEncuesta">
                 <i class="fa-solid fa-share-nodes" style="color: #ffffff;"></i> Compartir encuesta
-            </button>            
-            <p class="p">{{ editandoEncuesta ? 'Ingresa los datos para actualizar la encuesta' : 'Ingresa los datos para crear una encuesta nueva'}}</p>
-            <div class="encabezado">
-                <input type="text" class="tituloInput" (ngModelChange)="Obtenertitulo($event)" placeholder="Título de la encuesta" formControlName="tituloEncuesta">
-                <input type="text" class="descripcion"  (ngModelChange)="Obtenertitulo($event)" placeholder="Descripción de la encuesta" formControlName="descripcionEncuesta">
-            </div>
-            <div class="containerTarjetas">
-                <app-app-tarjetas  [tituloEditar]="tituloEditar" [descripcionEditar]="descripcionEditar"  [id]="0"  (tarjetaCompletada)="guardarRespuesta($event, 0)" [editandoEncuesta]="editandoEncuesta"
-                [valoresPreguntas]="valoresPreguntas" [datosPreguntaEncuesta]="datosPreguntaEncuesta"></app-app-tarjetas>
-                <div class="botones" *ngIf="!editandoEncuesta">
-                    <button class="agregar" id="agregarTarjetaPrimera" (click)="agregarTarjeta()">
-                       <i class="fa-solid fa-plus" style="color: #068460;"></i> Agregar
-                   </button> 
-               </div>
-            </div>
-            <div class="containerTarjetas" *ngFor="let tarjeta of tarjetas; let i = index">
-                <app-app-tarjetas [tituloEditar]="tituloEditar" [descripcionEditar]="descripcionEditar" [id]="tarjeta.id" [index]="i+1" (eliminarTarjeta)="eliminarTarjeta(i)" (tarjetaClicada)="agregarTarjeta(i)" 
-                (tarjetaCompletada)="guardarRespuesta($event, i+1)" [valoresPreguntas]="valoresPreguntas" 
-                [editandoEncuesta]="editandoEncuesta" [datosPreguntaEncuesta]="datosPreguntaEncuesta"></app-app-tarjetas>
-                <div class="botones" *ngIf="!editandoEncuesta">
-                    <button class="agregar" (click)="eliminarTarjeta(i)">
-                        <i class="fa-solid fa-trash" style="color: #068460;"></i> Eliminar
-                    </button>
-                    <button class="agregar" (click)="agregarTarjeta(i)">
-                        <i class="fa-solid fa-plus" style="color: #068460;"></i> Agregar
-                    </button> 
+            </button>  
+            <button class="compartir" (click)="compartirEncuestaEditar()" *ngIf="editandoEncuesta">
+                <i class="fa-solid fa-share-nodes" style="color: #ffffff;"></i> Compartir encuesta
+            </button> 
+            <form class="form" [formGroup]="formEncuesta" (ngSubmit)="saveEncuesta()">                                   
+                <p class="p">{{ editandoEncuesta ? 'Ingresa los datos para actualizar la encuesta' : 'Ingresa los datos para crear una encuesta nueva'}}</p>
+                <div class="encabezado">
+                    <input type="text" class="tituloInput" (ngModelChange)="Obtenertitulo($event)" placeholder="Título de la encuesta" formControlName="tituloEncuesta">
+                    <input type="text" class="descripcion"  (ngModelChange)="Obtenertitulo($event)" placeholder="Descripción de la encuesta" formControlName="descripcionEncuesta">
                 </div>
-            </div>
-            <button class="btn" type="submit" (click)="saveEncuesta()" *ngIf="!editandoEncuesta">
-                <i class="fa-solid fa-floppy-disk" style="color: #ffffff;"></i> Guardar
-            </button>              
+                <div class="containerTarjetas">
+                    <app-app-tarjetas [tituloEditar]="tituloEditar" [descripcionEditar]="descripcionEditar" [id]="0" 
+                    (tarjetaCompletada)="guardarRespuesta($event, 0)" 
+                    [editandoEncuesta]="editandoEncuesta" [valoresPreguntas]="valoresPreguntas" [datosPreguntaEncuesta]="datosPreguntaEncuesta" 
+                    ></app-app-tarjetas>
+                    <div class="botones" *ngIf="!editandoEncuesta">
+                        <button class="agregar" id="agregarTarjetaPrimera" (click)="agregarTarjeta()">
+                           <i class="fa-solid fa-plus" style="color: #068460;"></i> Agregar
+                       </button> 
+                   </div>
+                </div>
+                <div class="containerTarjetas" *ngFor="let tarjeta of tarjetas; let i = index">
+                    <app-app-tarjetas [tituloEditar]="tituloEditar" [descripcionEditar]="descripcionEditar" [id]="tarjeta.id" [index]="i+1" (eliminarTarjeta)="eliminarTarjeta(i)" 
+                    (tarjetaClicada)="agregarTarjeta(i)" (tarjetaCompletada)="guardarRespuesta($event, i+1)" [valoresPreguntas]="valoresPreguntas" 
+                    [editandoEncuesta]="editandoEncuesta" [datosPreguntaEncuesta]="datosPreguntaEncuesta"></app-app-tarjetas>
+                    <div class="botones" *ngIf="!editandoEncuesta">
+                        <button class="agregar" (click)="eliminarTarjeta(i)">
+                            <i class="fa-solid fa-trash" style="color: #068460;"></i> Eliminar
+                        </button>
+                        <button class="agregar" (click)="agregarTarjeta(i)">
+                            <i class="fa-solid fa-plus" style="color: #068460;"></i> Agregar
+                        </button> 
+                    </div>
+                </div>
+                <button class="btn" type="submit" *ngIf="!editandoEncuesta" [disabled]="!formEncuesta.valid || !tarjetaCompleta">
+                    <i class="fa-solid fa-floppy-disk" style="color: #ffffff;"></i> Guardar
+                </button>                                                   
+            </form>
         </div>
     </div>
 </div>

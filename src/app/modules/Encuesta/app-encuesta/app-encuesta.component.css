@@ -32,6 +32,10 @@ h1{
     flex-direction: column;
     margin-left: 2vw;
 }
+.containerForm{
+    display: flex;
+    flex-direction: column;
+}
 .encabezado{
     display: flex;
     flex-direction: column;

@@ -275,11 +275,7 @@ export class AppAuditoriaInternaComponent {
 
       this.ApiService.postNewRecord(actividad)
       .subscribe((data : any )=>{
-        if(data.StatusCode == 201){
-          console.log("insertado");
-        }else{
-          console.log("no insertado");
-        }
+1
       })
 
 

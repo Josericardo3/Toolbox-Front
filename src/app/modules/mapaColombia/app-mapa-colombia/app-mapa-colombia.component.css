@@ -1,3 +1,24 @@
+/* BOTON  */
+.container-btn{
+  display: flex;
+  justify-content: flex-end;
+}
+.btn-monitorizacion{
+  margin: 3vh 0 2vh 0;
+    height: 40px;
+    width: 200px;
+    padding: 10px;
+    background-color: #068460;
+    border-radius: 100px;
+    color: #FFFFFF;
+    font-family: 'Work Sans', sans-serif;
+    font-size: 13px;
+    border: none;
+    cursor: pointer;
+    align-self: center;
+}
+
+
 svg {
   display: block;
   width: 100%;
@@ -53,19 +74,38 @@ h4{
   width: 50%;
   margin: 0 3vw 0 0;
 }
+.container-tarjeta{
+  position: fixed;
+  z-index: 999;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+}
+
+
 
 .tarjeta {
+
+  text-align: center;
+  position: relative;
+  padding: 30px;
+
   position: absolute;
  
   background-color: #fff;
   border: 1px solid #ccc;
   border-radius: 5px;
   padding: 10px;
-  max-width: 240px; /* Establece el ancho máximo de la tarjeta */
+   /*max-width: 240px; Establece el ancho máximo de la tarjeta */
   box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
   font-size: 14px; /* Tamaño de fuente más pequeño */
-  max-height: 300px; /* Ajusta esto según tus necesidades */
-
+  max-height: 501px;
   /* Habilita el scroll vertical si el contenido excede la altura máxima */
   overflow-y: auto;
 }
