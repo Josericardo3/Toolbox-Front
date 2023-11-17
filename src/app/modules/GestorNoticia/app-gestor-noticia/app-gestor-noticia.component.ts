@@ -187,6 +187,7 @@ export class AppGestorNoticiaComponent implements OnInit {
         this.datos = data;
         this.dataContador = data;
         this.filterArray = this.datos;
+        console.log(this.filterArray);
         this.dataInitial = data;
         this.getListCategorias();
         this.updateContadorCategorias();

@@ -21,6 +21,8 @@ export class AppNoticiaComponent implements OnInit {
   showModalEditar = false;
   editarNoticiaForm: FormGroup;
   files: any = [];
+  datos: any=[];
+  noticiaSelected: any={};
 
   constructor(
     private api: ApiService,
@@ -39,6 +41,7 @@ export class AppNoticiaComponent implements OnInit {
     this.dato = history.state.dato;
     this.idNoticia = history.state.idNoticiaa;
     console.log(this.idNoticia);
+    this.getTableData();
     this.idActividad = history.state.idActividad;
     if (this.dato == 'Noticia' && this.idNoticia != undefined ) {
       //this.getDataNoticia();
@@ -46,11 +49,7 @@ export class AppNoticiaComponent implements OnInit {
     if (this.dato == 'Actividad' && this.idActividad != undefined ) {
       this.getDataActividad();
     }
-    this.getTableData();
   }
-
-  datos: any=[];
-  noticiaSelected: any={};
 
   getTableData() {
     this.api.getTablaNoticias()
@@ -58,10 +57,11 @@ export class AppNoticiaComponent implements OnInit {
         this.datos = data;
         this.datos.forEach(val=>{
           if(val.ID_NOTICIA == this.idNoticia)
-          this.noticiaSelected=val;
+          this.noticiaSelected = val;
         })
         this.imagen = this.noticiaSelected.COD_IMAGEN ? 'data:image/png;base64,' + this.noticiaSelected.COD_IMAGEN : '';
-        //console.log(this.noticiaSelected);
+        console.log(this.datos);
+        console.log(this.noticiaSelected);
       })
   }
   getRolValue(): number {
