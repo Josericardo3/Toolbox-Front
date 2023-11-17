@@ -183,6 +183,7 @@ export class AppNoticiaComponent implements OnInit {
   }
 
   getDataNoticia(){
+    debugger;
     this.api.getNoticiaCompleta(this.idNoticia)
       .subscribe(data => {
         this.datosNoticia = data;

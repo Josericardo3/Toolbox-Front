@@ -30,13 +30,12 @@ export class AppTarjetasComponent implements OnInit, AfterViewInit {
   @Input() valoresPreguntas: any = [];
   @Input() editandoEncuesta: boolean = false;
   @Input() datosPreguntaEncuesta: any[]
-  valoresPreguntass: any = [];
   @Input() tituloEditar: any = "";
   @Input() descripcionEditar: any = "";
 
   public form: FormGroup;
   hayopcion:any=true;
-  // public formEditar: FormGroup;
+  valoresPreguntass: any = [];
   showOtro: boolean = false;
   addInput: boolean = false;
   selectedOption: Option = { id: 0, label: 'Seleccione una opción', value: '', icon: '' };

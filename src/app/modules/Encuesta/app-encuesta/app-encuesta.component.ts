@@ -88,7 +88,7 @@ export class AppEncuestaComponent implements OnInit{
 
     this.tarjetasData.splice(index + 1, 0, {}); 
 
-    if (this.tarjetasComponent.length > 0) {
+    if (this.tarjetasComponent.length > 0 && index !== undefined) {
       this.tarjetasComponent.last.completarFormulario();
     }
   }

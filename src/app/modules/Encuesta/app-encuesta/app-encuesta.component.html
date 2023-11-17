@@ -17,7 +17,7 @@
             <button class="compartir" (click)="compartirEncuestaEditar()" *ngIf="editandoEncuesta">
                 <i class="fa-solid fa-share-nodes" style="color: #ffffff;"></i> Compartir encuesta
             </button> 
-            <form class="form" [formGroup]="formEncuesta" (ngSubmit)="saveEncuesta()">                                   
+            <form class="form" [formGroup]="formEncuesta">                                   
                 <p class="p">{{ editandoEncuesta ? 'Ingresa los datos para actualizar la encuesta' : 'Ingresa los datos para crear una encuesta nueva'}}</p>
                 <div class="encabezado">
                     <input type="text" class="tituloInput" (ngModelChange)="Obtenertitulo($event)" placeholder="Título de la encuesta" formControlName="tituloEncuesta">
@@ -39,7 +39,7 @@
                     (tarjetaClicada)="agregarTarjeta(i)" (tarjetaCompletada)="guardarRespuesta($event, i+1)" [valoresPreguntas]="valoresPreguntas" 
                     [editandoEncuesta]="editandoEncuesta" [datosPreguntaEncuesta]="datosPreguntaEncuesta"></app-app-tarjetas>
                     <div class="botones" *ngIf="!editandoEncuesta">
-                        <button class="agregar" (click)="eliminarTarjeta(i)">
+                        <button class="agregar" id="agregarTarjetas" (click)="eliminarTarjeta(i)">
                             <i class="fa-solid fa-trash" style="color: #068460;"></i> Eliminar
                         </button>
                         <button class="agregar" (click)="agregarTarjeta(i)">
@@ -47,7 +47,8 @@
                         </button> 
                     </div>
                 </div>
-                <button class="btn" type="submit" *ngIf="!editandoEncuesta" [disabled]="!formEncuesta.valid || !tarjetaCompleta">
+                <button class="btn" type="submit" *ngIf="!editandoEncuesta" (click)="saveEncuesta()"
+                [disabled]="!formEncuesta.valid || !tarjetaCompleta">
                     <i class="fa-solid fa-floppy-disk" style="color: #ffffff;"></i> Guardar
                 </button>                                                   
             </form>

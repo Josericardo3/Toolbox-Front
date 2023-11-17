@@ -314,7 +314,7 @@ span{
 .noticia-content{
     width: 90%;
     height: auto;
-    margin: 0px 10%;    
+    margin: 0px 10%; 
     display: flex;
 }
 .cards-view{
@@ -552,11 +552,14 @@ hr{
     }
     .noticia-content{
         width: 100%;
+        margin: 0;
+        margin-right: 10%;
+        margin-left: 10% - 33px;
         height: auto;
-        display: flex;
+        display: block;
     }
     .categorizacion-view{
-        display: none;
+        width: 95%;
     }
     .cards-view{
         width: 95%;

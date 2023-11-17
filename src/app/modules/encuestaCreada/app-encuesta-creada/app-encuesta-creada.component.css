@@ -25,7 +25,8 @@ h1{
     justify-content: center;
     flex-direction: column;
 }
-.encabezado{
+.encabezado,
+.agradecimiento{
     display: flex;
     flex-direction: column;
     border-top: 10px solid #068460;
@@ -36,6 +37,10 @@ h1{
     padding: 1vh 2vw;
     background-color: #FFFFFF;
     margin: 4vh 0 1vh 0;
+}
+.agradecimiento{
+    padding: 2vh 2vw !important;
+    border-top: 15px solid #068460 !important;
 }
 .descripcion{
     font-family: 'Work Sans', sans-serif;
