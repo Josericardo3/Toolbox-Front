@@ -10,7 +10,7 @@ import { ApiService } from 'src/app/servicios/api/api.service';
   styleUrls: ['./app-encuesta-creada.component.css']
 })
 
-export class AppEncuestaCreadaComponent implements OnInit, AfterContentChecked{
+export class AppEncuestaCreadaComponent implements OnInit, AfterContentChecked {
   encuestaId: any;
   datosEncuesta: any = [];
   datosPreguntaEncuesta: any = []
@@ -24,9 +24,9 @@ export class AppEncuestaCreadaComponent implements OnInit, AfterContentChecked{
     private formBuilder: FormBuilder,
     private cd: ChangeDetectorRef,
     private Message: ModalService,
-    ) {}
+  ) { }
 
-  ngAfterContentChecked() : void {
+  ngAfterContentChecked(): void {
     this.cd.detectChanges();
   }
 
@@ -36,10 +36,10 @@ export class AppEncuestaCreadaComponent implements OnInit, AfterContentChecked{
       this.getDataEncuesta(this.encuestaId);
     });
     this.form = this.formBuilder.group({})
-    
+
   }
 
-  formulario(){
+  formulario() {
     this.datosPreguntaEncuesta.MAE_ENCUESTA_PREGUNTAS.forEach((pregunta) => {
       if (pregunta.TIPO === 'respuestaCorta') {
         this.form.addControl(`respuestaCorta_${pregunta.ID_MAE_ENCUESTA_PREGUNTA}`, this.formBuilder.control(''));
@@ -50,8 +50,8 @@ export class AppEncuestaCreadaComponent implements OnInit, AfterContentChecked{
         this.form.addControl(`radioButtonOtro_${pregunta.ID_MAE_ENCUESTA_PREGUNTA}`, this.formBuilder.control(''));
         pregunta.mostrarOtroRadio = false;
       } else if (pregunta.TIPO === 'checkbox') {
-        pregunta.VALOR.split(';').forEach((opcion) => {
-          this.form.addControl(`checkbox_${pregunta.ID_MAE_ENCUESTA_PREGUNTA}`, this.formBuilder.control(''));
+        pregunta.VALOR.split(';').forEach((opcion, i) => {
+          this.form.addControl(`checkbox_${pregunta.ID_MAE_ENCUESTA_PREGUNTA}_${i}`, this.formBuilder.control(''));
         });
         this.form.addControl(`checkboxOtro_${pregunta.ID_MAE_ENCUESTA_PREGUNTA}`, this.formBuilder.control(''));
         pregunta.mostrarOtroCheckbox = false;
@@ -61,25 +61,13 @@ export class AppEncuestaCreadaComponent implements OnInit, AfterContentChecked{
     });
   }
 
-  getDataEncuesta(id: number){
-    // this.ApiService.getEncuestas()
-    // .subscribe(data => {
-    //   this.datosEncuesta = data
-      // this.datosEncuesta.sort((a, b) => b.ID_MAE_ENCUESTA - a.ID_MAE_ENCUESTA);
-
-      // Obtiene el último ID_MAE_ENCUESTA
-      // if (this.datosEncuesta.length > 0) {
-        // this.id = this.datosEncuesta[0].ID_MAE_ENCUESTA;
-        console.log('ID_MAE_ENCUESTA:', id);
-        this.ApiService.getEncuestasRespuesta(id)
-        .subscribe(respuesta => {
-          this.datosPreguntaEncuesta = respuesta;
-          this.formulario();
-        })
-      // } else {
-      //   console.log('No se encontraron encuestas.');
-      // }
-    // });
+  getDataEncuesta(id: number) {
+    console.log('ID_MAE_ENCUESTA:', id);
+    this.ApiService.getEncuestasRespuesta(id)
+      .subscribe(respuesta => {
+        this.datosPreguntaEncuesta = respuesta;
+        this.formulario();
+      })
   }
 
   toggleOtroRadio(pregunta, opcionSeleccionada) {
@@ -93,20 +81,20 @@ export class AppEncuestaCreadaComponent implements OnInit, AfterContentChecked{
 
   toggleOtroCheckbox(pregunta, opcionSeleccionada) {
     if (opcionSeleccionada === 'Otro') {
-        pregunta.mostrarOtroCheckbox = !pregunta.mostrarOtroCheckbox;
-        if (!pregunta.mostrarOtroCheckbox) {
-            this.form.get(`checkboxOtro_${pregunta.ID_MAE_ENCUESTA_PREGUNTA}`).setValue('');
-        }
+      pregunta.mostrarOtroCheckbox = !pregunta.mostrarOtroCheckbox;
+      if (!pregunta.mostrarOtroCheckbox) {
+        this.form.get(`checkboxOtro_${pregunta.ID_MAE_ENCUESTA_PREGUNTA}`).setValue('');
+      }
     }
-}
-  
+  }
+
   enviarFormulario() {
     const respuestas = [];
-  
+
     this.datosPreguntaEncuesta.MAE_ENCUESTA_PREGUNTAS.forEach((pregunta, index) => {
       const tipo = pregunta.TIPO;
       let respuesta = '';
-  
+
       if (tipo === 'respuestaCorta') {
         respuesta = this.form.get(`respuestaCorta_${pregunta.ID_MAE_ENCUESTA_PREGUNTA}`).value || '';
       } else if (tipo === 'respuestaLarga') {
@@ -125,25 +113,28 @@ export class AppEncuestaCreadaComponent implements OnInit, AfterContentChecked{
           }
         }
       } else if (tipo === 'checkbox') {
-        const opcionesSeleccionadas = pregunta.VALOR.split(';').filter((opcion, i) => {
-          const isChecked = this.form.get(`checkbox_${pregunta.ID_MAE_ENCUESTA_PREGUNTA}`).value;
-          return isChecked;
+        pregunta.VALOR.split(';').filter((opcion, i) => {
+          const isChecked = this.form.get(`checkbox_${pregunta.ID_MAE_ENCUESTA_PREGUNTA}_${i}`).value;
+          if (isChecked) {
+            respuesta += (respuesta ? ', ' : '') + opcion;
+          }
+          // return isChecked;
         });
 
-        if (opcionesSeleccionadas.length > 0) {
-            respuesta = opcionesSeleccionadas.join(', ');
-        }
+        // if (opcionesSeleccionadas.length > 0) {
+        //   respuesta = opcionesSeleccionadas.join(', ');
+        // }
 
         if (pregunta.mostrarOtroCheckbox) {
-            const valorOtro = this.form.get(`checkboxOtro_${pregunta.ID_MAE_ENCUESTA_PREGUNTA}`).value;
-            if (valorOtro) {
-                respuesta += (respuesta ? ', ' : '') + valorOtro;
-            }
+          const valorOtro = this.form.get(`checkboxOtro_${pregunta.ID_MAE_ENCUESTA_PREGUNTA}`).value;
+          if (valorOtro) {
+            respuesta += (respuesta ? ', ' : '') + valorOtro;
+          }
         }
       } else if (tipo === 'desplegable') {
         respuesta = this.form.get(`desplegable_${pregunta.ID_MAE_ENCUESTA_PREGUNTA}`).value || '';
       }
-  
+
       if (respuesta) {
         const respuestaFormato = {
           FK_ID_MAE_ENCUESTA_PREGUNTA: pregunta.ID_MAE_ENCUESTA_PREGUNTA,
@@ -152,7 +143,7 @@ export class AppEncuestaCreadaComponent implements OnInit, AfterContentChecked{
         respuestas.push(respuestaFormato);
       }
     });
-  
+
     console.log(respuestas);
     this.ApiService.saveEncuestaRespuesta(respuestas)
       .subscribe((data) => {
@@ -160,7 +151,7 @@ export class AppEncuestaCreadaComponent implements OnInit, AfterContentChecked{
         const title = "ENCUESTA COMPLETADA";
         const message = "Se completó la encuesta correctamente"
         this.Message.showModal(title, message);
-        
+
       });
   }
 }

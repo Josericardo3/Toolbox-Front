@@ -32,6 +32,9 @@ export class AppTarjetasComponent implements OnInit, AfterViewInit {
   @Input() datosPreguntaEncuesta: any[]
   @Input() tituloEditar: any = "";
   @Input() descripcionEditar: any = "";
+  @Input() selectCrearTarjeta: boolean = false;
+  @Output() ultimoIDChanged: EventEmitter<any> = new EventEmitter<any>();
+  @Output() activarCompartirEncuesta: EventEmitter<any> = new EventEmitter<any>();
 
   public form: FormGroup;
   hayopcion:any=true;
@@ -56,6 +59,9 @@ export class AppTarjetasComponent implements OnInit, AfterViewInit {
     { id: 5, label: 'Desplegable', value: 'desplegable', icon: 'fa-solid fa-circle-arrow-down' }
   ];
   modelPreguntas: any = [{ opcionesBoton: [], opcionesCheckbox: [], opcionesDesplegableEditar: [] }];
+  selectTarjeta: boolean = false;
+  ultimoID: any;
+  compartirEncuestaBtn: boolean = false;
 
   constructor(
     private ApiService: ApiService,
@@ -79,6 +85,12 @@ export class AppTarjetasComponent implements OnInit, AfterViewInit {
       this.completarFormularioEdicion();
       console.log(this.editandoEncuesta)
     }
+    else {
+      this.selectOptionEditar(this.selectedOptionEditar[0], 0) 
+      this.toggleOptionsEditar(0);
+    }
+
+    this.onInputChange(this.form);
   }
 
   obtenerDatosEncuesta(encuestaId: string) {
@@ -164,9 +176,16 @@ export class AppTarjetasComponent implements OnInit, AfterViewInit {
     });
   }
   
-  onInputChange() {
-    if (this.form.valid) {
-      this.tarjetaCompletada.emit(this.form.value);
+  onInputChange(formulario: any) {
+    console.log(formulario)
+    
+    if (this.form.status === 'VALID') {
+      this.tarjetaCompletada.emit(true);
+      console.log('aaaaaaaaaaaaaaa', this.selectCrearTarjeta)
+    }
+    else {
+      this.tarjetaCompletada.emit(false);
+      this.selectCrearTarjeta = true;
     }
   }
   
@@ -260,14 +279,17 @@ export class AppTarjetasComponent implements OnInit, AfterViewInit {
   }
 
   selectOptionEditar(option: Option, id: any) {
+    // this.selectTarjeta = true;
     this.showOptionss[id] = false;
     this.selectedOptions[id] = option;
     this.modelPreguntas[id].TIPO = option.value;
-    if (option.value === 'respuestaCorta' || option.value === 'respuestaLarga') {
+    if (option.value === 'respuestaCorta' || option.value === 'respuestaLarga' || option.value === 'radioButton' 
+    || option.value === 'checkbox' || option.value === 'desplegable') {
+      
       // Establecer el campo VALOR a una cadena vacía ('')
       this.modelPreguntas[id].VALOR = '';
+      this.selectTarjeta = true;
     } 
-    
     if (this.modelPreguntas[id].opcionesBoton.length < 1) {
       this.modelPreguntas[id].opcionesBoton.push({})
     }
@@ -277,6 +299,10 @@ export class AppTarjetasComponent implements OnInit, AfterViewInit {
     if (this.modelPreguntas[id].opcionesDesplegableEditar.length < 1) {
       this.modelPreguntas[id].opcionesDesplegableEditar.push({})
     }
+
+      // Establecer this.selectTarjeta en true solo para opciones específicas
+  // this.selectTarjeta = ['respuestaCorta', 'respuestaLarga', 'radioButton', 'checkbox', 'desplegable'].includes(option.value);
+
     this.showOptionEditar[id] = !this.showOptionEditar[id];
   }
 
@@ -292,8 +318,18 @@ export class AppTarjetasComponent implements OnInit, AfterViewInit {
   }
 
   selectOption(option: Option) {
+    console.log(option)
+    if (option.id === 1 || option.id === 2) {
+      this.selectCrearTarjeta = true; 
+    }
+    else{
+      this.selectCrearTarjeta = false; 
+    }
     this.selectedOption = option;
     this.showOptions = false;
+    
+    this.onInputChange(this.form);
+    console.log('fffffffffffffff', this.selectedOption)
   }
 
   agregarOtro() {
@@ -431,10 +467,6 @@ export class AppTarjetasComponent implements OnInit, AfterViewInit {
     
   }
 
-  // agregarInputDesplegableEditar(){
-  //   this.opcionesDesplegableEditar.push(this.formBuilder.control(''));
-  // }
-
   removeRadioOption(index: number) {
     this.opcionesRadio.removeAt(index);
     this.opcionesCheckbox.removeAt(index);
@@ -458,6 +490,7 @@ export class AppTarjetasComponent implements OnInit, AfterViewInit {
       this.selectedOptions[this.modelPreguntas.length - 1] = { id: 0, label: 'Seleccione una opción', value: '', icon: '' };
     }
 
+    this.selectTarjeta = false;
   }
 
   eliminar(i,pregunta) {
@@ -525,5 +558,66 @@ export class AppTarjetasComponent implements OnInit, AfterViewInit {
       this.obtenerDatosEncuesta(this.idEncuesta);
       this.modalService.showModal("Correcto", "Se Actualizó correctamente");
     })
+  }
+
+  guardarEncuesta(){
+    this.modelPreguntas.forEach(elements => {
+      var arrayTemporal: any = [];
+      var arrayTemporal2: any = [];
+      var arrayTemporal3: any = [];
+      if (elements.TIPO === "radioButton") {
+        elements.opcionesBoton.forEach(x => {
+          if (x.esOpcion) {
+            x.valorCheck = "Otro";
+          }
+          arrayTemporal.push(x.valorCheck);
+        });
+        elements.VALOR = arrayTemporal.join(";");
+      }
+      if (elements.TIPO === "checkbox") {
+        elements.opcionesCheckbox.forEach(x => {
+          if (x.esOpcion) {
+            x.valorCheck = "Otro";
+          }
+          arrayTemporal2.push(x.valorCheck);
+        });
+        elements.VALOR = arrayTemporal2.join(";");
+      }
+      if (elements.TIPO === "desplegable") {
+        elements.opcionesDesplegableEditar.forEach(x => {
+          if (x.esOpcion) {
+            x.valorCheck = "Otro";
+          }
+          arrayTemporal3.push(x.valorCheck);
+        });
+        elements.VALOR = arrayTemporal3.join(";");
+      }
+    })
+
+    this.modeloEnvio.TITULO = this.tituloEditar;
+    this.modeloEnvio.DESCRIPCION = this.descripcionEditar;
+    this.modeloEnvio.MAE_ENCUESTA_PREGUNTAS = this.modelPreguntas;
+    this.modeloEnvio.ID_MAE_ENCUESTA = 0
+    this.modeloEnvio.FK_ID_USUARIO = localStorage.getItem('Id'),
+
+    this.ApiService.saveEncuesta(this.modeloEnvio)
+    .subscribe( (d) => {
+      this.modalService.showModal("ENCUESTA CREADA", "Se creó la encuesta correctamente");
+      this.compartirEncuestaBtn = true;
+      this.activarCompartirEncuesta.emit(this.compartirEncuestaBtn)
+      this.ApiService.getEncuestas()
+      .subscribe(response => {
+        console.log(response)
+        const encuestas = response as Array<any>;
+
+        if (encuestas.length > 0) {
+          this.ultimoID = encuestas[encuestas.length - 1].ID_MAE_ENCUESTA;
+          this.ultimoIDChanged.emit(this.ultimoID)
+          console.log('Último ID_MAE_ENCUESTA:', this.ultimoID);
+        } else {
+          console.log('No hay encuestas disponibles');
+        }
+      })
+    });
   }
 }
