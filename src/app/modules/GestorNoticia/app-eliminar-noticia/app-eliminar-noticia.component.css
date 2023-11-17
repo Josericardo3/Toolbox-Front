@@ -1,17 +1,17 @@
 .modal-contedor {
-    background-color: #fff;
-    border-radius: 5px;
-    box-shadow: 0 2px 10px #00000026;
-    padding: 10px;
-    max-width: 600px;
-    text-align: center;
-    position: relative;
-  }
-  h4 {
-    width: 100%;
-    font-family: 'Montserrat', sans-serif;
-    font-weight: bolder;
-    font-size: 20px;
-    color: #068460;
-    text-align: center;
-  }  
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 2px 10px #00000026;
+  padding: 10px;
+  max-width: 600px;
+  text-align: center;
+  position: relative;
+}
+h4 {
+  width: 100%;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: bolder;
+  font-size: 20px;
+  color: #068460;
+  text-align: center;
+}  

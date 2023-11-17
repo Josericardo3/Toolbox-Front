@@ -119,14 +119,23 @@ export class AppResultadosEncuestasComponent {
     this.router.navigate(['/resultadosEncuestasPreguntas', ID_MAE_ENCUESTA, num]);
   }
 
-  getFechaRespuesta(): string {
+  getFechaRespuesta(numEncuestado: number): string[] {
+    const fechas: string[] = [];
+  
     if (this.datosResultados && this.datosResultados.length > 0) {
-      const primeraRespuesta = this.datosResultados[0]; // La fecha siempre se repite y tomo el primer valor
-      if (primeraRespuesta.RESPUESTA && primeraRespuesta.RESPUESTA.length > 0) {
-        return new Date(primeraRespuesta.RESPUESTA[0].FECHA_REG).toLocaleDateString(); // Ajusta el formato según lo necesario
-      }
+      const respuestasPersona = this.datosResultados
+        .filter(respuesta => respuesta.RESPUESTA && respuesta.RESPUESTA.length > 0)
+        .map(respuesta => respuesta.RESPUESTA.find(item => item.NUM_ENCUESTADO === numEncuestado))
+        .filter(item => item !== undefined);
+  
+      respuestasPersona.forEach(item => {
+        const fechaReg = item.FECHA_REG;
+        const formattedDate = new Date(fechaReg).toLocaleDateString();
+        fechas.push(formattedDate);
+      });
     }
-    return '';
+  
+    return fechas;
   }
   
 }

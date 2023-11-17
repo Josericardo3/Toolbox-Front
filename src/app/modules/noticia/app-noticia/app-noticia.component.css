@@ -287,7 +287,7 @@ textarea {
     .categorizacion-view{
         width: 80%;
         height: auto;
-        margin-left: 30px;
+        margin-left: 0px;
     }
     .share-noticia{
         display: block;
@@ -295,5 +295,16 @@ textarea {
     }
     .share-noticia p{
         margin-bottom: 10px;
+    }
+    .img-container-final{
+        width: 500px;
+        height: auto;
+        display: block;
+        align-items: center;
+        justify-content: center;
+    }
+    .img-container-final p{
+        font-size: small;
+        text-align: center;
     }
 }

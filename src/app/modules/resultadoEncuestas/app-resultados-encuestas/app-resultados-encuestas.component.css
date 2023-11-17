@@ -124,6 +124,7 @@ h1{
     flex-direction: column;
     width: 100%;
 }
+
 /* pagination */
 .page-style {
     display: flex;

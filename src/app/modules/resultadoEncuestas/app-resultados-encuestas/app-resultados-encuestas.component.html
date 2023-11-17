@@ -90,7 +90,8 @@
                         <ng-container *ngIf="selectedEncuesta?.NUM_ENCUESTADOS > 0">
                             <tr *ngFor="let i of personasArray(selectedEncuesta.NUM_ENCUESTADOS); let j = index">
                                 <td>Persona {{i}}</td>
-                                <td>{{ getFechaRespuesta() }}</td>
+                                <td>{{ getFechaRespuesta(i) }}</td>
+
                                 <td>
                                     <a title="Ver resultados" (click)="fnShowResultados(selectedEncuesta?.ID_MAE_ENCUESTA, j+1)">
                                         <i class="fa-solid fa-eye" style="color: #06543c; cursor: pointer;"></i>
