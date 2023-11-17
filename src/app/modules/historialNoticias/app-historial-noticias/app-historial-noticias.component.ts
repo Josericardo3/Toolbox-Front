@@ -40,7 +40,11 @@ export class AppHistorialNoticiasComponent implements OnInit{
         this.totalPaginas = 1;
       }
        this.datatotal = this.dataInitial.length;
-       this.datos = this.dataInitial.slice(0, 6);
+       if (data.length >= 6) {
+        this.datos = this.dataInitial.slice(0, 6);
+      } else {
+        this.datos = this.dataInitial; // Handle the case where there are fewer than 6 items
+      }
        this.contentArray = data;
        this.currentPage = 1;
        if(this.datatotal>=6){
@@ -61,7 +65,7 @@ export class AppHistorialNoticiasComponent implements OnInit{
     this.idNoticia = this.datos[index].FK_ID_NOTICIA;
     this.dato= this.datos[index].TIPO;
      if (this.dato == 'Noticia' && this.idNoticia != undefined ) {
-      this.router.navigate(['/noticia'],{ state: { idNoticia: this.idNoticia, dato: this.dato} });
+      this.router.navigate(['/noticia'],{ state: { idNoticiaa: this.idNoticia} });
     }
    }
 
@@ -69,7 +73,7 @@ export class AppHistorialNoticiasComponent implements OnInit{
     this.pages = event.page;
     const startItem = (event.page - 1) * event.itemsPerPage; 
     const endItem = event.page * event.itemsPerPage;
-    this.datos = this.dataInitial.slice(startItem, endItem)
+    this.datos = this.dataInitial?.slice(startItem, endItem)
     this.totalRegistros = this.datos.length;
   }
 
