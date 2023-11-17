@@ -121,7 +121,7 @@ export class AppGestorNoticiaComponent implements OnInit {
     this.getSelectMultipleCategoria();
     this.getSelectMultipleSubCategoria();
     this.listarCategorias();
-    this.listarPst(); 
+    this.listarPst();
     this.getListCategorias();
 
     this.editarNoticiaForm = this.formBuilder.group({

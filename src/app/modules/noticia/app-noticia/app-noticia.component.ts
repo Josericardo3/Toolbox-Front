@@ -61,8 +61,7 @@ export class AppNoticiaComponent implements OnInit {
           this.noticiaSelected=val;
         })
         this.imagen = this.noticiaSelected.COD_IMAGEN ? 'data:image/png;base64,' + this.noticiaSelected.COD_IMAGEN : '';
-        console.log(this.noticiaSelected);
-        console.log(this.imagen);
+        //console.log(this.noticiaSelected);
       })
   }
   getRolValue(): number {
