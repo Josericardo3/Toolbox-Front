@@ -65,7 +65,7 @@ export class AppHistorialNoticiasComponent implements OnInit{
     this.idNoticia = this.datos[index].FK_ID_NOTICIA;
     this.dato= this.datos[index].TIPO;
      if (this.dato == 'Noticia' && this.idNoticia != undefined ) {
-      this.router.navigate(['/noticia'],{ state: { idNoticiaa: this.idNoticia} });
+      this.router.navigate(['/noticia'],{ state: { idNoticia: this.idNoticia} });
     }
    }
 
