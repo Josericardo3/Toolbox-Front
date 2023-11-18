@@ -44,7 +44,7 @@ export class AppNoticiaComponent implements OnInit {
     this.getTableData();
     this.idActividad = history.state.idActividad;
     if (this.dato == 'Noticia' && this.idNoticia != undefined ) {
-      this.getDataNoticia();
+      //this.getDataNoticia();
     }
     if (this.dato == 'Actividad' && this.idActividad != undefined ) {
       this.getDataActividad();
