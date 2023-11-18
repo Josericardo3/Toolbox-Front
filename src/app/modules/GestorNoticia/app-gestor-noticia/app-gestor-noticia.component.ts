@@ -179,7 +179,7 @@ export class AppGestorNoticiaComponent implements OnInit {
   
   indexCard(val: any){
     this.idNoticia = val;
-    this.router.navigate(['/noticia'], { state: { idNoticiaa: this.idNoticia } });
+    this.router.navigate(['/noticia'], { state: { idNoticia: this.idNoticia } });
   }
   getTableData() {
     this.api.getTablaNoticias()
