@@ -5,7 +5,7 @@
     <h1>Taller de Política de Desarrollo Sostenible</h1>
   </header>
   <button type="button" class="btnReporte" (click)="generatePDF()" [disabled]="disablePDF">
-    <i class="fa-solid fa-download" style="color: #ffffff; margin-right: 0.5vw;"></i>Visualizar reporte
+    <i class="fa-solid fa-download" style="color: #ffffff; margin-right: 0.5vw;"></i>Visualizar documento
   </button>
   <div class="form">
     <h3>Responda las siguientes preguntas:</h3>
@@ -95,7 +95,7 @@
                     <p>Otro ¿Cuál?</p>
                   </div>
                   <input type="text" style="width: 45% !important;" [(ngModel)]="pregunta.OTRO_VALOR"
-                    [disabled]="accionActivo!='guardar' || pregunta.RESPUESTA === 'Página web' || pregunta.RESPUESTA === 'Redes sociales'">
+                    [disabled]="pregunta.RESPUESTA ==''||  (accionActivo!='guardar' || pregunta.RESPUESTA === 'Página web' || pregunta.RESPUESTA === 'Redes sociales')">
                   <p class="info">Responda según desee implementar.</p>
                 </div>
               </ng-container>

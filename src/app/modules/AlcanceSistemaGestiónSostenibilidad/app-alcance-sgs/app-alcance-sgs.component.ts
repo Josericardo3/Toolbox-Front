@@ -3,6 +3,7 @@ import { ModalService } from 'src/app/messagemodal/messagemodal.component.servic
 import { ApiService } from 'src/app/servicios/api/api.service';
 import * as pdfMake from 'pdfmake/build/pdfmake';
 import { NOMEM } from 'dns';
+import { head } from 'lodash';
 
 class Pregunta {
   PREGUNTA: string;
@@ -269,6 +270,14 @@ export class AppAlcanceSGSComponent implements OnInit {
   }
 
   generatePDF() {
+
+    var headerElement = {};
+  
+    if (this.userInfor.LOGO == null) {
+      headerElement = { text: this.userInfor.LOGO, fit: [50, 50], alignment: 'center', rowSpan: 2 };
+    } else {
+      headerElement = { image: this.userInfor.LOGO, fit: [50, 50], alignment: 'center', rowSpan: 2 };
+    }
     const respuesta = this.estructura.sostenibilidad.RESPUESTA;
     this.RespuestaRequisitos = this.obtenerNormaNoAplica(respuesta);
     console.log(respuesta);
@@ -284,7 +293,7 @@ export class AppAlcanceSGSComponent implements OnInit {
             headerRows: 1,
             body: [
               [
-                { image: this.userInfor.LOGO, fit: [50, 50], alignment: 'center', rowSpan: 2 },
+                headerElement,
                 { text: this.userInfor.RAZON_SOCIAL_PST, alignment: 'center', margin: [0, 15, 0, 15], rowSpan: 2 },
                 { text: 'ALCANCE DEL SGS', alignment: 'center', bold: true, margin: [0, 15, 0, 15], rowSpan: 2 },
                 { text: 'CÓDIGO: GS-D', alignment: 'center', bold: true, margin: [0, 2, 0, 2], puntosstyle: ['codigoLeft'] }

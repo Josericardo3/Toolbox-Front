@@ -45,13 +45,20 @@ export class AppProcRequisitosLegalesComponent implements OnInit{
   }
 
   generatePDF(){
+    var headerElement = {};
+  
+    if (this.logo == null) {
+      headerElement = { text: this.logo, fit: [50, 50], alignment: 'center', margin: [0, 3, 0, 3], rowSpan: 2 };
+    } else {
+      headerElement = { image: this.logo, fit: [50, 50], alignment: 'center', margin: [0, 3, 0, 3], rowSpan: 2 };
+    }
     const pdfDefinition: any = {
       header: {
         table: {
           widths: ['*', '*', '*', '*'],
           body: [
             [     
-              { image: this.logo, fit:[50, 50], alignment: 'center', margin:[ 0,3, 0,3 ], rowSpan: 2 },
+              headerElement,
               { text: this.pst, alignment: 'center', margin:[ 0, 21, 0, 21 ], rowSpan: 2},
               { text: 'PROCEDIMIENTO PARA LA IDENTIFICACIÓN Y EVALUACIÓN DE REQUISITOS LEGALES', alignment: 'center',rowSpan: 2, margin:[ 0,9,0,9 ] },
               { text: 'CÓDIGO: GS-P-02', alignment: 'center' }
