@@ -272,6 +272,14 @@ export class AppAlcanceSGSComponent implements OnInit {
     const respuesta = this.estructura.sostenibilidad.RESPUESTA;
     this.RespuestaRequisitos = this.obtenerNormaNoAplica(respuesta);
     console.log(respuesta);
+    var headerElement = {};
+  
+    if (this.userInfor.LOGO == null) {
+      headerElement = { text: this.userInfor.LOGO, fit: [50, 50], alignment: 'center', rowSpan: 2 };
+    } else {
+      headerElement = { image: this.userInfor.LOGO, fit: [50, 50], alignment: 'center', rowSpan: 2 };
+    }
+  
     const pdfDefinition: any = {
       pageOrientation: 'portrait', // 'portrait' indica orientación vertical (predeterminado)
       pageMargins: [30, 30, 30, 30],
@@ -284,7 +292,7 @@ export class AppAlcanceSGSComponent implements OnInit {
             headerRows: 1,
             body: [
               [
-                { image: this.userInfor.LOGO, fit: [50, 50], alignment: 'center', rowSpan: 2 },
+                headerElement,
                 { text: this.userInfor.RAZON_SOCIAL_PST, alignment: 'center', margin: [0, 15, 0, 15], rowSpan: 2 },
                 { text: 'ALCANCE DEL SGS', alignment: 'center', bold: true, margin: [0, 15, 0, 15], rowSpan: 2 },
                 { text: 'CÓDIGO: GS-D', alignment: 'center', bold: true, margin: [0, 2, 0, 2], puntosstyle: ['codigoLeft'] }

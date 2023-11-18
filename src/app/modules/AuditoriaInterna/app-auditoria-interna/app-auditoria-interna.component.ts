@@ -326,6 +326,13 @@ export class AppAuditoriaInternaComponent {
   generatePlanDeAuditoria(request) {
     const temporalEquipoAuditor = request.equipO_AUDITOR.split(',')
     const temporalEqupioAuditorString = temporalEquipoAuditor.join(',  ');
+    var headerElement = {};
+  
+    if (this.userInfor.LOGO == null) {
+      headerElement = { text: this.userInfor.LOGO, fit: [50, 50], alignment: 'center', rowSpan: 2 };
+    } else {
+      headerElement = { image: this.userInfor.LOGO, fit: [50, 50], alignment: 'center', rowSpan: 2 };
+    }
     const docDefinition: any = {
       pageMargins: [30, 30, 30, 30],
       content: [
@@ -337,7 +344,7 @@ export class AppAuditoriaInternaComponent {
             headerRows: 1,
             body: [
               [
-                { image: this.userInfor.LOGO, fit: [50, 50], alignment: 'center', rowSpan: 2 },
+                headerElement,
                 { text: this.userInfor.RAZON_SOCIAL_PST, alignment: 'center', margin: [0, 15, 0, 15], rowSpan: 2 },
                 { text: 'LISTA DE VERIFICACIÓN AUDITORÍA', alignment: 'center', margin: [0, 15, 0, 15], rowSpan: 2 },
                 { text: 'CÓDIGO: GS-M-01', alignment: 'center', margin: [0, 2, 0, 2] }
