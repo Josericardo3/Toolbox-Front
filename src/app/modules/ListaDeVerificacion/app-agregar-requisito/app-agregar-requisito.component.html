@@ -1,18 +1,17 @@
 <!-- Button trigger modal -->
-  <button id="openModalButton" class="btn-agregar" (click)="cancelEvent($event)" data-toggle="modal" data-target="#myModal" *ngIf="getRolValue() !== 4 && getRolValue() !== 5" >
+  <button id="openModalButton" class="btn-agregar" (click)="cancelEvent($event)" data-bs-toggle="modal" data-bs-target="#myModal" *ngIf="getRolValue() !== 4 && getRolValue() !== 5" >
     Agregar requisito
     <i class="fa-solid fa-plus" style="color: #fff;"></i>
   </button>
-  
-  <!-- Modal -->
+           <!-- Modal -->
   <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-contedor">
         <div >
-          <button  id = "closeModal" style="display: none;" type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <button  id = "closeModal" style="display: none;" type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
-          <a  title="Cancelar"  class="cancelar" data-dismiss="modal" aria-label="Close">
+          <a  title="Cancelar"  class="cancelar" data-bs-dismiss="modal" aria-label="Close">
             <i class="fa-solid fa-circle-xmark" style="color: #06543c;font-size: 25px;margin-top: 13px;"></i>
           </a>
           <h4 class="modal-title" id="myModalLabel">Agregar Requisito</h4>
@@ -122,6 +121,10 @@
       </div>
     </div>
   </div>
+
+
+
+ 
   <ngx-spinner
     bdColor="rgba(0, 0, 0, 0.5)"
     size="small"

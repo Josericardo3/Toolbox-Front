@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ApiService } from 'src/app/servicios/api/api.service';
 import { ColorLista } from 'src/app//servicios/api/models/color';
 
@@ -8,6 +8,7 @@ import { ColorLista } from 'src/app//servicios/api/models/color';
   styleUrls: ['./app-header.component.css']
 })
 export class AppHeaderComponent implements OnInit {
+  @Input() esVisible=false;
   datos: any = [];
   nombre: any;
   colorHeader: ColorLista;

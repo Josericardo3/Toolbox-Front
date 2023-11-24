@@ -265,6 +265,10 @@ textarea {
 .fileBtn:hover {
     background-color: #dddddd;
 }
+.iconos-share a{
+    text-decoration: none;
+    color: #000000;
+}
 @media (max-width: 970px) {
     .noticia-content{
         width: 100%;
@@ -306,5 +310,42 @@ textarea {
     .img-container-final p{
         font-size: small;
         text-align: center;
+    }
+    /* MODAL DE AGREGAR NOTICIAS */
+    .modal-content {
+        width: 90%;
+        max-height: 80vh;
+        overflow-y: auto;
+    }
+
+    /* MODAL DE EDITAR NOTICIAS */
+    .modal-title-editar h2 {
+        font-size: 20px;
+    }
+
+    .form input {
+        width: 100%;
+    }
+
+    footer {
+        width: 100%;
+    }
+
+    .input-field {
+        width: 100%;
+    }
+
+    .buscador {
+        width: 100%;
+    }
+
+    img {
+        max-width: 100%;
+        height: auto;
+        /* Mantiene la proporción de la imagen */
+    }
+    .notificacion-noticias input{
+        width: 21px;
+        margin: 3px;
     }
 }

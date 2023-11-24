@@ -1,5 +1,5 @@
 <!-- Button trigger modal -->
-<button id="openModalButton" class="btn" (click)="cancelEvent($event)" data-toggle="modal" data-target="#myModal" *ngIf="getRolValue() !== 4 && getRolValue() !== 5">
+<button id="openModalButton" class="btn" (click)="cancelEvent($event)" data-bs-toggle="modal" data-bs-target="#myModal" *ngIf="getRolValue() !== 4 && getRolValue() !== 5">
   Agregar actividad <i class="fa-solid fa-plus" style="color: #fff;"></i>
 </button>
 
@@ -9,11 +9,11 @@
     <div class="modal-contedor">
       <form  [formGroup]="formParent" class="controller-auditoria" (ngSubmit)="saveForm()">
         <div>
-          <button id="closeModal" style="display: none;" type="button" class="close" data-dismiss="modal"
+          <button id="closeModal" style="display: none;" type="button" class="close" data-bs-dismiss="modal"
             aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
-          <a title="Cancelar" class="cancelar" data-dismiss="modal" aria-label="Close">
+          <a title="Cancelar" class="cancelar" data-bs-dismiss="modal" aria-label="Close">
             <i class="fa-solid fa-circle-xmark" style="color: #06543c;font-size: 25px;margin-top: 13px;"></i>
           </a>
           <h4 class="modal-title" id="myModalLabel">Planificación de la Auditoria Interna</h4>

@@ -98,6 +98,11 @@
               "Orden": "4.5.1",
               "Opcion": [
                 {
+                  "Nombre": "Mapa de procesos",
+                  "router": "/mapaprocesos",
+                  "Elementos": []
+                },
+                {
                   "Nombre": "Generar Documento",
                   "router": "",
                   "Elementos": []

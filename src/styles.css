@@ -1,27 +1,30 @@
 /* You can add global styles to this file, and also import other style files */
 @import url('https://fonts.googleapis.com/css2?family=Montserrat&family=Work+Sans&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Work+Sans&display=swap');
-*{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 a {
-    cursor: pointer;
+  cursor: pointer;
 }
+
 /* Estilos para la página actual activa */
-.pagination > .active > a,
-.pagination > .active > span {
-    background-color: #068460 !important;
-    color: #fff !important;
+.pagination>.active>a,
+.pagination>.active>span {
+  background-color: #068460 !important;
+  color: #fff !important;
 }
 
 /* Estilos para los números de página y los puntos suspensivos */
-.pagination > li > a,
-.pagination > li > span {
-    color: #068460 !important;
+.pagination>li>a,
+.pagination>li>span {
+  color: #068460 !important;
 }
+
 /* En tu archivo de estilos personalizado */
 .custom-tab .nav-link,
 .custom-tab .nav-link,
@@ -32,86 +35,94 @@ a {
   border: 1px solid #ddd;
   border-bottom-color: transparent;
 }
-.custom-tab .nav-link.active .custom-tab .nav-link.active:focus{
-    color: #17473a !important;
-    
+
+.custom-tab .nav-link.active .custom-tab .nav-link.active:focus {
+  color: #17473a !important;
+
 }
+
 .angular-editor-textarea {
     height: auto !important;
     min-height: 100px !important;
   }
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body { margin: 0;
+  font-family: 'Roboto', "Helvetica Neue", sans-serif !important;
+background-color: #ececec;
+}
 /*Estlios material*/
+.mdc-notched-outline>* {
+  border-color: #068460 !important;
+  size: 14px;
+}
 
-
-.mdc-notched-outline > * {
-    border-color:  #068460 !important;
-    
-    size: 14px;
-  }
-.mdc-text-field--invalid .mdc-notched-outline > * {
-    border-color: red !important;
-   
+.mdc-text-field--invalid .mdc-notched-outline>* {
+  border-color: red !important;
 }
 
 .mat-mdc-form-field-infix {
-    min-height: 0px !important;
+  min-height: 0px !important;
 }
+
 mat-label {
-    color: black !important;
-  }
- .btn-nuevo{
-    background: #068460;
-    color: white;
-    border-radius: 10px;
-    height:40px;
-    width: 165px;
-    border: none;
-    cursor: pointer;
-    margin: 0.5vh 0 3vh 0;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
-    align-self: flex-end;
-   
-  }
+  color: black !important;
+}
 
-  .formato-texto{
-    
-        width: 100%;
-        font-family: "Montserrat", sans-serif;
-        font-weight: bolder;
-        color: #068460;
-        
-        margin: 2vh 0;
-      
+.btn-nuevo {
+  background: #068460;
+  color: white;
+  border-radius: 10px;
+  height: 40px;
+  width: 165px;
+  border: none;
+  cursor: pointer;
+  margin: 0.5vh 0 3vh 0;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+  align-self: flex-end;
+}
 
-  }
-  /*estilos nuevos*/
-  .required-field-error {
-    border: 1px solid red;
-  }
-  .alinear-buscador{
-    display: flex;
-    align-items: center;
-  }
-  .borde-input{
-    border: 2px solid #068460 !important;
-    
-  }
-  mat-option{
-    font-size: 14px !important; /* Ajusta el tamaño de fuente del input según tus necesidades */
-    font-family: 'Work Sans', sans-serif !important;
-  }
-  mat-label{
-    font-size: 14px; /* Ajusta el tamaño de fuente del input según tus necesidades */
-    font-family: 'Work Sans', sans-serif !important; 
-  }
-  mat-select {
-    font-size: 14px !important; /* Ajusta el tamaño de fuente del input según tus necesidades */
-    font-family: 'Work Sans', sans-serif !important;
-  }
-  /*******/
-  /******/
+.formato-texto {
+  width: 100%;
+  font-family: "Roboto", sans-serif;
+  font-weight: bolder;
+  color: #068460;
+  margin: 2vh 0;
+}
+
+/*estilos nuevos*/
+.required-field-error {
+  border: 1px solid red;
+}
+
+.alinear-buscador {
+  display: flex;
+  align-items: center;
+}
+
+.borde-input {
+  border: 2px solid #068460 !important;
+}
+
+mat-option {
+  font-size: 14px !important;
+  /* Ajusta el tamaño de fuente del input según tus necesidades */
+  font-family: 'Roboto', sans-serif !important;
+}
+
+mat-label {
+  font-size: 14px;
+  /* Ajusta el tamaño de fuente del input según tus necesidades */
+  font-family: 'Roboto', sans-serif !important;
+}
+
+mat-select {
+  font-size: 14px !important;
+  /* Ajusta el tamaño de fuente del input según tus necesidades */
+  font-family: 'Roboto', sans-serif !important;
+}
+
+/*******/
+/******/
 .mdc-menu-surface.mat-mdc-select-panel {
   width: 100% !important;
   max-height: 275px !important;
@@ -125,6 +136,7 @@ mat-label {
   margin-bottom: 0.5rem !important;
   border-radius: 10px !important;
 }
+
 .mat-mdc-option {
   display: flex !important;
   position: relative !important;
@@ -137,17 +149,27 @@ mat-label {
   -webkit-user-select: none !important;
   user-select: none !important;
   cursor: pointer !important;
-  -webkit-tap-highlight-color: rgba(0,0,0,0) !important;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0) !important;
   min-height: 20px !important;
   border-radius: 10px !important;
 }
+
 .mat-mdc-select-panel .mat-option.mat-selected {
   color: inherit !important;
 }
-.mat-pseudo-checkbox-checked.mat-pseudo-checkbox-full, .mat-pseudo-checkbox-indeterminate.mat-pseudo-checkbox-full {
+
+.mat-pseudo-checkbox-checked.mat-pseudo-checkbox-full,
+.mat-pseudo-checkbox-indeterminate.mat-pseudo-checkbox-full {
   background: #3f51b5;
 }
-
-
-
-
+label{
+  font-weight: bold !important;
+}
+h1{
+  font-size: 2rem !important;
+  font-weight: 550 !important;
+  color: #068460 !important;
+  width: 100% !important;
+  text-align: center !important;
+  
+}

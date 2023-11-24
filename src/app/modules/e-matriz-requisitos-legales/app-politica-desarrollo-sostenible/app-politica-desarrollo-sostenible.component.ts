@@ -36,6 +36,7 @@ export class AppPoliticaDesarrolloSostenibleComponent implements OnInit {
   quienComunica: any = [];
   preguntasRespuestasArray: any[] = []
   minDate: string;
+  today: Date;
 
   constructor(
     private Message: ModalService,
@@ -56,10 +57,10 @@ export class AppPoliticaDesarrolloSostenibleComponent implements OnInit {
     this.usuario();
     this.getDataFor();
 
-    const today = new Date();
-    const year = today.getFullYear();
-    const month = today.getMonth() + 1; // Los meses comienzan en 0
-    const day = today.getDate();
+    this.today = new Date();
+    const year = this.today.getFullYear();
+    const month = this.today.getMonth() + 1; // Los meses comienzan en 0
+    const day = this.today.getDate();
 
     this.minDate = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
   }
@@ -301,9 +302,8 @@ export class AppPoliticaDesarrolloSostenibleComponent implements OnInit {
         indice++;
       });
     });
-    let messageshow = '';
     this.api.saveForms(preguntasRequest)
-      .subscribe((data: any) => {
+      .subscribe((data) => {
         if (data.StatusCode === 200) {
           //console.log(preguntasRequest);
           this.printCampos(this.dataGrilla);
@@ -320,14 +320,12 @@ export class AppPoliticaDesarrolloSostenibleComponent implements OnInit {
             //const title2 = "Registro exitoso";
             //const message2 = "El registro se ha realizado exitosamente";
             //this.Message.showModal(title2, message2);
-            messageshow = messageshow + ' y Planificacion';
+            //messageshow = messageshow + ' y Planificacion';
           })
-
+          console.log('si entraaa');
           this.disablePDF = false;
           this.botonCancelar = false;
           this.botonOcultar = true;
-          const title = "Operacion Exitosa.";
-          const message = data.Message;
           this.estructura = {
             establecimiento: {} as Pregunta,
             sostenibilidad: {} as Pregunta,
@@ -335,8 +333,11 @@ export class AppPoliticaDesarrolloSostenibleComponent implements OnInit {
             adicionales: [] as Adicional[]
           };
           this.getDataFor();
-          this.Message.showModal(title, message);
+          const title = "Registro exitoso";
+          const messageshow = "El registro se ha realizado exitosamente";
+          this.Message.showModal(title, messageshow);
         }
+        console.log('si entraaa');
       });
   }
 
@@ -527,6 +528,7 @@ export class AppPoliticaDesarrolloSostenibleComponent implements OnInit {
     } else {
       headerElement = { image: this.logo, fit: [50, 50], alignment: 'center', margin: [0, 3, 0, 3], rowSpan: 2 };
     }
+  
     const pdfDefinition: any = {
       header: {
         table: {

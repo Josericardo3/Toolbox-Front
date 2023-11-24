@@ -16,12 +16,12 @@
   </div>
   <mat-menu #menu="matMenu">
     <div class="responsi-menu" >
-      <label type="button" class="btn" title="Subir Foto" *ngIf="getRolValue() !== 4 && getRolValue() !==3 && getRolValue() !==5 && getRolValue() !==7">
+      <!--<label type="button" class="btn" title="Subir Foto" *ngIf="getRolValue() !== 4 && getRolValue() !==3 && getRolValue() !==5 && getRolValue() !==7">
         <span style="padding: 5px;"> <i class="fa-solid fa-camera" style="color: #fff;margin: 6px;"></i>Cargar Logo</span>
         <input type="file" accept="image/*" onclick="this.value = null"ngf-max-size="500KB"  (change)="fnSubirFoto($event)" style="display: none;" multiple>
       </label>  
       <app-app-avatar  (click)="crearNuevoRegistro=false; filter=false; crearNuevoRegistro= false" *ngIf="getRolValue() !== 4 && getRolValue() !==3 && getRolValue() !==5 && getRolValue() !==7" ></app-app-avatar>
-      <app-app-colaborador    (click)="fnNuevoRegistroCancelar()" *ngIf="getRolValue() !== 4 && getRolValue() !==3 && getRolValue() !==5 && getRolValue() !==7" ></app-app-colaborador>
+      <app-app-colaborador    (click)="fnNuevoRegistroCancelar()" *ngIf="getRolValue() !== 4 && getRolValue() !==3 && getRolValue() !==5 && getRolValue() !==7" ></app-app-colaborador>-->
       <button class="btn" (click)="fnNuevoRegistro()" *ngIf="getRolValue() !== 4  && getRolValue() !==5 && getRolValue() !==7" >
         <i class="fa-solid fa-plus" style="color: #fff;"></i>
         Actividad
@@ -33,12 +33,12 @@
     </div>
   </mat-menu>
   <div class="botones-cabecera" >
-    <label type="button" class="btn" title="Subir Foto" *ngIf="getRolValue() !== 4 && getRolValue() !==3 && getRolValue() !==5 && getRolValue() !==7">
+     <!--<label type="button" class="btn" title="Subir Foto" *ngIf="getRolValue() !== 4 && getRolValue() !==3 && getRolValue() !==5 && getRolValue() !==7">
       <span style="padding: 5px;"> <i class="fa-solid fa-camera" style="color: #fff;margin: 6px;"></i>Cargar Logo</span>
       <input type="file" accept="image/*" onclick="this.value = null"ngf-max-size="500KB"  (change)="fnSubirFoto($event)" style="display: none;" multiple>
     </label>  
     <app-app-avatar class="avatar-btn" (click)="crearNuevoRegistro=false; filter=false; crearNuevoRegistro= false" *ngIf="getRolValue() !== 4 &&  getRolValue() !==3 && getRolValue() !==5 && getRolValue() !==7" ></app-app-avatar>
-    <app-app-colaborador   class="colaborador-btn" (click)="fnNuevoRegistroCancelar()" *ngIf="getRolValue() !== 4 && getRolValue() !==3 && getRolValue() !==5 && getRolValue() !==7" ></app-app-colaborador>
+    <app-app-colaborador   class="colaborador-btn" (click)="fnNuevoRegistroCancelar()" *ngIf="getRolValue() !== 4 && getRolValue() !==3 && getRolValue() !==5 && getRolValue() !==7" ></app-app-colaborador> -->
     <button class="btn" (click)="fnNuevoRegistro()" *ngIf="getRolValue() !== 4  && getRolValue() !==5 && getRolValue() !==7" >
       <i class="fa-solid fa-plus" style="color: #fff;"></i>
       Actividad

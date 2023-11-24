@@ -1,13 +1,13 @@
 <app-app-header  class="indicadores-app-header" ></app-app-header>
 <app-modal></app-modal>
-<div class="container-fluid">
-  <div class="titulo">
-    <h1>Paquetes</h1>
-    <app-app-header-arrow-left
-      [redirectToDashboard]="true"
-    ></app-app-header-arrow-left>
+<app-app-header2></app-app-header2>
+<div class="container">
+  <div class=" header-container mt-0">
+    <app-app-header-arrow-left [redirectToDashboard]="true"></app-app-header-arrow-left>
+    <h1>PAQUETES</h1>
   </div>
 </div>
+<br>
 <div class="container-fluid">
   <div class="row">
     <div class="col-md-3">
@@ -24,40 +24,46 @@
       </button>
     </div>
     <div class="col-md-9">
-      <div class="col-md-2"></div>
-            <div class="col-md-6 col-sm-12 col-xs-12 text-center">
-             
-              <div class="form-group alinear-buscador" appearance="outline" >
-                <mat-icon
-                  class="search-icon hand-pointer"
-                  style="color: #068460"
-                  matPrefix
-                  (click)="obtenerTabla()"
-                  >search</mat-icon
-                >
-                
-                <input
-                  matInput
-                  [(ngModel)]="filter.search"
-                  class="form-control borde-input"
-                  
-                  placeholder="Ingresar nombre o descripcion del paquete"
-                />
-                
-              </div>
-            </div>
-      <div style="text-align: right" class="mb-4">
-        <button
-          class="btn-nuevo"
-          (click)="aniadirPaquete(1, undefined)"
-          data-toggle="modal"
-          data-target="#exampleModal"
-        >
-          Nuevo Paquete
-          <i class="fa-solid fa-plus" style="color: #fff"></i>
-        </button>
+      <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-6 col-sm-12 col-xs-12 text-center">
+         
+          <div class="form-group alinear-buscador" appearance="outline" >
+            <mat-icon
+              class="search-icon hand-pointer"
+              style="color: #068460"
+              matPrefix
+              (click)="obtenerTabla()"
+              >search</mat-icon
+            >
+            
+            <input
+              matInput
+              [(ngModel)]="filter.search"
+              class="form-control borde-input"
+              
+              placeholder="Ingresar nombre o descripcion del paquete"
+            />
+            
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div style="text-align: right" >
+            <button
+              class="btn-nuevo"
+              (click)="aniadirPaquete(1, undefined)"
+              data-toggle="modal"
+              data-target="#exampleModal"
+            >
+              Nuevo Paquete
+              <i class="fa-solid fa-plus" style="color: #fff"></i>
+            </button>
+          </div>
+        </div>
       </div>
-      <br />
+     
+     
+    
       <div class="mat-elevation-z8 table-responsive text-center mt-1">
         <table mat-table [dataSource]="dataSource">
           <ng-container matColumnDef="nombre">

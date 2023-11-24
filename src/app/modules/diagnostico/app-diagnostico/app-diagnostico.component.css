@@ -19,20 +19,7 @@
     flex-direction: row-reverse;
     margin: 2vh 0;
   }
-  h1{
-    width: 80vw;
-    font-family: 'Montserrat', sans-serif;
-    font-weight: bolder;
-    color: #068460;
-    text-align: center;
-    margin: 2vh 2vw;
-  }
-  .arrow{
-    align-self: flex-start;
-    margin: 0 4vw 0 -7vw;
-  }
 h3{
-    font-family: 'Montserrat';
     font-weight: bolder;
     font-size: 18px;
     line-height: 24px;
@@ -41,7 +28,6 @@ h3{
     margin: 5px 0 0 0;
 }
 h2{
-    font-family: 'Montserrat';
     font-weight: bolder;
     font-size: 16px;
     line-height: 24px;
@@ -52,7 +38,6 @@ h2{
 label,
 p{
     margin: 10px 0;
-    font-family: 'Work Sans', sans-serif;
     font-size: 16px;
     color: #000000;
     margin: 5px 0 5px 0;
@@ -68,11 +53,10 @@ input, textarea{
     margin: 5px 0 15px 0;
     padding: 5px;
     width: 60vw;
-    font-family: 'Work Sans', sans-serif;
     font-size: 14px;
     color: #000000;
 }
-.btn{
+/* .btn{
     margin: 6vh 3vw;
     height: 40px;
     width: 200px;
@@ -80,11 +64,10 @@ input, textarea{
     background-color: #068460;
     border-radius: 100px;
     color: #FFFFFF;
-    font-family: 'Work Sans', sans-serif;
     font-size: 16px;
     border: none;
     cursor: pointer;
-}
+} */
 
 .divBtn{
     display: flex;
@@ -94,39 +77,41 @@ input, textarea{
     display: flex;
     flex-direction: row;
     align-items: center;
+    justify-content: space-between;
+    width: 60vw;
 }
 .containerRadio {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    width: 16.5vw;
+    /* width: 20rem; */
+    margin: 0 1rem 0 0;
 }
 .radio{
     position: relative;
     display: flex;
     flex-direction: row;
     align-items:center;
-    font-family: 'Work Sans', sans-serif;
-    font-size: 16px;
-    width: 16vw;
+    /* font-size: 16px; */
+    /* width: max-content; */
     height: 20px !important;
     margin: 10px 5px 10px 0 !important;
-    padding: 3px;
+    /* padding: 3px; */
 }
-div.radio input[type=radio]{
-    position: relative;
+ div.radio input[type=radio]{
+    /* position: relative; */
     width: 20px;
     height: 20px;
-    -webkit-appearance: none;
+    /* -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
     border: 2px solid #068460;
     border-radius: 50%;
     outline: none;
-    cursor: pointer;
+    cursor: pointer; */
     margin: 10px 10px 10px 0 !important;
 }
-div.radio input[type=radio]:before {
+/*div.radio input[type=radio]:before {
     content: '';
     position: absolute;
     background-color: white;
@@ -141,6 +126,9 @@ div.radio input[type=radio]:before {
   }
   div.radio input[type=radio]:checked:before {
     background-color: #068460;
+  } */
+  .radioLabel{
+    font-weight: normal !important;
   }
 .inputContainer {
     background: #FFFFFF;
@@ -166,7 +154,6 @@ textarea:disabled{
 }
 .completarCamposLabel{
     color: tomato;
-    font-family: 'Work Sans', sans-serif;
     font-size: 17px;
     margin: 10px 0 5px 0;
 }
@@ -175,9 +162,10 @@ textarea:disabled{
 @media (max-width: 900px) {
     .cont{
         flex-direction: column;
+        align-items: flex-start;
     }    
     .containerRadio {
-        width: 26vw;
+        width: 20rem;
     }
     input[type=radio]{
         width: 20%;

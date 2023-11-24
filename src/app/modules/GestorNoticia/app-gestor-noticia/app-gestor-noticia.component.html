@@ -196,13 +196,13 @@
                     (onDeSelect)="onDeSelect($event, 'pst')" (onDeSelectAll)="onDeSelectAll($event, 'pst')"
                     style="margin-top:2vh;"></ng-multiselect-dropdown>
                 <input type="text" placeholder="Agregar un título" formControlName="tituloNoticia" id="tituloNoticia"
-                    style="margin-top:2vh;">
+                    style="margin-top:2vh;" maxlength="50">
                 <select id="CategoriaNoticia" name="CategoriaNoticia" formControlName="CategoriaNoticia" class="list-categorias">
                     <option value="">Seleccione una categoría</option>
                     <option *ngFor="let val of arrayCategorias; let i = index" [ngValue]="val.ID_CATEGORIA">{{val.DESCRIPCION}}</option>
                 </select>
                 <angular-editor placeholder="Agregar una descripción" formControlName="descripcionNoticia"
-                    id="descripcionNoticia" style="margin-top:2vh;"></angular-editor>
+                    id="descripcionNoticia" style="margin-top:2vh;" [[ngModel]]="ejemplo"></angular-editor>
                 <div class="containerFile" style="margin-top:2vh;">
                     <input type="file" accept="image/*" (change)="captureImage($event)" class="file" id="archivo"
                         formControlName="imagenNoticia" #archivo>
@@ -238,7 +238,7 @@
                 <input type="text" id="usuario" formControlName="usuario" [(ngModel)]="editarCaracteristica.NOMBRE"
                     [disabled]="true"><br>
                 <label for="">Título de la noticia</label>
-                <input type="text" id="titulo" formControlName="titulo" [(ngModel)]="editarCaracteristica.TITULO" ><br>
+                <input type="text" id="titulo" formControlName="titulo" [(ngModel)]="editarCaracteristica.TITULO" maxlength="50"><br>
                 <label for="">Descripción de la noticia</label>
                 <angular-editor placeholder="Agregar una descripción" formControlName="descripcion"
                     style="margin-top:2vh;" id="descripcion"

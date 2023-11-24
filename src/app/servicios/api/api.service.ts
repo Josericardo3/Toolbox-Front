@@ -32,6 +32,7 @@ export class ApiService {
 
   apiURL = environment.apiURL
   apiURLNuevo = environment.apiURLNuevo
+
   apiCHART = environment.apiChart
   constructor(private http: HttpClient) { }
   color: Object;
@@ -143,14 +144,16 @@ export class ApiService {
   }
 
   assignAdvisor(): Observable<any> {
-    var id = Number(window.localStorage.getItem('Id'));
+    const id = Number(window.localStorage.getItem('Id'));
     let assign = `${this.apiURLNuevo}/api/Asesor/usuarioPstxAsesor/${id}`
     return this.http.get<any>(assign)
   }
 
   getDiagnostico(): Observable<any> {
     const idNorma = JSON.parse(window.localStorage.getItem('idNormaSelected') || '[]');
-    let diagnostico = `${this.apiURLNuevo}/api/Diagnostico/Diagnostico/${idNorma}`
+    const idusuario = Number(window.localStorage.getItem('Id'));
+    const etapa = JSON.parse(window.localStorage.getItem('etapa'));
+    let diagnostico = `${this.apiURLNuevo}/api/Diagnostico/Diagnostico?idnorma=${idNorma}&idusuario=${idusuario}&etapa=${etapa}`
     return this.http.get<any>(diagnostico)
   }
 
@@ -267,6 +270,12 @@ export class ApiService {
     return this.http.get<any>(direccion)
   }
 
+  getUsuarioSettings() {
+    const id = localStorage.getItem('Id');
+    let direccion = `${this.apiURLNuevo}/api/Usuario/usserSettings/${id}`
+    return this.http.get<any>(direccion)
+  }
+
   getDatosHeaderMatriz(){
     const rnt = localStorage.getItem('rnt');
     let direccion = `${this.apiURLNuevo}/api/MatrizLegal/DataHeaderMatrizLegal?RNT=${rnt}`;
@@ -277,6 +286,15 @@ export class ApiService {
     let ley = `${this.apiURLNuevo}/api/MatrizLegal/DeleteLey?id=${id}`
     return this.http.delete<any>(ley)
   }
+
+  //Put usserSettings
+
+  putUsserSettings(request: any) {
+    const id = localStorage.getItem('Id');
+    let assign = `${this.apiURLNuevo}/api/Usuario/usserSettings/${id}`;
+    return this.http.put<any>(assign, request)
+  }
+
   //INSERTA EL RESUMEN EN LA MATRIZ CORRESPONDIENTE
   saveRespuestaMatrizResumen(request:any){
     const resumen = `${this.apiURLNuevo}/api/MatrizLegal/RespuestaMatrizLegalResumen`;
@@ -496,6 +514,23 @@ export class ApiService {
     let assign = `${this.apiURLNuevo}/api/Usuario/registrarEmpleadoPst?id=${request.idUsuario}&nombre=${request.nombre}&idcargo=${request.idcargo}&correo=${request.correo}&ENVIO_CORREO=${request.ENVIO_CORREO}`
     return this.http.post<any>(assign, null)
   }
+
+  obtenerUsuariosPstRoles() {
+    const rnt = localStorage.getItem('rnt');
+    let assign = `${this.apiURLNuevo}/api/Usuario/pstRoles/${rnt}`
+    return this.http.get<any>(assign)
+  }
+
+  deleteUsuarioPstRoles(ID_PST_ROLES : number){
+    let assign = `${this.apiURLNuevo}/api/Usuario/pstRoles/${ID_PST_ROLES}`
+    return this.http.delete<any>(assign)
+  }
+
+  updateUsuarioPstRoles(request : any){
+    let assign = `${this.apiURLNuevo}/api/Usuario/pstRoles`
+    return this.http.put<any>(assign,request)
+  }
+
   putAvatar(request: any) {
     const idUsuarioPst = window.localStorage.getItem('Id');
     let lista = `${this.apiURLNuevo}/api/Actividad/Avatar?idusuariopst=${idUsuarioPst}&idavatar=${request}`
@@ -540,7 +575,7 @@ export class ApiService {
     console.log(list);
     return this.http.get<any>(list)
   }
-  getFormsParteInteresada(){
+  getFormsParteInteresada() {
     const rnt = localStorage.getItem('rnt');
     const idUsuarioPst = window.localStorage.getItem('Id');
     let direccion = `${this.apiURLNuevo}/api/Formulario?ID_FORMULARIO=2&RNT=${rnt}&ID_USUARIO=${idUsuarioPst}`
@@ -551,6 +586,12 @@ export class ApiService {
     return this.http.post<any>(direccion, request)
   }
 
+  // // ENCUESTA
+
+  // getEncuestas() {
+  //   let lista = `${this.apiURLNuevo}/api/Encuesta`
+  //   return this.http.get<any>(lista)
+  // }
   //MONITORIZACIÓN
 
   getMonitorizacion() {
@@ -581,6 +622,21 @@ export class ApiService {
     let validate = `${this.apiURLNuevo}/api/Usuario/usuarioPermisosPorPerfil?idUsuarioPerfil=${idusuarioperfil}`
     let response = this.http.get<any>(validate);
     return response;
+  }
+
+  // MAPA DE PROCESOS
+  postMapaProceso(request: any) {
+    const direccion = `${this.apiURLNuevo}/api/MapaProceso/procesos`;
+    return this.http.post<any>(direccion, request)
+  }
+  getDataProceso() {
+    const rnt = localStorage.getItem('rnt');
+    let direccion = `${this.apiURLNuevo}/api/MapaProceso/procesos?Rnt=${rnt}`
+    return this.http.get<any>(direccion)
+  }
+  deleteProceso(id: number) {
+    let direccion = `${this.apiURLNuevo}/api/MapaProceso/proceso?id=${id}`
+    return this.http.delete<any>(direccion)
   }
   getEncuestas() {
     const idUsuarioPst = window.localStorage.getItem('Id');

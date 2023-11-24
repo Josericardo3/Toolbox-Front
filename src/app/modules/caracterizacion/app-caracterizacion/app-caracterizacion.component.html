@@ -1,13 +1,36 @@
 <app-app-header></app-app-header>
-<div class = "cointainer">
-<div class="titulo">
-    <h1>FORMULARIO DE CARACTERIZACIÓN DE {{ categoriaRNTValues }}</h1>
-    <app-app-header-arrow-left class="arrow"></app-app-header-arrow-left>
-</div>
-<form [formGroup]="formParent" class="controllerCaracterizacion" (ngSubmit)="saveForm()">
-  <p>Todos los campos con el asterisco (*) son obligatorios</p>
-    <div *ngFor="let campo of preguntasOrdenadas; let i = index" class="caracterizacion">
-      <!-- <div *ngFor="let campo of datos.campos; let i = index" class="caracterizacion"> -->
+  <div class="cointainer">
+    <app-app-header2></app-app-header2>
+  <div class="titulo header-container mt-0">
+      <h1>FORMULARIO DE CARACTERIZACIÓN DE {{ categoriaRNTValues }}</h1>
+      <app-app-header-arrow-left class="arrow"></app-app-header-arrow-left>
+  </div>
+  <form [formGroup]="formParent" class="controllerCaracterizacion">
+
+    <!-- /*BARRA DE STEPPER*/ -->
+    <mat-stepper labelPosition="bottom" [linear]="true" #stepper (selectionChange)="fnStepper($event)">
+      <mat-step  [stepControl]="valid1">
+        <form [formGroup]="">
+          <ng-template matStepLabel>Paso 1</ng-template>
+          <p class="parrafo">Todos los campos con el asterisco (*) son obligatorios</p>
+        </form>
+      </mat-step>
+      <mat-step  [stepControl]="valid2">
+        <form [formGroup]="">
+          <ng-template matStepLabel class="step-nombre">Paso 2</ng-template>
+          <p class="parrafo">Todos los campos con el asterisco (*) son obligatorios</p>
+        </form>
+      </mat-step>
+      <mat-step [stepControl]="valid3" >
+        <ng-template matStepLabel >Paso 3</ng-template>
+        <p class="parrafo">Todos los campos con el asterisco (*) son obligatorios</p>
+      </mat-step>
+    </mat-stepper>
+    
+    <!-- EL 1 PROCESO  -->
+    <div *ngIf="indexProceso== 0" class="cont-proceso1">
+      <div *ngFor="let campo of proceso1; let i = index" class="caracterizacion">
+        <!-- <div *ngFor="let campo of datos.campos; let i = index" class="caracterizacion"> -->
         <div *ngIf="campo.MENSAJE != 'dependencia' && campo.NOMBRE !== '¿Cuáles servicios de aventura presta?'">
           <label class="labelAll">{{ campo.NOMBRE }}
             <span *ngIf="campo.REQUERIDO == true && campo.VALUES == null" style="color: red;">*</span>
@@ -15,32 +38,32 @@
         </div>
         <div [ngSwitch]="campo.TIPO_DE_DATO">
           <div *ngIf="campo.MENSAJE != 'dependencia'">
-              <input *ngSwitchCase="'int'" type="number" [formControlName]="campo.NOMBRE" class="campo-nombre"
-              [id]="i" (ngModelChange)="capturarValor(i, $event, campo)" appNumeros 
-              [required]="campo.REQUERIDO">
+            <input *ngSwitchCase="'int'" type="number" [formControlName]="campo.NOMBRE" class="campo-nombre" [id]="i"
+              (ngModelChange)="capturarValor(i, $event, campo)" appNumeros [required]="campo.REQUERIDO">
 
-              <input *ngSwitchCase="'local_reference_id'" type="text" [formControlName]="campo.NOMBRE" 
-              [id]="i" (ngModelChange)="capturarValor(i, $event, campo)" [required]="campo.REQUERIDO">
-              
-              <input *ngSwitchCase="'string'" type="text" [formControlName]="campo.NOMBRE" [id]="i" 
+            <input *ngSwitchCase="'local_reference_id'" type="text" [formControlName]="campo.NOMBRE" [id]="i"
+              (ngModelChange)="capturarValor(i, $event, campo)" [required]="campo.REQUERIDO">
+
+            <input *ngSwitchCase="'string'" type="text" [formControlName]="campo.NOMBRE" [id]="i"
               (ngModelChange)="capturarValor(i, $event, campo)" [required]="campo.REQUERIDO">
           </div>
 
           <div *ngSwitchCase="'option'">
-            <div *ngIf="campo.MENSAJE === 'municipios'; else elseBlock"> 
+            <div *ngIf="campo.MENSAJE === 'municipios'; else elseBlock">
               <select [formControlName]="campo.NOMBRE" [id]="i" (change)="capturarValor(i, $event, campo)"
-              [(ngModel)]="selectedOption" (change)="printSelectedOption()" [required]="campo.REQUERIDO">
-                <option *ngFor="let municipio of municipios" [value]="municipio.nom_mpio">{{municipio.nom_mpio}}</option>
+                [(ngModel)]="selectedOption" (change)="printSelectedOption()" [required]="campo.REQUERIDO">
+                <option *ngFor="let municipio of municipios" [value]="municipio.nom_mpio">{{municipio.nom_mpio}}
+                </option>
               </select>
               <div class="selectedOption">
-                <label *ngFor="let option of selectedOptions; let i = index" class="labelX">{{ option }} 
+                <label *ngFor="let option of selectedOptions; let i = index" class="labelX">{{ option }}
                   <span><button class="x" (click)="selectedOptions.splice(i, 1)">X</button></span>
                 </label>
               </div>
-            </div> 
+            </div>
             <ng-template #elseBlock>
               <select [formControlName]="campo.NOMBRE" id="id-del-select" [id]="i" [required]="campo.REQUERIDO"
-              (ngModelChange)="capturarValor(i, $event, campo)">
+                (ngModelChange)="capturarValor(i, $event, campo)">
                 <option *ngFor="let opcion of campo.DESPLEGABLE" [value]="opcion.NOMBRE">{{opcion.NOMBRE}}</option>
               </select>
             </ng-template>
@@ -48,53 +71,57 @@
 
           <div *ngIf="categoriaRNTValues && categoriaRNTValues.includes('AGENCIAS DE VIAJES ')">
             <select *ngSwitchCase="'norma'" [formControlName]="campo.NOMBRE" [id]="i"
-            (ngModelChange)="capturarValor(i, $event, campo)" [required]="campo.REQUERIDO">
-              <option *ngFor="let opcion of dataNorma" [value]="opcion.ID_NORMA" 
-              [hidden]="!opcionesNorma.includes(opcion.ID_NORMA)" >{{ opcion.NORMA }}</option>
+              (ngModelChange)="capturarValor(i, $event, campo)" [required]="campo.REQUERIDO">
+              <option *ngFor="let opcion of dataNorma" [value]="opcion.ID_NORMA"
+                [hidden]="!opcionesNorma.includes(opcion.ID_NORMA)">{{ opcion.NORMA }}</option>
             </select>
           </div>
           <div *ngIf="categoriaRNTValues && !categoriaRNTValues.includes('AGENCIAS DE VIAJES ')">
             <select *ngSwitchCase="'norma'" [formControlName]="campo.NOMBRE" [id]="i"
-            (ngModelChange)="capturarValor(i, $event, campo)" [required]="campo.REQUERIDO">
+              (ngModelChange)="capturarValor(i, $event, campo)" [required]="campo.REQUERIDO">
               <option *ngFor="let opcion of dataNorma" [value]="opcion.ID_NORMA">{{ opcion.NORMA }}</option>
             </select>
           </div>
 
           <div *ngIf="campo.MENSAJE != 'dependencia' && campo.NOMBRE !== '¿Cuáles servicios de aventura presta?'">
             <div *ngSwitchCase="'checkbox'" class="containerCheck">
-              <div *ngFor="let opcion of campo.DESPLEGABLE; let j = index" class="check"> 
-                <input type="checkbox" [value]="opcion.ID_DESPLEGABLE_CARACTERIZACION" 
-                 [ngClass]="{'checkbox-required': (!campo.haySeleccionGrupoCheck && !campo.esCargarInicial),'checkbox-initialize': campo.haySeleccionGrupoCheck || campo.esCargarInicial}"
-                 (change)="opcion.check = $event.target['checked'];capturarValor(i, $event, campo)"
-                [id]="i" >{{opcion.NOMBRE}}
+              <div *ngFor="let opcion of campo.DESPLEGABLE; let j = index" class="check">
+                <input type="checkbox" [value]="opcion.ID_DESPLEGABLE_CARACTERIZACION"
+                  [ngClass]="{'checkbox-required': (!campo.haySeleccionGrupoCheck && !campo.esCargarInicial),'checkbox-initialize': campo.haySeleccionGrupoCheck || campo.esCargarInicial}"
+                  (change)="opcion.check = $event.target['checked'];capturarValor(i, $event, campo)"
+                  [id]="i">{{opcion.NOMBRE}}
                 <div>
                   <input type="text" *ngIf="habilitarInputPorCheck(opcion)" class="inputContainer"
-                  placeholder="Especifique detalladamente" [id]="i" (input)="opcion.valorUrl = $event.target['value']" 
-                  (change)="capturarValor(i, $event, campo)"
-                  [ngClass]="{'ng-invalid ng-touched': !validarCampoInput(opcion)}">
+                    placeholder="Especifique detalladamente" [id]="i" (input)="opcion.valorUrl = $event.target['value']"
+                    (change)="capturarValor(i, $event, campo)"
+                    [ngClass]="{'ng-invalid ng-touched': !validarCampoInput(opcion)}">
                 </div>
               </div>
             </div>
           </div>
 
           <div *ngSwitchCase="'radio'" class="containerRadio">
-            <div *ngFor="let opcion of campo.DESPLEGABLE" class="radio"> 
-              <div *ngIf="campo.NOMBRE === 'Cuenta con líder de sostenibilidad   (Si / No)'; else elseRadio" class="radio">
-                <input type="radio" [formControlName]="campo.NOMBRE" [value]="opcion.ID_DESPLEGABLE_CARACTERIZACION" [id]="i"   
-                (change)="campo.valorSeleccionadoRadio = opcion.NOMBRE; showSostenibilidad = (opcion.NOMBRE === 'SI');capturarValor(i, $event, campo);" [required]="campo.REQUERIDO"         
-                > {{opcion.NOMBRE}}
+            <div *ngFor="let opcion of campo.DESPLEGABLE" class="radio">
+              <div *ngIf="campo.NOMBRE === 'Cuenta con líder de sostenibilidad   (Si / No)'; else elseRadio"
+                class="radio">
+                <input type="radio" [formControlName]="campo.NOMBRE" [value]="opcion.ID_DESPLEGABLE_CARACTERIZACION"
+                  [id]="i"
+                  (change)="campo.valorSeleccionadoRadio = opcion.NOMBRE; showSostenibilidad = (opcion.NOMBRE === 'SI');capturarValor(i, $event, campo);"
+                  [required]="campo.REQUERIDO"> {{opcion.NOMBRE}}
               </div>
               <ng-template #elseRadio>
-                 <div *ngIf="campo.NOMBRE === '¿Presta servicios de aventura?'; else elseBlock2" class="radio">
-                  <input type="radio" [formControlName]="campo.NOMBRE" [value]="opcion.ID_DESPLEGABLE_CARACTERIZACION" [id]="i"   
-                  (change)="campo.valorSeleccionadoRadio = opcion.NOMBRE; showPrestaServiciosAventura = (opcion.NOMBRE === 'SI');onChangeAventuraSeleccionada(opcion.NOMBRE === 'SI');capturarValor(i, $event, campo);" [required]="campo.REQUERIDO"
-                  > {{opcion.NOMBRE}}
+                <div *ngIf="campo.NOMBRE === '¿Presta servicios de aventura?'; else elseBlock2" class="radio">
+                  <input type="radio" [formControlName]="campo.NOMBRE" [value]="opcion.ID_DESPLEGABLE_CARACTERIZACION"
+                    [id]="i"
+                    (change)="campo.valorSeleccionadoRadio = opcion.NOMBRE; showPrestaServiciosAventura = (opcion.NOMBRE === 'SI');onChangeAventuraSeleccionada(opcion.NOMBRE === 'SI');capturarValor(i, $event, campo);"
+                    [required]="campo.REQUERIDO"> {{opcion.NOMBRE}}
                 </div>
                 <ng-template #elseBlock2>
-                  <input type="radio" [formControlName]="campo.NOMBRE" [value]="opcion.ID_DESPLEGABLE_CARACTERIZACION" [id]="i"
-                  (change)="campo.valorSeleccionadoRadio = opcion.NOMBRE; showDependency = opcion.NOMBRE === 'SI'; capturarValor(i, $event, campo);" 
-                  [required]="campo.REQUERIDO">{{opcion.NOMBRE}}
-                </ng-template>             
+                  <input type="radio" [formControlName]="campo.NOMBRE" [value]="opcion.ID_DESPLEGABLE_CARACTERIZACION"
+                    [id]="i"
+                    (change)="campo.valorSeleccionadoRadio = opcion.NOMBRE; showDependency = opcion.NOMBRE === 'SI'; capturarValor(i, $event, campo);"
+                    [required]="campo.REQUERIDO">{{opcion.NOMBRE}}
+                </ng-template>
               </ng-template>
             </div>
           </div>
@@ -102,90 +129,461 @@
           <div *ngIf="showDependency && campo.MENSAJE === 'dependencia' && hasDepency(campo.DEPENDIENTE)">
             <div *ngFor="let item of campo.DESPLEGABLE">
               <input *ngSwitchCase="'string'" type="text" [formControlName]="campo.NOMBRE" [value]="item.nombre"
-              [id]="i" (ngModelChange)="capturarValor(i, $event, campo)">
+                [id]="i" (ngModelChange)="capturarValor(i, $event, campo)">
             </div>
             <div *ngSwitchCase="'checkbox'" class="containerCheck">
-              <label class="labelDependency">{{ campo.NOMBRE }} 
+              <label class="labelDependency">{{ campo.NOMBRE }}
                 <span *ngIf="campo.REQUERIDO == true && campo.VALUES == null" style="color: red;">*</span>
               </label>
-              <div *ngFor="let opcion of campo.DESPLEGABLE" class="check"> 
-                <input type="checkbox" [value]="opcion.ID_DESPLEGABLE_CARACTERIZACION" 
-                [ngClass]="{'checkbox-required':!campo.haySeleccionGrupoCheck &&  !campo.esCargarInicial ,'checkbox-initialize': campo.haySeleccionGrupoCheck   || campo.esCargarInicial }"
-                (change)="opcion.check = $event.target['checked'];  " 
-                [id]="i" (ngModelChange)="capturarValor(i, $event, campo)">          
+              <div *ngFor="let opcion of campo.DESPLEGABLE" class="check">
+                <input type="checkbox" [value]="opcion.ID_DESPLEGABLE_CARACTERIZACION"
+                  [ngClass]="{'checkbox-required':!campo.haySeleccionGrupoCheck &&  !campo.esCargarInicial ,'checkbox-initialize': campo.haySeleccionGrupoCheck   || campo.esCargarInicial }"
+                  (change)="opcion.check = $event.target['checked'];  " [id]="i"
+                  (ngModelChange)="capturarValor(i, $event, campo)">
                 {{opcion.nombre}}
                 <div>
-                  <input type="text" *ngIf="habilitarInputPorCheck(opcion)" class="inputContainer" 
-                  placeholder="Especifica otro" [id]="i" (ngModelChange)="capturarValor(i, $event, campo)"
-                  [ngClass]="{'ng-invalid ng-touched': !validarCampoInput(opcion)}"
-                  >
-                </div>
-               </div>
-            </div>
-          </div>   
-
-          <div *ngIf="showSostenibilidad && campo.MENSAJE === 'dependencia'">
-              <label class="labelDependency">{{ campo.NOMBRE }} </label>
-              <input *ngSwitchCase="'string'" type="text" [formControlName]="campo.NOMBRE"
-              [id]="i" (ngModelChange)="capturarValor(i, $event, campo)" [required]="campo.REQUERIDO">
-              
-              <input *ngSwitchCase="'int'" type="number" [formControlName]="campo.NOMBRE" class="campo-nombre"
-              [id]="i" (ngModelChange)="capturarValor(i, $event, campo)" [required]="campo.REQUERIDO">
-
-              <input *ngSwitchCase="'local_reference_id'" type="text" [formControlName]="campo.NOMBRE" 
-              [id]="i" (ngModelChange)="capturarValor(i, $event, campo)" [required]="campo.REQUERIDO">
-          </div>
-
-          <div *ngIf="showPrestaServiciosAventura && campo.MENSAJE === 'dependencia'" >
-            <div *ngSwitchCase="'checkbox'" class="containerCheck">
-              <label class="labelDependency">{{ campo.NOMBRE }} 
-                <span *ngIf="campo.REQUERIDO == true && campo.VALUES == null" style="color: red;">*</span> 
-              </label>
-              <!-- ¿Cuáles servicios de aventura presta? * -->
-              <div *ngFor="let opcion of campo.DESPLEGABLE; let j = index" class="check"> 
-                <input type="checkbox"  
-                       [value]="opcion.id"  
-                       [ngClass]="{'checkbox-required':!campo.haySeleccionGrupoCheck && !campo.esCargarInicial ,'checkbox-initialize': campo.haySeleccionGrupoCheck  || campo.esCargarInicial }"
-                       (change)="opcion.check = $event.target['checked'];capturarValor(i, $event, campo)" 
-                       [id]="i">{{opcion.NOMBRE}} 
-                <div>
-                  <input type="text"  *ngIf="habilitarInputPorCheck(opcion)" class="inputContainer" required
-                  placeholder="Especifica otro" [id]="i" (input)="opcion.valorUrl = $event.target['value']" 
-                   (change)="capturarValor(i, $event, campo)"
-                   [ngClass]="{'ng-invalid ng-touched': !validarCampoInput(opcion)}">
+                  <input type="text" *ngIf="habilitarInputPorCheck(opcion)" class="inputContainer"
+                    placeholder="Especifica otro" [id]="i" (ngModelChange)="capturarValor(i, $event, campo)"
+                    [ngClass]="{'ng-invalid ng-touched': !validarCampoInput(opcion)}">
                 </div>
               </div>
             </div>
           </div>
-        </div> 
 
-<!--      
+          <div *ngIf="showSostenibilidad && campo.MENSAJE === 'dependencia'">
+            <label class="labelDependency">{{ campo.NOMBRE }} </label>
+            <input *ngSwitchCase="'string'" type="text" [formControlName]="campo.NOMBRE" [id]="i"
+              (ngModelChange)="capturarValor(i, $event, campo)" [required]="campo.REQUERIDO">
+
+            <input *ngSwitchCase="'int'" type="number" [formControlName]="campo.NOMBRE" class="campo-nombre" [id]="i"
+              (ngModelChange)="capturarValor(i, $event, campo)" [required]="campo.REQUERIDO">
+
+            <input *ngSwitchCase="'local_reference_id'" type="text" [formControlName]="campo.NOMBRE" [id]="i"
+              (ngModelChange)="capturarValor(i, $event, campo)" [required]="campo.REQUERIDO">
+          </div>
+
+          <div *ngIf="showPrestaServiciosAventura && campo.MENSAJE === 'dependencia'">
+            <div *ngSwitchCase="'checkbox'" class="containerCheck">
+              <label class="labelDependency">{{ campo.NOMBRE }}
+                <span *ngIf="campo.REQUERIDO == true && campo.VALUES == null" style="color: red;">*</span>
+              </label>
+              <!-- ¿Cuáles servicios de aventura presta? * -->
+              <div *ngFor="let opcion of campo.DESPLEGABLE; let j = index" class="check">
+                <input type="checkbox" [value]="opcion.id"
+                  [ngClass]="{'checkbox-required':!campo.haySeleccionGrupoCheck && !campo.esCargarInicial ,'checkbox-initialize': campo.haySeleccionGrupoCheck  || campo.esCargarInicial }"
+                  (change)="opcion.check = $event.target['checked'];capturarValor(i, $event, campo)"
+                  [id]="i">{{opcion.NOMBRE}}
+                <div>
+                  <input type="text" *ngIf="habilitarInputPorCheck(opcion)" class="inputContainer" required
+                    placeholder="Especifica otro" [id]="i" (input)="opcion.valorUrl = $event.target['value']"
+                    (change)="capturarValor(i, $event, campo)"
+                    [ngClass]="{'ng-invalid ng-touched': !validarCampoInput(opcion)}">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!--      
         <div class="error-message" *ngIf="campo.REQUERIDO && ( 
           (formParent.controls[campo.NOMBRE]?.invalid && formParent.controls[campo.NOMBRE]?.touched && campo.TIPO_DE_DATO != 'checkbox')  ||
            (!existeUnoSeleccionado(campo) && ( campo.TIPO_DE_DATO=='checkbox' || campo.TIPO_DE_DATO=='radio') ) 
           )">
           <span style="color: tomato;">*Este campo es obligatorio</span>
         </div>  -->
-     
+
         <!-- <div class="error-message" *ngIf="formParent.get(campo.NOMBRE).hasError('required') && formParent.get(campo.NOMBRE).touched">
           <span style="color: tomato;">*Este campo es obligatorio</span>
         </div> -->
 
 
+      </div>
+      <div *ngIf="mostrarMensaje && !formParent.valid" class="completarCamposLabel">
+        Por favor complete todos los campos obligatorios.
+      </div>
+      <div>
+        <button class="btn-proceso" [disabled]="!llenadoPasoValido(1)" (click)="setState(valid1,false);guardarYContinuar('proceso1');">
+          Guardar y Continuar <i class="fa-regular fa-circle-right ms-2"></i>
+        </button>
+        <div class="col-md-12 mt-4">
+          <div class="text-center"
+            style="cursor: pointer; display: flex; justify-content: center; align-items: center; ">
+            <div class="d-flex align-items-center">
+              <i class="fa-regular fa-circle-left"
+                style="color: #575757; font-size: 16px; margin-left: 2px; cursor: pointer;"></i>
+              <span class="ms-2" style="color: #575757; font-weight: 550; font-size: 16px;">Cancelar</span>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-    <div *ngIf="mostrarMensaje && !formParent.valid" class="completarCamposLabel">
-      Por favor complete todos los campos obligatorios.
+
+    <!-- EL 2 PROCESO  -->
+    <div *ngIf="indexProceso== 1" class="cont-proceso2">
+      <div *ngFor="let campo of proceso2; let i = index" class="caracterizacion1">
+        <!-- <div *ngFor="let campo of datos.campos; let i = index" class="caracterizacion"> -->
+        <div *ngIf="campo.MENSAJE != 'dependencia' && campo.NOMBRE !== '¿Cuáles servicios de aventura presta?'">
+          <label class="labelAll">{{ campo.NOMBRE }}
+            <span *ngIf="campo.REQUERIDO == true && campo.VALUES == null" style="color: red;">*</span>
+          </label>
+        </div>
+        <div [ngSwitch]="campo.TIPO_DE_DATO">
+          <div *ngIf="campo.MENSAJE != 'dependencia'">
+            <input *ngSwitchCase="'int'" type="number" [formControlName]="campo.NOMBRE" class="campo-nombre" [id]="i"
+              (ngModelChange)="capturarValor(i, $event, campo)" appNumeros [required]="campo.REQUERIDO">
+
+            <input *ngSwitchCase="'local_reference_id'" type="text" [formControlName]="campo.NOMBRE" [id]="i"
+              (ngModelChange)="capturarValor(i, $event, campo)" [required]="campo.REQUERIDO">
+
+            <input *ngSwitchCase="'string'" type="text" [formControlName]="campo.NOMBRE" [id]="i"
+              (ngModelChange)="capturarValor(i, $event, campo)" [required]="campo.REQUERIDO">
+          </div>
+
+          <div *ngSwitchCase="'option'">
+            <div *ngIf="campo.MENSAJE === 'municipios'; else elseBlock">
+              <select [formControlName]="campo.NOMBRE" [id]="i" (change)="capturarValor(i, $event, campo)"
+                [(ngModel)]="selectedOption" (change)="printSelectedOption()" [required]="campo.REQUERIDO">
+                <option *ngFor="let municipio of municipios" [value]="municipio.nom_mpio">{{municipio.nom_mpio}}
+                </option>
+              </select>
+              <div class="selectedOption">
+                <label *ngFor="let option of selectedOptions; let i = index" class="labelX">{{ option }}
+                  <span><button class="x" (click)="selectedOptions.splice(i, 1)">X</button></span>
+                </label>
+              </div>
+            </div>
+            <ng-template #elseBlock>
+              <select [formControlName]="campo.NOMBRE" id="id-del-select" [id]="i" [required]="campo.REQUERIDO"
+                (ngModelChange)="capturarValor(i, $event, campo)">
+                <option *ngFor="let opcion of campo.DESPLEGABLE" [value]="opcion.NOMBRE">{{opcion.NOMBRE}}</option>
+              </select>
+            </ng-template>
+          </div>
+
+          <div *ngIf="categoriaRNTValues && categoriaRNTValues.includes('AGENCIAS DE VIAJES ')">
+            <select *ngSwitchCase="'norma'" [formControlName]="campo.NOMBRE" [id]="i"
+              (ngModelChange)="capturarValor(i, $event, campo)" [required]="campo.REQUERIDO">
+              <option *ngFor="let opcion of dataNorma" [value]="opcion.ID_NORMA"
+                [hidden]="!opcionesNorma.includes(opcion.ID_NORMA)">{{ opcion.NORMA }}</option>
+            </select>
+          </div>
+          <div *ngIf="categoriaRNTValues && !categoriaRNTValues.includes('AGENCIAS DE VIAJES ')">
+            <select *ngSwitchCase="'norma'" [formControlName]="campo.NOMBRE" [id]="i"
+              (ngModelChange)="capturarValor(i, $event, campo)" [required]="campo.REQUERIDO">
+              <option *ngFor="let opcion of dataNorma" [value]="opcion.ID_NORMA">{{ opcion.NORMA }}</option>
+            </select>
+          </div>
+
+          <div *ngIf="campo.MENSAJE != 'dependencia' && campo.NOMBRE !== '¿Cuáles servicios de aventura presta?'">
+            <div *ngSwitchCase="'checkbox'" class="containerCheck">
+              <div *ngFor="let opcion of campo.DESPLEGABLE; let j = index" class="check">
+                <input type="checkbox" [value]="opcion.ID_DESPLEGABLE_CARACTERIZACION"
+                  [ngClass]="{'checkbox-required': (!campo.haySeleccionGrupoCheck && !campo.esCargarInicial),'checkbox-initialize': campo.haySeleccionGrupoCheck || campo.esCargarInicial}"
+                  (change)="opcion.check = $event.target['checked'];capturarValor(i, $event, campo)"
+                  [id]="i">{{opcion.NOMBRE}}
+                <div>
+                  <input type="text" *ngIf="habilitarInputPorCheck(opcion)" class="inputContainer"
+                    placeholder="Especifique detalladamente" [id]="i" (input)="opcion.valorUrl = $event.target['value']"
+                    (change)="capturarValor(i, $event, campo)"
+                    [ngClass]="{'ng-invalid ng-touched': !validarCampoInput(opcion)}">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div *ngSwitchCase="'radio'" class="containerRadio">
+            <div *ngFor="let opcion of campo.DESPLEGABLE" class="radio">
+              <div *ngIf="campo.NOMBRE === 'Cuenta con líder de sostenibilidad   (Si / No)'; else elseRadio"
+                class="radio">
+                <input type="radio" [formControlName]="campo.NOMBRE" [value]="opcion.ID_DESPLEGABLE_CARACTERIZACION"
+                  [id]="i"
+                  (change)="campo.valorSeleccionadoRadio = opcion.NOMBRE; showSostenibilidad = (opcion.NOMBRE === 'SI');capturarValor(i, $event, campo);"
+                  [required]="campo.REQUERIDO"> {{opcion.NOMBRE}}
+              </div>
+              <ng-template #elseRadio>
+                <div *ngIf="campo.NOMBRE === '¿Presta servicios de aventura?'; else elseBlock2" class="radio">
+                  <input type="radio" [formControlName]="campo.NOMBRE" [value]="opcion.ID_DESPLEGABLE_CARACTERIZACION"
+                    [id]="i"
+                    (change)="campo.valorSeleccionadoRadio = opcion.NOMBRE; showPrestaServiciosAventura = (opcion.NOMBRE === 'SI');onChangeAventuraSeleccionada(opcion.NOMBRE === 'SI');capturarValor(i, $event, campo);"
+                    [required]="campo.REQUERIDO"> {{opcion.NOMBRE}}
+                </div>
+                <ng-template #elseBlock2>
+                  <input type="radio" [formControlName]="campo.NOMBRE" [value]="opcion.ID_DESPLEGABLE_CARACTERIZACION"
+                    [id]="i"
+                    (change)="campo.valorSeleccionadoRadio = opcion.NOMBRE; showDependency = opcion.NOMBRE === 'SI'; capturarValor(i, $event, campo);"
+                    [required]="campo.REQUERIDO">{{opcion.NOMBRE}}
+                </ng-template>
+              </ng-template>
+            </div>
+          </div>
+
+          <div *ngIf="showDependency && campo.MENSAJE === 'dependencia' && hasDepency(campo.DEPENDIENTE)">
+            <div *ngFor="let item of campo.DESPLEGABLE">
+              <input *ngSwitchCase="'string'" type="text" [formControlName]="campo.NOMBRE" [value]="item.nombre"
+                [id]="i" (ngModelChange)="capturarValor(i, $event, campo)">
+            </div>
+            <div *ngSwitchCase="'checkbox'" class="containerCheck">
+              <label class="labelDependency">{{ campo.NOMBRE }}
+                <span *ngIf="campo.REQUERIDO == true && campo.VALUES == null" style="color: red;">*</span>
+              </label>
+              <div *ngFor="let opcion of campo.DESPLEGABLE" class="check">
+                <input type="checkbox" [value]="opcion.ID_DESPLEGABLE_CARACTERIZACION"
+                  [ngClass]="{'checkbox-required':!campo.haySeleccionGrupoCheck &&  !campo.esCargarInicial ,'checkbox-initialize': campo.haySeleccionGrupoCheck   || campo.esCargarInicial }"
+                  (change)="opcion.check = $event.target['checked'];  " [id]="i"
+                  (ngModelChange)="capturarValor(i, $event, campo)">
+                {{opcion.nombre}}
+                <div>
+                  <input type="text" *ngIf="habilitarInputPorCheck(opcion)" class="inputContainer"
+                    placeholder="Especifica otro" [id]="i" (ngModelChange)="capturarValor(i, $event, campo)"
+                    [ngClass]="{'ng-invalid ng-touched': !validarCampoInput(opcion)}">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="showSostenibilidad && campo.MENSAJE === 'dependencia'">
+            <label class="labelDependency">{{ campo.NOMBRE }} </label>
+            <input *ngSwitchCase="'string'" type="text" [formControlName]="campo.NOMBRE" [id]="i"
+              (ngModelChange)="capturarValor(i, $event, campo)" [required]="campo.REQUERIDO">
+
+            <input *ngSwitchCase="'int'" type="number" [formControlName]="campo.NOMBRE" class="campo-nombre" [id]="i"
+              (ngModelChange)="capturarValor(i, $event, campo)" [required]="campo.REQUERIDO">
+
+            <input *ngSwitchCase="'local_reference_id'" type="text" [formControlName]="campo.NOMBRE" [id]="i"
+              (ngModelChange)="capturarValor(i, $event, campo)" [required]="campo.REQUERIDO">
+          </div>
+
+          <div *ngIf="showPrestaServiciosAventura && campo.MENSAJE === 'dependencia'">
+            <div *ngSwitchCase="'checkbox'" class="containerCheck">
+              <label class="labelDependency">{{ campo.NOMBRE }}
+                <span *ngIf="campo.REQUERIDO == true && campo.VALUES == null" style="color: red;">*</span>
+              </label>
+              <!-- ¿Cuáles servicios de aventura presta? * -->
+              <div *ngFor="let opcion of campo.DESPLEGABLE; let j = index" class="check">
+                <input type="checkbox" [value]="opcion.id"
+                  [ngClass]="{'checkbox-required':!campo.haySeleccionGrupoCheck && !campo.esCargarInicial ,'checkbox-initialize': campo.haySeleccionGrupoCheck  || campo.esCargarInicial }"
+                  (change)="opcion.check = $event.target['checked'];capturarValor(i, $event, campo)"
+                  [id]="i">{{opcion.NOMBRE}}
+                <div>
+                  <input type="text" *ngIf="habilitarInputPorCheck(opcion)" class="inputContainer" required
+                    placeholder="Especifica otro" [id]="i" (input)="opcion.valorUrl = $event.target['value']"
+                    (change)="capturarValor(i, $event, campo)"
+                    [ngClass]="{'ng-invalid ng-touched': !validarCampoInput(opcion)}">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!--      
+        <div class="error-message" *ngIf="campo.REQUERIDO && ( 
+          (formParent.controls[campo.NOMBRE]?.invalid && formParent.controls[campo.NOMBRE]?.touched && campo.TIPO_DE_DATO != 'checkbox')  ||
+           (!existeUnoSeleccionado(campo) && ( campo.TIPO_DE_DATO=='checkbox' || campo.TIPO_DE_DATO=='radio') ) 
+          )">
+          <span style="color: tomato;">*Este campo es obligatorio</span>
+        </div>  -->
+
+        <!-- <div class="error-message" *ngIf="formParent.get(campo.NOMBRE).hasError('required') && formParent.get(campo.NOMBRE).touched">
+          <span style="color: tomato;">*Este campo es obligatorio</span>
+        </div> -->
+
+
+      </div>
+      <div *ngIf="mostrarMensaje && !formParent.valid" class="completarCamposLabel">
+        Por favor complete todos los campos obligatorios.
+      </div>
+      <button class="btn-proceso" [disabled]="!llenadoPasoValido(2)"  (click)="setState(valid2,false);guardarYContinuar('proceso2');" >
+        Guardar y Continuar <i class="fa-regular fa-circle-right ms-2"></i>
+      </button>
     </div>
-    <div class="divBtn">     
+
+    <!-- EL 3 PROCESO  -->
+    <div *ngIf="indexProceso== 2" class="cont-proceso3">
+      <div *ngFor="let campo of proceso3; let i = index" class="caracterizacion">
+        <!-- <div *ngFor="let campo of datos.campos; let i = index" class="caracterizacion"> -->
+        <div *ngIf="campo.MENSAJE != 'dependencia' && campo.NOMBRE !== '¿Cuáles servicios de aventura presta?'">
+          <label class="labelAll">{{ campo.NOMBRE }}
+            <span *ngIf="campo.REQUERIDO == true && campo.VALUES == null" style="color: red;">*</span>
+          </label>
+        </div>
+        <div [ngSwitch]="campo.TIPO_DE_DATO">
+          <div *ngIf="campo.MENSAJE != 'dependencia'">
+            <input *ngSwitchCase="'int'" type="number" [formControlName]="campo.NOMBRE" class="campo-nombre" [id]="i"
+              (ngModelChange)="capturarValor(i, $event, campo)" appNumeros [required]="campo.REQUERIDO">
+
+            <input *ngSwitchCase="'local_reference_id'" type="text" [formControlName]="campo.NOMBRE" [id]="i"
+              (ngModelChange)="capturarValor(i, $event, campo)" [required]="campo.REQUERIDO">
+
+            <input *ngSwitchCase="'string'" type="text" [formControlName]="campo.NOMBRE" [id]="i"
+              (ngModelChange)="capturarValor(i, $event, campo)" [required]="campo.REQUERIDO">
+          </div>
+
+          <div *ngSwitchCase="'option'">
+            <div *ngIf="campo.MENSAJE === 'municipios'; else elseBlock">
+              <select [formControlName]="campo.NOMBRE" [id]="i" (change)="capturarValor(i, $event, campo)"
+                [(ngModel)]="selectedOption" (change)="printSelectedOption()" [required]="campo.REQUERIDO">
+                <option *ngFor="let municipio of municipios" [value]="municipio.nom_mpio">{{municipio.nom_mpio}}
+                </option>
+              </select>
+              <div class="selectedOption">
+                <label *ngFor="let option of selectedOptions; let i = index" class="labelX">{{ option }}
+                  <span><button class="x" (click)="selectedOptions.splice(i, 1)">X</button></span>
+                </label>
+              </div>
+            </div>
+            <ng-template #elseBlock>
+              <select [formControlName]="campo.NOMBRE" id="id-del-select" [id]="i" [required]="campo.REQUERIDO"
+                (ngModelChange)="capturarValor(i, $event, campo)">
+                <option *ngFor="let opcion of campo.DESPLEGABLE" [value]="opcion.NOMBRE">{{opcion.NOMBRE}}</option>
+              </select>
+            </ng-template>
+          </div>
+
+          <div *ngIf="categoriaRNTValues && categoriaRNTValues.includes('AGENCIAS DE VIAJES ')">
+            <select *ngSwitchCase="'norma'" [formControlName]="campo.NOMBRE" [id]="i"
+              (ngModelChange)="capturarValor(i, $event, campo)" [required]="campo.REQUERIDO">
+              <option *ngFor="let opcion of dataNorma" [value]="opcion.ID_NORMA"
+                [hidden]="!opcionesNorma.includes(opcion.ID_NORMA)">{{ opcion.NORMA }}</option>
+            </select>
+          </div>
+          <div *ngIf="categoriaRNTValues && !categoriaRNTValues.includes('AGENCIAS DE VIAJES ')">
+            <select *ngSwitchCase="'norma'" [formControlName]="campo.NOMBRE" [id]="i"
+              (ngModelChange)="capturarValor(i, $event, campo)" [required]="campo.REQUERIDO">
+              <option *ngFor="let opcion of dataNorma" [value]="opcion.ID_NORMA">{{ opcion.NORMA }}</option>
+            </select>
+          </div>
+
+          <div *ngIf="campo.MENSAJE != 'dependencia' && campo.NOMBRE !== '¿Cuáles servicios de aventura presta?'">
+            <div *ngSwitchCase="'checkbox'" class="containerCheck">
+              <div *ngFor="let opcion of campo.DESPLEGABLE; let j = index" class="check">
+                <input type="checkbox" [value]="opcion.ID_DESPLEGABLE_CARACTERIZACION"
+                  [ngClass]="{'checkbox-required': (!campo.haySeleccionGrupoCheck && !campo.esCargarInicial),'checkbox-initialize': campo.haySeleccionGrupoCheck || campo.esCargarInicial}"
+                  (change)="opcion.check = $event.target['checked'];capturarValor(i, $event, campo)"
+                  [id]="i">{{opcion.NOMBRE}}
+                <div>
+                  <input type="text" *ngIf="habilitarInputPorCheck(opcion)" class="inputContainer"
+                    placeholder="Especifique detalladamente" [id]="i" (input)="opcion.valorUrl = $event.target['value']"
+                    (change)="capturarValor(i, $event, campo)"
+                    [ngClass]="{'ng-invalid ng-touched': !validarCampoInput(opcion)}">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div *ngSwitchCase="'radio'" class="containerRadio">
+            <div *ngFor="let opcion of campo.DESPLEGABLE" class="radio">
+              <div *ngIf="campo.NOMBRE === 'Cuenta con líder de sostenibilidad   (Si / No)'; else elseRadio"
+                class="radio">
+                <input type="radio" [formControlName]="campo.NOMBRE" [value]="opcion.ID_DESPLEGABLE_CARACTERIZACION"
+                  [id]="i"
+                  (change)="campo.valorSeleccionadoRadio = opcion.NOMBRE; showSostenibilidad = (opcion.NOMBRE === 'SI');capturarValor(i, $event, campo);"
+                  [required]="campo.REQUERIDO"> {{opcion.NOMBRE}}
+              </div>
+              <ng-template #elseRadio>
+                <div *ngIf="campo.NOMBRE === '¿Presta servicios de aventura?'; else elseBlock2" class="radio">
+                  <input type="radio" [formControlName]="campo.NOMBRE" [value]="opcion.ID_DESPLEGABLE_CARACTERIZACION"
+                    [id]="i"
+                    (change)="campo.valorSeleccionadoRadio = opcion.NOMBRE; showPrestaServiciosAventura = (opcion.NOMBRE === 'SI');onChangeAventuraSeleccionada(opcion.NOMBRE === 'SI');capturarValor(i, $event, campo);"
+                    [required]="campo.REQUERIDO"> {{opcion.NOMBRE}}
+                </div>
+                <ng-template #elseBlock2>
+                  <input type="radio" [formControlName]="campo.NOMBRE" [value]="opcion.ID_DESPLEGABLE_CARACTERIZACION"
+                    [id]="i"
+                    (change)="campo.valorSeleccionadoRadio = opcion.NOMBRE; showDependency = opcion.NOMBRE === 'SI'; capturarValor(i, $event, campo);"
+                    [required]="campo.REQUERIDO">{{opcion.NOMBRE}}
+                </ng-template>
+              </ng-template>
+            </div>
+          </div>
+
+          <div *ngIf="showDependency && campo.MENSAJE === 'dependencia' && hasDepency(campo.DEPENDIENTE)">
+            <div *ngFor="let item of campo.DESPLEGABLE">
+              <input *ngSwitchCase="'string'" type="text" [formControlName]="campo.NOMBRE" [value]="item.nombre"
+                [id]="i" (ngModelChange)="capturarValor(i, $event, campo)">
+            </div>
+            <div *ngSwitchCase="'checkbox'" class="containerCheck">
+              <label class="labelDependency">{{ campo.NOMBRE }}
+                <span *ngIf="campo.REQUERIDO == true && campo.VALUES == null" style="color: red;">*</span>
+              </label>
+              <div *ngFor="let opcion of campo.DESPLEGABLE" class="check">
+                <input type="checkbox" [value]="opcion.ID_DESPLEGABLE_CARACTERIZACION"
+                  [ngClass]="{'checkbox-required':!campo.haySeleccionGrupoCheck &&  !campo.esCargarInicial ,'checkbox-initialize': campo.haySeleccionGrupoCheck   || campo.esCargarInicial }"
+                  (change)="opcion.check = $event.target['checked'];  " [id]="i"
+                  (ngModelChange)="capturarValor(i, $event, campo)">
+                {{opcion.nombre}}
+                <div>
+                  <input type="text" *ngIf="habilitarInputPorCheck(opcion)" class="inputContainer"
+                    placeholder="Especifica otro" [id]="i" (ngModelChange)="capturarValor(i, $event, campo)"
+                    [ngClass]="{'ng-invalid ng-touched': !validarCampoInput(opcion)}">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="showSostenibilidad && campo.MENSAJE === 'dependencia'">
+            <label class="labelDependency">{{ campo.NOMBRE }} </label>
+            <input *ngSwitchCase="'string'" type="text" [formControlName]="campo.NOMBRE" [id]="i"
+              (ngModelChange)="capturarValor(i, $event, campo)" [required]="campo.REQUERIDO">
+
+            <input *ngSwitchCase="'int'" type="number" [formControlName]="campo.NOMBRE" class="campo-nombre" [id]="i"
+              (ngModelChange)="capturarValor(i, $event, campo)" [required]="campo.REQUERIDO">
+
+            <input *ngSwitchCase="'local_reference_id'" type="text" [formControlName]="campo.NOMBRE" [id]="i"
+              (ngModelChange)="capturarValor(i, $event, campo)" [required]="campo.REQUERIDO">
+          </div>
+
+          <div *ngIf="showPrestaServiciosAventura && campo.MENSAJE === 'dependencia'">
+            <div *ngSwitchCase="'checkbox'" class="containerCheck">
+              <label class="labelDependency">{{ campo.NOMBRE }}
+                <span *ngIf="campo.REQUERIDO == true && campo.VALUES == null" style="color: red;">*</span>
+              </label>
+              <!-- ¿Cuáles servicios de aventura presta? * -->
+              <div *ngFor="let opcion of campo.DESPLEGABLE; let j = index" class="check">
+                <input type="checkbox" [value]="opcion.id"
+                  [ngClass]="{'checkbox-required':!campo.haySeleccionGrupoCheck && !campo.esCargarInicial ,'checkbox-initialize': campo.haySeleccionGrupoCheck  || campo.esCargarInicial }"
+                  (change)="opcion.check = $event.target['checked'];capturarValor(i, $event, campo)"
+                  [id]="i">{{opcion.NOMBRE}}
+                <div>
+                  <input type="text" *ngIf="habilitarInputPorCheck(opcion)" class="inputContainer" required
+                    placeholder="Especifica otro" [id]="i" (input)="opcion.valorUrl = $event.target['value']"
+                    (change)="capturarValor(i, $event, campo)"
+                    [ngClass]="{'ng-invalid ng-touched': !validarCampoInput(opcion)}">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!--      
+        <div class="error-message" *ngIf="campo.REQUERIDO && ( 
+          (formParent.controls[campo.NOMBRE]?.invalid && formParent.controls[campo.NOMBRE]?.touched && campo.TIPO_DE_DATO != 'checkbox')  ||
+           (!existeUnoSeleccionado(campo) && ( campo.TIPO_DE_DATO=='checkbox' || campo.TIPO_DE_DATO=='radio') ) 
+          )">
+          <span style="color: tomato;">*Este campo es obligatorio</span>
+        </div>  -->
+
+        <!-- <div class="error-message" *ngIf="formParent.get(campo.NOMBRE).hasError('required') && formParent.get(campo.NOMBRE).touched">
+          <span style="color: tomato;">*Este campo es obligatorio</span>
+        </div> -->
+
+
+      </div>
+      <div *ngIf="mostrarMensaje && !formParent.valid" class="completarCamposLabel">
+        Por favor complete todos los campos obligatorios.
+      </div>
+      <button type="button" class="btn-proceso" [disabled]="!formParent.valid" (click)="saveForm()">
+        Guardar y Continuar <i class="fa-regular fa-circle-right ms-2"></i>
+      </button>
+    </div>
+    <!-- <div class="divBtn">     
       <button type="submit" class="btn" [disabled]="!formParent.valid" >Guardar</button>
-    </div> 
-</form>
-<app-app-footer></app-app-footer>
-<app-modal></app-modal> 
-<ngx-spinner
-  bdColor="rgba(0, 0, 0, 0.5)"
-  size="small"
-  template="<img src='https://www.superiorlawncareusa.com/wp-content/uploads/2020/05/loading-gif-png-5.gif' width='50' height='50'/>"
->
-</ngx-spinner>
+    </div>  -->
+
+  </form>
+
+  <app-app-footer></app-app-footer>
 </div>
+  <app-modal></app-modal>
+  <ngx-spinner bdColor="rgba(0, 0, 0, 0.5)" size="small"
+    template="<img src='https://www.superiorlawncareusa.com/wp-content/uploads/2020/05/loading-gif-png-5.gif' width='50' height='50'/>">
+  </ngx-spinner>

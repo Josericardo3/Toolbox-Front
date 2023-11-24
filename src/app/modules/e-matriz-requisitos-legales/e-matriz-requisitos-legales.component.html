@@ -24,7 +24,7 @@
         <div *ngSwitchCase="'tab1'">
             <div class="containerTabActual">              
                 <div class="reporte">
-                    <button type="button" class="btnModificar" (click)="modificarBloquearCampos()" *ngIf="disabledModificar==false && getRolValue() !== 4 && getRolValue()!==5 && getRolValue()!==7" [disabled]="disabledEliminar == true ">Modificar Documento</button>
+                    <button type="button" class="btnModificar" (click)="modificarBloquearCampos()" *ngIf="disabledModificar==false && getRolValue() !== 4 && getRolValue()!==5 && getRolValue()!==7" [disabled]="disabledEliminar == true ">Modificar documento</button>
                     <button type="button" class="btnModificar" (click)="terminarModificarCampos()" *ngIf="disabledModificar==true">Terminar Modificación</button>
                     <button type="button" class="btnReporte" (click)="generateReporteTurismo()" [attr.disabled]="disabledModificar ? 'disabled' : null" [disabled]="disabledEliminar == true ">Visualizar documento</button>
                 </div>

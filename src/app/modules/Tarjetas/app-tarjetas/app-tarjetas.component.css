@@ -196,7 +196,7 @@
 .eliminarBoton{
     margin: 1vh 2vw 4vh 0 !important;
 }
-.btn{
+/* .btn{
     height: 40px;
     width: auto;
     padding: 10px;
@@ -208,7 +208,7 @@
     cursor: pointer;
     align-self: center;
     margin: 1vh 0 4vh 0;
-}
+} */
 .agregarEditar{
     border: none;
     background-color: transparent;

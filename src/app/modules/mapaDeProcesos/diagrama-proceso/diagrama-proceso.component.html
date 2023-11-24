@@ -1,0 +1,246 @@
+<div class="container">
+  <div class="card container">
+    <div class="container">
+      <p>
+        3. Lo(a) invitamos a que dibuje los procesos utilizando cuadros o rombos
+        o círculos, basado(a) en las respuestas del numeral 2 del presente
+        taller.
+      </p>
+      <div class="row">
+        <div class="col-md-4">
+          <div class="form-group">
+            <label for="slect">Seleccionar Proceso</label>
+            <mat-select
+              [(ngModel)]="model.DESCRIPCION_PROCESO"
+              name="laboratorioIds"
+              class="form-control my-panel-class"
+              (selectionChange)="cambio($event.value)"
+            >
+              <mat-option>
+                <ngx-mat-select-search
+                  (ngModelChange)="onSearchInputChange(2, $event)"
+                  [placeholderLabel]="'Buscar'"
+                  [formControl]="tipoFilterCtrl"
+                  [noEntriesFoundLabel]="'No se encontraron resultados'"
+                ></ngx-mat-select-search>
+              </mat-option>
+              <mat-optgroup
+                *ngFor="let group of filterProcesosGroup"
+                [label]="group.nombre"
+                [disabled]="group.disabled"
+                
+              >
+                <mat-option
+                  *ngFor="let item of group.procesos; let index = index"
+                  
+                  
+                  [value]="item.ID_MAPA_PROCESO"
+                id="laboratorioIds-{{ index }}-{{item.ID_MAPA_PROCESO}}"
+                >
+                  {{ item.DESCRIPCION_PROCESO }}
+                </mat-option>
+              </mat-optgroup>
+              <!--<mat-option>
+                <ngx-mat-select-search
+                  (ngModelChange)="onSearchInputChange(1, $event)"
+                  [placeholderLabel]="'Buscar'"
+                  [formControl]="tipoFilterCtrl"
+                  [noEntriesFoundLabel]="'No se encontraron resultados'"
+                ></ngx-mat-select-search>
+              </mat-option>
+              <mat-option
+                *ngFor="let item of filterProcesos; let index = index"
+                [value]="item.ID_MAPA_PROCESO"
+                id="laboratorioIds-{{ index }}"
+              >
+                {{ item.DESCRIPCION_PROCESO }}
+              </mat-option>-->
+            </mat-select>
+          </div>
+        </div>
+      </div>
+
+      <p>
+        Y ubíquelos en la sección que corresponda, es decir si es proceso
+        misional o estratégico o de apoyo:
+      </p>
+    </div>
+
+    <div class="chart">
+      <div class="row">
+        <div class="col-md-2 col-12 col-sm-12"></div>
+        <div class="col-md-8 col-12 col-sm-12">
+          <div
+            cdkDropList
+            id="1"
+            class="col-md-4 lista form-control display d-flex align-items-center justify-content-center"
+            #ln1="cdkDropList"
+            [cdkDropListData]="listNumbers1"
+            [cdkDropListConnectedTo]="[]"
+            (cdkDropListDropped)="drop($event)"
+            style="overflow: auto"
+          >
+            <div class="row">
+              <p
+                cdkDrag
+                class="m-2 bordes text-break text-center d-flex align-items-center justify-content-center col-md-4"
+                *ngFor="let n of listNumbers1"
+                style="cursor: pointer"
+                (click)="seleccionarProceso(n)"
+                id="{{ n.ID_MAPA_PROCESO }} -{{ n.id }}"
+                [ngClass]="{
+                  ellipse: n.id === 1,
+                  cuadrado: n.id === 2,
+                  circle: n.id === 3
+                }"
+              >
+                {{ n.DESCRIPCION_PROCESO }}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="tuContenido">
+        <div class="card-body mat-elevation-z8">
+          <div class="container" #contentToConvert>
+            <div class="row">
+              <div
+                class="col-md-1 col-1 col-sm-1 bordes d-flex align-items-center justify-content-center"
+              >
+                <label class="vertical-text"
+                  >NECESIDADES&nbsp;&nbsp;DE&nbsp;&nbsp;PARTES&nbsp;&nbsp;INTERESADAS
+                </label>
+              </div>
+              <div
+                class="col-md-1 col-1 col-sm-1 d-flex align-items-center justify-content-center"
+              >
+                <i class="fa-solid flecha fa-4x fa-arrow-right"></i>
+              </div>
+              <div class="col-md-8 col-7 col-xs-8 col-sm-8">
+                <div class="row">
+                  <div class="col-md-12 text-center">
+                    <h2>PROCESOS ESTRATÉGICOS DE MI EMPRESA</h2>
+                  </div>
+                  <div
+                    cdkDropList
+                    id="1"
+                    class="col-md-12 lista form-control display d-flex align-items-center justify-content-center"
+                    #ln2="cdkDropList"
+                    [cdkDropListData]="listNumbers2"
+                    [cdkDropListConnectedTo]="[ln1]"
+                    (cdkDropListDropped)="drop($event)"
+                    style="overflow: auto"
+                  >
+                    <div class="row">
+                      <p
+                        cdkDrag
+                        class="m-2 bordes text-break text-center d-flex align-items-center justify-content-center col-md-4"
+                        *ngFor="let n of listNumbers2"
+                        style="cursor: pointer"
+                        id="{{ n.ID_MAPA_PROCESO }} -{{ n.id }}"
+                        [ngClass]="{
+                          ellipse: n.id === 1,
+                          cuadrado: n.id === 2,
+                          circle: n.id === 3
+                        }"
+                      >
+                        {{ n.DESCRIPCION_PROCESO }}
+                      </p>
+                    </div>
+                  </div>
+                  <div class="col-md-12 text-center">
+                    <i class="fa-solid flecha m-1 fa-4x fa-arrows-up-down"></i>
+                  </div>
+                  <div class="col-md-12 text-center">
+                    <h2>PROCESOS MISIONALES DE MI EMPRESA</h2>
+                  </div>
+                  <div
+                    cdkDropList
+                    id="2"
+                    class="col-md-12 m-2 listatwo form-control display d-flex align-items-center justify-content-center"
+                    #ln3="cdkDropList"
+                    [cdkDropListData]="listNumbers3"
+                    [cdkDropListConnectedTo]="[ln1]"
+                    (cdkDropListDropped)="drop($event)"
+                    style="overflow: auto"
+                  >
+                    <div class="row">
+                      <p
+                        cdkDrag
+                        class="m-2 col-md-2 bordes text-break d-flex align-items-center justify-content-center text-center"
+                        *ngFor="let n of listNumbers3"
+                        style="cursor: pointer"
+                        id="{{ n.ID_MAPA_PROCESO }}-{{ n.id }}"
+                        [ngClass]="{
+                          ellipse: n.id === 1,
+                          cuadrado: n.id === 2,
+                          circle: n.id === 3
+                        }"
+                      >
+                        {{ n.DESCRIPCION_PROCESO }}
+                      </p>
+                    </div>
+                  </div>
+                  <div class="col-md-12 text-center">
+                    <i class="fa-solid m-1 flecha fa-4x fa-arrows-up-down"></i>
+                  </div>
+                  <div class="col-md-12 text-center">
+                    <h2>PROCESOS DE APOYO DE MI EMPRESA</h2>
+                  </div>
+                  <div
+                    cdkDropList
+                    id="3"
+                    class="col-md-12 listathree form-control display d-flex align-items-center justify-content-center"
+                    #ln4="cdkDropList"
+                    [cdkDropListData]="listNumbers4"
+                    [cdkDropListConnectedTo]="[ln1]"
+                    (cdkDropListDropped)="drop($event)"
+                    style="overflow: auto"
+                  >
+                    <p
+                      cdkDrag
+                      class="m-2 bordes text-center text-break d-flex align-items-center justify-content-center col-md-2"
+                      *ngFor="let n of listNumbers4"
+                      id="{{ n.ID_MAPA_PROCESO }} -{{ n.id }}"
+                      style="cursor: pointer"
+                      [ngClass]="{
+                        ellipse: n.id === 1,
+                        cuadrado: n.id === 2,
+                        circle: n.id === 3
+                      }"
+                    >
+                      {{ n.DESCRIPCION_PROCESO }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="col-md-1 col-1 col-sm-1 d-flex align-items-center justify-content-center"
+              >
+                <i class="fa-solid fa-4x fa-arrow-left flecha"></i>
+              </div>
+              <div
+                class="col-md-1 col-1 col-sm-1 bordes d-flex align-items-center justify-content-center barra"
+              >
+                <label class="vertical-text-t"
+                  >SATISFACCION&nbsp;&nbsp;DE&nbsp;&nbsp;PARTES&nbsp;&nbsp;INTERESADAS</label
+                >
+              </div>
+            </div>
+          </div>
+          <div class="d-flex justify-content-center align-items-center">
+            <button type="button" class="btnReporte" (click)="generarPDF()">
+              <i
+                class="fa-solid fa-download"
+                style="color: #ffffff; margin-right: 0.5vw"
+              ></i>
+              Descargar gráfico
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

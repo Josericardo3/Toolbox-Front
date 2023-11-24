@@ -80,42 +80,44 @@
                 <span class="dot-red"></span> <{{model.SEMAFORIZACION}}  <span style="color:red">MALO</span><br>
               </div>
               <h3>Variables</h3>
-            
+            <div class="row">
               <div
-                class="col-md-2"
-                *ngFor="let item of model.VARIABLES_EVALUACION,let index=index"
-              >
-              <div class="form-group" >
-                  <label for="item.ID_VARIABLE" class="truncated-text" [matTooltip]="item.NOMBRE">{{ item.NOMBRE }}</label>
+              class="col-md-2"
+              *ngFor="let item of model.VARIABLES_EVALUACION,let index=index"
+            >
+            <div class="form-group" >
+                <label for="item.ID_VARIABLE" class="truncated-text" [matTooltip]="item.NOMBRE">{{ item.NOMBRE }}</label>
+                
+                <input
+                  matInput
                   
-                  <input
-                    matInput
-                    
-                    [disabled]="item.NOMBRE=='100'?true:false"
-                    id="item.ID_VARIABLE_EVALUACION_INDICADOR-{{index}}"
-                    type="text"
-                    class="form-control "
-                    placeholder=""
-                    name="item.ID_VARIABLE_EVALUACION_INDICADOR-{{index}}"
-                    [(ngModel)]="item.VALOR"
-                    (ngModelChange)="submitForm(formObjetivo)"
-                  />
-              </div>
-               <!--
-                <mat-form-field appearance="outline" class="matForm">
-                  <mat-label>{{ item.NOMBRE }}</mat-label>
-                  <input
-                    matInput
-                    type="text"
-                    placeholder=""
-                    name="item.ID"
-                    [(ngModel)]="item.VALOR"
-                    (ngModelChange)="submitForm(formObjetivo)"
-                  />
-                </mat-form-field>
+                  [disabled]="item.NOMBRE=='100'?true:false"
+                  id="item.ID_VARIABLE_EVALUACION_INDICADOR-{{index}}"
+                  type="text"
+                  class="form-control "
+                  placeholder=""
+                  name="item.ID_VARIABLE_EVALUACION_INDICADOR-{{index}}"
+                  [(ngModel)]="item.VALOR"
+                  (ngModelChange)="submitForm(formObjetivo)"
+                />
+            </div>
+             <!--
+              <mat-form-field appearance="outline" class="matForm">
+                <mat-label>{{ item.NOMBRE }}</mat-label>
+                <input
+                  matInput
+                  type="text"
+                  placeholder=""
+                  name="item.ID"
+                  [(ngModel)]="item.VALOR"
+                  (ngModelChange)="submitForm(formObjetivo)"
+                />
+              </mat-form-field>
 
-               --> 
-              </div>
+             --> 
+            </div>
+            </div>
+              
               <div class="col-md-3">
                 <button
                   class="btn-nuevo"
@@ -130,87 +132,90 @@
               </div>
             </div>
             <div class="col-md-12">
-              <div class="col-md-3 ">
-                <div class="form-group">
-                  <label for="RESULTADO">Resultado</label>
-                  <input
-                    matInput
-                    disabled
-                    type="text"
-                    placeholder=""
-                    class="form-control"
-                    name="RESULTADO"
-                    [(ngModel)]="model.RESULTADO"
-                    (ngModelChange)="submitForm(formObjetivo)"
-                  />
+              <div class="row">
+                <div class="col-md-3 ">
+                  <div class="form-group">
+                    <label for="RESULTADO">Resultado</label>
+                    <input
+                      matInput
+                      disabled
+                      type="text"
+                      placeholder=""
+                      class="form-control"
+                      name="RESULTADO"
+                      [(ngModel)]="model.RESULTADO"
+                      (ngModelChange)="submitForm(formObjetivo)"
+                    />
+                  </div>
+                  <!--<mat-form-field appearance="outline" class="matForm">
+                    <mat-label>Resultado</mat-label>
+                    <input
+                      matInput
+                      disabled
+                      type="text"
+                      placeholder=""
+                      name="RESULTADO"
+                      [(ngModel)]="model.RESULTADO"
+                      (ngModelChange)="submitForm(formObjetivo)"
+                    />
+                  </mat-form-field>-->
                 </div>
-                <!--<mat-form-field appearance="outline" class="matForm">
-                  <mat-label>Resultado</mat-label>
-                  <input
-                    matInput
-                    disabled
-                    type="text"
-                    placeholder=""
-                    name="RESULTADO"
-                    [(ngModel)]="model.RESULTADO"
-                    (ngModelChange)="submitForm(formObjetivo)"
-                  />
-                </mat-form-field>-->
-              </div>
-              <div class="col-md-3 ">
-                <div class="from-group">
-                  <label for="META">Meta </label>
-                  <input
-                  matInput
-                  disabled
-                  type="text"
-                  placeholder=""
-                  name="META"
-                  [(ngModel)]="model.META"
-                  class="form-control"
-                  (ngModelChange)="submitForm(formObjetivo)"
-                />
-                </div>
-                <!--<mat-form-field appearance="outline" class="matForm">
-                  <mat-label>Meta (%)</mat-label>
-                  <input
+                <div class="col-md-3 ">
+                  <div class="from-group">
+                    <label for="META">Meta </label>
+                    <input
                     matInput
                     disabled
                     type="text"
                     placeholder=""
                     name="META"
                     [(ngModel)]="model.META"
+                    class="form-control"
                     (ngModelChange)="submitForm(formObjetivo)"
                   />
-                </mat-form-field>-->
-              </div>
-              <div class="col-md-3 interlineado">
-                <div class="form-group">
-                  <label for="ESTADO">Estado</label>
-                  <input
-                  matInput
-                  disabled
-                  type="text"
-                  placeholder=""
-                  name="ESTADO"
-                  [(ngModel)]="model.ESTADO"
-                  class="form-control"
-                  (ngModelChange)="submitForm(formObjetivo)"
-                />
+                  </div>
+                  <!--<mat-form-field appearance="outline" class="matForm">
+                    <mat-label>Meta (%)</mat-label>
+                    <input
+                      matInput
+                      disabled
+                      type="text"
+                      placeholder=""
+                      name="META"
+                      [(ngModel)]="model.META"
+                      (ngModelChange)="submitForm(formObjetivo)"
+                    />
+                  </mat-form-field>-->
                 </div>
-                <!--<mat-form-field appearance="outline" class="matForm">
-                  <mat-label>Estado </mat-label>
-                  <input
+                <div class="col-md-3 interlineado">
+                  <div class="form-group">
+                    <label for="ESTADO">Estado</label>
+                    <input
                     matInput
                     disabled
                     type="text"
                     placeholder=""
                     name="ESTADO"
                     [(ngModel)]="model.ESTADO"
+                    class="form-control"
                     (ngModelChange)="submitForm(formObjetivo)"
                   />
-                </mat-form-field>-->
+                  </div>
+                  <!--<mat-form-field appearance="outline" class="matForm">
+                    <mat-label>Estado </mat-label>
+                    <input
+                      matInput
+                      disabled
+                      type="text"
+                      placeholder=""
+                      name="ESTADO"
+                      [(ngModel)]="model.ESTADO"
+                      (ngModelChange)="submitForm(formObjetivo)"
+                    />
+                  </mat-form-field>-->
+                </div>
               </div>
+             
             </div>
           </div>
         </div>

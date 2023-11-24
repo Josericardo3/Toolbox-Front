@@ -1,12 +1,13 @@
-<div class="container">
-  <div class="logo">
-    <img class="logo-escudo"
-      src="../../../../assets/img-dashboard/logo.svg"
-      alt=""
-      (click)="Logo()"/>
-  </div>
-  <div class="container-pst" *ngIf="nombre && nombre.length > 0">
-    <p>{{nombre}}</p>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-12">
+     
+        <div class="container d-flex justify-content-between">
+          <img class="logo-escudo" src="../../../../assets/img-dashboard/logo.svg" alt="" (click)="Logo()"/>
+          <p *ngIf="esVisible" style="color: white; margin-top: 0.8rem; cursor: pointer;" routerLink="">Cerrar Sesión</p>
+        </div>
+     
+    </div>
+    
   </div>
 </div>
-

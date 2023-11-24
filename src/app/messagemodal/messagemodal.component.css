@@ -68,8 +68,8 @@ button:hover {
   font-size: 28px !important;
   font-weight: bold;
   font-family: 'Montserrat',sans-serif;
-  margin-top: 0px !important; 
-  margin-bottom: 0px !important;
+  margin: auto;
+ 
 }
 
 .p-mensaje{

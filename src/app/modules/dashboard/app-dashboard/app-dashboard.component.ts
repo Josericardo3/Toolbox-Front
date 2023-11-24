@@ -69,6 +69,7 @@ export class AppDashboardComponent implements OnInit {
   AccesoKpi : boolean = true; 
   AccesoMejora : boolean = true; 
   AccesoMonitorizacion : boolean = true;
+  AccesoSettings: boolean = true;
 //indicadores
 filter:any={ID_USUARIO:localStorage.getItem('Id')}
 resultInicadores: boolean = false;
@@ -132,9 +133,12 @@ listaIndicadores:any=[];
       if(dataPermiso[0].DIAGNOSTICO === "x"){
         this.AccesoDiagnostico = false;
       }
+      this.AccesoSettings=false;
+      console.log(dataPermiso); 
     });
     this.showModal = false;
     this.existingRoutes = this.router.config.map(route => route.path);
+    console.log(this.existingRoutes);
     //borrar
     let arrNormas = JSON.parse(localStorage.getItem('norma') || '[]');
     this.validateDiagnostico.subscribe((data: any) =>
@@ -390,7 +394,7 @@ listaIndicadores:any=[];
     this.router.navigate(['/listaDeVerificacion']);
   }
 
-  indexCard(index: any, dato: string) {
+  indexCard(index: any) {
     const request = {
       FK_ID_USUARIO: parseInt(localStorage.getItem("Id")),
       TIPO: "Modulo",
@@ -398,8 +402,7 @@ listaIndicadores:any=[];
     };
     this.ApiService.postMonitorizacionUsuario(request).subscribe();
     this.idNoticia = index;
-    this.dato = dato;
-    this.router.navigate(['/noticia'], { state: { idNoticia: this.idNoticia, dato: dato } });
+    this.router.navigate(['/noticia'], { state: { idNoticiaa: this.idNoticia } });
   }
 
   getActivities() {

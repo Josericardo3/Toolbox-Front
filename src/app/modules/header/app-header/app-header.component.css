@@ -1,24 +1,27 @@
 
-.container{
-  display: flex;
-  width: 100%;
-  /* background-color: var(--color-header, #3366CC); */
+.container-fluid{
+  /*display: flex;
+  width: 100%;*/
+ 
   background-color: #068460 ;
-  height: 50px;
-   /* //    #068460; */
-  /* position: fixed; */
-  /* margin-bottom: 0.1vh; */
-  top: 0;
-  /* z-index: 100; */
+  height: 3.125rem;
+   
+ /* top: 0;*/
+
   }
-.logo{
+.container{
+  height: 3.125rem;
+
+}
+/*.logo{
   padding: 12px 10px;
   cursor: pointer;
-}
+}*/
 .logo-escudo{
-  height: 32px;
+  height: 2rem;
+ margin-top: 0.5rem;
 }
-.container-pst{
+/*.container-pst{
   display: flex;
   flex-direction: column;
   margin: 2vh 0 0 73vw;
@@ -27,4 +30,4 @@
 p{
   font-size: 16px;
   color: white; 
-}
+}*/

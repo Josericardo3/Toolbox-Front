@@ -39,11 +39,11 @@ h1{
 .encabezado{
     display: flex;
     flex-direction: column;
-    margin: 1vh 2vw;
+    margin: 1rem 2.1rem;
     border-top: 10px solid #068460;
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.15);
     border-radius: 15px;
-    width: 70vw;
+    width: 50.3rem;
     height: auto;
     padding: 20px;
     background-color: white;
@@ -84,7 +84,7 @@ h1{
 .agregar:hover{
     font-weight: bolder;
 }
-.compartir,
+/* .compartir,
 .btn{
     margin: 1vh 3vw;
     height: 40px;
@@ -101,7 +101,7 @@ h1{
 .btn{
     align-self: center !important;
     margin: 1vh 0 4vh 0 !important;
-}
+} */
 .menu{
     margin: 6vh 0 0 0
 }

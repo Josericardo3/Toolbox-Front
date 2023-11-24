@@ -118,6 +118,7 @@ tr th {
     position: initial;
     justify-content: flex-start;
     overflow: auto;
+   
 }
 
 .modal-title,
@@ -353,6 +354,9 @@ span{
     font-size: large;
     margin-bottom: 20px;
     font-weight: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 /*CARD NOTICIA*/
 .card-noticia{
@@ -367,6 +371,7 @@ span{
     color: #000000;
     transition: all 300ms ease;
 }
+
 .card-noticia:hover{
     background-color: transparent;
     transform: scale(1.01);
@@ -378,6 +383,7 @@ span{
 .img-noticiaaa{
     width: 100%;
     height: auto;
+    max-height: 350px;
     border-radius: 10px 10px 0px 0px;
 }
 .categorias{
@@ -479,8 +485,9 @@ hr{
 
     /* MODAL DE AGREGAR NOTICIAS */
     .modal-content {
-        width: 56%;
-        height: auto
+        width: 90%;
+        max-height: 80vh;
+        overflow-y: auto;
     }
 
     .modal-title h2 {
@@ -527,7 +534,8 @@ hr{
     /* MODAL DE AGREGAR NOTICIAS */
     .modal-content {
         width: 80%;
-        height: auto
+        max-height: 80vh;
+        overflow-y: auto;
     }
 
     .modal-title h2 {
