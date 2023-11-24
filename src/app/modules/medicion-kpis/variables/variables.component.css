@@ -3,14 +3,7 @@
     flex-direction: row-reverse;
     margin: 2vh 0;
   }
-  h1 {
-    width: 100%;
-    font-family: "Montserrat", sans-serif;
-    font-weight: bolder;
-    color: #068460;
-    text-align: center;
-    margin: 2vh 0;
-  }
+
   /* pagination */
   .page-style {
     display: flex;
@@ -22,7 +15,7 @@
     margin: 10px;
     font-weight: 700;
     font-size: 14px;
-    font-family: "Work Sans", sans-serif;
+    
   }
   .container-label {
     display: flex;
@@ -84,7 +77,7 @@
   td,th
   {
     font-size: 16px; /* Ajusta el tamaño de fuente del input según tus necesidades */
-    font-family: 'Work Sans', sans-serif;
+   
   }
   th{
     font-weight: bold;
@@ -92,4 +85,30 @@
   label {
     color: black !important;
     font-size: 13px;
+    font-weight: bold;
+  }
+  .header-container {
+    display: flex;
+    justify-content: space-between; /* Espaciado entre los elementos dentro del contenedor */
+    align-items: center;
+   
+  }
+  
+  /* Media query para estilos responsivos */
+  @media (max-width: 767px) {
+    .header-container {
+      flex-direction: column; 
+      align-items: flex-start; 
+    }
+  
+    h1 {
+      order: 1;
+    }
+    .container{
+        padding-left: 0rem;
+    }
+    app-app-header-arrow-left {
+      order: 2; 
+      
+    }
   }

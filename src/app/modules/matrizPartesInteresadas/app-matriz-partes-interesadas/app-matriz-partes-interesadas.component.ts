@@ -62,8 +62,8 @@ export class AppMatrizPartesInteresadasComponent implements OnInit {
   result: boolean = false;
   //
   ParteInteresada: string;
-  Necesidad: string;
-  Expectativa: string;
+  Necesidad: string = '';
+  Expectativa: string = '';
   Cumplimiento: string;
   Observaciones: string;
   Acciones: string;
@@ -77,6 +77,7 @@ export class AppMatrizPartesInteresadasComponent implements OnInit {
   mejoraContinua: number;
   id_colab_number: number;
   minDate: string;
+  opt: string;
 
   constructor(
     private api: ApiService,
@@ -98,7 +99,8 @@ export class AppMatrizPartesInteresadasComponent implements OnInit {
       interesada: ['', Validators.required],
       necesidades: ['', Validators.required],
       otro: [""],
-      expectativas: ["", Validators.required]
+      expectativas: ["", Validators.required],
+      parteInteresadaName: ['']
     });
 
     this.fnListResponsible();
@@ -218,7 +220,6 @@ export class AppMatrizPartesInteresadasComponent implements OnInit {
   editarPlanificacion: any = {};
 
   fnMatrizPartesInteresadasEdit(indice: number) {
-    //this.caracteristicaIndice = indice;
     this.editarCaracteristica = {};
     Object.assign(this.editarCaracteristica, this.rolessArray[indice]);
     this.fnChangeEditarStatus(false);
@@ -227,8 +228,11 @@ export class AppMatrizPartesInteresadasComponent implements OnInit {
     else
       this.isChecked = false;
 
-    //console.log(this.isChecked);
-    //console.log(this.editarCaracteristica.MEJORA_CONTINUA);
+    //
+    if(this.editarCaracteristica.NECESIDAD != '-')
+      this.necesidadDatos=this.editarCaracteristica.NECESIDAD.split(';');
+    else
+      this.expectativasDatos=this.editarCaracteristica.EXPECTATIVA.split(';');
     //MEJORA CONTINUA
     this.ApiService.getMejoraContinua().subscribe((data) => {
       this.arrayMejora = data;
@@ -249,6 +253,11 @@ export class AppMatrizPartesInteresadasComponent implements OnInit {
     })
 
     this.form.get('interesada').disable();
+    if(this.editarCaracteristica.NECESIDAD!='-')
+      this.form.get('expectativas').disable();
+    else
+      this.form.get('necesidades').disable();
+
     this.option = this.editarCaracteristica.ESTADO_DE_CUMPLIMIENTO;
   }
   checkboxChange(event: any) {
@@ -259,7 +268,9 @@ export class AppMatrizPartesInteresadasComponent implements OnInit {
     else
       this.isChecked = false;
   }
+
   limpiarCampos() {
+    this.form.get('parteInteresadaName')?.setValue('');
     this.form.get('interesada')?.setValue('');
     this.form.get('necesidades')?.setValue('');
     this.form.get('expectativas')?.setValue('');
@@ -270,19 +281,48 @@ export class AppMatrizPartesInteresadasComponent implements OnInit {
     this.form.get('responsable')?.setValue('');
     this.form.get('estado')?.setValue('');
     this.form.get('interesada').enable();
+    this.form.get('necesidades').enable();
+    this.form.get('expectativas').enable();
     //this.editarCaracteristica.MEJORA_CONTINUA = 0;
     this.isChecked = false;
     this.fnChangeEditarStatus(true);
+    this.necesidadDatos=[];
+    this.expectativasDatos=[];
+    this.opt='';
   }
   fnUpdatePartesInteresadas() {
-    this.editarCaracteristica.NECESIDAD = this.form.get('necesidades').value;
-    this.editarCaracteristica.EXPECTATIVA = this.form.get('expectativas').value;
+    //this.editarCaracteristica.NECESIDAD = this.form.get('necesidades').value;
+    //this.editarCaracteristica.EXPECTATIVA = this.form.get('expectativas').value;
+    var concatNec = '';
+    if(this.editarCaracteristica.NECESIDAD != '-'){
+      for (let i = 0; i < this.necesidadDatos.length; i++) {
+        if(i == this.necesidadDatos.length - 1){
+          concatNec = concatNec + this.necesidadDatos[i];
+        }
+        else  {
+          concatNec = concatNec + this.necesidadDatos[i] + ';';
+        }
+      }
+      this.editarCaracteristica.NECESIDAD=concatNec;
+    }else{
+      for (let i = 0; i < this.expectativasDatos.length; i++) {
+        if(i == this.expectativasDatos.length - 1){
+          concatNec = concatNec + this.expectativasDatos[i];
+        }
+        else  {
+          concatNec = concatNec + this.expectativasDatos[i] + ';';
+        }
+      }
+      this.editarCaracteristica.EXPECTATIVA=concatNec;
+    }
+
     this.editarCaracteristica.ESTADO_DE_CUMPLIMIENTO = this.form.get('estadoCumplimiento').value;
     this.editarCaracteristica.OBSERVACIONES = this.form.get('observaciones').value;
     this.editarCaracteristica.ACCIONES_A_REALIZAR = this.form.get('acciones').value;
     this.editarCaracteristica.RESPONSABLE = this.form.get('responsable').value;
     this.editarCaracteristica.ESTADO_ABIERTO_CERRADO = this.form.get('estado').value;
     this.editarCaracteristica.FECHA_EJECUCION = this.form.get('fecha').value;
+    this.editarCaracteristica.PARTE_INTERESADA_DESC = this.form.get('parteInteresadaName').value;
     //UPDATE MEJORA CONTINUA
     this.editarMejora.DESCRIPCION = this.form.get('observaciones').value;
     //this.editarMejora.REQUISITOS = this.form.get('acciones').value;
@@ -303,27 +343,51 @@ export class AppMatrizPartesInteresadasComponent implements OnInit {
     this.ApiService.putMatrizPartesInteresadas(this.editarCaracteristica).subscribe((data) => {
       this.ApiService.putMejoraContinua(this.editarMejora).subscribe((data) => {
         let msg = "exitoso";
-        console.log(msg);
+        //console.log(msg);
       })
       this.ApiService.putActivities(this.editarPlanificacion).subscribe((data) => {
         let msg = "exitoso";
-        console.log(msg);
+        //console.log(msg);
       })
       const title = "Actualizacion exitosa.";
       const message = "El registro se ha realizado exitosamente";
       this.Message.showModal(title, message);
 
       this.fnConsultMatrizPartesInteresadas();
-      //this.caracteristicaIndice = -1;
       this.limpiarCampos();
       this.fnChangeEditarStatus(true);
+      this.necesidadDatos=[];
     })
   }
-
   addDatosParteInteresada() {
     this.ParteInteresada = this.form.get('interesada').value;
-    this.Necesidad = this.form.get('necesidades').value;
-    this.Expectativa = this.form.get('expectativas').value;
+    //this.Necesidad = this.form.get('necesidades').value;
+    //this.Expectativa = this.form.get('expectativas').value;
+    var concatNec = '';
+    if(this.opt=='Necesidad'){
+      for (let i = 0; i < this.necesidadDatos.length; i++) {
+        if(i == this.necesidadDatos.length - 1){
+          concatNec = concatNec + this.necesidadDatos[i];
+        }
+        else  {
+          concatNec = concatNec + this.necesidadDatos[i] + ';';
+        }
+      }
+      this.Necesidad=concatNec;
+      this.Expectativa='-';
+    }else{
+      for (let i = 0; i < this.expectativasDatos.length; i++) {
+        if(i == this.expectativasDatos.length - 1){
+          concatNec = concatNec + this.expectativasDatos[i];
+        }
+        else  {
+          concatNec = concatNec + this.expectativasDatos[i] + ';';
+        }
+      }
+      this.Necesidad='-';
+      this.Expectativa=concatNec;
+    }
+
     this.Cumplimiento = this.form.get('estadoCumplimiento').value;
     this.Observaciones = this.form.get('observaciones').value;
     this.Acciones = this.form.get('acciones').value;
@@ -376,9 +440,16 @@ export class AppMatrizPartesInteresadasComponent implements OnInit {
         FECHA_EJECUCION: this.Fecha,
         MEJORA_CONTINUA: Number(this.mejoraContinua),
         ID_RNT: String(localStorage.getItem("rnt")),
+        PARTE_INTERESADA_DESC: this.form.get('parteInteresadaName').value,
       }
       let messageshow = '';
-
+      let existeParte = false;
+      this.rolessArray.forEach(v=>{
+        if(v.PARTE_INTERESADA == this.ParteInteresada)
+          existeParte = true;
+      })
+      //console.log(existeParte);
+      if(existeParte==false){
       //AGREGAR A PLANIFICACIÓN postNewRecord
       if (this.option != 'cumple') {
         const request1 = {
@@ -432,6 +503,8 @@ export class AppMatrizPartesInteresadasComponent implements OnInit {
         this.Message.showModal(title, messageshow);
         this.pages = 1;
         this.currentPage = 1
+        this.necesidadDatos=[];
+        this.expectativasDatos=[];
       },
         (error) => {
           const title = "Error en la petición";
@@ -439,6 +512,12 @@ export class AppMatrizPartesInteresadasComponent implements OnInit {
           this.Message.showModal(title, message);
         }
       );
+      }
+      else{
+        const title = "Error en la petición";
+        const message = "La parte interesada ya se encuentra registrada y no se permite un doble registro. Seleccione otra opción.";
+        this.Message.showModal(title, message);
+      }
     }
     else {
       const title = "Registro no exitoso";
@@ -447,11 +526,70 @@ export class AppMatrizPartesInteresadasComponent implements OnInit {
     }
   }
 
+  necesidadDatos: any=[];
+  expectativasDatos: any=[];
+
+  addNecesidad(){
+    this.necesidadDatos.push(this.form.get('necesidades').value)
+    this.form.get('expectativas').disable();
+    this.opt='Necesidad';
+  }
+  addExpectativa(){
+    this.expectativasDatos.push(this.form.get('expectativas').value);
+    this.form.get('necesidades').disable();
+    this.opt='Expectativa';
+  }
+  editNec: string='';
+  editExp: string='';
+  isEditt: boolean=false;
+  editNecesidad(indice: number){
+    this.isEditt=true;
+    this.editNec=this.necesidadDatos[indice];
+    this.indiceEditt=indice;
+  }
+  editExpectativa(indice: number){
+    this.isEditt=true;
+    this.editExp=this.expectativasDatos[indice];
+    this.indiceEditt=indice;
+  }
+  indiceEditt: number;
+  editNecesidadFinal(){
+    let i=this.indiceEditt;
+    this.necesidadDatos[i]=this.form.get('necesidades').value;
+    this.editNec='';
+    this.indiceEditt=-1;
+    this.isEditt=false;
+  }
+  editExpectativaFinal(){
+    let i=this.indiceEditt;
+    this.expectativasDatos[i]=this.form.get('expectativas').value;
+    this.editExp='';
+    this.indiceEditt=-1;
+    this.isEditt=false;
+  }
+
+  deleteNecesidad(indice:number){
+    if (indice >= 0 && indice < this.necesidadDatos.length) {
+      this.necesidadDatos.splice(indice, 1);
+    }
+  }
+  deleteExpectativa(indice: number){
+    if (indice >= 0 && indice < this.expectativasDatos.length) {
+      this.expectativasDatos.splice(indice, 1);
+    }
+  }
+
   getOption() {
     this.option = this.form.get('estadoCumplimiento').value;
   }
 
   ID_RESPUESTA_FORMULARIOS: number;
+
+  transformDate(date: string): string {
+    // Supongamos que date está en formato MM/DD/YYYY
+    const [month, day, year] = date.split('/');
+    return `${day}-${month}-${year}`;
+  }
 
   generatePDF() {
     const getSelected = this.form.get('interesada')?.value;
@@ -494,14 +632,14 @@ export class AppMatrizPartesInteresadasComponent implements OnInit {
       }
     });
     const a = this.rolessArray.forEach(dato => { dato.ID_INTERESADA == 2 ? console.log(dato.NECESIDAD) : '-' });
-  
     var headerElement = {};
-      
+  
     if (this.logo == null) {
       headerElement = { text: this.logo, fit: [50, 50], alignment: 'center', margin: [0, 3, 0, 3], rowSpan: 2 };
     } else {
-      headerElement = { image: this.logo, fit: [50, 50], alignment: 'center', margin: [0, 3, 0, 3], rowSpan: 2 };
+      headerElement =  { image: this.logo, fit: [50, 50], alignment: 'center', margin: [0, 3, 0, 3], rowSpan: 2 };
     }
+  
     const pdfDefinition: any = {
       header: {
         table: {
@@ -530,14 +668,15 @@ export class AppMatrizPartesInteresadasComponent implements OnInit {
         height: 1123,
       },
       pageOrientation: 'landscape',
-      pageMargins: [45, 80, 45, 80],
+      pageMargins: [15, 80, 15, 80],
       content: [
         {
           table: {
-            widths: ['auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto'],
+            widths: ['auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto','auto'],
             body: [
               [
                 { text: 'PARTE INTERESADA PERTENECIENTE AL SGS', style: ['tituloTabla'], margin: [0, 46, 0, 46] },
+                { text: 'DESCRIPCIÓN PARTE INTERESADA', style: ['tituloTabla'], margin: [0, 46, 0, 46] },
                 { text: 'NECESIDAD(ES) DE LA PARTE INTERESADA', style: ['tituloTabla'], margin: [0, 45, 0, 45] },
                 { text: 'EXPECTATIVA(S) DE LA PARTE INTERESADA', style: ['tituloTabla'], margin: [0, 45, 0, 45] },
                 { text: 'LA ORGANIZACIÓN CUMPLE CON LOS REQUISITOS DE LAS PARTES INTERESADAS (C/ NC / CP)', style: ['tituloTabla'], margin: [0, 15, 0, 15] },
@@ -550,122 +689,132 @@ export class AppMatrizPartesInteresadasComponent implements OnInit {
               ],
               [
                 { text: 'PROVEEDOR(ES)', style: ['tituloTabla'] },
-                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 1).map(dato => dato.NECESIDAD) || '-' },
-                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 1).map(dato => dato.EXPECTATIVA) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 1).map(dato => dato.PARTE_INTERESADA_DESC) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 1).map(dato => dato.NECESIDAD.replace(/;/g, "\n")) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 1).map(dato => dato.EXPECTATIVA.replace(/;/g, "\n")) || '-' },
                 { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 1).map(dato => dato.ESTADO_DE_CUMPLIMIENTO) || '-' },
                 { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 1).map(dato => dato.OBSERVACIONES) || '-' },
                 { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 1).map(dato => dato.ACCIONES_A_REALIZAR) || '-' },
                 { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 1).map(dato => dato.FECHA_EJECUCION) || '-' },
                 { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 1).map(dato => dato.RESPONSABLE) || '-' },
-                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 1).map(dato => dato.FECHA_REGISTRO.split(' ')[0]) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 1).map(dato => this.transformDate(dato.FECHA_REGISTRO.split(' ')[0])) || '-' },
                 { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 1).map(dato => dato.ESTADO_ABIERTO_CERRADO) || '-' },
               ],
               [
                 { text: 'ORGANIZACIONES GUBERNAMENTALES', style: ['tituloTabla'] },
-                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 2).map(dato => dato.NECESIDAD) || '-' },
-                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 2).map(dato => dato.EXPECTATIVA) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 2).map(dato => dato.PARTE_INTERESADA_DESC) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 2).map(dato => dato.NECESIDAD.replace(/;/g, "\n")) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 2).map(dato => dato.EXPECTATIVA.replace(/;/g, "\n")) || '-' },
                 { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 2).map(dato => dato.ESTADO_DE_CUMPLIMIENTO) || '-' },
                 { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 2).map(dato => dato.OBSERVACIONES) || '-' },
                 { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 2).map(dato => dato.ACCIONES_A_REALIZAR) || '-' },
                 { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 2).map(dato => dato.FECHA_EJECUCION) || '-' },
                 { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 2).map(dato => dato.RESPONSABLE) || '-' },
-                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 2).map(dato => dato.FECHA_REGISTRO.split(' ')[0]) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 2).map(dato => this.transformDate(dato.FECHA_REGISTRO.split(' ')[0])) || '-' },
                 { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 2).map(dato => dato.ESTADO_ABIERTO_CERRADO) || '-' },
               ],
               [
                 { text: 'ORGANIZACIONES NO GUBERNAMENTALES', style: ['tituloTabla'] },
-                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 3).map(dato => dato.NECESIDAD) || '-' },
-                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 3).map(dato => dato.EXPECTATIVA) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 3).map(dato => dato.PARTE_INTERESADA_DESC) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 3).map(dato => dato.NECESIDAD.replace(/;/g, "\n")) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 3).map(dato => dato.EXPECTATIVA.replace(/;/g, "\n")) || '-' },
                 { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 3).map(dato => dato.ESTADO_DE_CUMPLIMIENTO) || '-' },
                 { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 3).map(dato => dato.OBSERVACIONES) || '-' },
                 { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 3).map(dato => dato.ACCIONES_A_REALIZAR) || '-' },
                 { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 3).map(dato => dato.FECHA_EJECUCION) || '-' },
                 { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 3).map(dato => dato.RESPONSABLE) || '-' },
-                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 3).map(dato => dato.FECHA_REGISTRO.split(' ')[0]) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 3).map(dato => this.transformDate(dato.FECHA_REGISTRO.split(' ')[0])) || '-' },
                 { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 3).map(dato => dato.ESTADO_ABIERTO_CERRADO) || '-' },
               ],
               [
                 { text: 'CLIENTE(S)', style: ['tituloTabla'] },
-                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 4).map(dato => dato.NECESIDAD) || '-' },
-                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 4).map(dato => dato.EXPECTATIVA) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 4).map(dato => dato.PARTE_INTERESADA_DESC) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 4).map(dato => dato.NECESIDAD.replace(/;/g, "\n")) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 4).map(dato => dato.EXPECTATIVA.replace(/;/g, "\n")) || '-' },
                 { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 4).map(dato => dato.ESTADO_DE_CUMPLIMIENTO) || '-' },
                 { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 4).map(dato => dato.OBSERVACIONES) || '-' },
                 { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 4).map(dato => dato.ACCIONES_A_REALIZAR) || '-' },
                 { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 4).map(dato => dato.FECHA_EJECUCION) || '-' },
                 { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 4).map(dato => dato.RESPONSABLE) || '-' },
-                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 4).map(dato => dato.FECHA_REGISTRO.split(' ')[0]) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 4).map(dato => this.transformDate(dato.FECHA_REGISTRO.split(' ')[0])) || '-' },
                 { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 4).map(dato => dato.ESTADO_ABIERTO_CERRADO) || '-' },
               ],
               [
                 { text: 'HUÉSPEDES', style: ['tituloTabla'] },
-                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 5).map(dato => dato.NECESIDAD) || '-' },
-                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 5).map(dato => dato.EXPECTATIVA) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 5).map(dato => dato.PARTE_INTERESADA_DESC) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 5).map(dato => dato.NECESIDAD.replace(/;/g, "\n")) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 5).map(dato => dato.EXPECTATIVA.replace(/;/g, "\n")) || '-' },
                 { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 5).map(dato => dato.ESTADO_DE_CUMPLIMIENTO) || '-' },
                 { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 5).map(dato => dato.OBSERVACIONES) || '-' },
                 { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 5).map(dato => dato.ACCIONES_A_REALIZAR) || '-' },
                 { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 5).map(dato => dato.FECHA_EJECUCION) || '-' },
                 { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 5).map(dato => dato.RESPONSABLE) || '-' },
-                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 5).map(dato => dato.FECHA_REGISTRO.split(' ')[0]) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 5).map(dato => this.transformDate(dato.FECHA_REGISTRO.split(' ')[0])) || '-' },
                 { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 5).map(dato => dato.ESTADO_ABIERTO_CERRADO) || '-' },
               ],
               [
                 { text: 'COLABORADORES (Personal directo y/o indirecto)', style: ['tituloTabla'] },
-                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 6).map(dato => dato.NECESIDAD) || '-' },
-                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 6).map(dato => dato.EXPECTATIVA) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 6).map(dato => dato.PARTE_INTERESADA_DESC) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 6).map(dato => dato.NECESIDAD.replace(/;/g, "\n")) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 6).map(dato => dato.EXPECTATIVA.replace(/;/g, "\n")) || '-' },
                 { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 6).map(dato => dato.ESTADO_DE_CUMPLIMIENTO) || '-' },
                 { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 6).map(dato => dato.OBSERVACIONES) || '-' },
                 { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 6).map(dato => dato.ACCIONES_A_REALIZAR) || '-' },
                 { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 6).map(dato => dato.FECHA_EJECUCION) || '-' },
                 { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 6).map(dato => dato.RESPONSABLE) || '-' },
-                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 6).map(dato => dato.FECHA_REGISTRO.split(' ')[0]) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 6).map(dato => this.transformDate(dato.FECHA_REGISTRO.split(' ')[0])) || '-' },
                 { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 6).map(dato => dato.ESTADO_ABIERTO_CERRADO) || '-' },
               ],
               [
                 { text: 'ACCIONISTAS O PROPIETARIOS', style: ['tituloTabla'] },
-                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 7).map(dato => dato.NECESIDAD) || '-' },
-                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 7).map(dato => dato.EXPECTATIVA) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 7).map(dato => dato.PARTE_INTERESADA_DESC) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 7).map(dato => dato.NECESIDAD.replace(/;/g, "\n")) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 7).map(dato => dato.EXPECTATIVA.replace(/;/g, "\n")) || '-' },
                 { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 7).map(dato => dato.ESTADO_DE_CUMPLIMIENTO) || '-' },
                 { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 7).map(dato => dato.OBSERVACIONES) || '-' },
                 { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 7).map(dato => dato.ACCIONES_A_REALIZAR) || '-' },
                 { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 7).map(dato => dato.FECHA_EJECUCION) || '-' },
                 { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 7).map(dato => dato.RESPONSABLE) || '-' },
-                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 7).map(dato => dato.FECHA_REGISTRO.split(' ')[0]) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 7).map(dato => this.transformDate(dato.FECHA_REGISTRO.split(' ')[0])) || '-' },
                 { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 7).map(dato => dato.ESTADO_ABIERTO_CERRADO) || '-' },
               ],
               [
                 { text: 'COMUNIDAD ', style: ['tituloTabla'] },
-                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 8).map(dato => dato.NECESIDAD) || '-' },
-                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 8).map(dato => dato.EXPECTATIVA) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 8).map(dato => dato.PARTE_INTERESADA_DESC) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 8).map(dato => dato.NECESIDAD.replace(/;/g, "\n")) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 8).map(dato => dato.EXPECTATIVA.replace(/;/g, "\n")) || '-' },
                 { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 8).map(dato => dato.ESTADO_DE_CUMPLIMIENTO) || '-' },
                 { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 8).map(dato => dato.OBSERVACIONES) || '-' },
                 { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 8).map(dato => dato.ACCIONES_A_REALIZAR) || '-' },
                 { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 8).map(dato => dato.FECHA_EJECUCION) || '-' },
                 { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 8).map(dato => dato.RESPONSABLE) || '-' },
-                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 8).map(dato => dato.FECHA_REGISTRO.split(' ')[0]) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 8).map(dato => this.transformDate(dato.FECHA_REGISTRO.split(' ')[0])) || '-' },
                 { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 8).map(dato => dato.ESTADO_ABIERTO_CERRADO) || '-' },
               ],
               [
                 { text: 'COMUNIDAD VULNERABLE', style: ['tituloTabla'] },
-                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 9).map(dato => dato.NECESIDAD) || '-' },
-                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 9).map(dato => dato.EXPECTATIVA) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 9).map(dato => dato.PARTE_INTERESADA_DESC) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 9).map(dato => dato.NECESIDAD.replace(/;/g, "\n")) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 9).map(dato => dato.EXPECTATIVA.replace(/;/g, "\n")) || '-' },
                 { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 9).map(dato => dato.ESTADO_DE_CUMPLIMIENTO) || '-' },
                 { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 9).map(dato => dato.OBSERVACIONES) || '-' },
                 { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 9).map(dato => dato.ACCIONES_A_REALIZAR) || '-' },
                 { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 9).map(dato => dato.FECHA_EJECUCION) || '-' },
                 { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 9).map(dato => dato.RESPONSABLE) || '-' },
-                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 9).map(dato => dato.FECHA_REGISTRO.split(' ')[0]) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 9).map(dato => this.transformDate(dato.FECHA_REGISTRO.split(' ')[0])) || '-' },
                 { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 9).map(dato => dato.ESTADO_ABIERTO_CERRADO) || '-' },
               ],
               [
                 { text: 'ATRACTIVOS TURÍSTICOS', style: ['tituloTabla'] },
-                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 10).map(dato => dato.NECESIDAD) || '-' },
-                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 10).map(dato => dato.EXPECTATIVA) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 10).map(dato => dato.PARTE_INTERESADA_DESC) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 10).map(dato => dato.NECESIDAD.replace(/;/g, "\n")) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 10).map(dato => dato.EXPECTATIVA.replace(/;/g, "\n")) || '-' },
                 { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 10).map(dato => dato.ESTADO_DE_CUMPLIMIENTO) || '-' },
                 { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 10).map(dato => dato.OBSERVACIONES) || '-' },
                 { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 10).map(dato => dato.ACCIONES_A_REALIZAR) || '-' },
                 { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 10).map(dato => dato.FECHA_EJECUCION) || '-' },
                 { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 10).map(dato => dato.RESPONSABLE) || '-' },
-                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 10).map(dato => dato.FECHA_REGISTRO.split(' ')[0]) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 10).map(dato => this.transformDate(dato.FECHA_REGISTRO.split(' ')[0])) || '-' },
                 { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 10).map(dato => dato.ESTADO_ABIERTO_CERRADO) || '-' },
               ],
               [
@@ -673,14 +822,15 @@ export class AppMatrizPartesInteresadasComponent implements OnInit {
                   text: `OTRA, ¿CUÁL? : ${filterData.filter(e => e.ORDEN === 4).length > 0 ? filterData[4]?.RESPUESTA : '-'}`,
                   style: ['tituloTabla']
                 },
-                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 11).map(dato => dato.NECESIDAD) || '-' },
-                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 11).map(dato => dato.EXPECTATIVA) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 11).map(dato => dato.PARTE_INTERESADA_DESC) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 11).map(dato => dato.NECESIDAD.replace(/;/g, "\n")) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 11).map(dato => dato.EXPECTATIVA.replace(/;/g, "\n")) || '-' },
                 { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 11).map(dato => dato.ESTADO_DE_CUMPLIMIENTO) || '-' },
                 { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 11).map(dato => dato.OBSERVACIONES) || '-' },
                 { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 11).map(dato => dato.ACCIONES_A_REALIZAR) || '-' },
                 { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 11).map(dato => dato.FECHA_EJECUCION) || '-' },
                 { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 11).map(dato => dato.RESPONSABLE) || '-' },
-                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 11).map(dato => dato.FECHA_REGISTRO.split(' ')[0]) || '-' },
+                { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 11).map(dato => this.transformDate(dato.FECHA_REGISTRO.split(' ')[0])) || '-' },
                 { text: this.rolessArray.filter(dato => dato.ID_INTERESADA === 11).map(dato => dato.ESTADO_ABIERTO_CERRADO) || '-' },
               ]
             ],

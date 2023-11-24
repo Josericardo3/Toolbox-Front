@@ -1,62 +1,125 @@
 <ng-container *ngIf="arrResult?.length>0">
-<app-app-modal-inicial></app-app-modal-inicial></ng-container>
-<app-app-header></app-app-header> 
-<div id="loginContainer" class="loginContainer">
-    <div class="divImg">
-        <img src='../../../../assets/imagenes/fondo.png' class="img">
-    </div>
-    <div class="login">
-        <h1>Inicio de sesión</h1>
-        <!-- <form class="formBody" [formGroup] = "loginForm" (ngSubmit)="onLogin(loginForm.value)"> -->
-        <form class="formBody" [formGroup] = "loginForm" (ngSubmit)="onLogin()">
-            <label for="correo">Correo*</label>
-            <input type="text" formControlName="correo" placeholder="Correo@email.com">
-            <label class="textDanger" *ngIf="loginForm.controls['correo'].hasError('pattern')">
-                Debe contener un correo válido
-            </label>
-            
-            <label for="registroNacionalDeTurismo">Registro Nacional de Turismo*</label>
-            <input type="text" formControlName="registroNacionalDeTurismo" placeholder="Número de RNT">
-            <div class="password">
-                <label for="pass">Contraseña*</label>
-                <div class="eye">
-                  <span class='iconEye' (click)="seePassword()"><i class="fas fa-eye-slash"></i></span>
-                </div>
-                <input type="password" formControlName="pass" placeholder="Ingrese contraseña" id="passLogin" class="passLogin">
-                    
-                    <label class="textDanger" *ngIf="loginForm.controls['pass'].hasError('required') || loginForm.controls['pass'].hasError('minlength') || loginForm.controls['pass'].hasError('maxlength')">
-                        Debe contener mínimo 8 caracteres y máximo 12 caracteres.
-                    </label>
-                    <br>
-                    <label class="textDanger" *ngIf="loginForm.controls['pass'].hasError('required') || loginForm.controls['pass'].hasError('hasNumber')">
-                        Debe contener al menos 1 número.
-                    </label>
-                    <br>
-                    <label class="textDanger" *ngIf="loginForm.controls['pass'].hasError('required') || loginForm.controls['pass'].hasError('hasCapitalCase')">
-                        Debe contener 1 letra mayúscula.
-                    </label>
-                    <br>
-                    <label class="textDanger" *ngIf="loginForm.controls['pass'].hasError('required') || loginForm.controls['pass'].hasError('hasSmallCase')">
-                        Debe contener 1 letra minúscula.
-                    </label>
-                    <br>
-                    <label class="textDanger" *ngIf=" loginForm.controls['pass'].hasError('required') || loginForm.controls['pass'].hasError('hasSpecialCharacters')">
-                        Debe contener 1 caracter especial.
-                    </label>
-                </div>
-                <div *ngIf="errorMessage" class="error-message">{{errorMessage}}</div>
-                <div class="btn-login">
-             <button type="submit" class="btn" [disabled]="loginForm.invalid">Ingresar</button> 
-            </div>   <!--M routerLink="/dashboard" routerLinkActive="activebutton" -->
-            <p class="p">¿Olvidó su contraseña? <a routerLink="/recovery" routerLinkActive="activebutton">Ingrese aquí</a></p>
-            <p class="p">¿No tienes una cuenta? <a routerLink="/register" routerLinkActive="activebutton">Registrarse como prestador</a></p>
-        </form>
+    <app-app-modal-inicial></app-app-modal-inicial></ng-container>
+<app-app-header></app-app-header>
+<app-app-header2></app-app-header2>
+<div class="container ">
+    <div class="card-body bg-white mat-elevation-z8">
+        <div class="row container-fluid p-4">
+            <div class="col-md-6 d-flex justify-content-center align-items-center ">
+
+                <img src='../../../../assets/imagenes/fondo.png' class="img-fluid img">
+
+            </div>
+
+            <div class="col-md-6">
+                <h3 class="text-center" style="color: #068460"> <strong>BIENVENIDO A CAJA DE HERRAMIENTAS </strong>
+                </h3>
+                <h4 class="text-center" style="color: #068460"><strong>Inicio de sesión </strong></h4>
+                <!-- <form class="formBody" [formGroup] = "loginForm" (ngSubmit)="onLogin(loginForm.value)"> -->
+                <form [formGroup]="loginForm" (ngSubmit)="onLogin()" class="form w-100">
+                    <div class="form-group mb-3" style="width: 100%">
+                        <label for="correo">Correo*</label>
+                        <input type="text" formControlName="correo" placeholder="Correo@email.com" class="form-control">
+                        <small class="text-danger" *ngIf="loginForm.controls['correo'].hasError('pattern')">
+                            Debe contener un correo válido
+                        </small>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label for="registroNacionalDeTurismo">Registro Nacional de Turismo*</label>
+                        <input type="text" formControlName="registroNacionalDeTurismo" placeholder="Número de RNT"
+                            class="form-control">
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label for="pass">Contraseña*</label>
+                        <!--                              
+                                  <div class="form-group has-feedback">                          
+                                                                   
+                                    <span class='form-group input-group-text' (click)="seePassword()">
+                                        <input type="password" formControlName="pass" placeholder="Ingrese contraseña" id="passLogin" class="form-control" >
+                                        <i class="fas fa-eye-slash "></i></span>
+                                  </div> -->
+                        <div class="input-group mb-3">
+                            <input type="password" formControlName="pass" placeholder="Ingrese contraseña"
+                                id="passLogin" class="form-control">
+                            <!-- <input  class="form-control" placeholder="Escribe algo..." aria-label="Username" aria-describedby="basic-addon1">   -->
+                            <span class="input-group-text" id="basic-addon1" style="cursor: pointer;"
+                                (click)="seePassword()">
+                                <!-- Icono de candado de Bootstrap -->
+                                <span class="bi bi-lock"><i id="icon" class="fas fa-eye-slash"
+                                        style="color: #068460"></i></span>
+                            </span>
+                        </div>
+                        <div class="form-group mb-3" >
+                            <label for="pass">Contraseña*</label>
+                           
+            <!--                              
+                              <div class="form-group has-feedback">                          
+                                                               
+                                <span class='form-group input-group-text' (click)="seePassword()">
+                                    <input type="password" formControlName="pass" placeholder="Ingrese contraseña" id="passLogin" class="form-control" >
+                                    <i class="fas fa-eye-slash "></i></span>
+                              </div> -->
+                              <div class="input-group mb-3">    
+                                <input type="password" formControlName="pass" placeholder="Ingrese contraseña" id="passLogin" class="form-control" >
+                                <!-- <input  class="form-control" placeholder="Escribe algo..." aria-label="Username" aria-describedby="basic-addon1">   -->
+                                <span class="input-group-text" id="basic-addon1" style="cursor: pointer;" (click)="seePassword()">      
+                                    <!-- Icono de candado de Bootstrap -->      
+                                    <span class="bi bi-lock"><i id="icon" class="fas fa-eye-slash "></i></span>    
+                                </span>  
+                            </div>
+                             
+                                <small class="text-danger" *ngIf="loginForm.controls['pass'].touched  &&( loginForm.controls['pass'].hasError('required') || loginForm.controls['pass'].hasError('minlength') 
+                                || loginForm.controls['pass'].hasError('maxlength')
+                                || loginForm.controls['pass'].hasError('required') || loginForm.controls['pass'].hasError('hasNumber')
+                                ||showError && loginForm.controls['pass'].hasError('required') || loginForm.controls['pass'].hasError('hasCapitalCase')
+                                ||loginForm.controls['pass'].hasError('required') || loginForm.controls['pass'].hasError('hasSmallCase')
+                                ||loginForm.controls['pass'].hasError('required') || loginForm.controls['pass'].hasError('hasSpecialCharacters'))
+                                ||loginForm.controls['pass'].hasError('noSpaces')
+                                ">
+                                    Las contraseñas deben tener 8 caracteres como mínimo y máximo 12 caracteres. Contener al menos uno de los siguientes elementos: mayúsculas, minúsculas, números y caracter especial
+                                </small>
+                               <!--
+                                    <small  *ngIf="loginForm.controls['pass'].touched  && loginForm.controls['pass'].hasError('required') || loginForm.controls['pass'].hasError('hasNumber')">
+                                    Debe contener al menos 1 número.
+                                </small>
+                                <small *ngIf="loginForm.controls['pass'].touched  && showError && loginForm.controls['pass'].hasError('required') || loginForm.controls['pass'].hasError('hasCapitalCase')">
+                                    Debe contener 1 letra mayúscula.
+                                </small>
+                                <small *ngIf="loginForm.controls['pass'].touched  && loginForm.controls['pass'].hasError('required') || loginForm.controls['pass'].hasError('hasSmallCase')">
+                                    Debe contener 1 letra minúscula.
+                                </small>
+                                <small  *ngIf="loginForm.controls['pass'].touched  && loginForm.controls['pass'].hasError('required') || loginForm.controls['pass'].hasError('hasSpecialCharacters')">
+                                    Debe contener 1 caracter especial.
+                                </small>
+                                </small>
+                               --> 
+                        
+                            <div *ngIf="errorMessage" class="error-message">{{errorMessage}}</div>
+                        
+                         <button type="submit" class="btn btn-primary w-100"  [disabled]="loginForm.invalid">Ingresar <i class="far fa-arrow-alt-circle-right"></i></button> 
+                         <p class="p mt-2">¿Olvidó su contraseña? <a  routerLink="/recovery" routerLinkActive="activebutton">Ingrese aquí</a></p>
+                         <p class="p">¿No tienes una cuenta? <a routerLink="/register" routerLinkActive="activebutton">Registrarse como prestador</a></p>
+                        <br>
+                        <br>
+                        
+                            
+                         
+                         
+                        </div>   <!--M routerLink="/dashboard" routerLinkActive="activebutton" -->
+                    </div>
+   
+                       
+                    </form>
+                    <div class="footer2">
+                        <app-footer2></app-footer2> 
+                    </div>
+               </div>
+        </div>
     </div>
 </div>
 <app-modal></app-modal>
-<ngx-spinner
-  bdColor="rgba(0, 0, 0, 0.5)"
-  size="small"
-  template="<img src='https://www.superiorlawncareusa.com/wp-content/uploads/2020/05/loading-gif-png-5.gif' width='50' height='50'/>"
->
+<ngx-spinner bdColor="rgba(0, 0, 0, 0.5)" size="small"
+    template="<img src='https://www.superiorlawncareusa.com/wp-content/uploads/2020/05/loading-gif-png-5.gif' width='50' height='50'/>">
 </ngx-spinner>

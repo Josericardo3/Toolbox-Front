@@ -39,7 +39,7 @@ export class AppNoticiaComponent implements OnInit {
       descripcion: ['', Validators.required]
     });
     this.dato = history.state.dato;
-    this.idNoticia = history.state.idNoticia;
+    this.idNoticia = history.state.idNoticiaa;
     console.log(this.idNoticia);
     this.getTableData();
     this.idActividad = history.state.idActividad;

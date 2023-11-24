@@ -1,7 +1,7 @@
 
  input {
   font-size: 14px; /* Ajusta el tamaño de fuente del input según tus necesidades */
-  font-family: 'Work Sans', sans-serif !important;
+  
 }
 .containerResultadosAuditoria {
   display: flex;
@@ -13,14 +13,7 @@
   flex-direction: row-reverse;
   margin: 2vh 0;
 }
-h1 {
-  width: 100%;
-  font-family: "Montserrat", sans-serif;
-  font-weight: bolder;
-  color: #068460;
-  text-align: center;
-  margin: 2vh 0;
-}
+
 .resultados {
   display: flex;
 }
@@ -70,7 +63,7 @@ h1 {
   height: 40px;
   padding: 5px;
   width: 30vw;
-  font-family: "Work Sans", sans-serif;
+ 
   font-size: 14px;
   color: #000000;
   align-self: flex-end;
@@ -86,7 +79,7 @@ h1 {
   margin: 2rem;
   font-weight: 700;
   font-size: 14px;
-  font-family: "Work Sans", sans-serif;
+ 
 }
 .container-label {
   display: flex;
@@ -98,7 +91,7 @@ h1 {
   background-color: #068460;
   border-radius: 5px;
   color: white;
-  font-family: "Work Sans", sans-serif;
+
   font-size: 14px;
   border: none;
   cursor: pointer;
@@ -159,7 +152,7 @@ th {
 td,th
 {
   font-size: 16px; /* Ajusta el tamaño de fuente del input según tus necesidades */
-  font-family: 'Work Sans', sans-serif;
+
 }
 th{
   font-weight: bold;
@@ -171,4 +164,30 @@ th{
 label {
   color: black !important;
   font-size: 13px;
+}
+
+.header-container {
+  display: flex;
+  justify-content: space-between; /* Espaciado entre los elementos dentro del contenedor */
+  align-items: center;
+ 
+}
+
+/* Media query para estilos responsivos */
+@media (max-width: 767px) {
+  .header-container {
+    flex-direction: column; 
+    align-items: flex-start; 
+  }
+
+  h1 {
+    order: 1;
+  }
+  .container{
+      padding-left: 0rem;
+  }
+  app-app-header-arrow-left {
+    order: 2; 
+    
+  }
 }

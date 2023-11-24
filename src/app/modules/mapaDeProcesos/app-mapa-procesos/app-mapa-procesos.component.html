@@ -1,0 +1,197 @@
+<app-app-header></app-app-header>
+<div class="containermapaprocesos">
+  <div class="container mt-4">
+    <div class=" header-container mt-0">
+      <app-app-header-arrow-left></app-app-header-arrow-left>
+      <h1>Taller de Construcción de Mapa de Procesos</h1>
+    </div>
+  </div>
+ 
+  <section class="container-btnReporte">
+    <!--<button type="button" class="btnReporte">
+      <i class="fa-solid fa-download" style="color: #ffffff; margin-right: 0.5vw;"></i>
+      Descargar reporte
+    </button>-->
+  </section>
+  <div class="container">
+    
+    <div class="card container">
+      <form action="" #forMapaProcesos="ngForm">
+        <h3>Después de leer la Guía para construir mapa de procesos, realice el siguiente formulario.</h3>
+        <!-- Procesos Estratégicos -->
+        <div class="container-estrategicos">
+          <h3 class="sub-title">Procesos Estratégicos</h3>
+          <p>
+            ¿Qué procesos estratégicos o de toma de decisiones tiene mi empresa? (Ejemplo: Gerencial, estratégico,
+            comercial)
+          </p>
+
+          <div class="container-proceso">
+           
+          </div>
+          <div class="container-servicios"
+            *ngFor="let adicionalEstrategicos of arrays.procesosEstrategicos; let i = index">
+            <div class="container-1">
+              <p>Agregue su proceso número {{i+1}}</p>
+              <input type="text" placeholder="Escribe tu proceso" required name="estrategicos-proc-{{i}}" id="estrategicos-proc-{{i}}" [disabled]="disabled"
+                [(ngModel)]="adicionalEstrategicos.DESCRIPCION_PROCESO">
+            </div>
+            <div class="container-1">
+              <p>Seleccione el responsable</p>
+              <select name="estrategicos-proc-res-{{i}}" id="estrategicos-proc-res-{{i}}" [(ngModel)]="adicionalEstrategicos.FK_ID_RESPONSABLE" required  [disabled]="disabled" name="estrategicos-{{i}}" id="estrategicos-select-{{i}}">
+                <option *ngFor="let responsable of arrayListResponsable" [value]="responsable.ID_USUARIO">{{
+                  responsable.NOMBRE }}</option>
+              </select>
+            </div>
+            <div class="container-2">
+              <p>Orden  </p>
+              <select name="estrategicos-proc-sel-res-{{i}}" id="estrategicos-sel-proc-res-{{i}}" [(ngModel)]="adicionalEstrategicos.ORDEN" required  [disabled]="disabled" (ngModelChange)="cambioSelect(adicionalEstrategicos,i)">
+                <option *ngFor="let orden of arrays.procesosEstrategicos; let index=index" [value]="index+1">{{ (index+1) }}</option>
+              </select>
+            <!--
+<input type="text" name="misional-input-orden-{{i}}" id="misional-input-orden-{{i}}" placeholder="Escribe número de orden" required
+                [(ngModel)]="adicionalEstrategicos.ORDEN" [disabled]="disabled">
+            -->  
+            </div>
+            <div >
+              <button class="btn-delete"
+                (click)="deleteServicios(adicionalEstrategicos.TIPO_PROCESO,adicionalEstrategicos.ID_MAPA_PROCESO,adicionalEstrategicos.index)">Borrar</button>
+            </div>
+          </div>
+          <section class="mb-2">
+            <button type="button " class="botonAgregar" (click)="agregarAdicional('estrategicos')">
+              <i class="fa-solid fa-plus" style="color: white; margin: 0 0.4vw;"></i>Agregar proceso
+            </button>
+          </section>
+        </div>
+        <h3 class="sub-title">Procesos Misionales</h3>
+        <p>
+          ¿Cuáles son los procesos de mi empresa? (Ejemplo: Recepción, alojamiento, otros procesos como restaurante,
+          eventos)
+        </p>
+        <!-- Procesos Misionales
+      <div class="container-proceso">
+      <div  class="container-1">
+        <p>Agregue su proceso </p>
+        <input type="text" [(ngModel)]="estructuraMisionales.DESCRIPCION_PROCESO" placeholder="Escribe tu proceso" >
+      </div>
+      <div >
+        <p>Seleccione el responsable</p>
+        <select name="" id="" [(ngModel)]="estructuraMisionales.FK_ID_RESPONSABLE">
+          <option *ngFor="let responsable of arrayListResponsable"  [value]="responsable.ID_USUARIO">{{ responsable.NOMBRE }}</option>
+      </select>
+      </div>
+      </div> -->
+      
+        <div class="container-2">
+          <!-- <p>Seleccione el responsable</p>
+  
+        <select name="" id="" [(ngModel)]="estructuraMisionales.FK_ID_RESPONSABLE">
+          <option *ngFor="let responsable of arrayListResponsable"  [value]="responsable.ID_USUARIO">{{ responsable.NOMBRE }}</option>
+      </select> -->
+          <!-- [disabled]="accionActivo!='guardar'" -->
+          <div class="container-servicios" *ngFor="let adicionalMisionales of arrays.procesosMisionales; let i = index">
+            <div class="container-1">
+              <p>Agregue su proceso número {{i+1}} </p>
+              <input type="text" name="misional-input-{{i}}" id="misional-input-{{i}}" placeholder="Escribe tu proceso" required
+                [(ngModel)]="adicionalMisionales.DESCRIPCION_PROCESO" [disabled]="disabled">
+            </div>
+            <div class="container-1">
+              <p>Seleccione el responsable</p>
+              <select name="misional-select-{{i}}" id="misional-select-{{i}}" required [disabled]="disabled"
+                [(ngModel)]="adicionalMisionales.FK_ID_RESPONSABLE">
+                <option *ngFor="let responsable of arrayListResponsable" [value]="responsable.ID_USUARIO">{{
+                  responsable.NOMBRE }}</option>
+              </select>
+  
+            </div>
+            <div class="container-2 ">
+              <p>Orden  </p>
+              <!-- <input type="text" name="misional-input-orden-{{i}}" id="misional-input-orden-{{i}}" placeholder="Escribe número de orden" required
+                [(ngModel)]="adicionalMisionales.ORDEN" [disabled]="disabled"> -->
+                <select name="misional-proc-sel-res-{{i}}" id="misional-sel-proc-res-{{i}}" [(ngModel)]="adicionalMisionales.ORDEN" required  [disabled]="disabled" (ngModelChange)="cambioSelect(adicionalMisionales,i)" >
+                  <option *ngFor="let orden of arrays.procesosMisionales; let index=index" [value]="index+1">{{ (index+1) }}</option>
+                </select>
+            </div>
+            <div>
+              <button class="btn-delete"
+                (click)="deleteServicios(adicionalMisionales.TIPO_PROCESO,adicionalMisionales.ID_MAPA_PROCESO,adicionalMisionales.index)">Borrar</button>
+            </div>
+          </div>
+          <section>
+            <button type="button" class="botonAgregar" (click)="agregarAdicional('misionales')">
+              <i class="fa-solid fa-plus" style="color: white; margin: 0 0.4vw;"></i>Agregar proceso
+            </button>
+          </section>
+  
+          
+          <!-- Procesos de Apoyo o Soporte -->
+          <section class="container-soporte">
+            <h3 class="sub-title">Procesos de Apoyo o Soporte</h3>
+            <p>
+              ¿Cuáles procesos de apoyo o administrativos para dar soporte a los procesos de mi empresa? (Ejemplo:
+              Administración, contabilidad, recurso humano, mantenimiento)
+            </p>
+            
+            <div class="container-servicios" *ngFor="let adicionalSoporte of arrays.procesosApoyo; let i = index">
+              <div class="container-1">
+                <p>Agregue su proceso número {{i+1}} </p>
+                <input type="text" placeholder="Escribe tu proceso" [(ngModel)]="adicionalSoporte.DESCRIPCION_PROCESO" required [disabled]="disabled"  name="soporte-{{i}}" id="soporte-input-{{i}}">
+              </div>
+              <div class="container-1">
+                <p>Seleccione el responsable</p>
+                <select [(ngModel)]="adicionalSoporte.FK_ID_RESPONSABLE" required  name="soporte-select-{{i}}" id="soporte-select-{{i}}" [disabled]="disabled">
+                  <option *ngFor="let responsable of arrayListResponsable" [value]="responsable.ID_USUARIO">{{
+                    responsable.NOMBRE }}</option>
+                </select>
+              </div>
+              <div class="container-2 ">
+                <p>Orden  </p>
+                <!-- <input type="text" name="adicionalSoporte-input-orden-{{i}}" id="adicionalSoporte-input-orden-{{i}}" placeholder="Escribe número de orden" required
+                  [(ngModel)]="adicionalSoporte.ORDEN" [disabled]="disabled"> -->
+                  <select name="adicionalSoporte-proc-sel-res-{{i}}" id="adicionalSoporte-sel-proc-res-{{i}}" [(ngModel)]="adicionalSoporte.ORDEN" required  [disabled]="disabled" (ngModelChange)="cambioSelect(adicionalSoporte,i)" >
+                    <option *ngFor="let orden of arrays.procesosApoyo; let index=index" [value]="index+1">{{ (index+1) }}</option>
+                  </select>
+              </div>
+              <div>
+                <button class="btn-delete"
+                  (click)="deleteServicios(adicionalSoporte.TIPO_PROCESO,adicionalSoporte.ID_MAPA_PROCESO,adicionalSoporte.index)">Borrar</button>
+              </div>
+            </div>
+  
+          
+            <section >
+              <button type="button" class="botonAgregar" (click)="agregarAdicional('soporte')">
+                <i class="fa-solid fa-plus" style="color: white; margin: 0 0.4vw;"></i>Agregar proceso
+              </button>
+            </section>
+  
+          </section>
+          <div class="containerBtn">
+            <button type="submit" class="botonG" (click)="saveForm()" [disabled]="!forMapaProcesos.valid || disabled">
+              <i class="fa-regular fa-floppy-disk" style="color: #fff;"></i> Guardar
+            </button>
+            <button type="button" class="botonG" *ngIf="botonOcultar" (click)="activarCampos()">
+              <i class="fa-solid fa-pen" style="color: white; margin: 0 0.4vw;"></i> Editar
+            </button>
+            <button type="button" class="botonCancelar" *ngIf="botonCancelar" (click)="cancelarEdit()">
+              <i class="fa-sharp fa-solid fa-x" style="color: white; margin: 0 0.4vw;"></i> Cancelar
+            </button>
+          </div>
+        
+          <ngx-spinner bdColor="rgba(0, 0, 0, 0.5)" size="small"
+            template="<img src='https://www.superiorlawncareusa.com/wp-content/uploads/2020/05/loading-gif-png-5.gif' width='50' height='50'/>">
+          </ngx-spinner>
+          <app-modal></app-modal>
+          
+        </div>
+      </form>
+      <div *ngIf="esNuevo">
+        <app-diagrama-proceso [esNuevo]="esNuevo">
+
+        </app-diagrama-proceso>
+      </div>
+      
+    </div>
+  </div>
+

@@ -207,7 +207,7 @@ export class AppInformeDeAuditoriaComponent {
     if (this.userInfor.LOGO == null) {
       headerElement = { text: this.userInfor.LOGO, fit: [50, 50], alignment: 'center', rowSpan: 2 };
     } else {
-      headerElement = { image: this.userInfor.LOGO, fit: [50, 50], alignment: 'center',  rowSpan: 2 };
+      headerElement = { image: this.userInfor.LOGO, fit: [50, 50], alignment: 'center', rowSpan: 2 };
     }
     const docDefinition:any = {
       pageMargins: [ 30, 30, 30, 30 ],

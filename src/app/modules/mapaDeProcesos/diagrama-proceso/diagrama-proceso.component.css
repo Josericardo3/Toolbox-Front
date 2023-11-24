@@ -1,0 +1,135 @@
+.circle {
+  border-style: solid;
+  border-color: #068460;
+  border-radius: 50%;
+  height: 8rem;
+  width: 8rem;
+  font-size: 0.7rem;
+}
+
+.ellipse {
+  border-style: solid;
+  border-color: #068460;
+  border-radius: 50%;
+  height: 5rem;
+  width: 12rem;
+  font-size: 0.7rem;
+}
+.cuadrado {
+  border-style: solid;
+  border-color: #068460;
+  border-radius: 10%;
+  height: 8rem;
+  width: 8rem;
+  font-size: 0.7rem;
+}
+.lista {
+  border-color: #068460;
+  min-height: 8rem;
+}
+.listatwo {
+  border-color: #068460;
+  min-height: 8rem;
+}
+.listathree {
+  border-color: #068460;
+
+  min-height: 8rem;
+}
+.bordes {
+  border-style: solid;
+  border-color: #068460;
+}
+.vertical-text {
+  font-size: 18px;
+  font-weight: bold;
+
+  transform: rotate(-90deg);
+}
+.vertical-text-t {
+  font-size: 18px;
+  font-weight: bold;
+  transform: rotate(90deg);
+}
+.overflow-control {
+  overflow: auto; /* Puedes cambiar 'hidden' por 'auto' o 'scroll' según tus necesidades */
+
+  text-overflow: ellipsis; /* Agrega puntos suspensivos (...) al final si el texto es demasiado largo */
+}
+.btnReporte {
+  margin: 4vh 0 2vh 2vw;
+  height: 40px;
+  width: 200px;
+  padding: 5px;
+  background-color: #068460;
+  border-radius: 100px;
+  color: #ffffff;
+
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+  align-self: center;
+}
+
+@media (max-width: 500px) {
+  .flecha {
+    font-size: 1rem;
+    margin-left: 1rem;
+  }
+  .barra {
+    margin-left: 0.5rem;
+  }
+  h2 {
+    font-size: 0.7rem;
+    line-height: 1.3;
+  }
+  .circle {
+    border-style: solid;
+    border-color: #068460;
+    border-radius: 50%;
+    height: 4rem;
+    width: 4rem;
+    font-size: 0.7rem;
+  }
+
+  .ellipse {
+    border-style: solid;
+    border-color: #068460;
+    border-radius: 50%;
+    height: 2rem;
+    width: 6rem;
+    font-size: 0.7rem;
+  }
+  .cuadrado {
+    border-style: solid;
+    border-color: #068460;
+    border-radius: 10%;
+    height: 4rem;
+    width: 4rem;
+    font-size: 0.7rem;
+  }
+}
+@media (max-width: 400px) {
+  .barra {
+    margin-left: 0.15rem;
+  }
+}
+
+.circle:hover {
+  box-shadow: 0 0 10px #068460;
+}
+.ellipse:hover {
+  box-shadow: 0 0 10px #068460;
+}
+.cuadrado:hover {
+  box-shadow: 0 0 10px #068460;
+}
+::ng-deep .mat-mdc-optgroup-label {
+ 
+  background-color: #068460;
+  color: #ffffff;
+}
+::ng-deep .mat-mdc-optgroup-label .mdc-list-item__primary-text {
+  
+  color: white;
+}

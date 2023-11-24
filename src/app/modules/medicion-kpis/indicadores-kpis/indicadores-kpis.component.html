@@ -1,14 +1,22 @@
 <app-modal></app-modal>
-<app-app-header class="indicadores-app-header"></app-app-header>
-
-<div class="container-fluid">
+<app-app-header ></app-app-header>
+<app-app-header2></app-app-header2>
+<!--<div class="container-fluid">
   <div class="titulo">
     <h1>Indicadores</h1>
     <app-app-header-arrow-left
       [redirectToDashboard]="true"
     ></app-app-header-arrow-left>
   </div>
+</div>-->
+<div class="container">
+  <div class=" header-container mt-0">
+    <app-app-header-arrow-left [redirectToDashboard]="true"></app-app-header-arrow-left>
+    <h1>INDICADORES</h1>
+  </div>
 </div>
+
+<br>
 <div class="container-fluid">
   <div class="row">
     <div class="col-md-3">
@@ -68,7 +76,7 @@
             <div class="form-group">
               <label for="paquete">Paquete</label>
               <select
-              class="form-control"
+              class="form-select"
               [(ngModel)]="dataEnvio.ID_PAQUETE"
               name="paquete"
               required
@@ -109,10 +117,10 @@
           </mat-form-field>-->
         </div>
         <div class="col-md-2">
-          <div style="text-align: right" class="mb-4">
+          <div style="text-align: right" >
             <button
               class="btn-nuevo"
-              style="margin-bottom: 2rem"
+              style="margin-top: 1rem"
               (click)="aniadirIndicador(1, undefined)"
               data-toggle="modal"
               data-target="#exampleModal"
@@ -122,27 +130,30 @@
             </button>
           </div>
         </div>
-        <div class="col-md-12 col-sm-12 col-12 text-center" style="margin-bottom: -2rem;">
-          <div class="col-md-3"></div>
-          <div class="col-md-6">
-            <div class="form-group alinear-buscador" appearance="outline" >
-              <mat-icon
-                class="search-icon hand-pointer"
-                style="color: #068460"
-                matPrefix
-                (click)="buscar()"
-                >search</mat-icon
-              >
-              
-              <input
-                matInput
-                [(ngModel)]="filter.search"
-                class="form-control"
-                placeholder="Ingresar título del KPI"
-              />
-              
+        <div class="col-md-12 col-sm-12 col-12 text-center" >
+          <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-md-6">
+              <div class="form-group alinear-buscador" appearance="outline" >
+                <mat-icon
+                  class="search-icon hand-pointer"
+                  style="color: #068460"
+                  matPrefix
+                  (click)="buscar()"
+                  >search</mat-icon
+                >
+                
+                <input
+                  matInput
+                  [(ngModel)]="filter.search"
+                  class="form-control"
+                  placeholder="Ingresar título del KPI"
+                />
+                
+              </div>
             </div>
           </div>
+          
          <!--
 <mat-form-field appearance="outline" style="width: 50%">
             <mat-label>Buscar</mat-label>
@@ -220,21 +231,21 @@
                 <mat-icon
                   matTooltip="Borrar"
                   style="color: #068460"
-                  class="text-danger margen iconos hand-pointer"
+                  class=" margen iconos hand-pointer"
                   fontIcon="delete"
                   (click)="eliminar(element)"
                 ></mat-icon>
                 <mat-icon
                   matTooltip="Asignar Indicador"
                   style="color: #068460"
-                  class="text-danger margen iconos hand-pointer"
+                  class=" margen iconos hand-pointer"
                   fontIcon="assignment"
                   (click)="asignarIndicador(2, element)"
                 ></mat-icon>
                 <mat-icon
                   matTooltip="Gráfico"
                   style="color: #068460"
-                  class="text-danger margen iconos hand-pointer"
+                  class=" margen iconos hand-pointer"
                   fontIcon="bar_chart"
                   (click)="verGrafico(element)"
                 ></mat-icon>

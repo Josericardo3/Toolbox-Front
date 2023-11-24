@@ -102,6 +102,9 @@ import { AppEncuestaCreadaComponent } from './modules/encuestaCreada/app-encuest
 import { AppTablaEncuestasComponent } from './modules/tablaEncuestas/app-tabla-encuestas/app-tabla-encuestas.component';
 import { AppEliminarEncuestaComponent } from './modules/tablaEncuestas/app-eliminar-encuesta/app-eliminar-encuesta.component';
 import { AppMonitorizacionComponent } from './modules/monitorizacion/app-monitorizacion/app-monitorizacion.component';
+import { AppMapaProcesosComponent } from './modules/mapaDeProcesos/app-mapa-procesos/app-mapa-procesos.component';
+import { DiagramaProcesoComponent } from './modules/mapaDeProcesos/diagrama-proceso/diagrama-proceso.component';
+import { DragDropModule } from "@angular/cdk/drag-drop";
 import { MedicionKpisComponent } from './modules/medicion-kpis/medicion-kpis.component';
 import { MenuMedicionKpisComponent } from './modules/medicion-kpis/menu-medicion-kpis/menu-medicion-kpis.component';
 import { ObjetivosKpisComponent } from './modules/medicion-kpis/objetivos-kpis/objetivos-kpis.component';
@@ -136,9 +139,18 @@ import { CargarDocumentoComponent } from "./modules/evidencia/cargar-documento/c
 import { VariablesComponent } from "./modules/medicion-kpis/variables/variables.component";
 import { GestionVariableKpiComponent } from "./modules/medicion-kpis/variables/gestion-variable-kpi/gestion-variable-kpi.component";
 import { FormularioVariableKpiComponent } from "./modules/medicion-kpis/variables/formulario-variable-kpi/formulario-variable-kpi.component";
+// import { AppDiagnosticoProgressComponent } from "./modules/diagnosticoProgress/app-diagnostico-progress/app-diagnostico-progress.component";
+import { AppUserSettingsComponent } from './modules/UserSettings/app-user-settings.component';
+// import { AppHeader2Component } from "./modules/header/app-header2/app-header2.component";
+// import { Footer2Component } from "./modules/footer2/footer2/footer2.component";
+
+import { AppDiagnosticoProgressComponent } from "./modules/diagnosticoProgress/app-diagnostico-progress/app-diagnostico-progress.component";
+import { Footer2Component } from "./modules/footer2/footer2/footer.component";
+import { AppHeader2Component } from "./modules/header/app-header2/app-header2.component";
 
 @NgModule({
   declarations: [
+    AppUserSettingsComponent,
     AppComponent,
     AppLoginComponent,
     AppFooterComponent,
@@ -204,6 +216,9 @@ import { FormularioVariableKpiComponent } from "./modules/medicion-kpis/variable
     AppTablaEncuestasComponent,
     AppEliminarEncuestaComponent,
     AppMonitorizacionComponent,
+    AppMapaProcesosComponent,
+    DiagramaProcesoComponent,
+    DiagramaProcesoComponent,
     MedicionKpisComponent,
     MenuMedicionKpisComponent,
     ObjetivosKpisComponent,
@@ -228,8 +243,10 @@ import { FormularioVariableKpiComponent } from "./modules/medicion-kpis/variable
     CargarDocumentoComponent,
     VariablesComponent,
     GestionVariableKpiComponent,
-    FormularioVariableKpiComponent
-    
+    FormularioVariableKpiComponent,
+    AppDiagnosticoProgressComponent,
+    Footer2Component,
+    AppHeader2Component,
   ],
   imports: [
     /*NgxSpinnerModule.forRoot({
@@ -266,6 +283,8 @@ import { FormularioVariableKpiComponent } from "./modules/medicion-kpis/variable
     TabsModule,
     //NgSelectModule,
     AngularEditorModule,
+    DragDropModule,
+    
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: !isDevMode(),
       // Register the ServiceWorker as soon as the application is stable

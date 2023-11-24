@@ -46,7 +46,6 @@ export class AppAgregarRequisitoComponent {
       HALLAZGO: ['', Validators.required],
       OBSERVACION: [''],
       PREGUNTA: ['']
-
     });
 
 

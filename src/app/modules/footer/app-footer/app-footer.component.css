@@ -88,6 +88,39 @@ color: white;
 .text{
     font-size: 20.8px;
 }
+@media(max-width: 770px) {
+    .govco-portales-contenedor {
+        display: grid;
+        grid-template-columns: none;
+        grid-gap: 8px;
+        gap: 8px;
+        padding: 40px 16px; 
+    }
+
+    .govco-separator-rows{
+        border-left: 0px;
+  }
+.footer-direccion, .footer{
+    display: none;
+}
+.text {
+    font-size: 20px;
+    text-align: center;
+}
+.govco-portales-contenedor{
+    padding: 12px 10px !important;
+}
+.politicas-footer{
+    text-decoration-line: underline;
+    text-align: center;
+}
+    .redes-sociales{
+        display: flex;
+        justify-content: center;
+        }
+    
+}
+
 
 @media only screen and (max-width: 540px) {
     .govco-portales-contenedor {

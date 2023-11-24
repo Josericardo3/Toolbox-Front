@@ -20,60 +20,86 @@
 }
 .labelDependency{
   vertical-align:middle;
-  font-family: 'Work Sans', sans-serif;
+  font-family: Roboto, 'Work Sans', sans-serif;
   font-size: 16px;
 }
 input, select{ 
     background: #FFFFFF;
-    border: 2px solid #068460;
-    border-radius: 10px;
+    border: 1px solid #A3A8B3;
+    border-radius: 5px;
     height: 40px;
     margin: 5px 0 15px 0;
-    padding: 5px;
+    padding: 12px 9px 7px 9px;
     width: 60vw;
 }
 option:hover{
   background-color: #068460;
-    border: 2px solid #068460;;
+    border: 1px solid #A3A8B3;
     border-radius: 20px;
     height: 40px;
     width: 60vw;
     margin: 2px;
-    font-family: 'Work Sans', sans-serif;
+    font-family: Roboto,'Work Sans', sans-serif;
     font-size: 14px;
 }
 input[type=number]
   {
-    font-family: 'Work Sans', sans-serif;
+    font-family: Roboto,'Work Sans', sans-serif;
     font-size: 14px;
-    border: 2px solid #068460;
+    border: 1px solid #A3A8B3;
     
   }
 input:disabled{
     background: #FFFFFF;
-    border: 2px solid #068460;
+    border: 1px solid #A3A8B3;
     background-color: #f2f2f2fa;
 }
 .titulo{
   display: flex;
-  justify-content: center;
   flex-direction: row-reverse;
-  margin: 2vh 0;
-}
-h1{
-  width: 80vw;
-  font-family: 'Montserrat', sans-serif;
-  font-weight: bolder;
-  color: var(--color-title, #962d46);
   text-align: center;
-  margin: 2vh 2vw;
+  align-items: center;
+  padding-top: 12px;
+  width: 100%;
+  
+}
+
+h1{
+  text-align: center !important;
+  line-height: 34px;
+  padding: 10px;
+}
+.parrafo{
+  color:  #048F56;
+}
+/* color del step */
+::ng-deep.mat-stepper-horizontal, 
+::ng-deep.mat-stepper-vertical {
+  background-color: var(--color-wallpaper, #f6f8f9);
+}
+::ng-deep .mat-stepper-label-position-bottom 
+::ng-deep .mat-horizontal-stepper-header 
+::ng-deep .mat-step-label{
+  color:  #048F56;
+}
+
+::ng-deep .mat-step-header .mat-step-icon-state-number {
+  background-color: rgba(0, 0, 0, 0.54);
+  color: #fff;
+}
+ 
+::ng-deep .mat-step-header .mat-step-icon-selected,
+::ng-deep .mat-step-header .mat-step-icon-state-done,
+::ng-deep .mat-step-header .mat-step-icon-state-edit {
+  background-color: #048F56;
+  color: #fff;
 }
 .arrow{
-  align-self: flex-start;
-  margin: 0 4vw 0 -7vw;
+  align-self: auto;
+  margin-left: 1rem;
 }
 p{
-    font-family: 'Work Sans', sans-serif;
+    font-family: Roboto, 'Work Sans', sans-serif;
     font-size: 16px;
     color: red;
     margin: 0 0 2vh 0;
@@ -89,20 +115,37 @@ p{
 }
 .inputContainer {
     background: #FFFFFF;
-    border: 2px solid #068460;
+    border: 1px solid #A3A8B3;
     border-radius: 10px;
     height: 30px;
     padding: 5px;
     margin: 5px 0 5px 15px !important;
     width: 40vw !important;
 }
+
+.btn-proceso:disabled{
+  background-color: #999999;
+  color: #000000;
+}
+.btn-proceso{
+
+  height: 40px;
+  width: 100%;
+  padding: 12px, 15px, 12px, 15px;
+  background-color: #1583F4;
+  color: #FFFFFF;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+}
+
 div.check,
 div.radio{
   position: relative; /* establece posición relativa */
   display: flex;
   flex-direction: row;
   align-items:center;
-  font-family: 'Work Sans', sans-serif;
+  font-family: Roboto,'Work Sans', sans-serif;
   font-size: 16px;
   width: 60vw;
   /* width: 90%; */
@@ -117,7 +160,7 @@ div.radio{
     appearance: none;
     background-color: white;
     border-radius: 5px;
-    border: 2px solid #068460;
+    border: 1px solid #A3A8B3;
     margin: 10px 10px 10px 0 !important;
     cursor: pointer;
     position: relative;
@@ -162,7 +205,7 @@ div.radio{
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
-    border: 2px solid #068460;
+    border: 1px solid #A3A8B3;
     border-radius: 50%;
     outline: none;
     cursor: pointer;
@@ -192,7 +235,7 @@ div.radio{
   background-color: #068460;
   border-radius: 100px;
   color: #FFFFFF;
-  font-family: 'Work Sans', sans-serif;
+  font-family: Roboto,'Work Sans', sans-serif;
   font-size: 16px;
   border: none;
   cursor: pointer;
@@ -213,14 +256,14 @@ input[type=number] {
 
 .x{
   all: unset;
-  font-family: 'Work Sans', sans-serif;
+  font-family: Roboto,'Work Sans', sans-serif;
   font-size: 14px;
   font-weight: bold;
   cursor: pointer;
 }
 
 .labelX{
-  font-family: 'Work Sans', sans-serif;
+  font-family: Roboto,'Work Sans', sans-serif;
   font-size: 14px;
   margin: 0 2vw 0 0.5vw; 
 }
@@ -232,7 +275,7 @@ input[type=number] {
 
 .completarCamposLabel{
   color: tomato;
-  font-family: 'Work Sans', sans-serif;
+  font-family: Roboto,'Work Sans', sans-serif;
   font-size: 17px;
   margin: 10px 0 5px 0;
 }
@@ -255,29 +298,27 @@ input[type="checkbox"],.ng-invalid,.ng-touched {
 .error-message{
   margin: 0 0 1vh 0;
 }
-.titulo{
+
+.header-container {
   display: flex;
+  justify-content: space-between; /* Espaciado entre los elementos dentro del contenedor */
   align-items: center;
-  justify-content: center;
-  flex-direction: row-reverse;
-  margin: 0 2vh 0;
-  padding-top: 12px;
-  width: 100%;
-}
-.arrow{
-  align-self: flex-start;
-  margin: 0 3vw 0 -6vw;
+ 
 }
 
 @media (max-width: 900px) {
+  .header-container {
+    flex-direction: column; 
+    align-items: flex-start; 
+  }
   .containerRadio {
     width: 26vw;
   }
-  .caracterizacion{
-    width: 60%;
+  .caracterizacion , .caracterizacion1{
+    width: 60% !important;
   }
   h1{
-    font-size: 20px;
+      font-size: 1.5rem !important;;
   }
   input[type=radio]{
       width: 5%;
@@ -285,5 +326,39 @@ input[type="checkbox"],.ng-invalid,.ng-touched {
   p{
     font-size: 15px;
     margin: 2vh;
+    text-align: center;
   }
+  .parrafo{
+    color:  red;
+  }
+  .cont-proceso3 {
+    padding-left: 25px;
+  }
+}
+@media (max-width: 540px) {
+
+  input, select {
+    width: 28.563rem;
+}
+  .btn-proceso{
+    width: 28.563rem;
+  }
+  .labelAll{
+    font-size: 14px !important;
+  }
+}
+@media (max-width: 440px) {
+  .cont-proceso2,  .cont-proceso3 {
+    padding-left: 25px;
+    /* padding-right: 5px */
+  }
+  input, select {
+    width: 20.625rem;
+}
+  .btn-proceso{
+    width: 20.625rem;
+  }
+p{
+  color: red;
+}
 }

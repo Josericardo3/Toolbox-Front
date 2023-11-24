@@ -34,7 +34,7 @@
                         <p *ngFor="let subItem of elemento.Detalle"> {{ subItem.Orden ? subItem.Orden + ' .' : '' }} {{ subItem.Nombre }} |
                          <!--<a *ngFor="let subOpcion of subItem.Opcion"> {{subOpcion.Nombre}} |</a> --> 
                           <ng-container *ngFor="let subOpcion of subItem.Opcion" >
-                            <a *ngIf="subOpcion.Nombre!='Cargar documento' && subOpcion.Nombre!='Cargar Documento' ">{{subOpcion.Nombre}} |</a>
+                            <a *ngIf="subOpcion.Nombre!='Cargar documento' && subOpcion.Nombre!='Cargar Documento'"  [routerLink]="subOpcion.router.length > 0 ? subOpcion.router : '/evidencia/:sectionm '">{{subOpcion.Nombre}} |</a>
                             <a *ngIf="subOpcion.Nombre=='Cargar documento' || subOpcion.Nombre=='Cargar Documento'  " (click)="cargarDocumento(subItem)">{{subOpcion.Nombre}} |</a>
                            
                           </ng-container>

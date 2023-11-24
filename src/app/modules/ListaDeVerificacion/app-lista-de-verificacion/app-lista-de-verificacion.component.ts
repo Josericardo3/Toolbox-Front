@@ -234,7 +234,7 @@ export class AppListaDeVerificacionComponent {
     })
 
     const title = "Actualizacion exitosa.";
-    const message = "El registro se ha realizado exitosamente";
+    const message = "El registro se ha realizado exitosamente ";
     this.Message.showModal(title, message);
 
   }

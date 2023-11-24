@@ -42,6 +42,9 @@ import { AppResultEncuestasPreguntasComponent } from './modules/resultEncuestasP
 import { AppEncuestaCreadaComponent } from './modules/encuestaCreada/app-encuesta-creada/app-encuesta-creada.component';
 import { AppTablaEncuestasComponent } from './modules/tablaEncuestas/app-tabla-encuestas/app-tabla-encuestas.component';
 import { AppMonitorizacionComponent } from './modules/monitorizacion/app-monitorizacion/app-monitorizacion.component';
+import { AppMapaProcesosComponent } from './modules/mapaDeProcesos/app-mapa-procesos/app-mapa-procesos.component';
+import { DiagramaProcesoComponent } from './modules/mapaDeProcesos/diagrama-proceso/diagrama-proceso.component';
+
 import { MedicionKpisComponent } from './modules/medicion-kpis/medicion-kpis.component';
 import { IndicadoresKpisComponent } from './modules/medicion-kpis/indicadores-kpis/indicadores-kpis.component';
 import { ObjetivosKpisComponent } from './modules/medicion-kpis/objetivos-kpis/objetivos-kpis.component';
@@ -50,13 +53,16 @@ import { RegistroEvaluacionIndicadorComponent } from './modules/medicion-kpis/re
 import { RecordatoriosKpisComponent } from './modules/medicion-kpis/recordatorios-kpis/recordatorios-kpis.component';
 import { RecoveryFormularioComponent } from './recovery/app-recovery/recoveryformulario/recoveryformulario.component';
 import { VariablesComponent } from './modules/medicion-kpis/variables/variables.component';
+import { AppDiagnosticoProgressComponent } from './modules/diagnosticoProgress/app-diagnostico-progress/app-diagnostico-progress.component';
+
+import { AppUserSettingsComponent } from './modules/UserSettings/app-user-settings.component';
 
 const routes: Routes = [
   {path: '', component: AppLoginComponent},
   {path: 'register', component: AppRegisterComponent},
   {path: 'dashboard', component: AppDashboardComponent},
   {path: 'caracterizacion', component: AppCaracterizacionComponent},
-  {path: 'diagnostico', component: AppDiagnosticoComponent},
+  {path: 'diagnostico/:id', component: AppDiagnosticoComponent},
   {path: 'diagnosticoDoc', component: AppDiagnosticoDocComponent},
   {path: 'documentacion', component: AppDocumentacionComponent},
   {path: 'gestionUsuario', component: AppGestionDeUsuariosComponent},
@@ -92,12 +98,17 @@ const routes: Routes = [
   {path: 'encuestaCreada/:id', component: AppEncuestaCreadaComponent},
   {path: 'tablaEncuestas', component: AppTablaEncuestasComponent},
   {path: 'monitorizacion', component:AppMonitorizacionComponent },
+  {path: 'mapaprocesos', component: AppMapaProcesosComponent },
+  {path: 'diagrama', component: DiagramaProcesoComponent },
   {path: 'kpis',component:MedicionKpisComponent},
   {path: 'indicadores',component:IndicadoresKpisComponent},
   {path: 'objetivos',component:ObjetivosKpisComponent},
   {path: 'paquetes',component:PaquetesComponent},
+  {path: 'variables',component:VariablesComponent},
   {path: 'evaluaciones',component:RegistroEvaluacionIndicadorComponent},
-  {path: 'recordatorios',component:RecordatoriosKpisComponent}
+  {path: 'recordatorios',component:RecordatoriosKpisComponent},
+  {path: 'diagnosticoProgress', component:AppDiagnosticoProgressComponent},
+  {path: 'userSettings',component:AppUserSettingsComponent}
 ];
 
 @NgModule({

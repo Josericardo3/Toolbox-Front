@@ -1,4 +1,4 @@
-import { Component, OnInit, CUSTOM_ELEMENTS_SCHEMA } from "@angular/core";
+import { Component, OnInit, CUSTOM_ELEMENTS_SCHEMA, Renderer2 } from "@angular/core";
 import {
   FormGroup,
   FormControl,
@@ -20,6 +20,7 @@ import { ColorLista } from "src/app/servicios/api/models/color";
 import { debug } from "console";
 //PG import { TokenStorageService } from '../../../servicios/token/token-storage.service';
 
+
 @Component({
   selector: "app-app-login",
   templateUrl: "./app-login.component.html",
@@ -29,6 +30,7 @@ export class AppLoginComponent implements OnInit {
   arrResult: any;
   arrNormas: any;
   idnorma: any;
+  showError=false;
   usuario = { registroNacionalDeTurismo: "", pass: "", correo: "" };
   public loginForm!: FormGroup;
   errorMessage!: string;
@@ -42,7 +44,8 @@ export class AppLoginComponent implements OnInit {
     private formBuilder: FormBuilder,
     private ApiService: ApiService,
     private Message: ModalService,
-    private store: Store<{ dataLogin: any }>
+    private store: Store<{ dataLogin: any }>,
+    private renderer: Renderer2,
   ) //   {
   //  }
   {}
@@ -73,18 +76,22 @@ export class AppLoginComponent implements OnInit {
           CustomValidators.patternValidator(/[A-Z]/, { hasCapitalCase: true }),
           CustomValidators.patternValidator(/[a-z]/, { hasSmallCase: true }),
           //CustomValidators.patternValidator(/(?=.*?[#?!@$%^&*-])/, {
-          CustomValidators.patternValidator(/(?=.*[!@#$%^&*()\-_=+{};:,<.>])/, {
-            hasSpecialCharacters: true,
-          }),
+            CustomValidators.patternValidator(/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[^A-Za-z0-9 ]).{8,12}$/,{
+              hasSpecialCharacters: true,
+            }),
+            CustomValidators.patternValidator(/^[^\s]*$/, {
+              noSpaces: true,
+            }),
           Validators.minLength(8),
           Validators.maxLength(12),
         ]),
       ],
     });
   }
+
   seePassword() {
 
-    const passLogin = document.querySelector("#passLogin") as HTMLInputElement;
+    /*const passLogin = document.querySelector("#passLogin") as HTMLInputElement;
     const icon = document.querySelector("i") as HTMLElement;
     if (passLogin.type === "password") {
       passLogin.type = "text";
@@ -94,10 +101,21 @@ export class AppLoginComponent implements OnInit {
       passLogin.type = "password";
       icon?.classList.add("fa-eye-slash");
       icon?.classList.remove("fa-eye");
+    }*/
+
+    const passLogin = document.querySelector("#passLogin") as HTMLInputElement;
+    const icon = document.querySelector("#icon") as HTMLElement;
+    if (passLogin.type === "password") {
+      passLogin.type = "text";
+      this.renderer.setStyle(icon, 'color', '#068460');
+    } else {
+      passLogin.type = "password";
+      this.renderer.setStyle(icon, 'color', 'black');
     }
   }
 
   async onLogin() {
+    this.errorMessage="";
     this.usuario.correo = this.loginForm.get("correo")?.value;
     this.usuario.registroNacionalDeTurismo = this.loginForm.get(
       "registroNacionalDeTurismo"
@@ -105,7 +123,7 @@ export class AppLoginComponent implements OnInit {
 
     this.usuario.correo = this.loginForm.get("correo")?.value;
     this.usuario.pass = this.loginForm.get("pass")?.value;
-    this.usuario.pass = reemplazarCaracteresEspeciales(this.usuario.pass);
+    //this.usuario.pass = reemplazarCaracteresEspeciales(this.usuario.pass);
     //jalar el valor del correo
 
     /*await this.ApiService.ValidateRntMincit(this.usuario.registroNacionalDeTurismo).subscribe((datarnt: any) => {

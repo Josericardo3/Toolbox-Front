@@ -13,12 +13,12 @@ export class LetrasDirective {
   onKeyPress(event: any) {
     const e = <KeyboardEvent>event;
     const charCode = (e.which) ? e.which : e.keyCode;
-    if (!(charCode >= 65 && charCode <= 90) && // letras mayúsculas
-        !(charCode >= 97 && charCode <= 122)&& // letras minúsculas
-        charCode !== 32 // espacio
-        ) { // números
-      e.preventDefault();
-    }
+    if (!(charCode >= 65 && charCode <= 90) &&
+      !(charCode >= 97 && charCode <= 122) &&
+      charCode !== 32 &&
+      charCode !== 241 && !(charCode >= 160 && charCode <= 255)) {
+    e.preventDefault();
+  }
   }
 }
 

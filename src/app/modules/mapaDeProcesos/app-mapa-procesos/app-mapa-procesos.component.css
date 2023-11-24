@@ -1,0 +1,174 @@
+.containerPolitica {
+    display: flex;
+    flex-direction: column;
+    padding: 2vh 1vw;
+}
+
+header {
+    margin: 16px;
+}
+
+
+.form{
+    display: flex;
+    flex-direction: column;
+    margin: 0 1vw;
+}
+h3 {
+    
+  
+    margin: 0 0 2vh 0;
+}
+.sub-title{
+    font-weight: bolder;
+    font-size: 20px;
+}
+.container-servicios{
+    width: 100%;
+    display: flex;
+}
+.container-proceso{
+    width: 100%;
+    display: flex;
+    margin-bottom: 8px;
+}
+.container-1{
+    margin: 0 45px 0 0;
+}
+input, select{
+    background: #FFFFFF;
+    border: 1px solid black;
+    border-radius: 8px;
+    width: 310px;
+    height: 40px;
+    padding: 3px;
+    /* margin: 1vh 0 0.5vh 0; */
+}
+/*BOTONES*/
+
+.btn-delete{
+    margin: 2rem 0 2vh 2vw;
+    padding: 5px;
+    background-color: #DF164A;
+    border-radius: 100px;
+    color: #FFFFFF;
+    font-family: 'Work Sans', sans-serif;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    align-self: flex-start;
+    width: 97px;
+    height: 42px;
+}
+.botonAgregar{
+    /* margin:  4vh 0 2vh 1vw; */
+    height: 40px;
+    width: 200px;
+    padding: 5px;
+    background-color: #068460;
+    border-radius: 100px;
+    color: #FFFFFF;
+    font-family: 'Work Sans', sans-serif;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    align-self: flex-start;
+}
+.botonG,
+.btnReporte{
+    margin: 4vh 0 2vh 2vw;
+    height: 40px;
+    width: 200px;
+    padding: 5px;
+    background-color: #068460;
+    border-radius: 100px;
+    color: #FFFFFF;
+    font-family: 'Work Sans', sans-serif;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    align-self: flex-start;
+}
+
+.container-btnReporte{
+    display: flex;
+    width: 100%;
+    padding-right: 10px;
+    justify-content: flex-end;
+}
+.containerBtn{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+  }
+  
+  .botonCancelar{
+    margin: 4vh 0 2vh 2vw;
+    height: 40px;
+    width: 200px;
+    padding: 5px;
+    background-color: #d9534f;
+    border-color: #d43f3a;
+    border-radius: 100px;
+    color: #FFFFFF;
+    font-family: 'Work Sans', sans-serif;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    align-self: flex-start;
+  }
+:disabled{
+    background-color: #e1e1e1;
+}
+/*Estilos: Procesos Estratégicos */
+.container-estrategicos{
+    margin-top: 15px;
+}
+/*Estilos: Procesos de Apoyo o Soporte */
+.container-soporte{
+    margin-top: 15px;
+}
+/*Estilos: dibujo */
+.container-dibujo{
+    margin-top: 15px;
+}
+
+@media (max-width: 900px) {
+    .container-servicios {
+      flex-direction: column;
+    }
+    h1{
+        font-size: 25px;
+       
+    }
+    .form{
+        padding: 11px;
+    }
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between; /* Espaciado entre los elementos dentro del contenedor */
+    align-items: center;
+   
+  }
+  
+  /* Media query para estilos responsivos */
+  @media (max-width: 767px) {
+    .header-container {
+      flex-direction: column; 
+      align-items: flex-start; 
+    }
+  
+    h1 {
+      order: 1;
+    }
+    .container{
+        padding-left: 0rem;
+    }
+    app-app-header-arrow-left {
+      order: 2; 
+      
+    }
+  }

@@ -1,13 +1,13 @@
 <app-modal></app-modal>
 <app-app-header  class="indicadores-app-header" ></app-app-header>
-<div class="container-fluid">
-  <div class="titulo">
-    <h1>Evaluación Indicador</h1>
-    <app-app-header-arrow-left
-      [redirectToDashboard]="true"
-    ></app-app-header-arrow-left>
+<app-app-header2></app-app-header2>
+<div class="container">
+  <div class=" header-container mt-0">
+    <app-app-header-arrow-left [redirectToDashboard]="true"></app-app-header-arrow-left>
+    <h1>EVALUACIÓN INDICADOR</h1>
   </div>
 </div>
+<br>
 <div class="container-fluid">
   <div class="row">
     <div class="col-md-3">
@@ -128,27 +128,30 @@
                 -->
           </div>
         </div>
-        <div class="col-md-12 col-sm-12  text-center">
-          <div class="col-md-3"></div>
-          <div class="col-md-6">
-            <div class="form-group alinear-buscador" appearance="outline" >
-              <mat-icon
-                class="search-icon hand-pointer"
-                style="color: #068460"
-                matPrefix
-                (click)="buscar()"
-                >search</mat-icon
-              >
-              
-              <input
-                matInput
-                [(ngModel)]="filter.search"
-                class="form-control"
-                placeholder="Ingresar título del Objetivo"
-              />
-              
+        <div class="col-md-12 col-sm-12  text-center mt-2">
+          <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-md-6">
+              <div class="form-group alinear-buscador" appearance="outline" >
+                <mat-icon
+                  class="search-icon hand-pointer"
+                  style="color: #068460"
+                  matPrefix
+                  (click)="buscar()"
+                  >search</mat-icon
+                >
+                
+                <input
+                  matInput
+                  [(ngModel)]="filter.search"
+                  class="form-control"
+                  placeholder="Ingresar título del Indicador"
+                />
+                
+              </div>
             </div>
           </div>
+          
           
           <!--<mat-form-field appearance="outline" style="width: 50%">
             <mat-label>Buscar</mat-label>
@@ -251,7 +254,7 @@
               <mat-icon
                 matTooltip="Registrar Evaluacion"
                 style="color: #068460"
-                class="text-danger margen iconos hand-pointer"
+                class=" margen iconos hand-pointer"
                 fontIcon="insert_chart"
                 (click)="evaluarIndicador(2, element)"
               ></mat-icon>

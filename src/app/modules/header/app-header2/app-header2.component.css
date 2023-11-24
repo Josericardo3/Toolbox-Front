@@ -1,0 +1,10 @@
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.logo-escudo {
+    max-width: 100%;
+    height: auto;
+}

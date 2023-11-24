@@ -179,7 +179,7 @@ export class AppGestorNoticiaComponent implements OnInit {
   
   indexCard(val: any){
     this.idNoticia = val;
-    this.router.navigate(['/noticia'], { state: { idNoticia: this.idNoticia } });
+    this.router.navigate(['/noticia'], { state: { idNoticiaa: this.idNoticia } });
   }
   getTableData() {
     this.api.getTablaNoticias()
@@ -358,7 +358,11 @@ export class AppGestorNoticiaComponent implements OnInit {
   onChangeCheckbox(event: any) {
     this.recibirNoticias = event.target.checked;
   }
-
+  ejemplo: any;
+  ejemplooo(){
+    console.log(this.saveForm.value.descripcionNoticia);
+    console.log(this.ejemplo);
+  }
   saveModal() {
    try {
       const id = localStorage.getItem('Id');
@@ -368,7 +372,7 @@ export class AppGestorNoticiaComponent implements OnInit {
       const destinatario = this.selectedPst;
       const destinatariopst = this.selectedAdmin;
       const titulo = this.saveForm.value.tituloNoticia;
-      const descripcion = this.saveForm.value.descripcionNoticia;
+      const descripcion = this.sanitizer.bypassSecurityTrustHtml(this.saveForm.value.descripcionNoticia); 
       const imagen = this.imagen ? this.imagen : '';
       const id_categoria = this.saveForm.value.CategoriaNoticia;
       const data = {

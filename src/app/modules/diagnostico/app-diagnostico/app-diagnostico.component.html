@@ -1,14 +1,15 @@
 <app-app-header></app-app-header>
-<div class = "cointainer">
-<!-- <p>rol colaborador</p> -->
-<a href="../../../../assets//Politica-de-datos/POLITICA DE TRATAMIENTO DE DATOS  ISOLUCIONES.pdf"></a>
-<div class="titulo">
-  <h1>{{datos.TITULO_PRINCIPAL}}</h1>
-  <app-app-header-arrow-left class="arrow"></app-app-header-arrow-left>
-</div>
-<form [formGroup]="formParent" class="controllerDiagnostico" (ngSubmit)="saveForm()"> 
-  <p>Todos los campos con el asterisco (*) son obligatorios</p>
-    <div *ngFor="let campo of datos.campos; let j = index" class="diagnostico">
+<app-app-header2></app-app-header2>
+<div class="container d-flex flex-column justify-content-center">
+
+  <a href="../../../../assets//Politica-de-datos/POLITICA DE TRATAMIENTO DE DATOS  ISOLUCIONES.pdf"></a>
+  <h1 *ngIf="!isLetra(numeralPrincipal)">CUESTIONARIO #{{numeralPrincipal}}</h1>
+  <h1 *ngIf="isLetra(numeralPrincipal)">ANEXO TIPO #{{numeralPrincipal}}</h1>
+  <app-app-header-arrow-left></app-app-header-arrow-left>
+  <p class="text-center">Todos los campos con el asterisco (*) son obligatorios</p>
+  <form [formGroup]="formParent" class="container d-flex flex-column justify-content-center align-items-center mt-4"> 
+    <ng-container *ngFor="let campo of datos.campos; let j = index" >
+      <div *ngIf="campo.NUMERAL_PRINCIPAL === numeralPrincipal" class="diagnostico">
         <h3>{{campo.TITULO_PRINCIPAL}}</h3>
         <div *ngFor="let subcampo of campo.listacampos; let i = index" class="formDiagnostico">
           <h2>{{subcampo.TITULO}}</h2>  
@@ -29,22 +30,29 @@
               <div class="radio">
                 <input type="radio" [value]="opcion.ITEM" [name]="'radio' + j + '-' + i" (change)="capturarValor($event, opcion.ITEM, subcampo.NUMERAL_PRINCIPAL , subcampo.NUMERAL_ESPECIFICO)" 
                 (click)="valorSeleccionado = opcion.ITEM" [id]="subcampo.NUMERAL_ESPECIFICO" (change)="opcionSeleccionada = true"
-                [formControlName]="'radio' + j + '-' + i"> {{opcion.DESCRIPCION}}
+                [formControlName]="'radio' + j + '-' + i" [checked]="opcion.ITEM === getRadioValue(subcampo.VALOR_RESPUESTA)"
+                >              
+                <label class="radioLabel" [for]="subcampo.NUMERAL_ESPECIFICO">{{opcion.DESCRIPCION}}</label>
               </div>
             </div>
           </div>
           <label>Observacion</label>
           <textarea type="text" style="height: 200px" [id]="'observacion-' + subcampo.NUMERAL_ESPECIFICO" 
-          (input)="capturarValorObs($event, subcampo.NUMERAL_PRINCIPAL ,subcampo.NUMERAL_ESPECIFICO)" class="obs"></textarea>
+          (input)="capturarValorObs($event, subcampo.NUMERAL_PRINCIPAL ,subcampo.NUMERAL_ESPECIFICO)" class="obs"
+          [value]="subcampo.OBSERVACION_RESPUESTA" [attr.disabled]="subcampo.bloquearGuardar"></textarea>
+          <div class="container d-flex align-items-center flex-column">
+              <button type="submit" class="btn btn-primary w-100 m-3" [id]="j + '-' + i" [name]="j + '-' + i" 
+              [disabled]="!isFormValid(j, i) || isButtonDisabled(j, i) || subcampo.bloquearGuardar" (click)="saveForm(j, i)">
+                Guardar
+                <i class="far fa-arrow-alt-circle-right"></i>
+              </button>
+          </div>
           <div class="linea"></div>
         </div>
-    </div>
-    <label *ngIf="!isFormValid()" class="completarCamposLabel">Completa todos los campos obligatorios del formulario</label>
-    <div>
-      <button type="submit" class="btn" [disabled]="!isFormValid()">Guardar</button>
-    </div>
-    
-</form>
+      </div>
+    </ng-container>
+  </form>
+<app-footer2></app-footer2>
 <app-app-footer></app-app-footer>
 <app-modal></app-modal>
 <ngx-spinner
@@ -53,5 +61,4 @@
   template="<img src='https://www.superiorlawncareusa.com/wp-content/uploads/2020/05/loading-gif-png-5.gif' width='50' height='50'/>"
 >
 </ngx-spinner>
-
 </div>

@@ -52,7 +52,9 @@ export class AppProcRequisitosLegalesComponent implements OnInit{
     } else {
       headerElement = { image: this.logo, fit: [50, 50], alignment: 'center', margin: [0, 3, 0, 3], rowSpan: 2 };
     }
+  
     const pdfDefinition: any = {
+     
       header: {
         table: {
           widths: ['*', '*', '*', '*'],

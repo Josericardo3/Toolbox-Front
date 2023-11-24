@@ -2,16 +2,14 @@ import { HttpClient } from '@angular/common/http';
 import { ChangeDetectorRef, Component, CUSTOM_ELEMENTS_SCHEMA, ElementRef, NgModule, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder, AbstractControl, ValidationErrors } from '@angular/forms';
 import { ApiService } from 'src/app/servicios/api/api.service';
-// import 'core-js/es/object';
 import { Router } from '@angular/router';
-import { Categoria } from '../../../utils/constants';
 import { SpinnerService } from 'src/app/servicios/spinnerService/spinner.service';
 import { NgxSpinnerModule } from 'ngx-spinner'; 
 import { ConditionalExpr } from '@angular/compiler';
 import { ModalService } from 'src/app/messagemodal/messagemodal.component.service';
 import { ColorLista } from 'src/app/servicios/api/models/color';
-import { throws } from 'assert';
-import { log } from 'console';
+import { Location } from '@angular/common';
+import { MatStepper } from '@angular/material/stepper';
 
 @Component({
   selector: 'app-app-caracterizacion',
@@ -69,6 +67,11 @@ export class AppCaracterizacionComponent implements OnInit {
 
   aventuraSeleccionada: boolean = false;
   opcionesNorma: any[] = [];
+  indexProceso: number = 0; 
+  proceso1: any []= [];
+  proceso2: any []= [];
+  proceso3: any []= [];
+  @ViewChild('stepper') stepper: MatStepper  ; 
 
   public mostrarMensaje: boolean = false;
   public templateGenerado: string = '';
@@ -87,13 +90,19 @@ export class AppCaracterizacionComponent implements OnInit {
     private router: Router,
     private spinnerService: SpinnerService,
     private Message: ModalService,
-    private cdref: ChangeDetectorRef 
+    private cdref: ChangeDetectorRef,
+    private location: Location,
+   
   ) {
     this.cargaInicial=true;
+    this.setState(this.valid1,true)
+  this.setState(this.valid2,true)
+  this.setState(this.valid3,true)
   }
 
 cargaInicial: boolean;
 ngOnInit(): void { 
+
   const id = Number(window.localStorage.getItem('Id'));
   this.colorTitle = JSON.parse(localStorage.getItem("color")).title;
   this.colorWallpaper = JSON.parse(localStorage.getItem("color")).wallpaper;
@@ -110,7 +119,7 @@ ngOnInit(): void {
       .subscribe((data: any[]) => {
         this.municipios = data;
       });  
-   }
+  }
   })
 
   //validar input-otro
@@ -154,6 +163,7 @@ validarCampoInput(opcion: any){
 
 
 getCaracterizacion(){
+  this.valoresForm=[];
   this.ApiService.getData()
   .subscribe((data: any) => {
     this.datos = data;
@@ -168,7 +178,7 @@ getCaracterizacion(){
         this.formParent.addControl(campo.NOMBRE, new FormControl({value: campo.VALUES, disabled: true}))
       }
       else{
-        this.formParent.addControl(campo.NOMBRE, new FormControl(null))          
+        this.formParent.addControl(campo.NOMBRE, new FormControl(null))  
       }
     });
 
@@ -176,6 +186,48 @@ getCaracterizacion(){
     this.ordenarPreguntas();
   });
 }
+
+fnStepper(value: any){
+  
+   this.indexProceso = value.selectedIndex; 
+   let anterior= value.previouslySelectedIndex;
+   if(this.indexProceso==0 && (anterior == 1|| anterior ==2) ){
+    this.setState(this.valid1,true)
+    this.setState(this.valid2,true)
+    this.setState(this.valid3,true)
+   } 
+   else if(this.indexProceso==1  && anterior ==2 ) {
+    this.setState(this.valid2,true)
+    this.setState(this.valid3,true)
+   }
+   this.cdref.detectChanges();
+}
+
+valid1 = new FormControl('')
+valid2 = new FormControl('')
+valid3 = new FormControl('')
+setState(control: FormControl, state: boolean) {
+  if (state) {
+    control.setErrors({ "required": true })
+  } else {
+    control.reset()
+  }
+}
+
+guardarYContinuar(value: string){
+if(value == 'proceso1'){
+  this.stepper.selectedIndex = 1;
+}
+if(value == 'proceso2'){
+  this.stepper.selectedIndex = 2;
+}
+// if(value == 'proceso2') {
+//   this.stepper.selectedIndex = 1;
+// }
+}
+retroceder(){
+  this.location.back();
+} 
 
 getPreguntasOrdenadas(){
   // this.http.get('assets/datos.json')
@@ -203,11 +255,21 @@ ordenarPreguntas() {
     return e;
   })
 
-  //inicializar el saveform
 
-  this.preguntasOrdenadas.forEach(element => {
-    if(element.TIPO_DE_DATO =="checkbox" || element.TIPO_DE_DATO == "radio"    ){
+  // Para la barra de procesos
+  const totalPag = this.preguntasOrdenadas.length;
+  const preguntasPorProceso  =  Math.ceil(totalPag / 3);
+  this.proceso1 = this.preguntasOrdenadas.slice(0, preguntasPorProceso).map((elemento:any)=>{ elemento.numeroPaso=1 ; return elemento;});
+  this.proceso2 = this.preguntasOrdenadas.slice(preguntasPorProceso, preguntasPorProceso * 2).map((elemento:any)=>{ elemento.numeroPaso=2 ; return elemento;});
+  this.proceso3 = this.preguntasOrdenadas.slice(preguntasPorProceso * 2).map((elemento:any)=>{ elemento.numeroPaso=3 ; return elemento;});
+  
+  let arrayTemporal =this.proceso1.concat(this.proceso2).concat(this.proceso3);
+  //inicializar el saveForm
+  this.valoresForm=[];
+  arrayTemporal.forEach(element => {
+    if(element.VALUES == null || element.ID_CARACTERIZACION_DINAMICA == '29'){
       this.valoresForm.push({
+        "NOMBRE":element.NOMBRE,
         "id": 0,
         "valor": '',
         "idUsuarioPst": localStorage.getItem('Id'),
@@ -216,13 +278,13 @@ ordenarPreguntas() {
         "tipoDato": element.TIPO_DE_DATO,
         "requerido": element.REQUERIDO,
         "seleccionCheckValido": false,
-        "seleccionInputCheckValido": false
+        "seleccionInputCheckValido": false,
+        "numeroPaso":element.numeroPaso
       });
     }
-  
   });
-
 }
+
 
 onChangeAventuraSeleccionada(value: boolean) {
     this.aventuraSeleccionada = value;
@@ -257,6 +319,7 @@ allFieldsFilled(): boolean {
 createFormControls() {
   for (let campo of this.datos.CAMPOS) {
     let control = this.getControlType(campo);
+    campo.numero=1;
     // this.formParent.addControl(control.nombre, new FormControl(control.value));
     if(campo.TIPO_DE_DATO === "referencia_id"){
       this.dataSelect = this.datos.CAMPOS
@@ -436,18 +499,19 @@ hasDepency(id: number) {
 
 valorSeleccionadoRadio: string = '';
 validateCampo(valoresForm: any){
+  let preguntasRequeridas=valoresForm.filter((e:any)=>e.requerido);
   let ver=true;
-    let temporal =  valoresForm.filter((elemento: any)=>
+    let temporal =  preguntasRequeridas.filter((elemento: any)=>
     elemento.tipoDato == "checkbox" 
     && elemento.idCaracterizacion != 21
     && (!elemento.seleccionCheckValido || !elemento.seleccionInputCheckValido )
     )
 
-   if(valoresForm.filter((e:any)=>e.tipoDato == "radio" && e.valor=="").length>0){
+   if(preguntasRequeridas.filter((e:any)=>e.tipoDato == "radio" && e.valor=="").length>0){
     ver = false;
    }
-   else if(valoresForm.filter((e:any)=>e.tipoDato == "radio" && e.valor=="SI").length>0){
-      let temporal2 =  valoresForm.filter((elemento: any)=>
+   else if(preguntasRequeridas.filter((e:any)=>e.tipoDato == "radio" && e.valor=="SI").length>0){
+      let temporal2 =  preguntasRequeridas.filter((elemento: any)=>
       elemento.tipoDato == "checkbox" 
       && elemento.idCaracterizacion == 21
       && (!elemento.seleccionCheckValido || !elemento.seleccionInputCheckValido )
@@ -456,9 +520,12 @@ validateCampo(valoresForm: any){
         ver = false;
        }
    }
-
    if(temporal.length>0){
     ver = false;
+   }
+   if(preguntasRequeridas.filter((e:any)=>e.tipoDato != "radio" && e.tipoDato != "checkbox" && String(e.valor).trim()=="" ).length>0)
+   {
+      ver = false;
    }
 
    return ver;
@@ -483,6 +550,7 @@ public saveForm(){
       caracterizacionRespuesta = caracterizacionRespuesta.filter((e:any)=>e.FK_ID_CARACTERIZACION_DINAMICA!=21)
     }
     this.mostrarMensaje = true;
+ 
     if (this.formParent.valid) {
       this.ApiService.saveData(caracterizacionRespuesta).subscribe((data: any) => {
     
@@ -537,5 +605,11 @@ public saveForm(){
 checkMarcadoEnDesplegable(campo:any) {
   return campo.DESPLEGABLE.some(opcion => opcion.checked);
 }
+llenadoPasoValido(paso:any){
+  let validate = this.validateCampo(this.valoresForm.filter((item:any)=>item.numeroPaso==paso));
+  return validate;
+}
+
+
 }
 

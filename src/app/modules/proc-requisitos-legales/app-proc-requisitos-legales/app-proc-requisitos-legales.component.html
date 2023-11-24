@@ -5,7 +5,7 @@
         <app-app-header-arrow-left></app-app-header-arrow-left>
     </div>
     <button type="button" class="btnReporte" [disabled]="isEditarActivo" (click)="generatePDF()">
-        <i class="fa-solid fa-download" style="color: #ffffff; margin-right: 0.5vw;"></i>Visualizar reporte
+        <i class="fa-solid fa-download" style="color: #ffffff; margin-right: 0.5vw;"></i>Visualizar documento
     </button>
     <form [formGroup]="formRequisitosLegales" class="form" (ngSubmit)="saveForm()">
         <h3>Responda las siguientes preguntas:</h3>

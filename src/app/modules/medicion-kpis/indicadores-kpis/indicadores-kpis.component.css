@@ -10,16 +10,9 @@
 .titulo {
   display: flex;
   flex-direction: row-reverse;
-  margin: 2vh 0;
+  margin: 2rem 0;
 }
-h1 {
-  width: 100%;
-  font-family: "Montserrat", sans-serif;
-  font-weight: bolder;
-  color: #068460;
-  text-align: center;
-  margin: 2vh 0;
-}
+
 .resultados {
   display: flex;
 }
@@ -31,7 +24,7 @@ h1 {
 .table-gestion {
   width: 75vw;
   font-size: 16px;
-  font-family: "Work Sans", sans-serif;
+ 
   min-width: 450px;
   border: 2px solid #068460;
   border-left: none;
@@ -44,7 +37,7 @@ h1 {
 .table-gestion thead tr {
   background-color: #068460;
   color: #ffffff;
-  font-family: "Work Sans", sans-serif;
+ 
 }
 .table-gestion th,
 .table-gestion tbody td {
@@ -69,7 +62,7 @@ h1 {
   height: 40px;
   padding: 5px;
   width: 30vw;
-  font-family: "Work Sans", sans-serif;
+
   font-size: 14px;
   color: #000000;
   align-self: flex-end;
@@ -85,7 +78,7 @@ h1 {
   margin: 10px;
   font-weight: 700;
   font-size: 14px;
-  font-family: "Work Sans", sans-serif;
+  
 }
 .container-label {
   display: flex;
@@ -200,7 +193,7 @@ app-app-header {
 td,th
 {
   font-size: 16px; /* Ajusta el tamaño de fuente del input según tus necesidades */
-  font-family: 'Work Sans', sans-serif;
+ 
 }
 th{
   font-weight: bold;
@@ -209,7 +202,33 @@ label {
   color: black !important;
   font-size: 13px;
 }
-select option {
+
+/****/
+.container-formulario{
+  padding-left: 7.5rem;
+}
+.header-container {
+  display: flex;
+  justify-content: space-between; /* Espaciado entre los elementos dentro del contenedor */
+  align-items: center;
+ 
+}
+
+/* Media query para estilos responsivos */
+@media (max-width: 767px) {
+  .header-container {
+    flex-direction: column; 
+    align-items: flex-start; 
+  }
+
+  h1 {
+    order: 1;
+  }
+  .container{
+      padding-left: 0rem;
+  }
+  app-app-header-arrow-left {
+    order: 2; 
     
-  font-family: "Work Sans", sans-serif;
+  }
 }

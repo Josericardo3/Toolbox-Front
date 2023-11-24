@@ -1,4 +1,4 @@
-import { Component, OnInit, ComponentFactoryResolver } from '@angular/core'
+import { Component, OnInit, ComponentFactoryResolver, Renderer2 } from '@angular/core'
 import { Router } from '@angular/router'
 import { FormGroup, Validators, FormBuilder, FormControl } from '@angular/forms'
 import { CustomValidators } from '../../../models/customeValidator'
@@ -10,6 +10,7 @@ import { ModalService } from '../../../messagemodal/messagemodal.component.servi
 import { debug } from 'console'
 import { timeInterval } from 'rxjs'
 import { TimeInterval } from 'rxjs/internal/operators/timeInterval'
+import { Location } from '@angular/common';
 
 
 @Component({
@@ -30,7 +31,25 @@ export class AppRegisterComponent implements OnInit {
   arrAgency: any;
   accionDisabled: boolean = true;
   public registerForm!: FormGroup;
+  isChecked: boolean = false;
   private emailPattern: any = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+
+  imagenPrevisualizada: string | ArrayBuffer = '';
+imagenLogo:any={
+  esAvatar:false,
+  logo:'',
+  idAvatar:1
+};
+avatares = [
+  "../../../../assets/avatares/avatar1.svg",
+  "../../../../assets/avatares/avatar2.svg",
+  "../../../../assets/avatares/avatar3.svg",
+  "../../../../assets/avatares/avatar4.svg",
+  "../../../../assets/avatares/avatar5.svg",
+  "../../../../assets/avatares/avatar6.svg"
+];
+avatarSeleccionado: number=-1;
+deshabilitarAvatars:any=false;
   constructor(
     private router: Router,
     private formBuilder: FormBuilder,
@@ -38,7 +57,10 @@ export class AppRegisterComponent implements OnInit {
     public ApiService: ApiService,
     private categoria: Categoria,
     private Message: ModalService,
+    private renderer: Renderer2,
     private store: Store<{ dataLogin: any }>,
+    private location: Location,
+    
   ) { }
 
   ngOnInit(): void {
@@ -108,15 +130,18 @@ export class AppRegisterComponent implements OnInit {
               hasCapitalCase: true,
             }),
             CustomValidators.patternValidator(/[a-z]/, { hasSmallCase: true }),
-            CustomValidators.patternValidator(/(?=.*?[#?!@$%^&*-])/, {
+            CustomValidators.patternValidator(/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[^A-Za-z0-9 ]).{8,12}$/,{
               hasSpecialCharacters: true,
+            }),
+            CustomValidators.patternValidator(/^[^\s]*$/, {
+              noSpaces: true,
             }),
             Validators.minLength(8),
             Validators.maxLength(12),
           ]),
         ],
         confirmPassword: ['', Validators.compose([Validators.required])],
-        checkbox: ['', Validators.required],
+        checkbox: ['', Validators.required]
 
       },
       {
@@ -124,11 +149,23 @@ export class AppRegisterComponent implements OnInit {
         validator: CustomValidators.comparePassword,
       },
     )
-    this.deshabilitarCampos(false);
+   
+
+  }
+  specialCharacterValidator():any{
+    return (control) => {
+      const value = control.value;
+      if (!value) {
+        return null;  // El valor es nulo, la validación debería ser manejada por otro validador
+      }
+
+      const hasSpecialCharacter =  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&""//((==¿¿¡¡??\\\\)])[A-Za-z\d@$!%*?&""//((==¿¿¡¡??\\\\)]{8,}$/.test(value);
+      return hasSpecialCharacter ? null : { hasSpecialCharacters: true };
+    };
 
   }
   deshabilitarCampos(deshabilitar: boolean) {
-    if (deshabilitar) {
+    /*if (deshabilitar) {
       // Deshabilita todos los controles del formulario
       this.registerForm.disable();
       this.registerForm.get('registroNacionalDeTurismo').enable();
@@ -137,7 +174,7 @@ export class AppRegisterComponent implements OnInit {
       // Habilita todos los controles del formulario
       this.registerForm.enable();
       this.accionDisabled = false;
-    }
+    }*/
   }
   normalizeString(str: string): string {
     return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
@@ -177,7 +214,7 @@ export class AppRegisterComponent implements OnInit {
                 return item.cod_depto
               })),
             )
-            select.add(new Option('Seleccione un departamento', '0'))
+            select.add(new Option('Seleccione un departamento', '0', true))
             departments.forEach((item: any, index) => {
               let option = document.createElement('option')
               option.id = departmentsCode[index]
@@ -230,7 +267,7 @@ export class AppRegisterComponent implements OnInit {
   }
 
   seePasswordRegister() {
-    const passRegister = document.querySelector(
+   /* const passRegister = document.querySelector(
       '#passRegister',
     ) as HTMLInputElement
     const icon = document.querySelector('i') as HTMLElement
@@ -242,11 +279,20 @@ export class AppRegisterComponent implements OnInit {
       passRegister.type = 'password'
       icon.classList.add('fa-eye-slash')
       icon.classList.remove('fa-eye')
+    }*/
+    const passLogin = document.querySelector("#passRegister") as HTMLInputElement;
+    const icon = document.querySelector("#icon") as HTMLElement;
+    if (passLogin.type === "password") {
+      passLogin.type = "text";
+      this.renderer.setStyle(icon, 'color', '#068460');
+    } else {
+      passLogin.type = "password";
+      this.renderer.setStyle(icon, 'color', 'black');
     }
   }
 
   seePasswordRegister2() {
-    const passRegister2 = document.querySelector(
+    /*const passRegister2 = document.querySelector(
       '#passRegister2',
     ) as HTMLInputElement
     const icon = document.querySelector('#i') as HTMLElement
@@ -258,6 +304,15 @@ export class AppRegisterComponent implements OnInit {
       passRegister2.type = 'password'
       icon.classList.add('fa-eye-slash')
       icon.classList.remove('fa-eye')
+    }*/
+    const passLogin = document.querySelector("#passRegister2") as HTMLInputElement;
+    const icon = document.querySelector("#icon2") as HTMLElement;
+    if (passLogin.type === "password") {
+      passLogin.type = "text";
+      this.renderer.setStyle(icon, 'color', '#068460');
+    } else {
+      passLogin.type = "password";
+      this.renderer.setStyle(icon, 'color', 'black');
     }
   }
 
@@ -290,21 +345,25 @@ export class AppRegisterComponent implements OnInit {
 
   }
   async validarRnt(): Promise<any> {
-
+    
     const rnt = this.registerForm.get('registroNacionalDeTurismo').value;
     await this.verificarRnt(rnt);
     if(rnt==""){
       const title = "Mensaje";
       const message = "Debe completar el campo de Registro Nacional de Turismo";
       this.Message.showModal(title, message);
+      this.deshabilitarCampos(true);
       return;
     }  
     if (this.showFaXmarkRnt == true) {
       const title = "Mensaje";
       const message = "El Registro Nacional de Turismo ya se encuentra registrado";
       this.Message.showModal(title, message);
+      //this.deshabilitarCampos(true);
     } else {
-      this.ApiService.ValidateRntMincit(rnt).subscribe((data: any) => {
+      console.log("entraaaaaaaaaaaaotraApiiiii");
+      this.ApiService.ValidateRntMincit(rnt).subscribe({ next:(data:any)=> {
+        console.log("dataaaa",data);
         if (data.error) {
           const title = "Error";
           const message = data.error.message;
@@ -320,7 +379,7 @@ export class AppRegisterComponent implements OnInit {
 
           this.registerForm.get('departamento').setValue('');
           this.registerForm.get('municipio').setValue('');
-          this.deshabilitarCampos(false);
+          this.deshabilitarCampos(true);
         }
         else {
           this.datosRnt = data;
@@ -369,7 +428,27 @@ export class AppRegisterComponent implements OnInit {
           return this.arrAgency;
         }
         
-      })    }        
+     },error: (e) => {
+      console.log("eeeeeeee::",e)
+      const title = "Error";
+          const message = "Algo salió mal, vuelva a validar";
+          this.Message.showModal(title, message);
+
+          this.registerForm.get('correo').setValue('');
+          this.registerForm.get('numeroDeIdentificacionTributaria').setValue('');
+          this.registerForm.get('razonSocialDelPst').setValue('');
+          this.registerForm.get('telefono').setValue('');
+          this.registerForm.get('nombreDelRepresenteLegal').setValue('');
+          this.registerForm.get('categoriaRnt').setValue('');
+          this.registerForm.get('subcategoriaRnt').setValue('');
+
+          this.registerForm.get('departamento').setValue('');
+          this.registerForm.get('municipio').setValue('');
+          this.deshabilitarCampos(true);
+     },
+    
+    })    
+    }        
     
 
 
@@ -377,6 +456,12 @@ export class AppRegisterComponent implements OnInit {
 
 
   saveUser() {
+    if(!this.imagenLogo.esAvatar && this.imagenLogo.logo==""){
+      const title = "Error de carga";
+            const message = `Ingrese un logo.`;
+            this.Message.showModal(title, message);
+            return;
+    }
     const request = {
       NIT: this.registerForm.get("numeroDeIdentificacionTributaria")?.value.toString(),
       RNT: this.registerForm.get("registroNacionalDeTurismo")?.value,
@@ -407,22 +492,36 @@ export class AppRegisterComponent implements OnInit {
       )?.value,
       TELEFONO_RESPONSABLE_SOSTENIBILIDAD: this.registerForm.get("telefonoDelResponsableDeSostenibilidad")?.value,
       PASSWORD: this.registerForm.get("password1")?.value,
-      FK_ID_TIPO_AVATAR: 1,
+      //AVATAR
+      FK_ID_TIPO_AVATAR: this.imagenLogo.idAvatar,
+      
+      ESAVATAR:this.imagenLogo.esAvatar,
+      LOGO:this.imagenLogo.logo
     }
+    console.log("ddddd",request)
     localStorage.setItem("newUser", 'yes')
-    return this.ApiService.createUser(request).subscribe((data: any) => {
+    console.log("enviooooooo_::::::", request)
+    this.ApiService.createUser(request).subscribe((data: any) => {
       if (data.StatusCode === 201) {
         const title = "Registro exitoso";
         const message = "El registro se ha realizado exitosamente"
         this.Message.showModal(title, message);
         this.router.navigate(['/']);      
       }
+      if (data.StatusCode === 404) {
+        const title = "Alerta";
+        const message = data.Valor+": "+data.Mensaje
+        this.Message.showModal(title, message);
+        //this.router.navigate(['/']);      
+      }
+      console.log(data)
     })
   }
-  isChecked: boolean = false;
+  
   change(event: Event): void {
     const checkbox = event.target as HTMLInputElement;
     this.isChecked = checkbox.checked;
+    this.registerForm.controls['checkbox'].setValue(this.isChecked);
     // const btnAceptar = document.querySelector('#btnAceptar') as HTMLInputElement
     // if(btnAceptar.getAttribute('disabled')===null){
     //   return btnAceptar.setAttribute("disabled",'');
@@ -442,6 +541,7 @@ export class AppRegisterComponent implements OnInit {
   showFaXmarkRnt: boolean = false;
 
   async verificarRnt(rnt: any): Promise<void> {
+
     this.showFaXmarkRnt = false;
     this.showCheckRnt = false;
     this.msjRnt = '';
@@ -454,13 +554,36 @@ export class AppRegisterComponent implements OnInit {
       if (data === false) {
         this.showCheckRnt = true;
         this.showFaXmarkRnt = false;
-        this.msjRnt = '';
+        this.msjRnt = 'Valide Nuevamente';
+
+        this.registerForm.get('correo').setValue('');
+          this.registerForm.get('numeroDeIdentificacionTributaria').setValue('');
+          this.registerForm.get('razonSocialDelPst').setValue('');
+          this.registerForm.get('telefono').setValue('');
+          this.registerForm.get('nombreDelRepresenteLegal').setValue('');
+          this.registerForm.get('categoriaRnt').setValue('');
+          this.registerForm.get('subcategoriaRnt').setValue('');
+
+          this.registerForm.get('departamento').setValue('');
+          this.registerForm.get('municipio').setValue('');
+          this.deshabilitarCampos(true);
       }
       if (data === true) {
         this.registerForm.get('registroNacionalDeTurismo').setErrors({ valido: true });
         this.msjRnt = 'El Registro Nacional de Turismo ya se encuentra registrado';
         this.showFaXmarkRnt = true;
         this.showCheckRnt = false;
+        this.registerForm.get('correo').setValue('');
+          this.registerForm.get('numeroDeIdentificacionTributaria').setValue('');
+          this.registerForm.get('razonSocialDelPst').setValue('');
+          this.registerForm.get('telefono').setValue('');
+          this.registerForm.get('nombreDelRepresenteLegal').setValue('');
+          this.registerForm.get('categoriaRnt').setValue('');
+          this.registerForm.get('subcategoriaRnt').setValue('');
+
+          this.registerForm.get('departamento').setValue('');
+          this.registerForm.get('municipio').setValue('');
+          this.deshabilitarCampos(true);
       }
     } catch (error) {
       // Manejo de errores si la llamada API falla
@@ -529,5 +652,101 @@ export class AppRegisterComponent implements OnInit {
       inputElement.value = inputElement.value.slice(0, 12);
       this.registerForm.get('identificacionDelRepresentanteLegal')?.setValue(inputElement.value);
     }
+  }
+  fnSubirFoto(event){
+    
+    if(this.avatarSeleccionado !== undefined && this.avatarSeleccionado != -1){
+      const title = "Error de carga";
+      const message = `Ya tiene un avatar seleccionado`;
+      this.Message.showModal(title, message);
+      return;
+    }
+    console.log(event)
+    var imagenPrev:any="";
+    var fileList:FileList=event.target.files;
+    var file :File=fileList[0];
+
+    if (event.target.files.length > 0) {
+      const reader = new FileReader();
+      const file = event.target.files[0]; // Obtener el archivo de la lista de archivos seleccionados
+
+      // Leer el archivo y convertirlo a base64
+      reader.onloadend = () => {
+        const base64Data = reader.result as string;
+        const image = new Image();
+
+        image.onload = () => {
+          const width = image.width;
+          const height = image.height;
+
+          const MAX_WIDTH = 600;
+          const MAX_HEIGHT = 600;
+
+          if (width > MAX_WIDTH || height > MAX_HEIGHT) {
+            const title = "Error de carga";
+            const message = `Las dimensiones del logo no deben exceder ${MAX_WIDTH}x${MAX_HEIGHT} píxeles.`;
+            this.Message.showModal(title, message);
+            this.imagenPrevisualizada="";
+            this.imagenLogo.esAvatar=false;
+            this.imagenLogo.logo="";
+            this.deshabilitarAvatars=false;
+            return;
+          }
+
+          
+        };
+        
+        this.imagenLogo.logo=base64Data;
+        image.src = base64Data;
+        this.imagenPrevisualizada=base64Data;
+        this.deshabilitarAvatars=true;
+      };
+
+      reader.readAsDataURL(file); // Leer el archivo como base64
+    }
+   
+  }
+  
+  borrarImagen(){
+    this.deshabilitarAvatars=false;
+    this.imagenPrevisualizada ='';
+    this.imagenLogo.esAvatar=false;
+    this.imagenLogo.logo="";
+    this.avatarSeleccionado==undefined;
+    delete this.avatarSeleccionado;
+    
+  }
+  VerModelo(){
+   
+    console.log("imageeeeennnnnnn",this.imagenLogo)
+  }
+ 
+  obtenerAvatar(index: number) {
+    if (this.avatarSeleccionado === index) {
+      this.imagenLogo.esAvatar=false;
+      delete this.avatarSeleccionado ;
+      this.avatarSeleccionado != -1
+    } else {
+      this.avatarSeleccionado = index;
+      this.imagenLogo.idAvatar=index+1;
+      this.imagenLogo.esAvatar=true;
+    }
+    
+  }
+
+  isCheckboxDisabled(index: number): boolean {
+  
+    return this.avatarSeleccionado === null && this.avatarSeleccionado === index;
+  }
+  retroceder(){
+    this.location.back();
+  }
+  bloquearEspacio(event:any){
+    
+    var keyCode = event.keyCode || event.which;
+    if (keyCode === 32) {
+      event.preventDefault();
+    }
+
   }
 }

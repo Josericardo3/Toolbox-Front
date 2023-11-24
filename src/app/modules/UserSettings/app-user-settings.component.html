@@ -1,0 +1,141 @@
+<app-app-header></app-app-header>
+
+<div class="containerSettings">
+    <!--<div class="barra-header">
+      <div class="img-container">
+        <img class="img-header" src="https://upload.wikimedia.org/wikipedia/commons/3/30/LOGO_PLAN_DE_DESARROLLO_COLOMBIA_POTENCIA_DE_LA_VIDA_2022-2026.png"/>
+        <img class="img-header" src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/Logo_Ministerio_de_Comercio_Industria_y_Turismo_2022-2026.png/1200px-Logo_Ministerio_de_Comercio_Industria_y_Turismo_2022-2026.png"/>
+      </div>
+    </div>-->
+    <app-app-header2></app-app-header2>
+    <div class="titulo">
+      <h1>Configuración del prestador</h1>
+      <app-app-header-arrow-left></app-app-header-arrow-left>
+    </div>
+
+    <div class="contenido-settings" [formGroup]="principal">
+        <div class="titulo-settings">
+            <img src="https://seeklogo.com/images/S/Starbucks_Coffee-logo-D24A63ABDC-seeklogo.com.png">
+            <h3 class="nombre-prestador">NOMBRE DEL PRESTADOR</h3>
+        </div>
+        <div class="container-settings">
+            <div class="menu-settings">
+                <a (click)="option='general'" class="link-setting">GENERAL</a>
+                <a (click)="option='ingreso'" class="link-setting">INGRESO EMPLEADOS</a>
+                <a (click)="option='editar'" class="link-setting">EDITAR REGISTRO INICIAL</a>
+                <hr>
+            </div>
+            <div class="form-settings" *ngIf="option=='general'">
+                <div class="btn-img-head">
+                    <div class="group-img-logo">
+                        <img src="https://seeklogo.com/images/S/Starbucks_Coffee-logo-D24A63ABDC-seeklogo.com.png" alt="" class="logo-peq">
+                        <div class="btn-group">
+                            <button class="cargar-logo">Cargar nuevo logo&emsp;<i class="fi fi-rr-arrow-circle-right"></i></button>
+                            <button class="borrar-logo">Borrar</button>
+                        </div>
+                    </div>
+                    <button class="cambiar-contra" (click)="cambiarPassword()">Cambiar contraseña&emsp;<i class="fi fi-rr-arrow-circle-right"></i></button>
+                </div>
+                <hr>
+                <div class="datos-prestador" >
+                    <p class="tit">Nombre del Representante Legal</p>
+                    <input type="text" placeholder="Nombre representante" class="input-general" formControlName="nombre_representante">
+                    <p class="tit">Correo del PST</p>
+                    <input type="email" placeholder="correo@email.com" class="input-general" formControlName="correo_representante">
+                    <p class="tit">Telefono del Reprentante Legal</p>
+                    <input type="text" placeholder="Número de telefono" class="input-general" formControlName="numero_representante">
+                    <p class="tit">Pagina web</p>
+                    <input type="text" placeholder="www.paginaweb.com" class="input-general" formControlName="pagina_web">
+                </div>
+                <hr>
+                <div class="redes-sociales">
+                    <p class="tit">Instagram</p>
+                    <div class="group-redes">
+                        <i class="fi fi-brands-instagram"></i>
+                        <input type="text" placeholder="www.paginaweb.com" class="input-general-1" formControlName="instagram">
+                    </div>
+                    <p class="tit">Facebook</p>
+                    <div class="group-redes">
+                        <i class="fi fi-brands-facebook"></i>
+                        <input type="text" placeholder="www.paginaweb.com" class="input-general-1" formControlName="facebook">
+                    </div>
+                    <p class="tit">Youtube</p>
+                    <div class="group-redes">
+                        <i class="fi fi-brands-twitter"></i>
+                        <input type="text" placeholder="www.paginaweb.com" class="input-general-1" formControlName="twitter">
+                    </div>
+                    <p class="tit">Otros</p>
+                    <div class="group-redes">
+                        <i class="fi fi-brands-twitter"></i>
+                        <input type="text" placeholder="www.paginaweb.com" class="input-general-1" formControlName="otros">
+                    </div>
+                </div>
+                  <button class="guardar-cambios" (click)="updateGeneral()"> Guardar Cambios </button>                
+                </div>
+            <div class="form-settings" *ngIf="option=='ingreso'" [formGroup]="segundo" >
+                <div class="datos-prestador">
+                    <p class="tit">Nombre del Empleado</p>
+                    <input type="text" placeholder="Nombre representante" class="input-general" formControlName="nombre_empleado">
+                    <p class="tit">Correo del empleado</p>
+                    <input type="email" placeholder="correo@email.com" class="input-general" formControlName="correo_empleado">
+                    <p class="tit">Ocupación</p>
+                    <select required id="roles"  class="form-control" formControlName="ocupacion">
+                        <option value="" disabled>Selecciona una opción</option>
+                        <option *ngFor="let status of arrayStatus" [ngValue]="status.ITEM">{{status.VALOR}}</option>
+                    </select>
+                    <p class="tit">Enviar Correo</p>
+                    <select required id="roles"  class="form-control" formControlName="enviar_correo">
+                        <option value="true" selected>Sí</option>
+                        <option value="false">No</option>
+                    </select>
+                </div>
+                <div class="btn-guardar">
+                    <button class="guardar-empleado"  (click)="registrarEmpleado()" >Guardar cambios</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="tabla-empleados" *ngIf="option === 'ingreso'">
+        <hr>
+        <table class="table-gestion" style="margin-top: 8px;">
+          <thead>
+            <tr>
+              <th scope="col">Nombre del Empleado</th>
+              <th scope="col">Correo del Empleado</th>
+              <th scope="col">Ocupación</th>
+              <th scope="col"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let usuario of datosUsuarios">
+              <td>{{ usuario.NOMBRE }}</td>
+              <td>{{ usuario.CORREO }}</td>
+              <td>
+                {{ usuario.ID_CARGO === 6 ? 'Lider de proceso' : 'Colaborador' }}
+              </td>
+              <td class="btn-tabla">
+                <button class="btn-tabla-editar" (click)="editarEmpleado(usuario)">Editar</button>
+                <button class="btn-tabla-eliminar" (click)="eliminarEmpleado(usuario)">Eliminar</button>
+            </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>      
+    <!--<div class="barra-final">
+        <div class="img-container-final">
+            <p class="ejecutado-por">EJECUTADO POR: </p>
+            <img class="img-header" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQEsHzxTrRb-PWp5RSTU86xdutn0Ta3lTbklA&usqp=CAU"/>
+            <img class="img-header" src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/Logo_Ministerio_de_Comercio_Industria_y_Turismo_2022-2026.png/1200px-Logo_Ministerio_de_Comercio_Industria_y_Turismo_2022-2026.png"/>
+        </div>
+    </div>-->
+    <app-footer2></app-footer2>
+</div>
+
+<app-app-footer></app-app-footer>
+<app-modal></app-modal>
+<ngx-spinner
+  bdColor="rgba(0, 0, 0, 0.5)"
+  size="small"
+  template="<img src='https://www.superiorlawncareusa.com/wp-content/uploads/2020/05/loading-gif-png-5.gif' width='50' height='50'/>"
+>
+</ngx-spinner>

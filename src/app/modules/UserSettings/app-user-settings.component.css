@@ -1,0 +1,413 @@
+*{
+    margin: 0;
+}
+.containerSettings{
+    display: flex;
+    flex-direction: column;
+    margin: 2vh 5vw;
+}
+/*BARRA HEADER*/
+.barra-header{
+    width: 100%;
+    height: auto;
+}
+.img-container{
+    width:100%;
+    height:auto;
+    margin: 0px, 0px, 0px, 0px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    /*background-color:#fff;*/
+}
+.img-header{
+    width: 100px;
+    height: auto;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+.titulo{
+    display: flex;
+    flex-direction: row-reverse;
+    margin: 2vh 0;
+}
+h1, h2, .fecha{
+    width: 100%;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: bolder;
+    color: #068460;
+    text-align: center;
+}
+h2, .fecha, .descripcion{
+    text-align: justify;
+}
+.barra-final{
+    width: 100%;
+    height: auto;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 30px;
+}
+.img-container-final{
+    width: 500px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/*CONTENIDO SETTINGS*/
+.contenido-settings{
+    width: 100%;
+    padding: 0px 15%;
+    display: block;
+    align-items: center;
+    justify-content: center;
+}
+.titulo-settings{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 0px 3%;
+    height: 40px;
+    margin-bottom: 30px;
+}
+.titulo-settings img{
+    width: 35px;
+    height: auto;
+    margin-right: 20px;
+}
+.nombre-prestador{
+    margin: 0;
+    padding: 0;
+    font-size: large;
+    color: #068460;
+    font-weight: bolder;
+}
+.container-settings{
+    width: 100%;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    margin-top: 50px;
+}
+/*menú links*/
+.menu-settings{
+    width: 25%;
+    padding-right: 5px;
+}
+.link-setting{
+    display: block;
+    align-items: center;
+    justify-content: flex-start;
+    margin-bottom: 15px;
+    color: rgb(121, 121, 121);
+    font-weight: bold;
+}
+/*FORM part GENERAL*/
+.form-settings{
+    width: 75%;
+    display: block;
+    align-items: flex-start;
+    justify-content: center;
+}
+.btn-img-head{
+    width: 100%;
+    padding: 0px 20px;
+    display: block;
+    align-items: flex-start;
+    justify-content: center;
+}
+.group-img-logo{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.logo-peq{
+    width: 60px;
+    height: auto;
+}
+.cargar-logo{
+    width: 200px;
+    background-color: transparent;
+    border: 1px solid #259DFF;
+    color: #259DFF;
+    height: 35px;
+    border-radius: 5px;
+    margin-bottom: 0;
+}
+.cargar-logo:hover{
+    color: #fff;
+    background-color: #259DFF;
+}
+.borrar-logo{
+    width: 200px;
+    background-color: transparent;
+    border: 1px solid rgb(156, 27, 27);
+    background-color: rgb(156, 27, 27);
+    color: white;
+    height: 35px;
+    border-radius: 5px;
+}
+.btn-group{
+    width: 80%;
+    display: flex;
+    justify-content: space-between;
+}
+.cambiar-contra{
+    width: 100%;
+    margin: 20px 0px;
+    background-color: transparent;
+    border: 1px solid #259DFF;
+    color: #259DFF;
+    height: 35px;
+    border-radius: 5px;
+}
+.cambiar-contra:hover{
+    color: #fff;
+    background-color: #259DFF;
+}
+hr{
+    margin-bottom: 15px;
+}
+.datos-prestador{
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 0px 5px;
+}
+.tit{
+    margin-bottom: 5px;
+    font-weight: bold;
+    width: 100%;
+}
+.input-general{
+    width: 100%;
+    height: 30px;
+    border-radius: 5px;
+    color: rgb(152, 152, 152);
+    border: 1px solid rgb(188, 188, 188);
+    margin-bottom: 15px;
+    padding: 0px 10px;
+}
+.redes-sociales{
+    padding: 0px 5px;
+    width: 100%;
+    margin-top: 15px;
+    margin-bottom: 20px;
+}
+.input-general-1{
+    width: 95%;
+    height: 30px;
+    border-radius: 5px;
+    color: rgb(152, 152, 152);
+    border: 1px solid rgb(188, 188, 188);
+    padding: 0px 10px;
+}
+i{
+    font-size: large;
+    width: 5%;
+}
+.group-redes{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-bottom: 15px;
+}
+.guardar-cambios{
+    width: 100%;
+    margin: 20px 0px;
+    background-color: transparent;
+    border: 1px solid #259DFF;
+    color: white;
+    background-color: #259DFF;
+    height: 35px;
+    border-radius: 5px;
+}
+.btn-guardar{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+.guardar-empleado{
+    width: 200px;
+    margin: 20px 0px;
+    background-color: transparent;
+    border: 1px solid #259DFF;
+    color: #259DFF;
+    background-color: transparent;
+    height: 35px;
+    border-radius: 5px;
+}
+.guardar-empleado:hover{
+    color: #fff;
+    background-color: #259DFF;
+}
+/*TABLA INGRESO EMPLEADOS*/
+.tabla-empleados{
+    width: 100%;
+    padding: 0px 15%;
+    display: block;
+    align-items: center;
+    justify-content: center;
+}
+.table-gestion {
+    width: 100%;
+    font-size: 14px;
+    font-family: 'Work Sans', sans-serif;
+    min-width: 450px;
+    border: 2px solid #068460;
+    border-left: none;
+    border-right: none;
+    border-bottom: none;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+    text-align: center;
+}
+
+.table-gestion thead tr {
+    background-color: #068460;
+    color: #ffffff;
+    font-family: 'Work Sans', sans-serif;
+    text-align: center;
+}
+
+.table-gestion th,
+.table-gestion tbody td {
+    padding: 15px;
+    text-align: center;
+}
+
+.table-gestion tbody tr {
+    border-bottom: 1px solid white;
+}
+.btn-tabla-editar{
+    text-decoration: none;
+    width: 90px;
+    background-color: transparent;
+    border: 1px solid #259DFF;
+    color: #259DFF;
+    background-color: transparent;
+    height: 35px;
+    border-radius: 5px;
+    margin-right: 10px;
+}
+.btn-tabla-eliminar{
+    text-decoration: none;
+    width: 90px;
+    background-color: transparent;
+    border: 1px solid rgb(156, 27, 27);
+    color: rgb(156, 27, 27);
+    background-color: transparent;
+    height: 35px;
+    border-radius: 5px;
+}
+.btn-tabla-editar:hover{
+    color: #fff;
+    background-color: #259DFF;
+}
+.btn-tabla-eliminar:hover{
+    color: #fff;
+    background-color: rgb(156, 27, 27);
+}
+
+@media (max-width: 970px) {
+    .contenido-settings{
+        width: 100%;
+        padding: 0px 10%;
+        display: block;
+        align-items: center;
+        justify-content: center;
+    }
+    .btn-group{
+        width: 80%;
+        display: block;
+        justify-content: center;
+        align-items: center;
+    }
+    .cargar-logo{
+        margin-bottom: 10px;
+    }
+    .input-general-1{
+        width: 90%;
+        margin-left: 10px;
+    }
+    .btn-tabla{
+        display: flex;
+        flex-wrap: wrap;
+    }
+    .btn-tabla-editar{
+        margin-bottom: 5px;
+    }
+}
+
+@media (max-width: 420px) {
+    .contenido-settings{
+        width: 100%;
+        padding: 0px 1%;
+        display: block;
+        align-items: center;
+        justify-content: center;
+    }
+    .container-settings{
+        width: 100%;
+        display: block;
+        align-items: flex-start;
+        justify-content: center;
+        margin-top: 50px;
+    }
+    .btn-group{
+        width: 80%;
+        display: block;
+        justify-content: center;
+        align-items: center;
+    }
+    .cargar-logo{
+        margin-bottom: 10px;
+    }
+    .menu-settings{
+        width: 100%;
+        padding-right: 5px;
+    }
+    .form-settings{
+        width: 100%;
+    }
+    .img-container-final{
+        width: 500px;
+        height: auto;
+        display: block;
+        align-items: center;
+        justify-content: center;
+    }
+    .img-container-final p{
+        font-size: small;
+        text-align: center;
+    }
+    .input-general-1{
+        width: 90%;
+        margin-left: 10px;
+    }
+
+    .tabla-empleados{
+        width: 100%;
+        padding: 0px 0%;
+        display: block;
+        align-items: center;
+        justify-content: center;
+    }
+    .table-gestion th,
+    .table-gestion tbody td {
+        padding: 5px;
+        text-align: center;
+    }
+    .btn-tabla{
+        display: flex;
+        flex-wrap: wrap;
+    }
+    .btn-tabla-editar{
+        margin-bottom: 5px;
+    }
+}

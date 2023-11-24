@@ -303,8 +303,15 @@ h3 {
 
 .pTitulo {
   text-align: center;
+
 }
 
+.cont {
+  max-height: 100px; 
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
 .modal-container {
   /* padding: 0 !important;

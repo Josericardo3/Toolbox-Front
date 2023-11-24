@@ -3,7 +3,6 @@ import { ModalService } from 'src/app/messagemodal/messagemodal.component.servic
 import { ApiService } from 'src/app/servicios/api/api.service';
 import * as pdfMake from 'pdfmake/build/pdfmake';
 import { NOMEM } from 'dns';
-import { head } from 'lodash';
 
 class Pregunta {
   PREGUNTA: string;
@@ -270,7 +269,9 @@ export class AppAlcanceSGSComponent implements OnInit {
   }
 
   generatePDF() {
-
+    const respuesta = this.estructura.sostenibilidad.RESPUESTA;
+    this.RespuestaRequisitos = this.obtenerNormaNoAplica(respuesta);
+    console.log(respuesta);
     var headerElement = {};
   
     if (this.userInfor.LOGO == null) {
@@ -278,9 +279,7 @@ export class AppAlcanceSGSComponent implements OnInit {
     } else {
       headerElement = { image: this.userInfor.LOGO, fit: [50, 50], alignment: 'center', rowSpan: 2 };
     }
-    const respuesta = this.estructura.sostenibilidad.RESPUESTA;
-    this.RespuestaRequisitos = this.obtenerNormaNoAplica(respuesta);
-    console.log(respuesta);
+  
     const pdfDefinition: any = {
       pageOrientation: 'portrait', // 'portrait' indica orientación vertical (predeterminado)
       pageMargins: [30, 30, 30, 30],

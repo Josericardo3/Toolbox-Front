@@ -1,0 +1,52 @@
+<app-app-header></app-app-header>
+<app-app-header2></app-app-header2>
+<div class="container">
+    <div class=" header-container mt-0">
+      <app-app-header-arrow-left [redirectToDashboard]="true"></app-app-header-arrow-left>
+      <h1>FORMULARIOS DE DIAGNÓSTICO</h1>
+    </div>
+</div>
+<div class="container-fluid bg-transparent col-12 d-flex flex-column justify-content-center align-items-center">
+    <div class="container bg-white p-3 m-4 d-flex" *ngFor="let campo of datos.campos; let i = index">
+        <div class="container d-flex flex-row flex-wrap cont align-items-center justify-content-center">
+            <div class="container col-md-9 col-sm-12">
+                <div class="container d-flex justify-content-between">
+                    <p class="fw-bold fs-6 ms-0" *ngIf="!isLetra(campo.NUMERAL_PRINCIPAL)">CUESTIONARIO #{{campo.NUMERAL_PRINCIPAL}}</p>
+                    <p class="fw-bold fs-6 ms-0" *ngIf="isLetra(campo.NUMERAL_PRINCIPAL)">ANEXO TIPO #{{campo.NUMERAL_PRINCIPAL}}</p>
+                    <span class="d-flex">
+                        <p class="fs-6 fw-bold">{{ campo.CANT_RESPUESTAS }}</p>
+                        <p>/{{ campo.totalFormularios }}</p>
+                    </span>
+                </div>
+                <div class="container d-flex flex-row">
+                    <div class="progress progress-bar-striped me-2 position-relative" [style.width.%]="100">
+                        <div [style.left.%]="33.33" class="position-absolute top-0 bottom-0 custom-border"></div>
+                        
+                        <div [style.left.%]="66.66" class="position-absolute top-0 bottom-0 custom-border"></div>
+            
+                        <div [style.background-color]="getColorGlobal(campo.CANT_RESPUESTAS, campo.totalFormularios)" class="rounded" 
+                        role="progressbar" [style.width.%]="(campo.CANT_RESPUESTAS / campo.totalFormularios) * 100"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="container col-md-3 col-sm-12 ancho">
+                <button type="button" *ngIf="campo.CANT_RESPUESTAS !== campo.totalFormularios" [id]="i" 
+                (click)="irDiagnostico(campo.NUMERAL_PRINCIPAL)" [ngClass]="getButtonClasses(campo.CANT_RESPUESTAS)">
+                <span class="d-flex align-items-center justify-content-center">
+                    {{ campo.CANT_RESPUESTAS !== 0 ? 'CONTINUAR' : 'EMPEZAR' }}
+                    <i class="far fa-arrow-alt-circle-right ms-1"></i>
+                </span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<app-footer2 class="footer"></app-footer2>
+<app-app-footer></app-app-footer>
+
+<ngx-spinner bdColor="rgba(0, 0, 0, 0.5)" size="small"
+    template="<img src='https://www.superiorlawncareusa.com/wp-content/uploads/2020/05/loading-gif-png-5.gif' width='50' height='50'/>">
+</ngx-spinner>
