@@ -51,8 +51,7 @@
                                         style="color: #068460"></i></span>
                             </span>
                         </div>
-                        <div class="form-group mb-3" >
-                            <label for="pass">Contraseña*</label>
+                 
                            
             <!--                              
                               <div class="form-group has-feedback">                          
@@ -61,14 +60,7 @@
                                     <input type="password" formControlName="pass" placeholder="Ingrese contraseña" id="passLogin" class="form-control" >
                                     <i class="fas fa-eye-slash "></i></span>
                               </div> -->
-                              <div class="input-group mb-3">    
-                                <input type="password" formControlName="pass" placeholder="Ingrese contraseña" id="passLogin" class="form-control" >
-                                <!-- <input  class="form-control" placeholder="Escribe algo..." aria-label="Username" aria-describedby="basic-addon1">   -->
-                                <span class="input-group-text" id="basic-addon1" style="cursor: pointer;" (click)="seePassword()">      
-                                    <!-- Icono de candado de Bootstrap -->      
-                                    <span class="bi bi-lock"><i id="icon" class="fas fa-eye-slash "></i></span>    
-                                </span>  
-                            </div>
+                      
                              
                                 <small class="text-danger" *ngIf="loginForm.controls['pass'].touched  &&( loginForm.controls['pass'].hasError('required') || loginForm.controls['pass'].hasError('minlength') 
                                 || loginForm.controls['pass'].hasError('maxlength')
@@ -107,7 +99,7 @@
                             
                          
                          
-                        </div>   <!--M routerLink="/dashboard" routerLinkActive="activebutton" -->
+                         <!--M routerLink="/dashboard" routerLinkActive="activebutton" -->
                     </div>
    
                        
