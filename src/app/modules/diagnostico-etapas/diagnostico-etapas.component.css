@@ -1,0 +1,36 @@
+.arrow {
+    margin-left: 5rem;
+}
+
+.custom-border {
+    border-right: 0.7rem solid white;
+}
+
+.custom-background {
+    background-color: #c6c6c6;
+    color: white;
+}
+
+.custom-progress-bar {
+    background-color: lightgray;
+}
+
+.custom-progress-bar-inicio {
+    background-color: #abf573;
+}
+
+.custom-progress-bar-intermedia {
+    background-color: #fc3a3a;
+}
+
+.custom-progress-bar-final {
+    background-color: #f5d773;
+}
+
+.disabled {
+    background-color: #878787;
+    border-color: #878787;
+    cursor: not-allowed;
+    color: white;
+}
+  

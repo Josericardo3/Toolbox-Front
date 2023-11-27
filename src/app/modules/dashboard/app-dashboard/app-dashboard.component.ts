@@ -161,37 +161,38 @@ listaIndicadores:any=[];
   disabledBtn: boolean = false;
   bloquearIntermedio: boolean =false;
   bloquearFinal: boolean =false;
+
   fnShowModal() {
-    this.validateCaracterizacion.subscribe((data) => {
-      if (!data) {
-        const title = "Aviso";
-        const message = "Debe realizar el proceso de caracterización antes de continuar con el proceso de diagnostico"
-        this.Message.showModal(title, message);
-        return
-      }else{
-        this.showModal = true;
-        if (this.normaDiadnostico.ETAPA_INICIO == false) {
-          this.bloquearIntermedio = true;
-          this.bloquearFinal = true;
-        }
-        if (this.normaDiadnostico.ETAPA_INICIO == true) {
-          this.etapaShowInicio = true;
-          this.bloquearIntermedio = false;
-          this.bloquearFinal = true;
-        }
-        if (this.normaDiadnostico.ETAPA_INTERMEDIO == true) {
-          this.etapaShowIntermedio = true;
-          this.bloquearIntermedio = false;
-          this.bloquearFinal = false;
-        }
-        if (this.normaDiadnostico.ETAPA_FINAL == true) {
-          this.etapaShowFinal = true;
-          this.bloquearIntermedio = false;
-          this.bloquearFinal = false;
-        }
-      }
-    });
- 
+    this.router.navigate(["/diagnosticoEtapas"]);
+    // this.validateCaracterizacion.subscribe((data) => {
+    //   if (!data) {
+    //     const title = "Aviso";
+    //     const message = "Debe realizar el proceso de caracterización antes de continuar con el proceso de diagnostico"
+    //     this.Message.showModal(title, message);
+    //     return
+    //   }else{
+    //     this.showModal = true;
+    //     if (this.normaDiadnostico.ETAPA_INICIO == false) {
+    //       this.bloquearIntermedio = true;
+    //       this.bloquearFinal = true;
+    //     }
+    //     if (this.normaDiadnostico.ETAPA_INICIO == true) {
+    //       this.etapaShowInicio = true;
+    //       this.bloquearIntermedio = false;
+    //       this.bloquearFinal = true;
+    //     }
+    //     if (this.normaDiadnostico.ETAPA_INTERMEDIO == true) {
+    //       this.etapaShowIntermedio = true;
+    //       this.bloquearIntermedio = false;
+    //       this.bloquearFinal = false;
+    //     }
+    //     if (this.normaDiadnostico.ETAPA_FINAL == true) {
+    //       this.etapaShowFinal = true;
+    //       this.bloquearIntermedio = false;
+    //       this.bloquearFinal = false;
+    //     }
+    //   }
+    // });
   }
 
   fnEtapa(etapa: string) {
@@ -204,7 +205,6 @@ listaIndicadores:any=[];
     else if (etapa === "final") {
       localStorage.setItem("etapa", '3');
     }
-  
   }
   
   buscarRuta(ruta: string) {
@@ -254,6 +254,7 @@ listaIndicadores:any=[];
     });
 
   }
+
   getRecordatorioIndicador(){
     this.IndicadorService.obtnerRecordatorioNoticia(this.filter).subscribe({
       next: (x) => {
@@ -421,10 +422,11 @@ listaIndicadores:any=[];
     this.ApiService.postMonitorizacionUsuario(request).subscribe();
     this.router.navigate(['/planificacion'], { state: { idActividad: index, dato: dato } });
   }
+
   indexReminderIndicador() {
-    
     this.router.navigate(['/evaluaciones']);
   }
+
   getRolValue(): number {
     // Obtener el valor del rol almacenado en el Local Storage
     const rol = localStorage.getItem('rol');
@@ -437,6 +439,7 @@ listaIndicadores:any=[];
     // Valor predeterminado si no se encuentra el rol o no es un número válido
     return 0;
   }
+
   redirigirAUrlExterna() {
     const urlExterna = 'https://starlit-lollipop-776b18.netlify.app';
     window.location.href = urlExterna;

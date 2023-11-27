@@ -15,23 +15,29 @@
 
     <div class="contenido-settings" [formGroup]="principal">
         <div class="titulo-settings">
-            <img src="https://seeklogo.com/images/S/Starbucks_Coffee-logo-D24A63ABDC-seeklogo.com.png">
-            <h3 class="nombre-prestador">NOMBRE DEL PRESTADOR</h3>
+          <img [src]="imagen" alt="Logo" width="50px" >
+          <h3 class="nombre-prestador">{{this.nombre}}</h3>
         </div>
+
+
+
         <div class="container-settings">
             <div class="menu-settings">
                 <a (click)="option='general'" class="link-setting">GENERAL</a>
                 <a (click)="option='ingreso'" class="link-setting">INGRESO EMPLEADOS</a>
-                <!--<a (click)="option='editar'" class="link-setting">EDITAR REGISTRO INICIAL</a>-->
+                <!--<a (click)="navigateToEdit()" class="link-setting">EDITAR REGISTRO INICIAL</a>-->
                 <hr>
             </div>
             <div class="form-settings" *ngIf="option=='general'">
                 <div class="btn-img-head">
                     <div class="group-img-logo">
-                        <img src="https://seeklogo.com/images/S/Starbucks_Coffee-logo-D24A63ABDC-seeklogo.com.png" alt="" class="logo-peq">
+                      <img [src]="imagen" alt="Logo" width="150px" >
                         <div class="btn-group">
-                            <button class="cargar-logo">Cargar nuevo logo&emsp;<i class="fi fi-rr-arrow-circle-right"></i></button>
-                            <button class="borrar-logo">Borrar</button>
+                          <label type="button" class="cargar-logo" title="Subir Foto">
+                            <span style="padding: 5px;"><i class="fi fi-rr-arrow-circle-right"></i>Cargar nuevo logo</span>
+                            <input type="file" accept="image/*" onclick="this.value = null"ngf-max-size="500KB"  (change)="fnSubirFoto($event)" style="display: none;" multiple>
+                          </label>  
+                          <button class="borrar-logo">Borrar</button>
                         </div>
                     </div>
                     <button class="cambiar-contra" (click)="cambiarPassword()">Cambiar contraseña&emsp;<i class="fi fi-rr-arrow-circle-right"></i></button>

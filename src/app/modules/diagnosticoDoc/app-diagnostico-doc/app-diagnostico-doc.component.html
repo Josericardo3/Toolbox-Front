@@ -1,46 +1,65 @@
-<app-app-header></app-app-header>
-<form class="controllerDiagnosticoDoc" (ngSubmit)="saveForm()">
-  <div class="titulo">
-    <h1>Formatos de descarga del formulario de diagnóstico</h1>
-    <app-app-header-arrow-left class="arrow" [redirectToDashboard]="true"></app-app-header-arrow-left>
-  </div>
-    <div id="listDocuments"> 
-        <p>Visualizar lista de chequeo | <a (click)="generateListaChequeo()">Documento PDF</a></p>
-        <p>Visualizar plan de mejora   | <a (click)="generatePlanMejora()">Documento PDF</a></p>
-        <p>Visualizar diagnóstico      | <a (click)="generateDiagnostico()"> Documento PDF</a></p>
-    <!-- <p>Descargar diagnóstico | <a (click)="captureChart()"> Documento PDF</a></p> -->
-        <!-- <div class="modal-background" id="modal-success" *ngIf="showModal">
-            <div class="modal-content">
-              <div class="modal-borde">
-                <div class="modal-title">
-                    <h4>Ya teniendo la información de la lista de chequeo, realice su análisis de la actividad diagnóstica.</h4>
-                </div>
-                    <textarea id="textAreaModal"></textarea>
-                <div class="modal-btn">
-                    <button (click)="showModal = false; saveModal()">Guardar</button>
-                </div>
-              </div>
-            </div>
-        </div> -->
-    </div>
-    <!-- <canvas id="chart"></canvas> -->
+<!-- <app-app-header></app-app-header>
+<app-app-header2></app-app-header2>
+<h1>FORMATOS DE DESCARGA DEL FORMULARIO DE DIAGNÓSTICO</h1>
+<div class="arrow">
+  <app-app-header-arrow-left [redirectToDashboard]="true"></app-app-header-arrow-left>
+</div>
 
-    <div>
-        <!-- <button (click)="captureChart()">Capturar gráfico</button> -->
-        <div #chartContainer id="chart-container" style="display:none;">
-          <canvas id="myChart" width="400" height="400"></canvas>
-        </div>
+<div class="container-fluid bg-transparent col-12 d-flex flex-column justify-content-center align-items-center">
+  <div class="container bg-white p-3 m-4 d-flex">
+      <div class="container d-flex flex-row flex-wrap cont align-items-center justify-content-center">
+          <div class="container col-md-9 col-sm-12">
+              <div class="container d-flex justify-content-between">
+                  <p class="fw-bold fs-6 ms-0">DIAGNÓSTICO ETAPA INICIAL</p>
+              </div>
+              <div class="container d-flex flex-row">
+                  <div class="progress progress-bar-striped me-2 position-relative" [style.width.%]="100">
+                      <div [style.left.%]="33.33" class="position-absolute top-0 bottom-0 custom-border"></div>
+                      
+                      <div [style.left.%]="66.66" class="position-absolute top-0 bottom-0 custom-border"></div>
+          
+                      <div class="rounded" 
+                      role="progressbar"></div>
+                  </div>
+              </div>
+          </div>
       </div>
-    <!-- <div id="chart-container">
-        <canvas id="myChart"></canvas>
-    </div> -->
-    
-</form>
+  </div>
+</div> -->
+
+<div class="container-fluid col-12 d-flex flex-column justify-content-center align-items-center mt-3 p-0">
+  <div class="container bg-white col-12 d-flex flex-column justify-content-center align-items-center p-0 custom-border">
+    <div class="container-fluid d-flex justify-content-center align-items-center p-4">
+      <p class="fs-5 mb-0 text-center">FORMATOS DE DESCARGA DEL FORMULARIO DE DIAGNÓSTICO - ETAPA INICIAL</p>
+    </div>
+    <div class="linea col-12"></div>
+    <div class="container d-flex flex-column justify-content-center align-items-center p-4">
+      <div class="container d-flex align-items-center justify-content-end mb-3 p-0 col-8">
+        <p class="mb-0">LISTA DE CHEQUEO | 
+          <a (click)="generateListaChequeo()"> VISUALIZAR DOCUMENTO PDF <i class="fa-regular fa-file-lines"></i></a>
+        </p>      
+      </div>
+      <div class="container d-flex align-items-center justify-content-end mb-3 p-0 col-8">
+        <p class="mb-0">PLAN DE MEJORA |
+          <a (click)="generatePlanMejora()">VISUALIZAR DOCUMENTO PDF <i class="fa-regular fa-file-lines"></i></a>
+        </p> 
+      </div>
+      <div class="container d-flex align-items-center justify-content-end p-0 col-8">
+        <p class="mb-0">DIAGNÓSTICO |
+          <a (click)="generateDiagnostico()">VISUALIZAR DOCUMENTO PDF <i class="fa-regular fa-file-lines"></i></a>
+        </p> 
+      </div>
+    </div>
+  </div>
+  <button class="btn btn-outline-primary mt-4" routerLink="/diagnosticoEtapas" routerLinkActive="active">
+    Volver al inicio
+    <i class="far fa-arrow-alt-circle-right ms-1"></i>
+  </button>
+</div>
+ 
+<!-- <app-footer2></app-footer2>
 <app-app-footer></app-app-footer>
-<app-modal></app-modal>
-<ngx-spinner
-  bdColor="rgba(0, 0, 0, 0.5)"
-  size="small"
-  template="<img src='https://www.superiorlawncareusa.com/wp-content/uploads/2020/05/loading-gif-png-5.gif' width='50' height='50'/>"
->
-</ngx-spinner>  
+
+<ngx-spinner bdColor="rgba(0, 0, 0, 0.5)" size="small"
+  template="<img src='https://www.superiorlawncareusa.com/wp-content/uploads/2020/05/loading-gif-png-5.gif' width='50' height='50'/>">
+</ngx-spinner> -->

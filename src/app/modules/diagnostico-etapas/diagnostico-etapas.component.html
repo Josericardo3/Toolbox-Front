@@ -1,0 +1,123 @@
+<app-app-header></app-app-header>
+<app-app-header2></app-app-header2>
+
+<h1>FORMULARIOS DE DIAGNÓSTICO</h1>
+<div class="arrow">
+  <app-app-header-arrow-left [redirectToDashboard]="true"></app-app-header-arrow-left>
+</div>
+
+<div class="container-fluid bg-transparent col-12 d-flex flex-column justify-content-center align-items-center">
+  <div class="container bg-white p-3 m-4 d-flex">
+    <div class="container d-flex flex-row flex-wrap cont align-items-center justify-content-center">
+      <div class="container col-md-9 col-sm-12">
+        <div class="container d-flex justify-content-between">
+          <p class="fw-bold fs-6 ms-0">DIAGNÓSTICO DE ETAPA INICIAL</p>
+        </div>
+        <div class="container d-flex flex-row">
+          <div [ngClass]="getProgressBarClasses('inicio')" class="progress progress-bar me-2 position-relative"
+            [style.width.%]="100">
+            <div [style.left.%]="33.33" class="position-absolute top-0 bottom-0 custom-border"></div>
+            <div [style.left.%]="66.66" class="position-absolute top-0 bottom-0 custom-border"></div>
+            <div class="rounded" role="progressbar"></div>
+          </div>
+        </div>
+      </div>
+      <div class="container col-md-3 col-sm-12 ancho">
+        <!-- <button type="submit" (click)="fnEtapa('inicial')" [ngClass]="getButtonClasses(etapaShowInicio)"> -->
+        <button type="submit" (click)="fnEtapa('inicial')" class="btn btn-primary w-100 text-center">
+          <span class="d-flex align-items-center justify-content-center">
+            {{ etapaShowInicio ? 'VER RESULTADOS' : 'EMPEZAR'}}
+            <i class="far fa-arrow-alt-circle-right ms-1"></i>
+          </span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container-fluid bg-transparent col-12 d-flex flex-column justify-content-center align-items-center">
+  <div class="container bg-white p-3 m-4 d-flex">
+    <div class="container d-flex flex-row flex-wrap cont align-items-center justify-content-center">
+      <div class="container col-md-9 col-sm-12">
+        <div class="container d-flex justify-content-between">
+          <p class="fw-bold fs-6 ms-0">DIAGNÓSTICO DE ETAPA INTERMEDIA</p>
+        </div>
+        <div class="container d-flex flex-row">
+          <div [ngClass]="getProgressBarClasses('intermedia')" class="progress progress-bar me-2 position-relative"
+            [style.width.%]="100">
+            <div [style.left.%]="33.33" class="position-absolute top-0 bottom-0 custom-border"></div>
+            <div [style.left.%]="66.66" class="position-absolute top-0 bottom-0 custom-border"></div>
+            <div class="rounded" role="progressbar"></div>
+          </div>
+        </div>
+      </div>
+      <div class="container col-md-3 col-sm-12 ancho">
+        <!-- <button type="submit" (click)="fnEtapa('intermedia')" [ngClass]="getButtonClasses(etapaShowIntermedio)"> -->
+        <!-- <button type="submit" (click)="fnEtapa('intermedia')" class="btn btn-primary w-100 text-center">
+          <span class="d-flex align-items-center justify-content-center">
+            {{ etapaShowIntermedio ? 'VER RESULTADOS' : 'EMPEZAR'}}
+            <i class="far fa-arrow-alt-circle-right ms-1"></i>
+          </span>
+        </button> -->
+
+        <button class="btn btn-primary w-100 text-center" (click)="fnEtapa('intermedia')" [ngClass]="{'disabled': bloquearIntermedio}">
+          <span *ngIf="etapaShowIntermedio; else diagnosticoIntermedio">
+            VER RESULTADOS <i class="far fa-arrow-alt-circle-right ms-1"></i>
+          </span>
+          <ng-template #diagnosticoIntermedio>
+            <span>
+              EMPEZAR <i class="far fa-arrow-alt-circle-right ms-1"></i>
+            </span>
+          </ng-template>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container-fluid bg-transparent col-12 d-flex flex-column justify-content-center align-items-center">
+  <div class="container bg-white p-3 m-4 d-flex">
+    <div class="container d-flex flex-row flex-wrap cont align-items-center justify-content-center">
+      <div class="container col-md-9 col-sm-12">
+        <div class="container d-flex justify-content-between">
+          <p class="fw-bold fs-6 ms-0">DIAGNÓSTICO DE ETAPA FINAL</p>
+        </div>
+        <div class="container d-flex flex-row">
+          <div [ngClass]="getProgressBarClasses('final')" class="progress progress-bar me-2 position-relative"
+            [style.width.%]="100">
+            <div [style.left.%]="33.33" class="position-absolute top-0 bottom-0 custom-border"></div>
+            <div [style.left.%]="66.66" class="position-absolute top-0 bottom-0 custom-border"></div>
+            <div class="rounded" role="progressbar"></div>
+          </div>
+        </div>
+      </div>
+      <div class="container col-md-3 col-sm-12 ancho">
+        <!-- <button type="submit" (click)="fnEtapa('final')" [ngClass]="getButtonClasses(etapaShowFinal)"> -->
+        <!-- <button type="submit" (click)="fnEtapa('final')" class="btn btn-primary w-100 text-center">
+          <span class="d-flex align-items-center justify-content-center">
+            {{ etapaShowFinal ? 'VER RESULTADOS' : 'EMPEZAR'}}
+            <i class="far fa-arrow-alt-circle-right ms-1"></i>
+          </span>
+        </button> -->
+
+        <button class="btn w-100 text-center" (click)="fnEtapa('final')" [ngClass]="{'disabled': bloquearFinal}">
+          <span *ngIf="etapaShowFinal; else diagnosticoFinal">
+            VER RESULTADOS <i class="far fa-arrow-alt-circle-right ms-1"></i>
+          </span>
+          <ng-template #diagnosticoFinal>
+            <span>
+              EMPEZAR <i class="far fa-arrow-alt-circle-right ms-1"></i>
+            </span>
+          </ng-template>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-footer2 class="footer"></app-footer2>
+<app-app-footer></app-app-footer>
+
+<ngx-spinner bdColor="rgba(0, 0, 0, 0.5)" size="small"
+  template="<img src='https://www.superiorlawncareusa.com/wp-content/uploads/2020/05/loading-gif-png-5.gif' width='50' height='50'/>">
+</ngx-spinner>

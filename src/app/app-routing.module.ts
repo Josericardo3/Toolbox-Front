@@ -54,8 +54,8 @@ import { RecordatoriosKpisComponent } from './modules/medicion-kpis/recordatorio
 import { RecoveryFormularioComponent } from './recovery/app-recovery/recoveryformulario/recoveryformulario.component';
 import { VariablesComponent } from './modules/medicion-kpis/variables/variables.component';
 import { AppDiagnosticoProgressComponent } from './modules/diagnosticoProgress/app-diagnostico-progress/app-diagnostico-progress.component';
-
 import { AppUserSettingsComponent } from './modules/UserSettings/app-user-settings.component';
+import { DiagnosticoEtapasComponent } from './modules/diagnostico-etapas/diagnostico-etapas.component';
 
 const routes: Routes = [
   {path: '', component: AppLoginComponent},
@@ -108,7 +108,8 @@ const routes: Routes = [
   {path: 'evaluaciones',component:RegistroEvaluacionIndicadorComponent},
   {path: 'recordatorios',component:RecordatoriosKpisComponent},
   {path: 'diagnosticoProgress', component:AppDiagnosticoProgressComponent},
-  {path: 'userSettings',component:AppUserSettingsComponent}
+  {path: 'userSettings',component:AppUserSettingsComponent},
+  {path: 'diagnosticoEtapas',component:DiagnosticoEtapasComponent}
 ];
 
 @NgModule({

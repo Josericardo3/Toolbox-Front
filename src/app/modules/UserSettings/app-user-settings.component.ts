@@ -20,6 +20,8 @@ export class AppUserSettingsComponent implements OnInit {
   arrayStatus: any = [];
   datosUsuarios: any[] = [];
   modoEdicion: boolean = true;
+  imagen: any;
+  nombre: string;
 
   constructor(
     private api: ApiService,
@@ -30,6 +32,13 @@ export class AppUserSettingsComponent implements OnInit {
 
   ngOnInit() {
     this.option='general';
+
+    this.api.getLogo().subscribe(
+      (data: any) => {
+        this.imagen = data.LOGO;
+        console.log(this.imagen);
+      })
+
     this.api.getTypeList(1).subscribe((data) => {
       this.arrayStatus = data.filter((e:any) => e.ITEM!=0 && e.DESCRIPCION == 'SubPerfil');
     })
@@ -57,6 +66,7 @@ export class AppUserSettingsComponent implements OnInit {
         twitter: data.TWITTER,
         otros: data.OTROS
       });
+      this.nombre = data.NOMBRE_REPRESENTANTE_LEGAL
     });
 
     this.segundo = this.formBuilder.group({
@@ -66,6 +76,7 @@ export class AppUserSettingsComponent implements OnInit {
       enviar_correo: [true]
 
     });
+
 
     this.cargarDatosUsuarios();
 
@@ -144,6 +155,14 @@ export class AppUserSettingsComponent implements OnInit {
         console.error('Error al obtener los datos', error);
       }
     );
+
+    this.api.getLogo().subscribe(
+      (data: any) => {
+        this.imagen = data.LOGO;
+        console.log(this.imagen);
+      })
+
+
   }
 
   eliminarEmpleado(usuario: any){
@@ -174,5 +193,54 @@ export class AppUserSettingsComponent implements OnInit {
     localStorage.setItem("ID_PST_ROLES", usuario.ID_PST_ROLES);
 
   }
+
+  fnSubirFoto(e?: any) {
+
+    if (e.target.files.length > 0) {
+      const reader = new FileReader();
+      const file = e.target.files[0];
+
+      idUsuario : localStorage.getItem("Id");
+
+      // Leer el archivo y convertirlo a base64
+      reader.onloadend = () => {
+        const base64Data = reader.result as string;
+        const image = new Image();
+
+        image.onload = () => {
+          const width = image.width;
+          const height = image.height;
+
+          const MAX_WIDTH = 250;
+          const MAX_HEIGHT = 250;
+
+          if (width > MAX_WIDTH || height > MAX_HEIGHT) {
+            const title = "Error de carga";
+            const message = `Las dimensiones del logo no deben exceder ${MAX_WIDTH}x${MAX_HEIGHT} píxeles.`;
+            this.Message.showModal(title, message);
+            return;
+          }
+          // Las dimensiones del logo son válidas, enviar el archivo a través del servicio
+          this.api.putLogo(base64Data).subscribe((data) => {
+            const title = "Carga exitosa.";
+            const message = "El registro se ha cargado exitosamente";
+            this.Message.showModal(title, message);
+            this.cargarDatosUsuarios();
+          });
+        };
+
+        image.src = base64Data;
+      };
+
+      reader.readAsDataURL(file); 
+    }
+  }
+
+  navigateToEdit() {
+    localStorage.setItem('opcionEditar', '1');
+    this.router.navigate(['/register']);
+  }
+
+
 
 }

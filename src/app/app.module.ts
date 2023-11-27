@@ -147,6 +147,7 @@ import { AppUserSettingsComponent } from './modules/UserSettings/app-user-settin
 import { AppDiagnosticoProgressComponent } from "./modules/diagnosticoProgress/app-diagnostico-progress/app-diagnostico-progress.component";
 import { Footer2Component } from "./modules/footer2/footer2/footer.component";
 import { AppHeader2Component } from "./modules/header/app-header2/app-header2.component";
+import { DiagnosticoEtapasComponent } from "./modules/diagnostico-etapas/diagnostico-etapas.component";
 
 @NgModule({
   declarations: [
@@ -247,6 +248,7 @@ import { AppHeader2Component } from "./modules/header/app-header2/app-header2.co
     AppDiagnosticoProgressComponent,
     Footer2Component,
     AppHeader2Component,
+    DiagnosticoEtapasComponent
   ],
   imports: [
     /*NgxSpinnerModule.forRoot({

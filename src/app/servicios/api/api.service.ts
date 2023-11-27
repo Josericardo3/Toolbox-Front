@@ -91,6 +91,13 @@ export class ApiService {
     let direccion = `${this.apiURLNuevo}/api/Usuario/${idUsuario}`
     return this.http.get<any>(direccion, idUsuario)
   }
+
+  getUserRegistro(): Observable<any> {
+    const ID_USUARIO = window.localStorage.getItem('Id');
+    let direccion = `${this.apiURLNuevo}/api/Usuario/registro/${ID_USUARIO}`
+    return this.http.get<any>(direccion)
+  }
+
   getUserAvatar(idUsuario: any): Observable<any> {
     let direccion = `${this.apiURLNuevo}/api/Usuario/${idUsuario}`
     return this.http.get<any>(direccion, idUsuario)
@@ -543,6 +550,12 @@ export class ApiService {
     }
     let lista = `${this.apiURLNuevo}/api/Actividad/Logo`
     return this.http.put<any>(lista, send)
+  }
+
+  getLogo() {
+    const ID_USUARIO = window.localStorage.getItem('Id');
+    let lista = `${this.apiURLNuevo}/api/Actividad/Logo?idUsuario=${ID_USUARIO}`
+    return this.http.get<any>(lista)
   }
 
   //FORMULARIOS DE EVIDENCIA

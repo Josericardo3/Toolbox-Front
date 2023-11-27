@@ -30,6 +30,5 @@ export class BtnEmpezarContinuarService {
 
   obtenerProgreso(id: string): number {
     return this.progresoSubject.value[id] || 0;
-  }
-  
+  }  
 }

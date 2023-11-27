@@ -1,5 +1,5 @@
 import { compileDeclareInjectorFromMetadata } from '@angular/compiler';
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { head } from 'lodash';
 import { ApiService } from 'src/app/servicios/api/api.service';
@@ -119,9 +119,9 @@ export class AppDiagnosticoDocComponent implements OnInit {
     private http: HttpClient,
     private Message: ModalService,
     private sanitizer: DomSanitizer,
-    private spinnerService: SpinnerService
+    private spinnerService: SpinnerService,
   ) { }
-
+  
   ngOnInit(): void {
     const id = Number(window.localStorage.getItem('Id'));
     this.ApiService.colorTempo(); 
@@ -173,6 +173,7 @@ export class AppDiagnosticoDocComponent implements OnInit {
         this.porcentajeC = this.datosL.PORCENTAJE_C;
       });
   }
+
   getListaDiagnostico() {
     this.ApiService.getListaDiagnosticoApi()
       .subscribe((data: any) => {
@@ -335,6 +336,7 @@ export class AppDiagnosticoDocComponent implements OnInit {
         }, { NO_APLICA: 0, NO_CUMPLE: 0, CUMPLE_PARCIAL: 0, CUMPLE: 0 });
       })
   }
+
   getTotales() {
     this.totalesD = {
       cumple: this.datosD.DATA_CONSOLIDADO.reduce((accumulator, obj) => accumulator + parseFloat(obj.CUMPLE), 0).toFixed(2),
@@ -345,11 +347,13 @@ export class AppDiagnosticoDocComponent implements OnInit {
     }
     this.totalesD.porcCumple = (((this.totalesD.cumple) + Number(this.totalesD.cumpleParcial)) / (Number(this.totalesD.cumple) + Number(this.totalesD.noCumple) + Number(this.totalesD.cumpleParcial) + Number(this.totalesD.noAplica)) * 100).toFixed(2);
   }
+
   getSubtotales() {
     this.datosD.DATA_CONSOLIDADO.forEach((element: any) => {
       this.requisitosCumplidos.push(element.PORC_CUMPLE);
     });
   }
+
   getListaPlanMejora() {
     // var normaValue = window.localStorage.getItem('idNormaSelected');
     // var idUsuario = window.localStorage.getItem('Id');
@@ -377,6 +381,7 @@ export class AppDiagnosticoDocComponent implements OnInit {
         this.fechaInformeP = this.datosP.FECHA_INFORME;
       });
   }
+
   generateGrafico() {
     try {
       var configChart = `{
@@ -461,6 +466,7 @@ export class AppDiagnosticoDocComponent implements OnInit {
       this.Message.showModal(title, message);
     }
   }
+
   generateGraficoBarras() {
     const listaRequisitosMayusculas = this.listaRequisitos.map(requisito => requisito.toUpperCase());
     const configChart = `{
@@ -537,6 +543,7 @@ export class AppDiagnosticoDocComponent implements OnInit {
         reader.readAsDataURL(data);
       });
   }
+
   generateDiagnostico() {
     if (!!!this.datosD) {
       const title = "Error";
@@ -913,6 +920,7 @@ export class AppDiagnosticoDocComponent implements OnInit {
       pdfMake.createPdf(pdfDefinition).open();
     }
   }
+
   generateListaChequeo() {
     if (!!!this.datosL.RESPONSE_USUARIO) {
       const title = "No hay datos";
@@ -1139,6 +1147,7 @@ export class AppDiagnosticoDocComponent implements OnInit {
     this.Message.showModal(title, message);
     pdfMake.createPdf(pdfDefinition).open();
   }
+
   generatePlanMejora() {
     if (!!!this.datosP.USUARIO) {
       const title = "No hay datos";
@@ -1351,7 +1360,10 @@ export class AppDiagnosticoDocComponent implements OnInit {
     this.Message.showModal(title, message);
     pdfMake.createPdf(pdfDefinition).open();
   }
+  
   saveForm() {
     this.router.navigate(['/dashboard'])
   }
+
+  coloresProgress: string[] = ['#fc3a3a', '#fc6a3a', '#f5d773'];
 }

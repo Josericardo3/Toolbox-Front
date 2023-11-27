@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterContentChecked, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiService } from 'src/app/servicios/api/api.service';
 import { BtnEmpezarContinuarService } from 'src/app/servicios/btn-empezar-continuar/btn-empezar-continuar.service';
@@ -16,7 +16,8 @@ export class AppDiagnosticoProgressComponent implements OnInit{
   constructor(
     private ApiService: ApiService,
     private router: Router,
-    public btnEmpezarContinuarService : BtnEmpezarContinuarService
+    public btnEmpezarContinuarService : BtnEmpezarContinuarService,
+    private cd: ChangeDetectorRef
   ) { }
 
   ngOnInit() {
@@ -48,9 +49,10 @@ export class AppDiagnosticoProgressComponent implements OnInit{
           
             // Establece la propiedad guardado como false
             campo.guardado = false;
-          
+            
             console.log(`Cantidad de subformularios del formulario ${valorBuscar}: ${campo.totalFormularios}`);
           });
+          this.verificarBotonesDesaparecidos();
         } else {
           console.error('La respuesta del endpoint no tiene la estructura esperada.');
         }
@@ -69,37 +71,29 @@ export class AppDiagnosticoProgressComponent implements OnInit{
     return progresoActual !== 0 ? 'btn btn-outline-primary w-100 text-center' : 'btn btn-primary w-100 text-center';
   }
 
-  coloresProgress: string[] = ['#fc3a3a', '#fc6a3a', '#f5d773', '#abf573', '#46faf4', '#ad5dfc'];
-  colorIndex: number = 0;
-
-  // getColorGlobal(cantRespuestasGlobal: number, totalFormulariosGlobal: number): string {
-  //   const percentageGlobal = (cantRespuestasGlobal / totalFormulariosGlobal) * 100;
-  
-  //   if (cantRespuestasGlobal === 0) {
-  //     return 'light gray';
-  //   }
-
-  //   const currentColor = this.coloresProgress[this.colorIndex];
-  //   this.colorIndex = (this.colorIndex + 1) % this.coloresProgress.length;
-  
-  //   return currentColor;
-  // }
-
-  getColorGlobal(cantRespuestasGlobal: number, totalFormulariosGlobal: number): string {
-    const colorIndex = this.getNextColorIndex();
-  
-    if (cantRespuestasGlobal === 0) {
-      return 'light gray';
-    }
-  
-    return this.coloresProgress[colorIndex];
-  }
-  
+  coloresPorNumeral: { [numeral: string]: string } = {};
+  private coloresProgress: string[] = ['#fc3a3a', '#fc6a3a', '#f5d773', '#abf573', '#46faf4', '#ad5dfc'];
   private currentColorIndex: number = 0;
-  
-  private getNextColorIndex(): number {
+  todosBotonesDesaparecidos: boolean = false;
+
+  getColorGlobal(numeral: string, cantRespuestasGlobal: number, totalFormulariosGlobal: number): string {
+    // Verifica si ya se asignó un color a este NUMERAL_PRINCIPAL
+    if (!this.coloresPorNumeral[numeral]) {
+      // Si no se ha asignado, asigna un color único y constante
+      this.coloresPorNumeral[numeral] = this.getNextColor();
+    }
+    // Retorna el color asignado a este NUMERAL_PRINCIPAL
+    return this.coloresPorNumeral[numeral];
+  }
+
+  private getNextColor(): string {
     const nextIndex = this.currentColorIndex % this.coloresProgress.length;
     this.currentColorIndex = (this.currentColorIndex + 1) % this.coloresProgress.length;
-    return nextIndex;
+    return this.coloresProgress[nextIndex];
+  }
+
+  verificarBotonesDesaparecidos() {
+    this.todosBotonesDesaparecidos = this.datos && this.datos.campos && this.datos.campos.length > 0 &&
+      this.datos.campos.every(campo => campo.CANT_RESPUESTAS === campo.totalFormularios);
   }
 }

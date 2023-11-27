@@ -1,15 +1,23 @@
 <app-app-header></app-app-header>
 <app-app-header2></app-app-header2>
-<div class="container">
+<!-- <div class="container">
     <div class=" header-container mt-0">
       <app-app-header-arrow-left [redirectToDashboard]="true"></app-app-header-arrow-left>
       <h1>FORMULARIOS DE DIAGNÓSTICO</h1>
     </div>
+</div> -->
+<h1>FORMULARIOS DE DIAGNÓSTICO</h1>
+<div class="arrow">
+    <app-app-header-arrow-left></app-app-header-arrow-left>
+</div>
+<div *ngIf="todosBotonesDesaparecidos" class="container-fluid bg-transparent col-12 d-flex flex-column justify-content-center align-items-center">
+    <app-app-diagnostico-doc></app-app-diagnostico-doc>
+    <div class="linea col-11 mt-3"></div>
 </div>
 <div class="container-fluid bg-transparent col-12 d-flex flex-column justify-content-center align-items-center">
     <div class="container bg-white p-3 m-4 d-flex" *ngFor="let campo of datos.campos; let i = index">
         <div class="container d-flex flex-row flex-wrap cont align-items-center justify-content-center">
-            <div class="container col-md-9 col-sm-12">
+            <div class="container col-md-9 col-sm-12" [ngClass]="'campo.CANT_RESPUESTAS !== campo.totalFormularios' ? 'col-md-12' : 'col-md-9'">
                 <div class="container d-flex justify-content-between">
                     <p class="fw-bold fs-6 ms-0" *ngIf="!isLetra(campo.NUMERAL_PRINCIPAL)">CUESTIONARIO #{{campo.NUMERAL_PRINCIPAL}}</p>
                     <p class="fw-bold fs-6 ms-0" *ngIf="isLetra(campo.NUMERAL_PRINCIPAL)">ANEXO TIPO #{{campo.NUMERAL_PRINCIPAL}}</p>
@@ -24,14 +32,14 @@
                         
                         <div [style.left.%]="66.66" class="position-absolute top-0 bottom-0 custom-border"></div>
             
-                        <div [style.background-color]="getColorGlobal(campo.CANT_RESPUESTAS, campo.totalFormularios)" class="rounded" 
+                        <div [style.background-color]="getColorGlobal(campo.NUMERAL_PRINCIPAL, campo.CANT_RESPUESTAS, campo.totalFormularios)" class="rounded" 
                         role="progressbar" [style.width.%]="(campo.CANT_RESPUESTAS / campo.totalFormularios) * 100"></div>
                     </div>
                 </div>
             </div>
 
             <div class="container col-md-3 col-sm-12 ancho">
-                <button type="button" *ngIf="campo.CANT_RESPUESTAS !== campo.totalFormularios" [id]="i" 
+                <button type="submit" *ngIf="campo.CANT_RESPUESTAS !== campo.totalFormularios" [id]="i" 
                 (click)="irDiagnostico(campo.NUMERAL_PRINCIPAL)" [ngClass]="getButtonClasses(campo.CANT_RESPUESTAS)">
                 <span class="d-flex align-items-center justify-content-center">
                     {{ campo.CANT_RESPUESTAS !== 0 ? 'CONTINUAR' : 'EMPEZAR' }}
@@ -42,7 +50,6 @@
         </div>
     </div>
 </div>
-
 
 <app-footer2 class="footer"></app-footer2>
 <app-app-footer></app-app-footer>

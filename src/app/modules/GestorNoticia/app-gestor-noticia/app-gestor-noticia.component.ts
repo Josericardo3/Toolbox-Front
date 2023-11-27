@@ -372,7 +372,9 @@ export class AppGestorNoticiaComponent implements OnInit {
       const destinatario = this.selectedPst;
       const destinatariopst = this.selectedAdmin;
       const titulo = this.saveForm.value.tituloNoticia;
-      const descripcion = this.sanitizer.bypassSecurityTrustHtml(this.saveForm.value.descripcionNoticia); 
+      //const descripcion = this.sanitizer.bypassSecurityTrustHtml(this.saveForm.value.descripcionNoticia); 
+      const descripcion = this.saveForm.value.descripcionNoticia; 
+
       const imagen = this.imagen ? this.imagen : '';
       const id_categoria = this.saveForm.value.CategoriaNoticia;
       const data = {
