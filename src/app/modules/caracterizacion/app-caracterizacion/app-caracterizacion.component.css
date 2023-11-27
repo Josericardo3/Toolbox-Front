@@ -82,7 +82,9 @@ h1{
 ::ng-deep .mat-step-label{
   color:  #048F56;
 }
-
+.cont-proceso2 {
+  width: 60% !important;
+}
 ::ng-deep .mat-step-header .mat-step-icon-state-number {
   background-color: rgba(0, 0, 0, 0.54);
   color: #fff;
@@ -305,7 +307,14 @@ input[type="checkbox"],.ng-invalid,.ng-touched {
   align-items: center;
  
 }
-
+.footer2{
+  display: flex;
+    justify-content: flex-end;
+    flex-direction: column;
+    align-content: flex-end;
+    flex-wrap: wrap;
+    margin-right: 91px;
+}
 @media (max-width: 900px) {
   .header-container {
     flex-direction: column; 
@@ -323,6 +332,10 @@ input[type="checkbox"],.ng-invalid,.ng-touched {
   input[type=radio]{
       width: 5%;
   }
+  .cont-proceso3{
+    /* padding-left: 25px;  */
+    width: 64% !important;
+  }
   p{
     font-size: 15px;
     margin: 2vh;
@@ -334,9 +347,16 @@ input[type="checkbox"],.ng-invalid,.ng-touched {
   .cont-proceso3 {
     padding-left: 25px;
   }
+  .footer2{
+    align-content: center;
+    margin-right: 0px;
+  }
 }
 @media (max-width: 540px) {
-
+  .cont-proceso2,.cont-proceso3 {
+    /* padding-left: 25px; */
+    width: 90% !important;
+  }
   input, select {
     width: 28.563rem;
 }
@@ -348,9 +368,13 @@ input[type="checkbox"],.ng-invalid,.ng-touched {
   }
 }
 @media (max-width: 440px) {
-  .cont-proceso2,  .cont-proceso3 {
-    padding-left: 25px;
-    /* padding-right: 5px */
+  .cont-proceso2 {
+    /* padding-left: 25px; */
+    width: 90% !important;
+  }
+  .cont-proceso3 {
+    padding-left: 25px; 
+    width: 100% !important;
   }
   input, select {
     width: 20.625rem;
@@ -361,4 +385,5 @@ input[type="checkbox"],.ng-invalid,.ng-touched {
 p{
   color: red;
 }
+
 }

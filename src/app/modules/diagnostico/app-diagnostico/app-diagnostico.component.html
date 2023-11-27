@@ -39,10 +39,11 @@
           <label>Observacion</label>
           <textarea type="text" style="height: 200px" [id]="'observacion-' + subcampo.NUMERAL_ESPECIFICO" 
           (input)="capturarValorObs($event, subcampo.NUMERAL_PRINCIPAL ,subcampo.NUMERAL_ESPECIFICO)" class="obs"
-          [value]="subcampo.OBSERVACION_RESPUESTA" [attr.disabled]="subcampo.bloquearGuardar"></textarea>
+          [value]="subcampo.OBSERVACION_RESPUESTA"></textarea>
           <div class="container d-flex align-items-center flex-column">
               <button type="submit" class="btn btn-primary w-100 m-3" [id]="j + '-' + i" [name]="j + '-' + i" 
-              [disabled]="!isFormValid(j, i) || isButtonDisabled(j, i) || subcampo.bloquearGuardar" (click)="saveForm(j, i)">
+              [disabled]="!isFormValid(j, i) || isButtonDisabled(j, i) || subcampo.bloquearGuardar" (click)="saveForm(j, i)"
+              [ngClass]="{'disabled-button': !isFormValid(j, i) || isButtonDisabled(j, i) || subcampo.bloquearGuardar}">
                 Guardar
                 <i class="far fa-arrow-alt-circle-right"></i>
               </button>

@@ -218,9 +218,9 @@ export class AppDiagnosticoComponent implements OnInit {
           this.Message.showModal(title, message);
           // this.bloquearGuardar = true;
           formularioActual.bloquearGuardar = true;
-              formularioActual.listacampos.forEach((subcampo: any) => {
-      subcampo.bloquearGuardar = true;
-    });
+    //           formularioActual.listacampos.forEach((subcampo: any) => {
+    //   subcampo.bloquearGuardar = true;
+    // });
           // this.router.navigate(['/diagnosticoDoc']) 
 
           // Incrementar el progreso actual y obtener el nuevo valor
@@ -240,35 +240,4 @@ export class AppDiagnosticoComponent implements OnInit {
     return /^[A-Za-z]$/.test(numeral);
   }
 
-  // cambiosNoGuardados: boolean = false;
-  // onFormChange(j: number, i: number) {
-  //   // Puedes llamar a este método cada vez que se realice un cambio en el formulario
-  //   this.cambiosNoGuardados = true;
-  // }
-
-  // // Método para manejar la alerta antes de salir de la ventana
-  // @HostListener('window:beforeunload', ['$event'])
-  // unloadNotification($event: any): void {
-  //   if (this.cambiosNoGuardados) {
-  //     // Mostrar la alerta en tu modal personalizado
-  //     const title = "Guarda tus cambios";
-  //     const message = "Las respuestas no guardadas se perderán";
-  //     this.Message.showModal(title, message);
-  //     $event.returnValue = true;
-  //   }
-  // }
-
-  // // Método para manejar la navegación cuando se hace clic en el botón de retroceso
-  // goBack(): void {
-  //   if (this.cambiosNoGuardados) {
-  //     // Mostrar la alerta en tu modal personalizado
-  //     const title = "Guarda tus cambios";
-  //     const message = "Las respuestas no guardadas se perderán";
-  //     this.Message.showModal(title, message);
-  //   } else {
-  //     // Navegar hacia atrás si no hay cambios no guardados
-  //     // Puedes agregar más lógica de navegación aquí según tus necesidades
-  //     this.router.navigate(['/tu-pagina-anterior']);
-  //   }
-  // }
 }

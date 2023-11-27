@@ -157,8 +157,10 @@ textarea:disabled{
     font-size: 17px;
     margin: 10px 0 5px 0;
 }
-
-  
+.disabled-button:disabled {
+    background-color: #878787;
+    border-color: #878787;
+}  
 @media (max-width: 900px) {
     .cont{
         flex-direction: column;

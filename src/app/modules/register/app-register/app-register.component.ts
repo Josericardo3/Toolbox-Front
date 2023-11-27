@@ -11,6 +11,7 @@ import { debug } from 'console'
 import { timeInterval } from 'rxjs'
 import { TimeInterval } from 'rxjs/internal/operators/timeInterval'
 import { Location } from '@angular/common';
+import { stringify } from 'querystring'
 
 
 @Component({
@@ -20,6 +21,7 @@ import { Location } from '@angular/common';
 })
 export class AppRegisterComponent implements OnInit {
   password: string = '';
+  opcionEditar: string = '';
   repeatPassword: string = '';
   showPassword: boolean = false;
   showRepeatPassword: boolean = false;
@@ -59,12 +61,14 @@ deshabilitarAvatars:any=false;
     private Message: ModalService,
     private renderer: Renderer2,
     private store: Store<{ dataLogin: any }>,
-    private location: Location,
-    
+    private location: Location    
   ) { }
 
   ngOnInit(): void {
+
     localStorage.removeItem("newUser")
+    var opcion = localStorage.getItem("opcionEditar");
+
     this.data = this.categoria.name.tipo
     this.setDepartments('')
     this.registerForm = this.formBuilder.group(
@@ -149,6 +153,40 @@ deshabilitarAvatars:any=false;
         validator: CustomValidators.comparePassword,
       },
     )
+
+    
+    if(opcion == "1"){
+
+      this.ApiService.getUserRegistro().subscribe((data) => {
+        if (data && data.length > 0) {
+          const firstUser = data[0]; 
+          this.registerForm.setValue({
+            registroNacionalDeTurismo: firstUser.RNT,
+            numeroDeIdentificacionTributaria: firstUser.NIT,
+            categoriaRnt: firstUser.FK_ID_CATEGORIA_RNT,
+            subcategoriaRnt: firstUser.FK_ID_SUB_CATEGORIA_RNT,
+            nombreDelPst: firstUser.NOMBRE_PST,
+            razonSocialDelPst: firstUser.RAZON_SOCIAL_PST,
+            correo: firstUser.CORREO_PST,
+            telefono: firstUser.TELEFONO_PST,
+            tipoDeIdentificacionDelRepresentanteLegal : "CEDULA DE CIUDADANIA",
+            nombreDelRepresenteLegal: firstUser.NOMBRE_REPRESENTANTE_LEGAL,
+            correoRepresentanteLegal: firstUser.CORREO_REPRESENTANTE_LEGAL,
+            telefonoDelRepresentanteLegal: firstUser.TELEFONO_REPRESENTANTE_LEGAL,
+            identificacionDelRepresentanteLegal: firstUser.IDENTIFICACION_REPRESENTANTE_LEGAL,
+            departamento: firstUser.DEPARTAMENTO,
+            municipio: firstUser.MUNICIPIO,
+            nombreDelResponsableDeSostenibilidad: firstUser.NOMBRE_RESPONSABLE_SOSTENIBILIDAD,
+            correoDelResponsableDeSostenibilidad: firstUser.CORREO_RESPONSABLE_SOSTENIBILIDAD,
+            telefonoDelResponsableDeSostenibilidad: firstUser.TELEFONO_RESPONSABLE_SOSTENIBILIDAD,
+            password1 : "",
+            confirmPassword : "",
+            checkbox: ''
+          });
+          }
+      });
+
+    }
    
 
   }
@@ -441,7 +479,6 @@ deshabilitarAvatars:any=false;
           this.registerForm.get('nombreDelRepresenteLegal').setValue('');
           this.registerForm.get('categoriaRnt').setValue('');
           this.registerForm.get('subcategoriaRnt').setValue('');
-
           this.registerForm.get('departamento').setValue('');
           this.registerForm.get('municipio').setValue('');
           this.deshabilitarCampos(true);
