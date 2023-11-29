@@ -1,13 +1,55 @@
 <div class="container-fluid">
   <div class="row">
     <div class="col-md-12">
-     
-        <div class="container d-flex justify-content-between">
-          <img class="logo-escudo" src="../../../../assets/img-dashboard/logo.svg" alt="" (click)="Logo()"/>
-          <p *ngIf="esVisible" style="color: white; margin-top: 0.8rem; cursor: pointer;" routerLink="">Cerrar Sesión</p>
+      <div class="container d-flex justify-content-between">
+        <div>
+          <img
+          class="logo-escudo"
+          src="../../../../assets/img-dashboard/logo.svg"
+          alt=""
+          (click)="Logo()"
+        />
         </div>
+       <hr>
+        <div class=" d-flex justify-content-between informacion" *ngIf="!isMobile && esInfoHeader">
+          <p  style="color: white; margin-top: 0.8rem; cursor: pointer" class="me-4" (click)="irUserSettings()">
+            {{nombre}}
+          </p>
+          <img
+          style="
+            margin-top: 0.5rem;
+            width: 2rem;
+            height: 2rem;
+            border-radius: 50%;
+            border: 2px solid white;
+            cursor: pointer;
+          "
+          (click)="irUserSettings()"
+          class="img-avatar img-fluid rounded-circle"
+          [src]="logo"
+          alt="Previsualización de la imagen"
+        />
+ 
+        <p
+        *ngIf="esVisible"
      
+        style="color: white; margin-top: 0.8rem; cursor: pointer; margin-left: 2rem;"
+        routerLink=""
+      >
+        Cerrar Sesión
+      </p>
+        </div>
+       
+       
+      </div>
     </div>
-    
   </div>
 </div>
+
+
+ 
+  
+
+
+ 
+   

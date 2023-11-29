@@ -24,7 +24,7 @@
                     <div class="descripcion-noticia">
                         <p class="titulo-noticia">{{val.TITULO}}</p>
                         <p class="fecha-noticia">{{formatFechaText(val.FECHA_REG)}}</p>
-                        <p class="descripcion" [innerHTML]="val.DESCRIPCION.slice(0,320)">{{val.DESCRIPCION.slice(0,320)}}</p>
+                        <p class="descripcion" [innerHTML]="val.DESCRIPCION?.slice(0,320)">{{val.DESCRIPCION?.slice(0,320)}}</p>
                     </div>
                 </a>
             <!-- Paginacion -->

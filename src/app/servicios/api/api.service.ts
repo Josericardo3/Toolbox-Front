@@ -615,6 +615,11 @@ export class ApiService {
     let lista = `${this.apiURLNuevo}/api/Monitorizacion/GetContadorMonitorizacion`
     return this.http.get<any>(lista)
   }
+  getModulosConsultados(){
+    const idUsuarioPst = window.localStorage.getItem('Id');
+    let lista = `${this.apiURLNuevo}/api/Monitorizacion/GetModulosConsultados?userId=${idUsuarioPst}`
+    return this.http.get<any>(lista)
+  }
 
   UpdateAuditoriaEstadoTerminado(id: any) {
     let assign = `${this.apiURLNuevo}/api/Auditoria/UpdateEstadoTerminadoAuditoria?idAuditoria=${id}`

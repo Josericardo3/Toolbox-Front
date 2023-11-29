@@ -136,8 +136,7 @@ export class AppDiagnosticoDocComponent implements OnInit {
         this.getListaPlanMejora();
       }
       else {
-        this.router.navigate(['/dashboard']);
-       
+        this.router.navigate(['/dashboard']);     
       }
     })
   }

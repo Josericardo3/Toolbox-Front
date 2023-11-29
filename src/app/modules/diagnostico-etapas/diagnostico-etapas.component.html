@@ -100,7 +100,7 @@
           </span>
         </button> -->
 
-        <button class="btn w-100 text-center" (click)="fnEtapa('final')" [ngClass]="{'disabled': bloquearFinal}">
+        <button class="btn btn-primary w-100 text-center" (click)="fnEtapa('final')" [ngClass]="{'disabled': bloquearFinal}">
           <span *ngIf="etapaShowFinal; else diagnosticoFinal">
             VER RESULTADOS <i class="far fa-arrow-alt-circle-right ms-1"></i>
           </span>

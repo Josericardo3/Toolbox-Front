@@ -1,5 +1,5 @@
-import { Component, Injectable, NgModule, OnInit } from '@angular/core'
-import { Router } from '@angular/router'
+import { Component, ElementRef, HostListener, Injectable, NgModule, NgZone, OnInit, ViewChild } from '@angular/core'
+import { NavigationEnd, Router } from '@angular/router'
 import { selectFeatureCount } from '../../../state/selectors/items.selectors'
 import { Observable } from 'rxjs'
 import { Store } from '@ngrx/store'
@@ -10,6 +10,8 @@ import { ApiService } from 'src/app/servicios/api/api.service';
 import { debounce } from 'lodash'
 import { IndicadorService } from '../../../servicios/kpis/indicador.service';
 import { ColorLista } from 'src/app/servicios/api/models/color'
+import { MatMenu } from '@angular/material/menu'
+
 
 
 @Component({
@@ -20,6 +22,7 @@ import { ColorLista } from 'src/app/servicios/api/models/color'
 export class AppDashboardComponent implements OnInit {
   //PG counter$: Observable<any>;
   public showModal: boolean = false;
+  menuOpened:any=false;
   datos: any = [];
   datosTarjeta: any = [];
   nombre: any;
@@ -55,6 +58,28 @@ export class AppDashboardComponent implements OnInit {
   colorWallpaper:ColorLista;
   result: boolean = false;
   resultNoticia: boolean = false;
+  resultSeguimiento: boolean = false;
+
+
+  contenidoCargado: boolean = false;
+
+
+  imagenesModulos = {
+    'Caracterización': '../../../../assets/img-dashboard/documentacion-thumb.svg',
+    'Autodiagnóstico': '../../../../assets/img-dashboard/diagnostico-thumb.svg',
+    'Gestor De Tareas': '../../../../assets/img-dashboard/documentacion-thumb.svg',
+    'Documentación': '../../../../assets/img-dashboard/documentacion-thumb.svg',
+    'Formación E E-Learning': '../../../../assets/img-dashboard/formacion-thumb.svg',
+    'Noticias': '../../../../assets/img-dashboard/documentacion-thumb.svg',
+    'Auditoría Interna': '../../../../assets/img-dashboard/auditoria-thumb.svg',
+    'Evidencia E Implementación': '../../../../assets/img-dashboard/evidencia-thumb.svg',
+    'Alta Gerencia': '../../../../assets/img-dashboard/documentacion-thumb.svg',
+    "Medición Y Kpi's": '../../../../assets/img-dashboard/documentacion-thumb.svg',
+    'Mejora Continua': '../../../../assets/img-dashboard/mejora_continua-thumb.svg',
+    'Monitorización': '../../../../assets/img-dashboard/monitorizacion-thumb.svg'
+  };
+
+  @ViewChild('botonCarousel') miBoton: ElementRef | undefined;
   
   //Permisos
   AccesoCaracterizacion : boolean = true; 
@@ -74,18 +99,35 @@ export class AppDashboardComponent implements OnInit {
 filter:any={ID_USUARIO:localStorage.getItem('Id')}
 resultInicadores: boolean = false;
 listaIndicadores:any=[];
+@ViewChild(MatMenu) menu: any; 
   constructor(
     //PG private store: Store<{ initialState:any }>,
     private router: Router,
     private Message: ModalService,
     private ApiService: ApiService,
     private IndicadorService:IndicadorService,
-  ) {//PG this.counter$= store.select('initialState')
+    private zone: NgZone,
+    private elRef: ElementRef
+    
+  ) { this.getContenidoTarjeta();
+    //PG this.counter$= store.select('initialState')
   }
   normaDiadnostico: any = {};
   applyStyle: boolean = false;
   adminTes: boolean = false;
   pst:boolean=false; 
+  carousel: any = false;
+
+  modulosConsultados: any[] = [{},{},{},{}];
+
+  @HostListener('document:click', ['$event'])
+onClick(event: Event) {
+  const collapse = this.elRef.nativeElement.querySelector('#collapseContent');
+  if (collapse && !collapse.contains(event.target)) {
+    // Verifica si el clic ocurre fuera del collapse y lo cierra si es así
+    collapse.classList.remove('show');
+  }
+}
   ngOnInit(): void {
     if (localStorage.getItem('rol') == "4" || 4 ||"3"|| 3) {
       this.applyStyle = true;
@@ -134,11 +176,11 @@ listaIndicadores:any=[];
         this.AccesoDiagnostico = false;
       }
       this.AccesoSettings=false;
-      console.log(dataPermiso); 
+      
     });
     this.showModal = false;
     this.existingRoutes = this.router.config.map(route => route.path);
-    console.log(this.existingRoutes);
+    
     //borrar
     let arrNormas = JSON.parse(localStorage.getItem('norma') || '[]');
     this.validateDiagnostico.subscribe((data: any) =>
@@ -148,9 +190,38 @@ listaIndicadores:any=[];
     let normaSelected = localStorage.getItem("normaSelected");
     //prueba global selectFeatureCount
     // this.getNombreUsuario();
-    this.getContenidoTarjeta();
+    // this.getContenidoTarjeta();
     this.getRecordatorioIndicador();
+    this.router.events.subscribe((event:any) => {    
+         if (event.url == '/dashboard' ) {    
+          this.carousel = false;
+          this.datosTarjetaNoticia = [];
+          this.getContenidoTarjeta();
+
+          
+
+          this.zone.run(() => {     if (this.miBoton && this.miBoton.nativeElement) {       this.miBoton.nativeElement.click();     }   });
+             
+            location.reload();
+           }     
+              
+              
+              });
+    
+    this.obtenerModulosConsultados();
   }
+  ngAfterViewInit(){
+    this.carousel = false;
+    this.datosTarjetaNoticia = [];
+    this.getContenidoTarjeta();
+
+    setTimeout(() => {
+      this.contenidoCargado = true;
+    }, 1000);
+
+  }
+
+  
 
   mostrarNotificacion : boolean = false;
   isCollapsed = true;
@@ -194,6 +265,10 @@ listaIndicadores:any=[];
     //   }
     // });
   }
+  darclick(event: any){
+    // console.log("click123", event);
+
+  }
 
   fnEtapa(etapa: string) {
     if (etapa === "inicial") {
@@ -208,16 +283,21 @@ listaIndicadores:any=[];
   }
   
   buscarRuta(ruta: string) {
-    if (!this.existingRoutes.includes(ruta)) {
-      return; // La ventana no existe en el enrutamiento, salir del método
-    }
-    this.router.navigate([ruta]);
+  
+      if (!this.existingRoutes.includes(ruta)) {
+        return; // La ventana no existe en el enrutamiento, salir del método
+      }
+      this.router.navigate([ruta]);
+      this.carousel= false;
+    
+  
   }
 
   getContenidoTarjeta() {
+    this.carousel = true;
     this.ApiService.getTarjeta().subscribe(data => {
       this.datosTarjeta = data;
-
+  
       for (let i = 0; i < this.datosTarjeta.length; i++) {
         if (this.datosTarjeta[i].Notificacion.TIPO == "Actividad") {
           this.showActividad = true;
@@ -227,22 +307,26 @@ listaIndicadores:any=[];
             dato: this.datosTarjeta[i].Notificacion.TIPO
           });
         }
-
+       
         if (this.datosTarjeta[i].Notificacion.TIPO == "Noticia") {
           if (this.datosTarjeta[i].Notificacion.COD_IMAGEN != null || this.datosTarjeta[i].Notificacion.COD_IMAGEN != undefined) {
             this.showimagen = 'data:image/png;base64,' + this.datosTarjeta[i].Notificacion.COD_IMAGEN
           } else {
             this.showimagen = null
           }
+         
           this.datosTarjetaNoticia.push({
             COD_IMAGEN: this.showimagen,
             DESCRIPCION_NOTICIA: this.datosTarjeta[i].Notificacion.DESCRIPCION_NOTICIA,
             TITULO_NOTICIA: this.datosTarjeta[i].Notificacion.TITULO_NOTICIA,
             NOMBRE_FIRMA: this.datosTarjeta[i].Notificacion.NOMBRE_FIRMA,
             FK_ID_NOTICIA: this.datosTarjeta[i].Notificacion.FK_ID_NOTICIA,
-            dato: this.datosTarjeta[i].Notificacion.TIPO
+            dato: this.datosTarjeta[i].Notificacion.TIPO,
+            FECHA_REG:this.datosTarjeta[i].Notificacion.FECHA_REG_NOTICIA
           })
+     
         }
+        
       }
 
       if (this.datosTarjetaNoticia.length == 0 || this.datosTarjetaNoticia.length <= 0) {
@@ -289,27 +373,26 @@ listaIndicadores:any=[];
     this.normaSelected = evt.target.value;
   }
 
-  menuFilter(evt: any) { //redireccionar
-    if (this.validateRol(evt)) {// condicional cuando sí tiene acceso
-      evt.target.src = '../../../../assets/img-dashboard/' + evt.target.id + '-3.svg';
-      switch (evt.target.id) {
-        case 'caracterizacion':
+  activarRuta: boolean = false; 
+  menuFilter(moduleName: any) { 
+
+      switch (moduleName) {
+        case 'Caracterización':
           this.validateCaracterizacion.subscribe((data) => {
             if (data) {
-              this.router.navigate(['/dashboard']);
               const title = "Aviso";
               const message = "Usted ya ha realizado el proceso de caracterización, si desea modificarlo, por favor comuníquese con el administrador del sistema."
               this.Message.showModal(title, message);
-              return
+              this.activarRuta = true; 
             } else {
               const request = {
                 FK_ID_USUARIO: parseInt(localStorage.getItem("Id")),
                 TIPO: "Modulo",
-                MODULO: evt.target.id
+                MODULO: moduleName
               };
               this.ApiService.postMonitorizacionUsuario(request).subscribe();
-
-              this.router.navigate(['/' + evt.target.id]);
+              this.buscarRuta('caracterizacion');
+              // this.router.navigate(['/' + evt.target.id]);
             }
           });
           break;
@@ -320,63 +403,135 @@ listaIndicadores:any=[];
               const message = "Debe realizar el proceso de caracterización antes de continuar con el proceso de diagnostico"
               this.Message.showModal(title, message);
               return
-            } else {
-              this.validateDiagnostico.subscribe((data) => {
-                if (data) {
-                  const request = {
-                    FK_ID_USUARIO: parseInt(localStorage.getItem("Id")),
-                    TIPO: "Modulo",
-                    MODULO: "diagnosticoDoc"
-                  };
-                  this.ApiService.postMonitorizacionUsuario(request).subscribe();
+            } 
+            // else {
+            //   this.validateDiagnostico.subscribe((data) => {
+            //     if (data) {
+            //       const request = {
+            //         FK_ID_USUARIO: parseInt(localStorage.getItem("Id")),
+            //         TIPO: "Modulo",
+            //         MODULO: "diagnosticoDoc"
+            //       };
+            //       this.ApiService.postMonitorizacionUsuario(request).subscribe();
 
-                  this.router.navigate(['/diagnosticoDoc']);
-                  return
-                } else {
-                  const request = {
-                    FK_ID_USUARIO: parseInt(localStorage.getItem("Id")),
-                    TIPO: "Modulo",
-                    MODULO: evt.target.id
-                  };
-                  this.ApiService.postMonitorizacionUsuario(request).subscribe();
-                  this.router.navigate(['/' + evt.target.id]);
-                }
-              });
-            }
-          });
-
-
+            //       this.router.navigate(['/diagnosticoDoc']);
+            //       return
+            //     } else {
+            //       const request = {
+            //         FK_ID_USUARIO: parseInt(localStorage.getItem("Id")),
+            //         TIPO: "Modulo",
+            //         MODULO: evt.target.id
+            //       };
+            //       this.ApiService.postMonitorizacionUsuario(request).subscribe();
+            //       // this.router.navigate(['/' + evt.target.id]);
+            //     }
+            //   });
+            // }
+          }); 
           break;
-        default: const request = {
-          FK_ID_USUARIO: parseInt(localStorage.getItem("Id")),
-          TIPO: "Modulo",
-          MODULO: evt.target.id
-        };
-          this.ApiService.postMonitorizacionUsuario(request).subscribe();
-          this.router.navigate(['/' + evt.target.id]);
-          break;
+          case 'Medición':
+            moduleName = "Medición Y Kpi's";
+            break;
+
       }
+      if (!this.activarRuta) {
+      const request = {
+        FK_ID_USUARIO: parseInt(localStorage.getItem("Id")),
+        TIPO: "Modulo",
+        MODULO: moduleName,
+      };
+        this.ApiService.postMonitorizacionUsuario(request).subscribe();
+      }
+  }
+
+  obtenerModulosConsultados() {
+    this.ApiService.getModulosConsultados().subscribe((data: any[]) => {
+      
+      this.modulosConsultados = data;
+      
+      if (this.modulosConsultados.length == 0 || this.modulosConsultados.length <= 0) {
+        this.resultSeguimiento = true;
+      }
+      // for (let i = 0; i < this.modulosConsultados.length; i++) {
+      //   switch (this.modulosConsultados[i].MODULO){
+      //     case 'CARACTERIZACIÓN':
+      //       break
+      //     case 'DIAGNÓSTICO':
+      //       break
+      //     case 'PLANIFICACIÓN':
+      //       break
+      //     case 'DOCUMENTACIÓN':
+      //       break
+      //     case 'FORMACIÓN E E-LEARNING':
+      //       break
+      //     case 'NOTICIAS':
+      //       break
+      //     case 'AUDITORÍA INTERNA':
+      //       break
+      //     case 'EVIDENCIA E IMPLEMENTACIÓN':
+      //       break
+      //     case 'ALTA GERENCIA':
+      //       break
+      //     case "MEDICIÓN Y KPI's":
+      //       break
+      //     case 'MEJORA CONTINUA':
+      //       break
+      //     case 'MONITORIZACIÓN':
+      //       break
+          
+      //   }
+      // }
+    });
+  }
+
+  getFechaFormato(fecha: string): string {
+    const fechaConsulta = new Date(fecha);
+    const ahora = new Date();
+  
+    const diferencia = Math.abs(ahora.getTime() - fechaConsulta.getTime());
+    const segundos = Math.floor(diferencia / 1000);
+    const minutos = Math.floor(segundos / 60);
+    const horas = Math.floor(minutos / 60);
+  
+    if (horas >= 24) {
+      const dias = Math.floor(horas / 24);
+      if (dias === 1) {
+        return 'Última vez visitado ayer';
+      } else {
+        const fechaConsulta = new Date(fecha);
+        const dia = fechaConsulta.getDate();
+        const mes = fechaConsulta.getMonth() + 1; // El mes en JavaScript es de 0 a 11
+        const año = fechaConsulta.getFullYear();
+
+        return `Última vez visitado ${dia < 10 ? '0' + dia : dia}/${mes < 10 ? '0' + mes : mes}/${año}`;
+      }
+    } else if (horas >= 1) {
+      return `Última vez visitado hace ${horas} horas`;
+    } else if (minutos >= 1) {
+      return `Última vez visitado hace ${minutos} minutos`;
+    } else {
+      return 'Recientemente visitado';
     }
   }
 
   mouseOver(evt: any) {
-    if (this.validateRol(evt)) {
-      evt.target.src = '../../../../assets/img-dashboard/' + evt.target.id + '-3.svg';
-      const p = document.getElementById('p-' + evt.target.id);
-      if (p) {
-        p.style.color = "#068460";
-      }
-    }
+    // if (this.validateRol(evt)) {
+    //   evt.target.src = '../../../../assets/img-dashboard/' + evt.target.id + '-3.svg';
+    //   const p = document.getElementById('p-' + evt.target.id);
+    //   if (p) {
+    //     p.style.color = "#068460";
+    //   }
+    // }
   }
 
   mouseOut(evt: any) {
-    if (this.validateRol(evt)) {
-      evt.target.src = '../../../../assets/img-dashboard/' + evt.target.id + '.svg';
-      const p = document.getElementById('p-' + evt.target.id);
-      if (p) {
-        p.style.color = "#999999";
-      }
-    }
+    // if (this.validateRol(evt)) {
+    //   evt.target.src = '../../../../assets/img-dashboard/' + evt.target.id + '.svg';
+    //   const p = document.getElementById('p-' + evt.target.id);
+    //   if (p) {
+    //     p.style.color = "#999999";
+    //   }
+    // }
   }
 
   Logo() {
@@ -385,15 +540,15 @@ listaIndicadores:any=[];
   }
 
   //prueba para auditoria
-  redirigirAuditoria() {
-    const request = {
-      FK_ID_USUARIO: parseInt(localStorage.getItem("Id")),
-      TIPO: "Modulo",
-      MODULO: "listaDeVerificacion"
-    };
-    this.ApiService.postMonitorizacionUsuario(request).subscribe();
-    this.router.navigate(['/listaDeVerificacion']);
-  }
+  // redirigirAuditoria() {
+  //   const request = {
+  //     FK_ID_USUARIO: parseInt(localStorage.getItem("Id")),
+  //     TIPO: "Modulo",
+  //     MODULO: "listaDeVerificacion"
+  //   };
+  //   this.ApiService.postMonitorizacionUsuario(request).subscribe();
+  //   this.router.navigate(['/listaDeVerificacion']);
+  // }
 
   indexCard(index: any) {
     const request = {
@@ -444,4 +599,62 @@ listaIndicadores:any=[];
     const urlExterna = 'https://starlit-lollipop-776b18.netlify.app';
     window.location.href = urlExterna;
   }
+
+  preserveFirstLetterCase(inputString: string): string {
+    const words = inputString.split(' ');
+
+    for (let i = 0; i < words.length; i++) {
+      let word = words[i];
+
+      if (word.includes('-')) {
+        // Manejo de palabras con guiones (como E-Learning)
+        const hyphenatedWords = word.split('-');
+        const capitalizedHyphenatedWords = hyphenatedWords.map((hyphenatedWord, index) => {
+          if (index === 0) {
+            return hyphenatedWord.charAt(0).toUpperCase() + hyphenatedWord.slice(1).toLowerCase();
+          } else {
+            return hyphenatedWord.charAt(0).toUpperCase() + hyphenatedWord.slice(1).toLowerCase();
+          }
+        });
+
+        words[i] = capitalizedHyphenatedWords.join('-');
+      } else {
+        // Palabras normales
+        const firstLetter = word.charAt(0).toUpperCase();
+        const restOfWord = word.slice(1).toLowerCase();
+        words[i] = firstLetter + restOfWord;
+      }
+    }
+
+    return words.join(' ');
+  }
+  
+
+// Función que se activa cuando el contenido del carousel está listo
+
+
+irUserSettings(){
+  this.router.navigate(["/userSettings"]);
+}
+
+cambioIcono(){
+  this.menuOpened=!this.menuOpened;
+}
+
+formatFechaText(fecha: string): string {
+  const meses = [
+    "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+    "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+  ];
+
+  const fechaOriginal = new Date(fecha);
+  const dia = fechaOriginal.getDate();
+  const mes = meses[fechaOriginal.getMonth()];
+  const año = fechaOriginal.getFullYear();
+
+  const fechaFormateada = `${dia} de ${mes} del ${año}`;
+
+  return fechaFormateada;
+}
+
 }
