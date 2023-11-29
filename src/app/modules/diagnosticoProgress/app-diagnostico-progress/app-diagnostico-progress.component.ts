@@ -96,4 +96,10 @@ export class AppDiagnosticoProgressComponent implements OnInit{
     this.todosBotonesDesaparecidos = this.datos && this.datos.campos && this.datos.campos.length > 0 &&
       this.datos.campos.every(campo => campo.CANT_RESPUESTAS === campo.totalFormularios);
   }
+
+  // En tu componente de Angular
+  areAllButtonsHidden(): boolean {
+    return this.datos.campos.every(campo => campo.CANT_RESPUESTAS === campo.totalFormularios);
+  }
+
 }

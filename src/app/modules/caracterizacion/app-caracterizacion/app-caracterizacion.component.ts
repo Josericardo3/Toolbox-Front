@@ -108,10 +108,10 @@ ngOnInit(): void {
   this.colorWallpaper = JSON.parse(localStorage.getItem("color")).wallpaper;
 
    this.ApiService.validateCaracterizacion(id).subscribe((data: any)=>{
-    if(data === true){
-      this.router.navigate(['/dashboard']);
-    }
-  else{
+  //   if(data === true){
+  //     this.router.navigate(['/dashboard']);
+  //   }
+  // else{
       this.formParent = this.formBuilder.group({});
       this.getCaracterizacion();
       this.getPreguntasOrdenadas();
@@ -119,7 +119,7 @@ ngOnInit(): void {
       .subscribe((data: any[]) => {
         this.municipios = data;
       });  
-  }
+  //}
   })
 
   //validar input-otro
@@ -167,9 +167,11 @@ getCaracterizacion(){
   this.ApiService.getData()
   .subscribe((data: any) => {
     this.datos = data;
+
+    const tempoArray =  data.CAMPOS
     this.preguntasDesordenadas = data.CAMPOS;
     // Obtiene el valor de "Categoría RNT" para el título
-    const campoCategoriaRNT = this.datos.CAMPOS.find(campo => campo.NOMBRE === 'Categoría RNT');
+    const campoCategoriaRNT = tempoArray.find(campo => campo.NOMBRE === 'Categoría RNT');
     this.categoriaRNTValues = campoCategoriaRNT.VALUES;
     
     //Bloquear campos con valor
@@ -307,7 +309,12 @@ onChangeAventuraSeleccionada(value: boolean) {
 }
 
 printSelectedOption() {
+
+ // this.selectedOptions.push(this.selectedOption);
+ if (!this.selectedOptions.includes(this.selectedOption)) {
+  // Si no está presente, agrégala
   this.selectedOptions.push(this.selectedOption);
+}
 }
 
 allFieldsFilled(): boolean {

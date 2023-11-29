@@ -58,6 +58,7 @@ export class AppDiagnosticoComponent implements OnInit {
       .subscribe((data: any) => {
         this.datos = data;
         this.isDataLoaded = true;
+        console.log(this.datos)
 
         if (this.datos && this.datos.campos) {
           console.log('Datos filtrados:', this.datos.campos);

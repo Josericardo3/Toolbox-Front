@@ -17,7 +17,7 @@
 <div class="container-fluid bg-transparent col-12 d-flex flex-column justify-content-center align-items-center">
     <div class="container bg-white p-3 m-4 d-flex" *ngFor="let campo of datos.campos; let i = index">
         <div class="container d-flex flex-row flex-wrap cont align-items-center justify-content-center">
-            <div class="container col-md-9 col-sm-12" [ngClass]="'campo.CANT_RESPUESTAS !== campo.totalFormularios' ? 'col-md-12' : 'col-md-9'">
+            <div [ngClass]="{'col-md-12': areAllButtonsHidden(), 'col-md-9': !areAllButtonsHidden()}" class="container col-sm-12">
                 <div class="container d-flex justify-content-between">
                     <p class="fw-bold fs-6 ms-0" *ngIf="!isLetra(campo.NUMERAL_PRINCIPAL)">CUESTIONARIO #{{campo.NUMERAL_PRINCIPAL}}</p>
                     <p class="fw-bold fs-6 ms-0" *ngIf="isLetra(campo.NUMERAL_PRINCIPAL)">ANEXO TIPO #{{campo.NUMERAL_PRINCIPAL}}</p>

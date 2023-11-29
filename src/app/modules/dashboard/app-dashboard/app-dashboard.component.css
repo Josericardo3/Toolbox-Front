@@ -1,3 +1,4 @@
+
 .password-toggle {
   position: absolute;
   right: 0;
@@ -17,18 +18,21 @@
 .grid-img {
   justify-items: center;
   margin: 1vh 0;
+  
+  
   display: grid;
-  grid-template-rows: repeat(4, 1fr);
+  grid-template-rows: repeat(3, 1fr);
   grid-template-columns: repeat(4, 1fr);
   /*grid-gap: 40px;
    gap: 1vw; */
   justify-content: center;
   align-content: center;
   cursor: pointer;
-  height: 91vh;
-  width: 75vw;
-  column-gap: 20px;
-  row-gap: 20px;
+  height: 72vh;
+  width: 65vw;
+  column-gap: 10px;
+  row-gap: 5px;
+  
 }
 
 .item-1 {
@@ -95,18 +99,12 @@
   flex-direction: column;
 }
 
-.container {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
-  align-items: center;
-  position: absolute;
-}
+
 
 .container-norma {
   display: flex;
   flex-direction: column;
-  margin: -9vh 10vw 0 0;
+  margin: -9vh 30vw 0 0;
   position: absolute;
 }
 
@@ -125,16 +123,19 @@
 }
 
 .containerDashboard {
-  display: flex;
-  height: 91vh;
-  width: 100vw;
+  
+ 
+  width: 88vw;
+  
+  
 }
 
 .mainContainer {
   /* background-color: var(--color-wallpaper, #f6f8f9); */
-  display: flex;
-  width: 100vw;
-  height: 91vh;
+ 
+  width: 88vw;
+
+  
 }
 
 .dashboard {
@@ -142,26 +143,31 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 80vw;
-  height: 91vh;
+  width: 75vw;
+ 
+  
 }
 
-.notificaciones {
+/* .notificaciones {
   display: flex;
   width: 20vw;
-  height: 91vh;
+  height: 92vh;
   align-items: flex-start;
   background-color: #068460;
-  font-family: 'Work Sans', sans-serif;
+  
   justify-content: center;
   flex-direction: column;
-}
+  box-sizing: border-box;
+} */
 
 h3 {
-  color: white;
-  font-weight: bold;
+  font-family: Nunito Sans,'Roboto' !important;
   font-size: 22px;
-  margin: 1vh 0 0.5vh 0
+  font-weight: 700;
+  line-height: 19px;
+  letter-spacing: 0em;
+  margin: 1vh 0 0.5vh 0;
+  padding: 15px;
 }
 
 .tituloNot,
@@ -192,22 +198,99 @@ h3 {
 .tituloRec::-webkit-scrollbar-thumb {
   background-color: #888888;
 } */
-.not1,
+/* .not1,
 .not22 {
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 50vh;
+  height: 46vh;
   width: 100%;
+} */
+.notificaciones{
+  width: 25vw;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
+.not1 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 51vh; 
+  width: 100%;
+  margin-bottom: 20px;
+  background-color: #068460;
+  overflow: hidden;
+  /* Ajusta el espacio entre .not1 y .not22 según tu preferencia */
+}
+#card-seguimiento {
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+  height: 55vh; /* La tarjeta tomará la altura del contenedor .not1 */
+  max-width: 100%; /* La tarjeta tomará el ancho del contenedor .not1 */
+}
+
+.not22 {
+  display: block;
+  flex-direction: column;
+  align-items: center;
+  justify-content: end; 
+  height: 50.5vh !important; 
+  width: 25vw;
+  /* background-color: #068460; */
+  background-color: white;
+  overflow: hidden;
+  margin-top: 5vh;
+  
+  
+
+}
+.not222 {
+  display: block;
+  flex-direction: column;
+  align-items: center;
+  justify-content: end; 
+  height: 35.5vh !important;
+  
+  /* background-color: #068460; */
+  background-color: white;
+  overflow: hidden;
+  margin-top: 5vh;
+}
+
 
 .not2 {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100%;
+  width: 90%;
+  
 }
 
+.titulo-noticia{
+  /* white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; */
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+.container-texto-noticia {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+
+.btn-footer{
+  display: flex;
+  align-content: flex-end;
+  flex-direction: row-reverse !important;
+  justify-content: flex-end !important;
+}
 .verMas {
   display: flex;
   align-items: center;
@@ -223,8 +306,8 @@ h3 {
 }
 
 .linea {
-  border-top: 2px solid white;
-  width: 15vw;
+  border-top: 2px solid #a0a0a0;
+  width: 10vw;
 }
 
 .lineaTarjeta {
@@ -282,10 +365,10 @@ h3 {
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  width: 14vw;
+  width: 5vw;
   height: 9vh;
   background-color: white;
-  padding: 3px;
+  padding: 1px;
   cursor: pointer;
 }
 
@@ -318,18 +401,15 @@ h3 {
   background-color: #f7f7f7;
   border-radius: 15px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); */
-  position: fixed;
-  z-index: 999;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  
 }
-
+.container-buton {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  position: absolute;
+}
 .modal-header,
 .modal-body {
   /* display: flex;
@@ -411,20 +491,11 @@ label {
 .oculto {
   display: none;
 }
-h4 {
-  color: white;
-  font-weight: bold;
-  font-size: 14px;
-  margin: 1vh 0 0.5vh 0
-}
-.close {
-  display: none;
-}
 
-/* .fa-clock {
-  display: block;
-} */
-
+.pcard-img-top {
+width: 5rem;
+height: 6rem;
+}
 .container-header {
   display: none;
 }
@@ -558,7 +629,7 @@ h4 {
     margin: 1px;
     grid-template-columns: repeat(2, 1fr);
     /* Cambiar a 2 columnas */
-    row-gap: 10px;
+    row-gap: 5px;
     column-gap: 10px;
     gap: 19px;
   }
@@ -623,3 +694,425 @@ h4 {
     max-height: 98%;
   }
 }
+
+/* COMENZANDO BOOTSTRAP */
+
+
+
+.icono{
+ cursor: pointer;
+padding: -10rem;
+  transition: transform 0.15s; /* Transición suave en el cambio de tamaño */
+}
+
+.icono:hover {
+  transform: scale(1.15); /* Aumenta el tamaño al 105% del tamaño original */
+}
+
+/* .#header-dashboard{
+  width: 100%;
+  height: auto;
+} */
+#img-container{
+  width:100%;
+  height:auto;
+  margin: 0px, 0px, 0px, 0px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  /*background-color:#fff;*/
+}
+
+.img-header{
+  width: 100px;
+  height: auto;
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+.footer-dashboard{
+  
+  
+
+    width: 20rem;
+
+}
+
+
+.card img:not(#img-noticia) {
+  width: auto; 
+  height: 80px;
+  padding: 0.5rem;
+}
+
+
+
+#card-carousel{
+  margin-top: 1.5vh !important;
+  margin-bottom: 1.5vh !important;
+  height: 45.5vh !important; 
+  width: 18.5vw;
+  margin: 0 auto;/* Asegurar que la tarjeta tenga margen para centrarse */
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+  
+
+}
+
+.carousel-item {
+  
+  
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+}
+.container-carousel-general{
+  position: relative !important
+}
+.noticia-carousel{
+  position: relative;
+}
+
+
+
+
+
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg);
+}
+
+
+
+/* Reducir el espaciado entre los elementos dentro de la tarjeta */
+.card-body {
+  padding: 10px; /* Reducir el relleno alrededor del contenido */
+}
+
+.card-title {
+ 
+  /* margin-bottom: 5px;
+  text-align: left;
+  font-weight: 800;  */
+
+  margin-bottom: 5px;
+    text-align: left;
+    font-weight: 800;
+    /* font-family: Nunito Sans,'Roboto'; */
+    /* font-size: 15px; */
+    font-weight: 700;
+    line-height: 19px;
+    letter-spacing: 0em;
+    text-align: left;
+}
+
+.card-text {
+  margin-bottom: 10px;
+  text-align: left; /* Reducir el margen inferior del texto */
+}
+
+.btn {
+  margin-top: 5px; /* Reducir el margen superior de los botones */
+  margin-bottom: 5px; /* Reducir el margen inferior de los botones */
+}
+
+#img-noticia{
+  width: 100%; 
+  height: 6rem;
+   /* Ajusta el tamaño de la imagen, dejando espacio para el texto y el botón */
+  object-fit: cover; /* Asegura que la imagen ocupe todo el espacio disponible sin deformarse */
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+
+}
+
+
+
+
+.carousel-caption{
+  text-align: center;
+  padding: 0 10rem ;
+}
+ 
+.imgPerfil{
+  border-radius: 50%;
+  width: 10rem;
+}
+ 
+ 
+@media (max-width: 768px) {
+ 
+  .imgPerfil{
+    width: 10rem;
+  }
+  .carousel-caption{
+    padding: 0;
+  }
+ 
+}
+ 
+@media (max-width: 480px){
+ 
+}
+
+/*ESTO ES PARA SEGUIMIENTO*/
+
+.modulo-item {
+  display: flex; /* Alinear elementos horizontalmente */
+  align-items:center;
+   /* Centrar verticalmente los elementos */
+}
+
+/* Estilo de la imagen del módulo */
+.modulo-imagen {
+
+  max-width: 100px; /* Ancho máximo de la imagen */
+  max-height: 100px; /* Altura máxima de la imagen */
+  margin-right: 10px;
+  margin-left: -10px; /* Espacio entre la imagen y la información */
+  
+}
+
+/* Estilo de la información del módulo */
+
+
+.not1 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 51vh;
+  width: 100%;
+  margin-bottom: 20px;
+  background-color: #068460;
+  position: relative;
+  padding-top: 40px; /* Agrega un padding superior para el título */
+}
+
+.titulo {
+  width: 100%;
+  text-align: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.contenedorCard {
+  /* Agrega un margen superior igual al padding del .not1 */
+  width: 27vw;
+  max-width: 100%;
+  height: calc(100% ); /* Calcula la altura restando el padding superior e inferior */
+  
+  position: absolute;
+  box-sizing: border-box; /* Asegura que el padding y borde no afecten el tamaño total */
+}
+.container-notificaciones{
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  margin-top: -2.2rem;
+
+}
+.menu-icono{
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  position: absolute;
+  right: 0; /* Posicionar a la derecha */
+  margin-top: -3rem;
+
+}
+
+#collapseContent{
+  z-index: 99999;
+  
+}
+.margen-card{
+}
+
+
+
+ .custom-popover {  
+    max-width: 200px; 
+      background-color: #fff;             
+      border: 1px solid #ccc;            
+      border-radius: 5px;            
+    padding: 10px;           
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);  
+      transition: none;    
+      margin-top: 0.8rem;   
+      margin-left: -0.6rem;  
+    }
+
+    .custom-popover::before {    
+      margin-top: 5px;
+      content: '';
+      position: absolute;
+      top: -15px; /* Ajusta la distancia del triángulo a la parte superior */
+      left: 50%;
+      margin-left: -10px; /* Ajusta la posición del triángulo */
+      border-width: 0 15px 15px; /* Ajusta el tamaño del triángulo */
+      border-style: solid;
+      border-color: transparent transparent #fff;        
+    
+     }
+
+    
+     .custom-popover.collapse {             
+      transition: none;        
+     }
+
+     .cardnotificaciones{
+      display:block !important;
+      
+      
+     }
+     .header-two{
+    
+     }
+     @media (min-width: 767px) {
+      .footer2 {
+        display: flex; 
+        justify-content: flex-end; 
+       
+        margin-top: -10rem;
+       
+      }
+      .menu-icono{
+        display: none;
+      }
+     
+      
+  }
+ 
+  @media(max-width: 767px){
+    .container-notificaciones{
+      display: none;
+    }
+   
+    .seguimiento{
+      display: none;
+    }
+    
+  }
+  @media(max-width: 995px){
+    .container-notificaciones{margin-right: 100px;}
+  }
+  
+     
+/*******ACORDEON*********/
+/* Oculta el ícono de flecha arriba por defecto */
+.accordion-button .fa-circle-down {
+  display: none;
+}
+
+/* Muestra el ícono de flecha arriba cuando el acordeón está desplegado */
+.accordion-button[aria-expanded="true"] .fa-circle-down{
+  display: inline-block;
+}
+
+/* Muestra el ícono de flecha abajo por defecto */
+.accordion-button[aria-expanded="false"] .fa-circle-right {
+  display: inline-block;
+}
+
+/* Oculta el ícono de flecha abajo cuando el acordeón está desplegado */
+.accordion-button[aria-expanded="true"] .fa-circle-right {
+  display: none;
+}
+.accordion-button::after {
+  content: none; /* Elimina el contenido que representa la flecha */
+}
+
+/* Asegura que el botón aún se ve como un botón */
+.accordion-button {
+  background-color: #fff; /* Fondo blanco o el color que desees */
+  color: #000; /* Color de texto negro o el color que desees */
+  border: 1px solid #ddd; /* Borde o estilo que desees */
+}
+#card-seguimiento-acordeon {
+  display: flex;
+  
+  align-items: center;
+  
+  font-size: 12px;
+  height: 43.2vh; /* La tarjeta tomará la altura del contenedor .not1 */
+  max-width: 100%; /* La tarjeta tomará el ancho del contenedor .not1 */
+  
+}
+#card-carousel2{
+  margin-top: 1.5vh !important;
+  
+  width: 16rem;
+  margin: 0 auto;/* Asegurar que la tarjeta tenga margen para centrarse */
+  
+
+}
+/* En tu archivo de estilos CSS o en línea en tu componente */
+::ng-deep .mat-mdc-menu-panel.mat-mdc-menu-panel  {
+  position: fixed !important;
+  top: 3rem !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+
+}
+
+
+
+
+h2{
+  font-size: 1.375rem !important;
+  font-weight: 400 !important;
+  color: #0B5738 !important;
+  width: 100% !important;
+  text-align: center !important;
+  padding: 1.7rem;
+}
+
+.dot-red {
+  background-color: red;
+  display: inline-block;
+  width: 10px; /* Tamaño de la bolita */
+  height: 10px;
+  border-radius: 50%; /* Forma redonda */
+  margin-right: 5px; /* Espacio entre la bolita y el texto */
+  margin-top: -1rem;
+}
+.accordion-button[aria-expanded="true"] .dot-red {
+  display: none;
+}
+
+
+.accordion-button{
+  padding: 0 !important;
+  border: 1px solid #ddd !important;
+  margin-bottom: -1rem !important;
+  
+}
+
+.accordion-item{
+border: none;
+margin-top: -1rem
+}
+
+
+.accordion-item:first-of-type .accordion-button {
+   border-top-left-radius: none;
+   border-top-right-radius: none
+}
+
+.modulo-imagen {
+  flex-shrink: 0; /* Evita que la imagen se redimensione */
+}
+
+.modulo-info {
+  flex-grow: 1; /* Permite que el texto ocupe el espacio restante */
+}
+
+
