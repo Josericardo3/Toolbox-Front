@@ -136,4 +136,36 @@ openDialog(opcion: string, descripcion: string = ''): void {
 
     return fechaConvertida;
   }
+  calcular(nMeta,esIncremento:any,esDisminuir,nResultado:any):string{
+    var respuesta="";
+    if(esIncremento){
+      if(nResultado>=(Number(nMeta)+11)){
+        respuesta="green";
+        return respuesta;
+      }
+      if(nResultado>=(Number(nMeta)) && nResultado<=(Number(nMeta)+10)){
+        respuesta="yellow";
+        return respuesta;
+      }
+      if(nResultado<=(nMeta-1)){
+        respuesta="red";
+        return respuesta;
+      }
+    }
+    if(esDisminuir){
+      if( nResultado>0 && nResultado<=(nMeta-11)){
+        respuesta="green";
+        return respuesta;
+      }
+      if(nResultado<=(Number(nMeta)) && nResultado>=(nMeta-10)){
+        respuesta="yellow";
+        return respuesta;
+      }
+      if(nResultado>=(Number(nMeta)+1)){
+        respuesta="red";
+        return respuesta;
+      }
+    }
+    return respuesta;
+  }
 }

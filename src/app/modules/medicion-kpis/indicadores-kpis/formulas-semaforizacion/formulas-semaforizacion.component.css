@@ -1,0 +1,18 @@
+.dot-green {
+    background-color: green;
+  }
+  
+  .dot-yellow {
+    background-color: yellow;
+  }
+  
+  .dot-red {
+    background-color: red;
+  }
+  .dot-green, .dot-yellow, .dot-red {
+    display: inline-block;
+    width: 10px; /* Tamaño de la bolita */
+    height: 10px;
+    border-radius: 50%; /* Forma redonda */
+    margin-right: 5px; /* Espacio entre la bolita y el texto */
+  }

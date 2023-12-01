@@ -132,7 +132,7 @@
 
 .mainContainer {
   /* background-color: var(--color-wallpaper, #f6f8f9); */
- 
+  
   width: 88vw;
 
   
@@ -166,8 +166,7 @@ h3 {
   font-weight: 700;
   line-height: 19px;
   letter-spacing: 0em;
-  margin: 1vh 0 0.5vh 0;
-  padding: 15px;
+  
 }
 
 .tituloNot,
@@ -281,7 +280,7 @@ h3 {
 .container-texto-noticia {
   display: -webkit-box;
   overflow: hidden;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
 }
 
@@ -701,7 +700,7 @@ height: 6rem;
 
 .icono{
  cursor: pointer;
-padding: -10rem;
+ margin: -10px;
   transition: transform 0.15s; /* Transición suave en el cambio de tamaño */
 }
 
@@ -748,15 +747,13 @@ padding: -10rem;
 
 
 #card-carousel{
-  margin-top: 1.5vh !important;
+  margin-top: 1.2vh !important;
   margin-bottom: 1.5vh !important;
-  height: 45.5vh !important; 
+  height: 43vh !important; 
   width: 18.5vw;
   margin: 0 auto;/* Asegurar que la tarjeta tenga margen para centrarse */
   border-radius: 10px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
-  
-
 }
 
 .carousel-item {
@@ -1111,8 +1108,33 @@ margin-top: -1rem
   flex-shrink: 0; /* Evita que la imagen se redimensione */
 }
 
-.modulo-info {
-  flex-grow: 1; /* Permite que el texto ocupe el espacio restante */
+
+.gianfranco{
+  height: 16em !important;
+  width: 50em;
+  
 }
+.pepe{
+  height:  20em !important;
+}
+
+.pepe2{
+  margin-top: 0.9vh;
+  height: 20em !important;
+}
+.pin{
+  height: 10em;
+}
+.PEPE{
+  margin-bottom: -2vh;
+}
+.row{
+  --bs-gutter-x: initial !important; /* Reinicia el valor a su estado inicial */
+}
+
+
+
+
+
 
 

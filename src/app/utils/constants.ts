@@ -208,17 +208,17 @@ export class Categoria {
     {
       id:33,
       id_categoria:5,
-      name:'AGENCIA DE VIAJES OPERADORAS'
+      name:'AGENCIAS DE VIAJES OPERADORAS'
     },
     {
       id:34,
       id_categoria:5,
-      name:'AGENCIA DE VIAJES Y DE TURISMO'
+      name:'AGENCIAS DE VIAJES Y TURISMO'
     },
     {
       id:35,
       id_categoria:5,
-      name:'AGENCIA DE VIAJES MAYORISTAS'
+      name:'AGENCIAS DE VIAJES MAYORISTAS'
     },
     {
       id:36,

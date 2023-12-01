@@ -11,7 +11,7 @@
         <h1> NOTICIAS </h1>
         <app-app-header-arrow-left></app-app-header-arrow-left>
     </div>
-
+    
     <div class="noticia-content">
         <div class="cards-view">
                 <a class="card-noticia" *ngFor="let val of filterArray; let i = index" (click)="indexCard(val.ID_NOTICIA)">
@@ -24,7 +24,7 @@
                     <div class="descripcion-noticia">
                         <p class="titulo-noticia">{{val.TITULO}}</p>
                         <p class="fecha-noticia">{{formatFechaText(val.FECHA_REG)}}</p>
-                        <p class="descripcion" [innerHTML]="val.DESCRIPCION?.slice(0,320)">{{val.DESCRIPCION?.slice(0,320)}}</p>
+                        <p class="descripcion" [innerHTML]="val.DESC_CORTA">{{val.DESC_CORTA}}</p>
                     </div>
                 </a>
             <!-- Paginacion -->
@@ -161,7 +161,7 @@
                 <h2>Agregar noticia</h2>
                 <div class="linea"></div>
             </div>
-            <form [formGroup]="saveForm" class="form" (ngSubmit)="saveModal()">
+            <form [formGroup]="saveForm" class="form" (ngSubmit)="saveModal()" #forma="ngForm">
                 <ng-multiselect-dropdown *ngIf="getRolValue() === 3 || getRolValue() === 4"
                     formControlName="selectMultipleNorma" [placeholder]="'Seleccione una norma'"
                     [settings]="dropdownSettingsNorma" [data]="dropdownListNorma" [ngModel]="selectedItemsNorma"
@@ -201,8 +201,24 @@
                     <option value="">Seleccione una categoría</option>
                     <option *ngFor="let val of arrayCategorias; let i = index" [ngValue]="val.ID_CATEGORIA">{{val.DESCRIPCION}}</option>
                 </select>
-                <angular-editor placeholder="Agregar una descripción" formControlName="descripcionNoticia"
-                    id="descripcionNoticia" style="margin-top:2vh;" [[ngModel]]="ejemplo"></angular-editor>
+                <!--<angular-editor placeholder="Agregar una descripción" formControlName="descripcionNoticia"
+                    id="descripcionNoticia" style="margin-top:2vh;"></angular-editor>-->
+                <br>
+                <editor apiKey="55jurjhq2t2vhxydiwxvftw7j1oxklp4tjwmapao76sojkxw" formControlName="descripcionNoticia" name="descripcionNoticia"
+                    [init]="{
+                      height: 500,
+                      plugins: [
+                         'a11ychecker','advlist','advcode','advtable','autolink','checklist','export',
+                        'lists','link','image','charmap','preview','anchor','searchreplace','visualblocks',
+                        'powerpaste','fullscreen','formatpainter','insertdatetime','media','table','help','wordcount'
+                      ],
+                      toolbar:
+                       'undo redo | casechange blocks | bold italic backcolor | \
+                       alignleft aligncenter alignright alignjustify | \
+                       bullist numlist checklist outdent indent | removeformat | a11ycheck code table help'
+                    }"
+                ></editor>
+                <!--<button (click)="obtenerDatos()">click</button>-->
                 <div class="containerFile" style="margin-top:2vh;">
                     <input type="file" accept="image/*" (change)="captureImage($event)" class="file" id="archivo"
                         formControlName="imagenNoticia" #archivo>
@@ -215,8 +231,8 @@
                         <input type="checkbox" name="recibirNoticias"  [checked]="recibirNoticias" (change)="onChangeCheckbox($event)"> Deseo recibir noticias por correo electrónico.
                     </label>
                 </div>
-                <button type="submit" class="botonG"
-                    [disabled]=" ( (saveForm.controls.selectMultipleAdmin?.value?.length||0) === 0 && (saveForm.controls.selectMultipleNorma?.value?.length||0) === 0  && (saveForm.controls.selectMultipleCategoria.value?.length||0) === 0 && (saveForm.controls.selectMultipleSubCategoria.value?.length||0) === 0 && (saveForm.controls.selectMultiplePST.value?.length||0) === 0) || !saveForm.controls.CategoriaNoticia.value || !saveForm.controls.tituloNoticia.value || !saveForm.controls.descripcionNoticia.value || this.imagen==null ">
+                <button type="submit" class="botonG">
+                    <!--[disabled]=" ( (saveForm.controls.selectMultipleAdmin?.value?.length||0) === 0 && (saveForm.controls.selectMultipleNorma?.value?.length||0) === 0  && (saveForm.controls.selectMultipleCategoria.value?.length||0) === 0 && (saveForm.controls.selectMultipleSubCategoria.value?.length||0) === 0 && (saveForm.controls.selectMultiplePST.value?.length||0) === 0) || !saveForm.controls.CategoriaNoticia.value || !saveForm.controls.tituloNoticia.value || !saveForm.controls.descripcionNoticia.value || this.imagen==null ">-->
                     <i class="fa-regular fa-floppy-disk" style="color: #fff;"></i>
                     Guardar noticia</button>
             </form>

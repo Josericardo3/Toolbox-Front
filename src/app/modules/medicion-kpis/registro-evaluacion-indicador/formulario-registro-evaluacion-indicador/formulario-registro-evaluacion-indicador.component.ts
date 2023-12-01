@@ -1,7 +1,14 @@
-import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { ModalService } from 'src/app/messagemodal/messagemodal.component.service';
+import { helpers } from 'src/app/modules/Helpers/helpers';
 
 @Component({
   selector: 'app-formulario-registro-evaluacion-indicador',
@@ -35,7 +42,8 @@ export class FormularioRegistroEvaluacionIndicadorComponent {
     ];
   }
   @ViewChild('formObjetivo') formObjetivo: NgForm;
-  constructor(private modalService: ModalService,) {
+  color:any;
+  constructor(private modalService: ModalService, private helpers:helpers) {
     this.dataSource.push(this.model);
   }
 
@@ -43,12 +51,11 @@ export class FormularioRegistroEvaluacionIndicadorComponent {
     this.requiredFieldsValid =
       formObjetivo.form.status === 'INVALID' ? false : true;
     this.requiredValidityChange.emit(this.requiredFieldsValid);
-    
   }
   calcular() {
-    this.requiredFieldsValid=false;
+    this.requiredFieldsValid = false;
     this.habilitaCampo = true;
-  delete this.model.ID_ACCION;
+    delete this.model.ID_ACCION;
     //const expresion = 'Variable 3 a+Variable 2 e*Variable 1';
 
     const filtroFormula = this.model.FORMULA_TEXT.split(/([+\-*()\/])/).filter(
@@ -58,41 +65,46 @@ export class FormularioRegistroEvaluacionIndicadorComponent {
     var formulaConNumero = '';
     var ultimoVarEsOperador = true; // Inicializado en true para evitar un operador al principio
     let variablesEnFila = 0; // Contador de variables en la fila
-const variables = this.model.VARIABLES_EVALUACION;
-    
+    const variables = this.model.VARIABLES_EVALUACION;
+
     for (let j = 0; j < filtroFormula.length; j++) {
       const variableNombre = filtroFormula[j];
 
-  // Encuentra la variable por nombre
-  const variable = variables.find(
-    (v) => v.NOMBRE.toUpperCase() === variableNombre.toUpperCase()
-  );
+      // Encuentra la variable por nombre
+      const variable = variables.find(
+        (v) => v.NOMBRE.toUpperCase() === variableNombre.toUpperCase()
+      );
 
-  if (variable) {
-    if (!ultimoVarEsOperador) {
-      formulaConNumero += ' ';
-    }
+      if (variable) {
+        if (!ultimoVarEsOperador) {
+          formulaConNumero += ' ';
+        }
 
-    // Utiliza variablesEnFila para determinar qué variable usar
-    formulaConNumero += variables[variablesEnFila].VALOR;
-    ultimoVarEsOperador = false;
+        // Utiliza variablesEnFila para determinar qué variable usar
+        formulaConNumero += variables[variablesEnFila].VALOR;
+        ultimoVarEsOperador = false;
 
-    // Incrementa el contador de variables en la fila
-    variablesEnFila = (variablesEnFila + 1) % variables.length;
-  } else if (['+', '-', '*', '/', '(', ')'].includes(variableNombre.toLowerCase())) {
-    formulaConNumero += variableNombre;
-    ultimoVarEsOperador = true;
-  }
+        // Incrementa el contador de variables en la fila
+        variablesEnFila = (variablesEnFila + 1) % variables.length;
+      } else if (
+        ['+', '-', '*', '/', '(', ')'].includes(variableNombre.toLowerCase())
+      ) {
+        formulaConNumero += variableNombre;
+        ultimoVarEsOperador = true;
+      }
     }
 
     const resultado = eval(formulaConNumero);
 
     const result: any = parseFloat(resultado.toFixed(2)).toFixed(2);
-    if(result=='NaN' || result=='Infinity'){
-      this.modalService.showModal("Alerta", 'La operación no puede ser procesada');
+    if (result == 'NaN' || result == 'Infinity') {
+      this.modalService.showModal(
+        'Alerta',
+        'La operación no puede ser procesada'
+      );
       return;
     }
-    
+
     this.model.RESULTADO = result;
 
     if (resultado >= this.model.META) {
@@ -103,5 +115,8 @@ const variables = this.model.VARIABLES_EVALUACION;
       this.model.ESTADO = 'NO CUMPLE';
       this.requiredValidityChange.emit(false);
     }
+    this.color=this.helpers.calcular(this.model.META,this.model.ES_INCREMENTO,this.model.ES_DISMINUIR,result);
+    
+    this.color="dot-"+this.color;
   }
 }

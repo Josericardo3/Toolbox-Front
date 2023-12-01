@@ -217,7 +217,10 @@
           <ng-container matColumnDef="meta">
             <th mat-header-cell *matHeaderCellDef>Meta %</th>
             <td mat-cell *matCellDef="let element">
-              {{ element.META }} 
+              {{ element.META }} %
+              <br>
+              <span *ngIf="element.ES_DISMINUIR">Para disminuir</span>
+              <span *ngIf="!element.ES_DISMINUIR">Para aumentar</span>
             </td>
           </ng-container>
           <ng-container matColumnDef="periodo">
@@ -231,11 +234,7 @@
           <ng-container matColumnDef="sem">
             <th mat-header-cell *matHeaderCellDef>META</th>
             <td mat-cell *matCellDef="let element">
-              <div>
-                <span class="dot-green"></span> >={{element.META}}  <span style="color:green">BUENO</span><br>
-                <span class="dot-yellow"></span> >={{element.SEMAFORIZACION}}  <span style="color:yellow">REGULAR</span><br>
-                <span class="dot-red"></span> <{{element.SEMAFORIZACION}}  <span style="color:red">MALO</span><br>
-              </div>
+              <app-formulas-semaforizacion [nMeta]="element.META" [esDetalle]="true" [esDisminuir]="element.ES_DISMINUIR" [esIncremento]="element.ES_INCREMENTO"></app-formulas-semaforizacion>
             </td>
           </ng-container>
          
