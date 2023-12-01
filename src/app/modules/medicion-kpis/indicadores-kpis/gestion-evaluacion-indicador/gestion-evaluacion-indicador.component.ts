@@ -45,6 +45,14 @@ export class GestionEvaluacionIndicadorComponent {
     this._dialog.close(opcion);
   }
   registrar() {
+    if(!this.model.esDisminuir && !this.model.esIncremento){
+      const title = 'Alerta.';
+      this.modalService.showModal(title, "Favor seleccione si la meta es para incrementar o disminuir");
+      return;
+    }
+    if(this.model.esDisminuir){
+      this.model.ES_INCREMENTO=false;
+    }
     this.model.ID_USUARIO_CREA = localStorage.getItem('Id');
 
     this.indicadorService.asignarEvaluaion(this.model).subscribe({

@@ -8,7 +8,7 @@ import 'jquery-ui/ui/widgets/dialog.js'
 import { Categoria } from '../../../utils/constants'
 import { ModalService } from '../../../messagemodal/messagemodal.component.service';
 import { debug } from 'console'
-import { timeInterval } from 'rxjs'
+import { elementAt, timeInterval } from 'rxjs'
 import { TimeInterval } from 'rxjs/internal/operators/timeInterval'
 import { Location } from '@angular/common';
 import { stringify } from 'querystring'
@@ -183,7 +183,26 @@ deshabilitarAvatars:any=false;
             confirmPassword : "",
             checkbox: ''
           });
+          const selectedIndex = this.data.findIndex(element => element.name === firstUser.CATEGORIA_RNT);
+          const selectedcategory = this.data.find(element => this.normalizeString(element.name) === this.normalizeString(firstUser.CATEGORIA_RNT));
+          const categoryelectedid =selectedcategory.id;
+
+        // Si se encontró el índice, establece el valor seleccionado en el campo de selección
+          if (selectedIndex !== -1) {
+            this.registerForm.get('categoriaRnt').setValue(this.data[selectedIndex]);
           }
+          const filterCategory = this.categoria.name.agencias.filter(
+            (agency: { id_categoria: number; name: string }) =>
+              agency.id_categoria === categoryelectedid
+          )
+          this.arrAgency = filterCategory.sort();
+          const selectedIndexSub = this.arrAgency.findIndex(element => element.id === firstUser.FK_ID_SUB_CATEGORIA_RNT);
+          this.registerForm.get('subcategoriaRnt').setValue(this.arrAgency[selectedIndexSub]);
+          this.setDepartments(firstUser.DEPARTAMENTO);
+          this.setMunicipalities(firstUser.MUNICIPIO);
+
+          }
+
       });
 
     }
@@ -420,6 +439,7 @@ deshabilitarAvatars:any=false;
           this.deshabilitarCampos(true);
         }
         else {
+          
           this.datosRnt = data;
           console.log(data);
           this.deshabilitarCampos(false);
@@ -427,10 +447,9 @@ deshabilitarAvatars:any=false;
           //aqui debo mandar el subcategoria filtrado
           this.registerForm.get('correo').setValue(this.datosRnt?.correo_electronico_prestador);
           this.registerForm.get('numeroDeIdentificacionTributaria').setValue(this.datosRnt?.numero_identificacion);
-          this.registerForm.get('razonSocialDelPst').setValue(this.datosRnt?.razon_social);
           this.registerForm.get('telefono').setValue(this.datosRnt?.numero_telefonico);
           this.registerForm.get('nombreDelRepresenteLegal').setValue(this.datosRnt?.nombre_representante_legal);
-          const selectedIndex = this.data.findIndex(element => element.name === this.datosRnt?.categoria);
+          const selectedIndex = this.data.findIndex(element => element.name === this.datosRnt.categoria);
 
           const selectedcategory = this.data.find(element => this.normalizeString(element.name) === this.normalizeString(this.datosRnt?.categoria));
           const categoryelectedid =selectedcategory?.id;
@@ -458,7 +477,7 @@ deshabilitarAvatars:any=false;
             break;
           }
         }
-      this.registerForm.get('departamento').setValue(nameDepartment);
+       this.registerForm.get('departamento').setValue(nameDepartment);
       this.setDepartments(nameDepartment);
 
       this.verificarCorreo(this.datosRnt?.correo_electronico_prestador);

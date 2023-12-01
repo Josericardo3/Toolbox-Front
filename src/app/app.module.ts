@@ -141,13 +141,13 @@ import { GestionVariableKpiComponent } from "./modules/medicion-kpis/variables/g
 import { FormularioVariableKpiComponent } from "./modules/medicion-kpis/variables/formulario-variable-kpi/formulario-variable-kpi.component";
 // import { AppDiagnosticoProgressComponent } from "./modules/diagnosticoProgress/app-diagnostico-progress/app-diagnostico-progress.component";
 import { AppUserSettingsComponent } from './modules/UserSettings/app-user-settings.component';
-// import { AppHeader2Component } from "./modules/header/app-header2/app-header2.component";
-// import { Footer2Component } from "./modules/footer2/footer2/footer2.component";
+import { EditorModule } from '@tinymce/tinymce-angular';
 
 import { AppDiagnosticoProgressComponent } from "./modules/diagnosticoProgress/app-diagnostico-progress/app-diagnostico-progress.component";
 import { Footer2Component } from "./modules/footer2/footer2/footer.component";
 import { AppHeader2Component } from "./modules/header/app-header2/app-header2.component";
 import { DiagnosticoEtapasComponent } from "./modules/diagnostico-etapas/diagnostico-etapas.component";
+import { FormulasSemaforizacionComponent } from "./modules/medicion-kpis/indicadores-kpis/formulas-semaforizacion/formulas-semaforizacion.component";
 
 @NgModule({
   declarations: [
@@ -248,7 +248,8 @@ import { DiagnosticoEtapasComponent } from "./modules/diagnostico-etapas/diagnos
     AppDiagnosticoProgressComponent,
     Footer2Component,
     AppHeader2Component,
-    DiagnosticoEtapasComponent
+    DiagnosticoEtapasComponent,
+    FormulasSemaforizacionComponent
   ],
   imports: [
     /*NgxSpinnerModule.forRoot({
@@ -257,6 +258,7 @@ import { DiagnosticoEtapasComponent } from "./modules/diagnostico-etapas/diagnos
       color: '#fff',
       type: 'ball-scale-multiple',
     }),*/
+    EditorModule,
     MaterialModule,
     PipesModule,
     BrowserModule,

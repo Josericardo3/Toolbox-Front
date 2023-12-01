@@ -237,7 +237,7 @@
                -->
       <div class="input-group">
        <input type="password" formControlName="password1" placeholder="Ingrese contraseña" id="passRegister" class="form-control" required="required" (keydown)="bloquearEspacio($event)" />
-       <span class="input-group-text" id="basic-addon1" style="cursor: pointer" (click)="seePasswordRegister()">
+       <span class="input-group-text" id="basic-addon1" style="cursor: pointer" (click)="seePasswordRegister()" [hidden]="this.registerForm.get('password1').disabled">
         <i id="icon" class="fas fa-eye-slash"></i>
        </span>
       </div>
@@ -259,7 +259,7 @@
       <label for="pass">Repetir contraseña</label>
       <div class="input-group">
        <input type="password" formControlName="confirmPassword" required="required" (keydown)="bloquearEspacio($event)" placeholder="Ingrese contraseña" id="passRegister2" class="form-control" />
-       <span class="input-group-text" (click)="seePasswordRegister2()">
+       <span class="input-group-text" (click)="seePasswordRegister2()" [hidden]="this.registerForm.get('password1').disabled">
         <i style="cursor: pointer" id="icon2" class="fas fa-eye-slash"></i>
        </span>
       </div>
@@ -281,7 +281,7 @@
               </i></div>-->
      </div>
      <div class="col-md-12 mt-3 text-center">
-      <button style="width: 100%;" type="submit" class="btn btn-primary " [disabled]="!registerForm.valid || !isChecked || msjRnt==''"> GUARDAR <i class="fa-regular fa-circle-right ms-2"></i>
+      <button style="width: 100%;" type="submit" class="btn btn-primary" [disabled]="!registerForm.valid || !isChecked"> GUARDAR <i class="fa-regular fa-circle-right ms-2"></i>
       </button>
      </div>
      <div class="col-md-12 mt-4 margenAbajo">

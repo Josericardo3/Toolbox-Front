@@ -46,3 +46,27 @@
     color: black !important;
     font-size: 13px;
   }
+  .dot-green, .dot-yellow, .dot-red {
+    display: inline-block;
+    width: 10px; /* Tamaño de la bolita */
+    height: 10px;
+    border-radius: 50%; /* Forma redonda */
+    margin-right: 5px; /* Espacio entre la bolita y el texto */
+  }
+  .dot-green {
+    background-color: green;
+  }
+  
+  .dot-yellow {
+    background-color: yellow;
+  }
+  
+  .dot-red {
+    background-color: red;
+  }
+  .truncated-text {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; /* Agrega puntos suspensivos (...) al final del texto */
+    width: 100%; /* Opcional, para asegurarse de que ocupe todo el ancho disponible */
+  }

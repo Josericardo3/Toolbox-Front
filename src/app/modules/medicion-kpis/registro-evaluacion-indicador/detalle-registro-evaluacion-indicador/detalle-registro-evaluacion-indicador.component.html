@@ -3,8 +3,8 @@
   <app-modal></app-modal>
 
   <div mat-dialog-content class="contenedor">
-    <a title="Cancelar" id="cerrarModal" style="display: flex; justify-content: flex-end; align-items: center;" data-dismiss="modal" aria-label="Close" >
-      <i class="fa-solid fa-circle-xmark" style="color: #06543c;font-size: 25px;" (click)="cerrarDialog(2)"></i>
+    <a title="Cancelar" id="cerrarModal" style=" display: flex; justify-content: flex-end; align-items: center;" data-dismiss="modal" aria-label="Close" >
+      <i class="fa-solid fa-circle-xmark" style="z-index: 2; position: fixed; color: #06543c;font-size: 25px;" (click)="cerrarDialog(2)"></i>
     </a>
     <div class="detalle-card">
         <mat-card-header class="text-center">
@@ -17,7 +17,7 @@
           
           <div class="detalle">
             
-            <p><strong>Proceso:</strong> {{ model.NOMBRE_PROCESO }}</p>
+            <p><strong>Proceso:</strong> {{ model.NOMBRE_PROCESO }}</p> 
             <p><strong>Período de Medición:</strong> {{ model.FECHA_PERIODO}}</p>
             <p><strong>Fórmula:</strong> {{ model.FORMULA_TEXT }}</p>
             <p><strong>Objetivo:</strong> {{ model.TITULO_OBJETIVO }}</p>
@@ -27,7 +27,7 @@
             <ul>
               <li *ngFor="let variable of model.VARIABLES_EVALUACION">{{ variable.NOMBRE }} : <strong>{{variable.VALOR}}</strong></li>
             </ul>
-            <p><strong>Resultado:</strong> {{ model.RESULTADO}} %</p>
+            <p><strong>Resultado:</strong> {{ model.RESULTADO}} % <span [class]='colorSem'> </span></p> 
             <p><strong>Meta:</strong> {{ model.META}} %</p>
             <p><strong>Estado:</strong> {{ model.ESTADO}}</p>
             <p><strong>Analisis:</strong> {{ model.ANALISIS}}</p>

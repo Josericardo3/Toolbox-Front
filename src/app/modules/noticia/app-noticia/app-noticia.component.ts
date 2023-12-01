@@ -51,9 +51,6 @@ export class AppNoticiaComponent implements OnInit {
     }
   }
 
-  textoDescripcion: any;
-  enlaceYt: SafeResourceUrl | null = null;
-
   getTableData() {
     this.api.getTablaNoticias()
       .subscribe(data => {
@@ -62,25 +59,24 @@ export class AppNoticiaComponent implements OnInit {
           if(val.ID_NOTICIA == this.idNoticia)
           this.noticiaSelected = val;
         })
-        this.textoDescripcion=this.noticiaSelected.DESCRIPCION;
-
+        console.log(this.noticiaSelected.DESCRIPCION);
         this.imagen = this.noticiaSelected.COD_IMAGEN ? 'data:image/png;base64,' + this.noticiaSelected.COD_IMAGEN : '';
-        //console.log(this.datos);
-        //console.log(this.noticiaSelected);
-        const texto = this.textoDescripcion;
-        const iframeCode = '&lt;iframe width=&#34;560&#34; height=&#34;315&#34; src=&#34;https://www.youtube.com/embed/8AYhuRiIZnw?si=wP5iHYNMZAonOrPH&#34; title=&#34;YouTube video player&#34; frameborder=&#34;0&#34; allow=&#34;accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share&#34; allowfullscreen&gt;&lt;/iframe&gt;';
-        const patron = /(https?:\/\/(?:www\.|)youtube\.com\/watch\?v=[\w-]+)|(https?:\/\/youtu\.be\/[\w-]+)|(https?:\/\/(?:www\.|)youtube\.com\/embed\/[\w-]+\?si=[\w-]+)/g;
-        console.log(texto);
-        const matches = texto.match(patron);
-        const enlaces = matches ? matches.join(", ") : '';
-        this.noticiaSelected.LINKYT=enlaces;
+        
         //
+        //console.log(this.procesarHTML(this.noticiaSelected.DESCRIPCION));
+        this.procesarHTML(this.noticiaSelected.DESCRIPCION);
         //
-        //
-        const textoCompleto=this.noticiaSelected.DESCRIPCION;
-        const posicionIframe = textoCompleto.indexOf('&lt;iframe');
-        this.noticiaSelected.DESCRIPCION=textoCompleto.substring(0, posicionIframe).trim();
       })
+  }
+  secureUrlYT: string;
+
+  procesarHTML(htmlString: string): string {
+    const safeHtml = htmlString.replace(/<iframe\s[^>]*src="([^"]+)"[^>]*>/gi, (match, src) => {
+      const safeSrc = `this.sanitizer.bypassSecurityTrustResourceUrl('${src}')\" width="560" height="314" allowfullscreen="allowfullscreen`;
+      this.secureUrlYT=src;
+      return `<iframe [src]="${safeSrc}">`;
+    });
+    return safeHtml;
   }
   getRolValue(): number {
     const rol = localStorage.getItem('rol');
@@ -99,6 +95,7 @@ export class AppNoticiaComponent implements OnInit {
       })
   }
   saveModalEditar() {
+    //this.noticiaSelected.DESCRIPCION=this.editarNoticiaForm.value.descripcion;
     const data = {
       ID_NOTICIA: this.noticiaSelected.ID_NOTICIA,
       FK_ID_USUARIO: this.noticiaSelected.FK_ID_USUARIO,

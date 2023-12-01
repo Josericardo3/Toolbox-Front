@@ -194,7 +194,6 @@ export class AppGestorNoticiaComponent implements OnInit {
         this.filterArray.forEach(val=>{
           val.RUTA_IMAGEN = 'data:image/png;base64,' + val.COD_IMAGEN;
         })
-        console.log(this.filterArray);
         for (let i = 0; i < this.dataInitial.length; i++) {
           if (this.dataInitial[i].COD_IMAGEN != null || this.dataInitial[i].COD_IMAGEN != undefined) {
             this.imagenNoticia = 'data:image/png;base64,' + this.dataInitial[i].COD_IMAGEN
@@ -202,6 +201,10 @@ export class AppGestorNoticiaComponent implements OnInit {
             this.imagenNoticia = null
           }
         }
+        this.filterArray.forEach(val=>{
+          val.DESC_CORTA=this.truncarTexto(val.DESCRIPCION,600);
+        })
+        console.log(this.filterArray);
         //paginado
         const totalPag = data.length;
         this.totalPaginas = Math.ceil(totalPag / 6);
@@ -218,7 +221,17 @@ export class AppGestorNoticiaComponent implements OnInit {
         }
       })
   }
-
+  descNoticia: any;
+  truncarTexto(texto: string, limite: number): string {
+    const limiteTexto = Math.min(limite, texto.length);
+    let textoTruncado = texto.substring(0, limiteTexto);
+    
+    if (texto.length > limite) {
+      textoTruncado = textoTruncado.trim() + '...';
+    }
+  
+    return textoTruncado;
+  }
   verImagen(imagenUrl: any) {
     const imagenDatos = this.dataInitial[imagenUrl].COD_IMAGEN;
     if (imagenDatos != null || imagenDatos != undefined) {
@@ -358,11 +371,6 @@ export class AppGestorNoticiaComponent implements OnInit {
   onChangeCheckbox(event: any) {
     this.recibirNoticias = event.target.checked;
   }
-  ejemplo: any;
-  ejemplooo(){
-    console.log(this.saveForm.value.descripcionNoticia);
-    console.log(this.ejemplo);
-  }
   saveModal() {
    try {
       const id = localStorage.getItem('Id');
@@ -370,11 +378,9 @@ export class AppGestorNoticiaComponent implements OnInit {
       const selectedCategoria = this.selectedCategorias;
       const selectedSubCategoria = this.selectedSubCategorias;
       const destinatario = this.selectedPst;
-      const destinatariopst = this.selectedAdmin;
+      const destinatariopst = this.selectedAdmin; 
       const titulo = this.saveForm.value.tituloNoticia;
-      //const descripcion = this.sanitizer.bypassSecurityTrustHtml(this.saveForm.value.descripcionNoticia); 
       const descripcion = this.saveForm.value.descripcionNoticia; 
-
       const imagen = this.imagen ? this.imagen : '';
       const id_categoria = this.saveForm.value.CategoriaNoticia;
       const data = {

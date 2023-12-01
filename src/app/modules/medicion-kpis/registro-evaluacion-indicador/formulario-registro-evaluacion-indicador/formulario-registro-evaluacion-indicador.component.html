@@ -75,9 +75,7 @@
               </div>
               
               <div>
-                <span class="dot-green"></span> >={{model.META}}  <span style="color:green">BUENO</span><br>
-                <span class="dot-yellow"></span> >={{model.SEMAFORIZACION}}  <span style="color:yellow">REGULAR</span><br>
-                <span class="dot-red"></span> <{{model.SEMAFORIZACION}}  <span style="color:red">MALO</span><br>
+                <app-formulas-semaforizacion [nMeta]="model.META" [esIncremento]="model.ES_INCREMENTO" [esDisminuir]="model.ES_DISMINUIR"></app-formulas-semaforizacion>
               </div>
               <h3>Variables</h3>
             <div class="row">
@@ -135,7 +133,7 @@
               <div class="row">
                 <div class="col-md-3 ">
                   <div class="form-group">
-                    <label for="RESULTADO">Resultado</label>
+                    <label for="RESULTADO">Resultado <span [class]='color'></span></label>
                     <input
                       matInput
                       disabled
@@ -146,6 +144,7 @@
                       [(ngModel)]="model.RESULTADO"
                       (ngModelChange)="submitForm(formObjetivo)"
                     />
+                    
                   </div>
                   <!--<mat-form-field appearance="outline" class="matForm">
                     <mat-label>Resultado</mat-label>

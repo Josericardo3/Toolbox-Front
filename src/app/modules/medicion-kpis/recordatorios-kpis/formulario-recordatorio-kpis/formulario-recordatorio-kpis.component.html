@@ -39,52 +39,56 @@
           <hr>
         
           <div class="col-md-12">
-            <div class="col-md-6">
-              <div class="form-group">
-                <label for="fecha">Fecha:</label>
-                <div class="form-group alinear-buscador">
-                  <input
-                    class="form-control"
-                    [ngClass]="{
-                      'required-field-error': formObjetivo.controls.indicador?.invalid && formObjetivo.controls.indicador?.touched
-                    }"
-                    type="text"
-                    [required]="true"
-                    [(ngModel)]="model.FECHA_RECORDATORIOR"
-                    name="fecha"
-                    [minDate]="model.HORA_RECORDATORIOR"
-                    placeholder="DD-MM-YYYY"
-                    maxlength="10"
-                    appDateInputMask
-                    placement="top"
-                    tooltip="Campo Obligatorio"
-                    bsDatepicker
-                    #dp="bsDatepicker"
-                    [bsConfig]="{
-                      adaptivePosition: true,
-                      dateInputFormat: ' DD-MM-YYYY'
-                    }"
-                  />
-                  <img
-                    class="calendar-picker rp-calendar hand-pointer"
-                    (click)="dp.show()"
-                    [attr.aria-expanded]="dp.isOpen"
-                    type="button"
-                    src="assets/imagenes/calendar.png"
-                  />
+            <div class="row">
+              <div class="col-md-2"></div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label for="fecha">Fecha:</label>
+                  <div class="form-group alinear-buscador">
+                    <input
+                      class="form-control"
+                      [ngClass]="{
+                        'required-field-error': formObjetivo.controls.indicador?.invalid && formObjetivo.controls.indicador?.touched
+                      }"
+                      type="text"
+                      [required]="true"
+                      [(ngModel)]="model.FECHA_RECORDATORIOR"
+                      name="fecha"
+                      [minDate]="model.HORA_RECORDATORIOR"
+                      placeholder="DD-MM-YYYY"
+                      maxlength="10"
+                      appDateInputMask
+                      placement="top"
+                      tooltip="Campo Obligatorio"
+                      bsDatepicker
+                      #dp="bsDatepicker"
+                      [bsConfig]="{
+                        adaptivePosition: true,
+                        dateInputFormat: ' DD-MM-YYYY'
+                      }"
+                    />
+                    <img
+                      class="calendar-picker rp-calendar hand-pointer"
+                      (click)="dp.show()"
+                      [attr.aria-expanded]="dp.isOpen"
+                      type="button"
+                      src="assets/imagenes/calendar.png"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label for="timepicker">Seleccionar hora:</label>
+                  <timepicker
+                    name="hora"
+                    id="hora"
+                    [(ngModel)]="model.HORA_RECORDATORIOR"
+                  ></timepicker>
                 </div>
               </div>
             </div>
-            <div class="col-md-4">
-              <div class="form-group">
-                <label for="timepicker">Seleccionar hora:</label>
-                <timepicker
-                  name="hora"
-                  id="hora"
-                  [(ngModel)]="model.HORA_RECORDATORIOR"
-                ></timepicker>
-              </div>
-            </div>
+            
           </div>
         </div>
       

@@ -102,7 +102,7 @@
           </mat-form-field>
          -->
         </div>
-        <div class="col-md-12">
+        <div class="col-md-8">
           <div class="form-group">
             <label for="META">Meta %</label>
             <input
@@ -115,6 +115,7 @@
               [(ngModel)]="model.META"
               (ngModelChange)="submitForm(formObjetivo)"
               class="form-control"
+              required
               [ngClass]="{
                 'required-field-error':
                   formObjetivo.controls.META?.invalid &&
@@ -123,7 +124,7 @@
             />
           </div>
           <!--
-  <mat-form-field appearance="outline" class="matForm" style="size: 1rem">
+             <mat-form-field appearance="outline" class="matForm" style="size: 1rem">
             <mat-label>Meta %</mat-label>
             <input
               autocomplete="off"
@@ -135,8 +136,36 @@
               (ngModelChange)="submitForm(formObjetivo)"
             />
           </mat-form-field>
-         -->
+           -->
         </div>
+        <div class="col-md-4 mt-3">
+          <div class="form-check">
+            <input (ngModelChange)="submitForm(formObjetivo)" class="form-check-input" type="checkbox"  id="flexCheckDefault" name="esIncremento" [(ngModel)]="model.esIncremento" (change)="changeIncremento(1,$event)" [checked]="model.esIncremento">
+            <label class="form-check-label" for="flexCheckDefault">
+              Para incrementar
+            </label>
+          </div>
+          <div class="form-check">
+            <input (ngModelChange)="submitForm(formObjetivo)" class="form-check-input" type="checkbox"  name="esDisminuir" id="flexCheckChecked" [(ngModel)]="model.esDisminuir" (change)="changeIncremento(2,$event)" [checked]="model.esDisminuir">
+            <label class="form-check-label" for="flexCheckChecked">
+              Para disminuir
+            </label>
+          </div>
+         
+
+        </div>
+        <div class="col-md-12" *ngIf="formObjetivo.controls?.META?.valid &&
+        formObjetivo.controls.META?.touched && muestraSemaforizacion">
+          <app-formulas-semaforizacion  [nMeta]="model.META" [esIncremento]="model.esIncremento" [esDisminuir]="model.esDisminuir">
+
+          </app-formulas-semaforizacion>
+        </div>
+      
+      </div>
+      
+    </div>
+    <div class="col-md-6">
+      <div class="row">
         <div class="col-md-12 interlineado">
           <div class="form-group">
             <label for="NOMBRE_PERIODO_MEDICION">Frecuencia de Medición</label>
@@ -227,11 +256,6 @@
           </mat-form-field>
          -->
         </div>
-      </div>
-      
-    </div>
-    <div class="col-md-6">
-      <div class="row">
         <div class="col-md-12 interlineado">
           <div class="form-group">
             <label for="procesos">Procesos</label>

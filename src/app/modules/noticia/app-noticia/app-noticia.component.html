@@ -20,10 +20,8 @@
       <hr>
       <div class="descripcion-noticia">
         <img class="img-noticiaaa" [src]="this.imagen"/>
-        <p class="descrip-noticia" [innerHTML]="this.noticiaSelected.DESCRIPCION">
-          {{this.noticiaSelected.DESCRIPCION}}
-        </p>
-        <iframe width="560" height="315" [src]="this.sanitizer.bypassSecurityTrustResourceUrl(this.noticiaSelected.LINKYT)" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+        <div class="descrip-noticia" [innerHTML]="this.sanitizer.bypassSecurityTrustHtml(this.noticiaSelected.DESCRIPCION)">{{this.noticiaSelected.DESCRIPCION}}</div>
+        <!--<div><iframe [src]="this.sanitizer.bypassSecurityTrustResourceUrl(this.secureUrlYT)" width="560" height="314" allowfullscreen="allowfullscreen"></iframe></div>-->
       </div>
       <hr>
       <div class="share-noticia">
@@ -72,16 +70,31 @@
             <h2>Editar noticia</h2>
             <div class="linea"></div>
         </div>
-        <form [formGroup]="editarNoticiaForm" (ngSubmit)="saveModalEditar()" class="form">
+        <form [formGroup]="editarNoticiaForm" (ngSubmit)="saveModalEditar()" class="form" #forma="ngForm">
             <label for="">Usuario</label>
             <input type="text" id="usuario" formControlName="usuario" [(ngModel)]="noticiaSelected.NOMBRE"
                 [disabled]="true"><br>
             <label for="">Título de la noticia</label>
             <input type="text" id="titulo" formControlName="titulo" [(ngModel)]="noticiaSelected.TITULO" ><br>
             <label for="">Descripción de la noticia</label>
-            <angular-editor placeholder="Agregar una descripción" formControlName="descripcion"
+            <!--<angular-editor placeholder="Agregar una descripción" formControlName="descripcion"
                 style="margin-top:2vh;" id="descripcion"
-                [(ngModel)]="noticiaSelected.DESCRIPCION"></angular-editor>
+                [(ngModel)]="noticiaSelected.DESCRIPCION"></angular-editor>-->
+            <br>
+            <editor apiKey="55jurjhq2t2vhxydiwxvftw7j1oxklp4tjwmapao76sojkxw" [(ngModel)]="noticiaSelected.DESCRIPCION" formControlName="descripcion" name="descripcion"
+                [init]="{
+                  height: 500,
+                  plugins: [
+                     'a11ychecker','advlist','advcode','advtable','autolink','checklist','export',
+                    'lists','link','image','charmap','preview','anchor','searchreplace','visualblocks',
+                    'powerpaste','fullscreen','formatpainter','insertdatetime','media','table','help','wordcount'
+                  ],
+                  toolbar:
+                   'undo redo | casechange blocks | bold italic backcolor | \
+                   alignleft aligncenter alignright alignjustify | \
+                   bullist numlist checklist outdent indent | removeformat | a11ycheck code table help'
+                }"
+            ></editor>
             <div class="containerFile" style="margin-top:2vh;">
                 <input type="file" (change)="captureImage($event)" class="file" id="archivo" #archivo>
                 <label for="archivo" class="fileBtn">Seleccionar imagen</label>

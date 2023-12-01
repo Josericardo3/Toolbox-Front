@@ -23,7 +23,7 @@ export class FormularioEvaluacionIndicadorComponent {
   variablesT: any = [];
   tipoFilterCtrl: FormControl = new FormControl();
 disableOptions=false;
-
+muestraSemaforizacion:boolean=false;
   requiredFieldsValid: boolean = false;
   @Output() requiredValidityChange = new EventEmitter<boolean>();
   contenidoDivEditable: any;
@@ -101,5 +101,22 @@ disableOptions=false;
       default:
         break;
     }
+  }
+  changeIncremento(opcion:any, event:any){
+    this.muestraSemaforizacion=false;
+  
+    if (opcion === 1) {
+      this.model.esDisminuir = false;  // Deselecciona el checkbox de disminuir
+    } else if (opcion === 2) {
+      this.model.esIncremento = false; // Deselecciona el checkbox de incrementar
+    }
+    if(!this.model.esDisminuir && !this.model.esIncremento){
+      this.muestraSemaforizacion=false;
+      this.requiredValidityChange.emit(this.muestraSemaforizacion);
+    }else{
+      this.muestraSemaforizacion=true;
+      this.requiredValidityChange.emit(this.muestraSemaforizacion);
+    }
+    
   }
 }

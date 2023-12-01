@@ -260,8 +260,8 @@
                           </h5>
                           <h5 class="card-title" style="color: #474747;">{{formatFechaText(campo.FECHA_REG)}}</h5>
                           <div class="container-texto-noticia">
-                            <h5 class="card-text " >
-                              {{ campo.DESCRIPCION_NOTICIA?.slice(0, 120) }} 
+                            <h5 class="card-text" [innerHTML]="campo.DESCRIPCION_NOTICIA.slice(0,120)">
+                              {{ campo.DESCRIPCION_NOTICIA.slice(0,120) }}
                             </h5>
                           </div>
  
@@ -392,36 +392,38 @@
  
 </div>
  
-<div class="row  mb-5">
-  <div class="col-md-9 col-12 col-sm-12 ">
+<div class="row " >
+  <div class="col-md-9 col-12 col-sm-12  ">
     <div
       class="row d-flex justify-content-center align-items-center header-two"
     >
-      <div class="col-md-10 mt-0 mb-4">
+      <div class="col-md-10">
         <app-app-header2></app-app-header2>
       </div>
     </div>
-    <div class="container pl-5 ps-5">
-      <div class="row text-center">
+    <div class="container" >
+      <div class="row  text-center " style="margin-left: 5vw;">
         <div
-          class="col-md-3 col-6 mb-4 icono"
+          class="col-md-3 col-6  icono "
           [ngClass]="{ oculto: AccesoCaracterizacion }"
         >
-          <div class="row">
+          <div class="row " >
             <div
               class="col-md-12 d-flex justify-content-center align-items-center"
+              style="height: 17vh;"
             >
               <div
-                class="p-3 card mat-elevation-z8 text-center position-relative"
+                class="p-3 card mat-elevation-z8 text-center position-relative d-flex justify-content-center align-items-center"
+                style="height: 15vh; width: 8vw;"
                 alt="caracterizacion"
                 (click)="menuFilter('Caracterización') "
               >
                 <!-- <img src="../../../../assets/img-dashboard/caracterizacion.svg" alt="caracterizacion" id="caracterizacion"> -->
-                <img src="../../../../assets/img-dashboard/caracterizacion-oficial.svg" class="pcard-img-top img-fluid"
+                <img src="../../../../assets/img-dashboard/caracterizacion-oficial.svg" class=""
                   alt="..." />
               </div>
             </div>
-            <div class="col-md-12 mt-3">
+            <div class="col-md-12 mt-2">
               <h5 class="text-success "><strong>CARACTERIZACIÓN</strong></h5>
             </div>
           </div>
@@ -429,10 +431,12 @@
         <div class="col-md-3 col-6 mb-4 icono" [ngClass]="{ oculto: AccesoDiagnostico }">
           <div class="row">
             <div
-              class="col-md-12 d-flex justify-content-center align-items-center"
+              class="col-md-12 d-flex justify-content-center align-items-center "
+              style="height: 17vh;"
             >
               <div
-                class="p-3 card mat-elevation-z3 text-center position-relative"
+                class="p-3 card mat-elevation-z3 text-center position-relative d-flex justify-content-center align-items-center"
+                style="height: 15vh; width: 8vw;"
                 (click)="
                   menuFilter('Autodiagnóstico'); buscarRuta('diagnostico'); fnShowModal()
                 "
@@ -444,7 +448,7 @@
                 />
               </div>
             </div>
-            <div class="col-md-12 mt-3">
+            <div class="col-md-12 mt-2">
               <h5 class="text-success"><strong>AUTODIAGNÓSTICO</strong></h5>
             </div>
           </div>
@@ -454,13 +458,15 @@
           class="col-md-3 col-6 mb-4 icono"
           [ngClass]="{ oculto: AccesoPlanificacion }"
         >
-          <div class="row">
+          <div class="row ">
             <div
               class="col-md-12 d-flex justify-content-center align-items-center"
+              style="height: 17vh;"
             >
               <div
-                class="p-3 card mat-elevation-z3"
+                class="p-3 card mat-elevation-z3 d-flex justify-content-center align-items-center"
                 (click)="menuFilter('Gestor De Tareas'); buscarRuta('planificacion')"
+                style="height: 15vh; width: 8vw;"
               >
                 <!-- <img src="../../../../assets/img-dashboard/planificacion.svg" alt="planificacion" id="planificacion"> -->
  
@@ -471,7 +477,7 @@
                 />
               </div>
             </div>
-            <div class="col-md-12 mt-3">
+            <div class="col-md-12 mt-2">
               <h5 class="text-success"><strong>GESTOR DE TAREAS</strong></h5>
             </div>
           </div>
@@ -480,10 +486,13 @@
           <div class="row">
             <div
               class="col-md-12 d-flex justify-content-center align-items-center"
+              style="height: 17vh;"
             >
               <div
-                class="p-3 card mat-elevation-z3"
+                class="p-3 card mat-elevation-z3 d-flex justify-content-center align-items-center"
                 (click)="menuFilter('Documentación'); buscarRuta('documentacion')"
+                style="height: 15vh; width: 8vw;"
+                
               >
                 <!-- <img src="../../../../assets/img-dashboard/documentacion.svg" alt="documentacion" id="documentacion"> -->
  
@@ -494,7 +503,7 @@
                 />
               </div>
             </div>
-            <div class="col-md-12 mt-3">
+            <div class="col-md-12 mt-2">
               <h5 class="text-success"><strong>DOCUMENTACIÓN</strong></h5>
             </div>
           </div>
@@ -505,10 +514,12 @@
         >
           <div
             class="col-md-12 text-center d-flex justify-content-center align-items-center"
+            style="height: 17vh;"
           >
             <div
-              class="p-3 card mat-elevation-z3"
+              class="p-3 card mat-elevation-z3 d-flex justify-content-center align-items-center"
               (click)="menuFilter('Formación E E-Learning'); redirigirAUrlExterna()"
+              style="height: 15vh; width: 8vw;"
             >
               <!-- <img src="../../../../assets/img-dashboard/formacion.svg" alt="formacion" id="formacion"> -->
  
@@ -519,7 +530,7 @@
               />
             </div>
           </div>
-          <div class="col-md-12 mt-3">
+          <div class="col-md-12 mt-2">
             <h5 class="text-success">
               <strong>FORMACIÓN E E-LEARNING</strong>
             </h5>
@@ -531,10 +542,12 @@
         >
           <div
             class="col-md-12 d-flex justify-content-center align-items-center"
+            style="height: 17vh;"
           >
             <div
-              class="p-3 card mat-elevation-z3"
+              class="p-3 card mat-elevation-z3 d-flex justify-content-center align-items-center"
               (click)="menuFilter('Noticias'); buscarRuta('gestorNoticia')"
+              style="height: 15vh; width: 8vw;"
             >
               <!-- <img src="../../../../assets/img-dashboard/noticias.svg" alt="noticias" id="noticias"> -->
  
@@ -545,7 +558,7 @@
               />
             </div>
           </div>
-          <div class="col-md-12 mt-3">
+          <div class="col-md-12 mt-2">
             <h5 class="text-success"><strong>NOTICIAS</strong></h5>
           </div>
         </div>
@@ -554,10 +567,12 @@
             <div
               class="col-md-12 d-flex justify-content-center align-items-center"
               (click)="menuFilter($event); buscarRuta('listaDeVerificacion')"
+              style="height: 17vh;"
             >
               <div
-                class="p-3 card mat-elevation-z3"
+                class="p-3 card mat-elevation-z3 d-flex justify-content-center align-items-center"
                 (click)="menuFilter('Auditoría Interna'); buscarRuta('listaDeVerificacion')"
+                style="height: 15vh; width: 8vw;"
               >
                 <!-- <img src="" alt="auditoria" id="auditoria" > -->
  
@@ -568,7 +583,7 @@
                 />
               </div>
             </div>
-            <div class="col-md-12 mt-3">
+            <div class="col-md-12 mt-2">
               <h5 class="text-success"><strong>AUDITORÍA INTERNA</strong></h5>
             </div>
           </div>
@@ -577,10 +592,12 @@
           <div class="row">
             <div
               class="col-md-12 d-flex justify-content-center align-items-center"
+              style="height: 17vh;"
             >
               <div
-                class="p-3 card mat-elevation-z3"
+                class="p-3 card mat-elevation-z3 d-flex justify-content-center align-items-center"
                 (click)="menuFilter('Evidencia E Implementación'); buscarRuta('evidencia/:section')"
+                style="height: 15vh; width: 8vw;"
               >
                 <!-- <img src="../../../../assets/img-dashboard/" alt="evidencia" id="evidencia"> -->
  
@@ -591,7 +608,7 @@
                 />
               </div>
             </div>
-            <div class="col-md-12 mt-3">
+            <div class="col-md-12 mt-2">
               <h5 class="text-success">
                 <strong>EVIDENCIA E IMPLEMENTACIÓN</strong>
               </h5>
@@ -602,10 +619,12 @@
           <div class="row">
             <div
               class="col-md-12 d-flex justify-content-center align-items-center"
+              style="height: 17vh;"
             >
               <div
-                class="p-3 card mat-elevation-z3"
+                class="p-3 card mat-elevation-z3 d-flex justify-content-center align-items-center"
                 (click)="menuFilter('Alta Gerencia'); buscarRuta('resultadosAuditoria')"
+                style="height: 15vh; width: 8vw;"
               >
                 <!-- <img src="../../../../assets/img-dashboard/gerencia.svg" alt="gerencia" id="gerencia"> -->
  
@@ -616,7 +635,7 @@
                 />
               </div>
             </div>
-            <div class="col-md-12 mt-3">
+            <div class="col-md-12 mt-2">
               <h5 class="text-success"><strong>ALTA GERENCIA</strong></h5>
             </div>
           </div>
@@ -625,10 +644,12 @@
           <div class="row">
             <div
               class="col-md-12 d-flex justify-content-center align-items-center"
+              style="height: 17vh;"
             >
               <div
-                class="p-3 card mat-elevation-z3"
+                class="p-3 card mat-elevation-z3 d-flex justify-content-center align-items-center"
                 (click)="menuFilter('Medición'); buscarRuta('indicadores')"
+                style="height: 15vh; width: 8vw;"
               >
                 <!-- <img src="../../../../assets/img-dashboard/medicion.svg" alt="medicion" > -->
  
@@ -639,7 +660,7 @@
                 />
               </div>
             </div>
-            <div class="col-md-12 mt-3">
+            <div class="col-md-12 mt-2">
               <h5 class="text-success"><strong>MEDICIÓN Y KPI's</strong></h5>
             </div>
           </div>
@@ -648,9 +669,11 @@
           <div class="row">
             <div
               class="col-md-12 d-flex justify-content-center align-items-center"
+              style="height: 17vh;"
             >
               <div
-                class="p-3 card mat-elevation-z3"
+                class="p-3 card mat-elevation-z3 d-flex justify-content-center align-items-center"
+                style="height: 15vh; width: 8vw;"
                 (click)="menuFilter('Mejora Continua'); buscarRuta('mejoraContinua')"
               >
                 <img
@@ -660,7 +683,7 @@
                 />
               </div>
             </div>
-            <div class="col-md-12 mt-3">
+            <div class="col-md-12 mt-2">
               <h5 class="text-success"><strong>MEJORA CONTINUA</strong></h5>
             </div>
           </div>
@@ -669,10 +692,12 @@
           <div class="row">
             <div
               class="col-md-12 d-flex justify-content-center align-items-center"
+              style="height: 17vh;"
             >
               <div
-                class="p-3 card mat-elevation-z3"
+                class="p-3 card mat-elevation-z3 d-flex justify-content-center align-items-center"
                 (click)="menuFilter('Monitorización'); buscarRuta('monitorizacion')"
+                style="height: 15vh; width: 8vw;"
               >
                 <img
                   src="../../../../assets/img-dashboard/monitorizacion-oficial.svg"
@@ -681,7 +706,7 @@
                 />
               </div>
             </div>
-            <div class="col-md-12 mt-3">
+            <div class="col-md-12 mt-2">
               <h5 class="text-success"><strong>MONITORIZACIÓN </strong></h5>
             </div>
 
@@ -695,32 +720,32 @@
     </div>
   </div>
  
-  <div class="col-md-3 h-100 seguimiento">
+  <div class="col-md-3  seguimiento ">
     <div
       class="cardnotificaciones collapse navbar-collapse"
       [ngClass]="{ 'mostrar-notificaciones': mostrarNotificacion }"
       [collapse]="isCollapsed"
     >
-      <div class="card mat-elevation-z2">
-        <li class="list-group-item p-1" style="background-color: #f2f2f2">
+      <div class="card mat-elevation-z2 pepe">
+        <li class="list-group-item pt-3" style="background-color: #f2f2f2">
           <h3
             class="text text-success text-center"
             style="font-family: 'Nunito Sans'"
           >
             SEGUIMIENTO
           </h3>
-          <hr style="margin-top: -1px; margin-bottom: -4px" />
+          <hr style="display: block; margin-bottom: 0px" />
         </li>
  
         <div class="card" id="card-seguimiento" style="border: none">
-          <div class="contenedorCard" style="overflow-y: auto">
+          <div class="contenedorCard" style="overflow-y: auto; overflow-x: hidden">
             <div class="tituloNot">
               <p
                 *ngIf="resultSeguimiento"
                 style="
                   color: white !important;
                   text-align: center;
-                  margin-top: 14px;
+                  
                   font-size: 12px;
                   font-family: 'Work Sans', sans-serif;
                 "
@@ -735,10 +760,10 @@
                   <hr
                     style="margin-top: -1px; margin-bottom: -3px; width: 350px"
                   />
-                  <li class="list-group-item pt-3" style="all: initial; margin-left: 50px;">
+                  <li class="list-group-item pt-1" style="all: initial; margin-left: 50px;">
                     <div class="modulo-item" style="display: flex; align-items: center;">
-                      <img [src]="imagenesModulos[modulo.MODULO]" alt="Imagen de {{ modulo.MODULO }}" style="max-width: 80px; max-height: 80px;" class="modulo-imagen" />
-                      <div class="modulo-info" style="font-size: 15px; margin-left: 10px;">
+                      <img [src]="imagenesModulos[modulo.MODULO]" alt="Imagen de {{ modulo.MODULO }}" style="max-width: 75px; max-height: 75px;" class="modulo-imagen" />
+                      <div class="modulo-info" style="font-size: 14px; margin-left: -5px;">
                         <p class="card-title" style="color: #0b5738; margin-bottom: 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
                           {{ modulo.MODULO }}
                         </p>
@@ -755,7 +780,7 @@
         </div>
       </div>
  
-      <div class="card not22 mat-elevation-z2">
+      <div class="card mat-elevation-z2 pepe2">
         <div class="noticia-carousel" *ngIf="carousel">
           <p
             *ngIf="resultNoticia"
@@ -802,7 +827,7 @@
                       <h5 class="card-title titulo-noticia">{{ campo.TITULO_NOTICIA }}</h5>
                       <h5 class="card-title" style="color: #474747;">{{formatFechaText(campo.FECHA_REG)}}</h5>
                       <div class="container-texto-noticia">
-                      <h5 class="card-text " >
+                      <h5 class="card-text" [innerHTML]="campo.DESCRIPCION_NOTICIA.slice(0,120)" >
                         {{ campo.DESCRIPCION_NOTICIA?.slice(0, 120) }} 
                       </h5>
                     </div>
@@ -852,7 +877,7 @@
     </div>
   </div>
 </div>
-<div class="row  text-end footer2">
+<div class="row footer2" style="margin-top: -68px;">
   <div class="col-md-9 col-12 col-sm-12  ">
     <app-footer2 class="w-100"></app-footer2>
   </div>

@@ -33,6 +33,7 @@ export class ApiService {
   apiURL = environment.apiURL
   apiURLNuevo = environment.apiURLNuevo
 
+
   apiCHART = environment.apiChart
   constructor(private http: HttpClient) { }
   color: Object;
@@ -66,14 +67,17 @@ export class ApiService {
       direccion,
       request,
       { observe: "response" }
-      // { registroNacionalDeTurismo, pass },
-      // {headers}
     )
   }
 
   createUser(request: any): Observable<any> {
     let direccion = `${this.apiURLNuevo}/api/Usuario`
     return this.http.post<any>(direccion, request)
+  }
+
+  updateUser(request: any): Observable<any> {
+    let direccion = `${this.apiURLNuevo}/api/Usuario`
+    return this.http.put<any>(direccion, request)
   }
 
   sendEmailRecovery(request: any): Observable<any> {
