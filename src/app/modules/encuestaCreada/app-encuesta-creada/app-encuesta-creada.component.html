@@ -5,6 +5,7 @@
             <p class="descripcion">{{datosPreguntaEncuesta.DESCRIPCION}}</p>
             <div class="linea"></div>
             <p class="obligatorio">Todos los campos con * son obligatorios</p>
+            <p class="obligatorio">Es necesario responder al menos una pregunta para enviar el formulario</p>
         </div>
         <div class="containerTarjetas" *ngFor="let pregunta of datosPreguntaEncuesta.MAE_ENCUESTA_PREGUNTAS; let i = index">
             <div *ngIf="pregunta.TIPO === 'respuestaCorta'" class="tipoDiv">
@@ -12,14 +13,14 @@
                     <span *ngIf="pregunta.OBLIGATORIO == true" style="color: tomato;">*</span>
                 </label>
                 <input type="text" placeholder="Ingresar respuesta corta" class="respuestaCorta" [formControlName]="'respuestaCorta_' + pregunta.ID_MAE_ENCUESTA_PREGUNTA" 
-                maxlength="200" [required]="pregunta.OBLIGATORIO">
+                maxlength="200" [required]="pregunta.OBLIGATORIO" appNoEspacio pattern="[^\s]+">
             </div>
             <div *ngIf="pregunta.TIPO === 'respuestaLarga'" class="tipoDiv">
                 <label class="descripcion">{{pregunta.DESCRIPCION}}
                     <span *ngIf="pregunta.OBLIGATORIO == true" style="color: tomato;">*</span>
                 </label>
                 <textarea placeholder="Ingresar respuesta larga" class="respuestaLarga" [formControlName]="'respuestaLarga_' + pregunta.ID_MAE_ENCUESTA_PREGUNTA" 
-                [required]="pregunta.OBLIGATORIO" maxlength="1500"></textarea>
+                [required]="pregunta.OBLIGATORIO" maxlength="1500" appNoEspacio pattern="[^\s]+"></textarea>
             </div>
             <div *ngIf="pregunta.TIPO === 'radioButton'" class="tipoDiv">
                 <label class="descripcion">{{pregunta.DESCRIPCION}}
@@ -31,21 +32,21 @@
                         (change)="toggleOtroRadio(pregunta, opcion)"> {{opcion}}
                   </label>
                 </div>
-                <input *ngIf="pregunta.mostrarOtroRadio" type="text" placeholder="Otro" maxlength="100" 
-                [formControlName]="'radioButtonOtro_' + pregunta.ID_MAE_ENCUESTA_PREGUNTA">
+                <input *ngIf="pregunta.mostrarOtroRadio" type="text" placeholder="Otro" maxlength="100" [required]="pregunta.OBLIGATORIO"
+                [formControlName]="'radioButtonOtro_' + pregunta.ID_MAE_ENCUESTA_PREGUNTA" appNoEspacio pattern="[^\s]+">
             </div>                                   
             <div *ngIf="pregunta.TIPO === 'checkbox'" class="tipoDiv">
                 <label class="descripcion">{{pregunta.DESCRIPCION}}
                     <span *ngIf="pregunta.OBLIGATORIO == true" style="color: tomato;">*</span>
                 </label>
-                <div *ngFor="let opcion of pregunta.VALOR.split(';'); let i = index">
+                <div *ngFor="let opcion of pregunta.VALOR.split(';'); let j = index">
                     <label>
                         <input type="checkbox" [required]="pregunta.OBLIGATORIO" [value]="opcion" [formControlName]="'checkbox_' + pregunta.ID_MAE_ENCUESTA_PREGUNTA + '_' + i"
-                        (change)="toggleOtroCheckbox(pregunta, opcion)">{{opcion}}
+                        (change)="toggleOtroCheckbox(pregunta, opcion)" [id]="'checkbox_' + pregunta.ID_MAE_ENCUESTA_PREGUNTA + '_' + j">{{opcion}}
                     </label>
                 </div>
-                <input *ngIf="pregunta.mostrarOtroCheckbox" type="text" placeholder="Otro" maxlength="100" 
-                [formControlName]="'checkboxOtro_' + pregunta.ID_MAE_ENCUESTA_PREGUNTA">
+                <input *ngIf="pregunta.mostrarOtroCheckbox" type="text" placeholder="Otro" maxlength="100" [required]="pregunta.OBLIGATORIO"
+                [formControlName]="'checkboxOtro_' + pregunta.ID_MAE_ENCUESTA_PREGUNTA" appNoEspacio pattern="[^\s]+">
             </div>
             <div *ngIf="pregunta.TIPO === 'desplegable'" class="tipoDiv">
                 <label class="descripcion">{{pregunta.DESCRIPCION}}
@@ -57,7 +58,7 @@
                 </select>
             </div>          
         </div>
-        <button class="btn" type="submit" [disabled]="form.invalid">
+        <button class="btn" type="submit" [disabled]="form.invalid || !alMenosUnaPreguntaRespondida()">
             <i class="fa-solid fa-floppy-disk" style="color: #ffffff;"></i> Enviar
         </button> 
     </form>

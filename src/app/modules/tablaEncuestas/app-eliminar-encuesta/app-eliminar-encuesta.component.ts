@@ -33,10 +33,12 @@ export class AppEliminarEncuestaComponent implements OnInit{
   }
 
   confirmDelete(){
+    console.log(this.indice, 'sdddddddddddddddddddddd')
     if(this.indice != undefined){
       const valor = -2 ;
       this.apiService.deleteEncuesta(this.indice)
       .subscribe(data => {
+        console.log("Eliminación exitosa")
         const title = "Eliminación exitosa";
         const message = "El registro se ha eliminado exitosamente"
         this.Message.showModal(title, message);

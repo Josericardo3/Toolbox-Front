@@ -1,6 +1,6 @@
 import { Component, OnInit, ComponentFactoryResolver, Renderer2 } from '@angular/core'
 import { Router } from '@angular/router'
-import { FormGroup, Validators, FormBuilder, FormControl } from '@angular/forms'
+import { FormGroup, Validators, FormBuilder, FormControl, Validator } from '@angular/forms';
 import { CustomValidators } from '../../../models/customeValidator'
 import { ApiService } from '../../../servicios/api/api.service'
 import { Store } from '@ngrx/store'
@@ -40,7 +40,7 @@ export class AppRegisterComponent implements OnInit {
 imagenLogo:any={
   esAvatar:false,
   logo:'',
-  idAvatar:1
+  idAvatar:0
 };
 avatares = [
   "../../../../assets/avatares/avatar1.svg",
@@ -51,7 +51,7 @@ avatares = [
   "../../../../assets/avatares/avatar6.svg"
 ];
 avatarSeleccionado: number=-1;
-deshabilitarAvatars:any=false;
+//deshabilitarAvatars:any=false;
   constructor(
     private router: Router,
     private formBuilder: FormBuilder,
@@ -79,22 +79,22 @@ deshabilitarAvatars:any=false;
             Validators.required,
             Validators.pattern(/^\d{10}$/)]),
         ],
-        telefonoDelRepresentanteLegal: ['',
+        /*telefonoDelRepresentanteLegal: ['',
           Validators.compose([
             Validators.required,
             Validators.pattern(/^\d{10}$/)]),
-        ],
-        telefonoDelResponsableDeSostenibilidad: ['',
+        ],*/
+        /*telefonoDelResponsableDeSostenibilidad: ['',
           Validators.compose([
             Validators.required,
             Validators.pattern(/^\d{10}$/)]),
-        ],
+        ],*/
         numeroDeIdentificacionTributaria: ['', Validators.required],
         registroNacionalDeTurismo: ['', Validators.required],
         categoriaRnt: ['', Validators.required],
         subcategoriaRnt: ['', Validators.required],
-        nombreDelPst: ['', Validators.required],
-        razonSocialDelPst: ['', Validators.required],
+       // nombreDelPst: ['', Validators.required],
+        razonSocialDelPst: ['',Validators.compose([Validators.required,Validators.pattern(/^\S.*\S$/)]) ],
         correo: [
           '',
           Validators.compose([
@@ -103,28 +103,37 @@ deshabilitarAvatars:any=false;
           ]),
         ],
 
-        nombreDelRepresenteLegal: ['', Validators.required],
-        correoRepresentanteLegal: [
+        nombreDelRepresenteLegal: ['',Validators.compose([Validators.required,Validators.maxLength(45),Validators.pattern(/^\S.*\S$/)])] ,
+        apellidoDelRepresenteLegal:  ['',Validators.compose([Validators.required,Validators.maxLength(50),Validators.pattern(/^\S.*\S$/)])],
+        
+        /*correoRepresentanteLegal: [
           '',
           Validators.compose([
             Validators.pattern(this.emailPattern),
             Validators.required,
           ]),
+        ],*/
+        correo2: [
+          '',
+          Validators.compose([
+            
+            Validators.required,
+          ]),
         ],
 
-        tipoDeIdentificacionDelRepresentanteLegal: ['', Validators.required],
-        identificacionDelRepresentanteLegal: ['', Validators.required],
+        //tipoDeIdentificacionDelRepresentanteLegal: ['', Validators.required],
+        //identificacionDelRepresentanteLegal: ['', Validators.required],
         departamento: ['', Validators.required],
         municipio: ['', Validators.required],
-        correoDelResponsableDeSostenibilidad: [
+        /*correoDelResponsableDeSostenibilidad: [
           '',
           Validators.compose([
             Validators.pattern(this.emailPattern),
             Validators.required,
           ]),
-        ],
+        ],*/
 
-        nombreDelResponsableDeSostenibilidad: ['', Validators.required],
+       // nombreDelResponsableDeSostenibilidad: ['', Validators.required],
         password1: [
           '',
           Validators.compose([
@@ -150,7 +159,7 @@ deshabilitarAvatars:any=false;
       },
       {
         // check whether our password and confirm password match
-        validator: CustomValidators.comparePassword,
+        validator:[ CustomValidators.comparePassword, CustomValidators.validarIgualdadInputs]
       },
     )
 
@@ -404,7 +413,8 @@ deshabilitarAvatars:any=false;
   async validarRnt(): Promise<any> {
     
     const rnt = this.registerForm.get('registroNacionalDeTurismo').value;
-    await this.verificarRnt(rnt);
+    const nit = this.registerForm.get('numeroDeIdentificacionTributaria').value;
+    
     if(rnt==""){
       const title = "Mensaje";
       const message = "Debe completar el campo de Registro Nacional de Turismo";
@@ -412,24 +422,34 @@ deshabilitarAvatars:any=false;
       this.deshabilitarCampos(true);
       return;
     }  
+    if(nit==""){
+      const title = "Mensaje";
+      const message = "Debe completar el campo de Número de identificación tributaria";
+      this.Message.showModal(title, message);
+      this.deshabilitarCampos(true);
+      return;
+    }  
+    await this.verificarRnt(rnt,nit);
     if (this.showFaXmarkRnt == true) {
       const title = "Mensaje";
       const message = "El Registro Nacional de Turismo ya se encuentra registrado";
       this.Message.showModal(title, message);
+      this.msjRnt="Validación icorrecta"
       //this.deshabilitarCampos(true);
     } else {
-      console.log("entraaaaaaaaaaaaotraApiiiii");
+      
       this.ApiService.ValidateRntMincit(rnt).subscribe({ next:(data:any)=> {
-        console.log("dataaaa",data);
+        
         if (data.error) {
+          this.msjRnt="Validación icorrecta"
           const title = "Error";
           const message = data.error.message;
           this.Message.showModal(title, message);
 
-          this.registerForm.get('correo').setValue('');
-          this.registerForm.get('numeroDeIdentificacionTributaria').setValue('');
-          this.registerForm.get('razonSocialDelPst').setValue('');
-          this.registerForm.get('telefono').setValue('');
+          this.registerForm.get('correo').setValue('');//no
+          //this.registerForm.get('numeroDeIdentificacionTributaria').setValue('');
+          this.registerForm.get('razonSocialDelPst').setValue('');//nombre de la empresa
+          this.registerForm.get('telefono').setValue('');//no
           this.registerForm.get('nombreDelRepresenteLegal').setValue('');
           this.registerForm.get('categoriaRnt').setValue('');
           this.registerForm.get('subcategoriaRnt').setValue('');
@@ -439,22 +459,32 @@ deshabilitarAvatars:any=false;
           this.deshabilitarCampos(true);
         }
         else {
-          
+          this.msjRnt=""
           this.datosRnt = data;
-          console.log(data);
+          
           this.deshabilitarCampos(false);
+          
+          if(this.datosRnt?.numero_identificacion!=nit){
+            this.msjRnt="Validación icorrecta"
+            const title = "Alerta";
+          const message = "El Número de identificación tributaria, no pertenece al Registro Nacional de Turismo ingresado";
+          this.Message.showModal(title, message);
+          return;
+          }
 
           //aqui debo mandar el subcategoria filtrado
-          this.registerForm.get('correo').setValue(this.datosRnt?.correo_electronico_prestador);
-          this.registerForm.get('numeroDeIdentificacionTributaria').setValue(this.datosRnt?.numero_identificacion);
-          this.registerForm.get('telefono').setValue(this.datosRnt?.numero_telefonico);
-          this.registerForm.get('nombreDelRepresenteLegal').setValue(this.datosRnt?.nombre_representante_legal);
+          //this.registerForm.get('correo').setValue(this.datosRnt?.correo_electronico_prestador);
+          //this.registerForm.get('numeroDeIdentificacionTributaria').setValue(this.datosRnt?.numero_identificacion);
+
+
+         // this.registerForm.get('telefono').setValue(this.datosRnt?.numero_telefonico);
+          this.registerForm.get('razonSocialDelPst').setValue(this.datosRnt?.razon_social);
           const selectedIndex = this.data.findIndex(element => element.name === this.datosRnt.categoria);
 
           const selectedcategory = this.data.find(element => this.normalizeString(element.name) === this.normalizeString(this.datosRnt?.categoria));
           const categoryelectedid =selectedcategory?.id;
 
-        // Si se encontró el índice, establece el valor seleccionado en el campo de selección
+          // Si se encontró el índice, establece el valor seleccionado en el campo de selección
           if (selectedIndex !== -1) {
             this.registerForm.get('categoriaRnt').setValue(this.data[selectedIndex]);
           }
@@ -464,6 +494,7 @@ deshabilitarAvatars:any=false;
           )
           this.arrAgency = filterCategory.sort();
           const selectedIndexSub = this.arrAgency.findIndex(element => this.normalizeString(element.name) === this.normalizeString(this.datosRnt?.subcategoria));
+          
           if (selectedIndexSub !== -1) {
             this.registerForm.get('subcategoriaRnt').setValue(this.arrAgency[selectedIndexSub]);
           }
@@ -480,19 +511,19 @@ deshabilitarAvatars:any=false;
        this.registerForm.get('departamento').setValue(nameDepartment);
       this.setDepartments(nameDepartment);
 
-      this.verificarCorreo(this.datosRnt?.correo_electronico_prestador);
-      this.verificarPhone(this.datosRnt?.numero_telefonico);
+      //this.verificarCorreo(this.datosRnt?.correo_electronico_prestador);
+      /*this.verificarPhone(this.datosRnt?.numero_telefonico);*/
           return this.arrAgency;
         }
         
      },error: (e) => {
-      console.log("eeeeeeee::",e)
+      
       const title = "Error";
           const message = "Algo salió mal, vuelva a validar";
           this.Message.showModal(title, message);
-
+          this.msjRnt="Validación icorrecta"
           this.registerForm.get('correo').setValue('');
-          this.registerForm.get('numeroDeIdentificacionTributaria').setValue('');
+          //this.registerForm.get('numeroDeIdentificacionTributaria').setValue('');
           this.registerForm.get('razonSocialDelPst').setValue('');
           this.registerForm.get('telefono').setValue('');
           this.registerForm.get('nombreDelRepresenteLegal').setValue('');
@@ -512,9 +543,16 @@ deshabilitarAvatars:any=false;
 
 
   saveUser() {
-    if(!this.imagenLogo.esAvatar && this.imagenLogo.logo==""){
+    
+    if( this.imagenLogo.logo==""){
       const title = "Error de carga";
             const message = `Ingrese un logo.`;
+            this.Message.showModal(title, message);
+            return;
+    }
+    if(this.imagenLogo.idAvatar==0 || this.imagenLogo.idAvatar==-1){
+      const title = "Error de carga";
+            const message = `Seleccione un Avatar.`;
             this.Message.showModal(title, message);
             return;
     }
@@ -523,30 +561,45 @@ deshabilitarAvatars:any=false;
       RNT: this.registerForm.get("registroNacionalDeTurismo")?.value,
       FK_ID_CATEGORIA_RNT: this.registerForm.get("categoriaRnt")?.value.id,
       FK_ID_SUB_CATEGORIA_RNT: this.registerForm.get("subcategoriaRnt")?.value.id,
-      NOMBRE_PST: this.registerForm.get("nombreDelPst")?.value,
+      //NOMBRE_PST: this.registerForm.get("nombreDelPst")?.value,
+      NOMBRE_PST: this.registerForm.get("razonSocialDelPst")?.value,
       RAZON_SOCIAL_PST: this.registerForm.get("razonSocialDelPst")?.value,
+      //RAZON_SOCIAL_PST: this.registerForm.get("razonSocialDelPst")?.value,
       CORREO_PST: this.registerForm.get("correo")?.value,
+      //CORREO_PST: this.registerForm.get("correo")?.value,
+      
       TELEFONO_PST: this.registerForm.get("telefono")?.value,
       NOMBRE_REPRESENTANTE_LEGAL: this.registerForm.get(
         "nombreDelRepresenteLegal",
       )?.value,
+      APELLIDO_REPRESENTANTE_LEGAL: this.registerForm.get(
+        "apellidoDelRepresenteLegal",
+      )?.value,
       CORREO_REPRESENTANTE_LEGAL: this.registerForm.get(
+        "correo",
+      )?.value,
+      /*CORREO_REPRESENTANTE_LEGAL: this.registerForm.get(
         "correoRepresentanteLegal",
-      )?.value,
-      TELEFONO_REPRESENTANTE_LEGAL: this.registerForm.get("telefonoDelRepresentanteLegal")?.value,
+      )?.value,*/
+      TELEFONO_REPRESENTANTE_LEGAL: "-",
+      //TELEFONO_REPRESENTANTE_LEGAL: this.registerForm.get("telefonoDelRepresentanteLegal")?.value,
       FK_ID_TIPO_IDENTIFICACION: 1,//modificado
-      IDENTIFICACION_REPRESENTANTE_LEGAL: this.registerForm.get(
+      /*IDENTIFICACION_REPRESENTANTE_LEGAL: this.registerForm.get(
         "identificacionDelRepresentanteLegal",
-      )?.value,
+      )?.value,*/
+      IDENTIFICACION_REPRESENTANTE_LEGAL: "-",
       DEPARTAMENTO:this.registerForm.get("departamento")?.value,
       MUNICIPIO:this.registerForm.get("municipio")?.value,
-      NOMBRE_RESPONSABLE_SOSTENIBILIDAD: this.registerForm.get(
+      /*NOMBRE_RESPONSABLE_SOSTENIBILIDAD: this.registerForm.get(
         "nombreDelResponsableDeSostenibilidad",
-      )?.value,
-      CORREO_RESPONSABLE_SOSTENIBILIDAD: this.registerForm.get(
+      )?.value,*/
+      NOMBRE_RESPONSABLE_SOSTENIBILIDAD: "-",
+     /* CORREO_RESPONSABLE_SOSTENIBILIDAD: this.registerForm.get(
         "correoDelResponsableDeSostenibilidad",
-      )?.value,
-      TELEFONO_RESPONSABLE_SOSTENIBILIDAD: this.registerForm.get("telefonoDelResponsableDeSostenibilidad")?.value,
+      )?.value,*/
+      CORREO_RESPONSABLE_SOSTENIBILIDAD: "-",
+      //TELEFONO_RESPONSABLE_SOSTENIBILIDAD: this.registerForm.get("telefonoDelResponsableDeSostenibilidad")?.value,
+      TELEFONO_RESPONSABLE_SOSTENIBILIDAD: "-",
       PASSWORD: this.registerForm.get("password1")?.value,
       //AVATAR
       FK_ID_TIPO_AVATAR: this.imagenLogo.idAvatar,
@@ -554,9 +607,9 @@ deshabilitarAvatars:any=false;
       ESAVATAR:this.imagenLogo.esAvatar,
       LOGO:this.imagenLogo.logo
     }
-    console.log("ddddd",request)
+  
     localStorage.setItem("newUser", 'yes')
-    console.log("enviooooooo_::::::", request)
+    
     this.ApiService.createUser(request).subscribe((data: any) => {
       if (data.StatusCode === 201) {
         const title = "Registro exitoso";
@@ -570,7 +623,7 @@ deshabilitarAvatars:any=false;
         this.Message.showModal(title, message);
         //this.router.navigate(['/']);      
       }
-      console.log(data)
+      
     })
   }
   
@@ -596,24 +649,25 @@ deshabilitarAvatars:any=false;
   showCheckRnt: boolean = false;
   showFaXmarkRnt: boolean = false;
 
-  async verificarRnt(rnt: any): Promise<void> {
+  async verificarRnt(rnt: any, nit:any): Promise<void> {
 
     this.showFaXmarkRnt = false;
     this.showCheckRnt = false;
     this.msjRnt = '';
-    if (rnt.target != null){
+    if (rnt?.target != null){
       rnt = rnt.target.value
     }
     try {
       const data: any = await this.ApiService.validateRnt(rnt).toPromise();
-  
+      
       if (data === false) {
+        
         this.showCheckRnt = true;
         this.showFaXmarkRnt = false;
-        this.msjRnt = 'Valide Nuevamente';
+        //this.msjRnt = 'Valide Nuevamente';
 
         this.registerForm.get('correo').setValue('');
-          this.registerForm.get('numeroDeIdentificacionTributaria').setValue('');
+        //  this.registerForm.get('numeroDeIdentificacionTributaria').setValue('');
           this.registerForm.get('razonSocialDelPst').setValue('');
           this.registerForm.get('telefono').setValue('');
           this.registerForm.get('nombreDelRepresenteLegal').setValue('');
@@ -625,20 +679,21 @@ deshabilitarAvatars:any=false;
           this.deshabilitarCampos(true);
       }
       if (data === true) {
+        
         this.registerForm.get('registroNacionalDeTurismo').setErrors({ valido: true });
         this.msjRnt = 'El Registro Nacional de Turismo ya se encuentra registrado';
         this.showFaXmarkRnt = true;
         this.showCheckRnt = false;
         this.registerForm.get('correo').setValue('');
-          this.registerForm.get('numeroDeIdentificacionTributaria').setValue('');
+        //  this.registerForm.get('numeroDeIdentificacionTributaria').setValue('');
           this.registerForm.get('razonSocialDelPst').setValue('');
           this.registerForm.get('telefono').setValue('');
-          this.registerForm.get('nombreDelRepresenteLegal').setValue('');
-          this.registerForm.get('categoriaRnt').setValue('');
+        //  this.registerForm.get('nombreDelRepresenteLegal').setValue('');
+        /*  this.registerForm.get('categoriaRnt').setValue('');
           this.registerForm.get('subcategoriaRnt').setValue('');
 
           this.registerForm.get('departamento').setValue('');
-          this.registerForm.get('municipio').setValue('');
+          this.registerForm.get('municipio').setValue('');*/
           this.deshabilitarCampos(true);
       }
     } catch (error) {
@@ -711,13 +766,13 @@ deshabilitarAvatars:any=false;
   }
   fnSubirFoto(event){
     
-    if(this.avatarSeleccionado !== undefined && this.avatarSeleccionado != -1){
+    /*if(this.avatarSeleccionado !== undefined && this.avatarSeleccionado != -1){
       const title = "Error de carga";
       const message = `Ya tiene un avatar seleccionado`;
       this.Message.showModal(title, message);
       return;
-    }
-    console.log(event)
+    }*/
+    
     var imagenPrev:any="";
     var fileList:FileList=event.target.files;
     var file :File=fileList[0];
@@ -745,7 +800,7 @@ deshabilitarAvatars:any=false;
             this.imagenPrevisualizada="";
             this.imagenLogo.esAvatar=false;
             this.imagenLogo.logo="";
-            this.deshabilitarAvatars=false;
+            //this.deshabilitarAvatars=false;
             return;
           }
 
@@ -755,7 +810,7 @@ deshabilitarAvatars:any=false;
         this.imagenLogo.logo=base64Data;
         image.src = base64Data;
         this.imagenPrevisualizada=base64Data;
-        this.deshabilitarAvatars=true;
+       // this.deshabilitarAvatars=true;
       };
 
       reader.readAsDataURL(file); // Leer el archivo como base64
@@ -764,23 +819,24 @@ deshabilitarAvatars:any=false;
   }
   
   borrarImagen(){
-    this.deshabilitarAvatars=false;
+    //this.deshabilitarAvatars=false;
     this.imagenPrevisualizada ='';
-    this.imagenLogo.esAvatar=false;
+    //this.imagenLogo.esAvatar=false;
     this.imagenLogo.logo="";
-    this.avatarSeleccionado==undefined;
-    delete this.avatarSeleccionado;
+    //this.avatarSeleccionado==undefined;
+    //delete this.avatarSeleccionado;
     
   }
   VerModelo(){
    
-    console.log("imageeeeennnnnnn",this.imagenLogo)
+   
   }
  
   obtenerAvatar(index: number) {
     if (this.avatarSeleccionado === index) {
       this.imagenLogo.esAvatar=false;
       delete this.avatarSeleccionado ;
+      this.imagenLogo.idAvatar=-1;
       this.avatarSeleccionado != -1
     } else {
       this.avatarSeleccionado = index;

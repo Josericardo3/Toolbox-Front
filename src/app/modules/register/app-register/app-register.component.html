@@ -1,4 +1,450 @@
 <app-app-header></app-app-header>
+<app-modal></app-modal>
+<div class="container">
+ <div class=" header-container ">
+  <app-app-header-arrow-left [redirectToDashboard]="false"></app-app-header-arrow-left>
+  <h1>REGISTRAR NUEVO PRESTADOR <br>
+   <h4 class="color-text mt-1"> Todos los campos son obligatorios </h4>
+  </h1>
+ </div>
+ <div class=" mt-3 container-formulario mb-4">
+  <div class="container ">
+   <br>
+   <form [formGroup]="registerForm" (ngSubmit)="saveUser()">
+    <div class="row">
+     <div class="col-md-9 col-sm-9 col-9">
+      <div class="form-group">
+       <label for="registro">Registro Nacional de Turismo</label>
+       <input size="28" name="registro" type="text" class="form-control" placeholder="Registro Nacional de Turismo" formControlName="registroNacionalDeTurismo" appNumeros  />
+       <small class="textDanger text-danger" *ngIf="!showCheckRnt">
+        {{ msjRnt }}
+       </small>
+      </div>
+     </div>
+     <div class="col-md-3 col-sm-3 col-3">
+      <button type="button" matTooltip="Validar" class="btn btn-outline-primary Validar" style=" width: 100%; margin-top: 1rem;" (click)="validarRnt()"> Validar </button>
+     </div>
+     <div class="col-md-12 mt-3">
+      <div class="form-group">
+       <label>Número de identificación tributaria</label>
+       <input class="formmincit" type="text" appNumeros class="form-control" placeholder="Número de identificación tributaria" size="28" formControlName="numeroDeIdentificacionTributaria" />
+      </div>
+     </div>
+     <div class="col-md-12 mt-3">
+      <div class="form-group">
+       <label>Nombres del representante legal</label>
+       <input type="text" appLetras class="form-control" placeholder="Nombre del Representante Legal" formControlName="nombreDelRepresenteLegal" />
+      </div>
+      <small class="text-danger" *ngIf="registerForm.controls['nombreDelRepresenteLegal'].hasError('maxlength')">
+        El Nombre del Representante Legal no puede tener más de 45 caracteres.
+
+      </small>
+     </div>
+
+     <div class="col-md-12 mt-3">
+      <div class="form-group">
+       <label>Apellidos del representante legal</label>
+       <input type="text" appLetras class="form-control" placeholder="Apellidos del representante legal" formControlName="apellidoDelRepresenteLegal" />
+      </div>
+      <small class="text-danger" *ngIf="registerForm.controls['apellidoDelRepresenteLegal'].hasError('maxlength')">
+        Los Apellidos del representante legal legal no puede tener más de 50 caracteres.
+      </small>
+     </div>
+
+     <div class="col-md-12 mt-3">
+      <div class="form-group">
+       <label>Nombre de la empresa</label>
+       <input type="text" appLetras class="form-control" placeholder="Nombre de la empresa" formControlName="razonSocialDelPst" />
+      </div>
+     </div>
+     <div class="col-md-12 mt-3">
+      <div class="form-group">
+       <label>Correo Electrónico</label>
+       <div class="input-group">
+        <input type="email" placeholder="Correo Electrónico"  class="form-control" formControlName="correo" id="correo" name="correo" (change)="verificarCorreo($event)" />
+        <span *ngIf="showCheck" class="iconcheck">
+         <i class="fa-solid fa-check"></i>
+        </span>
+        <span *ngIf="showFaXmark" class="iconFaXmark">
+         <i class="fa-solid fa-xmark"></i>
+        </span>
+       </div>
+      
+       <small class="textDanger text-danger" *ngIf="!showCheck">
+        {{ msjEmail }} 
+       </small>
+       <br *ngIf="!showCheck && registerForm.controls['correo'].hasError('pattern')">
+       <small class="textDanger text-danger" *ngIf="registerForm.controls['correo'].hasError('pattern')"> <span *ngIf="!showCheck">/ </span> Debe contener un correo válido </small>
+      </div>
+     </div>
+     
+     <div class="col-md-12 mt-3">
+      <div class="form-group">
+       <label>Confirmar Correo Electrónico</label>
+       <input type="email" placeholder="Confirmar Correo Electrónico" class="form-control" formControlName="correo2"  id="correo2" name="correo2"/>
+       <small class=" textDanger text-danger" *ngIf="
+                  registerForm.controls['correo2'].hasError(
+                    'NoEmailMatch'
+                  ) ||  registerForm.controls['correo'].hasError(
+                    'NoEmailMatch'
+                  )
+                "> Correos No coinciden </small>
+      </div>
+     </div>
+    
+     <div class="col-md-12 mt-3">
+      
+      <label for="pass">Contraseña</label>
+    
+      <div class="input-group">
+       <input type="password" formControlName="password1" placeholder="Ingrese contraseña" id="passRegister" class="form-control" required="required" (keydown)="bloquearEspacio($event)" />
+       <span class="input-group-text" id="basic-addon1" style="cursor: pointer" (click)="seePasswordRegister()">
+        <i id="icon" class="fas fa-eye-slash"></i>
+       </span>
+      </div>
+      <small class="textDanger text-danger" *ngIf="
+                registerForm.controls['password1'].touched &&
+                (registerForm.controls['password1'].hasError('required') ||
+                  registerForm.controls['password1'].hasError('minlength') ||
+                  registerForm.controls['password1'].hasError('maxlength') ||
+                  registerForm.controls['password1'].hasError('hasNumber') ||
+                  registerForm.controls['password1'].hasError('hasCapitalCase') ||
+                  registerForm.controls['password1'].hasError('hasSmallCase') ||
+                  registerForm.controls['password1'].hasError('noSpaces') ||
+                  registerForm.controls['password1'].hasError(
+                    'hasSpecialCharacters'
+                  ))
+              "> Las contraseñas deben tener 8 caracteres como mínimo y máximo 12 caracteres. Contener al menos uno de los siguientes elementos: mayúsculas, minúsculas, números y caracter especial. </small>
+     </div>
+     <div class="col-md-12 mt-3">
+      <label for="pass">Confirmar Contraseña</label>
+      <div class="input-group">
+       <input type="password" formControlName="confirmPassword" required="required" (keydown)="bloquearEspacio($event)" placeholder="Ingrese contraseña" id="passRegister2" class="form-control" />
+       <span class="input-group-text" (click)="seePasswordRegister2()">
+        <i style="cursor: pointer" id="icon2" class="fas fa-eye-slash"></i>
+       </span>
+      </div>
+      <small class="text-danger" *ngIf="
+                registerForm.controls['confirmPassword'].hasError(
+                  'NoPassswordMatch'
+                )
+              "> Las contraseñas deben coincidir </small>
+     </div>
+     <div class="col-md-12 mt-3">
+      <div class="form-group">
+       <label>Teléfono de Contacto</label>
+       <div class="input-group">
+        <input appNumeros type="text" maxlength="10" class="form-control" formControlName="telefono" placeholder="Teléfono de Contacto" (change)="verificarPhone($event)" />
+        <div class="phone-icon" *ngIf="showCheckPhone">
+         <span class="iconCheckPhone">
+          <i class="fa-solid fa-check"></i>
+         </span>
+        </div>
+        <div class="phone-icon" *ngIf="showFaXmarkPhone">
+         <span class="iconFaXmarkPhone">
+          <i class="fa-solid fa-xmark"></i>
+         </span>
+        </div>
+       </div>
+       <small class="textDanger text-danger" *ngIf="!showCheckPhone">
+        {{ msjPhone }}
+       </small>
+       <br *ngIf="!showCheckPhone && registerForm.controls['telefono'].hasError('pattern')">
+       <small class=" textDanger text-danger" *ngIf="registerForm.controls['telefono'].hasError('pattern')"> Ingresa un número de teléfono válido con 10 dígitos. </small>
+      </div>
+     </div>
+
+     <div class="col-md-6 mt-3">
+      <div class="form-group">
+       <label>Categoría RNT</label>
+       <select name="select" class="form-select" id="selectCategoria" formControlName="categoriaRnt" (change)="onLoadCategory($event)">
+        <option value="" disabled selected>Seleccionar categoría</option>
+        <option *ngFor="let element of data" [ngValue]="element">
+         {{ element.name }}
+        </option>
+       </select>
+      </div>
+     </div>
+     <div class="col-md-6 mt-3">
+      <div class="form-group">
+       <label>Subcategoría RNT </label>
+       <select name="select" id="1" class="form-select" formControlName="subcategoriaRnt">
+        <option value="" selected disabled>Seleccionar subcategoría</option>
+        <option *ngFor="let element of arrAgency" [ngValue]="element">
+         {{ element.name }}
+        </option>
+       </select>
+      </div>
+     </div>
+     <div class="col-md-12 mt-3">
+      <div class="form-group">
+       <label>Departamento</label>
+       <select class="form-select" id="selectDepartment" name="select" formControlName="departamento" (change)="setDepartments($event)"></select>
+      </div>
+     </div>
+     <div class="col-md-12 mt-3">
+      <div class="form-group">
+       <label>Municipio</label>
+       <select class="form-select" id="selectMunicipality" name="select" formControlName="municipio"></select>
+      </div>
+     </div>
+     <div class="col-md-12 mt-3">
+      <div class="row mt-2">
+       <label class="logoPrestadorLabel mb-2">Logo del Prestador</label>
+       <div class="col-md-2 col-12 col-sm-12 text-center">
+        <div class="rounded-circle ">
+         <img *ngIf="!imagenPrevisualizada" style="
+                        width: 125px;
+                        height: 125px;
+                        
+                      
+                        border-radius: 50%;
+                       
+                        
+                      " class="img-avatar img-fluid rounded-circle" src="../../../../assets/avatares/tulogo.svg" alt="Previsualización de la imagen" />
+         <img style="width: 125px; height: 125px" class="img img-fluid img rounded-circle" [src]="imagenPrevisualizada" alt="Previsualización de la imagen" *ngIf="imagenPrevisualizada" />
+        </div>
+       </div>
+       <div class="col-md-6 col-12 col-sm-12">
+        <div class="row mt-3">
+         <small class="mb-1 ">JPG o PNG.tamaño máximo 600x600 pixeles</small>
+         <div class="col-md-6 mb-2">
+          <label type="button" class="btn btn-primary w-100" title="Subir Foto">
+           <span style="color: white"> Subir una imagen</span>
+           <input type="file" accept="image/*" onclick="this.value = null" ngf-max-size="500KB" (change)="fnSubirFoto($event)" style="display: none" multiple />
+          </label>
+         </div>
+         <div class="col-md-6 ">
+          <button type="button" class="btn btn-outline-secondary  w-100" style="margin-top: 0.1rem" (click)="borrarImagen()"> Borrar </button>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+     <div class="col-md-12 mt-3 mb-4">
+      <label class="mb-2">Seleccione un avatar</label>
+      <div class="row text-center">
+       <div class="col-md-2 col-sm-6 col-6 d-flex align-items-center" *ngFor="let avatar of avatares; let i = index">
+        <img style="width: 105.79px; height: 105.79px" class="img-avatar img-fluid rounded-circle" [src]="avatar" alt="Previsualización de la imagen" />
+        <input type="checkbox" id="checkboxId{{ i }}" style="cursor: pointer; margin-left: 0.5rem; width: 1rem" [checked]="i === avatarSeleccionado" (click)="obtenerAvatar(i)" />
+       </div>
+      </div>
+     </div>
+     <div class="col-md-12 mt-3">
+      <div class="form-group form-check">
+       <input class="checkbox" type="checkbox" class="form-check-input" trueFalseValue formControlName="checkbox" (click)="change($event)" [checked]="isChecked" />
+       <label class="form-check-label" for="politicas">
+       Aceptas nuestras <a href="https://www.mincit.gov.co/servicio-ciudadano/politicas-de-tratamiento-de-datos-personales/#87211" target="_blank">Condiciones</a>, la <a href="https://www.mincit.gov.co/servicio-ciudadano/politicas-de-tratamiento-de-datos-personales#87209" target="_blank">Política de privacidad</a> y la <a href="https://www.mincit.gov.co/getattachment/servicio-ciudadano/politicas-de-tratamiento-de-datos-personales/politica-uso-de-cookies-para-sede-electronica-y-si/17-11-2022-politica-uso-cookies-sede-electronica-y-sitios-web-institucionales.pdf.aspx" target="_blank">Política de cookies</a>.
+       </label>
+      </div>
+     
+     </div>
+     <div class="col-md-12 mt-3 text-center">
+      <button style="width: 100%;" type="submit" class="btn btn-primary " [disabled]="!registerForm.valid || !isChecked || msjRnt!=''"> GUARDAR <i class="fa-regular fa-circle-right ms-2"></i>
+      </button>
+     </div>
+     <div class="col-md-12 mt-4 mb-5">
+      <div class="text-center" style="cursor: pointer; display: flex; justify-content: center; align-items: center; " (click)="retroceder()">
+       <div class="d-flex align-items-center">
+        <i class="fa-regular fa-circle-left" style="color: #575757; font-size: 20px; margin-left: 2px; cursor: pointer;"></i>
+        <span class="ms-2" style="color: #575757; font-weight: 550; font-size: 1rem;">CANCELAR</span>
+       </div>
+      </div>
+     </div>
+
+     <ngx-spinner bdColor="rgba(0, 0, 0, 0.5)" size="small" template="
+     <img src='https://www.superiorlawncareusa.com/wp-content/uploads/2020/05/loading-gif-png-5.gif' width='50' height='50'/>">
+</ngx-spinner>
+
+
+
+     <!-- <div class="col-md-12 mt-3">
+      <div class="form-group">
+       <label>Nombre del PST</label>
+       <input type="text" appLetras class="form-control" placeholder="Nombre del PST" formControlName="nombreDelPst" />
+      </div>
+     </div>
+     <div class="col-md-12 mt-3">
+      <div class="form-group">
+       <label>Razón Social del PST</label>
+       <input type="text" class="form-control" placeholder="Razón Social del PST" formControlName="razonSocialDelPst" />
+      </div>
+     </div>
+     <div class="col-md-12 mt-3">
+      <div class="form-group">
+       <label>Correo del PST</label>
+       <div class="input-group">
+        <input type="email" placeholder="Correo del PST" class="form-control" formControlName="correo" (change)="verificarCorreo($event)" />
+        <span *ngIf="showCheck" class="iconcheck">
+         <i class="fa-solid fa-check"></i>
+        </span>
+        <span *ngIf="showFaXmark" class="iconFaXmark">
+         <i class="fa-solid fa-xmark"></i>
+        </span>
+       </div>
+       <small class="textDanger text-danger" *ngIf="!showCheck">
+        {{ msjEmail }}
+       </small>
+       <small class="textDanger text-danger" *ngIf="registerForm.controls['correo'].hasError('pattern')"> Debe contener un correo válido </small>
+      </div>
+     </div>
+     <div class="col-md-12 mt-3">
+      <div class="form-group">
+       <label>Teléfono del PST</label>
+       <div class="input-group">
+        <input appNumeros type="text" maxlength="10" class="form-control" formControlName="telefono" placeholder="Ingresa tu número de teléfono" (change)="verificarPhone($event)" />
+        <div class="phone-icon" *ngIf="showCheckPhone">
+         <span class="iconCheckPhone">
+          <i class="fa-solid fa-check"></i>
+         </span>
+        </div>
+        <div class="phone-icon" *ngIf="showFaXmarkPhone">
+         <span class="iconFaXmarkPhone">
+          <i class="fa-solid fa-xmark"></i>
+         </span>
+        </div>
+       </div>
+       <small class="textDanger text-danger" *ngIf="!showCheckPhone">
+        {{ msjPhone }}
+       </small>
+       <small class=" textDanger text-danger" *ngIf="registerForm.controls['telefono'].hasError('pattern')"> Ingresa un número de teléfono válido con 10 dígitos. </small>
+      </div>
+     </div>
+     
+     
+     <div class="col-md-12 mt-3">
+      <div class="form-group">
+       <label>Correo del Representante Legal</label>
+       <input type="email" placeholder="Correo del Representante Legal" class="form-control" formControlName="correoRepresentanteLegal" />
+       <small class="control-error textDanger text-danger" *ngIf="
+                  registerForm.controls['correoRepresentanteLegal'].hasError(
+                    'pattern'
+                  )
+                "> Debe contener un correo válido </small>
+      </div>
+     </div>
+     
+     <div class="col-md-12 mt-3">
+      <div class="for-group">
+       <label>Tipo de Identificación del Representante Legal</label>
+       <select name="select" class="form-select" formControlName="tipoDeIdentificacionDelRepresentanteLegal">
+        <option class="deshabilitar" value="" selected disabled>Seleccionar Tipo de Identificación del Representante Legal</option>
+        <option value="CEDULA DE CIUDADANIA">Cédula de Ciudadanía</option>
+        <option value="CEDULA DE EXTRANJERIA">Cédula de Extranjería</option>
+        <option value="PASAPORTE">Pasaporte</option>
+        <option value="DOCUMENTO NACIONAL DE IDENTIDAD"> Documento Nacional de Identidad </option>
+       </select>
+      </div>
+     </div>
+     <div class="col-md-12 mt-3">
+      <div class="form-group">
+       <label>Identificación del Representante Legal</label>
+       <input type="text" size="12" class="form-control" placeholder="Identificación del Representante Legal" formControlName="identificacionDelRepresentanteLegal" (input)="inputsize($event)" />
+      </div>
+     </div>
+     
+     
+     <div class="col-md-12 mt-3">
+      <div class="form-group">
+       <label>Nombre del Responsable de Sostenibilidad</label>
+       <input type="text" appLetras class="form-control" placeholder="Nombre del Responsable de Sostenibilidad" formControlName="nombreDelResponsableDeSostenibilidad" />
+      </div>
+     </div>
+     <div class="col-md-12 mt-3">
+      <div class="form-group">
+       <label>Correo del Responsable de Sostenibilidad</label>
+       <input type="email" class="form-control" placeholder="Correo del Responsable de Sostenibilidad" formControlName="correoDelResponsableDeSostenibilidad" />
+       <small class="control-error textDanger text-danger" *ngIf="
+                  registerForm.controls[
+                    'correoDelResponsableDeSostenibilidad'
+                  ].hasError('pattern')
+                "> Debe contener un correo válido </small>
+      </div>
+     </div>
+     <div class="col-md-12 mt-3">
+      <div class="form-group">
+       <label>Teléfono del Responsable de Sostenibilidad</label>
+       <input type="text" class="form-control" formControlName="telefonoDelResponsableDeSostenibilidad" maxlength="10" appNumeros placeholder="Teléfono del Responsable de Sostenibilidad" />
+       <small class="control-error textDanger text-danger" *ngIf="
+                  registerForm.controls[
+                    'telefonoDelResponsableDeSostenibilidad'
+                  ].hasError('pattern')
+                "> Ingresa un número de teléfono válido con 10 dígitos. </small>
+      </div>
+     </div>
+     <div class="col-md-12 mt-3">
+      
+      <label for="pass">Contraseña</label>
+    
+      <div class="input-group">
+       <input type="password" formControlName="password1" placeholder="Ingrese contraseña" id="passRegister" class="form-control" required="required" (keydown)="bloquearEspacio($event)" />
+       <span class="input-group-text" id="basic-addon1" style="cursor: pointer" (click)="seePasswordRegister()">
+        <i id="icon" class="fas fa-eye-slash"></i>
+       </span>
+      </div>
+      <small class="textDanger text-danger" *ngIf="
+                registerForm.controls['password1'].touched &&
+                (registerForm.controls['password1'].hasError('required') ||
+                  registerForm.controls['password1'].hasError('minlength') ||
+                  registerForm.controls['password1'].hasError('maxlength') ||
+                  registerForm.controls['password1'].hasError('hasNumber') ||
+                  registerForm.controls['password1'].hasError('hasCapitalCase') ||
+                  registerForm.controls['password1'].hasError('hasSmallCase') ||
+                  registerForm.controls['password1'].hasError('noSpaces') ||
+                  registerForm.controls['password1'].hasError(
+                    'hasSpecialCharacters'
+                  ))
+              "> Las contraseñas deben tener 8 caracteres como mínimo y máximo 12 caracteres. Contener al menos uno de los siguientes elementos: mayúsculas, minúsculas, números y caracter especial. </small>
+     </div>
+     <div class="col-md-12 mt-3">
+      <label for="pass">Repetir contraseña</label>
+      <div class="input-group">
+       <input type="password" formControlName="confirmPassword" required="required" (keydown)="bloquearEspacio($event)" placeholder="Ingrese contraseña" id="passRegister2" class="form-control" />
+       <span class="input-group-text" (click)="seePasswordRegister2()">
+        <i style="cursor: pointer" id="icon2" class="fas fa-eye-slash"></i>
+       </span>
+      </div>
+      <small class="text-danger" *ngIf="
+                registerForm.controls['confirmPassword'].hasError(
+                  'NoPassswordMatch'
+                )
+              "> Las contraseñas deben coincidir </small>
+     </div>
+     
+     
+    </div>
+   </form>
+  </div>
+ </div>
+</div>
+<br>
+
+<div id="modalTerminos" style="width: 100vw">
+ <div class="content-terminos" title="TERMINOS Y CONDICIONES">
+  <section class="modal-content">
+   <a title="Cerrar" data-dismiss="modal" aria-label="Close" class="x">
+    <i class="fa-solid fa-circle-xmark" style="color: #06543c;font-size: 25px;" (click)="close()"></i>
+   </a>
+   <h2 class="datos">Política de tratamiento de datos</h2>
+   <p class="terminos"> Acepto y autorizo el uso de mis datos personales por Innovación Empresarial Isoluciones SAS, los cuales serán tratados de acuerdo con la política de tratamiento de datos de Innovación Empresarial Isoluciones SAS, la cual puede consultar en: </p>
+   <a class="enlace" href="http://drive.google.com/file/d/1VOCQrTfuhWNpcZuLRQlRs-ZbH8BDDGJ_/view?usp=sharing" target="_blank">Política de protección de datos personales</a>
+   <div class="forma-label-sin-izquierda ">
+    <input class="checkbox" type="checkbox" trueFalseValue formControlName="checkbox" (click)="change($event)" [checked]="isChecked" />
+    <label class="checkbox-datos">He leído la política de tratamiento de datos</label>
+   </div>
+   <div class="button-container-2 mt-2">
+    <button class="btn btn-primary " (click)="closeModal($event)" id="btnAceptar" [disabled]="!isChecked">Aceptar</button>
+   </div>
+  </section>
+ </div>
+</div>
+<app-modal></app-modal>
+
+<ngx-spinner bdColor="rgba(0, 0, 0, 0.5)" size="small" template="
+				<img src='https://www.superiorlawncareusa.com/wp-content/uploads/2020/05/loading-gif-png-5.gif' width='50' height='50'/>">
+</ngx-spinner>  -->
+
+<!-- <app-app-header></app-app-header>
 <div class="container">
  <div class=" header-container ">
   <app-app-header-arrow-left [redirectToDashboard]="false"></app-app-header-arrow-left>
@@ -230,11 +676,9 @@
       </div>
      </div>
      <div class="col-md-12 mt-3">
-      <!--<input type="password" formControlName="pass" placeholder="Ingrese contraseña" id="passLogin" class="form-control" ><span class="input-group-text" id="basic-addon1" style="cursor: pointer;" (click)="seePassword()"><span class="bi bi-lock"><i id="icon" class="fas fa-eye-slash "></i></span></span>  -->
+      
       <label for="pass">Contraseña</label>
-      <!--
-                <div class="eye"><span class="iconEye" (click)="seePasswordRegister()"><i class="fas fa-eye-slash"></i></span></div>
-               -->
+    
       <div class="input-group">
        <input type="password" formControlName="password1" placeholder="Ingrese contraseña" id="passRegister" class="form-control" required="required" (keydown)="bloquearEspacio($event)" />
        <span class="input-group-text" id="basic-addon1" style="cursor: pointer" (click)="seePasswordRegister()" [hidden]="this.registerForm.get('password1').disabled">
@@ -273,12 +717,10 @@
       <div class="form-group form-check">
        <input class="checkbox" type="checkbox" class="form-check-input" trueFalseValue formControlName="checkbox" (click)="change($event)" [checked]="isChecked" />
        <label class="form-check-label" for="politicas">
-        <!--Al hacer clic en "Registrarte",  --> Aceptas nuestras <a href="https://www.mincit.gov.co/servicio-ciudadano/politicas-de-tratamiento-de-datos-personales/#87211" target="_blank">Condiciones</a>, la <a href="https://www.mincit.gov.co/servicio-ciudadano/politicas-de-tratamiento-de-datos-personales#87209" target="_blank">Política de privacidad</a> y la <a href="https://www.mincit.gov.co/getattachment/servicio-ciudadano/politicas-de-tratamiento-de-datos-personales/politica-uso-de-cookies-para-sede-electronica-y-si/17-11-2022-politica-uso-cookies-sede-electronica-y-sitios-web-institucionales.pdf.aspx" target="_blank">Política de cookies</a>.
+       Aceptas nuestras <a href="https://www.mincit.gov.co/servicio-ciudadano/politicas-de-tratamiento-de-datos-personales/#87211" target="_blank">Condiciones</a>, la <a href="https://www.mincit.gov.co/servicio-ciudadano/politicas-de-tratamiento-de-datos-personales#87209" target="_blank">Política de privacidad</a> y la <a href="https://www.mincit.gov.co/getattachment/servicio-ciudadano/politicas-de-tratamiento-de-datos-personales/politica-uso-de-cookies-para-sede-electronica-y-si/17-11-2022-politica-uso-cookies-sede-electronica-y-sitios-web-institucionales.pdf.aspx" target="_blank">Política de cookies</a>.
        </label>
       </div>
-      <!--<div class="checkbox-container"><i class="checkbox-tema" (click)="openModal()"
-                >Acepto y autorizo el uso de mis datos por parte de MinCIT y Fontur
-              </i></div>-->
+     
      </div>
      <div class="col-md-12 mt-3 text-center">
       <button style="width: 100%;" type="submit" class="btn btn-primary" [disabled]="!registerForm.valid || !isChecked"> GUARDAR <i class="fa-regular fa-circle-right ms-2"></i>
@@ -298,7 +740,7 @@
  </div>
 </div>
 <br>
-<!-- modal de terminos y condiciones -->
+
 <div id="modalTerminos" style="width: 100vw">
  <div class="content-terminos" title="TERMINOS Y CONDICIONES">
   <section class="modal-content">
@@ -319,9 +761,7 @@
  </div>
 </div>
 <app-modal></app-modal>
-<!--
-<app-app-footer></app-app-footer>
--->
+
 <ngx-spinner bdColor="rgba(0, 0, 0, 0.5)" size="small" template="
 				<img src='https://www.superiorlawncareusa.com/wp-content/uploads/2020/05/loading-gif-png-5.gif' width='50' height='50'/>">
-</ngx-spinner>
+</ngx-spinner> -->

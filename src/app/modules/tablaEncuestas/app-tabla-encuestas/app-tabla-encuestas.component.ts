@@ -108,6 +108,7 @@ export class AppTablaEncuestasComponent implements OnInit, AfterViewInit{
 
   eliminarEncuesta(id: any) {
     this.indiceAEliminar = id;
+    console.log(this.indiceAEliminar, id)
   }
 
   recibirValor(valor: number) {

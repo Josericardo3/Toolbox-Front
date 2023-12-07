@@ -109,7 +109,7 @@ listaIndicadores:any=[];
     private zone: NgZone,
     private elRef: ElementRef
     
-  ) { this.getContenidoTarjeta();
+  ) { 
     //PG this.counter$= store.select('initialState')
   }
   normaDiadnostico: any = {};
@@ -209,6 +209,7 @@ onClick(event: Event) {
               });
     
     this.obtenerModulosConsultados();
+    
   }
   ngAfterViewInit(){
     this.carousel = false;
@@ -306,6 +307,7 @@ onClick(event: Event) {
             fkIdActividad: this.datosTarjeta[i].Notificacion.FK_ID_ACTIVIDAD,
             dato: this.datosTarjeta[i].Notificacion.TIPO
           });
+          
         }
        
         if (this.datosTarjeta[i].Notificacion.TIPO == "Noticia") {
@@ -336,6 +338,7 @@ onClick(event: Event) {
         this.result = true;
       }
     });
+    console.log("gian actividad: ",this.datosTarjetaActividad);
 
   }
 

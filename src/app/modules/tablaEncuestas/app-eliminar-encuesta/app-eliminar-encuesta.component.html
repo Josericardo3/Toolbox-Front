@@ -1,11 +1,11 @@
-<a title="Eliminar" data-toggle="modal" data-target="#deleteModal">
+<a title="Eliminar" data-bs-toggle="modal" data-bs-target="#deleteModal">
     <i class="fa-solid fa-trash" style="color: #06543c;font-size: 19px;margin: 4px;"></i>
 </a>
 <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-contedor">
+    <div class="modal-content">
       <div >
-        <a title="Cancelar" id="cerrarModal" style="display: flex; justify-content: flex-end; align-items: center;" data-dismiss="modal" aria-label="Close">
+        <a title="Cancelar" id="cerrarModal" style="display: flex; justify-content: flex-end; align-items: center;" data-bs-dismiss="modal" aria-label="Close">
           <i class="fa-solid fa-circle-xmark" style="color: #06543c;font-size: 25px;"></i>
         </a>
         <h4 class="modal-title" id="myModalLabel">Confirmar Eliminación</h4>
@@ -14,8 +14,8 @@
         <p>¿Estás seguro de que deseas eliminar este elemento?</p>
       </div>
       <div style="text-align: center;">
-        <button type="button" style="margin-right: 9px;" class="btn btn-default" data-dismiss="modal" >Cancelar</button>
-        <button type="button" class="btn btn-danger" (click)="confirmDelete()" data-dismiss="modal">Eliminar</button>
+        <button type="button" style="margin-right: 9px;" class="btn btn-default" data-bs-dismiss="modal" >Cancelar</button>
+        <button type="button" class="btn btn-danger" (click)="confirmDelete()" data-bs-dismiss="modal">Eliminar</button>
       </div>
     </div>
   </div>

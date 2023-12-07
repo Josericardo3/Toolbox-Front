@@ -23,6 +23,7 @@ export class AppNoticiaComponent implements OnInit {
   files: any = [];
   datos: any=[];
   noticiaSelected: any={};
+  arrayCategorias: any = [];
 
   constructor(
     private api: ApiService,
@@ -50,7 +51,22 @@ export class AppNoticiaComponent implements OnInit {
       this.getDataActividad();
     }
   }
-
+  getListCategorias(){
+    this.api.getNoticiaCategorias().subscribe(data => {
+      this.arrayCategorias=data;
+      this.updateContadorCategorias();
+      console.log(this.arrayCategorias);
+    });
+  }
+  updateContadorCategorias(){
+    this.arrayCategorias.forEach(val=>{
+      let i=0;
+      if(this.noticiaSelected.FK_ID_CATEGORIAAA==val.ID_CATEGORIA){
+        i++;
+      }
+      val.N_REGISTROS=i;
+    })
+  }
   getTableData() {
     this.api.getTablaNoticias()
       .subscribe(data => {
@@ -66,6 +82,7 @@ export class AppNoticiaComponent implements OnInit {
         //console.log(this.procesarHTML(this.noticiaSelected.DESCRIPCION));
         this.procesarHTML(this.noticiaSelected.DESCRIPCION);
         //
+        this.getListCategorias();
       })
   }
   secureUrlYT: string;

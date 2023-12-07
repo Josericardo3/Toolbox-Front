@@ -126,7 +126,25 @@ img{
 p{
     text-align: justify;
 }
-
+.categorias{
+    border-top: 1px solid #068460;
+}
+.val-cat{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+.cat-n{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.contador{
+    background-color: #dddddd;
+    padding: 0px 5px;
+    border-radius: 3px;
+}
 /*MODAL*/
 .modal-background {
     background-color: rgba(0, 0, 0, 0.5);
@@ -160,6 +178,9 @@ p{
     flex-direction: column;
     width: 45vw;
     margin: 1vh 0 2vh 0;
+}
+.modal-title-editar h2{
+    text-align: center;
 }
 .modal-content::-webkit-scrollbar {
     width: 8px;
@@ -198,7 +219,10 @@ p{
     background-color: #7cc4af;
     color: #000000;
 }
-
+.indicador-max{
+    font-size: xx-small;
+    color: red;
+}
 input,
 textarea {
     background: #FFFFFF;

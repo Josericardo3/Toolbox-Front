@@ -1,247 +1,307 @@
 <app-app-header></app-app-header>
 <div class="MainContainerMatrizRequisitosLegales">
-<div class="tituloP">
-    <h1>Matriz de requisitos legales</h1>
-    <app-app-header-arrow-left class="arrow"></app-app-header-arrow-left>
-</div>
-<!-- <div class="reporte">
+    <div class="tituloP">
+        <h1>Matriz de requisitos legales</h1>
+        <app-app-header-arrow-left class="arrow"></app-app-header-arrow-left>
+    </div>
+    <!-- <div class="reporte">
     <button type="button" class="btnReporte" (click)="showModal = true">Resumen</button>
 </div> -->
 
 
 
-<input type="text" [(ngModel)]="busqueda" (input)="buscarTitulos()" placeholder="Buscar..." class="buscador">
-  <div class="containerTabs">
-    <div class="tabs">
-        <div class="tab" (click)="disabledTabs1 ? null : cambiarTab('tab1')" [ngClass]="{ 'active': tabActual === 'tab1','bloqueado': disabledTabs1 }" [attr.disabled]="disabledTabs1 ? 'disabled' : null">Turismo</div>
-        <div class="tab" (click)="disabledTabs2 ? null : cambiarTab('tab2')" [ngClass]="{ 'active': tabActual === 'tab2','bloqueado': disabledTabs2 }" [attr.disabled]="disabledTabs2 ? 'disabled' : null">Ambiental</div>
-        <div class="tab" (click)="disabledTabs3 ? null : cambiarTab('tab3')" [ngClass]="{ 'active': tabActual === 'tab3','bloqueado': disabledTabs3 }" [attr.disabled]="disabledTabs3 ? 'disabled' : null">Laboral SGSST</div>
-        <div class="tab" (click)="disabledTabs4 ? null : cambiarTab('tab4')" [ngClass]="{ 'active': tabActual === 'tab4','bloqueado': disabledTabs4 }" [attr.disabled]="disabledTabs4 ? 'disabled' : null">Social</div>
-        <div class="tab" (click)="disabledTabs5 ? null : cambiarTab('tab5')" [ngClass]="{ 'active': tabActual === 'tab5','bloqueado': disabledTabs5 }" [attr.disabled]="disabledTabs5 ? 'disabled' : null">Económico</div>
-        <div class="tab" (click)="disabledTabs6 ? null : cambiarTab('tab6')" [ngClass]="{ 'active': tabActual === 'tab6','bloqueado': disabledTabs6 }" [attr.disabled]="disabledTabs6 ? 'disabled' : null">Particular de Norma</div>
-    </div>
-    <div [ngSwitch]="tabActual" class="contenidoTabs">
-        <div *ngSwitchCase="'tab1'">
-            <div class="containerTabActual">              
-                <div class="reporte">
-                    <button type="button" class="btnModificar" (click)="modificarBloquearCampos()" *ngIf="disabledModificar==false && getRolValue() !== 4 && getRolValue()!==5 && getRolValue()!==7" [disabled]="disabledEliminar == true ">Modificar documento</button>
-                    <button type="button" class="btnModificar" (click)="terminarModificarCampos()" *ngIf="disabledModificar==true">Terminar Modificación</button>
-                    <button type="button" class="btnReporte" (click)="generateReporteTurismo()" [attr.disabled]="disabledModificar ? 'disabled' : null" [disabled]="disabledEliminar == true ">Visualizar documento</button>
-                </div>
-                
-                
-                <div class="div" *ngFor="let campo of leyesTurismo; let i = index" >
-                    <div class="titulo" (click)="toggleSectionLey('primeraLey', i, campo.ID_MATRIZ)" [ngClass]="{'gris': disabledEliminar == true && campo.ES_FIJO == 1}" >
-                        <tr >
-                            <td>
-                                <div class="h3">
-                                    <h3>{{ campo.TIPO_NORMATIVIDAD }} {{ campo.NUMERO }} de {{ campo.ANIO }}</h3> 
-                                </div> 
-                            </td>
-                            <td>
-                                <!-- <app-app-delete-ley [selectedMatrizId]="campo.ID_MATRIZ" [deleteMatriz]="true" *ngIf="campo.ES_FIJO==0" >
-    
-                                </app-app-delete-ley> -->
-
-                            </td>
-                            <td>
-                                <div class="iconos">
-                                    <i class="fa-solid" [class.fa-angle-up]="isLeyVisible(i)" [class.fa-angle-down]="!isLeyVisible(i)"></i>
-                                </div>
-
-                            </td>
-                            
-                              
-                            
-                            
-
-                        </tr>
-                        
-              
-            
+    <input type="text" [(ngModel)]="busqueda" (input)="buscarTitulos()" placeholder="Buscar..." class="buscador">
+    <div class="containerTabs">
+        <div class="tabs">
+            <div class="tab" (click)="disabledTabs1 ? null : cambiarTab('tab1')"
+                [ngClass]="{ 'active': tabActual === 'tab1','bloqueado': disabledTabs1 }"
+                [attr.disabled]="disabledTabs1 ? 'disabled' : null">Turismo</div>
+            <div class="tab" (click)="disabledTabs2 ? null : cambiarTab('tab2')"
+                [ngClass]="{ 'active': tabActual === 'tab2','bloqueado': disabledTabs2 }"
+                [attr.disabled]="disabledTabs2 ? 'disabled' : null">Ambiental</div>
+            <div class="tab" (click)="disabledTabs3 ? null : cambiarTab('tab3')"
+                [ngClass]="{ 'active': tabActual === 'tab3','bloqueado': disabledTabs3 }"
+                [attr.disabled]="disabledTabs3 ? 'disabled' : null">Laboral SGSST</div>
+            <div class="tab" (click)="disabledTabs4 ? null : cambiarTab('tab4')"
+                [ngClass]="{ 'active': tabActual === 'tab4','bloqueado': disabledTabs4 }"
+                [attr.disabled]="disabledTabs4 ? 'disabled' : null">Social</div>
+            <div class="tab" (click)="disabledTabs5 ? null : cambiarTab('tab5')"
+                [ngClass]="{ 'active': tabActual === 'tab5','bloqueado': disabledTabs5 }"
+                [attr.disabled]="disabledTabs5 ? 'disabled' : null">Económico</div>
+            <div class="tab" (click)="disabledTabs6 ? null : cambiarTab('tab6')"
+                [ngClass]="{ 'active': tabActual === 'tab6','bloqueado': disabledTabs6 }"
+                [attr.disabled]="disabledTabs6 ? 'disabled' : null">Particular de Norma</div>
+        </div>
+        <div [ngSwitch]="tabActual" class="contenidoTabs">
+            <div *ngSwitchCase="'tab1'">
+                <div class="containerTabActual">
+                    <div class="reporte">
+                        <button type="button" class="btnModificar" (click)="modificarBloquearCampos()"
+                            *ngIf="disabledModificar==false && getRolValue() !== 4 && getRolValue()!==5 && getRolValue()!==7"
+                            [disabled]="disabledEliminar == true ">Modificar documento</button>
+                        <button type="button" class="btnModificar" (click)="terminarModificarCampos()"
+                            *ngIf="disabledModificar==true">Terminar Modificación</button>
+                        <button type="button" class="btnReporte" (click)="generateReporteTurismo()"
+                            [attr.disabled]="disabledModificar ? 'disabled' : null"
+                            [disabled]="disabledEliminar == true ">Visualizar documento</button>
                     </div>
-                    
-                    <div class="detalle" *ngIf="isLeyVisible(i)">
-                        <ng-container *ngFor="let subCampo of campo.subLeyes; let j = index">
-                            <div class="subdetalle">
-                                <h2>Emitida por:</h2>
-                                <p class="parrafo">{{subCampo.DESCRIPCION}}</p>
-                                <h4 style="font-weight: bolder;" class="parrafo">ARTÍCULOS / SECCIONES / REQUISITOS ESPECÍFICOS QUE APLICAN</h4>
-                                
-                                <p class="parrafo">{{ subCampo.DOCS_ESPECIFICOS}}</p>
-                                <app-app-formulario [selectedMatrizId]="subCampo.ID_MATRIZ" [data]="subCampo" [idMatriz]="idMatriz" 
-                                                    
-                                                    [showBotones]="disabledModificar" 
-                                                    [showBotonEliminar] = "disabledEliminar">
 
-                                    
-                                </app-app-formulario>
-                                <!-- <app-app-delete-ley [selectedMatrizId]="subCampo.ID_MATRIZ" [deleteMatriz]="true" *ngIf="subCampo.ES_FIJO==0" >
-    
-                                </app-app-delete-ley> -->
-                                
-                                
-                            </div>
-                        </ng-container>
-                    </div>
-                    
-                </div>
-                
-                <div *ngIf="divsVisible">
-                    <div class="div" id="divAdd" *ngFor="let div of divsTab1; let i = index">
-                        <div *ngIf = "div.DESCRIPCION || div.SECCIONES || div.NUMERO || div.ANIO || div.TIPO_NORMATIVIDAD">
-                                <div class="titulo" (click)="toggleSectionDivAdd('divAdd', i)" [ngClass]="{'gris': disabledEliminar == true}">
+
+                    <div class="div" *ngFor="let campo of leyesTurismo; let i = index">
+                        <div class="titulo" (click)="toggleSectionLey('primeraLey', i, campo.ID_MATRIZ)"
+                            [ngClass]="{'gris': disabledEliminar == true && campo.ES_FIJO == 1}">
+                            <tr>
+                                <td>
                                     <div class="h3">
-                                        <h3 id="tituloNormativa">{{div.TIPO_NORMATIVIDAD !== 'otro' ? div.TIPO_NORMATIVIDAD : otroValor}} {{div.NUMERO}} de {{div.ANIO}}</h3> 
-                                    </div> 
-                                    <i class="fa-solid" [class.fa-angle-up]="isDivAddVisible(i)" [class.fa-angle-down]="!isDivAddVisible(i)"></i>
+                                        <h3>{{ campo.TIPO_NORMATIVIDAD }} {{ campo.NUMERO }} de {{ campo.ANIO }}</h3>
+                                    </div>
+                                </td>
+                                <td>
+                                    <!-- <app-app-delete-ley [selectedMatrizId]="campo.ID_MATRIZ" [deleteMatriz]="true" *ngIf="campo.ES_FIJO==0" >
+    
+                                </app-app-delete-ley> -->
+
+                                </td>
+                                <td>
+                                    <div class="iconos">
+                                        <i class="fa-solid" [class.fa-angle-up]="isLeyVisible(i)"
+                                            [class.fa-angle-down]="!isLeyVisible(i)"></i>
+                                    </div>
+
+                                </td>
+
+
+
+
+
+                            </tr>
+
+
+
+                        </div>
+
+                        <div class="detalle" *ngIf="isLeyVisible(i)">
+                            <ng-container *ngFor="let subCampo of campo.subLeyes; let j = index">
+                                <div class="subdetalle">
+                                    <h2>Emitida por:</h2>
+                                    <p class="parrafo">{{subCampo.DESCRIPCION}}</p>
+                                    <h4 style="font-weight: bolder;" class="parrafo">ARTÍCULOS / SECCIONES / REQUISITOS
+                                        ESPECÍFICOS QUE APLICAN</h4>
+
+                                    <p class="parrafo">{{ subCampo.DOCS_ESPECIFICOS}}</p>
+                                    <app-app-formulario [selectedMatrizId]="subCampo.ID_MATRIZ" [data]="subCampo"
+                                        [idMatriz]="idMatriz" [showBotones]="disabledModificar"
+                                        [showBotonEliminar]="disabledEliminar">
+
+
+                                    </app-app-formulario>
+                                    <!-- <app-app-delete-ley [selectedMatrizId]="subCampo.ID_MATRIZ" [deleteMatriz]="true" *ngIf="subCampo.ES_FIJO==0" >
+    
+                                </app-app-delete-ley> -->
+
+
+                                </div>
+                            </ng-container>
+                        </div>
+
+                    </div>
+
+                    <div *ngIf="divsVisible">
+                        <div class="div" id="divAdd" *ngFor="let div of divsTab1; let i = index">
+                            <div
+                                *ngIf="div.DESCRIPCION || div.SECCIONES || div.NUMERO || div.ANIO || div.TIPO_NORMATIVIDAD">
+                                <div class="titulo" (click)="toggleSectionDivAdd('divAdd', i)"
+                                    [ngClass]="{'gris': disabledEliminar == true}">
+                                    <div class="h3">
+                                        <h3 id="tituloNormativa">{{div.TIPO_NORMATIVIDAD !== 'otro' ?
+                                            div.TIPO_NORMATIVIDAD : otroValor}} {{div.NUMERO}} de {{div.ANIO}}</h3>
+                                    </div>
+                                    <i class="fa-solid" [class.fa-angle-up]="isDivAddVisible(i)"
+                                        [class.fa-angle-down]="!isDivAddVisible(i)"></i>
                                     <button (click)="eliminarDivAdd()" class="boton-eliminar">x</button>
                                 </div>
-                                <div class="detalle" id="detalleAdd" *ngIf="isDivAddVisible(i)">       
+                                <div class="detalle" id="detalleAdd" *ngIf="isDivAddVisible(i)">
                                     <h2>Emitida por:</h2>
-                                    <p class="parrafo">Por la cual se expide la Ley General de Turismo y se dictan otras disposiciones</p>
-                                    <h4 style="font-weight: bolder;" class="parrafo">ARTÍCULOS / SECCIONES / REQUISITOS ESPECÍFICOS QUE APLICAN</h4>
+                                    <p class="parrafo">Por la cual se expide la Ley General de Turismo y se dictan otras
+                                        disposiciones</p>
+                                    <h4 style="font-weight: bolder;" class="parrafo">ARTÍCULOS / SECCIONES / REQUISITOS
+                                        ESPECÍFICOS QUE APLICAN</h4>
                                     <p class="parrafo">{{ div.DESCRIPCION }}</p>
                                     <p class="parrafo">{{ div.SECCIONES }}</p>
-                                    <app-app-formulario></app-app-formulario> 
-                                </div> 
-                        </div>  
-                    </div>
-                </div>
-                <ng-template #inputTemplate>
-                    <div>
-                      <input type="text" [(ngModel)]="nuevoDiv.anio">
-                      <input type="text" [(ngModel)]="nuevoDiv.numero">
-                      <textarea [(ngModel)]="nuevoDiv.descripcion"></textarea>
-                      <textarea [(ngModel)]="nuevoDiv.secciones"></textarea>
-                      <input type="text" [(ngModel)]="nuevoDiv.tipoNormatividad">
-                    </div>
-                </ng-template>                
-
-                <div id="ContainerdetalleAdicionar">
-                    <div class="adicionar"  *ngIf="getRolValue() !== 4 && getRolValue()!==5 && getRolValue()!==7" >
-                        <button class="adicionarBtn"  (click)="toggleSection('adicionarTurismo')" id="adicionarRequisitoTurismo" [disabled]="disabledModificar==true" [disabled]="disabledEliminar == true ">Adicionar requisito legal +</button>
-                        <button class="eliminarBtn" (click)="eliminarBloquearCampos()" id="eliminarRequisitoTurismo" [disabled]="disabledModificar==true" *ngIf = "disabledEliminar == false">Eliminar requisito legal -</button>
-                        <button class="eliminarBtn" (click)="eliminarBloquearCampos()" id="eliminarRequisitoTurismo"  *ngIf = "disabledEliminar == true">Salir del modo Eliminar</button>
-                    </div>
-                    <div class="detalleAdicionar" id="detalleAdicionarRequisito" *ngIf="adicionarVisibleTurismo">
-                        <form [formGroup]="tab1Form" (ngSubmit) ="agregarDiv()" >
-
-                            <label class="adicionarLabel">Categoría</label>
-                            <input type="text" class="adicionarInput" id="categoriaInput" formControlName="categoria" value ="Turismo" readonly appLetras> 
-
-                            <label class="adicionarLabel">Tipo de normatividad</label>
-                            <select class="adicionarInput" id="tipoNormatividadSelect" #selectOption (change)="onSelect(selectOption.value)"
-                            formControlName="tipoNormatividad" [(ngModel)]="selectValue">
-                                <option value="" disabled >Seleccione una opción</option>
-                                <option value="Ley">Ley</option>
-                                <option value="Decreto">Decreto</option>
-                                <!-- <option value="Decreto Ley">Decreto Ley</option> -->
-                                <option value="otro">Otro</option>
-                            </select>
-                            <div *ngIf="selectedOption === 'otro'" class="changeOtro">
-                                <label class="adicionarLabel">Otro ¿Cuál?</label>
-                                <input type="text" class="adicionarInput" id="otroInput" (input)="onOtroInputChange($event)" formControlName="otroValor" appLetras>
+                                    <app-app-formulario></app-app-formulario>
+                                </div>
                             </div>
+                        </div>
+                    </div>
+                    <ng-template #inputTemplate>
+                        <div>
+                            <input type="text" [(ngModel)]="nuevoDiv.anio">
+                            <input type="text" [(ngModel)]="nuevoDiv.numero">
+                            <textarea [(ngModel)]="nuevoDiv.descripcion"></textarea>
+                            <textarea [(ngModel)]="nuevoDiv.secciones"></textarea>
+                            <input type="text" [(ngModel)]="nuevoDiv.tipoNormatividad">
+                        </div>
+                    </ng-template>
 
-                                                            
-                            <label class="adicionarLabel">Número</label>
-                            <input type="number" class="adicionarInput" id="numeroInput" formControlName="numero" appNumeros> 
-                                
-                            <label class="adicionarLabel">Año</label>
-                            <input type="number" class="adicionarInput" id="anioInput" maxlength="4" formControlName="anio" appNumeros>
-                                
-                            <label class="adicionarLabel">Descripción</label>
-                            <textarea style="height: 100px" class="adicionarInput" id="descripcionTextAreaAdd" formControlName="descripcion"></textarea>
-                                
-                            <label class="adicionarLabel">Artículos / Secciones / Requisitos específicos que aplican</label>
-                            <textarea style="height: 100px" class="adicionarInput" id="seccionesTextAreaAdd" formControlName="secciones"></textarea>
-                                
-                            <button type="submit" class="btnAdd" [disabled]="tab1Form.invalid || tab1Form.hasError('customError') || tab1Form.pristine">Agregar</button>
-                        </form>
+                    <div id="ContainerdetalleAdicionar">
+                        <div class="adicionar" *ngIf="getRolValue() !== 4 && getRolValue()!==5 && getRolValue()!==7">
+                            <button class="adicionarBtn" (click)="toggleSection('adicionarTurismo')"
+                                id="adicionarRequisitoTurismo" [disabled]="disabledModificar==true"
+                                [disabled]="disabledEliminar == true ">Adicionar requisito legal +</button>
+                            <button class="eliminarBtn" (click)="eliminarBloquearCampos()" id="eliminarRequisitoTurismo"
+                                [disabled]="disabledModificar==true" *ngIf="disabledEliminar == false">Eliminar
+                                requisito legal -</button>
+                            <button class="eliminarBtn" (click)="eliminarBloquearCampos()" id="eliminarRequisitoTurismo"
+                                *ngIf="disabledEliminar == true">Salir del modo Eliminar</button>
+                        </div>
+                        <div class="detalleAdicionar" id="detalleAdicionarRequisito" *ngIf="adicionarVisibleTurismo">
+                            <form [formGroup]="tab1Form" (ngSubmit)="agregarDiv()">
+
+                                <label class="adicionarLabel">Categoría</label>
+                                <input type="text" class="adicionarInput" id="categoriaInput"
+                                    formControlName="categoria" value="Turismo" readonly appLetras>
+
+                                <label class="adicionarLabel">Tipo de normatividad</label>
+                                <select class="adicionarInput" id="tipoNormatividadSelect" #selectOption
+                                    (change)="onSelect(selectOption.value)" formControlName="tipoNormatividad"
+                                    [(ngModel)]="selectValue">
+                                    <option value="" disabled>Seleccione una opción</option>
+                                    <option value="Ley">Ley</option>
+                                    <option value="Decreto">Decreto</option>
+                                    <!-- <option value="Decreto Ley">Decreto Ley</option> -->
+                                    <option value="otro">Otro</option>
+                                </select>
+                                <div *ngIf="selectedOption === 'otro'" class="changeOtro">
+                                    <label class="adicionarLabel">Otro ¿Cuál?</label>
+                                    <input type="text" class="adicionarInput" id="otroInput"
+                                        (input)="onOtroInputChange($event)" formControlName="otroValor" appLetras>
+                                </div>
+
+
+                                <label class="adicionarLabel">Número</label>
+                                <input type="number" class="adicionarInput" id="numeroInput" formControlName="numero"
+                                    appNumeros>
+
+                                <label class="adicionarLabel">Año</label>
+                                <input type="number" class="adicionarInput" id="anioInput" maxlength="4"
+                                    formControlName="anio" appNumeros>
+
+                                <label class="adicionarLabel">Descripción</label>
+                                <textarea style="height: 100px" class="adicionarInput" id="descripcionTextAreaAdd"
+                                    formControlName="descripcion"></textarea>
+
+                                <label class="adicionarLabel">Artículos / Secciones / Requisitos específicos que
+                                    aplican</label>
+                                <textarea style="height: 100px" class="adicionarInput" id="seccionesTextAreaAdd"
+                                    formControlName="secciones"></textarea>
+
+                                <button type="submit" class="btnAdd"
+                                    [disabled]="tab1Form.invalid || tab1Form.hasError('customError') || tab1Form.pristine">Agregar</button>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        
-        <div *ngSwitchCase="'tab2'">    
-            <div class="containerTabActual">
-                <div class="reporte">
+
+            <div *ngSwitchCase="'tab2'">
+                <div class="containerTabActual">
                     <div class="reporte">
-                        <button type="button" class="btnModificar" (click)="modificarBloquearCampos()" *ngIf="disabledModificar==false && getRolValue() !== 4 && getRolValue()!==5 && getRolValue()!==7" [disabled]="disabledEliminar == true ">Modificar Documento</button>
-                        <button type="button" class="btnModificar" (click)="terminarModificarCampos()" *ngIf="disabledModificar==true">Terminar Modificación</button>
-                        <button type="button" class="btnReporte" (click)="generateReporteAmbiental()" [attr.disabled]="disabledModificar ? 'disabled' : null" [disabled]="disabledEliminar == true ">Visualizar documento</button>
-                    </div>
-                </div>
-                <div class="div" *ngFor="let campo of leyesAmbiental; let i = index">
-                    <div class="titulo" (click)="toggleSectionLey('primeraLey', i, campo.ID_MATRIZ)" [ngClass]="{'gris': disabledEliminar == true && campo.ES_FIJO == 1}">
-                        <div class="h3">
-                            <h3>{{ campo.TIPO_NORMATIVIDAD }} {{ campo.NUMERO }} de {{ campo.ANIO }}</h3> 
-                        </div>    
-                        <div class="iconos">
-                            <i class="fa-solid" [class.fa-angle-up]="isLeyVisible(i)" [class.fa-angle-down]="!isLeyVisible(i)"></i>
+                        <div class="reporte">
+                            <button type="button" class="btnModificar" (click)="modificarBloquearCampos()"
+                                *ngIf="disabledModificar==false && getRolValue() !== 4 && getRolValue()!==5 && getRolValue()!==7"
+                                [disabled]="disabledEliminar == true ">Modificar Documento</button>
+                            <button type="button" class="btnModificar" (click)="terminarModificarCampos()"
+                                *ngIf="disabledModificar==true">Terminar Modificación</button>
+                            <button type="button" class="btnReporte" (click)="generateReporteAmbiental()"
+                                [attr.disabled]="disabledModificar ? 'disabled' : null"
+                                [disabled]="disabledEliminar == true ">Visualizar documento</button>
                         </div>
                     </div>
-                    <div class="detalle" *ngIf="isLeyVisible(i)">
-                        <ng-container *ngFor="let subCampo of campo.subLeyes; let j = index">
-                            <div class="subdetalle">
-                                <h2>Emitida por:</h2>
-                                <p class="parrafo">{{campo.DESCRIPCION}}</p>
-                                <h4 style="font-weight: bolder;" class="parrafo">ARTÍCULOS / SECCIONES / REQUISITOS ESPECÍFICOS QUE APLICAN</h4>
-                                <p class="parrafo">{{ subCampo.DOCS_ESPECIFICOS}}</p>
-                                <app-app-formulario [selectedMatrizId]="subCampo.ID_MATRIZ" [data]="subCampo" [idMatriz]="idMatriz" 
-                                [showBotones]="disabledModificar" [showBotonEliminar] = "disabledEliminar"></app-app-formulario>
+                    <div class="div" *ngFor="let campo of leyesAmbiental; let i = index">
+                        <div class="titulo" (click)="toggleSectionLey('primeraLey', i, campo.ID_MATRIZ)"
+                            [ngClass]="{'gris': disabledEliminar == true && campo.ES_FIJO == 1}">
+                            <div class="h3">
+                                <h3>{{ campo.TIPO_NORMATIVIDAD }} {{ campo.NUMERO }} de {{ campo.ANIO }}</h3>
                             </div>
-                        </ng-container>       
+                            <div class="iconos">
+                                <i class="fa-solid" [class.fa-angle-up]="isLeyVisible(i)"
+                                    [class.fa-angle-down]="!isLeyVisible(i)"></i>
+                            </div>
+                        </div>
+                        <div class="detalle" *ngIf="isLeyVisible(i)">
+                            <ng-container *ngFor="let subCampo of campo.subLeyes; let j = index">
+                                <div class="subdetalle">
+                                    <h2>Emitida por:</h2>
+                                    <p class="parrafo">{{campo.DESCRIPCION}}</p>
+                                    <h4 style="font-weight: bolder;" class="parrafo">ARTÍCULOS / SECCIONES / REQUISITOS
+                                        ESPECÍFICOS QUE APLICAN</h4>
+                                    <p class="parrafo">{{ subCampo.DOCS_ESPECIFICOS}}</p>
+                                    <app-app-formulario [selectedMatrizId]="subCampo.ID_MATRIZ" [data]="subCampo"
+                                        [idMatriz]="idMatriz" [showBotones]="disabledModificar"
+                                        [showBotonEliminar]="disabledEliminar"></app-app-formulario>
+                                </div>
+                            </ng-container>
+                        </div>
                     </div>
-                </div>
-                
-                <div *ngIf="divsVisible">
-                    <div class="div" id="divAdd" *ngFor="let div of divsTab2; let i = index">
-                        <div *ngIf = "div.DESCRIPCION || div.SECCIONES || div.TIPO_NORMATIVIDAD || div.NUMERO || div.ANIO">
-                                <div class="titulo" (click)="toggleSectionDivAdd('divAdd', i)" [ngClass]="{'verde': isDivAddVisible(i)}">
+
+                    <div *ngIf="divsVisible">
+                        <div class="div" id="divAdd" *ngFor="let div of divsTab2; let i = index">
+                            <div
+                                *ngIf="div.DESCRIPCION || div.SECCIONES || div.TIPO_NORMATIVIDAD || div.NUMERO || div.ANIO">
+                                <div class="titulo" (click)="toggleSectionDivAdd('divAdd', i)"
+                                    [ngClass]="{'verde': isDivAddVisible(i)}">
                                     <div class="h3">
-                                        <h3 id="tituloNormativa">{{div.TIPO_NORMATIVIDAD !== 'otro' ? div.TIPO_NORMATIVIDAD : otroValor}} {{div.NUMERO}} de {{div.ANIO}}</h3> 
-                                    </div> 
-                                <i class="fa-solid" [class.fa-angle-up]="isDivAddVisible(i)" [class.fa-angle-down]="!isDivAddVisible(i)"></i>
-                                <button (click)="eliminarDivAdd()" class="boton-eliminar">x</button>
+                                        <h3 id="tituloNormativa">{{div.TIPO_NORMATIVIDAD !== 'otro' ?
+                                            div.TIPO_NORMATIVIDAD : otroValor}} {{div.NUMERO}} de {{div.ANIO}}</h3>
+                                    </div>
+                                    <i class="fa-solid" [class.fa-angle-up]="isDivAddVisible(i)"
+                                        [class.fa-angle-down]="!isDivAddVisible(i)"></i>
+                                    <button (click)="eliminarDivAdd()" class="boton-eliminar">x</button>
                                 </div>
-                            <div class="detalle" id="detalleAdd" *ngIf="isDivAddVisible(i)">       
-                                <h2>Emitida por:</h2>
-                                <p class="parrafo">Por la cual se expide la Ley General de Turismo y se dictan otras disposiciones</p>
-                                <h4 style="font-weight: bolder;" class="parrafo">ARTÍCULOS / SECCIONES / REQUISITOS ESPECÍFICOS QUE APLICAN</h4>
-                                <p class="parrafo">{{ div.DESCRIPCION }}</p>
-                                <p class="parrafo">{{ div.SECCIONES }}</p>
-                                <app-app-formulario></app-app-formulario>
-                            </div> 
-                        </div>  
+                                <div class="detalle" id="detalleAdd" *ngIf="isDivAddVisible(i)">
+                                    <h2>Emitida por:</h2>
+                                    <p class="parrafo">Por la cual se expide la Ley General de Turismo y se dictan otras
+                                        disposiciones</p>
+                                    <h4 style="font-weight: bolder;" class="parrafo">ARTÍCULOS / SECCIONES / REQUISITOS
+                                        ESPECÍFICOS QUE APLICAN</h4>
+                                    <p class="parrafo">{{ div.DESCRIPCION }}</p>
+                                    <p class="parrafo">{{ div.SECCIONES }}</p>
+                                    <app-app-formulario></app-app-formulario>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                  
-                <ng-template #inputTemplate>
-                    <div>
-                      <input type="text" [(ngModel)]="nuevoDiv.anio">
-                      <input type="text" [(ngModel)]="nuevoDiv.numero">
-                      <textarea [(ngModel)]="nuevoDiv.descripcion"></textarea>
-                      <textarea [(ngModel)]="nuevoDiv.secciones"></textarea>
-                      <input type="text" [(ngModel)]="nuevoDiv.tipoNormatividad">
-                    </div>
-                </ng-template>
-                             
-                <div id="ContainerdetalleAdicionar">
-                    <div class="adicionar"  *ngIf="getRolValue() !== 4 && getRolValue()!==5 && getRolValue()!==7">
-                        <button class="adicionarBtn" (click)="toggleSection('adicionarAmbiental')" id="adicionarRequisitoTurismo" [disabled]="disabledModificar==true" [disabled]="disabledEliminar == true ">Adicionar requisito legal +</button>
-                        <button class="eliminarBtn" (click)="eliminarBloquearCampos()" id="eliminarRequisitoTurismo" [disabled]="disabledModificar==true" *ngIf = "disabledEliminar == false">Eliminar requisito legal -</button>
-                        <button class="eliminarBtn" (click)="eliminarBloquearCampos()" id="eliminarRequisitoTurismo"  *ngIf = "disabledEliminar == true">Salir del modo Eliminar</button>
-                    </div>
-                    <div class="detalleAdicionar" id="detalleAdicionarRequisito" *ngIf="adicionarVisibleAmbiental">
-                        <form [formGroup]="tab2Form">
+
+                    <ng-template #inputTemplate>
+                        <div>
+                            <input type="text" [(ngModel)]="nuevoDiv.anio">
+                            <input type="text" [(ngModel)]="nuevoDiv.numero">
+                            <textarea [(ngModel)]="nuevoDiv.descripcion"></textarea>
+                            <textarea [(ngModel)]="nuevoDiv.secciones"></textarea>
+                            <input type="text" [(ngModel)]="nuevoDiv.tipoNormatividad">
+                        </div>
+                    </ng-template>
+
+                    <div id="ContainerdetalleAdicionar">
+                        <div class="adicionar" *ngIf="getRolValue() !== 4 && getRolValue()!==5 && getRolValue()!==7">
+                            <button class="adicionarBtn" (click)="toggleSection('adicionarAmbiental')"
+                                id="adicionarRequisitoTurismo" [disabled]="disabledModificar==true"
+                                [disabled]="disabledEliminar == true ">Adicionar requisito legal +</button>
+                            <button class="eliminarBtn" (click)="eliminarBloquearCampos()" id="eliminarRequisitoTurismo"
+                                [disabled]="disabledModificar==true" *ngIf="disabledEliminar == false">Eliminar
+                                requisito legal -</button>
+                            <button class="eliminarBtn" (click)="eliminarBloquearCampos()" id="eliminarRequisitoTurismo"
+                                *ngIf="disabledEliminar == true">Salir del modo Eliminar</button>
+                        </div>
+                        <div class="detalleAdicionar" id="detalleAdicionarRequisito" *ngIf="adicionarVisibleAmbiental">
+                            <form [formGroup]="tab2Form">
                                 <label class="adicionarLabel">Categoría</label>
-                                <input type="text" class="adicionarInput" id="categoriaInput" formControlName="categoria" value ="Ambiental" readonly appLetras>
+                                <input type="text" class="adicionarInput" id="categoriaInput"
+                                    formControlName="categoria" value="Ambiental" readonly appLetras>
 
                                 <label class="adicionarLabel">Tipo de normatividad</label>
-                                <select class="adicionarInput" id="tipoNormatividadSelect" #selectOption (change)="onSelect(selectOption.value)"
-                                formControlName="tipoNormatividad">
+                                <select class="adicionarInput" id="tipoNormatividadSelect" #selectOption
+                                    (change)="onSelect(selectOption.value)" formControlName="tipoNormatividad">
                                     <option value="" disabled selected hidden>Seleccione una opción</option>
                                     <option value="Ley">Ley</option>
                                     <option value="Decreto">Decreto</option>
@@ -250,104 +310,132 @@
                                 </select>
                                 <div *ngIf="selectedOption === 'otro'" class="changeOtro">
                                     <label class="adicionarLabel">Otro ¿Cuál?</label>
-                                    <input type="text" class="adicionarInput" id="otroInput" (input)="onOtroInputChange($event)" formControlName="otroValor" appLetras>
+                                    <input type="text" class="adicionarInput" id="otroInput"
+                                        (input)="onOtroInputChange($event)" formControlName="otroValor" appLetras>
                                 </div>
-                                
+
                                 <label class="adicionarLabel">Número</label>
-                                <input type="number" class="adicionarInput" id="numeroInput" formControlName="numero" appNumeros> 
-                                
+                                <input type="number" class="adicionarInput" id="numeroInput" formControlName="numero"
+                                    appNumeros>
+
                                 <label class="adicionarLabel">Año</label>
-                                <input type="number" class="adicionarInput" id="anioInput" maxlength="4" formControlName="anio" appNumeros>
-                                
+                                <input type="number" class="adicionarInput" id="anioInput" maxlength="4"
+                                    formControlName="anio" appNumeros>
+
                                 <label class="adicionarLabel">Descripción</label>
-                                <textarea style="height: 100px" class="adicionarInput" id="descripcionTextAreaAdd" formControlName="descripcion"></textarea>
-                                
-                                <label class="adicionarLabel">Artículos / Secciones / Requisitos específicos que aplican</label>
-                                <textarea style="height: 100px" class="adicionarInput" id="seccionesTextAreaAdd" formControlName="secciones"></textarea>
-                                
-                                <button type="submit" class="btnAdd" (click)="agregarDiv()" [disabled]="tab2Form.invalid || tab2Form.hasError('customError')">Agregar</button>
-                        </form>
+                                <textarea style="height: 100px" class="adicionarInput" id="descripcionTextAreaAdd"
+                                    formControlName="descripcion"></textarea>
+
+                                <label class="adicionarLabel">Artículos / Secciones / Requisitos específicos que
+                                    aplican</label>
+                                <textarea style="height: 100px" class="adicionarInput" id="seccionesTextAreaAdd"
+                                    formControlName="secciones"></textarea>
+
+                                <button type="submit" class="btnAdd" (click)="agregarDiv()"
+                                    [disabled]="tab2Form.invalid || tab2Form.hasError('customError')">Agregar</button>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div *ngSwitchCase="'tab3'">
-            <div class="containerTabActual">
-                <div class="reporte">
-                    <button type="button" class="btnModificar" (click)="modificarBloquearCampos()" *ngIf="disabledModificar==false && getRolValue() !== 4 && getRolValue()!==5 && getRolValue()!==7" [disabled]="disabledEliminar == true ">Modificar Documento</button>
-                    <button type="button" class="btnModificar" (click)="terminarModificarCampos()" *ngIf="disabledModificar==true">Terminar Modificación</button>
-                    <button type="button" class="btnReporte" (click)="generateReporteLaboral()" [attr.disabled]="disabledModificar ? 'disabled' : null" [disabled]="disabledEliminar == true ">Visualizar documento</button>
-                </div>
-                <div class="div" *ngFor="let campo of leyesLaboral; let i = index">
-                    <div class="titulo" (click)="toggleSectionLey('primeraLey', i, campo.ID_MATRIZ)" [ngClass]="{'gris': disabledEliminar == true && campo.ES_FIJO == 1}">
-                        <div class="h3">
-                            <h3>{{ campo.TIPO_NORMATIVIDAD }} {{ campo.NUMERO }} de {{ campo.ANIO }}</h3> 
-                        </div>    
-                        <div class="iconos">
-                            <i class="fa-solid" [class.fa-angle-up]="isLeyVisible(i)" [class.fa-angle-down]="!isLeyVisible(i)"></i>
+            <div *ngSwitchCase="'tab3'">
+                <div class="containerTabActual">
+                    <div class="reporte">
+                        <button type="button" class="btnModificar" (click)="modificarBloquearCampos()"
+                            *ngIf="disabledModificar==false && getRolValue() !== 4 && getRolValue()!==5 && getRolValue()!==7"
+                            [disabled]="disabledEliminar == true ">Modificar Documento</button>
+                        <button type="button" class="btnModificar" (click)="terminarModificarCampos()"
+                            *ngIf="disabledModificar==true">Terminar Modificación</button>
+                        <button type="button" class="btnReporte" (click)="generateReporteLaboral()"
+                            [attr.disabled]="disabledModificar ? 'disabled' : null"
+                            [disabled]="disabledEliminar == true ">Visualizar documento</button>
+                    </div>
+                    <div class="div" *ngFor="let campo of leyesLaboral; let i = index">
+                        <div class="titulo" (click)="toggleSectionLey('primeraLey', i, campo.ID_MATRIZ)"
+                            [ngClass]="{'gris': disabledEliminar == true && campo.ES_FIJO == 1}">
+                            <div class="h3">
+                                <h3>{{ campo.TIPO_NORMATIVIDAD }} {{ campo.NUMERO }} de {{ campo.ANIO }}</h3>
+                            </div>
+                            <div class="iconos">
+                                <i class="fa-solid" [class.fa-angle-up]="isLeyVisible(i)"
+                                    [class.fa-angle-down]="!isLeyVisible(i)"></i>
+                            </div>
+                        </div>
+                        <div class="detalle" *ngIf="isLeyVisible(i)">
+                            <ng-container *ngFor="let subCampo of campo.subLeyes; let j = index">
+                                <div class="subdetalle">
+                                    <h2>Emitida por:</h2>
+                                    <p class="parrafo">{{campo.DESCRIPCION}}</p>
+                                    <h4 style="font-weight: bolder;" class="parrafo">ARTÍCULOS / SECCIONES / REQUISITOS
+                                        ESPECÍFICOS QUE APLICAN</h4>
+                                    <p class="parrafo">{{ subCampo.DOCS_ESPECIFICOS}}</p>
+                                    <app-app-formulario [selectedMatrizId]="subCampo.ID_MATRIZ" [data]="subCampo"
+                                        [idMatriz]="idMatriz" [showBotones]="disabledModificar"
+                                        [showBotonEliminar]="disabledEliminar"></app-app-formulario>
+                                </div>
+                            </ng-container>
                         </div>
                     </div>
-                    <div class="detalle" *ngIf="isLeyVisible(i)">
-                        <ng-container *ngFor="let subCampo of campo.subLeyes; let j = index">
-                            <div class="subdetalle">
-                                <h2>Emitida por:</h2>
-                                <p class="parrafo">{{campo.DESCRIPCION}}</p>
-                                <h4 style="font-weight: bolder;" class="parrafo">ARTÍCULOS / SECCIONES / REQUISITOS ESPECÍFICOS QUE APLICAN</h4>
-                                <p class="parrafo">{{ subCampo.DOCS_ESPECIFICOS}}</p>
-                                <app-app-formulario [selectedMatrizId]="subCampo.ID_MATRIZ" [data]="subCampo" [idMatriz]="idMatriz" 
-                                [showBotones]="disabledModificar" [showBotonEliminar] = "disabledEliminar"></app-app-formulario>
+
+                    <div *ngIf="divsVisible">
+                        <div class="div" id="divAdd" *ngFor="let div of divsTab3; let i = index">
+                            <div
+                                *ngIf="div.DESCRIPCION || div.SECCIONES || div.TIPO_NORMATIVIDAD || div.NUMERO || div.ANIO">
+                                <div class="titulo" (click)="toggleSectionDivAdd('divAdd', i)"
+                                    [ngClass]="{'verde': isDivAddVisible(i)}">
+                                    <div class="h3">
+                                        <h3 id="tituloNormativa">{{div.TIPO_NORMATIVIDAD !== 'otro' ?
+                                            div.TIPO_NORMATIVIDAD : otroValor}} {{div.NUMERO}} de {{div.ANIO}}</h3>
+                                    </div>
+                                    <i class="fa-solid" [class.fa-angle-up]="isDivAddVisible(i)"
+                                        [class.fa-angle-down]="!isDivAddVisible(i)"></i>
+                                    <button (click)="eliminarDivAdd()" class="boton-eliminar">x</button>
+                                </div>
+                                <div class="detalle" id="detalleAdd" *ngIf="isDivAddVisible(i)">
+                                    <h2>Emitida por:</h2>
+                                    <p class="parrafo">Por la cual se expide la Ley General de Turismo y se dictan otras
+                                        disposiciones</p>
+                                    <h4 style="font-weight: bolder;" class="parrafo">ARTÍCULOS / SECCIONES / REQUISITOS
+                                        ESPECÍFICOS QUE APLICAN</h4>
+                                    <p class="parrafo">{{ div.DESCRIPCION }}</p>
+                                    <p class="parrafo">{{ div.SECCIONES }}</p>
+                                    <app-app-formulario></app-app-formulario>
+                                </div>
                             </div>
-                        </ng-container>       
+                        </div>
                     </div>
-                </div>
-                
-                <div *ngIf="divsVisible">
-                    <div class="div" id="divAdd" *ngFor="let div of divsTab3; let i = index">
-                        <div *ngIf = "div.DESCRIPCION || div.SECCIONES || div.TIPO_NORMATIVIDAD || div.NUMERO || div.ANIO">
-                            <div class="titulo" (click)="toggleSectionDivAdd('divAdd', i)" [ngClass]="{'verde': isDivAddVisible(i)}">
-                                <div class="h3">
-                                    <h3 id="tituloNormativa">{{div.TIPO_NORMATIVIDAD !== 'otro' ? div.TIPO_NORMATIVIDAD : otroValor}} {{div.NUMERO}} de {{div.ANIO}}</h3> 
-                                </div> 
-                                <i class="fa-solid" [class.fa-angle-up]="isDivAddVisible(i)" [class.fa-angle-down]="!isDivAddVisible(i)"></i>
-                                <button (click)="eliminarDivAdd()" class="boton-eliminar">x</button>
-                            </div>
-                            <div class="detalle" id="detalleAdd" *ngIf="isDivAddVisible(i)">       
-                                <h2>Emitida por:</h2>
-                                <p class="parrafo">Por la cual se expide la Ley General de Turismo y se dictan otras disposiciones</p>
-                                <h4 style="font-weight: bolder;" class="parrafo">ARTÍCULOS / SECCIONES / REQUISITOS ESPECÍFICOS QUE APLICAN</h4>
-                                <p class="parrafo">{{ div.DESCRIPCION }}</p>
-                                <p class="parrafo">{{ div.SECCIONES }}</p>
-                                <app-app-formulario></app-app-formulario>
-                            </div> 
-                        </div>  
-                    </div>
-                </div>
-                  
-                <ng-template #inputTemplate>
-                    <div>
-                      <input type="text" [(ngModel)]="nuevoDiv.anio">
-                      <input type="text" [(ngModel)]="nuevoDiv.numero">
-                      <textarea [(ngModel)]="nuevoDiv.descripcion"></textarea>
-                      <textarea [(ngModel)]="nuevoDiv.secciones"></textarea>
-                      <input type="text" [(ngModel)]="nuevoDiv.tipoNormatividad">
-                    </div>
-                </ng-template>
-                             
-                <div id="ContainerdetalleAdicionar">
-                    <div class="adicionar"  *ngIf="getRolValue() !== 4 && getRolValue()!==5 && getRolValue()!==7">
-                        <button class="adicionarBtn" id="adicionarRequisitoTurismo" (click)="toggleSection('adicionarLaboral')" [disabled]="disabledModificar==true" [disabled]="disabledEliminar == true ">Adicionar requisito legal +</button>
-                        <button class="eliminarBtn" (click)="eliminarBloquearCampos()" id="eliminarRequisitoTurismo" [disabled]="disabledModificar==true" *ngIf = "disabledEliminar == false">Eliminar requisito legal -</button>
-                        <button class="eliminarBtn" (click)="eliminarBloquearCampos()" id="eliminarRequisitoTurismo"  *ngIf = "disabledEliminar == true">Salir del modo Eliminar</button>
-                    </div>
-                    <div class="detalleAdicionar" id="detalleAdicionarRequisito" *ngIf="adicionarVisibleLaboral">
-                        <form [formGroup]="tab3Form">
+
+                    <ng-template #inputTemplate>
+                        <div>
+                            <input type="text" [(ngModel)]="nuevoDiv.anio">
+                            <input type="text" [(ngModel)]="nuevoDiv.numero">
+                            <textarea [(ngModel)]="nuevoDiv.descripcion"></textarea>
+                            <textarea [(ngModel)]="nuevoDiv.secciones"></textarea>
+                            <input type="text" [(ngModel)]="nuevoDiv.tipoNormatividad">
+                        </div>
+                    </ng-template>
+
+                    <div id="ContainerdetalleAdicionar">
+                        <div class="adicionar" *ngIf="getRolValue() !== 4 && getRolValue()!==5 && getRolValue()!==7">
+                            <button class="adicionarBtn" id="adicionarRequisitoTurismo"
+                                (click)="toggleSection('adicionarLaboral')" [disabled]="disabledModificar==true"
+                                [disabled]="disabledEliminar == true ">Adicionar requisito legal +</button>
+                            <button class="eliminarBtn" (click)="eliminarBloquearCampos()" id="eliminarRequisitoTurismo"
+                                [disabled]="disabledModificar==true" *ngIf="disabledEliminar == false">Eliminar
+                                requisito legal -</button>
+                            <button class="eliminarBtn" (click)="eliminarBloquearCampos()" id="eliminarRequisitoTurismo"
+                                *ngIf="disabledEliminar == true">Salir del modo Eliminar</button>
+                        </div>
+                        <div class="detalleAdicionar" id="detalleAdicionarRequisito" *ngIf="adicionarVisibleLaboral">
+                            <form [formGroup]="tab3Form">
 
                                 <label class="adicionarLabel">Categoría</label>
-                                <input type="text" class="adicionarInput" id="categoriaInput" formControlName="categoria" value ="Laboral y SGSST" readonly appLetras>
-                                
+                                <input type="text" class="adicionarInput" id="categoriaInput"
+                                    formControlName="categoria" value="Laboral y SGSST" readonly appLetras>
+
                                 <label class="adicionarLabel">Tipo de normatividad</label>
-                                <select class="adicionarInput" id="tipoNormatividadSelect" #selectOption (change)="onSelect(selectOption.value)"
-                                formControlName="tipoNormatividad">
+                                <select class="adicionarInput" id="tipoNormatividadSelect" #selectOption
+                                    (change)="onSelect(selectOption.value)" formControlName="tipoNormatividad">
                                     <option value="" disabled selected hidden>Seleccione una opción</option>
                                     <option value="Ley">Ley</option>
                                     <option value="Decreto">Decreto</option>
@@ -356,103 +444,131 @@
                                 </select>
                                 <div *ngIf="selectedOption === 'otro'" class="changeOtro">
                                     <label class="adicionarLabel">Otro ¿Cuál?</label>
-                                    <input type="text" class="adicionarInput" id="otroInput" (input)="onOtroInputChange($event)" formControlName="otroValor" appLetras>
+                                    <input type="text" class="adicionarInput" id="otroInput"
+                                        (input)="onOtroInputChange($event)" formControlName="otroValor" appLetras>
                                 </div>
-                                
+
                                 <label class="adicionarLabel">Número</label>
-                                <input type="number" class="adicionarInput" id="numeroInput" formControlName="numero" appNumeros> 
-                                
+                                <input type="number" class="adicionarInput" id="numeroInput" formControlName="numero"
+                                    appNumeros>
+
                                 <label class="adicionarLabel">Año</label>
-                                <input type="number" class="adicionarInput" id="anioInput" maxlength="4" formControlName="anio" appNumeros>
-                                
+                                <input type="number" class="adicionarInput" id="anioInput" maxlength="4"
+                                    formControlName="anio" appNumeros>
+
                                 <label class="adicionarLabel">Descripción</label>
-                                <textarea style="height: 100px" class="adicionarInput" id="descripcionTextAreaAdd" formControlName="descripcion"></textarea>
-                                
-                                <label class="adicionarLabel">Artículos / Secciones / Requisitos específicos que aplican</label>
-                                <textarea style="height: 100px" class="adicionarInput" id="seccionesTextAreaAdd" formControlName="secciones"></textarea>
-                                
-                                <button type="submit" class="btnAdd" (click)="agregarDiv()" [disabled]="tab3Form.invalid || tab3Form.hasError('customError')">Agregar</button>
-                        </form>
+                                <textarea style="height: 100px" class="adicionarInput" id="descripcionTextAreaAdd"
+                                    formControlName="descripcion"></textarea>
+
+                                <label class="adicionarLabel">Artículos / Secciones / Requisitos específicos que
+                                    aplican</label>
+                                <textarea style="height: 100px" class="adicionarInput" id="seccionesTextAreaAdd"
+                                    formControlName="secciones"></textarea>
+
+                                <button type="submit" class="btnAdd" (click)="agregarDiv()"
+                                    [disabled]="tab3Form.invalid || tab3Form.hasError('customError')">Agregar</button>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div *ngSwitchCase="'tab4'">
-            <div class="containerTabActual">
-                <div class="reporte">
-                    <button type="button" class="btnModificar" (click)="modificarBloquearCampos()" *ngIf="disabledModificar==false && getRolValue() !== 4 && getRolValue()!==5 && getRolValue()!==7" [disabled]="disabledEliminar == true ">Modificar Documento</button>
-                    <button type="button" class="btnModificar" (click)="terminarModificarCampos()" *ngIf="disabledModificar==true">Terminar Modificación</button>
-                    <button type="button" class="btnReporte" (click)="generateReporteSocial()" [attr.disabled]="disabledModificar ? 'disabled' : null" [disabled]="disabledEliminar == true ">Visualizar documento</button>
-                </div>
-                <div class="div" *ngFor="let campo of leyesSocial; let i = index">
-                    <div class="titulo" (click)="toggleSectionLey('primeraLey', i, campo.ID_MATRIZ)" [ngClass]="{'gris': disabledEliminar == true && campo.ES_FIJO == 1}">
-                        <div class="h3">
-                            <h3>{{ campo.TIPO_NORMATIVIDAD }} {{ campo.NUMERO }} de {{ campo.ANIO }}</h3> 
-                        </div>    
-                        <div class="iconos">
-                            <i class="fa-solid" [class.fa-angle-up]="isLeyVisible(i)" [class.fa-angle-down]="!isLeyVisible(i)"></i>
+            <div *ngSwitchCase="'tab4'">
+                <div class="containerTabActual">
+                    <div class="reporte">
+                        <button type="button" class="btnModificar" (click)="modificarBloquearCampos()"
+                            *ngIf="disabledModificar==false && getRolValue() !== 4 && getRolValue()!==5 && getRolValue()!==7"
+                            [disabled]="disabledEliminar == true ">Modificar Documento</button>
+                        <button type="button" class="btnModificar" (click)="terminarModificarCampos()"
+                            *ngIf="disabledModificar==true">Terminar Modificación</button>
+                        <button type="button" class="btnReporte" (click)="generateReporteSocial()"
+                            [attr.disabled]="disabledModificar ? 'disabled' : null"
+                            [disabled]="disabledEliminar == true ">Visualizar documento</button>
+                    </div>
+                    <div class="div" *ngFor="let campo of leyesSocial; let i = index">
+                        <div class="titulo" (click)="toggleSectionLey('primeraLey', i, campo.ID_MATRIZ)"
+                            [ngClass]="{'gris': disabledEliminar == true && campo.ES_FIJO == 1}">
+                            <div class="h3">
+                                <h3>{{ campo.TIPO_NORMATIVIDAD }} {{ campo.NUMERO }} de {{ campo.ANIO }}</h3>
+                            </div>
+                            <div class="iconos">
+                                <i class="fa-solid" [class.fa-angle-up]="isLeyVisible(i)"
+                                    [class.fa-angle-down]="!isLeyVisible(i)"></i>
+                            </div>
+                        </div>
+                        <div class="detalle" *ngIf="isLeyVisible(i)">
+                            <ng-container *ngFor="let subCampo of campo.subLeyes; let j = index">
+                                <div class="subdetalle">
+                                    <h2>Emitida por:</h2>
+                                    <p class="parrafo">{{campo.DESCRIPCION}}</p>
+                                    <h4 style="font-weight: bolder;" class="parrafo">ARTÍCULOS / SECCIONES / REQUISITOS
+                                        ESPECÍFICOS QUE APLICAN</h4>
+                                    <p class="parrafo">{{ subCampo.DOCS_ESPECIFICOS}}</p>
+                                    <app-app-formulario [selectedMatrizId]="subCampo.ID_MATRIZ" [data]="subCampo"
+                                        [idMatriz]="idMatriz" [showBotones]="disabledModificar"
+                                        [showBotonEliminar]="disabledEliminar"></app-app-formulario>
+                                </div>
+                            </ng-container>
                         </div>
                     </div>
-                    <div class="detalle" *ngIf="isLeyVisible(i)">
-                        <ng-container *ngFor="let subCampo of campo.subLeyes; let j = index">
-                            <div class="subdetalle">
-                                <h2>Emitida por:</h2>
-                                <p class="parrafo">{{campo.DESCRIPCION}}</p>
-                                <h4 style="font-weight: bolder;" class="parrafo">ARTÍCULOS / SECCIONES / REQUISITOS ESPECÍFICOS QUE APLICAN</h4>
-                                <p class="parrafo">{{ subCampo.DOCS_ESPECIFICOS}}</p>
-                                <app-app-formulario [selectedMatrizId]="subCampo.ID_MATRIZ" [data]="subCampo" [idMatriz]="idMatriz" 
-                                [showBotones]="disabledModificar" [showBotonEliminar] = "disabledEliminar"></app-app-formulario>
+
+                    <div *ngIf="divsVisible">
+                        <div class="div" id="divAdd" *ngFor="let div of divsTab4; let i = index">
+                            <div
+                                *ngIf="div.DESCRIPCION || div.SECCIONES || div.TIPO_NORMATIVIDAD || div.NUMERO || div.ANIO">
+                                <div class="titulo" (click)="toggleSectionDivAdd('divAdd', i)"
+                                    [ngClass]="{'verde': isDivAddVisible(i)}">
+                                    <div class="h3">
+                                        <h3 id="tituloNormativa">{{div.TIPO_NORMATIVIDAD !== 'otro' ?
+                                            div.TIPO_NORMATIVIDAD : otroValor}} {{div.NUMERO}} de {{div.ANIO}}</h3>
+                                    </div>
+                                    <i class="fa-solid" [class.fa-angle-up]="isDivAddVisible(i)"
+                                        [class.fa-angle-down]="!isDivAddVisible(i)"></i>
+                                    <button (click)="eliminarDivAdd()" class="boton-eliminar">x</button>
+                                </div>
+                                <div class="detalle" id="detalleAdd" *ngIf="isDivAddVisible(i)">
+                                    <h2>Emitida por:</h2>
+                                    <p class="parrafo">Por la cual se expide la Ley General de Turismo y se dictan otras
+                                        disposiciones</p>
+                                    <h4 style="font-weight: bolder;" class="parrafo">ARTÍCULOS / SECCIONES / REQUISITOS
+                                        ESPECÍFICOS QUE APLICAN</h4>
+                                    <p class="parrafo">{{ div.DESCRIPCION }}</p>
+                                    <p class="parrafo">{{ div.SECCIONES }}</p>
+                                    <app-app-formulario></app-app-formulario>
+                                </div>
                             </div>
-                        </ng-container>    
+                        </div>
                     </div>
-                </div>
-                
-                <div *ngIf="divsVisible">
-                    <div class="div" id="divAdd" *ngFor="let div of divsTab4; let i = index">
-                        <div *ngIf = "div.DESCRIPCION || div.SECCIONES || div.TIPO_NORMATIVIDAD || div.NUMERO || div.ANIO">
-                            <div class="titulo" (click)="toggleSectionDivAdd('divAdd', i)" [ngClass]="{'verde': isDivAddVisible(i)}">
-                                <div class="h3">
-                                    <h3 id="tituloNormativa">{{div.TIPO_NORMATIVIDAD !== 'otro' ? div.TIPO_NORMATIVIDAD : otroValor}} {{div.NUMERO}} de {{div.ANIO}}</h3> 
-                                </div> 
-                                <i class="fa-solid" [class.fa-angle-up]="isDivAddVisible(i)" [class.fa-angle-down]="!isDivAddVisible(i)"></i>
-                                <button (click)="eliminarDivAdd()" class="boton-eliminar">x</button>
-                            </div>
-                            <div class="detalle" id="detalleAdd" *ngIf="isDivAddVisible(i)">       
-                                <h2>Emitida por:</h2>
-                                <p class="parrafo">Por la cual se expide la Ley General de Turismo y se dictan otras disposiciones</p>
-                                <h4 style="font-weight: bolder;" class="parrafo">ARTÍCULOS / SECCIONES / REQUISITOS ESPECÍFICOS QUE APLICAN</h4>
-                                <p class="parrafo">{{ div.DESCRIPCION }}</p>
-                                <p class="parrafo">{{ div.SECCIONES }}</p>
-                                <app-app-formulario></app-app-formulario>
-                            </div> 
-                        </div>  
-                    </div>
-                </div>
-                  
-                <ng-template #inputTemplate>
-                    <div>
-                      <input type="text" [(ngModel)]="nuevoDiv.anio">
-                      <input type="text" [(ngModel)]="nuevoDiv.numero">
-                      <textarea [(ngModel)]="nuevoDiv.descripcion"></textarea>
-                      <textarea [(ngModel)]="nuevoDiv.secciones"></textarea>
-                      <input type="text" [(ngModel)]="nuevoDiv.tipoNormatividad">
-                    </div>
-                </ng-template>
-                             
-                <div id="ContainerdetalleAdicionar">
-                    <div class="adicionar"  *ngIf="getRolValue() !== 4 && getRolValue()!==5 && getRolValue()!==7">
-                        <button class="adicionarBtn" id="adicionarRequisitoTurismo" (click)="toggleSection('adicionarSocial')" [disabled]="disabledModificar==true" [disabled]="disabledEliminar == true ">Adicionar requisito legal +</button>
-                        <button class="eliminarBtn" (click)="eliminarBloquearCampos()" id="eliminarRequisitoTurismo" [disabled]="disabledModificar==true" *ngIf = "disabledEliminar == false">Eliminar requisito legal -</button>
-                        <button class="eliminarBtn" (click)="eliminarBloquearCampos()" id="eliminarRequisitoTurismo"  *ngIf = "disabledEliminar == true">Salir del modo Eliminar</button>
-                    </div>
-                    <div class="detalleAdicionar" id="detalleAdicionarRequisito" *ngIf="adicionarVisibleSocial">
-                        <form [formGroup]="tab4Form">
+
+                    <ng-template #inputTemplate>
+                        <div>
+                            <input type="text" [(ngModel)]="nuevoDiv.anio">
+                            <input type="text" [(ngModel)]="nuevoDiv.numero">
+                            <textarea [(ngModel)]="nuevoDiv.descripcion"></textarea>
+                            <textarea [(ngModel)]="nuevoDiv.secciones"></textarea>
+                            <input type="text" [(ngModel)]="nuevoDiv.tipoNormatividad">
+                        </div>
+                    </ng-template>
+
+                    <div id="ContainerdetalleAdicionar">
+                        <div class="adicionar" *ngIf="getRolValue() !== 4 && getRolValue()!==5 && getRolValue()!==7">
+                            <button class="adicionarBtn" id="adicionarRequisitoTurismo"
+                                (click)="toggleSection('adicionarSocial')" [disabled]="disabledModificar==true"
+                                [disabled]="disabledEliminar == true ">Adicionar requisito legal +</button>
+                            <button class="eliminarBtn" (click)="eliminarBloquearCampos()" id="eliminarRequisitoTurismo"
+                                [disabled]="disabledModificar==true" *ngIf="disabledEliminar == false">Eliminar
+                                requisito legal -</button>
+                            <button class="eliminarBtn" (click)="eliminarBloquearCampos()" id="eliminarRequisitoTurismo"
+                                *ngIf="disabledEliminar == true">Salir del modo Eliminar</button>
+                        </div>
+                        <div class="detalleAdicionar" id="detalleAdicionarRequisito" *ngIf="adicionarVisibleSocial">
+                            <form [formGroup]="tab4Form">
                                 <label class="adicionarLabel">Categoría</label>
-                                <input type="text" class="adicionarInput" id="categoriaInput" formControlName="categoria" value ="Social" readonly appLetras>
+                                <input type="text" class="adicionarInput" id="categoriaInput"
+                                    formControlName="categoria" value="Social" readonly appLetras>
 
                                 <label class="adicionarLabel">Tipo de normatividad</label>
-                                <select class="adicionarInput" id="tipoNormatividadSelect" #selectOption (change)="onSelect(selectOption.value)"
-                                formControlName="tipoNormatividad">
+                                <select class="adicionarInput" id="tipoNormatividadSelect" #selectOption
+                                    (change)="onSelect(selectOption.value)" formControlName="tipoNormatividad">
                                     <option value="" disabled selected hidden>Seleccione una opción</option>
                                     <option value="Ley">Ley</option>
                                     <option value="Decreto">Decreto</option>
@@ -461,104 +577,132 @@
                                 </select>
                                 <div *ngIf="selectedOption === 'otro'" class="changeOtro">
                                     <label class="adicionarLabel">Otro ¿Cuál?</label>
-                                    <input type="text" class="adicionarInput" id="otroInput" (input)="onOtroInputChange($event)" formControlName="otroValor" appLetras>
+                                    <input type="text" class="adicionarInput" id="otroInput"
+                                        (input)="onOtroInputChange($event)" formControlName="otroValor" appLetras>
                                 </div>
-                                
+
                                 <label class="adicionarLabel">Número</label>
-                                <input type="number" class="adicionarInput" id="numeroInput" formControlName="numero" appNumeros> 
-                                
+                                <input type="number" class="adicionarInput" id="numeroInput" formControlName="numero"
+                                    appNumeros>
+
                                 <label class="adicionarLabel">Año</label>
-                                <input type="number" class="adicionarInput" id="anioInput" maxlength="4" formControlName="anio" appNumeros>
-                                
+                                <input type="number" class="adicionarInput" id="anioInput" maxlength="4"
+                                    formControlName="anio" appNumeros>
+
                                 <label class="adicionarLabel">Descripción</label>
-                                <textarea style="height: 100px" class="adicionarInput" id="descripcionTextAreaAdd" formControlName="descripcion"></textarea>
-                                
-                                <label class="adicionarLabel">Artículos / Secciones / Requisitos específicos que aplican</label>
-                                <textarea style="height: 100px" class="adicionarInput" id="seccionesTextAreaAdd" formControlName="secciones"></textarea>
-                                
-                                <button type="submit" class="btnAdd" (click)="agregarDiv()" [disabled]="tab4Form.invalid || tab4Form.hasError('customError')">Agregar</button>
-                        </form>
+                                <textarea style="height: 100px" class="adicionarInput" id="descripcionTextAreaAdd"
+                                    formControlName="descripcion"></textarea>
+
+                                <label class="adicionarLabel">Artículos / Secciones / Requisitos específicos que
+                                    aplican</label>
+                                <textarea style="height: 100px" class="adicionarInput" id="seccionesTextAreaAdd"
+                                    formControlName="secciones"></textarea>
+
+                                <button type="submit" class="btnAdd" (click)="agregarDiv()"
+                                    [disabled]="tab4Form.invalid || tab4Form.hasError('customError')">Agregar</button>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div *ngSwitchCase="'tab5'">
-            <div class="containerTabActual">
-                <div class="reporte">
-                    <button type="button" class="btnModificar" (click)="modificarBloquearCampos()" *ngIf="disabledModificar==false && getRolValue() !== 4 && getRolValue()!==5 && getRolValue()!==7" [disabled]="disabledEliminar == true ">Modificar Documento</button>
-                    <button type="button" class="btnModificar" (click)="terminarModificarCampos()" *ngIf="disabledModificar==true">Terminar Modificación</button>
-                    <button type="button" class="btnReporte" (click)="generateReporteEconomico()" [attr.disabled]="disabledModificar ? 'disabled' : null" [disabled]="disabledEliminar == true ">Visualizar documento</button>
-                </div>
-                <div class="div" *ngFor="let campo of leyesEconomico; let i = index">
-                    <div class="titulo" (click)="toggleSectionLey('primeraLey', i, campo.ID_MATRIZ)" [ngClass]="{'gris': disabledEliminar == true && campo.ES_FIJO == 1}">
-                        <div class="h3">
-                            <h3>{{ campo.TIPO_NORMATIVIDAD }} {{ campo.NUMERO }} de {{ campo.ANIO }}</h3> 
-                        </div>    
-                        <div class="iconos">
-                            <i class="fa-solid" [class.fa-angle-up]="isLeyVisible(i)" [class.fa-angle-down]="!isLeyVisible(i)"></i>
+            <div *ngSwitchCase="'tab5'">
+                <div class="containerTabActual">
+                    <div class="reporte">
+                        <button type="button" class="btnModificar" (click)="modificarBloquearCampos()"
+                            *ngIf="disabledModificar==false && getRolValue() !== 4 && getRolValue()!==5 && getRolValue()!==7"
+                            [disabled]="disabledEliminar == true ">Modificar Documento</button>
+                        <button type="button" class="btnModificar" (click)="terminarModificarCampos()"
+                            *ngIf="disabledModificar==true">Terminar Modificación</button>
+                        <button type="button" class="btnReporte" (click)="generateReporteEconomico()"
+                            [attr.disabled]="disabledModificar ? 'disabled' : null"
+                            [disabled]="disabledEliminar == true ">Visualizar documento</button>
+                    </div>
+                    <div class="div" *ngFor="let campo of leyesEconomico; let i = index">
+                        <div class="titulo" (click)="toggleSectionLey('primeraLey', i, campo.ID_MATRIZ)"
+                            [ngClass]="{'gris': disabledEliminar == true && campo.ES_FIJO == 1}">
+                            <div class="h3">
+                                <h3>{{ campo.TIPO_NORMATIVIDAD }} {{ campo.NUMERO }} de {{ campo.ANIO }}</h3>
+                            </div>
+                            <div class="iconos">
+                                <i class="fa-solid" [class.fa-angle-up]="isLeyVisible(i)"
+                                    [class.fa-angle-down]="!isLeyVisible(i)"></i>
+                            </div>
+                        </div>
+                        <div class="detalle" *ngIf="isLeyVisible(i)">
+                            <ng-container *ngFor="let subCampo of campo.subLeyes; let j = index">
+                                <div class="subdetalle">
+                                    <h2>Emitida por:</h2>
+                                    <p class="parrafo">{{campo.DESCRIPCION}}</p>
+                                    <h4 style="font-weight: bolder;" class="parrafo">ARTÍCULOS / SECCIONES / REQUISITOS
+                                        ESPECÍFICOS QUE APLICAN</h4>
+                                    <p class="parrafo">{{ subCampo.DOCS_ESPECIFICOS}}</p>
+                                    <app-app-formulario [selectedMatrizId]="subCampo.ID_MATRIZ" [data]="subCampo"
+                                        [idMatriz]="idMatriz" [showBotones]="disabledModificar"
+                                        [showBotonEliminar]="disabledEliminar"></app-app-formulario>
+                                </div>
+                            </ng-container>
                         </div>
                     </div>
-                    <div class="detalle" *ngIf="isLeyVisible(i)">
-                        <ng-container *ngFor="let subCampo of campo.subLeyes; let j = index">
-                            <div class="subdetalle">
-                                <h2>Emitida por:</h2>
-                                <p class="parrafo">{{campo.DESCRIPCION}}</p>
-                                <h4 style="font-weight: bolder;" class="parrafo">ARTÍCULOS / SECCIONES / REQUISITOS ESPECÍFICOS QUE APLICAN</h4>
-                                <p class="parrafo">{{ subCampo.DOCS_ESPECIFICOS}}</p>
-                                <app-app-formulario [selectedMatrizId]="subCampo.ID_MATRIZ" [data]="subCampo" [idMatriz]="idMatriz" 
-                                [showBotones]="disabledModificar" [showBotonEliminar] = "disabledEliminar"></app-app-formulario>
+
+                    <div *ngIf="divsVisible">
+                        <div class="div" id="divAdd" *ngFor="let div of divsTab5; let i = index">
+                            <div
+                                *ngIf="div.DESCRIPCION || div.SECCIONES || div.TIPO_NORMATIVIDAD || div.NUMERO || div.ANIO">
+                                <div class="titulo" (click)="toggleSectionDivAdd('divAdd', i)"
+                                    [ngClass]="{'verde': isDivAddVisible(i)}">
+                                    <div class="h3">
+                                        <h3 id="tituloNormativa">{{div.TIPO_NORMATIVIDAD !== 'otro' ?
+                                            div.TIPO_NORMATIVIDAD : otroValor}} {{div.NUMERO}} de {{div.ANIO}}</h3>
+                                    </div>
+                                    <i class="fa-solid" [class.fa-angle-up]="isDivAddVisible(i)"
+                                        [class.fa-angle-down]="!isDivAddVisible(i)"></i>
+                                    <button (click)="eliminarDivAdd()" class="boton-eliminar">x</button>
+                                </div>
+                                <div class="detalle" id="detalleAdd" *ngIf="isDivAddVisible(i)">
+                                    <h2>Emitida por:</h2>
+                                    <p class="parrafo">Por la cual se expide la Ley General de Turismo y se dictan otras
+                                        disposiciones</p>
+                                    <h4 style="font-weight: bolder;" class="parrafo">ARTÍCULOS / SECCIONES / REQUISITOS
+                                        ESPECÍFICOS QUE APLICAN</h4>
+                                    <p class="parrafo">{{ div.DESCRIPCION }}</p>
+                                    <p class="parrafo">{{ div.SECCIONES }}</p>
+                                    <app-app-formulario></app-app-formulario>
+                                </div>
                             </div>
-                        </ng-container>           
+                        </div>
                     </div>
-                </div>
-                
-                <div *ngIf="divsVisible">
-                    <div class="div" id="divAdd" *ngFor="let div of divsTab5; let i = index">
-                        <div *ngIf = "div.DESCRIPCION || div.SECCIONES || div.TIPO_NORMATIVIDAD || div.NUMERO || div.ANIO">
-                            <div class="titulo" (click)="toggleSectionDivAdd('divAdd', i)" [ngClass]="{'verde': isDivAddVisible(i)}">
-                                <div class="h3">
-                                    <h3 id="tituloNormativa">{{div.TIPO_NORMATIVIDAD !== 'otro' ? div.TIPO_NORMATIVIDAD : otroValor}} {{div.NUMERO}} de {{div.ANIO}}</h3> 
-                                </div> 
-                                <i class="fa-solid" [class.fa-angle-up]="isDivAddVisible(i)" [class.fa-angle-down]="!isDivAddVisible(i)"></i>
-                                <button (click)="eliminarDivAdd()" class="boton-eliminar">x</button>
-                            </div>
-                            <div class="detalle" id="detalleAdd" *ngIf="isDivAddVisible(i)">       
-                                <h2>Emitida por:</h2>
-                                <p class="parrafo">Por la cual se expide la Ley General de Turismo y se dictan otras disposiciones</p>
-                                <h4 style="font-weight: bolder;" class="parrafo">ARTÍCULOS / SECCIONES / REQUISITOS ESPECÍFICOS QUE APLICAN</h4>
-                                <p class="parrafo">{{ div.DESCRIPCION }}</p>
-                                <p class="parrafo">{{ div.SECCIONES }}</p>
-                                <app-app-formulario></app-app-formulario>
-                            </div> 
-                        </div>  
-                    </div>
-                </div>
-                  
-                <ng-template #inputTemplate>
-                    <div>
-                      <input type="text" [(ngModel)]="nuevoDiv.anio">
-                      <input type="text" [(ngModel)]="nuevoDiv.numero">
-                      <textarea [(ngModel)]="nuevoDiv.descripcion"></textarea>
-                      <textarea [(ngModel)]="nuevoDiv.secciones"></textarea>
-                      <input type="text" [(ngModel)]="nuevoDiv.tipoNormatividad">
-                    </div>
-                </ng-template>
-                             
-                <div id="ContainerdetalleAdicionar">
-                    <div class="adicionar"  *ngIf="getRolValue() !== 4 && getRolValue()!==5 && getRolValue()!==7">
-                        <button class="adicionarBtn" id="adicionarRequisitoTurismo" (click)="toggleSection('adicionarEconomico')" [disabled]="disabledModificar==true" [disabled]="disabledEliminar == true ">Adicionar requisito legal +</button>
-                        <button class="eliminarBtn" (click)="eliminarBloquearCampos()" id="eliminarRequisitoTurismo" [disabled]="disabledModificar==true" *ngIf = "disabledEliminar == false">Eliminar requisito legal -</button>
-                        <button class="eliminarBtn" (click)="eliminarBloquearCampos()" id="eliminarRequisitoTurismo"  *ngIf = "disabledEliminar == true">Salir del modo Eliminar</button>
-                    </div>
-                    <div class="detalleAdicionar" id="detalleAdicionarRequisito" *ngIf="adicionarVisibleEconomico">
-                        <form [formGroup]="tab5Form">
+
+                    <ng-template #inputTemplate>
+                        <div>
+                            <input type="text" [(ngModel)]="nuevoDiv.anio">
+                            <input type="text" [(ngModel)]="nuevoDiv.numero">
+                            <textarea [(ngModel)]="nuevoDiv.descripcion"></textarea>
+                            <textarea [(ngModel)]="nuevoDiv.secciones"></textarea>
+                            <input type="text" [(ngModel)]="nuevoDiv.tipoNormatividad">
+                        </div>
+                    </ng-template>
+
+                    <div id="ContainerdetalleAdicionar">
+                        <div class="adicionar" *ngIf="getRolValue() !== 4 && getRolValue()!==5 && getRolValue()!==7">
+                            <button class="adicionarBtn" id="adicionarRequisitoTurismo"
+                                (click)="toggleSection('adicionarEconomico')" [disabled]="disabledModificar==true"
+                                [disabled]="disabledEliminar == true ">Adicionar requisito legal +</button>
+                            <button class="eliminarBtn" (click)="eliminarBloquearCampos()" id="eliminarRequisitoTurismo"
+                                [disabled]="disabledModificar==true" *ngIf="disabledEliminar == false">Eliminar
+                                requisito legal -</button>
+                            <button class="eliminarBtn" (click)="eliminarBloquearCampos()" id="eliminarRequisitoTurismo"
+                                *ngIf="disabledEliminar == true">Salir del modo Eliminar</button>
+                        </div>
+                        <div class="detalleAdicionar" id="detalleAdicionarRequisito" *ngIf="adicionarVisibleEconomico">
+                            <form [formGroup]="tab5Form">
 
                                 <label class="adicionarLabel">Categoría</label>
-                                <input type="text" class="adicionarInput" id="categoriaInput" formControlName="categoria" value ="Economico" readonly appLetras>
+                                <input type="text" class="adicionarInput" id="categoriaInput"
+                                    formControlName="categoria" value="Economico" readonly appLetras>
 
                                 <label class="adicionarLabel">Tipo de normatividad</label>
-                                <select class="adicionarInput" id="tipoNormatividadSelect" #selectOption (change)="onSelect(selectOption.value)"
-                                formControlName="tipoNormatividad">
+                                <select class="adicionarInput" id="tipoNormatividadSelect" #selectOption
+                                    (change)="onSelect(selectOption.value)" formControlName="tipoNormatividad">
                                     <option value="" disabled selected hidden>Seleccione una opción</option>
                                     <option value="Ley">Ley</option>
                                     <option value="Decreto">Decreto</option>
@@ -567,104 +711,132 @@
                                 </select>
                                 <div *ngIf="selectedOption === 'otro'" class="changeOtro">
                                     <label class="adicionarLabel">Otro ¿Cuál?</label>
-                                    <input type="text" class="adicionarInput" id="otroInput" (input)="onOtroInputChange($event)" formControlName="otroValor" appLetras>
+                                    <input type="text" class="adicionarInput" id="otroInput"
+                                        (input)="onOtroInputChange($event)" formControlName="otroValor" appLetras>
                                 </div>
-                                
+
                                 <label class="adicionarLabel">Número</label>
-                                <input type="number" class="adicionarInput" id="numeroInput" formControlName="numero" appNumeros> 
-                                
+                                <input type="number" class="adicionarInput" id="numeroInput" formControlName="numero"
+                                    appNumeros>
+
                                 <label class="adicionarLabel">Año</label>
-                                <input type="number" class="adicionarInput" id="anioInput" maxlength="4" formControlName="anio" appNumeros>
-                                
+                                <input type="number" class="adicionarInput" id="anioInput" maxlength="4"
+                                    formControlName="anio" appNumeros>
+
                                 <label class="adicionarLabel">Descripción</label>
-                                <textarea style="height: 100px" class="adicionarInput" id="descripcionTextAreaAdd" formControlName="descripcion"></textarea>
-                                
-                                <label class="adicionarLabel">Artículos / Secciones / Requisitos específicos que aplican</label>
-                                <textarea style="height: 100px" class="adicionarInput" id="seccionesTextAreaAdd" formControlName="secciones"></textarea>
-                                
-                                <button type="submit" class="btnAdd" (click)="agregarDiv()" [disabled]="tab5Form.invalid || tab5Form.hasError('customError')">Agregar</button>
-                        </form>
+                                <textarea style="height: 100px" class="adicionarInput" id="descripcionTextAreaAdd"
+                                    formControlName="descripcion"></textarea>
+
+                                <label class="adicionarLabel">Artículos / Secciones / Requisitos específicos que
+                                    aplican</label>
+                                <textarea style="height: 100px" class="adicionarInput" id="seccionesTextAreaAdd"
+                                    formControlName="secciones"></textarea>
+
+                                <button type="submit" class="btnAdd" (click)="agregarDiv()"
+                                    [disabled]="tab5Form.invalid || tab5Form.hasError('customError')">Agregar</button>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div *ngSwitchCase="'tab6'">
-            <div class="containerTabActual">
-                <div class="reporte">
-                    <button type="button" class="btnModificar" (click)="modificarBloquearCampos()" *ngIf="disabledModificar==false && getRolValue() !== 4 && getRolValue()!==5 && getRolValue()!==7" [disabled]="disabledEliminar == true ">Modificar Documento</button>
-                    <button type="button" class="btnModificar" (click)="terminarModificarCampos()" *ngIf="disabledModificar==true">Terminar Modificación</button>
-                    <button type="button" class="btnReporte" (click)="generateReporteParticular()" [attr.disabled]="disabledModificar ? 'disabled' : null" [disabled]="disabledEliminar == true ">Visualizar documento</button>
-                </div>
-                <div class="div" *ngFor="let campo of leyesParticular; let i = index">
-                    <div class="titulo" (click)="toggleSectionLey('primeraLey', i, campo.ID_MATRIZ)" [ngClass]="{'gris': disabledEliminar == true && campo.ES_FIJO == 1}">
-                        <div class="h3">
-                            <h3>{{ campo.TIPO_NORMATIVIDAD }} {{ campo.NUMERO }} de {{ campo.ANIO }}</h3> 
-                        </div>    
-                        <div class="iconos">
-                            <i class="fa-solid" [class.fa-angle-up]="isLeyVisible(i)" [class.fa-angle-down]="!isLeyVisible(i)"></i>
+            <div *ngSwitchCase="'tab6'">
+                <div class="containerTabActual">
+                    <div class="reporte">
+                        <button type="button" class="btnModificar" (click)="modificarBloquearCampos()"
+                            *ngIf="disabledModificar==false && getRolValue() !== 4 && getRolValue()!==5 && getRolValue()!==7"
+                            [disabled]="disabledEliminar == true ">Modificar Documento</button>
+                        <button type="button" class="btnModificar" (click)="terminarModificarCampos()"
+                            *ngIf="disabledModificar==true">Terminar Modificación</button>
+                        <button type="button" class="btnReporte" (click)="generateReporteParticular()"
+                            [attr.disabled]="disabledModificar ? 'disabled' : null"
+                            [disabled]="disabledEliminar == true ">Visualizar documento</button>
+                    </div>
+                    <div class="div" *ngFor="let campo of leyesParticular; let i = index">
+                        <div class="titulo" (click)="toggleSectionLey('primeraLey', i, campo.ID_MATRIZ)"
+                            [ngClass]="{'gris': disabledEliminar == true && campo.ES_FIJO == 1}">
+                            <div class="h3">
+                                <h3>{{ campo.TIPO_NORMATIVIDAD }} {{ campo.NUMERO }} de {{ campo.ANIO }}</h3>
+                            </div>
+                            <div class="iconos">
+                                <i class="fa-solid" [class.fa-angle-up]="isLeyVisible(i)"
+                                    [class.fa-angle-down]="!isLeyVisible(i)"></i>
+                            </div>
+                        </div>
+                        <div class="detalle" *ngIf="isLeyVisible(i)">
+                            <ng-container *ngFor="let subCampo of campo.subLeyes; let j = index">
+                                <div class="subdetalle">
+                                    <h2>Emitida por:</h2>
+                                    <p class="parrafo">{{campo.DESCRIPCION}}</p>
+                                    <h4 style="font-weight: bolder;" class="parrafo">ARTÍCULOS / SECCIONES / REQUISITOS
+                                        ESPECÍFICOS QUE APLICAN</h4>
+                                    <p class="parrafo">{{ subCampo.DOCS_ESPECIFICOS}}</p>
+                                    <app-app-formulario [selectedMatrizId]="subCampo.ID_MATRIZ" [data]="subCampo"
+                                        [idMatriz]="idMatriz" [showBotones]="disabledModificar"
+                                        [showBotonEliminar]="disabledEliminar"></app-app-formulario>
+                                </div>
+                            </ng-container>
                         </div>
                     </div>
-                    <div class="detalle" *ngIf="isLeyVisible(i)">
-                        <ng-container *ngFor="let subCampo of campo.subLeyes; let j = index">
-                            <div class="subdetalle">
-                                <h2>Emitida por:</h2>
-                                <p class="parrafo">{{campo.DESCRIPCION}}</p>
-                                <h4 style="font-weight: bolder;" class="parrafo">ARTÍCULOS / SECCIONES / REQUISITOS ESPECÍFICOS QUE APLICAN</h4>
-                                <p class="parrafo">{{ subCampo.DOCS_ESPECIFICOS}}</p>
-                                <app-app-formulario [selectedMatrizId]="subCampo.ID_MATRIZ" [data]="subCampo" [idMatriz]="idMatriz" 
-                                [showBotones]="disabledModificar" [showBotonEliminar] = "disabledEliminar"></app-app-formulario>
+
+                    <div *ngIf="divsVisible">
+                        <div class="div" id="divAdd" *ngFor="let div of divsTab6; let i = index">
+                            <div
+                                *ngIf="div.DESCRIPCION || div.SECCIONES || div.TIPO_NORMATIVIDAD || div.NUMERO || div.ANIO">
+                                <div class="titulo" (click)="toggleSectionDivAdd('divAdd', i)"
+                                    [ngClass]="{'verde': isDivAddVisible(i)}">
+                                    <div class="h3">
+                                        <h3 id="tituloNormativa">{{div.TIPO_NORMATIVIDAD !== 'otro' ?
+                                            div.TIPO_NORMATIVIDAD : otroValor}} {{div.NUMERO}} de {{div.ANIO}}</h3>
+                                    </div>
+                                    <i class="fa-solid" [class.fa-angle-up]="isDivAddVisible(i)"
+                                        [class.fa-angle-down]="!isDivAddVisible(i)"></i>
+                                    <button (click)="eliminarDivAdd()" class="boton-eliminar">x</button>
+                                </div>
+                                <div class="detalle" id="detalleAdd" *ngIf="isDivAddVisible(i)">
+                                    <h2>Emitida por:</h2>
+                                    <p class="parrafo">Por la cual se expide la Ley General de Turismo y se dictan otras
+                                        disposiciones</p>
+                                    <h4 style="font-weight: bolder;" class="parrafo">ARTÍCULOS / SECCIONES / REQUISITOS
+                                        ESPECÍFICOS QUE APLICAN</h4>
+                                    <p class="parrafo">{{ div.DESCRIPCION }}</p>
+                                    <p class="parrafo">{{ div.SECCIONES }}</p>
+                                    <app-app-formulario></app-app-formulario>
+                                </div>
                             </div>
-                        </ng-container>  
+                        </div>
                     </div>
-                </div>
-                
-                <div *ngIf="divsVisible">
-                    <div class="div" id="divAdd" *ngFor="let div of divsTab6; let i = index">
-                        <div *ngIf = "div.DESCRIPCION || div.SECCIONES || div.TIPO_NORMATIVIDAD || div.NUMERO || div.ANIO">
-                            <div class="titulo" (click)="toggleSectionDivAdd('divAdd', i)" [ngClass]="{'verde': isDivAddVisible(i)}">
-                                <div class="h3">
-                                    <h3 id="tituloNormativa">{{div.TIPO_NORMATIVIDAD !== 'otro' ? div.TIPO_NORMATIVIDAD : otroValor}} {{div.NUMERO}} de {{div.ANIO}}</h3> 
-                                </div> 
-                                <i class="fa-solid" [class.fa-angle-up]="isDivAddVisible(i)" [class.fa-angle-down]="!isDivAddVisible(i)"></i>
-                                <button (click)="eliminarDivAdd()" class="boton-eliminar">x</button>
-                            </div>
-                            <div class="detalle" id="detalleAdd" *ngIf="isDivAddVisible(i)">       
-                                <h2>Emitida por:</h2>
-                                <p class="parrafo">Por la cual se expide la Ley General de Turismo y se dictan otras disposiciones</p>
-                                <h4 style="font-weight: bolder;" class="parrafo">ARTÍCULOS / SECCIONES / REQUISITOS ESPECÍFICOS QUE APLICAN</h4>
-                                <p class="parrafo">{{ div.DESCRIPCION }}</p>
-                                <p class="parrafo">{{ div.SECCIONES }}</p>
-                                <app-app-formulario></app-app-formulario>
-                            </div> 
-                        </div>  
-                    </div>
-                </div>
-                  
-                <ng-template #inputTemplate>
-                    <div>
-                      <input type="text" [(ngModel)]="nuevoDiv.anio">
-                      <input type="text" [(ngModel)]="nuevoDiv.numero">
-                      <textarea [(ngModel)]="nuevoDiv.descripcion"></textarea>
-                      <textarea [(ngModel)]="nuevoDiv.secciones"></textarea>
-                      <input type="text" [(ngModel)]="nuevoDiv.tipoNormatividad">
-                    </div>
-                </ng-template>
-                             
-                <div id="ContainerdetalleAdicionar">
-                    <div class="adicionar"  *ngIf="getRolValue() !== 4 && getRolValue()!==5 && getRolValue()!==7">
-                        <button class="adicionarBtn" id="adicionarRequisitoTurismo" (click)="toggleSection('adicionarParticular')" [disabled]="disabledModificar==true" [disabled]="disabledEliminar == true ">Adicionar requisito legal +</button>
-                        <button class="eliminarBtn" (click)="eliminarBloquearCampos()" id="eliminarRequisitoTurismo" [disabled]="disabledModificar==true" *ngIf = "disabledEliminar == false">Eliminar requisito legal -</button>
-                        <button class="eliminarBtn" (click)="eliminarBloquearCampos()" id="eliminarRequisitoTurismo"  *ngIf = "disabledEliminar == true">Salir del modo Eliminar</button>
-                    </div>
-                    <div class="detalleAdicionar" id="detalleAdicionarRequisito" *ngIf="adicionarVisibleParticular">
-                        <form [formGroup]="tab6Form">
+
+                    <ng-template #inputTemplate>
+                        <div>
+                            <input type="text" [(ngModel)]="nuevoDiv.anio">
+                            <input type="text" [(ngModel)]="nuevoDiv.numero">
+                            <textarea [(ngModel)]="nuevoDiv.descripcion"></textarea>
+                            <textarea [(ngModel)]="nuevoDiv.secciones"></textarea>
+                            <input type="text" [(ngModel)]="nuevoDiv.tipoNormatividad">
+                        </div>
+                    </ng-template>
+
+                    <div id="ContainerdetalleAdicionar">
+                        <div class="adicionar" *ngIf="getRolValue() !== 4 && getRolValue()!==5 && getRolValue()!==7">
+                            <button class="adicionarBtn" id="adicionarRequisitoTurismo"
+                                (click)="toggleSection('adicionarParticular')" [disabled]="disabledModificar==true"
+                                [disabled]="disabledEliminar == true ">Adicionar requisito legal +</button>
+                            <button class="eliminarBtn" (click)="eliminarBloquearCampos()" id="eliminarRequisitoTurismo"
+                                [disabled]="disabledModificar==true" *ngIf="disabledEliminar == false">Eliminar
+                                requisito legal -</button>
+                            <button class="eliminarBtn" (click)="eliminarBloquearCampos()" id="eliminarRequisitoTurismo"
+                                *ngIf="disabledEliminar == true">Salir del modo Eliminar</button>
+                        </div>
+                        <div class="detalleAdicionar" id="detalleAdicionarRequisito" *ngIf="adicionarVisibleParticular">
+                            <form [formGroup]="tab6Form">
 
                                 <label class="adicionarLabel">Categoría</label>
-                                <input type="text" class="adicionarInput" id="categoriaParticularInput" formControlName="categoria">   
+                                <input type="text" class="adicionarInput" id="categoriaParticularInput"
+                                    formControlName="categoria">
 
                                 <label class="adicionarLabel">Tipo de normatividad</label>
-                                <select class="adicionarInput" id="tipoNormatividadSelect" #selectOption (change)="onSelect(selectOption.value)"
-                                formControlName="tipoNormatividad">
+                                <select class="adicionarInput" id="tipoNormatividadSelect" #selectOption
+                                    (change)="onSelect(selectOption.value)" formControlName="tipoNormatividad">
                                     <option value="" disabled selected hidden>Seleccione una opción</option>
                                     <option value="Ley">Ley</option>
                                     <option value="Decreto">Decreto</option>
@@ -673,29 +845,36 @@
                                 </select>
                                 <div *ngIf="selectedOption === 'otro'" class="changeOtro">
                                     <label class="adicionarLabel">Otro ¿Cuál?</label>
-                                    <input type="text" class="adicionarInput" id="otroInput" (input)="onOtroInputChange($event)" formControlName="otroValor" appLetras>
+                                    <input type="text" class="adicionarInput" id="otroInput"
+                                        (input)="onOtroInputChange($event)" formControlName="otroValor" appLetras>
                                 </div>
-                                
+
                                 <label class="adicionarLabel">Número</label>
-                                <input type="number" class="adicionarInput" id="numeroInput" formControlName="numero" appNumeros> 
-                                
+                                <input type="number" class="adicionarInput" id="numeroInput" formControlName="numero"
+                                    appNumeros>
+
                                 <label class="adicionarLabel">Año</label>
-                                <input type="number" class="adicionarInput" id="anioInput" maxlength="4" formControlName="anio" appNumeros>
-                                
+                                <input type="number" class="adicionarInput" id="anioInput" maxlength="4"
+                                    formControlName="anio" appNumeros>
+
                                 <label class="adicionarLabel">Descripción</label>
-                                <textarea style="height: 100px" class="adicionarInput" id="descripcionTextAreaAdd" formControlName="descripcion"></textarea>
-                                
-                                <label class="adicionarLabel">Artículos / Secciones / Requisitos específicos que aplican</label>
-                                <textarea style="height: 100px" class="adicionarInput" id="seccionesTextAreaAdd" formControlName="secciones"></textarea>
-                                
-                                <button type="submit" class="btnAdd" (click)="agregarDiv()" [disabled]="tab6Form.invalid || tab6Form.hasError('customError')">Agregar</button>
-                        </form>
+                                <textarea style="height: 100px" class="adicionarInput" id="descripcionTextAreaAdd"
+                                    formControlName="descripcion"></textarea>
+
+                                <label class="adicionarLabel">Artículos / Secciones / Requisitos específicos que
+                                    aplican</label>
+                                <textarea style="height: 100px" class="adicionarInput" id="seccionesTextAreaAdd"
+                                    formControlName="secciones"></textarea>
+
+                                <button type="submit" class="btnAdd" (click)="agregarDiv()"
+                                    [disabled]="tab6Form.invalid || tab6Form.hasError('customError')">Agregar</button>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-  </div>
 </div>
 <!-- Modal Agregar Noticia -->
 <div class="modal-background" id="modal-success" *ngIf="showModalResumen">
@@ -709,14 +888,13 @@
             <div class="linea"></div>
         </div>
         <form [formGroup]="saveForm" class="form" (ngSubmit)="guardarTextArea()">
-            
+
             <label for="">Descripción de modificaciones realizadas</label>
             <!-- <angular-editor placeholder="Agregar una descripción" formControlName="descripcionNoticia"
                 id="descripcionNoticia" style="margin-top:2vh;"></angular-editor> -->
             <textarea id="textAreaModal" class="textAreaModal" formControlName="descripcionNoticia"></textarea>
-            
-            <button type="submit" class="botonG"
-                [disabled]="!saveForm.controls.descripcionNoticia.value">
+
+            <button type="submit" class="botonG" [disabled]="!saveForm.controls.descripcionNoticia.value">
                 <i id="idBotonResumen" class="fa-regular fa-floppy-disk" style="color: #fff;"></i>
                 Guardar Resumen</button>
         </form>

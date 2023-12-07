@@ -104,8 +104,8 @@
     <div *ngFor="let pregunta of modelPreguntas; let i = index" class="tarjetasEditar">
       <div class="tarjetas">
         <div class="section">
-          <input type="text" class="pregunta" id="pregunta.ID_MAE_ENCUESTA_PREGUNTA-{{i}}" placeholder="Ingrese su pregunta"
-            name="pregunta.ID_MAE_ENCUESTA_PREGUNTA-{{i}}" [(ngModel)]="pregunta.DESCRIPCION" required/>
+          <input type="text" class="pregunta" id="{{pregunta.IDUNICO}}" placeholder="Ingrese su pregunta"
+            name="{{pregunta.IDUNICO}}" [(ngModel)]="pregunta.DESCRIPCION" required/>
           <div class="select-wrapper" [id]="i">
             <div class="select-header" (click)="toggleOptionsEditar(i)">
               <span [id]="'selectedOptions[i].id' + i">
@@ -187,7 +187,7 @@
         <div class="footer">
           <p class="obligatorio">Obligatorio</p>
           <input type="checkbox" [id]="'toggleButton' + i" name="toggleButton-{{i}}" class="toggle-input"
-            [value]="pregunta.OBLIGATORIO" [(ngModel)]="pregunta.OBLIGATORIO" (change)="cambiarEstado(i)" />
+            [value]="pregunta.OBLIGATORIO" [(ngModel)]="pregunta.OBLIGATORIO" (change)="cambiarEstado(i)"/>
           <label [for]="'toggleButton' + i" class="toggle-label"></label>
         </div>
       </div>
@@ -200,8 +200,8 @@
         </button>
       </div>
     </div>
-    <div class="container d-flex flex-column justify-content-center">
-      <button class="btn btn-primary m-4 btn-sm p-2" type="submit" (click)="guardarEncuesta()" *ngIf="!editandoEncuesta" 
+    <div class="container d-flex justify-content-center mt-4 mb-4 col-11 p-0">
+      <button class="btn btn-primary btn-md col-11" type="submit" (click)="guardarEncuesta()" *ngIf="!editandoEncuesta" 
       [disabled]="tituloEditar === '' || descripcionEditar === '' || !formObjetivo.valid || !selectTarjeta">
         <i class="fa-solid fa-floppy-disk" style="color: #ffffff;"></i> Guardar
       </button>
@@ -214,8 +214,8 @@
     <div *ngFor="let pregunta of modelPreguntas; let i = index" class="tarjetasEditar">
       <div class="tarjetas">
         <div class="section">
-          <input type="text" class="pregunta" id="pregunta.ID_MAE_ENCUESTA_PREGUNTA-{{i}}" placeholder="Ingrese su pregunta"
-            name="pregunta.ID_MAE_ENCUESTA_PREGUNTA-{{i}}" [(ngModel)]="pregunta.DESCRIPCION" required/>
+          <input type="text" class="pregunta" id="{{pregunta.IDUNICO}}" placeholder="Ingrese su pregunta"
+            name="{{pregunta.IDUNICO}}" [(ngModel)]="pregunta.DESCRIPCION" required/>
           <div class="select-wrapper" [id]="i">
             <div class="select-header" (click)="toggleOptionsEditar(i)">
               <span [id]="'selectedOptions[i].id' + i">
@@ -296,9 +296,9 @@
         <div class="linea"></div>
         <div class="footer">
           <p class="obligatorio">Obligatorio</p>
-          <input type="checkbox" [id]="'toggleButton' + i" name="toggleButton-{{i}}" class="toggle-input"
-            [value]="pregunta.OBLIGATORIO" [(ngModel)]="pregunta.OBLIGATORIO" (change)="cambiarEstado(i)" />
-          <label [for]="'toggleButton' + i" class="toggle-label"></label>
+          <input type="checkbox" id="toggleButton_{{pregunta.IDUNICO}}" name="toggleButton-{{pregunta.IDUNICO}}" class="toggle-input"
+            [value]="pregunta.OBLIGATORIO" [(ngModel)]="pregunta.OBLIGATORIO" (change)="cambiarEstado(pregunta.OBLIGATORIO)" />
+          <label for="toggleButton_{{pregunta.IDUNICO}}" class="toggle-label"></label>
         </div>
       </div>
       <div class="botones">
@@ -311,7 +311,8 @@
       </div>
     </div>
     <div class="container d-flex flex-column justify-content-center">
-      <button class="btn btn-primary m-2 btn-sm p-2" (click)="actualizarrEncuesta()" *ngIf="editandoEncuesta" [disabled]="tituloEditar === '' || descripcionEditar === '' || !formObjetivo.valid || !selectTarjeta">
+      <button class="btn btn-primary m-2 btn-sm p-2" (click)="actualizarrEncuesta()" *ngIf="editandoEncuesta" 
+      [disabled]="tituloEditar === '' || descripcionEditar === '' || !formObjetivo.valid || !selectTarjeta || selectObligatorio">
         <i class="fa-solid fa-floppy-disk" style="color: #ffffff;"></i> Actualizar
       </button>
     </div>

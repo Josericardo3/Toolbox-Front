@@ -32,7 +32,6 @@ export class ApiService {
 
   apiURL = environment.apiURL
   apiURLNuevo = environment.apiURLNuevo
-  //apiURLNuevo = "https://localhost:8055"
 
 
   apiCHART = environment.apiChart

@@ -1,11 +1,5 @@
-<app-app-header class="noticias-app-header"></app-app-header>
+<app-app-header class="noticias-app-header" [esVisible]="true" [esInfoHeader]="true"></app-app-header>
 <div class="containerGestorNoticia">
-    <!--<div class="barra-header">
-        <div class="img-container">
-          <img class="img-header" src="https://upload.wikimedia.org/wikipedia/commons/3/30/LOGO_PLAN_DE_DESARROLLO_COLOMBIA_POTENCIA_DE_LA_VIDA_2022-2026.png"/>
-          <img class="img-header" src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/Logo_Ministerio_de_Comercio_Industria_y_Turismo_2022-2026.png/1200px-Logo_Ministerio_de_Comercio_Industria_y_Turismo_2022-2026.png"/>
-        </div>
-    </div>-->
     <app-app-header2></app-app-header2>
     <div class="titulo">
         <h1> NOTICIAS </h1>
@@ -59,97 +53,7 @@
             </div>
         </div>
     </div>
-    <!--<div class="barra-final">
-        <div class="img-container-final">
-            <p class="ejecutado-por">EJECUTADO POR: </p>
-            <img class="img-header" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQEsHzxTrRb-PWp5RSTU86xdutn0Ta3lTbklA&usqp=CAU"/>
-            <img class="img-header" src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/Logo_Ministerio_de_Comercio_Industria_y_Turismo_2022-2026.png/1200px-Logo_Ministerio_de_Comercio_Industria_y_Turismo_2022-2026.png"/>
-        </div>
-    </div>-->
-    <app-footer2></app-footer2>
 
-    <!--TABLA-FILTRO
-    <div class="divTop">
-        <input type="text" placeholder="Buscar..." class="buscador" [(ngModel)]="busqueda" *ngIf="mostrarBuscador"
-            (input)="filtrarDatos()">
-        <button class="btn" (click)="showModal = true" *ngIf="getRolValue() !== 5 && getRolValue() !== 7">
-            <i class="fa-solid fa-plus" style="color: #fff;"></i> Agregar noticia
-        </button>
-    </div>
-
-    CONTENIDO DE LA TABLA
-    <section>
-        <table class="table-gestion" style="margin-top: 8px;">
-            <thead>
-                <tr>
-                    <th scope="col">Usuario</th>
-                    <th scope="col" class="inf-tabla">Información de destino</th>
-                    <th scope="col" class="title-tabla">Título de la noticia</th>
-                    <th scope="col">Descripción de la noticia</th>
-                    <th scope="col">Imagen</th>
-                    <th scope="col" style="text-align: center;" (click)="mostrarBuscador = !mostrarBuscador">
-                        <i class="fa-solid fa-magnifying-glass" title="Buscar" style="cursor: pointer;"></i>
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let campo of filterArray;let i = index">
-                    <td>{{campo.NOMBRE}}</td>
-                    <td class="inf-tabla">
-                        <a title="Ver lista" (click)="fnShowModalLista(i)" >
-                            <i class="fa-solid fa-list-ul" style="color: #06543c; font-size: 18px;"></i>
-                        </a>
-                    </td>
-                    <td  class="title-tabla">{{campo.TITULO}}</td>
-                    <td (click)="fnShowModal(i)" title="Dale click para leer la Noticia">
-                        {{ getInnerText(campo.DESCRIPCION) | slice:0:97 }}{{ campo.DESCRIPCION.length > 97 ? '...' : ''
-                        }}
-                    </td>
-                    <td>
-                        <a title="Ver imagen" (click)="verImagen(i)">
-                            <img [src]="imagenNoticia" style="display: none;">
-                            <i class="fa-solid fa-eye" style="color: #06543c;"></i>
-                        </a>
-                    </td>
-                    <td>
-                        <ng-container
-                            *ngIf="!edicionIndices.includes(i) && (getRolValue() !== 5 && getRolValue() !== 7)">
-                            <a title="Editar" (click)="showModalEditar = true; fnEditar(i)">
-                                <i class="fa-solid fa-pen" style="color: #06543c;"></i>
-                            </a>
-                            <app-app-eliminar-noticia [indice]="indiceAEliminar" class="delete"
-                                (click)="eliminarNoticia(campo.ID_NOTICIA)" (valorEnviado)="recibirValor($event)">
-                            </app-app-eliminar-noticia>
-                        </ng-container>
-                        <ng-container *ngIf="edicionIndices.includes(i)">
-                            <a title="Cancelar" (click)="fnCancelar(i)">
-                                <i class="fa-solid fa-circle-xmark" style="color: #06543c;font-size: 25px;"></i>
-                            </a>
-                        </ng-container>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <p *ngIf="result"
-            style="text-align: center;margin-top: 3vh; font-size: 19px; font-family: 'Work Sans', sans-serif;">
-            No hay resultado para la búsqueda
-        </p>
-    </section>
-    Paginacion 
-    <footer class="page-style">
-        <div class="container-label">
-            <label class="paginas">
-                Página: {{ pages }} / {{ totalPaginas }} Mostrando: {{ totalRegistros }} Registros: {{ datatotal }}
-            </label>
-            <div class="ls-pagina ">
-                <pagination lastText="&raquo;" nextText="&rsaquo;" firstText="&laquo;" previousText="&lsaquo;"
-                    [maxSize]="3" [itemsPerPage]="6" [boundaryLinks]="true" [(ngModel)]="currentPage"
-                    [ngClass]="{'page-item': true}" [totalItems]="contentArray.length"
-                    (pageChanged)="pageChanged($event)">
-                </pagination>
-            </div>
-        </div>
-    </footer>-->
     <!-- Modal Agregar Noticia -->
     <div class="modal-background" id="modal-success" *ngIf="showModal">
         <div class="modal-content">
@@ -197,6 +101,7 @@
                     style="margin-top:2vh;"></ng-multiselect-dropdown>
                 <input type="text" placeholder="Agregar un título" formControlName="tituloNoticia" id="tituloNoticia"
                     style="margin-top:2vh;" maxlength="50">
+                <label for="" class="indicador-max">El titulo ingresado no debe tener más de 50 caractéres</label>
                 <select id="CategoriaNoticia" name="CategoriaNoticia" formControlName="CategoriaNoticia" class="list-categorias">
                     <option value="">Seleccione una categoría</option>
                     <option *ngFor="let val of arrayCategorias; let i = index" [ngValue]="val.ID_CATEGORIA">{{val.DESCRIPCION}}</option>
@@ -204,7 +109,7 @@
                 <!--<angular-editor placeholder="Agregar una descripción" formControlName="descripcionNoticia"
                     id="descripcionNoticia" style="margin-top:2vh;"></angular-editor>-->
                 <br>
-                <editor apiKey="55jurjhq2t2vhxydiwxvftw7j1oxklp4tjwmapao76sojkxw" formControlName="descripcionNoticia" name="descripcionNoticia"
+                <!--<editor formControlName="descripcionNoticia" name="descripcionNoticia"
                     [init]="{
                       height: 500,
                       plugins: [
@@ -217,7 +122,25 @@
                        alignleft aligncenter alignright alignjustify | \
                        bullist numlist checklist outdent indent | removeformat | a11ycheck code table help'
                     }"
+                ></editor>-->
+
+                <editor formControlName="descripcionNoticia" name="descripcionNoticia"
+                    [init]="{
+                        base_url: '/tinymce',
+                        suffix: '.min',
+                        height: 500,
+                        plugins: [
+                            'a11ychecker','advlist','advcode','advtable','autolink','checklist','export',
+                            'lists','link','image','charmap','preview','anchor','searchreplace','visualblocks',
+                            'powerpaste','fullscreen','formatpainter','insertdatetime','media','table','help','wordcount'
+                        ],
+                        toolbar:
+                        'undo redo | casechange blocks | bold italic backcolor | \
+                        alignleft aligncenter alignright alignjustify | \
+                        bullist numlist checklist outdent indent | removeformat | a11ycheck code table help'
+                    }"
                 ></editor>
+                <label for="" class="indicador-max">El texto ingresado no debe superar las 500 palabras</label>
                 <!--<button (click)="obtenerDatos()">click</button>-->
                 <div class="containerFile" style="margin-top:2vh;">
                     <input type="file" accept="image/*" (change)="captureImage($event)" class="file" id="archivo"
@@ -231,8 +154,8 @@
                         <input type="checkbox" name="recibirNoticias"  [checked]="recibirNoticias" (change)="onChangeCheckbox($event)"> Deseo recibir noticias por correo electrónico.
                     </label>
                 </div>
-                <button type="submit" class="botonG">
-                    <!--[disabled]=" ( (saveForm.controls.selectMultipleAdmin?.value?.length||0) === 0 && (saveForm.controls.selectMultipleNorma?.value?.length||0) === 0  && (saveForm.controls.selectMultipleCategoria.value?.length||0) === 0 && (saveForm.controls.selectMultipleSubCategoria.value?.length||0) === 0 && (saveForm.controls.selectMultiplePST.value?.length||0) === 0) || !saveForm.controls.CategoriaNoticia.value || !saveForm.controls.tituloNoticia.value || !saveForm.controls.descripcionNoticia.value || this.imagen==null ">-->
+                <button type="submit" class="botonG"
+                    [disabled]=" ( (saveForm.controls.selectMultipleAdmin?.value?.length||0) === 0 && (saveForm.controls.selectMultipleNorma?.value?.length||0) === 0  && (saveForm.controls.selectMultipleCategoria.value?.length||0) === 0 && (saveForm.controls.selectMultipleSubCategoria.value?.length||0) === 0 && (saveForm.controls.selectMultiplePST.value?.length||0) === 0) || !saveForm.controls.CategoriaNoticia.value || !saveForm.controls.tituloNoticia.value || !saveForm.controls.descripcionNoticia.value || this.imagen==null ">
                     <i class="fa-regular fa-floppy-disk" style="color: #fff;"></i>
                     Guardar noticia</button>
             </form>
@@ -318,6 +241,9 @@
             </div>
         </div>
     </div>
+    <div class="footer-img">
+        <app-footer2></app-footer2>
+    </div> 
 </div>
     <app-app-footer></app-app-footer>
     <app-modal></app-modal>

@@ -1,167 +1,111 @@
-
-<app-app-header [esVisible]="true" [esInfoHeader]="true" ></app-app-header>
+<app-app-header [esVisible]="true" [esInfoHeader]="true"></app-app-header>
 <div class="row">
   <div class="col-md-12 text-end; cursor: pointer">
-    <button mat-icon-button [matMenuTriggerFor]="menu" style="color: #ffffff; cursor: pointer" class="menu-icono" (click)="cambioIcono()">
+    <button mat-icon-button [matMenuTriggerFor]="menu" style="color: #ffffff; cursor: pointer" class="menu-icono"
+      (click)="cambioIcono()">
       <i class="fa-solid fa-bars" style="font-size: 20px; cursor: pointer;" *ngIf="!menuOpened"></i>
       <i class="fa-regular fa-circle-xmark" style="font-size: 20px; cursor: pointer;" *ngIf="menuOpened"></i>
     </button>
   </div>
 </div>
 
-<mat-menu #menu="matMenu"  (close)="cambioIcono()" >
-  <div class=" mt-0" >
-    <div class="accordion" id="accordionExample" >
+<mat-menu #menu="matMenu" (close)="cambioIcono()">
+  <div class=" mt-0">
+    <div class="accordion" id="accordionExample">
       <div class="accordion-item">
-       
-          <button
-            class="accordion-button"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#collapseOne"
-            aria-expanded="false"
-            aria-controls="collapseOne"
-            (click)="$event.stopPropagation()"
-          >
-            <h2>
-              <span class="dot-red"></span>
-              NOTIFICACIONES
-              <i class="fa-regular fa-circle-right" style="color: #0B5738;"></i>
-              <i class="fa-regular fa-circle-down" style="color: #0B5738"></i>
-            </h2>
-          </button>
-       
-        <div
-          id="collapseOne"
-          class="accordion-collapse collapse"
-          aria-labelledby="headingOne"
-          data-bs-parent="#accordionExample"
-        >
+
+        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne"
+          aria-expanded="false" aria-controls="collapseOne" (click)="$event.stopPropagation()">
+          <h2>
+            <span class="dot-red"></span>
+            NOTIFICACIONES
+            <i class="fa-regular fa-circle-right" style="color: #0B5738;"></i>
+            <i class="fa-regular fa-circle-down" style="color: #0B5738"></i>
+          </h2>
+        </button>
+
+        <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne"
+          data-bs-parent="#accordionExample">
           <div class="accordion-body">
-            <div
-              *ngIf="result && !resultInicadores"
-              style="text-align: center"
-            >
+            <div *ngIf="result && !resultInicadores" style="text-align: center">
               <hr />
               <p class="text text-success">No hay recordatorios</p>
             </div>
             <div *ngIf="!result || resultInicadores">
               <hr style="margin-bottom: 2px" />
               <ul class="list-group list-group-flush">
-                <li
-                  class="list-group-item"
-                  style="cursor: pointer"
-                  *ngFor="
+                <li class="list-group-item" style="cursor: pointer" *ngFor="
                     let notificacion of datosTarjetaActividad.slice(0, 2)
-                  "
-                >
-                  <p
-                    style="margin-bottom: -2px"
-                    (click)="
+                  ">
+                  <p style="margin-bottom: -2px" (click)="
                       indexReminder(
                         notificacion.fkIdActividad,
                         notificacion.dato
                       )
-                    "
-                  >
+                    ">
                     {{ notificacion.descripcion?.slice(0, 20) }}
                   </p>
                 </li>
- 
-                <li
-                  class="list-group-item"
-                  style="cursor: pointer"
-                  *ngFor="
+
+                <li class="list-group-item" style="cursor: pointer" *ngFor="
                     let campo of listaIndicadores.slice(0, 2);
                     let index = index
-                  "
-                >
+                  ">
                   <p (click)="indexReminderIndicador()">
                     {{ campo.NOMBRE_INDICADOR?.slice(0, 20) }}
                   </p>
                 </li>
               </ul>
               <hr style="margin-top: 1px" />
-              <a
-                routerLink="/planificacion"
-                class="btn btn-primary btn-block mt-2"
-                style="
+              <a routerLink="/planificacion" class="btn btn-primary btn-block mt-2" style="
                   display: block;
                   text-align: center;
                   justify-content: center;
-                "
-                >Ver más</a
-              >
+                ">Ver más</a>
             </div>
           </div>
         </div>
         <div class="accordion-item">
-         
-            <button
-              class="accordion-button collapsed"
-              type="button"
-              data-bs-toggle="collapse"
-              data-bs-target="#collapseTwo"
-              aria-expanded="false"
-              aria-controls="collapseTwo"
-              (click)="$event.stopPropagation()"
-            >
-              <h2>
-                <span class="dot-red"></span>
-                SEGUIMIENTO
- 
-                <i class="fa-regular fa-circle-right" style="color: #0b5738;"></i>
-                <i class="fa-regular fa-circle-down" style="color: #0B5738"></i>
-              </h2>
-            </button>
-         
-          <div
-            id="collapseTwo"
-            class="accordion-collapse collapse"
-            aria-labelledby="headingTwo"
-            data-bs-parent="#accordionExample"
-          >
+
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+            data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo"
+            (click)="$event.stopPropagation()">
+            <h2>
+              <span class="dot-red"></span>
+              SEGUIMIENTO
+
+              <i class="fa-regular fa-circle-right" style="color: #0b5738;"></i>
+              <i class="fa-regular fa-circle-down" style="color: #0B5738"></i>
+            </h2>
+          </button>
+
+          <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
+            data-bs-parent="#accordionExample">
             <div class="accordion-body">
-              <div
-                class="card"
-                id="card-seguimiento-acordeon"
-                style="border: none"
-              >
+              <div class="card" id="card-seguimiento-acordeon" style="border: none">
                 <div class="w-100" style="overflow-y: auto">
                   <div class="">
-                    <p
-                      *ngIf="resultNoticia"
-                      style="
+                    <p *ngIf="resultNoticia" style="
                         color: white !important;
                         text-align: center;
                         margin-top: 14px;
                         font-size: 12px;
                         font-family: 'Roboto', sans-serif;
-                      "
-                    >
+                      ">
                       Ningún módulo accedido
                     </p>
                     <div *ngIf="!resultNoticia">
-                      <ul
-                        class="list-group list-group-flush"
-                        *ngFor="let modulo of modulosConsultados"
-                      >
+                      <ul class="list-group list-group-flush" *ngFor="let modulo of modulosConsultados">
                         <hr style="margin-top: -1px" />
                         <li class="list-group-item">
-                          <div
-                            style="
+                          <div style="
                               display: flex;
                               justify-content:flex-start;
                               align-items:flex-start;       
                               font-family: 'Roboto';
-                            "
-                          >
-                            <img
-                              [src]="imagenesModulos[modulo.MODULO]"
-                              alt="Imagen de {{ modulo.MODULO }}"
-                            
-                              class="modulo-imagen"
-                            />
+                            ">
+                            <img [src]="imagenesModulos[modulo.MODULO]" alt="Imagen de {{ modulo.MODULO }}"
+                              class="modulo-imagen" />
                             <div class="" style="font-size: 15px">
                               <p class="card-title" style="color: #0b5738">
                                 {{ modulo.MODULO }}
@@ -181,65 +125,41 @@
           </div>
         </div>
         <div class="accordion-item d-flex justify-content-center">
-         
-            <button
-              class="accordion-button collapsed"
-              type="button"
-              data-bs-toggle="collapse"
-              data-bs-target="#collapseThree"
-              aria-expanded="false"
-              aria-controls="collapseThree"
-              (click)="irUserSettings()"
-            >
-              <h2>CONFIGURACIÓN DEL PRESTADOR </h2>
-            </button>
-         
+
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+            data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree"
+            (click)="irUserSettings()">
+            <h2>CONFIGURACIÓN DEL PRESTADOR </h2>
+          </button>
+
         </div>
         <div class="accordion-item">
-         
-            <button
-              class="accordion-button collapsed"
-              type="button"
-              data-bs-toggle="collapse"
-              data-bs-target="#collapseFour"
-              aria-expanded="false"
-              aria-controls="collapseThree"
-            >
-              <h2 routerLink="">CERRAR SESIÓN</h2>
-            </button>
-         
+
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+            data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseThree">
+            <h2 routerLink="">CERRAR SESIÓN</h2>
+          </button>
+
         </div>
         <div class="accordion-item">
           <div class="card not222 mat-elevation-z2">
             <div class="noticia-carousel" *ngIf="carousel">
-              <p
-                *ngIf="resultNoticia"
-                style="
+              <p *ngIf="resultNoticia" style="
                   text-align: center;
                   margin-top: 14px;
                   font-size: 12px;
                   font-family: 'Work Sans', sans-serif;
-                "
-              >
+                ">
                 No hay noticias
               </p>
               <div class="w-100" *ngIf="!resultNoticia">
-                <div
-                  id="carouselExampleInterval1"
-                  class="carousel slide"
-                  style="width: 100%; height: 100%"
-                  data-bs-ride="carousel"
-                >
+                <div id="carouselExampleInterval1" class="carousel slide" style="width: 100%; height: 100%"
+                  data-bs-ride="carousel">
                   <div class="carousel-inner">
-                    <div
-                      class="carousel-item"
-                      *ngFor="
+                    <div class="carousel-item" *ngFor="
                         let campo of datosTarjetaNoticia.slice(0, 6);
                         let i = index
-                      "
-                      [ngClass]="{ active: i === 0 }"
-                      [attr.data-bs-interval]="3000"
-                    >
+                      " [ngClass]="{ active: i === 0 }" [attr.data-bs-interval]="3000">
                       <div id="card-carousel2" class="card mat-elevation-z3">
                         <div class="card-img-top">
                           <div *ngIf="campo.COD_IMAGEN; else noImageBlock">
@@ -247,10 +167,8 @@
                           </div>
                           <ng-template #noImageBlock>
                             <div>
-                              <img
-                                id="img-noticia"
-                                src="https://www.dzoom.org.es/wp-content/uploads/2017/07/seebensee-2384369-810x540.jpg"
-                              />
+                              <img id="img-noticia"
+                                src="https://www.dzoom.org.es/wp-content/uploads/2017/07/seebensee-2384369-810x540.jpg" />
                             </div>
                           </ng-template>
                         </div>
@@ -264,45 +182,24 @@
                               {{ campo.DESCRIPCION_NOTICIA.slice(0,120) }}
                             </h5>
                           </div>
- 
+
                           <div class="btn-footer">
-                            <a
-                              class="btn btn-primary btn-noticias"
-                              (click)="indexCard(campo.FK_ID_NOTICIA)"
-                              >Ver más</a
-                            >
+                            <a class="btn btn-primary btn-noticias" (click)="indexCard(campo.FK_ID_NOTICIA)">Ver más</a>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
                   <div class="botones-externos">
-                    <button
-                      class="carousel-control-prev"
-                      (click)="darclick($event)"
-                      type="button"
-                      data-bs-target="#carouselExampleInterval1"
-                      data-bs-slide="prev"
-                      #botonCarousel
-                      (click)="$event.stopPropagation()"
-                    >
-                      <span
-                        class="carousel-control-prev-icon"
-                        aria-hidden="true"
-                      ></span>
+                    <button class="carousel-control-prev" (click)="darclick($event)" type="button"
+                      data-bs-target="#carouselExampleInterval1" data-bs-slide="prev" #botonCarousel
+                      (click)="$event.stopPropagation()">
+                      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                       <span class="visually-hidden">Previous</span>
                     </button>
-                    <button
-                      class="carousel-control-next"
-                      type="button"
-                      data-bs-target="#carouselExampleInterval1"
-                      data-bs-slide="next"
-                      (click)="$event.stopPropagation()"
-                    >
-                      <span
-                        class="carousel-control-next-icon"
-                        aria-hidden="true"
-                      ></span>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleInterval1"
+                      data-bs-slide="next" (click)="$event.stopPropagation()">
+                      <span class="carousel-control-next-icon" aria-hidden="true"></span>
                       <span class="visually-hidden">Next</span>
                     </button>
                   </div>
@@ -316,29 +213,16 @@
   </div>
 </mat-menu>
 <div class="row ">
-  <div class="col-md-8 campana text-end">
+  <div class="col-md-8 campana">
     <div class="container-notificaciones position-relative" style="margin-left: -50rem;">
       <div class="notification-icon">
-        <button
-          class="btn"
-          style="all: initial; cursor: pointer"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#collapseContent"
-          aria-expanded="false"
-          aria-controls="collapseContent"
-        >
+        <button class="btn" style="all: initial; cursor: pointer" type="button" data-bs-toggle="collapse"
+          data-bs-target="#collapseContent" aria-expanded="false" aria-controls="collapseContent">
           <i class="far fa-bell" style="color: #ffffff"></i>
         </button>
- 
-        <div
-          class="collapse custom-popover position-absolute start-100 translate-middle-x"
-          id="collapseContent"
-        >
-          <h3
-            class="text text-success"
-            style="text-align: center; margin-bottom: -10px"
-          >
+
+        <div class="collapse custom-popover position-absolute start-100 translate-middle-x" id="collapseContent">
+          <h3 class="text text-success" style="text-align: center; margin-bottom: -10px">
             Notificaciones
           </h3>
           <div *ngIf="result && !resultInicadores" style="text-align: center">
@@ -350,46 +234,42 @@
             <hr style="margin-bottom: 2px" />
             <ul class="list-group list-group-flush">
               <li
-                class="list-group-item"
+                class="list-group-item text-center"
                 style="cursor: pointer"
-                *ngFor="let notificacion of datosTarjetaActividad.slice(0, 2)"
+                *ngFor="let notificacion of datosTarjetaActividad.slice(0, 2 )"
               >
                 <p
-                  style="margin-bottom: -2px"
+                  style="margin-bottom: -2px;"
                   (click)="
                     indexReminder(notificacion.fkIdActividad, notificacion.dato)
                   "
                 >
-                  {{ notificacion.descripcion?.slice(0, 20) }}
+                  <strong style="display: flex; justify-content: start;">Actividad: </strong>{{ notificacion.descripcion?.slice(0, 20) }}
                 </p>
               </li>
  
               <li
-                class="list-group-item"
+                class="list-group-item text-center"
                 style="cursor: pointer"
                 *ngFor="
                   let campo of listaIndicadores.slice(0, 2);
                   let index = index
                 "
               >
-                <p style="margin-bottom: -2px" (click)="indexReminderIndicador()">
-                  {{ campo.NOMBRE_INDICADOR?.slice(0, 20) }}
+                <p style="margin-bottom: -2px;" (click)="indexReminderIndicador()">
+                  <strong style="display: flex; justify-content: start;">Recordatorio: </strong>{{ campo.NOMBRE_INDICADOR?.slice(0, 20) }}
                 </p>
               </li>
             </ul>
             <hr style="margin-top: 1px" />
-            <a
-              routerLink="/planificacion"
-              class="btn btn-primary btn-block mt-2"
-              style="display: block; text-align: center; justify-content: center"
-              >Ver más</a
-            >
+            <a routerLink="/planificacion" class="btn btn-primary btn-block mt-2"
+              style="display: block; text-align: center; justify-content: center">Ver más</a>
           </div>
         </div>
       </div>
     </div>
   </div>
- 
+
 </div>
  
 <div class="row " >
@@ -424,7 +304,7 @@
               </div>
             </div>
             <div class="col-md-12 mt-2">
-              <h5 class="text-success "><strong>CARACTERIZACIÓN</strong></h5>
+              <h5 class="text-success "><strong>Caracterización</strong></h5>
             </div>
           </div>
         </div>
@@ -439,17 +319,13 @@
                 style="height: 15vh; width: 8vw;"
                 (click)="
                   menuFilter('Autodiagnóstico'); buscarRuta('diagnostico'); fnShowModal()
-                "
-              >
-                <img
-                  src="../../../../assets/img-dashboard/diagnostico-oficial.svg"
-                  class="pcard-img-top img-fluid"
-                  alt="..."
-                />
+                ">
+                <img src="../../../../assets/img-dashboard/diagnostico-oficial.svg" class="pcard-img-top img-fluid"
+                  alt="..." />
               </div>
             </div>
             <div class="col-md-12 mt-2">
-              <h5 class="text-success"><strong>AUTODIAGNÓSTICO</strong></h5>
+              <h5 class="text-success"><strong>Autodiagnóstico</strong></h5>
             </div>
           </div>
         </div>
@@ -469,16 +345,13 @@
                 style="height: 15vh; width: 8vw;"
               >
                 <!-- <img src="../../../../assets/img-dashboard/planificacion.svg" alt="planificacion" id="planificacion"> -->
- 
-                <img
-                  src="../../../../assets/img-dashboard/planificacion-oficial.svg"
-                  class="pcard-img-top img-fluid"
-                  alt="..."
-                />
+
+                <img src="../../../../assets/img-dashboard/planificacion-oficial.svg" class="pcard-img-top img-fluid"
+                  alt="..." />
               </div>
             </div>
             <div class="col-md-12 mt-2">
-              <h5 class="text-success"><strong>GESTOR DE TAREAS</strong></h5>
+              <h5 class="text-success"><strong>Gestor de Tareas</strong></h5>
             </div>
           </div>
         </div>
@@ -495,16 +368,13 @@
                 
               >
                 <!-- <img src="../../../../assets/img-dashboard/documentacion.svg" alt="documentacion" id="documentacion"> -->
- 
-                <img
-                  src="../../../../assets/img-dashboard/documentacion-oficial.svg"
-                  class="pcard-img-top img-fluid"
-                  alt="..."
-                />
+
+                <img src="../../../../assets/img-dashboard/documentacion-oficial.svg" class="pcard-img-top img-fluid"
+                  alt="..." />
               </div>
             </div>
             <div class="col-md-12 mt-2">
-              <h5 class="text-success"><strong>DOCUMENTACIÓN</strong></h5>
+              <h5 class="text-success"><strong>Documentación</strong></h5>
             </div>
           </div>
         </div>
@@ -522,17 +392,14 @@
               style="height: 15vh; width: 8vw;"
             >
               <!-- <img src="../../../../assets/img-dashboard/formacion.svg" alt="formacion" id="formacion"> -->
- 
-              <img
-                src="../../../../assets/img-dashboard/formacion-oficial.svg"
-                class="pcard-img-top img-fluid"
-                alt="..."
-              />
+
+              <img src="../../../../assets/img-dashboard/formacion-oficial.svg" class="pcard-img-top img-fluid"
+                alt="..." />
             </div>
           </div>
           <div class="col-md-12 mt-2">
             <h5 class="text-success">
-              <strong>FORMACIÓN E E-LEARNING</strong>
+              <strong>Formación E E-Learning</strong>
             </h5>
           </div>
         </div>
@@ -550,16 +417,13 @@
               style="height: 15vh; width: 8vw;"
             >
               <!-- <img src="../../../../assets/img-dashboard/noticias.svg" alt="noticias" id="noticias"> -->
- 
-              <img
-                src="../../../../assets/img-dashboard/noticias-oficial.svg"
-                class="pcard-img-top img-fluid"
-                alt="..."
-              />
+
+              <img src="../../../../assets/img-dashboard/noticias-oficial.svg" class="pcard-img-top img-fluid"
+                alt="..." />
             </div>
           </div>
           <div class="col-md-12 mt-2">
-            <h5 class="text-success"><strong>NOTICIAS</strong></h5>
+            <h5 class="text-success"><strong>Noticias</strong></h5>
           </div>
         </div>
         <div class="col-md-3 col-6 mb-4 icono" [ngClass]="{ oculto: AccesoAuditoria }">
@@ -575,16 +439,13 @@
                 style="height: 15vh; width: 8vw;"
               >
                 <!-- <img src="" alt="auditoria" id="auditoria" > -->
- 
-                <img
-                  src="../../../../assets/img-dashboard/auditoria-oficial.svg"
-                  class="pcard-img-top img-fluid"
-                  alt="..."
-                />
+
+                <img src="../../../../assets/img-dashboard/auditoria-oficial.svg" class="pcard-img-top img-fluid"
+                  alt="..." />
               </div>
             </div>
             <div class="col-md-12 mt-2">
-              <h5 class="text-success"><strong>AUDITORÍA INTERNA</strong></h5>
+              <h5 class="text-success"><strong>Auditoría Interna</strong></h5>
             </div>
           </div>
         </div>
@@ -600,17 +461,14 @@
                 style="height: 15vh; width: 8vw;"
               >
                 <!-- <img src="../../../../assets/img-dashboard/" alt="evidencia" id="evidencia"> -->
- 
-                <img
-                  src="../../../../assets/img-dashboard/evidencia-oficial.svg"
-                  class="pcard-img-top img-fluid"
-                  alt="..."
-                />
+
+                <img src="../../../../assets/img-dashboard/evidencia-oficial.svg" class="pcard-img-top img-fluid"
+                  alt="..." />
               </div>
             </div>
             <div class="col-md-12 mt-2">
               <h5 class="text-success">
-                <strong>EVIDENCIA E IMPLEMENTACIÓN</strong>
+                <strong>Evidencia e Implementación</strong>
               </h5>
             </div>
           </div>
@@ -627,16 +485,13 @@
                 style="height: 15vh; width: 8vw;"
               >
                 <!-- <img src="../../../../assets/img-dashboard/gerencia.svg" alt="gerencia" id="gerencia"> -->
- 
-                <img
-                  src="../../../../assets/img-dashboard/gerencia-oficial.svg"
-                  class="pcard-img-top img-fluid"
-                  alt="..."
-                />
+
+                <img src="../../../../assets/img-dashboard/gerencia-oficial.svg" class="pcard-img-top img-fluid"
+                  alt="..." />
               </div>
             </div>
             <div class="col-md-12 mt-2">
-              <h5 class="text-success"><strong>ALTA GERENCIA</strong></h5>
+              <h5 class="text-success"><strong>Alta Gerencia</strong></h5>
             </div>
           </div>
         </div>
@@ -652,16 +507,12 @@
                 style="height: 15vh; width: 8vw;"
               >
                 <!-- <img src="../../../../assets/img-dashboard/medicion.svg" alt="medicion" > -->
- 
-                <img
-                  src="../../../../assets/img-dashboard/kpi-oficial.svg"
-                  class="pcard-img-top img-fluid"
-                  alt="..."
-                />
+
+                <img src="../../../../assets/img-dashboard/kpi-oficial.svg" class="pcard-img-top img-fluid" alt="..." />
               </div>
             </div>
             <div class="col-md-12 mt-2">
-              <h5 class="text-success"><strong>MEDICIÓN Y KPI's</strong></h5>
+              <h5 class="text-success"><strong>Medición y Kpi's</strong></h5>
             </div>
           </div>
         </div>
@@ -684,7 +535,7 @@
               </div>
             </div>
             <div class="col-md-12 mt-2">
-              <h5 class="text-success"><strong>MEJORA CONTINUA</strong></h5>
+              <h5 class="text-success"><strong>Mejora Continua</strong></h5>
             </div>
           </div>
         </div>
@@ -707,7 +558,7 @@
               </div>
             </div>
             <div class="col-md-12 mt-2">
-              <h5 class="text-success"><strong>MONITORIZACIÓN </strong></h5>
+              <h5 class="text-success"><strong>Monitorización</strong></h5>
             </div>
 
 
@@ -736,20 +587,19 @@
           </h3>
           <hr style="display: block; margin-bottom: 0px" />
         </li>
- 
+
         <div class="card" id="card-seguimiento" style="border: none">
           <div class="contenedorCard" style="overflow-y: auto; overflow-x: hidden">
             <div class="tituloNot">
               <p
                 *ngIf="resultSeguimiento"
                 style="
-                  color: white !important;
+                  color: black !important;
                   text-align: center;
                   
                   font-size: 12px;
                   font-family: 'Work Sans', sans-serif;
-                "
-              >
+                ">
                 Ningún módulo accedido
               </p>
               <div *ngIf="!resultSeguimiento">
@@ -782,33 +632,21 @@
  
       <div class="card mat-elevation-z2 pepe2">
         <div class="noticia-carousel" *ngIf="carousel">
-          <p
-            *ngIf="resultNoticia"
-            style="
+          <p *ngIf="resultNoticia" style="
               text-align: center;
               margin-top: 14px;
               font-size: 12px;
               font-family: 'Work Sans', sans-serif;
-            "
-          >
+            ">
             No hay noticias
           </p>
-          <div  *ngIf="!resultNoticia">
-            <div
-              id="carouselExampleInterval"
-              class="carousel slide"
-              data-bs-ride="carousel"
-            >
+          <div *ngIf="!resultNoticia">
+            <div id="carouselExampleInterval" class="carousel slide" data-bs-ride="carousel">
               <div class="carousel-inner">
-                <div
-                  class="carousel-item"
-                  *ngFor="
+                <div class="carousel-item" *ngFor="
                     let campo of datosTarjetaNoticia.slice(0, 6);
                     let i = index
-                  "
-                  [ngClass]="{ active: i === 0 }"
-                  [attr.data-bs-interval]="3000"
-                >
+                  " [ngClass]="{ active: i === 0 }" [attr.data-bs-interval]="3000">
                   <div id="card-carousel" class="card mat-elevation-z8 ">
                     <div class="card-img-top">
                       <div *ngIf="campo.COD_IMAGEN; else noImageBlock">
@@ -816,10 +654,8 @@
                       </div>
                       <ng-template #noImageBlock>
                         <div>
-                          <img
-                            id="img-noticia"
-                            src="https://www.dzoom.org.es/wp-content/uploads/2017/07/seebensee-2384369-810x540.jpg"
-                          />
+                          <img id="img-noticia"
+                            src="https://www.dzoom.org.es/wp-content/uploads/2017/07/seebensee-2384369-810x540.jpg" />
                         </div>
                       </ng-template>
                     </div>
@@ -843,30 +679,14 @@
                 </div>
               </div>
               <div class="botones-externos" *ngIf="contenidoCargado">
-                <button
-                  class="carousel-control-prev"
-                  (click)="darclick($event)"
-                  type="button"
-                  data-bs-target="#carouselExampleInterval"
-                  data-bs-slide="prev"
-                  #botonCarousel
-                >
-                  <span
-                    class="carousel-control-prev-icon"
-                    aria-hidden="true"
-                  ></span>
+                <button class="carousel-control-prev" (click)="darclick($event)" type="button"
+                  data-bs-target="#carouselExampleInterval" data-bs-slide="prev" #botonCarousel>
+                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                   <span class="visually-hidden">Previous</span>
                 </button>
-                <button
-                  class="carousel-control-next"
-                  type="button"
-                  data-bs-target="#carouselExampleInterval"
-                  data-bs-slide="next"
-                >
-                  <span
-                    class="carousel-control-next-icon"
-                    aria-hidden="true"
-                  ></span>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleInterval"
+                  data-bs-slide="next">
+                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
                   <span class="visually-hidden">Next</span>
                 </button>
               </div>
@@ -881,43 +701,24 @@
   <div class="col-md-9 col-12 col-sm-12  ">
     <app-footer2 class="w-100"></app-footer2>
   </div>
- 
+
   <div class="containerDashboard">
     <app-modal></app-modal>
- 
+
     <!-- Modal -->
-    <div
-      class="modal modal-dialog-centered"
-      tabindex="-1"
-      role="dialog"
-      *ngIf="showModal"
-      [ngClass]="{ show: showModal }"
-      style="display: block; background-color: rgba(0, 0, 0, 0.5)"
-    >
+    <div class="modal modal-dialog-centered" tabindex="-1" role="dialog" *ngIf="showModal"
+      [ngClass]="{ show: showModal }" style="display: block; background-color: rgba(0, 0, 0, 0.5)">
       <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content modal-container">
           <div class="modal-body">
-            <a
-              title="Cancelar"
-              class="close-btn"
-              data-dismiss="modal"
-              aria-label="Close"
-              (click)="showModal = false"
-            >
+            <a title="Cancelar" class="close-btn" data-dismiss="modal" aria-label="Close" (click)="showModal = false">
               <i class="fa-solid fa-circle-xmark"></i>
             </a>
             <div class="btn-container">
-              <button
-                class="btn-modal"
-                [routerLink]="
+              <button class="btn-modal" [routerLink]="
                   etapaShowInicio ? '/diagnosticoDoc' : '/diagnostico'
-                "
-                (click)="fnEtapa('inicial')"
-              >
-                <label
-                  *ngIf="etapaShowInicio; else diagnosticoInicio"
-                  style="cursor: pointer"
-                >
+                " (click)="fnEtapa('inicial')">
+                <label *ngIf="etapaShowInicio; else diagnosticoInicio" style="cursor: pointer">
                   Ver resultados etapa Inicial
                 </label>
                 <ng-template #diagnosticoInicio>
@@ -926,19 +727,11 @@
                   </label>
                 </ng-template>
               </button>
- 
-              <button
-                class="btn-modal"
-                [routerLink]="
+
+              <button class="btn-modal" [routerLink]="
                   etapaShowIntermedio ? '/diagnosticoDoc' : '/diagnostico'
-                "
-                (click)="fnEtapa('intermedia')"
-                [ngClass]="{ disabled: bloquearIntermedio }"
-              >
-                <label
-                  *ngIf="etapaShowIntermedio; else diagnosticoIntermedio"
-                  style="cursor: pointer"
-                >
+                " (click)="fnEtapa('intermedia')" [ngClass]="{ disabled: bloquearIntermedio }">
+                <label *ngIf="etapaShowIntermedio; else diagnosticoIntermedio" style="cursor: pointer">
                   Ver resultados etapa Intermedia
                 </label>
                 <ng-template #diagnosticoIntermedio>
@@ -947,19 +740,11 @@
                   </label>
                 </ng-template>
               </button>
- 
-              <button
-                class="btn-modal"
-                [routerLink]="
+
+              <button class="btn-modal" [routerLink]="
                   etapaShowFinal ? '/diagnosticoDoc' : '/diagnostico'
-                "
-                (click)="fnEtapa('final')"
-                [ngClass]="{ disabled: bloquearFinal }"
-              >
-                <label
-                  *ngIf="etapaShowFinal; else diagnosticoFinal"
-                  style="cursor: pointer"
-                >
+                " (click)="fnEtapa('final')" [ngClass]="{ disabled: bloquearFinal }">
+                <label *ngIf="etapaShowFinal; else diagnosticoFinal" style="cursor: pointer">
                   Ver resultados etapa Final
                 </label>
                 <ng-template #diagnosticoFinal>
@@ -973,14 +758,11 @@
         </div>
       </div>
     </div>
-    <ngx-spinner
-      bdColor="rgba(0, 0, 0, 0.5)"
-      size="small"
-      template="<img src='https://www.superiorlawncareusa.com/wp-content/uploads/2020/05/loading-gif-png-5.gif' width='50' height='50'/>"
-    >
+    <ngx-spinner bdColor="rgba(0, 0, 0, 0.5)" size="small"
+      template="<img src='https://www.superiorlawncareusa.com/wp-content/uploads/2020/05/loading-gif-png-5.gif' width='50' height='50'/>">
     </ngx-spinner>
-   
-   
+
+
   </div>
 </div>
 
@@ -1034,9 +816,6 @@
 </div> -->
 
 
-<ngx-spinner
-bdColor="rgba(0, 0, 0, 0.5)"
-size="small"
-template="<img src='https://www.superiorlawncareusa.com/wp-content/uploads/2020/05/loading-gif-png-5.gif' width='50' height='50'/>"
->
+<ngx-spinner bdColor="rgba(0, 0, 0, 0.5)" size="small"
+  template="<img src='https://www.superiorlawncareusa.com/wp-content/uploads/2020/05/loading-gif-png-5.gif' width='50' height='50'/>">
 </ngx-spinner>

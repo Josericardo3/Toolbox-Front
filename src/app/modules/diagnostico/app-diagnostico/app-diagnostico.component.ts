@@ -4,6 +4,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from 'src/app/servicios/api/api.service';
 import { ModalService } from 'src/app/messagemodal/messagemodal.component.service'
 import { BtnEmpezarContinuarService } from 'src/app/servicios/btn-empezar-continuar/btn-empezar-continuar.service';
+import { Observable } from 'rxjs';
+import { ModalDiagnosticoService } from 'src/app/servicios/modalDiagnostico/modal-diagnostico.service';
 
 @Component({
   selector: 'app-app-diagnostico',
@@ -34,6 +36,7 @@ export class AppDiagnosticoComponent implements OnInit {
   bloquearGuardar:boolean = false;
   bloquearRadio:boolean = false;
   bloquearTextarea: boolean = false;
+  mostrarModal: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -41,7 +44,7 @@ export class AppDiagnosticoComponent implements OnInit {
     private ApiService: ApiService,
     private Message: ModalService,
     private activatedRoute: ActivatedRoute,
-    public btnEmpezarContinuarService: BtnEmpezarContinuarService
+    public btnEmpezarContinuarService: BtnEmpezarContinuarService,
   ) { }
 
   ngOnInit(): void {
@@ -106,6 +109,33 @@ export class AppDiagnosticoComponent implements OnInit {
           });
         });
       });
+
+    this.getUsuario();
+  }
+
+  avatares: any = []
+  idAvatar: any;
+  rutaAvatar: any;
+  getUsuario(){
+    this.ApiService.getUsuario().subscribe((data:any) => {
+      this.avatares = data
+      this.idAvatar = this.avatares.FK_ID_TIPO_AVATAR;
+      this.rutaAvatar = `../../../../assets/avatares/avatar${this.idAvatar}.svg`
+      console.log(this.avatares.FK_ID_TIPO_AVATAR)
+    })
+  }
+
+  confirmarSalida() {
+    this.mostrarModal = true;
+    console.log('no se guardaron cambios')
+  }
+
+  cancelar(){
+    this.mostrarModal = false;
+  }
+
+  regresarAlCuestionario(){
+    this.router.navigate(["/diagnosticoProgress"]);
   }
 
   getRadioValue(valorRespuesta: string): any {
