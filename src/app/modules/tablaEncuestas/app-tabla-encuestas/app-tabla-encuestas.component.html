@@ -34,7 +34,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let campo of datos;let i = index">
+                    <tr *ngFor="let campo of datos; let i = index">
                         <td>{{campo.TITULO}}</td>
                         <td>{{campo.NUM_ENCUESTADOS}}</td>
                         <td *ngIf="getRolValue() !== 4 && getRolValue() !== 5 &&  getRolValue() !== 7">

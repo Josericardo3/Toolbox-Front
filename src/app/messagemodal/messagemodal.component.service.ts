@@ -1,8 +1,10 @@
 import { Injectable } from "@angular/core";
-import { BehaviorSubject } from "rxjs";
+import { Router } from "@angular/router";
+import { BehaviorSubject, Subject } from "rxjs";
 @Injectable({
   providedIn: "root",
 })
+
 export class ModalService {
   private modalSubject = new BehaviorSubject<{
     showModal: boolean;

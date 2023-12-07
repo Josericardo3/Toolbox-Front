@@ -71,7 +71,7 @@ export class AppResultadosEncuestasComponent {
   fnConsultActivities(){
     this.ApiService.getEncuestas().subscribe((data) => {
       this.datos = data;
-      this.dataInitial= data;
+      this.dataInitial = data;
       
       // Paginado inicial
       const totalPag = data.length;
@@ -137,5 +137,4 @@ export class AppResultadosEncuestasComponent {
   
     return fechas;
   }
-  
 }

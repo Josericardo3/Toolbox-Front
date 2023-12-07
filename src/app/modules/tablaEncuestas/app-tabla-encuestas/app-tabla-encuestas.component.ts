@@ -79,7 +79,7 @@ export class AppTablaEncuestasComponent implements OnInit, AfterViewInit{
       this.filterArray = this.datos;
       this.arrayEncuestas = data;
       this.dataInitial= data;
-      
+      this.datos.sort((a, b) => { a.FECHA_ACT > b.FECHA_ACT ? 1 : -1})
     // Paginado inicial
     const totalPag = data.length;
     this.totalPaginas = Math.ceil(totalPag / 7);

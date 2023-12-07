@@ -2,7 +2,7 @@ import { AfterViewInit, Component, EventEmitter, Input, OnChanges, OnInit, Outpu
 import { ApiService } from 'src/app/servicios/api/api.service';
 import { FormArray, FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { FormService } from 'src/app/servicios/form/form.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { forEach } from 'lodash';
 import { elements } from 'chart.js';
 import { ModalService } from 'src/app/messagemodal/messagemodal.component.service';
@@ -22,19 +22,20 @@ interface Option {
 
 export class AppTarjetasComponent implements OnInit, AfterViewInit {
 
-  @Input() index: number | undefined;
   @Output() eliminarTarjeta = new EventEmitter<number>();
   @Output() tarjetaClicada = new EventEmitter<number>();
   @Output() formularioCompletado = new EventEmitter<FormGroup>();
   @Output() tarjetaCompletada = new EventEmitter<any>();
+  @Output() ultimoIDChanged: EventEmitter<any> = new EventEmitter<any>();
+  @Output() activarCompartirEncuesta: EventEmitter<any> = new EventEmitter<any>();
+
+  @Input() index: number | undefined;
   @Input() valoresPreguntas: any = [];
   @Input() editandoEncuesta: boolean = false;
-  @Input() datosPreguntaEncuesta: any[]
+  @Input() datosPreguntaEncuesta: any[];
   @Input() tituloEditar: any = "";
   @Input() descripcionEditar: any = "";
   @Input() selectCrearTarjeta: boolean = false;
-  @Output() ultimoIDChanged: EventEmitter<any> = new EventEmitter<any>();
-  @Output() activarCompartirEncuesta: EventEmitter<any> = new EventEmitter<any>();
 
   public form: FormGroup;
   hayopcion:any=true;
@@ -68,7 +69,6 @@ export class AppTarjetasComponent implements OnInit, AfterViewInit {
   constructor(
     private ApiService: ApiService,
     private formBuilder: FormBuilder,
-    private formService: FormService,
     private activatedRoute: ActivatedRoute,
     private modalService: ModalService
   ) { }
@@ -526,17 +526,11 @@ export class AppTarjetasComponent implements OnInit, AfterViewInit {
   }
 
   cambiarEstado(i) {
-    
-    // this.selectObligatorio = false;
     if (this.cambiarEstadoSwitch) {
       this.selectObligatorio = false;
       this.cambiarEstadoSwitch = false;
       console.log("estadoooooooo", i)
     }
-    // if (i == true && this.selectTarjeta == true) {
-    //   this.selectObligatorio = true;
-    //   // this.selectTarjeta = true;
-    // }
   }
 
   actualizarrEncuesta() {
@@ -625,18 +619,16 @@ export class AppTarjetasComponent implements OnInit, AfterViewInit {
     this.modeloEnvio.ID_MAE_ENCUESTA = 0
     this.modeloEnvio.FK_ID_USUARIO = localStorage.getItem('Id'),
 
-    this.ApiService.saveEncuesta(this.modeloEnvio)
-    .subscribe( (d) => {
+    this.ApiService.saveEncuesta(this.modeloEnvio).subscribe( (d) => {
       this.modalService.showModal("ENCUESTA CREADA", "Se creó la encuesta correctamente");
       this.compartirEncuestaBtn = true;
       this.activarCompartirEncuesta.emit(this.compartirEncuestaBtn)
-      this.ApiService.getEncuestas()
-      .subscribe(response => {
+      this.ApiService.getEncuestas().subscribe(response => {
         console.log(response)
         const encuestas = response as Array<any>;
 
         if (encuestas.length > 0) {
-          this.ultimoID = encuestas[encuestas.length - 1].ID_MAE_ENCUESTA;
+          this.ultimoID = encuestas[0].ID_MAE_ENCUESTA;
           this.ultimoIDChanged.emit(this.ultimoID)
           console.log('Último ID_MAE_ENCUESTA:', this.ultimoID);
         } else {

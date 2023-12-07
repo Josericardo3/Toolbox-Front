@@ -1,18 +1,17 @@
 import { Directive, ElementRef, HostListener } from '@angular/core';
+import { NgControl } from '@angular/forms';
 
 @Directive({
   selector: '[appNoEspacio]'
 })
 export class NoEspacioDirective {
 
-  constructor(private el: ElementRef) { }
-
+  constructor(private el: ElementRef, private ngControl: NgControl) { }
+  
   @HostListener('input', ['$event']) onInput(event: Event): void {
-    const inputValue: string = this.el.nativeElement.value;
-    if (inputValue && inputValue.trim() !== inputValue) {
-      this.el.nativeElement.value = inputValue.trim();
-      event.preventDefault();
+    const inputValue = this.ngControl.value;
+    if (inputValue && inputValue.charAt(0) === ' ') {
+      this.ngControl.control.setValue(inputValue.trim(), { emitEvent: false });
     }
   }
-
 }

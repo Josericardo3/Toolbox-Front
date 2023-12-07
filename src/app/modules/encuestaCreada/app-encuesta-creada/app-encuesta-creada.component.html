@@ -13,14 +13,14 @@
                     <span *ngIf="pregunta.OBLIGATORIO == true" style="color: tomato;">*</span>
                 </label>
                 <input type="text" placeholder="Ingresar respuesta corta" class="respuestaCorta" [formControlName]="'respuestaCorta_' + pregunta.ID_MAE_ENCUESTA_PREGUNTA" 
-                maxlength="200" [required]="pregunta.OBLIGATORIO" appNoEspacio pattern="[^\s]+">
+                maxlength="200" [required]="pregunta.OBLIGATORIO" appNoEspacio>
             </div>
             <div *ngIf="pregunta.TIPO === 'respuestaLarga'" class="tipoDiv">
                 <label class="descripcion">{{pregunta.DESCRIPCION}}
                     <span *ngIf="pregunta.OBLIGATORIO == true" style="color: tomato;">*</span>
                 </label>
                 <textarea placeholder="Ingresar respuesta larga" class="respuestaLarga" [formControlName]="'respuestaLarga_' + pregunta.ID_MAE_ENCUESTA_PREGUNTA" 
-                [required]="pregunta.OBLIGATORIO" maxlength="1500" appNoEspacio pattern="[^\s]+"></textarea>
+                [required]="pregunta.OBLIGATORIO" maxlength="1500" appNoEspacio></textarea>
             </div>
             <div *ngIf="pregunta.TIPO === 'radioButton'" class="tipoDiv">
                 <label class="descripcion">{{pregunta.DESCRIPCION}}
@@ -33,7 +33,7 @@
                   </label>
                 </div>
                 <input *ngIf="pregunta.mostrarOtroRadio" type="text" placeholder="Otro" maxlength="100" [required]="pregunta.OBLIGATORIO"
-                [formControlName]="'radioButtonOtro_' + pregunta.ID_MAE_ENCUESTA_PREGUNTA" appNoEspacio pattern="[^\s]+">
+                [formControlName]="'radioButtonOtro_' + pregunta.ID_MAE_ENCUESTA_PREGUNTA" appNoEspacio>
             </div>                                   
             <div *ngIf="pregunta.TIPO === 'checkbox'" class="tipoDiv">
                 <label class="descripcion">{{pregunta.DESCRIPCION}}
@@ -41,12 +41,12 @@
                 </label>
                 <div *ngFor="let opcion of pregunta.VALOR.split(';'); let j = index">
                     <label>
-                        <input type="checkbox" [required]="pregunta.OBLIGATORIO" [value]="opcion" [formControlName]="'checkbox_' + pregunta.ID_MAE_ENCUESTA_PREGUNTA + '_' + i"
+                        <input type="checkbox" [required]="pregunta.OBLIGATORIO" [value]="opcion" [formControlName]="'checkbox_' + pregunta.ID_MAE_ENCUESTA_PREGUNTA + '_' + j"
                         (change)="toggleOtroCheckbox(pregunta, opcion)" [id]="'checkbox_' + pregunta.ID_MAE_ENCUESTA_PREGUNTA + '_' + j">{{opcion}}
                     </label>
                 </div>
                 <input *ngIf="pregunta.mostrarOtroCheckbox" type="text" placeholder="Otro" maxlength="100" [required]="pregunta.OBLIGATORIO"
-                [formControlName]="'checkboxOtro_' + pregunta.ID_MAE_ENCUESTA_PREGUNTA" appNoEspacio pattern="[^\s]+">
+                [formControlName]="'checkboxOtro_' + pregunta.ID_MAE_ENCUESTA_PREGUNTA" appNoEspacio>
             </div>
             <div *ngIf="pregunta.TIPO === 'desplegable'" class="tipoDiv">
                 <label class="descripcion">{{pregunta.DESCRIPCION}}

@@ -110,7 +110,8 @@ export class AppEncuestaCreadaComponent implements OnInit, AfterContentChecked {
         if (pregunta.mostrarOtroRadio) {
           const valorOtro = this.form.get(`radioButtonOtro_${pregunta.ID_MAE_ENCUESTA_PREGUNTA}`).value;
           if (valorOtro) {
-            respuesta = valorOtro;
+            // respuesta = valorOtro;
+            respuesta = `Otro: ${valorOtro}`;
           }
         }
       } else if (tipo === 'checkbox') {
@@ -119,41 +120,35 @@ export class AppEncuestaCreadaComponent implements OnInit, AfterContentChecked {
           if (isChecked) {
             respuesta += (respuesta ? ', ' : '') + opcion;
           }
-          // return isChecked;
         });
-
-        // if (opcionesSeleccionadas.length > 0) {
-        //   respuesta = opcionesSeleccionadas.join(', ');
-        // }
-
         if (pregunta.mostrarOtroCheckbox) {
           const valorOtro = this.form.get(`checkboxOtro_${pregunta.ID_MAE_ENCUESTA_PREGUNTA}`).value;
           if (valorOtro) {
-            respuesta += (respuesta ? ', ' : '') + valorOtro;
+            // respuesta += (respuesta ? ', ' : '') + valorOtro;
+            // respuesta += (respuesta ? ', ' : '') + `Otro: ${valorOtro}`;
+            respuesta += `: ${valorOtro}`;
           }
         }
       } else if (tipo === 'desplegable') {
         respuesta = this.form.get(`desplegable_${pregunta.ID_MAE_ENCUESTA_PREGUNTA}`).value || '';
       }
 
-      if (respuesta) {
+      // if (respuesta) {
         const respuestaFormato = {
           FK_ID_MAE_ENCUESTA_PREGUNTA: pregunta.ID_MAE_ENCUESTA_PREGUNTA,
           RESPUESTA: respuesta.toString()
         };
         respuestas.push(respuestaFormato);
-      }
+      // }
     });
 
     console.log(respuestas);
-    this.ApiService.saveEncuestaRespuesta(respuestas)
-      .subscribe((data) => {
+    this.ApiService.saveEncuestaRespuesta(respuestas).subscribe((data) => {
         this.mostrarFormulario = false;
         const title = "ENCUESTA COMPLETADA";
         const message = "Se completó la encuesta correctamente"
         this.Message.showModal(title, message);
-
-      });
+    });
   }
 
   alMenosUnaPreguntaRespondida(): boolean {
