@@ -141,12 +141,16 @@ import { GestionVariableKpiComponent } from "./modules/medicion-kpis/variables/g
 import { FormularioVariableKpiComponent } from "./modules/medicion-kpis/variables/formulario-variable-kpi/formulario-variable-kpi.component";
 // import { AppDiagnosticoProgressComponent } from "./modules/diagnosticoProgress/app-diagnostico-progress/app-diagnostico-progress.component";
 import { AppUserSettingsComponent } from './modules/UserSettings/app-user-settings.component';
-import { EditorModule } from '@tinymce/tinymce-angular';
+import { EditorModule, TINYMCE_SCRIPT_SRC } from '@tinymce/tinymce-angular';
 
 import { AppDiagnosticoProgressComponent } from "./modules/diagnosticoProgress/app-diagnostico-progress/app-diagnostico-progress.component";
 import { Footer2Component } from "./modules/footer2/footer2/footer.component";
 import { AppHeader2Component } from "./modules/header/app-header2/app-header2.component";
 import { DiagnosticoEtapasComponent } from "./modules/diagnostico-etapas/diagnostico-etapas.component";
+import { NoEspacioDirective } from "./directives/no-espacio.directive";
+import { ModalDiagnosticoService } from "./servicios/modalDiagnostico/modal-diagnostico.service";
+import { ModalDiagnosticoComponent } from "./modules/modal-diagnostico/modal-diagnostico.component";
+
 import { FormulasSemaforizacionComponent } from "./modules/medicion-kpis/indicadores-kpis/formulas-semaforizacion/formulas-semaforizacion.component";
 
 @NgModule({
@@ -249,6 +253,8 @@ import { FormulasSemaforizacionComponent } from "./modules/medicion-kpis/indicad
     Footer2Component,
     AppHeader2Component,
     DiagnosticoEtapasComponent,
+    ModalDiagnosticoComponent,
+    NoEspacioDirective,
     FormulasSemaforizacionComponent
   ],
   imports: [
@@ -312,11 +318,13 @@ import { FormulasSemaforizacionComponent } from "./modules/medicion-kpis/indicad
     AppPlanificacionComponent,
     { provide: MatPaginatorIntl, useClass: MatPaginatorIntlEsp },
     { provide: MAT_DATE_LOCALE, useValue: 'es-ES' },
+    { provide: TINYMCE_SCRIPT_SRC, useValue: 'tinymce/tinymce.min.js' }
   ],
   entryComponents: [
     AppDeleteActivitiesComponent,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   bootstrap: [AppComponent],
+  
 })
 export class AppModule { }

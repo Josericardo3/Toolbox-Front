@@ -33,6 +33,7 @@ export class ApiService {
   apiURL = environment.apiURL
   apiURLNuevo = environment.apiURLNuevo
 
+
   apiCHART = environment.apiChart
   constructor(private http: HttpClient) { }
   color: Object;

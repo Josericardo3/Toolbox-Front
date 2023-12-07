@@ -25,6 +25,7 @@ import {
     };
     
     static comparePassword(control:AbstractControl,error: ValidationErrors): ValidatorFn {
+      
       const password: string = control.get('password1')?.value; // get password from our password form control
       const confirmPassword: string = control.get('confirmPassword')?.value; // get password from our confirmPassword form control
       // compare is the password math
@@ -34,5 +35,15 @@ import {
       }
     return confirmPassword != '' && password !== confirmPassword? null: error as any;
     }
-  
+    static validarIgualdadInputs(control:AbstractControl,error: ValidationErrors):ValidatorFn {
+      
+      const password: string = control.get('correo')?.value; // get password from our password form control
+      const confirmPassword: string = control.get('correo2')?.value; // get password from our confirmPassword form control
+      // compare is the password math
+      if (confirmPassword != '' && password !== confirmPassword) {
+        // if they don't match, set an error in our confirmPassword form control
+       control.get('correo2')?.setErrors({ NoEmailMatch: true });
+      }
+    return confirmPassword != '' && password !== confirmPassword? null: error as any;
+    }
   }

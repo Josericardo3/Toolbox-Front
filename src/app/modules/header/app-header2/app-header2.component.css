@@ -2,9 +2,10 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    min-height: 70%;
 }
 
 .logo-escudo {
     max-width: 100%;
-    height: auto;
+    min-height: 30px;
 }

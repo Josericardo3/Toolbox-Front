@@ -35,7 +35,7 @@ export class AppHeaderComponent implements OnInit {
     // Suscribirse al evento de redimensionamiento
     window.addEventListener('resize', () => {
       this.isMobile = window.innerWidth < 780; // Actualizar el estado en tiempo real
-      console.log(this.isMobile, "tanioaaaaaaaa:",window.innerWidth)
+      
     });
   }
   Logo() {
@@ -48,7 +48,7 @@ export class AppHeaderComponent implements OnInit {
       .subscribe(data => {
         this.datos = data
         this.nombre = this.datos.NOMBRE
-        console.log("info usuario",this.datos)
+        
         if(this.datos.LOGO=="" || this.datos.LOGO==undefined || this.datos.LOGO==null){
          this.logo=`../../../../assets/avatares/avatar${this.datos.FK_ID_TIPO_AVATAR}.svg`
         }else{

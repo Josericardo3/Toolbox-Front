@@ -58,10 +58,12 @@ export class AppTarjetasComponent implements OnInit, AfterViewInit {
     { id: 4, label: 'Casillas', value: 'checkbox', icon: 'fa-regular fa-square-check' },
     { id: 5, label: 'Desplegable', value: 'desplegable', icon: 'fa-solid fa-circle-arrow-down' }
   ];
-  modelPreguntas: any = [{ opcionesBoton: [], opcionesCheckbox: [], opcionesDesplegableEditar: [] }];
+  modelPreguntas: any = [{ IDUNICO: 1, opcionesBoton: [], opcionesCheckbox: [], opcionesDesplegableEditar: [] }];
   selectTarjeta: boolean = false;
+  selectObligatorio: boolean = true;
   ultimoID: any;
   compartirEncuestaBtn: boolean = false;
+  cambiarEstadoSwitch: boolean = false;
 
   constructor(
     private ApiService: ApiService,
@@ -78,6 +80,9 @@ export class AppTarjetasComponent implements OnInit, AfterViewInit {
       this.activatedRoute.params.subscribe(params => {
         if (params['id']) {
           this.editandoEncuesta = true;
+          this.selectObligatorio = true;
+          this.cambiarEstadoSwitch = true;
+          this.selectTarjeta = true;
           this.obtenerDatosEncuesta(params['id']);
           this.idEncuesta=params['id'];
         }
@@ -103,7 +108,7 @@ export class AppTarjetasComponent implements OnInit, AfterViewInit {
         this.valoresPreguntass = respuesta.MAE_ENCUESTA_PREGUNTAS;
         this.modelPreguntas = respuesta.MAE_ENCUESTA_PREGUNTAS;
         this.modelPreguntas = this.modelPreguntas.map(function (pregunta) {
-          return { ...pregunta, opcionesBoton: [], opcionesCheckbox: [], opcionesDesplegableEditar: [] };
+          return { ...pregunta, IDUNICO: pregunta.ID_MAE_ENCUESTA_PREGUNTA, opcionesBoton: [], opcionesCheckbox: [], opcionesDesplegableEditar: [] };
         });
         this.completarFormularioEdicion();
         this.completarFormularioValores();
@@ -300,9 +305,6 @@ export class AppTarjetasComponent implements OnInit, AfterViewInit {
       this.modelPreguntas[id].opcionesDesplegableEditar.push({})
     }
 
-      // Establecer this.selectTarjeta en true solo para opciones específicas
-  // this.selectTarjeta = ['respuestaCorta', 'respuestaLarga', 'radioButton', 'checkbox', 'desplegable'].includes(option.value);
-
     this.showOptionEditar[id] = !this.showOptionEditar[id];
   }
 
@@ -332,9 +334,9 @@ export class AppTarjetasComponent implements OnInit, AfterViewInit {
     console.log('fffffffffffffff', this.selectedOption)
   }
 
-  agregarOtro() {
-    this.showOtro = !this.showOtro;
-  }
+  // agregarOtro() {
+  //   this.showOtro = !this.showOtro;
+  // }
 
   agregarOtros(pregunta: any, i: any, opcion) {
   var existeOtro=false;
@@ -454,17 +456,14 @@ export class AppTarjetasComponent implements OnInit, AfterViewInit {
 
   agregarInputRadio() {
     this.opcionesRadio.push(this.formBuilder.control(''));
-    
   }
 
   agregarInputCheckbox() {
     this.opcionesCheckbox.push(this.formBuilder.control(''));
-    
   }
 
   agregarInputDesplegable() {
     this.opcionesDesplegable.push(this.formBuilder.control(''));
-    
   }
 
   removeRadioOption(index: number) {
@@ -473,26 +472,43 @@ export class AppTarjetasComponent implements OnInit, AfterViewInit {
     this.opcionesDesplegable.removeAt(index);
   }
 
-  agregarotro(i) {
-    if (i != 0 && i != (this.modelPreguntas.length - 1)) {
-
-      this.modelPreguntas.splice(-1, 0, { FK_MAE_ENCUESTA: 0, ID_MAE_ENCUESTA_PREGUNTA: 0, OBLIGATORIO: false, opcionesBoton: [], opcionesCheckbox: [], opcionesDesplegableEditar: [] });
-      console.log("tamañooo", this.modelPreguntas.length)
-      this.selectedOptions[this.modelPreguntas.length - 1] = { id: 0, label: 'Seleccione una opción', value: '', icon: '' };
-    } else if (i == this.modelPreguntas.length - 1) {
-      //agregar despues
-      this.modelPreguntas.push({ FK_MAE_ENCUESTA: 0, ID_MAE_ENCUESTA_PREGUNTA: 0, OBLIGATORIO: false, opcionesBoton: [], opcionesCheckbox: [], opcionesDesplegableEditar: [] });
-
-      this.selectedOptions[this.modelPreguntas.length - 1] = { id: 0, label: 'Seleccione una opción', value: '', icon: '' };
-    } else if (i == 0) {
-      this.modelPreguntas.splice(1, 0, { FK_MAE_ENCUESTA: 0, ID_MAE_ENCUESTA_PREGUNTA: 0, OBLIGATORIO: false, opcionesBoton: [], opcionesCheckbox: [], opcionesDesplegableEditar: [] });
-      console.log("tamañooo", this.modelPreguntas.length)
-      this.selectedOptions[this.modelPreguntas.length - 1] = { id: 0, label: 'Seleccione una opción', value: '', icon: '' };
-    }
-
-    this.selectTarjeta = false;
+  generarUUID(): string {     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {         
+        const r = Math.random() * 16 | 0;         
+        const v = c === 'x' ? r : (r & 0x3 | 0x8);        
+        return v.toString(16);     
+      }); 
   }
 
+  agregarotro(i) {
+    this.selectObligatorio = false;
+    this.cambiarEstadoSwitch = false;
+    let defaultOption = { id: 0, label: 'Seleccione una opción', value: '', icon: '' };
+  
+    if (i != 0 && i != (this.modelPreguntas.length - 1)) {
+      this.modelPreguntas.splice(-1, 0, { IDUNICO: this.generarUUID() ,FK_MAE_ENCUESTA: 0, ID_MAE_ENCUESTA_PREGUNTA: 0, OBLIGATORIO: false, opcionesBoton: [], opcionesCheckbox: [], opcionesDesplegableEditar: [] });
+      console.log("tamañooo", this.modelPreguntas.length);
+  
+      // Establecer todas las opciones en 'Seleccione una opción'
+      this.selectedOptions.splice(-1, 0, { ...defaultOption });
+    } else if (i == this.modelPreguntas.length - 1) {
+      // Agregar después
+      this.modelPreguntas.push({ IDUNICO: this.generarUUID(), FK_MAE_ENCUESTA: 0, ID_MAE_ENCUESTA_PREGUNTA: 0, OBLIGATORIO: false, opcionesBoton: [], opcionesCheckbox: [], opcionesDesplegableEditar: [] });
+  
+      // Establecer la nueva opción en 'Seleccione una opción'
+      this.selectedOptions.push({ ...defaultOption });
+    } else if (i == 0) {
+      this.modelPreguntas.splice(1, 0, { IDUNICO: this.generarUUID(), FK_MAE_ENCUESTA: 0, ID_MAE_ENCUESTA_PREGUNTA: 0, OBLIGATORIO: false, opcionesBoton: [], opcionesCheckbox: [], opcionesDesplegableEditar: [] });
+      console.log("tamañooo", this.modelPreguntas.length);
+  
+      // Establecer la nueva opción en 'Seleccione una opción'
+      this.selectedOptions.splice(1, 0, { ...defaultOption });
+    }
+  
+    this.selectTarjeta = false;
+    // this.selectObligatorio = false;
+    console.log(this.selectTarjeta)
+  }
+  
   eliminar(i,pregunta) {
     console.log("eliminadaaaaa",pregunta)
     if(pregunta.ID_MAE_ENCUESTA_PREGUNTA!=0){
@@ -510,8 +526,17 @@ export class AppTarjetasComponent implements OnInit, AfterViewInit {
   }
 
   cambiarEstado(i) {
-    console.log("estadoooooooo")
-    //this.modelPreguntas[i].OBLIGATORIO=!this.modelPreguntas[i].OBLIGATORIO;
+    
+    // this.selectObligatorio = false;
+    if (this.cambiarEstadoSwitch) {
+      this.selectObligatorio = false;
+      this.cambiarEstadoSwitch = false;
+      console.log("estadoooooooo", i)
+    }
+    // if (i == true && this.selectTarjeta == true) {
+    //   this.selectObligatorio = true;
+    //   // this.selectTarjeta = true;
+    // }
   }
 
   actualizarrEncuesta() {

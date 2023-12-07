@@ -36,9 +36,18 @@
       <hr>
     </div>
     <div class="categorizacion-view">
+      <div class="categorias">
+        <div class="val-cat" *ngFor="let val of arrayCategorias; let i = index">
+            <div class="cat-n">
+                <i class="fi fi-sr-angle-right"></i>
+                <p class="cat-notica">{{val.DESCRIPCION}}</p>
+            </div>
+            <p class="contador">{{val.N_REGISTROS}}</p>
+        </div>
+      </div>
       <div class="btn-noticia">
-        <button class="btn-crear" (click)="showModalEditar = true" *ngIf="getRolValue() !== 5 && getRolValue() !== 7">EDITAR NOTICIA&emsp;<i class="fi fi-rr-arrow-circle-right"></i></button>
-        <button class="btn-delete" (click)="deleteNoticia()" *ngIf="getRolValue() !== 5 && getRolValue() !== 7">ELIMINAR NOTICIA&emsp;<i class="fi fi-rr-arrow-circle-right"></i></button>
+        <button class="btn-crear" (click)="showModalEditar = true" *ngIf="getRolValue() !== 5 && getRolValue() !== 7">Editar Noticia&emsp;<i class="fi fi-rr-arrow-circle-right"></i></button>
+        <button class="btn-delete" (click)="deleteNoticia()" *ngIf="getRolValue() !== 5 && getRolValue() !== 7">Eliminar Noticia&emsp;<i class="fi fi-rr-arrow-circle-right"></i></button>
       </div>
     </div>
   </div>
@@ -76,25 +85,29 @@
                 [disabled]="true"><br>
             <label for="">Título de la noticia</label>
             <input type="text" id="titulo" formControlName="titulo" [(ngModel)]="noticiaSelected.TITULO" ><br>
+            <label for="" class="indicador-max">El titulo ingresado no debe tener más de 50 caractéres</label>
             <label for="">Descripción de la noticia</label>
             <!--<angular-editor placeholder="Agregar una descripción" formControlName="descripcion"
                 style="margin-top:2vh;" id="descripcion"
                 [(ngModel)]="noticiaSelected.DESCRIPCION"></angular-editor>-->
             <br>
-            <editor apiKey="55jurjhq2t2vhxydiwxvftw7j1oxklp4tjwmapao76sojkxw" [(ngModel)]="noticiaSelected.DESCRIPCION" formControlName="descripcion" name="descripcion"
+            <editor [(ngModel)]="noticiaSelected.DESCRIPCION" formControlName="descripcion" name="descripcion"
                 [init]="{
+                  base_url: '/tinymce',
+                  suffix: '.min',
                   height: 500,
                   plugins: [
-                     'a11ychecker','advlist','advcode','advtable','autolink','checklist','export',
-                    'lists','link','image','charmap','preview','anchor','searchreplace','visualblocks',
-                    'powerpaste','fullscreen','formatpainter','insertdatetime','media','table','help','wordcount'
+                      'a11ychecker','advlist','advcode','advtable','autolink','checklist','export',
+                      'lists','link','image','charmap','preview','anchor','searchreplace','visualblocks',
+                      'powerpaste','fullscreen','formatpainter','insertdatetime','media','table','help','wordcount'
                   ],
                   toolbar:
-                   'undo redo | casechange blocks | bold italic backcolor | \
-                   alignleft aligncenter alignright alignjustify | \
-                   bullist numlist checklist outdent indent | removeformat | a11ycheck code table help'
+                  'undo redo | casechange blocks | bold italic backcolor | \
+                  alignleft aligncenter alignright alignjustify | \
+                  bullist numlist checklist outdent indent | removeformat | a11ycheck code table help'
                 }"
             ></editor>
+            <label for="" class="indicador-max">El texto ingresado no debe superar las 500 palabras</label>
             <div class="containerFile" style="margin-top:2vh;">
                 <input type="file" (change)="captureImage($event)" class="file" id="archivo" #archivo>
                 <label for="archivo" class="fileBtn">Seleccionar imagen</label>

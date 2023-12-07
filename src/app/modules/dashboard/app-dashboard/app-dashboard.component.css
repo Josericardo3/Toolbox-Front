@@ -1132,6 +1132,11 @@ margin-top: -1rem
   --bs-gutter-x: initial !important; /* Reinicia el valor a su estado inicial */
 }
 
+.campana{
+  display: flex;
+  justify-content: end;
+}
+
 
 
 

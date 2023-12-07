@@ -1,6 +1,7 @@
 import { AfterContentChecked, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { NoEspacioDirective } from 'src/app/directives/no-espacio.directive';
 import { ModalService } from 'src/app/messagemodal/messagemodal.component.service'
 import { ApiService } from 'src/app/servicios/api/api.service';
 
@@ -153,5 +154,34 @@ export class AppEncuestaCreadaComponent implements OnInit, AfterContentChecked {
         this.Message.showModal(title, message);
 
       });
+  }
+
+  alMenosUnaPreguntaRespondida(): boolean {
+    return (
+        this.datosPreguntaEncuesta &&
+        this.datosPreguntaEncuesta.MAE_ENCUESTA_PREGUNTAS &&
+        this.datosPreguntaEncuesta.MAE_ENCUESTA_PREGUNTAS.some(pregunta => this.esPreguntaRespondida(pregunta))
+    );
+  }
+
+  esPreguntaRespondida(pregunta: any): boolean {
+    const tipo = pregunta.TIPO;
+
+    if (tipo === 'respuestaCorta') {
+        return !!this.form.get(`respuestaCorta_${pregunta.ID_MAE_ENCUESTA_PREGUNTA}`).value;
+    } else if (tipo === 'respuestaLarga') {
+        return !!this.form.get(`respuestaLarga_${pregunta.ID_MAE_ENCUESTA_PREGUNTA}`).value;
+    } else if (tipo === 'radioButton') {
+        const valor = this.form.get(`radioButton_${pregunta.ID_MAE_ENCUESTA_PREGUNTA}`).value;
+        return !!valor || (pregunta.mostrarOtroRadio && !!this.form.get(`radioButtonOtro_${pregunta.ID_MAE_ENCUESTA_PREGUNTA}`).value);
+    } else if (tipo === 'checkbox') {
+        return pregunta.VALOR.split(';').some((opcion, i) => {
+            return !!this.form.get(`checkbox_${pregunta.ID_MAE_ENCUESTA_PREGUNTA}_${i}`).value;
+        }) || (pregunta.mostrarOtroCheckbox && !!this.form.get(`checkboxOtro_${pregunta.ID_MAE_ENCUESTA_PREGUNTA}`).value);
+    } else if (tipo === 'desplegable') {
+        return !!this.form.get(`desplegable_${pregunta.ID_MAE_ENCUESTA_PREGUNTA}`).value;
+    }
+
+    return false;
   }
 }

@@ -1,65 +1,90 @@
 <app-app-header></app-app-header>
 <app-app-header2></app-app-header2>
 <div class="container d-flex flex-column justify-content-center">
-
   <a href="../../../../assets//Politica-de-datos/POLITICA DE TRATAMIENTO DE DATOS  ISOLUCIONES.pdf"></a>
   <h1 *ngIf="!isLetra(numeralPrincipal)">CUESTIONARIO #{{numeralPrincipal}}</h1>
   <h1 *ngIf="isLetra(numeralPrincipal)">ANEXO TIPO #{{numeralPrincipal}}</h1>
-  <app-app-header-arrow-left></app-app-header-arrow-left>
-  <p class="text-center">Todos los campos con el asterisco (*) son obligatorios</p>
-  <form [formGroup]="formParent" class="container d-flex flex-column justify-content-center align-items-center mt-4"> 
-    <ng-container *ngFor="let campo of datos.campos; let j = index" >
+  <div style="cursor: pointer;" (click)="confirmarSalida()">
+    <div class="d-flex align-items-center">
+        <i class="fa-regular fa-circle-left" style="color: #575757; font-size: 20px; margin-left: 2px; cursor: pointer;"></i>
+        <span class="ms-2" style="color: #575757; font-weight: 550; font-size: 20px;">REGRESAR</span>
+    </div>
+</div>
+  <p class="text-center textP">Todos los campos con el asterisco (*) son obligatorios</p>
+  <form [formGroup]="formParent" class="container d-flex flex-column justify-content-center align-items-center mt-4">
+    <ng-container *ngFor="let campo of datos.campos; let j = index">
       <div *ngIf="campo.NUMERAL_PRINCIPAL === numeralPrincipal" class="diagnostico">
         <h3>{{campo.TITULO_PRINCIPAL}}</h3>
         <div *ngFor="let subcampo of campo.listacampos; let i = index" class="formDiagnostico">
-          <h2>{{subcampo.TITULO}}</h2>  
+          <h2>{{subcampo.TITULO}}</h2>
           <label>Numero principal</label>
           <input type="text" [value]="subcampo.NUMERAL_PRINCIPAL" disabled="true" [id]="'requisito-' + i">
           <label>Numero específico</label>
           <input type="text" [value]="subcampo.NUMERAL_ESPECIFICO" disabled="true" [id]="'requisito-' + i">
           <label>Titulo del requisito</label>
           <input type="text" [value]="subcampo.TITULO" disabled="true" [id]="'requisito-' + i">
-           <label>*Requisito</label>
-          <textarea type="text" [value]="subcampo.REQUISITO" style="height: 200px" disabled="true" [id]="'requisito-' + i"></textarea>
+          <label>*Requisito</label>
+          <textarea type="text" [value]="subcampo.REQUISITO" style="height: 200px" disabled="true"
+            [id]="'requisito-' + i"></textarea>
           <label>*Posible evidencia</label>
-          <textarea type="text" [value]="subcampo.NOMBRE_EVIDENCIA" style="height: 200px" disabled="true" [id]="'requisito-' + i"></textarea>
+          <textarea type="text" [value]="subcampo.NOMBRE_EVIDENCIA" style="height: 200px" disabled="true"
+            [id]="'requisito-' + i"></textarea>
           <label>Escoge una de las siguientes opciones<span style="color: red;">*</span></label>
           <div class="cont">
             <div *ngFor="let opcion of subcampo.desplegable" class="containerRadio">
               <label>{{opcion.descripcion}}</label>
               <div class="radio">
-                <input type="radio" [value]="opcion.ITEM" [name]="'radio' + j + '-' + i" (change)="capturarValor($event, opcion.ITEM, subcampo.NUMERAL_PRINCIPAL , subcampo.NUMERAL_ESPECIFICO)" 
-                (click)="valorSeleccionado = opcion.ITEM" [id]="subcampo.NUMERAL_ESPECIFICO" (change)="opcionSeleccionada = true"
-                [formControlName]="'radio' + j + '-' + i" [checked]="opcion.ITEM === getRadioValue(subcampo.VALOR_RESPUESTA)"
-                >              
+                <input type="radio" [value]="opcion.ITEM" [name]="'radio' + j + '-' + i"
+                  (change)="capturarValor($event, opcion.ITEM, subcampo.NUMERAL_PRINCIPAL , subcampo.NUMERAL_ESPECIFICO)"
+                  (click)="valorSeleccionado = opcion.ITEM" [id]="subcampo.NUMERAL_ESPECIFICO"
+                  (change)="opcionSeleccionada = true" [formControlName]="'radio' + j + '-' + i"
+                  [checked]="opcion.ITEM === getRadioValue(subcampo.VALOR_RESPUESTA)">
                 <label class="radioLabel" [for]="subcampo.NUMERAL_ESPECIFICO">{{opcion.DESCRIPCION}}</label>
               </div>
             </div>
           </div>
           <label>Observacion</label>
-          <textarea type="text" style="height: 200px" [id]="'observacion-' + subcampo.NUMERAL_ESPECIFICO" 
-          (input)="capturarValorObs($event, subcampo.NUMERAL_PRINCIPAL ,subcampo.NUMERAL_ESPECIFICO)" class="obs"
-          [value]="subcampo.OBSERVACION_RESPUESTA"></textarea>
+          <textarea type="text" style="height: 200px" [id]="'observacion-' + subcampo.NUMERAL_ESPECIFICO"
+            (input)="capturarValorObs($event, subcampo.NUMERAL_PRINCIPAL ,subcampo.NUMERAL_ESPECIFICO)" class="obs"
+            [value]="subcampo.OBSERVACION_RESPUESTA"></textarea>
           <div class="container d-flex align-items-center flex-column">
-              <button type="submit" class="btn btn-primary w-100 m-3" [id]="j + '-' + i" [name]="j + '-' + i" 
+            <button type="submit" class="btn btn-primary w-100 m-3" [id]="j + '-' + i" [name]="j + '-' + i"
               [disabled]="!isFormValid(j, i) || isButtonDisabled(j, i) || subcampo.bloquearGuardar" (click)="saveForm(j, i)"
               [ngClass]="{'disabled-button': !isFormValid(j, i) || isButtonDisabled(j, i) || subcampo.bloquearGuardar}">
-                Guardar
-                <i class="far fa-arrow-alt-circle-right"></i>
-              </button>
+              GUARDAR RESPUESTA
+            </button>
           </div>
           <div class="linea"></div>
         </div>
       </div>
     </ng-container>
+    <div class="container d-flex align-items-center flex-column col-10">
+      <button type="submit" class="btn btn-outline-primary w-100 m-3" (click)="confirmarSalida()">
+        <i class="far fa-arrow-alt-circle-left"></i>
+        VOLVER A LOS CUESTIONARIOS
+      </button>
+    </div>
   </form>
-<app-footer2></app-footer2>
-<app-app-footer></app-app-footer>
-<app-modal></app-modal>
-<ngx-spinner
-  bdColor="rgba(0, 0, 0, 0.5)"
-  size="small"
-  template="<img src='https://www.superiorlawncareusa.com/wp-content/uploads/2020/05/loading-gif-png-5.gif' width='50' height='50'/>"
->
-</ngx-spinner>
+  <app-footer2></app-footer2>
+  <app-app-footer></app-app-footer>
+  <app-modal></app-modal>
+  <ngx-spinner bdColor="rgba(0, 0, 0, 0.5)" size="small"
+    template="<img src='https://www.superiorlawncareusa.com/wp-content/uploads/2020/05/loading-gif-png-5.gif' width='50' height='50'/>">
+  </ngx-spinner>
+</div>
+
+<div class="modal modal-dialog-centered modal-background" role="dialog" tabindex="-1" *ngIf="mostrarModal" style="display: block;">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content modal-contedor p-4">
+      <div class="modal-body p-0 d-flex justify-content-center align-items-center">
+        
+        <img style="width: 70px; height: 70px" class="img-avatar img-fluid rounded-circle" [src]="rutaAvatar"/>
+        <p class="text-center fw-bold fs-6 ms-3 mb-0">Al volver a los cuestionarios toda la información no guardada se perderá. ¿Deseas volver?</p>
+      </div>
+      <div class="container d-flex align-items-center justify-content-center mt-3 p-0">
+        <button type="button" class="btn btn-outline-primary me-3 w-50" (click)="regresarAlCuestionario()">VOLVER A LOS CUESTIONARIOS</button>
+        <button type="button" class="btn btn-primary w-50" (click)="cancelar()">CANCELAR</button>
+      </div>
+    </div>
+  </div>
 </div>

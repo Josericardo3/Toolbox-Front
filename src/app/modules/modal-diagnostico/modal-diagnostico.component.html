@@ -1,0 +1,38 @@
+<!-- modal.component.html -->
+<!-- <div class="modal" [class.mostrar]="mostrarModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">¡Alerta!</h5>
+          <button type="button" class="close" aria-label="Close" (click)="cerrarModal()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="media">
+            <img src="ruta/avatar.png" class="mr-3" alt="Avatar">
+            <div class="media-body">
+              <p>Al volver a los cuestionarios toda la información no guardada se perderá. ¿Deseas volver?</p>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="cerrarModal()">Cancelar</button>
+          <button type="button" class="btn btn-primary" (click)="regresarCuestionario()">Regresar al cuestionario</button>
+        </div>
+      </div>
+    </div>
+  </div> -->
+
+  <!-- modal-confirmacion.component.html -->
+<div class="modal-header">
+    <h4 class="modal-title">Confirmación</h4>
+  </div>
+  <div class="modal-body">
+    <p>Al volver a los cuestionarios, toda la información no guardada se perderá. ¿Deseas volver?</p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="cancelar()">Cancelar</button>
+    <button type="button" class="btn btn-primary" (click)="regresarAlCuestionario()">Regresar al cuestionario</button>
+  </div>
+  
