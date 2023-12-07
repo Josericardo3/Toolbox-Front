@@ -58,6 +58,19 @@
         <!-- </div> -->
         </div>
 </div>
+
+<div class="modal-container" *ngIf="showModalConfirmacion">
+  <div class="modal-titulo">
+    <div class="modal-header">
+      <h3 class="h-titulo">URL PÚBLICA</h3>
+    </div>
+    <div class="modal-body">
+      <p class="p-mensaje">Enlace de la encuesta copiado</p>
+    </div>
+    <div class="modal-footer"><button class="btnDiag" (click)="closeModal()">OK</button></div>
+  </div>
+</div>
+
 <app-app-footer></app-app-footer>
 <app-modal></app-modal>
 <ngx-spinner

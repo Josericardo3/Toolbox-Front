@@ -4,7 +4,7 @@ import { ApiService } from 'src/app/servicios/api/api.service';
 import { ColorLista } from 'src/app/servicios/api/models/color';
 import { AppTarjetasComponent } from '../../Tarjetas/app-tarjetas/app-tarjetas.component';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 interface Option {
   label: string;
@@ -49,12 +49,14 @@ export class AppEncuestaComponent implements OnInit{
   mostrarBotonCompartir: boolean = false;
   tarjetaCompleta: boolean = false;
   selectCrearTarjeta: boolean = false;
+  showModalConfirmacion: boolean = false;
 
   constructor(
     private Message: ModalService,
     private ApiService: ApiService,
     private formBuilder: FormBuilder,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private router: Router
     ) { }
 
   ngOnInit() {
@@ -106,6 +108,7 @@ export class AppEncuestaComponent implements OnInit{
   onUltimoIDChanged(id: any){
     this.ultimoID = id;
   }
+  
   onActivarCompartir(btn: any){
     this.compartirEncuestaBtn = btn;
   }
@@ -113,15 +116,30 @@ export class AppEncuestaComponent implements OnInit{
   compartirEncuesta(){
     this.encuestaUrl = window.location.origin + `/encuestaCreada/${this.ultimoID}`;
     this.copyToClipboard(this.encuestaUrl);
+    this.showModalConfirmacion = true;
     console.log(this.ultimoID)
+  }
+
+  copyToClipboard(text: string){
+    const inputElement = document.createElement('input');
+    inputElement.value = text;
+    document.body.appendChild(inputElement);
+    inputElement.select();
+    document.execCommand('copy');
+    document.body.removeChild(inputElement);
+  }
+
+  closeModal(){
+    this.showModalConfirmacion = false;
+    this.router.navigate(['/tablaEncuestas'])
   }
 
   compartirEncuestaEditar(){
     this.encuestaUrlEditar = window.location.origin + `/encuestaCreada/${this.idEncuestaEditar}`;
-    this.copyToClipboard(this.encuestaUrlEditar);
+    this.copyToClipboardEditar(this.encuestaUrlEditar);
   }
 
-  copyToClipboard(text: string) {
+  copyToClipboardEditar(text: string) {
     const inputElement = document.createElement('input');
     inputElement.value = text;
     document.body.appendChild(inputElement);

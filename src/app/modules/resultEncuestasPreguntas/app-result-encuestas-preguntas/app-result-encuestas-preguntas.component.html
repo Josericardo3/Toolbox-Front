@@ -12,7 +12,7 @@
             </div>
             <div class="ContainerRespuesta" *ngFor="let campo of dato.RESPUESTA">
                 <p>{{campo.DESCRIPCION_PREGUNTA}}</p>
-                <div class="respuestas">
+                <div class="respuestas" [ngStyle]="{'height': campo.RESPUESTA ? 'auto' : '1.5rem'}">
                     <p>{{campo.RESPUESTA}}</p>
                 </div>
             </div>
