@@ -26,6 +26,7 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
             "assets": [
+              { "glob": "**/*", "input":"node_modules/tinymce", "output": "/tinymce/" },
               "src/favicon.ico",
               "src/assets",
               "src/manifest.webmanifest"
