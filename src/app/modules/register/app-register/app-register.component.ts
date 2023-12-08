@@ -613,7 +613,7 @@ avatarSeleccionado: number=-1;
     this.ApiService.createUser(request).subscribe((data: any) => {
       if (data.StatusCode === 201) {
         const title = "Registro exitoso";
-        const message = "El registro se ha realizado exitosamente"
+        const message = "El registro se ha realizado exitosamente, favor validar su cuenta, ingresando a su correo"
         this.Message.showModal(title, message);
         this.router.navigate(['/']);      
       }

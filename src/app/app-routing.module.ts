@@ -109,7 +109,8 @@ const routes: Routes = [
   {path: 'recordatorios',component:RecordatoriosKpisComponent},
   {path: 'diagnosticoProgress', component:AppDiagnosticoProgressComponent},
   {path: 'userSettings',component:AppUserSettingsComponent},
-  {path: 'diagnosticoEtapas',component:DiagnosticoEtapasComponent}
+  {path: 'diagnosticoEtapas',component:DiagnosticoEtapasComponent},
+  {path: ':id',component:AppLoginComponent}
 ];
 
 @NgModule({

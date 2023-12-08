@@ -723,4 +723,8 @@ export class ApiService {
       let assign = `${this.apiURLNuevo}/api/NoticiaCategorias/${id}`
       return this.http.delete<any>(assign)
     }
+    activarCuenta(codigo:any){
+      let direccion = `${this.apiURLNuevo}/api/Usuario/activar?codigo=${codigo}`
+    return this.http.post<any>(direccion,{})
+    }
 }
