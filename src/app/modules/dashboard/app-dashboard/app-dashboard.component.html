@@ -271,7 +271,7 @@
   </div>
 
 </div>
- 
+
 <div class="row " >
   <div class="col-md-9 col-12 col-sm-12  ">
     <div
@@ -290,11 +290,11 @@
           <div class="row " >
             <div
               class="col-md-12 d-flex justify-content-center align-items-center"
-              style="height: 17vh;"
+               style="height: 8rem;"
             >
               <div
                 class="p-3 card mat-elevation-z8 text-center position-relative d-flex justify-content-center align-items-center"
-                style="height: 15vh; width: 8vw;"
+               style="height: 6rem; width: 7rem;"
                 alt="caracterizacion"
                 (click)="menuFilter('Caracterización') "
               >
@@ -303,20 +303,20 @@
                   alt="..." />
               </div>
             </div>
-            <div class="col-md-12 mt-2">
+            <div class="col-md-12 mt-1">
               <h5 class="text-success "><strong>Caracterización</strong></h5>
             </div>
           </div>
         </div>
-        <div class="col-md-3 col-6 mb-4 icono" [ngClass]="{ oculto: AccesoDiagnostico }">
+        <div class="col-md-3 col-6 mb-2 icono" [ngClass]="{ oculto: AccesoDiagnostico }">
           <div class="row">
             <div
               class="col-md-12 d-flex justify-content-center align-items-center "
-              style="height: 17vh;"
+               style="height: 8rem;"
             >
               <div
                 class="p-3 card mat-elevation-z3 text-center position-relative d-flex justify-content-center align-items-center"
-                style="height: 15vh; width: 8vw;"
+               style="height: 6rem; width: 7rem;"
                 (click)="
                   menuFilter('Autodiagnóstico'); buscarRuta('diagnostico'); fnShowModal()
                 ">
@@ -324,25 +324,25 @@
                   alt="..." />
               </div>
             </div>
-            <div class="col-md-12 mt-2">
+            <div class="col-md-12 mt-1">
               <h5 class="text-success"><strong>Autodiagnóstico</strong></h5>
             </div>
           </div>
         </div>
  
         <div
-          class="col-md-3 col-6 mb-4 icono"
+          class="col-md-3 col-6 mb-2 icono"
           [ngClass]="{ oculto: AccesoPlanificacion }"
         >
           <div class="row ">
             <div
               class="col-md-12 d-flex justify-content-center align-items-center"
-              style="height: 17vh;"
+               style="height: 8rem;"
             >
               <div
                 class="p-3 card mat-elevation-z3 d-flex justify-content-center align-items-center"
                 (click)="menuFilter('Gestor De Tareas'); buscarRuta('planificacion')"
-                style="height: 15vh; width: 8vw;"
+               style="height: 6rem; width: 7rem;"
               >
                 <!-- <img src="../../../../assets/img-dashboard/planificacion.svg" alt="planificacion" id="planificacion"> -->
 
@@ -350,21 +350,21 @@
                   alt="..." />
               </div>
             </div>
-            <div class="col-md-12 mt-2">
+            <div class="col-md-12 mt-1">
               <h5 class="text-success"><strong>Gestor de Tareas</strong></h5>
             </div>
           </div>
         </div>
-        <div class="col-md-3 col-6 mb-4 icono" [ngClass]="{ oculto: AccesoDocumentacion }">
+        <div class="col-md-3 col-6 mb-2 icono" [ngClass]="{ oculto: AccesoDocumentacion }">
           <div class="row">
             <div
               class="col-md-12 d-flex justify-content-center align-items-center"
-              style="height: 17vh;"
+               style="height: 8rem;"
             >
               <div
                 class="p-3 card mat-elevation-z3 d-flex justify-content-center align-items-center"
                 (click)="menuFilter('Documentación'); buscarRuta('documentacion')"
-                style="height: 15vh; width: 8vw;"
+               style="height: 6rem; width: 7rem;"
                 
               >
                 <!-- <img src="../../../../assets/img-dashboard/documentacion.svg" alt="documentacion" id="documentacion"> -->
@@ -373,23 +373,23 @@
                   alt="..." />
               </div>
             </div>
-            <div class="col-md-12 mt-2">
+            <div class="col-md-12 mt-1">
               <h5 class="text-success"><strong>Documentación</strong></h5>
             </div>
           </div>
         </div>
         <div
-          class="col-md-3 col-6 mb-4 icono"
+          class="col-md-3 col-6 mb-2 icono"
           [ngClass]="{ oculto: AccesoELearning }"
         >
           <div
             class="col-md-12 text-center d-flex justify-content-center align-items-center"
-            style="height: 17vh;"
+             style="height: 8rem;"
           >
             <div
               class="p-3 card mat-elevation-z3 d-flex justify-content-center align-items-center"
               (click)="menuFilter('Formación E E-Learning'); redirigirAUrlExterna()"
-              style="height: 15vh; width: 8vw;"
+             style="height: 6rem; width: 7rem;"
             >
               <!-- <img src="../../../../assets/img-dashboard/formacion.svg" alt="formacion" id="formacion"> -->
 
@@ -397,24 +397,24 @@
                 alt="..." />
             </div>
           </div>
-          <div class="col-md-12 mt-2">
+          <div class="col-md-12 mt-1">
             <h5 class="text-success">
               <strong>Formación E E-Learning</strong>
             </h5>
           </div>
         </div>
         <div
-          class="col-md-3 col-6 mb-4 icono"
+          class="col-md-3 col-6 mb-2 icono"
           [ngClass]="{ oculto: AccesoNoticias }"
         >
           <div
             class="col-md-12 d-flex justify-content-center align-items-center"
-            style="height: 17vh;"
+             style="height: 8rem;"
           >
             <div
               class="p-3 card mat-elevation-z3 d-flex justify-content-center align-items-center"
               (click)="menuFilter('Noticias'); buscarRuta('gestorNoticia')"
-              style="height: 15vh; width: 8vw;"
+             style="height: 6rem; width: 7rem;"
             >
               <!-- <img src="../../../../assets/img-dashboard/noticias.svg" alt="noticias" id="noticias"> -->
 
@@ -422,21 +422,21 @@
                 alt="..." />
             </div>
           </div>
-          <div class="col-md-12 mt-2">
+          <div class="col-md-12 mt-1">
             <h5 class="text-success"><strong>Noticias</strong></h5>
           </div>
         </div>
-        <div class="col-md-3 col-6 mb-4 icono" [ngClass]="{ oculto: AccesoAuditoria }">
+        <div class="col-md-3 col-6 mb-2 icono" [ngClass]="{ oculto: AccesoAuditoria }">
           <div class="row">
             <div
               class="col-md-12 d-flex justify-content-center align-items-center"
               (click)="menuFilter($event); buscarRuta('listaDeVerificacion')"
-              style="height: 17vh;"
+               style="height: 8rem;"
             >
               <div
                 class="p-3 card mat-elevation-z3 d-flex justify-content-center align-items-center"
                 (click)="menuFilter('Auditoría Interna'); buscarRuta('listaDeVerificacion')"
-                style="height: 15vh; width: 8vw;"
+               style="height: 6rem; width: 7rem;"
               >
                 <!-- <img src="" alt="auditoria" id="auditoria" > -->
 
@@ -444,21 +444,21 @@
                   alt="..." />
               </div>
             </div>
-            <div class="col-md-12 mt-2">
+            <div class="col-md-12 mt-1">
               <h5 class="text-success"><strong>Auditoría Interna</strong></h5>
             </div>
           </div>
         </div>
-        <div class="col-md-3 col-6 mb-4 icono" [ngClass]="{ oculto: AccesoEvidencia }">
+        <div class="col-md-3 col-6 mb-2 icono" [ngClass]="{ oculto: AccesoEvidencia }">
           <div class="row">
             <div
               class="col-md-12 d-flex justify-content-center align-items-center"
-              style="height: 17vh;"
+               style="height: 8rem;"
             >
               <div
                 class="p-3 card mat-elevation-z3 d-flex justify-content-center align-items-center"
                 (click)="menuFilter('Evidencia E Implementación'); buscarRuta('evidencia/:section')"
-                style="height: 15vh; width: 8vw;"
+               style="height: 6rem; width: 7rem;"
               >
                 <!-- <img src="../../../../assets/img-dashboard/" alt="evidencia" id="evidencia"> -->
 
@@ -466,23 +466,23 @@
                   alt="..." />
               </div>
             </div>
-            <div class="col-md-12 mt-2">
+            <div class="col-md-12 mt-1">
               <h5 class="text-success">
                 <strong>Evidencia e Implementación</strong>
               </h5>
             </div>
           </div>
         </div>
-        <div class="col-md-3 col-6 mb-4 icono" [ngClass]="{ oculto: AccesoGerencia }">
+        <div class="col-md-3 col-6 mb-2 icono" [ngClass]="{ oculto: AccesoGerencia }">
           <div class="row">
             <div
               class="col-md-12 d-flex justify-content-center align-items-center"
-              style="height: 17vh;"
+               style="height: 8rem;"
             >
               <div
                 class="p-3 card mat-elevation-z3 d-flex justify-content-center align-items-center"
                 (click)="menuFilter('Alta Gerencia'); buscarRuta('resultadosAuditoria')"
-                style="height: 15vh; width: 8vw;"
+               style="height: 6rem; width: 7rem;"
               >
                 <!-- <img src="../../../../assets/img-dashboard/gerencia.svg" alt="gerencia" id="gerencia"> -->
 
@@ -490,41 +490,41 @@
                   alt="..." />
               </div>
             </div>
-            <div class="col-md-12 mt-2">
+            <div class="col-md-12 mt-1">
               <h5 class="text-success"><strong>Alta Gerencia</strong></h5>
             </div>
           </div>
         </div>
-        <div class="col-md-3 col-6 mb-4 icono" [ngClass]="{ oculto: AccesoKpi }">
+        <div class="col-md-3 col-6 mb-2 icono" [ngClass]="{ oculto: AccesoKpi }">
           <div class="row">
             <div
               class="col-md-12 d-flex justify-content-center align-items-center"
-              style="height: 17vh;"
+               style="height: 8rem;"
             >
               <div
                 class="p-3 card mat-elevation-z3 d-flex justify-content-center align-items-center"
                 (click)="menuFilter('Medición'); buscarRuta('indicadores')"
-                style="height: 15vh; width: 8vw;"
+               style="height: 6rem; width: 7rem;"
               >
                 <!-- <img src="../../../../assets/img-dashboard/medicion.svg" alt="medicion" > -->
 
                 <img src="../../../../assets/img-dashboard/kpi-oficial.svg" class="pcard-img-top img-fluid" alt="..." />
               </div>
             </div>
-            <div class="col-md-12 mt-2">
+            <div class="col-md-12 mt-1">
               <h5 class="text-success"><strong>Medición y Kpi's</strong></h5>
             </div>
           </div>
         </div>
-        <div class="col-md-3 col-6 mb-4 icono" [ngClass]="{ oculto: AccesoMejora }">
+        <div class="col-md-3 col-6 mb-2 icono" [ngClass]="{ oculto: AccesoMejora }">
           <div class="row">
             <div
               class="col-md-12 d-flex justify-content-center align-items-center"
-              style="height: 17vh;"
+               style="height: 8rem;"
             >
               <div
                 class="p-3 card mat-elevation-z3 d-flex justify-content-center align-items-center"
-                style="height: 15vh; width: 8vw;"
+               style="height: 6rem; width: 7rem;"
                 (click)="menuFilter('Mejora Continua'); buscarRuta('mejoraContinua')"
               >
                 <img
@@ -534,21 +534,21 @@
                 />
               </div>
             </div>
-            <div class="col-md-12 mt-2">
+            <div class="col-md-12 mt-1">
               <h5 class="text-success"><strong>Mejora Continua</strong></h5>
             </div>
           </div>
         </div>
-        <div class="col-md-3 col-6 mb-4 icono" [ngClass]="{ oculto: AccesoMonitorizacion }">
+        <div class="col-md-3 col-6 mb-0 icono" [ngClass]="{ oculto: AccesoMonitorizacion }">
           <div class="row">
             <div
               class="col-md-12 d-flex justify-content-center align-items-center"
-              style="height: 17vh;"
+               style="height: 8rem;"
             >
               <div
                 class="p-3 card mat-elevation-z3 d-flex justify-content-center align-items-center"
                 (click)="menuFilter('Monitorización'); buscarRuta('monitorizacion')"
-                style="height: 15vh; width: 8vw;"
+               style="height: 6rem; width: 7rem;"
               >
                 <img
                   src="../../../../assets/img-dashboard/monitorizacion-oficial.svg"
@@ -557,7 +557,7 @@
                 />
               </div>
             </div>
-            <div class="col-md-12 mt-2">
+            <div class="col-md-12 mt-1">
               <h5 class="text-success"><strong>Monitorización</strong></h5>
             </div>
 
@@ -569,6 +569,8 @@
 
       </div>
     </div>
+    
+    
   </div>
  
   <div class="col-md-3  seguimiento ">
@@ -697,10 +699,15 @@
     </div>
   </div>
 </div>
-<div class="row footer2" style="margin-top: -68px;">
-  <div class="col-md-9 col-12 col-sm-12  ">
-    <app-footer2 class="w-100"></app-footer2>
+<div class="row footer2">
+  <div class="col-md-9 com-sm-12 col-12 ">
+    <div class="mt-0 d-flex justify-content-end align-items-end ">
+      <app-footer2 class="w-100"></app-footer2>
+    </div>
   </div>
+</div>
+<div class="row  ">
+  
 
   <div class="containerDashboard">
     <app-modal></app-modal>

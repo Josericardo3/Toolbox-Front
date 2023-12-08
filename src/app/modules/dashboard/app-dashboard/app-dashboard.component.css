@@ -749,7 +749,7 @@ height: 6rem;
 #card-carousel{
   margin-top: 1.2vh !important;
   margin-bottom: 1.5vh !important;
-  height: 43vh !important; 
+  height: 15rem !important; 
   width: 18.5vw;
   margin: 0 auto;/* Asegurar que la tarjeta tenga margen para centrarse */
   border-radius: 10px;
@@ -970,18 +970,26 @@ height: 6rem;
      }
      @media (min-width: 767px) {
       .footer2 {
-        display: flex; 
-        justify-content: flex-end; 
+        margin-top: -4.9rem !important;
+        display: flex !important;
+        justify-content: flex-end !important;
        
-        margin-top: -10rem;
        
       }
       .menu-icono{
         display: none;
       }
+  }
+  @media (max-width: 1319px) {
+    .footer2 {
      
       
-  }
+    margin-right: 5rem;
+     
+    }
+    
+}
+  
  
   @media(max-width: 767px){
     .container-notificaciones{
@@ -1115,12 +1123,12 @@ margin-top: -1rem
   
 }
 .pepe{
-  height:  20em !important;
+  max-height:  20rem !important;
 }
 
 .pepe2{
-  margin-top: 0.9vh;
-  height: 20em !important;
+  margin-top: 2vh;
+  height:  16rem !important;
 }
 .pin{
   height: 10em;

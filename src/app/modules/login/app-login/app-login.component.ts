@@ -8,7 +8,7 @@ import {
 } from "@angular/forms";
 import { ApiService } from "src/app/servicios/api/api.service";
 import { LoginI } from "../../../models/loginInterface";
-import { Router } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 // import custom validator  class
 import { CustomValidators } from "../../../models/customeValidator";
 import { ResponseI } from "src/app/models/responseInterface";
@@ -36,6 +36,7 @@ export class AppLoginComponent implements OnInit {
   errorMessage!: string;
   colorTitle:ColorLista;
   colorWallpaper:ColorLista;
+  id:any;
   private emailPattern: any =
     /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
@@ -46,12 +47,34 @@ export class AppLoginComponent implements OnInit {
     private Message: ModalService,
     private store: Store<{ dataLogin: any }>,
     private renderer: Renderer2,
+    private route: ActivatedRoute
   ) //   {
   //  }
   {}
 
   ngOnInit(): void {
+    this.id = this.route.snapshot.paramMap.get('id');
     
+    if(this.id){
+      
+      this.ApiService.activarCuenta(this.id).subscribe(x=>{
+        
+        if(x.Confirmacion){
+          const title = "Validación Exitosa";
+          const message = x.Mensaje;
+          this.Message.showModal(title, message);
+          this.router.navigate([""]);
+          return;
+        }else{
+          const title = "Alerta";
+          const message = x.Mensaje;
+          this.Message.showModal(title, message);
+          //this.router.navigate([this.id]);
+          return;
+        }
+      })
+      
+    }
     localStorage.clear();
     //limpia el storage
     localStorage.removeItem("normaSelected");
@@ -59,6 +82,7 @@ export class AppLoginComponent implements OnInit {
     this.ApiService.colorTempo(); 
     this.colorTitle = JSON.parse(localStorage.getItem("color")).title;
     this.colorWallpaper = JSON.parse(localStorage.getItem("color")).wallpaper;
+
     this.loginForm = this.formBuilder.group({
       correo: [
         "",
@@ -134,7 +158,7 @@ export class AppLoginComponent implements OnInit {
         this.Message.showModal(title, message);
         return;
       }
-      else{*/
+      else{*/ 
         this.ApiService.login(this.usuario).subscribe(
       
           (data: any) => {
