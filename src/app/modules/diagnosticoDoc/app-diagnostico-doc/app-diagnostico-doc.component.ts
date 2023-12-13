@@ -24,6 +24,7 @@ import { headerLogo, footerLogo } from './logoBase64';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { SpinnerService } from 'src/app/servicios/spinnerService/spinner.service';
 import { ColorLista } from 'src/app/servicios/api/models/color';
+import { emptyObjectsAreNotAllowedMsg } from '@ngrx/store/src/models';
 
 @Component({
   selector: 'app-app-diagnostico-doc',
@@ -45,7 +46,7 @@ export class AppDiagnosticoDocComponent implements OnInit {
   subcategoriarntD: string;
   municipioD: any;
   departamentoD: any;
-  etapaD: any;
+  // etapaD: any;
   totales: any;
   analisis: any;
   etapaInicial: any;
@@ -68,7 +69,7 @@ export class AppDiagnosticoDocComponent implements OnInit {
   subcategoriarntP: string;
   municipioP: any;
   departamentoP: any;
-  etapaP: any;
+  // etapaP: any;
   nombreAsesorP: any;
   fechaInformeP: any;
 
@@ -85,7 +86,6 @@ export class AppDiagnosticoDocComponent implements OnInit {
   subcategoriarnt: string;
   municipio: any;
   departamento: any;
-  etapa: any;
   numeroRequisitoNA: any;
   numeroRequisitoNC: any;
   numeroRequisitoCP: any;
@@ -113,6 +113,10 @@ export class AppDiagnosticoDocComponent implements OnInit {
   colorTitle:ColorLista;
   colorWallpaper:ColorLista;
 
+  etapaIni: any;
+  etapaInt: any;
+  etapaFin: any;
+
   constructor(
     private router: Router,
     private ApiService: ApiService,
@@ -139,12 +143,35 @@ export class AppDiagnosticoDocComponent implements OnInit {
         this.router.navigate(['/dashboard']);     
       }
     })
+
+    // const etapas = Number(window.localStorage.getItem('etapa'));
+    // console.log(etapas)
+    // if (etapas === 1) {
+    //   this.etapaIni = 'Inicial'
+    // } else if (etapas === 2) {
+    //   this.etapaInt = 'Intermedia'
+    // } else if (etapas === 3) {
+    //   this.etapaFin = 'Final'
+    // }
+  }
+
+  getEtapaDiagnostico(): string {
+    const etapas = Number(window.localStorage.getItem('etapa'));
+    if (etapas === 1) {
+      return 'Inicial';
+    } else if (etapas === 2) {
+      return 'Intermedia';
+    } else if (etapas === 3) {
+      return 'Final';
+    }
+    return 'Sin definir';
   }
 
   getListaChequeo() {
     this.ApiService.getListaChequeoApi()
       .subscribe((data: any) => {
         this.datosL = data;
+        console.log(this.datosL)
         this.nombrePst = this.datosL.RESPONSE_USUARIO?.NOMBRE_PST;
         this.nit = this.datosL.RESPONSE_USUARIO?.NIT;
         this.rnt = this.datosL.RESPONSE_USUARIO?.RNT;
@@ -160,7 +187,8 @@ export class AppDiagnosticoDocComponent implements OnInit {
         this.subcategoriarnt = this.datosL.RESPONSE_USUARIO?.SUB_CATEGORIA_RNT;
         this.municipio = this.datosL.RESPONSE_USUARIO?.MUNICIPIO;
         this.departamento = this.datosL.RESPONSE_USUARIO?.DEPARTAMENTO;
-        this.etapa = this.datosL.RESPONSE_USUARIO?.ETAPA_DIAGNOSTICO;
+        
+        // this.etapa = this.datosL.RESPONSE_USUARIO?.ETAPA_DIAGNOSTICO;
         this.numeroRequisitoNA = this.datosL.N_REQUISITO_NA;
         this.numeroRequisitoNC = this.datosL.N_REQUISITO_NC;
         this.numeroRequisitoCP = this.datosL.N_REQUISITO_CP;
@@ -177,6 +205,7 @@ export class AppDiagnosticoDocComponent implements OnInit {
     this.ApiService.getListaDiagnosticoApi()
       .subscribe((data: any) => {
         this.datosD = data;
+        console.log(this.datosD)
         this.nombrePstD = this.datosD.DATA_USUARIO?.NOMBRE_PST;
         this.nitD = this.datosD.DATA_USUARIO?.NIT;
         this.rntD = this.datosD.DATA_USUARIO?.RNT;
@@ -191,8 +220,8 @@ export class AppDiagnosticoDocComponent implements OnInit {
         this.categoriarntD = this.datosD.DATA_USUARIO?.CATEGORIA_RNT;
         this.subcategoriarntD = this.datosD.DATA_USUARIO?.SUB_CATEGORIA_RNT;
         this.municipioD = this.datosD.DATA_USUARIO?.MUNICIPIO,
-          this.departamentoD = this.datosD.DATA_USUARIO?.DEPARTAMENTO
-        this.etapaD = this.datosD.DATA_USUARIO?.ETAPA_DIAGNOSTICO;
+        this.departamentoD = this.datosD.DATA_USUARIO?.DEPARTAMENTO
+        // this.etapaD = this.datosD.DATA_USUARIO?.ETAPA_DIAGNOSTICO;
         this.analisis = this.datosD.ANALISIS;
         this.etapaInicial = this.datosD.ETAPA_INICIAL;
         this.etapaIntermedia = this.datosD.ETAPA_INTERMEDIA;
@@ -360,6 +389,7 @@ export class AppDiagnosticoDocComponent implements OnInit {
     this.ApiService.getPlanMejoraApi()
       .subscribe((data: any) => {
         this.datosP = data;
+        console.log(this.datosP)
         this.nombrePstP = this.datosP.USUARIO?.NOMBRE_PST;
         this.nitP = this.datosP.USUARIO?.NIT;
         this.rntP = this.datosP.USUARIO?.RNT;
@@ -375,7 +405,7 @@ export class AppDiagnosticoDocComponent implements OnInit {
         this.subcategoriarntP = this.datosP.USUARIO?.SUB_CATEGORIA_RNT;
         this.municipioP = this.datosP.USUARIO?.MUNICIPIO;
         this.departamentoP = this.datosP.USUARIO?.DEPARTAMENTO;
-        this.etapaP = this.datosP.USUARIO?.ETAPA_DIAGNOSTICO;
+        // this.etapaP = this.datosP.USUARIO?.ETAPA_DIAGNOSTICO;
         this.nombreAsesorP = this.datosP.NOMBRE_ASESOR;
         this.fechaInformeP = this.datosP.FECHA_INFORME;
       });
@@ -549,6 +579,7 @@ export class AppDiagnosticoDocComponent implements OnInit {
       const message = "No se encontró información para generar el informe de diagnóstico"
       this.Message.showModal(title, message);
     } else {
+      const etapaDiagnostico = this.getEtapaDiagnostico();
       const pdfDefinition: any = {
         header: {
           columns: [
@@ -576,7 +607,6 @@ export class AppDiagnosticoDocComponent implements OnInit {
           width: 794,
           height: 1123
         },
-
         pageMargins: [40, 60, 40, 60],
         content: [
           {
@@ -622,7 +652,7 @@ export class AppDiagnosticoDocComponent implements OnInit {
                   'NTC de Turismo',
                   this.NTC,
                   'Etapa del diagnóstico',
-                  this.etapaD
+                  etapaDiagnostico
                 ],
                 [
                   'Nombre del responsable de sostenibilidad',
@@ -926,225 +956,227 @@ export class AppDiagnosticoDocComponent implements OnInit {
       const message = "No hay datos para generar el informe"
       this.Message.showModal(title, message);
       return;
-    }
-    const pdfDefinition: any = {
-      header: {
-        columns: [
-          { image: headerLogo, fit: [150, 150], style: ['headerLogo'] }
-        ]
-      },
-      footer: function (currentPage: number, pageCount: number) {
-        return {
-          columns: [
-            {
-              text: [
-                { text: 'Página ', style: ['footer'], alignment: 'left' },
-                { text: currentPage.toString(), style: ['footerPage'], alignment: 'left' },
-                { text: ' de ', style: ['footer'], alignment: 'left' },
-                { text: pageCount.toString(), style: ['footerPage'], alignment: 'left' }
-              ],
-              alignment: 'left',
-              margin: [30, 20, 20, 20]
-            },
-            { image: footerLogo, fit: [200, 200], style: ['footerLogo'], alignment: 'right' }
-          ]
-        }
-      },
-      pageSize: {
-        width: 794,
-        height: 1123,
-      },
-      pageMargins: [40, 60, 40, 60],
-      content: [
-        {
-          toc: {
-            title: { text: 'LISTA DE CHEQUEO', style: ['header'] }
-          }
-        },
-        {
-          table: {
-            widths: ['*', '*', '*', '*'],
-            body: [
-              [
-                { text: '1. Información general del Prestador de Servicios Turísticos - PST', colSpan: 4, alignment: 'center', bold: true },
-                {},
-                {},
-                {}
-              ],
-              [
-                'Nombre del prestador de servicios turísticos PST',
-                { text: this.nombrePst, colSpan: 3, alignment: 'center' },
-                {},
-                {}
-              ],
-              [
-                'Número de identificación tributaria NIT',
-                this.nit,
-                'Registro Nacional de Turismo RNT',
-                this.rnt
-              ],
-              [
-                'Categoría del RNT',
-                this.categoriarnt,
-                'Subcategoría del RNT	',
-                this.subcategoriarnt
-              ],
-              [
-                'Municipio',
-                this.municipio,
-                'Departamento',
-                this.departamento
-              ],
-              [
-                'NTC de Turismo',
-                this.NTCL,
-                'Etapa del diagnóstico',
-                this.etapa
-              ],
-              [
-                'Nombre del responsable de sostenibilidad',
-                this.nombreResponsableSostenibilidad,
-                'Teléfono de contacto del responsable de sostenibilidad',
-                this.telefonoResponsableSostenibilidad
-              ],
-              [
-                'Correo del responsable de sostenibilidad',
-                { text: this.correoResponsableSostenibilidad, colSpan: 2, alignment: 'center' },
-                {},
-                ''
-              ]
-            ]
-          },
-          fontSize: 10,
-        },
-        '\n',
-        {
-          table: {
-            widths: ['*', '*'],
-            body: [
-              [
-                { text: '2. Metodología de calificación diagnóstico', alignment: 'center', bold: true, colSpan: 2, fontSize: 10 },
-                {}
-              ],
-              [
-                {
-                  text: 'Califique, acorde con la siguiente escala:\n\nC = Cumple: Se encuentra documentado, implementado, socializado y es adecuado para la organización.\nCP = Cumple parcialmente: Se encuentra parcialmente documentado o en su totalidad, pero no está implementado o está en proceso de implementación o se ejecutan actividades pero no están documentadas.\nNC = No cumple: No se ha realizado ninguna acción respecto al requisito.\nNA = No aplica: No es aplicable el requisito a la organización.',
-                  colSpan: 2, fontSize: 10
-                },
-                {}
-              ]
-            ]
-          }
-        },
-        '\n',
-        {
-          table: {
-            widths: [80, 85, 'auto', 'auto', 'auto', 'auto'],
-            body: [
-              [
-                { text: 'Numeral', style: ['tituloDinamico'] },
-                { text: 'Título del requisito', style: ['tituloDinamico'] },
-                { text: 'Requisito', style: ['tituloDinamico'] },
-                { text: 'Posible evidencia', style: ['tituloDinamico'] },
-                { text: 'Calificación', style: ['tituloDinamico'] },
-                { text: 'Observaciones', style: ['tituloDinamico'] },
-              ],
-              // Aquí va el título NUMERAL
-              ...this.datosL.RESPONSE_CALIFICACION.map((item: any) => [
-                { text: item.NUMERAL, style: ['dinamicTable'] },
-                { text: item.TITULO_REQUISITO, style: ['dinamicTable'] },
-                { text: item.REQUISITO, fontSize: 10 },
-                { text: item.EVIDENCIA, fontSize: 10 },
-                { text: item.CALIFICADO, style: ['dinamicTable'] },
-                { text: item.OBSERVACION, style: ['dinamicTable'] }
-              ])
-            ],
-          }
-        },
-        '\n',
-        {
-          table: {
-            widths: ['*', '*', '*', '*', '*', '*', '*'],
-            body: [
-              [
-                { text: '3. Resultados lista de chequeo', colSpan: 7, style: ['tituloDinamico'] },
-                {},
-                {},
-                {},
-                {},
-                {},
-                {}
-              ],
-              [
-                '',
-                { text: 'Criterios', alignment: 'center' },
-                { text: 'NA', alignment: 'center' },
-                { text: 'NC', alignment: 'center' },
-                { text: 'CP', alignment: 'center' },
-                { text: 'C', alignment: 'center' },
-                { text: 'Total', alignment: 'center' }
-              ],
-              [
-                { text: 'TOTAL', alignment: 'center' },
-                { text: 'Número de requisitos', alignment: 'center' },
-                { text: this.numeroRequisitoNA, alignment: 'center' },
-                { text: this.numeroRequisitoNC, alignment: 'center' },
-                { text: this.numeroRequisitoCP, alignment: 'center' },
-                { text: this.numeroRequisitoC, alignment: 'center' },
-                { text: this.totalNumeroRequisito, alignment: 'center' }
-              ],
-              [
-                { text: 'TOTAL', alignment: 'center' },
-                { text: 'Porcentaje  de cumplimiento', alignment: 'center' },
-                { text: this.porcentajeNA, alignment: 'center' },
-                { text: this.porcentajeNC, alignment: 'center' },
-                { text: this.porcentajeCP, alignment: 'center' },
-                { text: this.porcentajeC, alignment: 'center' },
-                ''
-              ]
-            ],
-          },
-          fontSize: 10,
-        }
-      ],
-      styles: {
+    } else {
+      const etapaDiagnostico = this.getEtapaDiagnostico();
+      const pdfDefinition: any = {
         header: {
-          fontSize: 16,
-          bold: true,
-          margin: [20, 20, 20, 20],
-          alignment: 'center',
+          columns: [
+            { image: headerLogo, fit: [150, 150], style: ['headerLogo'] }
+          ]
         },
-        tituloDinamico: {
-          alignment: 'center',
-          bold: true,
-          fontSize: 10,
+        footer: function (currentPage: number, pageCount: number) {
+          return {
+            columns: [
+              {
+                text: [
+                  { text: 'Página ', style: ['footer'], alignment: 'left' },
+                  { text: currentPage.toString(), style: ['footerPage'], alignment: 'left' },
+                  { text: ' de ', style: ['footer'], alignment: 'left' },
+                  { text: pageCount.toString(), style: ['footerPage'], alignment: 'left' }
+                ],
+                alignment: 'left',
+                margin: [30, 20, 20, 20]
+              },
+              { image: footerLogo, fit: [200, 200], style: ['footerLogo'], alignment: 'right' }
+            ]
+          }
         },
-        dinamicTable: {
-          fontSize: 10,
-          alignment: 'center'
+        pageSize: {
+          width: 794,
+          height: 1123,
         },
-        headerLogo: {
-          margin: [30, 20, 20, 20],
-          alignment: 'left'
-        },
-        footerLogo: {
-          margin: [0, 10, 10, 0],
-          alignment: 'right'
-        },
-        footer: {
-          fontSize: 10,
-          margin: [0, 0, 0, 10],
-        },
-        footerPage: {
-          fontSize: 10,
-          bold: true
+        pageMargins: [40, 60, 40, 60],
+        content: [
+          {
+            toc: {
+              title: { text: 'LISTA DE CHEQUEO', style: ['header'] }
+            }
+          },
+          {
+            table: {
+              widths: ['*', '*', '*', '*'],
+              body: [
+                [
+                  { text: '1. Información general del Prestador de Servicios Turísticos - PST', colSpan: 4, alignment: 'center', bold: true },
+                  {},
+                  {},
+                  {}
+                ],
+                [
+                  'Nombre del prestador de servicios turísticos PST',
+                  { text: this.nombrePst, colSpan: 3, alignment: 'center' },
+                  {},
+                  {}
+                ],
+                [
+                  'Número de identificación tributaria NIT',
+                  this.nit,
+                  'Registro Nacional de Turismo RNT',
+                  this.rnt
+                ],
+                [
+                  'Categoría del RNT',
+                  this.categoriarnt,
+                  'Subcategoría del RNT	',
+                  this.subcategoriarnt
+                ],
+                [
+                  'Municipio',
+                  this.municipio,
+                  'Departamento',
+                  this.departamento
+                ],
+                [
+                  'NTC de Turismo',
+                  this.NTCL,
+                  'Etapa del diagnóstico',
+                  etapaDiagnostico
+                ],
+                [
+                  'Nombre del responsable de sostenibilidad',
+                  this.nombreResponsableSostenibilidad,
+                  'Teléfono de contacto del responsable de sostenibilidad',
+                  this.telefonoResponsableSostenibilidad
+                ],
+                [
+                  'Correo del responsable de sostenibilidad',
+                  { text: this.correoResponsableSostenibilidad, colSpan: 2, alignment: 'center' },
+                  {},
+                  ''
+                ]
+              ]
+            },
+            fontSize: 10,
+          },
+          '\n',
+          {
+            table: {
+              widths: ['*', '*'],
+              body: [
+                [
+                  { text: '2. Metodología de calificación diagnóstico', alignment: 'center', bold: true, colSpan: 2, fontSize: 10 },
+                  {}
+                ],
+                [
+                  {
+                    text: 'Califique, acorde con la siguiente escala:\n\nC = Cumple: Se encuentra documentado, implementado, socializado y es adecuado para la organización.\nCP = Cumple parcialmente: Se encuentra parcialmente documentado o en su totalidad, pero no está implementado o está en proceso de implementación o se ejecutan actividades pero no están documentadas.\nNC = No cumple: No se ha realizado ninguna acción respecto al requisito.\nNA = No aplica: No es aplicable el requisito a la organización.',
+                    colSpan: 2, fontSize: 10
+                  },
+                  {}
+                ]
+              ]
+            }
+          },
+          '\n',
+          {
+            table: {
+              widths: [80, 85, 'auto', 'auto', 'auto', 'auto'],
+              body: [
+                [
+                  { text: 'Numeral', style: ['tituloDinamico'] },
+                  { text: 'Título del requisito', style: ['tituloDinamico'] },
+                  { text: 'Requisito', style: ['tituloDinamico'] },
+                  { text: 'Posible evidencia', style: ['tituloDinamico'] },
+                  { text: 'Calificación', style: ['tituloDinamico'] },
+                  { text: 'Observaciones', style: ['tituloDinamico'] },
+                ],
+                // Aquí va el título NUMERAL
+                ...this.datosL.RESPONSE_CALIFICACION.map((item: any) => [
+                  { text: item.NUMERAL, style: ['dinamicTable'] },
+                  { text: item.TITULO_REQUISITO, style: ['dinamicTable'] },
+                  { text: item.REQUISITO, fontSize: 10 },
+                  { text: item.EVIDENCIA, fontSize: 10 },
+                  { text: item.CALIFICADO, style: ['dinamicTable'] },
+                  { text: item.OBSERVACION, style: ['dinamicTable'] }
+                ])
+              ],
+            }
+          },
+          '\n',
+          {
+            table: {
+              widths: ['*', '*', '*', '*', '*', '*', '*'],
+              body: [
+                [
+                  { text: '3. Resultados lista de chequeo', colSpan: 7, style: ['tituloDinamico'] },
+                  {},
+                  {},
+                  {},
+                  {},
+                  {},
+                  {}
+                ],
+                [
+                  '',
+                  { text: 'Criterios', alignment: 'center' },
+                  { text: 'NA', alignment: 'center' },
+                  { text: 'NC', alignment: 'center' },
+                  { text: 'CP', alignment: 'center' },
+                  { text: 'C', alignment: 'center' },
+                  { text: 'Total', alignment: 'center' }
+                ],
+                [
+                  { text: 'TOTAL', alignment: 'center' },
+                  { text: 'Número de requisitos', alignment: 'center' },
+                  { text: this.numeroRequisitoNA, alignment: 'center' },
+                  { text: this.numeroRequisitoNC, alignment: 'center' },
+                  { text: this.numeroRequisitoCP, alignment: 'center' },
+                  { text: this.numeroRequisitoC, alignment: 'center' },
+                  { text: this.totalNumeroRequisito, alignment: 'center' }
+                ],
+                [
+                  { text: 'TOTAL', alignment: 'center' },
+                  { text: 'Porcentaje  de cumplimiento', alignment: 'center' },
+                  { text: this.porcentajeNA, alignment: 'center' },
+                  { text: this.porcentajeNC, alignment: 'center' },
+                  { text: this.porcentajeCP, alignment: 'center' },
+                  { text: this.porcentajeC, alignment: 'center' },
+                  ''
+                ]
+              ],
+            },
+            fontSize: 10,
+          }
+        ],
+        styles: {
+          header: {
+            fontSize: 16,
+            bold: true,
+            margin: [20, 20, 20, 20],
+            alignment: 'center',
+          },
+          tituloDinamico: {
+            alignment: 'center',
+            bold: true,
+            fontSize: 10,
+          },
+          dinamicTable: {
+            fontSize: 10,
+            alignment: 'center'
+          },
+          headerLogo: {
+            margin: [30, 20, 20, 20],
+            alignment: 'left'
+          },
+          footerLogo: {
+            margin: [0, 10, 10, 0],
+            alignment: 'right'
+          },
+          footer: {
+            fontSize: 10,
+            margin: [0, 0, 0, 10],
+          },
+          footerPage: {
+            fontSize: 10,
+            bold: true
+          }
         }
       }
+      const title = "Se descargó correctamente";
+      const message = "La descarga se ha realizado exitosamente"
+      this.Message.showModal(title, message);
+      pdfMake.createPdf(pdfDefinition).open();
     }
-    const title = "Se descargó correctamente";
-    const message = "La descarga se ha realizado exitosamente"
-    this.Message.showModal(title, message);
-    pdfMake.createPdf(pdfDefinition).open();
   }
 
   generatePlanMejora() {
@@ -1153,211 +1185,213 @@ export class AppDiagnosticoDocComponent implements OnInit {
       const message = "No hay datos para generar el informe"
       this.Message.showModal(title, message);
       return;
-    }
-    const pdfDefinition: any = {
-      header: {
-        columns: [
-          { image: headerLogo, fit: [150, 150], style: ['headerLogo'] }
-        ]
-      },
-      footer: function (currentPage: number, pageCount: number) {
-        return {
-          columns: [
-            {
-              text: [
-                { text: 'Página ', style: ['footer'], alignment: 'left' },
-                { text: currentPage.toString(), style: ['footerPage'], alignment: 'left' },
-                { text: ' de ', style: ['footer'], alignment: 'left' },
-                { text: pageCount.toString(), style: ['footerPage'], alignment: 'left' }
-              ],
-              alignment: 'left',
-              margin: [30, 20, 20, 20]
-            },
-            { image: footerLogo, fit: [200, 200], style: ['footerLogo'], alignment: 'right' }
-          ]
-        }
-      },
-      pageSize: {
-        width: 794,
-        height: 1123,
-      },
-      pageMargins: [40, 120, 40, 120],
-      content: [
-        {
-          toc: {
-            title: { text: 'PLAN DE MEJORA', style: ['header'] }
-          }
-        },
-        {
-          table: {
-            widths: ['*', '*', '*', '*'],
-            body: [
-              [
-                { text: '1. Información general del Prestador de Servicios Turísticos - PST', colSpan: 4, alignment: 'center', bold: true },
-                {},
-                {},
-                {}
-              ],
-              [
-                'Nombre del prestador de servicios turísticos PST',
-                { text: this.nombrePstP, colSpan: 3, alignment: 'center' },
-                {},
-                {}
-              ],
-              [
-                'Número de identificación tributaria NIT',
-                this.nitP,
-                'Registro Nacional de Turismo RNT',
-                this.rntP
-              ],
-              [
-                'Categoría del RNT',
-                this.categoriarntP,
-                'Subcategoría del RNT	',
-                this.subcategoriarntP
-              ],
-              [
-                'Municipio',
-                this.municipioP,
-                'Departamento',
-                this.departamentoP
-              ],
-              [
-                'NTC de Turismo',
-                this.NTCP,
-                'Etapa del diagnóstico',
-                this.etapaP
-              ],
-              [
-                'Nombre del responsable de sostenibilidad',
-                this.nombreResponsableSostenibilidadP,
-                'Teléfono de contacto del responsable de sostenibilidad',
-                this.telefonoResponsableSostenibilidadP
-              ],
-              [
-                'Correo del responsable de sostenibilidad',
-                { text: this.correoResponsableSostenibilidadP, colSpan: 2, alignment: 'center' },
-                {},
-                ''
-              ]
-            ]
-          },
-          fontSize: 10,
-        },
-        '\n',
-        {
-          table: {
-            widths: ['*', '*'],
-            body: [
-              [
-                { text: '2. Metodología de calificación diagnóstico', alignment: 'center', bold: true, colSpan: 2 },
-                {}
-              ],
-              [
-                {
-                  text: 'Califique, acorde con la siguiente escala:\n\nC = Cumple: Se encuentra documentado, implementado, socializado y es adecuado para la organización.\nCP = Cumple parcialmente: Se encuentra parcialmente documentado o en su totalidad, pero no está implementado o está en proceso de implementación o se ejecutan actividades pero no están documentadas.\nNC = No cumple: No se ha realizado ninguna acción respecto al requisito.\nNA = No aplica: No es aplicable el requisito a la organización.',
-                  colSpan: 2
-                },
-                {}
-              ]
-            ]
-          },
-          fontSize: 10,
-        },
-        '\n',
-        {
-          table: {
-            widths: [80, 85, 'auto', 'auto', 'auto', 'auto'],
-            body: [
-              [
-                { text: 'Numeral', style: ['tituloDinamico'] },
-                { text: 'Titulo del requisito', style: ['tituloDinamico'] },
-                { text: 'Posible evidencia', style: ['tituloDinamico'] },
-                { text: 'Estado', style: ['tituloDinamico'] },
-                { text: 'Actividad general o fase a realizar', style: ['tituloDinamico'] },
-                { text: 'Duración', style: ['tituloDinamico'] },
-              ],
-              // Aquí va el título NUMERAL
-              ...this.datosP.DATA_CALIFICACION.map((item: any) => [
-                { text: item.NUMERAL, style: ['dinamicTable'] },
-                { text: item.TITULO_REQUISITO, style: ['dinamicTable'] },
-                { text: item.EVIDENCIA, fontSize: 10 },
-                { text: item.CALIFICADO, style: ['dinamicTable'] },
-                { text: item.OBSERVACION, fontSize: 10 },
-                { text: item.DURACION, style: ['dinamicTable'] }
-              ]),
-            ]
-          }
-        },
-        '\n',
-        {
-          table: {
-            widths: ['*', '*', '*', '*', '*', '*'],
-            body: [
-              [
-                { text: 'Responsables	', alignment: 'center', bold: true },
-                { text: 'Isoluciones da asistencia técnica (80 horas virtuales y 4 visitas presenciales) y el PST.', colSpan: 5 },
-                {},
-                {},
-                {},
-                {}
-              ],
-              [
-                { text: 'Nombre del Asesor', alignment: 'center', bold: true },
-                { text: this.nombreAsesorP, colSpan: 2 },
-                {},
-                { text: 'Fecha del informe', alignment: 'center', bold: true },
-                { text: this.fechaInformeP, colSpan: 2 },
-                {}
-              ]
-            ]
-          },
-          fontSize: 10,
-        },
-      ],
-      styles: {
+    } else {
+      const etapaDiagnostico = this.getEtapaDiagnostico();
+      const pdfDefinition: any = {
         header: {
-          fontSize: 16,
-          bold: true,
-          margin: [0, 10, 0, 10],
-          alignment: 'center',
+          columns: [
+            { image: headerLogo, fit: [150, 150], style: ['headerLogo'] }
+          ]
         },
-        planMejora: {
-          alignment: 'center',
-          bold: true,
-          fontSize: 10
+        footer: function (currentPage: number, pageCount: number) {
+          return {
+            columns: [
+              {
+                text: [
+                  { text: 'Página ', style: ['footer'], alignment: 'left' },
+                  { text: currentPage.toString(), style: ['footerPage'], alignment: 'left' },
+                  { text: ' de ', style: ['footer'], alignment: 'left' },
+                  { text: pageCount.toString(), style: ['footerPage'], alignment: 'left' }
+                ],
+                alignment: 'left',
+                margin: [30, 20, 20, 20]
+              },
+              { image: footerLogo, fit: [200, 200], style: ['footerLogo'], alignment: 'right' }
+            ]
+          }
         },
-        tituloDinamico: {
-          alignment: 'center',
-          bold: true,
-          fontSize: 10,
+        pageSize: {
+          width: 794,
+          height: 1123,
         },
-        dinamicTable: {
-          fontSize: 10,
-          alignment: 'center'
-        },
-        headerLogo: {
-          margin: [30, 30, 30, 30],
-          alignment: 'left'
-        },
-        footerLogo: {
-          margin: [0, 10, 10, 0],
-          alignment: 'right'
-        },
-        footer: {
-          fontSize: 10,
-          margin: [0, 0, 0, 10],
-        },
-        footerPage: {
-          fontSize: 10,
-          bold: true
+        pageMargins: [40, 120, 40, 120],
+        content: [
+          {
+            toc: {
+              title: { text: 'PLAN DE MEJORA', style: ['header'] }
+            }
+          },
+          {
+            table: {
+              widths: ['*', '*', '*', '*'],
+              body: [
+                [
+                  { text: '1. Información general del Prestador de Servicios Turísticos - PST', colSpan: 4, alignment: 'center', bold: true },
+                  {},
+                  {},
+                  {}
+                ],
+                [
+                  'Nombre del prestador de servicios turísticos PST',
+                  { text: this.nombrePstP, colSpan: 3, alignment: 'center' },
+                  {},
+                  {}
+                ],
+                [
+                  'Número de identificación tributaria NIT',
+                  this.nitP,
+                  'Registro Nacional de Turismo RNT',
+                  this.rntP
+                ],
+                [
+                  'Categoría del RNT',
+                  this.categoriarntP,
+                  'Subcategoría del RNT	',
+                  this.subcategoriarntP
+                ],
+                [
+                  'Municipio',
+                  this.municipioP,
+                  'Departamento',
+                  this.departamentoP
+                ],
+                [
+                  'NTC de Turismo',
+                  this.NTCP,
+                  'Etapa del diagnóstico',
+                  etapaDiagnostico
+                ],
+                [
+                  'Nombre del responsable de sostenibilidad',
+                  this.nombreResponsableSostenibilidadP,
+                  'Teléfono de contacto del responsable de sostenibilidad',
+                  this.telefonoResponsableSostenibilidadP
+                ],
+                [
+                  'Correo del responsable de sostenibilidad',
+                  { text: this.correoResponsableSostenibilidadP, colSpan: 2, alignment: 'center' },
+                  {},
+                  ''
+                ]
+              ]
+            },
+            fontSize: 10,
+          },
+          '\n',
+          {
+            table: {
+              widths: ['*', '*'],
+              body: [
+                [
+                  { text: '2. Metodología de calificación diagnóstico', alignment: 'center', bold: true, colSpan: 2 },
+                  {}
+                ],
+                [
+                  {
+                    text: 'Califique, acorde con la siguiente escala:\n\nC = Cumple: Se encuentra documentado, implementado, socializado y es adecuado para la organización.\nCP = Cumple parcialmente: Se encuentra parcialmente documentado o en su totalidad, pero no está implementado o está en proceso de implementación o se ejecutan actividades pero no están documentadas.\nNC = No cumple: No se ha realizado ninguna acción respecto al requisito.\nNA = No aplica: No es aplicable el requisito a la organización.',
+                    colSpan: 2
+                  },
+                  {}
+                ]
+              ]
+            },
+            fontSize: 10,
+          },
+          '\n',
+          {
+            table: {
+              widths: [80, 85, 'auto', 'auto', 'auto', 'auto'],
+              body: [
+                [
+                  { text: 'Numeral', style: ['tituloDinamico'] },
+                  { text: 'Titulo del requisito', style: ['tituloDinamico'] },
+                  { text: 'Posible evidencia', style: ['tituloDinamico'] },
+                  { text: 'Estado', style: ['tituloDinamico'] },
+                  { text: 'Actividad general o fase a realizar', style: ['tituloDinamico'] },
+                  { text: 'Duración', style: ['tituloDinamico'] },
+                ],
+                // Aquí va el título NUMERAL
+                ...this.datosP.DATA_CALIFICACION.map((item: any) => [
+                  { text: item.NUMERAL, style: ['dinamicTable'] },
+                  { text: item.TITULO_REQUISITO, style: ['dinamicTable'] },
+                  { text: item.EVIDENCIA, fontSize: 10 },
+                  { text: item.CALIFICADO, style: ['dinamicTable'] },
+                  { text: item.OBSERVACION, fontSize: 10 },
+                  { text: item.DURACION, style: ['dinamicTable'] }
+                ]),
+              ]
+            }
+          },
+          '\n',
+          {
+            table: {
+              widths: ['*', '*', '*', '*', '*', '*'],
+              body: [
+                [
+                  { text: 'Responsables	', alignment: 'center', bold: true },
+                  { text: 'Isoluciones da asistencia técnica (80 horas virtuales y 4 visitas presenciales) y el PST.', colSpan: 5 },
+                  {},
+                  {},
+                  {},
+                  {}
+                ],
+                [
+                  { text: 'Nombre del Asesor', alignment: 'center', bold: true },
+                  { text: this.nombreAsesorP, colSpan: 2 },
+                  {},
+                  { text: 'Fecha del informe', alignment: 'center', bold: true },
+                  { text: this.fechaInformeP, colSpan: 2 },
+                  {}
+                ]
+              ]
+            },
+            fontSize: 10,
+          },
+        ],
+        styles: {
+          header: {
+            fontSize: 16,
+            bold: true,
+            margin: [0, 10, 0, 10],
+            alignment: 'center',
+          },
+          planMejora: {
+            alignment: 'center',
+            bold: true,
+            fontSize: 10
+          },
+          tituloDinamico: {
+            alignment: 'center',
+            bold: true,
+            fontSize: 10,
+          },
+          dinamicTable: {
+            fontSize: 10,
+            alignment: 'center'
+          },
+          headerLogo: {
+            margin: [30, 30, 30, 30],
+            alignment: 'left'
+          },
+          footerLogo: {
+            margin: [0, 10, 10, 0],
+            alignment: 'right'
+          },
+          footer: {
+            fontSize: 10,
+            margin: [0, 0, 0, 10],
+          },
+          footerPage: {
+            fontSize: 10,
+            bold: true
+          }
         }
       }
+      const title = "Se descargó correctamente";
+      const message = "La descarga se ha realizado exitosamente"
+      this.Message.showModal(title, message);
+      pdfMake.createPdf(pdfDefinition).open();
     }
-    const title = "Se descargó correctamente";
-    const message = "La descarga se ha realizado exitosamente"
-    this.Message.showModal(title, message);
-    pdfMake.createPdf(pdfDefinition).open();
   }
   
   saveForm() {

@@ -106,21 +106,25 @@ ngOnInit(): void {
   const id = Number(window.localStorage.getItem('Id'));
   this.colorTitle = JSON.parse(localStorage.getItem("color")).title;
   this.colorWallpaper = JSON.parse(localStorage.getItem("color")).wallpaper;
-
-   this.ApiService.validateCaracterizacion(id).subscribe((data: any)=>{
-    if(data === true){
-      this.router.navigate(['/dashboard']);
-    }
-  else{
-      this.formParent = this.formBuilder.group({});
-      this.getCaracterizacion();
-      this.getPreguntasOrdenadas();
-      this.http.get('https://www.datos.gov.co/resource/gdxc-w37w.json')
-      .subscribe((data: any[]) => {
-        this.municipios = data;
-      });  
+  var opcion = localStorage.getItem("opcionEditar");
+  debugger;
+  if(opcion != "1"){
+    this.ApiService.validateCaracterizacion(id).subscribe((data: any)=>{
+      if(data === true){
+        this.router.navigate(['/dashboard']);
+      }
+      else{
+          this.formParent = this.formBuilder.group({});
+          this.getCaracterizacion();
+          this.getPreguntasOrdenadas();
+          this.http.get('https://www.datos.gov.co/resource/gdxc-w37w.json')
+          .subscribe((data: any[]) => {
+            this.municipios = data;
+          });  
+      }
+    })
   }
-  })
+ 
 
   //validar input-otro
   this.otroControlA = new FormControl('', [Validators.required]);

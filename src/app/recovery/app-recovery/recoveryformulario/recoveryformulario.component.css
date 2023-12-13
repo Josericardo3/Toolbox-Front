@@ -67,3 +67,31 @@ h1 {
   button:hover {
     background-color: #057551;
   }
+
+  .iconEye{
+    color: #068460;
+    cursor: pointer;
+ 
+    right: 0;
+    margin: 1.7vh 1vw 0 0;
+  }
+
+input.ng-invalid.ng-touched {
+    border: solid 2px tomato !important;
+    border-radius: 10px;
+  }
+input.ng-valid{
+    border: solid 2px #068460 !important;
+    border-radius: 10px;
+  }
+:disabled{
+    background-color: #737373;
+}
+.error-message {
+    color: red;
+    font-weight: bold;
+    text-align: center;
+    font-family: 'Reboto', sans-serif;
+    font-size: 15px;
+    align-self: flex-start;
+  }

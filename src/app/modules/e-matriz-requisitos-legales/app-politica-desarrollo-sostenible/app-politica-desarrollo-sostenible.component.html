@@ -28,15 +28,81 @@
     </p>
     <textarea name="" id="" cols="30" rows="10" [(ngModel)]="estructura.compromisoEmpresa.RESPUESTA" [disabled]="accionActivo!='guardar'"> </textarea>
     <p class="info">Responda con su compromiso para el sistema.</p>
-
+    <br><br>
     <div>
       <label for="descripcion" class="label-auditor">Política de Desarrollo Sostenible: </label>
-      <button type="button" class="botonAgregar" (click)="agregarAdicional()" [disabled]="accionActivo!='guardar'">
+      <!--<button type="button" class="botonAgregar" (click)="agregarAdicional()" [disabled]="accionActivo!='guardar'">
         <i class="fa-solid fa-plus" style="color: white; margin: 0 0.4vw;"></i>Agregar
-      </button>
+      </button>-->
+    </div>
+    <!--POLITICA DESARROLLO SOSTENIBLE MODIFICADO-->
+    <div class="politica-desarrollo">
+      <div class="divTabPregunta">
+        <p class="texto">¿Cómo se comunica la política?</p>
+        <textarea class="textarea-agg" [(ngModel)]="temporal1.RESPUESTA" [disabled]="accionActivo!='guardar'"></textarea>
+        <p class="info">Responda con su compromiso para el sistema.</p>
+      </div>
+      <div class="divTabPregunta">
+        <p class="texto">
+          ¿Quién comunica?
+        </p>
+        <select name="comunicacion" id="comunicacion" [(ngModel)]="temporal2.RESPUESTA" [disabled]="accionActivo!='guardar'">
+          <option value="" disabled>Seleccione una opción</option>
+          <option *ngFor="let responsible of quienComunica" [ngValue]="responsible.NOMBRE">{{responsible.NOMBRE | titlecase }}</option>
+        </select>
+        <p class="info">Responda según desee implementar.</p>
+      </div>
+
+      <div class="divTabPregunta">
+        <p class="texto">
+          ¿Cuándo?
+        </p>
+        <input bsDatepicker appFwCalendario type="text" maxlength="10" placement="bottom" class=" date-conte"
+               #dp3="bsDatepicker" placeholder="DD-MM-YYYY" title="Inicio de actividad"
+               fw_calendario ui-date-mask
+               [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY',adaptivePosition: true, isAnimated: true, containerClass: 'theme-green', minDate: today }"
+               [(ngModel)]="temporal3.RESPUESTA" (ngModelChange)="dateInputChange(estructura, $event)" [disabled]="accionActivo!='guardar'" />
+        <i (click)="dp3.show()" class="fa-solid fa-calendar-days"
+           style="color: #06543c;font-size: 22px;padding: 8px;" [attr.aria-expanded]="dp3.isOpen">
+        </i>
+        <!--<input id="fecha" type="date" class=" date-conte" formControlName="fecha" (ngModelChange)="dateInputChange(pregunta, $event)" [(ngModel)]="pregunta.RESPUESTA" [min]="minDate" [disabled]="accionActivo!='guardar'">-->
+
+        <p class="info">Responda según desee implementar.</p>
+      </div>
+
+      <div class="divTabPregunta">
+        <p class="texto">
+          ¿Dónde estará disponible?
+        </p>
+        <select [(ngModel)]="optSelect" [disabled]="accionActivo!='guardar'">
+          <option>Página web</option>
+          <option>Redes sociales</option>
+          <option>Otro ¿Cuál?</option>
+        </select>
+        <input type="text" [(ngModel)]="optValotro" *ngIf="optSelect=='Otro ¿Cuál?'" placeholder="Ingrese la respuesta" [disabled]="accionActivo!='guardar'">
+        <p class="info">Responda según desee implementar.</p>
+        <!--<div class="container-check">
+          <input type="checkbox" class="input-check" [checked]="pregunta.RESPUESTA === 'Página web'"
+            (change)="checkboxChange(pregunta, 'Página web')" [disabled]="accionActivo!='guardar'">
+          <p>Página web</p>
+        </div>
+        <div class="container-check">
+          <input type="checkbox" class="input-check" [checked]="pregunta.RESPUESTA === 'Redes sociales'"
+            (change)="checkboxChange(pregunta, 'Redes sociales')" [disabled]="accionActivo!='guardar'">
+          <p>Redes sociales</p>
+        </div>
+        <div class="container-check">
+          <input type="checkbox" class="input-check" [checked]="pregunta.RESPUESTA!='' && pregunta.RESPUESTA !== 'Página web' && pregunta.RESPUESTA !== 'Redes sociales'"
+            (change)="checkboxChange(pregunta, 'Otro')" [disabled]="accionActivo!='guardar'">
+          <p>Otro ¿Cuál?</p>
+        </div>
+        <input type="text" style="width: 45% !important;" [(ngModel)]="pregunta.OTRO_VALOR"
+          [disabled]="pregunta.RESPUESTA ==''||  (accionActivo!='guardar' || pregunta.RESPUESTA === 'Página web' || pregunta.RESPUESTA === 'Redes sociales')">
+        <p class="info">Responda según desee implementar.</p>-->
+      </div>
     </div>
 
-    <div class="card">
+    <!--<div class="card">
       <tabset class="bg-purple custom-tab">
         <ng-container *ngFor="let tab of estructura.adicionales, let index= index">
           <tab [heading]="'Politica ' + tab.orden">
@@ -70,7 +136,7 @@
                   <i (click)="dp3.show()" class="fa-solid fa-calendar-days"
                      style="color: #06543c;font-size: 22px;padding: 8px;" [attr.aria-expanded]="dp3.isOpen">
                   </i>
-                  <!--<input id="fecha" type="date" class=" date-conte" formControlName="fecha" (ngModelChange)="dateInputChange(pregunta, $event)" [(ngModel)]="pregunta.RESPUESTA" [min]="minDate" [disabled]="accionActivo!='guardar'">-->
+                  <input id="fecha" type="date" class=" date-conte" formControlName="fecha" (ngModelChange)="dateInputChange(pregunta, $event)" [(ngModel)]="pregunta.RESPUESTA" [min]="minDate" [disabled]="accionActivo!='guardar'">
 
                   <p class="info">Responda según desee implementar.</p>
                 </div>
@@ -99,17 +165,17 @@
                   <p class="info">Responda según desee implementar.</p>
                 </div>
               </ng-container>
-              <!-- <div class="btn-delete">
+               <div class="btn-delete">
                 <button class="botonEliminar" (click)="eliminarTab(tab.orden)" [disabled]="disableDelete">
                   <i class="fa-solid fa-trash" style="color: white; margin: 0 0.4vw;"></i>Eliminar
                 </button>
-              </div> -->
+              </div>
             </div>
            
           </tab>
         </ng-container>
       </tabset>
-    </div>
+    </div>-->
     
     <div class="containerBtn">
       <button type="submit" class="botonG" (click)="saveForm()" [disabled]="accionActivo != 'guardar' || (llenadoIncorrecto() &&  accionActivo=='guardar')">

@@ -71,11 +71,11 @@
   <!-- Modal Editar Noticia -->
   <div class="modal-background" id="modal-success" *ngIf="showModalEditar">
     <div class="modal-content">
-        <div class="modal-title-editar">
-            <a title="Cerrar" data-dismiss="modal" aria-label="Close" class="x">
+        <a title="Cerrar" data-dismiss="modal" aria-label="Close" class="x">
                 <i class="fa-solid fa-circle-xmark" style="color: #06543c;font-size: 25px;"
                     (click)="showModalEditar = false"></i>
             </a>
+        <div class="modal-title-editar">
             <h2>Editar noticia</h2>
             <div class="linea"></div>
         </div>
@@ -107,11 +107,12 @@
                   bullist numlist checklist outdent indent | removeformat | a11ycheck code table help'
                 }"
             ></editor>
-            <label for="" class="indicador-max">El texto ingresado no debe superar las 500 palabras</label>
+            <label for="" class="indicador-max">El texto ingresado no debe superar los 500 caractéres</label>
             <div class="containerFile" style="margin-top:2vh;">
                 <input type="file" (change)="captureImage($event)" class="file" id="archivo" #archivo>
                 <label for="archivo" class="fileBtn">Seleccionar imagen</label>
-                <label id="nombre" class="fileName">Ningún archivo seleccionado</label>
+                <label id="nombre" class="fileName" *ngIf="this.noticiaSelected.IMAGEN==''">Ningún archivo seleccionado</label>
+                <label id="nombre" class="fileName" *ngIf="this.noticiaSelected.IMAGEN!=''">{{ this.noticiaSelected.IMAGEN }}</label>
             </div><br>
             <button class="botonG" type="submit" [disabled]="noticiaSelected.invalid">
                 <i class="fa-regular fa-floppy-disk" style="color: #fff;"></i>

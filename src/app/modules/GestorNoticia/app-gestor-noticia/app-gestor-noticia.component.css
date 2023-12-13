@@ -193,6 +193,8 @@ textarea {
 
 .x {
     align-self: flex-end;
+    position: fixed;
+    z-index: 999999999999999999;
 }
 
 .form {
@@ -460,6 +462,94 @@ hr{
     align-items: center;
     justify-content: flex-end;
 }
+
+.container-notificaciones{
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    margin-top: -2.2rem;
+  
+  }
+  .menu-icono{
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    position: absolute;
+    right: 0; /* Posicionar a la derecha */
+    margin-top: -3rem;
+  
+  }
+  
+  #collapseContent{
+    z-index: 99999;
+  }
+  .custom-popover {  
+    max-width: 200px; 
+      background-color: #fff;             
+      border: 1px solid #ccc;            
+      border-radius: 5px;            
+    padding: 10px;           
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);  
+      transition: none;    
+      margin-top: 0.8rem;   
+      margin-left: -0.6rem;  
+    }
+
+    .custom-popover::before {    
+      margin-top: 5px;
+      content: '';
+      position: absolute;
+      top: -15px; /* Ajusta la distancia del triángulo a la parte superior */
+      left: 50%;
+      margin-left: -10px; /* Ajusta la posición del triángulo */
+      border-width: 0 15px 15px; /* Ajusta el tamaño del triángulo */
+      border-style: solid;
+      border-color: transparent transparent #fff;        
+    
+     }
+
+    
+     .custom-popover.collapse {             
+      transition: none;        
+     }
+
+     .cardnotificaciones{
+      display:block !important;
+      
+      
+     }
+     .header-two{
+    
+     }
+     @media (min-width: 767px) {
+      .footer2 {
+        display: flex; 
+        justify-content: flex-end; 
+       
+        margin-top: -10rem;
+       
+      }
+      .menu-icono{
+        display: none;
+      }
+     
+      
+  }
+ 
+  @media(max-width: 767px){
+    .container-notificaciones{
+      display: none;
+    }
+   
+    .seguimiento{
+      display: none;
+    }
+    
+  }
+  @media(max-width: 995px){
+    .container-notificaciones{margin-right: 100px;}
+  }
+  
 /* Estilos para pantallas pequeñas (menos de 970px de ancho) */
 @media (max-width: 970px) {
   .noticias-app-header .container-pst p {

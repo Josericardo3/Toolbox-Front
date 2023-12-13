@@ -83,6 +83,7 @@ export class AppNoticiaComponent implements OnInit {
         this.procesarHTML(this.noticiaSelected.DESCRIPCION);
         //
         this.getListCategorias();
+        console.log(this.noticiaSelected);
       })
   }
   secureUrlYT: string;

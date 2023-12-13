@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 })
 export class AppHeaderArrowLeftComponent implements OnInit{
   @Input() redirectToDashboard: boolean = false;
+  @Input() redirectToDiagEtapas: boolean = false;
 
   constructor(
     private location: Location,
@@ -20,8 +21,9 @@ export class AppHeaderArrowLeftComponent implements OnInit{
   retroceder() {
     if (this.redirectToDashboard) {
       this.router.navigate(['/dashboard']);
-    }
-    else{
+    } else if (this.redirectToDiagEtapas) {
+      this.router.navigate(['/diagnosticoEtapas']);
+    } else{
       this.location.back();
     }
   }

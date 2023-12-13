@@ -36,17 +36,23 @@
               <div class="radio">
                 <input type="radio" [value]="opcion.ITEM" [name]="'radio' + j + '-' + i"
                   (change)="capturarValor($event, opcion.ITEM, subcampo.NUMERAL_PRINCIPAL , subcampo.NUMERAL_ESPECIFICO)"
-                  (click)="valorSeleccionado = opcion.ITEM" [id]="subcampo.NUMERAL_ESPECIFICO"
+                  (click)="valorSeleccionado = opcion.ITEM" [id]="'radio' + j + '-' + i + '-' + opcion.ITEM"
                   (change)="opcionSeleccionada = true" [formControlName]="'radio' + j + '-' + i"
                   [checked]="opcion.ITEM === getRadioValue(subcampo.VALOR_RESPUESTA)">
-                <label class="radioLabel" [for]="subcampo.NUMERAL_ESPECIFICO">{{opcion.DESCRIPCION}}</label>
+                <label class="radioLabel" [for]="'radio' + j + '-' + i + '-' + opcion.ITEM">{{opcion.DESCRIPCION}}</label>
               </div>
             </div>
           </div>
           <label>Observacion</label>
           <textarea type="text" style="height: 200px" [id]="'observacion-' + subcampo.NUMERAL_ESPECIFICO"
-            (input)="capturarValorObs($event, subcampo.NUMERAL_PRINCIPAL ,subcampo.NUMERAL_ESPECIFICO)" class="obs"
-            [value]="subcampo.OBSERVACION_RESPUESTA"></textarea>
+            (input)="capturarValorObs($event, subcampo.NUMERAL_PRINCIPAL ,subcampo.NUMERAL_ESPECIFICO)"
+            [value]="subcampo.OBSERVACION_RESPUESTA" class="obs"
+            [readonly]="!isFormValid(j, i) || isButtonDisabled(j, i) || subcampo.bloquearGuardar"
+            [ngClass]="{'error-border': showObservationLengthError}">
+          </textarea>
+          <div *ngIf="showObservationLengthError" class="text-danger">
+            La observación ingresada no debe tener más de 200 caracteres
+          </div>
           <div class="container d-flex align-items-center flex-column">
             <button type="submit" class="btn btn-primary w-100 m-3" [id]="j + '-' + i" [name]="j + '-' + i"
               [disabled]="!isFormValid(j, i) || isButtonDisabled(j, i) || subcampo.bloquearGuardar" (click)="saveForm(j, i)"
@@ -65,14 +71,16 @@
       </button>
     </div>
   </form>
-  <app-footer2></app-footer2>
-  <app-app-footer></app-app-footer>
-  <app-modal></app-modal>
-  <ngx-spinner bdColor="rgba(0, 0, 0, 0.5)" size="small"
-    template="<img src='https://www.superiorlawncareusa.com/wp-content/uploads/2020/05/loading-gif-png-5.gif' width='50' height='50'/>">
-  </ngx-spinner>
 </div>
 
+<app-footer2></app-footer2>
+<app-app-footer></app-app-footer>
+<app-modal></app-modal>
+<ngx-spinner bdColor="rgba(0, 0, 0, 0.5)" size="small"
+  template="<img src='https://www.superiorlawncareusa.com/wp-content/uploads/2020/05/loading-gif-png-5.gif' width='50' height='50'/>">
+</ngx-spinner>
+
+<!--MODAL-->
 <div class="modal modal-dialog-centered modal-background" role="dialog" tabindex="-1" *ngIf="mostrarModal" style="display: block;">
   <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
     <div class="modal-content modal-contedor p-4">

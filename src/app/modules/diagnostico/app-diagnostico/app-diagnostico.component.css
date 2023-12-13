@@ -173,7 +173,13 @@ textarea:disabled{
     justify-content: center;
     z-index: 10000;
 }
-
+.error-border {
+    border: solid 2px tomato !important;
+    border-radius: 10px;
+}
+.obs{
+    outline: none;
+}
 @media (max-width: 900px) {
     .cont{
         flex-direction: column;

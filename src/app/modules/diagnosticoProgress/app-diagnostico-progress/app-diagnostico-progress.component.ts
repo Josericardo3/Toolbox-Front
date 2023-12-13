@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import { ApiService } from 'src/app/servicios/api/api.service';
 import { BtnEmpezarContinuarService } from 'src/app/servicios/btn-empezar-continuar/btn-empezar-continuar.service';
 
-
 @Component({
   selector: 'app-app-diagnostico-progress',
   templateUrl: './app-diagnostico-progress.component.html',
@@ -12,6 +11,7 @@ import { BtnEmpezarContinuarService } from 'src/app/servicios/btn-empezar-contin
 export class AppDiagnosticoProgressComponent implements OnInit{
 
   datos: any = [];
+  totalFormulariosSum: number = 0;
 
   constructor(
     private ApiService: ApiService,
@@ -44,14 +44,24 @@ export class AppDiagnosticoProgressComponent implements OnInit{
             campo.totalFormularios = subformularios.size;
           
             // Establece el valor inicial de progresoActual como 0
-            // campo.progresoActual = 0;
             this.getButtonClasses(campo.CANT_RESPUESTAS)
           
             // Establece la propiedad guardado como false
             campo.guardado = false;
+
+            // Suma de todos los formularios
+            campo.totalFormularios = subformularios.size;
+            this.totalFormulariosSum += campo.totalFormularios;
             
-            console.log(`Cantidad de subformularios del formulario ${valorBuscar}: ${campo.totalFormularios}`);
+            console.log(this.totalFormulariosSum);
           });
+          // Actualiza el servicio con el totalFormulariosSum
+          this.btnEmpezarContinuarService.updateTotalFormulariosSum(this.totalFormulariosSum);
+
+                  // Actualiza el servicio con el total de formularios respondidos
+        const totalFormulariosRespondidos = this.datos.campos.reduce((total, campo) => total + campo.CANT_RESPUESTAS, 0);
+        this.btnEmpezarContinuarService.updateTotalFormulariosRespondidos(totalFormulariosRespondidos);
+
           this.verificarBotonesDesaparecidos();
         } else {
           console.error('La respuesta del endpoint no tiene la estructura esperada.');
@@ -97,9 +107,7 @@ export class AppDiagnosticoProgressComponent implements OnInit{
       this.datos.campos.every(campo => campo.CANT_RESPUESTAS === campo.totalFormularios);
   }
 
-  // En tu componente de Angular
   areAllButtonsHidden(): boolean {
     return this.datos.campos.every(campo => campo.CANT_RESPUESTAS === campo.totalFormularios);
   }
-
 }

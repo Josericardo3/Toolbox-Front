@@ -14,16 +14,19 @@
           <p class="fw-bold fs-6 ms-0">DIAGNÓSTICO DE ETAPA INICIAL</p>
         </div>
         <div class="container d-flex flex-row">
-          <div [ngClass]="getProgressBarClasses('inicio')" class="progress progress-bar me-2 position-relative"
-            [style.width.%]="100">
-            <div [style.left.%]="33.33" class="position-absolute top-0 bottom-0 custom-border"></div>
+
+          <div style="background-color: lightgray;" class="progress progress-bar me-2 position-relative" [style.width.%]="100">
+            <div [style.left.%]="33.33" class="position-absolute top-0 bottom-0 custom-border"></div>         
             <div [style.left.%]="66.66" class="position-absolute top-0 bottom-0 custom-border"></div>
-            <div class="rounded" role="progressbar"></div>
+            <!-- <div style="background-color: lightgrey;"  role="progressbar" [style.width.%]="100 - porcentajeInicial"></div> -->
+            <div [ngClass]="{'custom-progress-bar-inicio': true, 'rounded': true}" role="progressbar" [style.width.%]="porcentajeInicial || 0">
+              <div style="color: transparent;">{{ porcentajeInicial }}%</div>
+            </div>
           </div>
+         
         </div>
       </div>
       <div class="container col-md-3 col-sm-12 ancho">
-        <!-- <button type="submit" (click)="fnEtapa('inicial')" [ngClass]="getButtonClasses(etapaShowInicio)"> -->
         <button type="submit" (click)="fnEtapa('inicial')" class="btn btn-primary w-100 text-center">
           <span class="d-flex align-items-center justify-content-center">
             {{ etapaShowInicio ? 'VER RESULTADOS' : 'EMPEZAR'}}
@@ -43,23 +46,17 @@
           <p class="fw-bold fs-6 ms-0">DIAGNÓSTICO DE ETAPA INTERMEDIA</p>
         </div>
         <div class="container d-flex flex-row">
-          <div [ngClass]="getProgressBarClasses('intermedia')" class="progress progress-bar me-2 position-relative"
-            [style.width.%]="100">
-            <div [style.left.%]="33.33" class="position-absolute top-0 bottom-0 custom-border"></div>
+          <div style="background-color: lightgray;"  class="progress progress-bar me-2 position-relative" [style.width.%]="100">
+            <div [style.left.%]="33.33" class="position-absolute top-0 bottom-0 custom-border"></div>         
             <div [style.left.%]="66.66" class="position-absolute top-0 bottom-0 custom-border"></div>
-            <div class="rounded" role="progressbar"></div>
+            <!-- <div [ngClass]="{'bg-lightgray': true, 'rounded': true}" role="progressbar" [style.width.%]="100 - porcentajeIntermedia"></div> -->
+            <div [ngClass]="{'custom-progress-bar-intermedia': true, 'rounded': true}" role="progressbar" [style.width.%]="porcentajeIntermedia || 0">
+              <div style="color: transparent;">{{ porcentajeIntermedia }}%</div>
+            </div>
           </div>
         </div>
       </div>
       <div class="container col-md-3 col-sm-12 ancho">
-        <!-- <button type="submit" (click)="fnEtapa('intermedia')" [ngClass]="getButtonClasses(etapaShowIntermedio)"> -->
-        <!-- <button type="submit" (click)="fnEtapa('intermedia')" class="btn btn-primary w-100 text-center">
-          <span class="d-flex align-items-center justify-content-center">
-            {{ etapaShowIntermedio ? 'VER RESULTADOS' : 'EMPEZAR'}}
-            <i class="far fa-arrow-alt-circle-right ms-1"></i>
-          </span>
-        </button> -->
-
         <button class="btn btn-primary w-100 text-center" (click)="fnEtapa('intermedia')" [ngClass]="{'disabled': bloquearIntermedio}">
           <span *ngIf="etapaShowIntermedio; else diagnosticoIntermedio">
             VER RESULTADOS <i class="far fa-arrow-alt-circle-right ms-1"></i>
@@ -83,23 +80,17 @@
           <p class="fw-bold fs-6 ms-0">DIAGNÓSTICO DE ETAPA FINAL</p>
         </div>
         <div class="container d-flex flex-row">
-          <div [ngClass]="getProgressBarClasses('final')" class="progress progress-bar me-2 position-relative"
-            [style.width.%]="100">
-            <div [style.left.%]="33.33" class="position-absolute top-0 bottom-0 custom-border"></div>
+          <div style="background-color: lightgray;" class="progress progress-bar me-2 position-relative" [style.width.%]="100">
+            <div [style.left.%]="33.33" class="position-absolute top-0 bottom-0 custom-border"></div>         
             <div [style.left.%]="66.66" class="position-absolute top-0 bottom-0 custom-border"></div>
-            <div class="rounded" role="progressbar"></div>
+            <!-- <div [ngClass]="{'bg-lightgray': true, 'rounded': true}" role="progressbar" [style.width.%]="100 - porcentajeFinal"></div> -->
+            <div [ngClass]="{'custom-progress-bar-final': true, 'rounded': true}" role="progressbar" [style.width.%]="porcentajeFinal || 0">
+              <div style="color: transparent;">{{ porcentajeFinal }}%</div>
+            </div>
           </div>
         </div>
       </div>
       <div class="container col-md-3 col-sm-12 ancho">
-        <!-- <button type="submit" (click)="fnEtapa('final')" [ngClass]="getButtonClasses(etapaShowFinal)"> -->
-        <!-- <button type="submit" (click)="fnEtapa('final')" class="btn btn-primary w-100 text-center">
-          <span class="d-flex align-items-center justify-content-center">
-            {{ etapaShowFinal ? 'VER RESULTADOS' : 'EMPEZAR'}}
-            <i class="far fa-arrow-alt-circle-right ms-1"></i>
-          </span>
-        </button> -->
-
         <button class="btn btn-primary w-100 text-center" (click)="fnEtapa('final')" [ngClass]="{'disabled': bloquearFinal}">
           <span *ngIf="etapaShowFinal; else diagnosticoFinal">
             VER RESULTADOS <i class="far fa-arrow-alt-circle-right ms-1"></i>

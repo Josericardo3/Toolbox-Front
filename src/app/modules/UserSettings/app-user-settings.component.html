@@ -37,7 +37,7 @@
                             <span style="padding: 5px;"><i class="fi fi-rr-arrow-circle-right"></i>Cargar nuevo logo</span>
                             <input type="file" accept="image/*" onclick="this.value = null"ngf-max-size="500KB"  (change)="fnSubirFoto($event)" style="display: none;" multiple>
                           </label>  
-                          <button class="borrar-logo">Borrar</button>
+                          <button class="borrar-logo" (click)="elimiarFoto()">Borrar</button>
                         </div>
                     </div>
                     <button class="cambiar-contra" (click)="cambiarPassword()">Cambiar contraseña&emsp;<i class="fi fi-rr-arrow-circle-right"></i></button>

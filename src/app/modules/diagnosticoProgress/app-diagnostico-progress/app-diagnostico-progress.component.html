@@ -1,14 +1,8 @@
 <app-app-header></app-app-header>
 <app-app-header2></app-app-header2>
-<!-- <div class="container">
-    <div class=" header-container mt-0">
-      <app-app-header-arrow-left [redirectToDashboard]="true"></app-app-header-arrow-left>
-      <h1>FORMULARIOS DE DIAGNÓSTICO</h1>
-    </div>
-</div> -->
 <h1>FORMULARIOS DE DIAGNÓSTICO</h1>
 <div class="arrow">
-    <app-app-header-arrow-left [redirectToDashboard]="true"></app-app-header-arrow-left>
+    <app-app-header-arrow-left [redirectToDiagEtapas]="true"></app-app-header-arrow-left>
 </div>
 <div *ngIf="todosBotonesDesaparecidos" class="container-fluid bg-transparent col-12 d-flex flex-column justify-content-center align-items-center">
     <app-app-diagnostico-doc></app-app-diagnostico-doc>

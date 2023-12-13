@@ -1,36 +1,7 @@
-<!-- <app-app-header></app-app-header>
-<app-app-header2></app-app-header2>
-<h1>FORMATOS DE DESCARGA DEL FORMULARIO DE DIAGNÓSTICO</h1>
-<div class="arrow">
-  <app-app-header-arrow-left [redirectToDashboard]="true"></app-app-header-arrow-left>
-</div>
-
-<div class="container-fluid bg-transparent col-12 d-flex flex-column justify-content-center align-items-center">
-  <div class="container bg-white p-3 m-4 d-flex">
-      <div class="container d-flex flex-row flex-wrap cont align-items-center justify-content-center">
-          <div class="container col-md-9 col-sm-12">
-              <div class="container d-flex justify-content-between">
-                  <p class="fw-bold fs-6 ms-0">DIAGNÓSTICO ETAPA INICIAL</p>
-              </div>
-              <div class="container d-flex flex-row">
-                  <div class="progress progress-bar-striped me-2 position-relative" [style.width.%]="100">
-                      <div [style.left.%]="33.33" class="position-absolute top-0 bottom-0 custom-border"></div>
-                      
-                      <div [style.left.%]="66.66" class="position-absolute top-0 bottom-0 custom-border"></div>
-          
-                      <div class="rounded" 
-                      role="progressbar"></div>
-                  </div>
-              </div>
-          </div>
-      </div>
-  </div>
-</div> -->
-
 <div class="container-fluid col-12 d-flex flex-column justify-content-center align-items-center mt-3 p-0">
   <div class="container bg-white col-12 d-flex flex-column justify-content-center align-items-center p-0 custom-border">
     <div class="container-fluid d-flex justify-content-center align-items-center p-4">
-      <p class="fs-5 mb-0 text-center">FORMATOS DE DESCARGA DEL FORMULARIO DE DIAGNÓSTICO - ETAPA INICIAL</p>
+      <p class="fs-5 mb-0 text-center">FORMATOS DE DESCARGA DEL FORMULARIO DE DIAGNÓSTICO - ETAPA {{getEtapaDiagnostico().toUpperCase()}}</p>
     </div>
     <div class="linea col-12"></div>
     <div class="container d-flex flex-column justify-content-center align-items-center p-4">
@@ -57,9 +28,3 @@
   </button>
 </div>
 <app-modal></app-modal>
-<!-- <app-footer2></app-footer2>
-<app-app-footer></app-app-footer>
-
-<ngx-spinner bdColor="rgba(0, 0, 0, 0.5)" size="small"
-  template="<img src='https://www.superiorlawncareusa.com/wp-content/uploads/2020/05/loading-gif-png-5.gif' width='50' height='50'/>">
-</ngx-spinner> -->

@@ -37,6 +37,10 @@ export class AppDiagnosticoComponent implements OnInit {
   bloquearRadio:boolean = false;
   bloquearTextarea: boolean = false;
   mostrarModal: boolean = false;
+  avatares: any = []
+  idAvatar: any;
+  rutaAvatar: any;
+  subcampoErrorMsg: string = '';
 
   constructor(
     private fb: FormBuilder,
@@ -44,7 +48,7 @@ export class AppDiagnosticoComponent implements OnInit {
     private ApiService: ApiService,
     private Message: ModalService,
     private activatedRoute: ActivatedRoute,
-    public btnEmpezarContinuarService: BtnEmpezarContinuarService,
+    // public btnEmpezarContinuarService: BtnEmpezarContinuarService,
   ) { }
 
   ngOnInit(): void {
@@ -54,6 +58,8 @@ export class AppDiagnosticoComponent implements OnInit {
         console.log(params['id'])
       }
     });
+
+    // this.formParent = this.fb.group({});
 
     this.formParent = this.fb.group({});
 
@@ -77,6 +83,7 @@ export class AppDiagnosticoComponent implements OnInit {
           campo.listacampos.forEach((subcampo, i) => {
             formControls[`radio${j}-${i}`] = new FormControl(null);
           });
+          
         });
         this.formParent = new FormGroup(formControls);
 
@@ -93,13 +100,13 @@ export class AppDiagnosticoComponent implements OnInit {
               const radioValue = this.getRadioValue(listacampo.VALOR_RESPUESTA);
               console.log(radioValue)
               this.formParent.get(`radio${j}-${i}`).setValue(radioValue);
-            }
 
-            // Procesar OBSERVACION_RESPUESTA
-            // if (listacampo.NUMERAL_ESPECIFICO && listacampo.OBSERVACION_RESPUESTA) {
-            //   this.formParent.get(`observacion-${listacampo.NUMERAL_ESPECIFICO}`).setValue(listacampo.OBSERVACION_RESPUESTA);
-            // }
-          });
+                      // Deshabilitar el control después de cargar la información
+        this.formParent.get(`radio${j}-${i}`).disable();
+                          // Deshabilitar el control de observación después de cargar la información
+      // this.formParent.get(`observacion-${listacampo.NUMERAL_ESPECIFICO}`).disable();
+            }
+          });          
         });
 
         // Agregar propiedad bloquearGuardar a cada objeto en datos.campos
@@ -113,9 +120,6 @@ export class AppDiagnosticoComponent implements OnInit {
     this.getUsuario();
   }
 
-  avatares: any = []
-  idAvatar: any;
-  rutaAvatar: any;
   getUsuario(){
     this.ApiService.getUsuario().subscribe((data:any) => {
       this.avatares = data
@@ -157,9 +161,7 @@ export class AppDiagnosticoComponent implements OnInit {
     if (!this.isDataLoaded) {
       return true;
     }
-
     const listacampo = this.datos.campos[j].listacampos[i];
-
     return listacampo.VALOR_RESPUESTA !== null || listacampo.OBSERVACION_RESPUESTA !== null;
   }
 
@@ -206,25 +208,55 @@ export class AppDiagnosticoComponent implements OnInit {
       });
     }
   }
-
+  showObservationLengthError: boolean = false;
   capturarValorObs(event: Event, numeralprincipal: any, numeralEspecifico: any) {
     this.valorObs = (event.target as HTMLInputElement).value;
     const normaValue = localStorage.getItem('idNormaSelected');
-    const result = this.valoresForm.find((o: any) => o.numeralespecifico === numeralEspecifico);
-    if (result) {
-      result.observacion = this.valorObs;
+  
+    // Verificar la longitud de la observación
+    if (this.valorObs.length > 200) {
+      // Mostrar el mensaje de error
+      this.showObservationLengthError = true;
     } else {
-      this.valoresForm.push({
-        "valor": "",
-        "idnormatecnica": normaValue,
-        "idusuario": localStorage.getItem('Id'),
-        "numeralprincipal": numeralprincipal,
-        "numeralespecifico": numeralEspecifico,
-        "observacion": this.valorObs,
-      });
+      // Ocultar el mensaje de error si la longitud es válida
+      this.showObservationLengthError = false;
+  
+      // Resto de tu lógica para capturar la observación
+      const result = this.valoresForm.find((o: any) => o.numeralespecifico === numeralEspecifico);
+      if (result) {
+        result.observacion = this.valorObs;
+      } else {
+        this.valoresForm.push({
+          "valor": "",
+          "idnormatecnica": normaValue,
+          "idusuario": localStorage.getItem('Id'),
+          "numeralprincipal": numeralprincipal,
+          "numeralespecifico": numeralEspecifico,
+          "observacion": this.valorObs,
+        });
+      }
     }
   }
-  
+
+
+  // capturarValorObs(event: Event, numeralprincipal: any, numeralEspecifico: any) {
+  //   this.valorObs = (event.target as HTMLInputElement).value;
+  //   const normaValue = localStorage.getItem('idNormaSelected');
+  //   const result = this.valoresForm.find((o: any) => o.numeralespecifico === numeralEspecifico);
+  //   if (result) {
+  //     result.observacion = this.valorObs;
+  //   } else {
+  //     this.valoresForm.push({
+  //       "valor": "",
+  //       "idnormatecnica": normaValue,
+  //       "idusuario": localStorage.getItem('Id'),
+  //       "numeralprincipal": numeralprincipal,
+  //       "numeralespecifico": numeralEspecifico,
+  //       "observacion": this.valorObs,
+  //     });
+  //   }
+  // }
+
   saveForm(j: number, i: number) {
     if (this.isFormValid(j, i)) {
 
@@ -247,22 +279,12 @@ export class AppDiagnosticoComponent implements OnInit {
           const title = "Registro exitoso";
           const message = "Se guardaron los campos correctamente";
           this.Message.showModal(title, message);
-          // this.bloquearGuardar = true;
+
+        // Deshabilitar los controles relevantes después de guardar
+        this.formParent.get(`radio${j}-${i}`).disable();
+        // this.formParent.get(`observacion-${formularioActual.NUMERAL_ESPECIFICO}`).disable();
+
           formularioActual.bloquearGuardar = true;
-    //           formularioActual.listacampos.forEach((subcampo: any) => {
-    //   subcampo.bloquearGuardar = true;
-    // });
-          // this.router.navigate(['/diagnosticoDoc']) 
-
-          // Incrementar el progreso actual y obtener el nuevo valor
-          // const progresoActual = this.btnEmpezarContinuarService.obtenerProgreso(formularioActual.NUMERAL_PRINCIPAL) + 1;
-
-          // Actualizar el progreso en el servicio
-          // this.btnEmpezarContinuarService.actualizarProgreso(formularioActual.NUMERAL_PRINCIPAL, progresoActual);
-
-          // Notificar al servicio que se ha guardado el formulario
-          // this.btnEmpezarContinuarService.actualizarGuardado(formularioActual.NUMERAL_PRINCIPAL, true);
-
         });
     }
   }
@@ -270,5 +292,4 @@ export class AppDiagnosticoComponent implements OnInit {
   isLetra(numeral: string): boolean {
     return /^[A-Za-z]$/.test(numeral);
   }
-
 }

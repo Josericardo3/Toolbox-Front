@@ -11,7 +11,7 @@
     color: white;
 }
 
-.custom-progress-bar {
+.bg-color {
     background-color: lightgray;
 }
 
@@ -20,7 +20,7 @@
 }
 
 .custom-progress-bar-intermedia {
-    background-color: #fc3a3a;
+    background-color: #fc3a6a;
 }
 
 .custom-progress-bar-final {
@@ -34,3 +34,11 @@
     color: white;
 }
   
+
+/* .bg-lightgray {
+    background-color: lightgray;
+  }
+  
+  .bg-red {
+    background-color: #abf573;
+  } */
