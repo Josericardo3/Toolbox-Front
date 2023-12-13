@@ -1,4 +1,81 @@
 <app-app-header class="noticias-app-header" [esVisible]="true" [esInfoHeader]="true"></app-app-header>
+<div class="row ">
+    <div class="col-md-8 campana text-end">
+      <div class="container-notificaciones position-relative" style="margin-left: -50rem;">
+        <div class="notification-icon">
+          <button
+            class="btn"
+            style="all: initial; cursor: pointer"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#collapseContent"
+            aria-expanded="false"
+            aria-controls="collapseContent"
+          >
+            <i class="far fa-bell" style="color: #ffffff"></i>
+          </button>
+   
+          <div
+            class="collapse custom-popover position-absolute start-100 translate-middle-x"
+            id="collapseContent"
+          >
+            <h3
+              class="text text-success"
+              style="text-align: center; margin-bottom: -10px"
+            >
+              Notificaciones
+            </h3>
+            <div *ngIf="result && !resultInicadores" style="text-align: center">
+              <!-- <div class="linea"></div> -->
+              <hr />
+              <p class="text text-success">No hay recordatorios</p>
+            </div>
+            <div *ngIf="!result || resultInicadores">
+              <hr style="margin-bottom: 2px" />
+              <ul class="list-group list-group-flush">
+                <li
+                  class="list-group-item"
+                  style="cursor: pointer"
+                  *ngFor="let notificacion of datosTarjetaActividad.slice(0, 2)"
+                >
+                  <p
+                    style="margin-bottom: -2px"
+                    (click)="
+                      indexReminder(notificacion.fkIdActividad, notificacion.dato)
+                    "
+                  >
+                    {{ notificacion.descripcion?.slice(0, 20) }}
+                  </p>
+                </li>
+   
+                <li
+                  class="list-group-item"
+                  style="cursor: pointer"
+                  *ngFor="
+                    let campo of listaIndicadores.slice(0, 2);
+                    let index = index
+                  "
+                >
+                  <p style="margin-bottom: -2px" (click)="indexReminderIndicador()">
+                    {{ campo.NOMBRE_INDICADOR?.slice(0, 20) }}
+                  </p>
+                </li>
+              </ul>
+              <hr style="margin-top: 1px" />
+              <a
+                routerLink="/planificacion"
+                class="btn btn-primary btn-block mt-2"
+                style="display: block; text-align: center; justify-content: center"
+                >Ver más</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+   
+</div>
+
 <div class="containerGestorNoticia">
     <app-app-header2></app-app-header2>
     <div class="titulo">
@@ -57,11 +134,11 @@
     <!-- Modal Agregar Noticia -->
     <div class="modal-background" id="modal-success" *ngIf="showModal">
         <div class="modal-content">
-            <div class="modal-title">
-                <a title="Cerrar" data-dismiss="modal" aria-label="Close" class="x">
+            <a title="Cerrar" data-dismiss="modal" aria-label="Close" class="x">
                     <i class="fa-solid fa-circle-xmark" style="color: #06543c;font-size: 25px;"
                         (click)="showModal = false;"></i>
                 </a>
+            <div class="modal-title">
                 <h2>Agregar noticia</h2>
                 <div class="linea"></div>
             </div>
@@ -140,8 +217,7 @@
                         bullist numlist checklist outdent indent | removeformat | a11ycheck code table help'
                     }"
                 ></editor>
-                <label for="" class="indicador-max">El texto ingresado no debe superar las 500 palabras</label>
-                <!--<button (click)="obtenerDatos()">click</button>-->
+                <label for="" class="indicador-max">El texto ingresado no debe superar los 500 caractéres</label>
                 <div class="containerFile" style="margin-top:2vh;">
                     <input type="file" accept="image/*" (change)="captureImage($event)" class="file" id="archivo"
                         formControlName="imagenNoticia" #archivo>

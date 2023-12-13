@@ -11,6 +11,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { ColorLista } from 'src/app/servicios/api/models/color';
 import { Router } from '@angular/router';
 import { forEach } from 'lodash';
+import { IndicadorService } from '../../../servicios/kpis/indicador.service';
 
 @Component({
   selector: 'app-app-gestor-noticia',
@@ -98,6 +99,9 @@ export class AppGestorNoticiaComponent implements OnInit {
   colorTitle: ColorLista;
   arrayLista: any[] = [];
   arrayListaPst: any[] = [];
+  resultInicadores: boolean = false;
+  listaIndicadores:any=[];
+  datosTarjetaActividad: any[] = [];
 
   constructor(
     private http: HttpClient,
@@ -105,7 +109,8 @@ export class AppGestorNoticiaComponent implements OnInit {
     private formBuilder: FormBuilder,
     private api: ApiService,
     private Message: ModalService,
-    public sanitizer: DomSanitizer
+    public sanitizer: DomSanitizer,
+    private IndicadorService:IndicadorService
   ) { }
 
   ngOnInit() {
@@ -141,6 +146,9 @@ export class AppGestorNoticiaComponent implements OnInit {
       descripcionNoticia: ['', Validators.required],
       imagenNoticia: [null, Validators.nullValidator]
     });
+
+    this.getRecordatorioIndicador();
+    this.getContenidoTarjeta();
   }
   getListCategorias(){
     this.api.getNoticiaCategorias().subscribe(data => {
@@ -174,7 +182,59 @@ export class AppGestorNoticiaComponent implements OnInit {
       val.N_REGISTROS=i;
     })
   }
+  indexReminder(index: number, dato: string) {
+    const request = {
+      FK_ID_USUARIO: parseInt(localStorage.getItem("Id")),
+      TIPO: "Modulo",
+      MODULO: "planificacion"
+    };
+    this.api.postMonitorizacionUsuario(request).subscribe();
+    this.router.navigate(['/planificacion'], { state: { idActividad: index, dato: dato } });
+  }
+  indexReminderIndicador() {
+    this.router.navigate(['/evaluaciones']);
+  }
+  datosTarjeta: any = [];
+  getContenidoTarjeta() {
+    this.api.getTarjeta().subscribe(data => {
+      this.datosTarjeta = data;
   
+      for (let i = 0; i < this.datosTarjeta.length; i++) {
+        if (this.datosTarjeta[i].Notificacion.TIPO == "Actividad") {
+          this.showActividad = true;
+          this.datosTarjetaActividad.push({
+            descripcion: this.datosTarjeta[i].Notificacion.DESCRIPCION_ACTIVIDAD,
+            fkIdActividad: this.datosTarjeta[i].Notificacion.FK_ID_ACTIVIDAD,
+            dato: this.datosTarjeta[i].Notificacion.TIPO
+          });
+        }
+      }
+
+      if (this.datosTarjetaActividad.length == 0 || this.datosTarjetaActividad.length <= 0) {
+        this.result = true;
+      }
+    });
+  }
+  filter:any={ID_USUARIO:localStorage.getItem('Id')}
+  getRecordatorioIndicador(){
+    this.IndicadorService.obtnerRecordatorioNoticia(this.filter).subscribe({
+      next: (x) => {
+        if (x.Confirmacion) {
+          this.listaIndicadores=x.Data;
+          if(x.Total>0){
+            this.resultInicadores=true;
+          }else{
+            this.resultInicadores=false;
+          }
+        } else {
+          this.resultInicadores=false;
+        }
+      },
+      error: (e) => {
+        this.resultInicadores=false;
+      },
+    });
+  }
   idNoticia!: number;
   
   indexCard(val: any){

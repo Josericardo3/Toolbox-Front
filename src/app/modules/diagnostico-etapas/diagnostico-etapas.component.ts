@@ -2,12 +2,17 @@ import { Component, Input, OnInit } from '@angular/core';
 import { ApiService } from 'src/app/servicios/api/api.service';
 import { ModalService } from 'src/app/messagemodal/messagemodal.component.service'
 import { Router } from '@angular/router';
+import { BtnEmpezarContinuarService } from 'src/app/servicios/btn-empezar-continuar/btn-empezar-continuar.service';
+import { ChangeDetectorRef } from '@angular/core';
+
 
 @Component({
   selector: 'app-diagnostico-etapas',
   templateUrl: './diagnostico-etapas.component.html',
   styleUrls: ['./diagnostico-etapas.component.css']
 })
+
+
 
 export class DiagnosticoEtapasComponent implements OnInit{
 
@@ -17,23 +22,64 @@ export class DiagnosticoEtapasComponent implements OnInit{
   bloquearIntermedio: boolean = false;
   bloquearFinal: boolean = false;
   idUser = localStorage.getItem("Id");
-  // validateCaracterizacion = this.ApiService.validateCaracterizacion(this.idUser);
   normaValue = Number(window.localStorage.getItem('idNormaSelected'));
-  // validateDiagnostico = this.ApiService.validateDiagnostico(this.normaValue);
   normaDiadnostico: any = {};
+  totalFormulariosSum: number = 0;
+  porcentajeAvance: number = 0;
+  datos: any = [];
+
+  etapaPorcentaje: number = 0;
+  etapaActual: string = '';
+  porcentajeInicial: number;
+  porcentajeIntermedia: number;
+  porcentajeFinal: number;
 
   constructor(
     private ApiService: ApiService,
     private Message: ModalService,
     private router: Router,
+    public btnEmpezarContinuarService : BtnEmpezarContinuarService,
+    private cdr: ChangeDetectorRef
   ) { }
 
   ngOnInit() {
-    // this.validateDiagnostico.subscribe((data: any) => this.normaDiadnostico = data);
-    
     this.ApiService.validateDiagnostico(this.normaValue).subscribe((data: any) => {
       this.normaDiadnostico = data
       this.fnShowModal();
+    });
+
+    // this.btnEmpezarContinuarService.totalFormulariosSum$.subscribe(sum => {
+    //   this.totalFormulariosSum = sum;
+    //   console.log(this.totalFormulariosSum);
+    // });
+
+    // this.btnEmpezarContinuarService.totalFormulariosRespondidos$.subscribe(total => {
+    //   this.porcentajeAvance = (total / this.totalFormulariosSum) * 100;
+    //   console.log(this.porcentajeAvance)
+    // });
+
+    this.ApiService.getEtapaDiag().subscribe((data:any) => {
+      this.datos = data;
+      // this.actualizarPorcentajes()
+      
+    const etapaInicial = this.datos.find(item => item.ETAPA === 1);
+    const etapaIntermedia = this.datos.find(item => item.ETAPA === 2);
+    const etapaFinal = this.datos.find(item => item.ETAPA === 3);
+
+    if (etapaInicial) {
+      this.porcentajeInicial = etapaInicial.PORCENTAJE;
+      console.log(this.porcentajeInicial)
+    }
+
+    if (etapaIntermedia) {
+      this.porcentajeIntermedia = etapaIntermedia.PORCENTAJE;
+      console.log(this.porcentajeIntermedia)
+    }
+
+    if (etapaFinal) {
+      this.porcentajeFinal = etapaFinal.PORCENTAJE;
+      console.log(this.porcentajeFinal)
+    }
     })
   }
 
@@ -83,14 +129,10 @@ export class DiagnosticoEtapasComponent implements OnInit{
     }
   }
 
-  // getButtonClasses(etapa: any) {
-  //   return etapa ? 'btn btn-primary w-100 text-center' : 'btn custom-background w-100 text-center';
-  // }
-
   getProgressBarClasses(etapa: string): any {
     switch (etapa) {
       case 'inicio':
-        return this.etapaShowInicio ? 'custom-progress-bar-inicio': 'custom-progress-bar';
+        return this.etapaShowInicio ? 'custom-progress-bar-inicio' : 'custom-progress-bar';
       case 'intermedia':
         return this.etapaShowIntermedio ? 'custom-progress-bar-intermedia' : 'custom-progress-bar';
       case 'final':
@@ -99,5 +141,4 @@ export class DiagnosticoEtapasComponent implements OnInit{
         return '';
     }
   }
-  
 }

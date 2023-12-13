@@ -150,8 +150,8 @@ import { DiagnosticoEtapasComponent } from "./modules/diagnostico-etapas/diagnos
 import { NoEspacioDirective } from "./directives/no-espacio.directive";
 import { ModalDiagnosticoService } from "./servicios/modalDiagnostico/modal-diagnostico.service";
 import { ModalDiagnosticoComponent } from "./modules/modal-diagnostico/modal-diagnostico.component";
-
 import { FormulasSemaforizacionComponent } from "./modules/medicion-kpis/indicadores-kpis/formulas-semaforizacion/formulas-semaforizacion.component";
+import { BtnEmpezarContinuarService } from "./servicios/btn-empezar-continuar/btn-empezar-continuar.service";
 
 @NgModule({
   declarations: [
@@ -318,7 +318,9 @@ import { FormulasSemaforizacionComponent } from "./modules/medicion-kpis/indicad
     AppPlanificacionComponent,
     { provide: MatPaginatorIntl, useClass: MatPaginatorIntlEsp },
     { provide: MAT_DATE_LOCALE, useValue: 'es-ES' },
-    { provide: TINYMCE_SCRIPT_SRC, useValue: 'tinymce/tinymce.min.js' }
+    { provide: TINYMCE_SCRIPT_SRC, useValue: 'tinymce/tinymce.min.js' },
+    BtnEmpezarContinuarService
+
   ],
   entryComponents: [
     AppDeleteActivitiesComponent,

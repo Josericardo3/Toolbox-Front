@@ -198,4 +198,7 @@ input{
     height: 119px;
   }
 
-
+.politica-desarrollo{
+    display: inline-flex;
+    flex-wrap: wrap;
+}

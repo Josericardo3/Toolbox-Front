@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Renderer2 } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ApiService } from 'src/app/servicios/api/api.service';
 import {FormGroup, FormControl, Validators, FormBuilder, NgModel} from '@angular/forms'
@@ -6,6 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
 import { ModalService } from 'src/app/messagemodal/messagemodal.component.service' 
 import { environment } from 'src/environments/environment.prod';
+import { CustomValidators } from "../../../models/customeValidator";
 
 declare var $: any;
 @Component({
@@ -14,7 +15,7 @@ declare var $: any;
   styleUrls: ['./recoveryformulario.component.css']
 })
 export class RecoveryFormularioComponent implements OnInit {
-  recoveryForm: FormGroup;  
+  public recoveryForm!: FormGroup;  
   error: string;
   mostrarFormulario2: boolean = false;
   passwordHidden = true;
@@ -24,33 +25,91 @@ export class RecoveryFormularioComponent implements OnInit {
   //error: string;
   id: string;
   correo: string;
+  showError=false;
+  errorMessage!: string;
+
   constructor(
     private http: HttpClient,
     private route: ActivatedRoute,
     private router: Router,
     private Message: ModalService,
     private ApiService: ApiService,
+    private renderer: Renderer2,
     private formBuilder: FormBuilder
-    ) {
-      this.recoveryForm = this.formBuilder.group({
-      correo: ['', [Validators.required, Validators.email]],
-      codigo: ['', Validators.required],
-      password: ['', Validators.required],
-      confirmarPassword: ['', Validators.required]
-    }); }
+    ) {}
   togglePasswordVisibility() {
     this.passwordHidden = !this.passwordHidden;
   }
-  ngOnInit() {
+  ngOnInit():void {
     this.id = this.route.snapshot.paramMap.get('id');
     //const title = "Aviso";
     //const message = "Se le ha enviado un correo con su codigo de recuperación"
     //this.Message.showModal(title,message);
+    this.recoveryForm = this.formBuilder.group({
+      pass: [
+        "",
+        Validators.compose([
+          Validators.required,
+          CustomValidators.patternValidator(/\d/, { hasNumber: true }),
+          CustomValidators.patternValidator(/[A-Z]/, { hasCapitalCase: true }),
+          CustomValidators.patternValidator(/[a-z]/, { hasSmallCase: true }),
+          //CustomValidators.patternValidator(/(?=.*?[#?!@$%^&*-])/, {
+            CustomValidators.patternValidator(/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[^A-Za-z0-9 ]).{8,12}$/,{
+              hasSpecialCharacters: true,
+            }),
+            CustomValidators.patternValidator(/^[^\s]*$/, {
+              noSpaces: true,
+            }),
+          Validators.minLength(8),
+          Validators.maxLength(12),
+        ]),
+      ],
+      pass2: [
+        "",
+        Validators.compose([
+          Validators.required,
+          CustomValidators.patternValidator(/\d/, { hasNumber: true }),
+          CustomValidators.patternValidator(/[A-Z]/, { hasCapitalCase: true }),
+          CustomValidators.patternValidator(/[a-z]/, { hasSmallCase: true }),
+          //CustomValidators.patternValidator(/(?=.*?[#?!@$%^&*-])/, {
+            CustomValidators.patternValidator(/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[^A-Za-z0-9 ]).{8,12}$/,{
+              hasSpecialCharacters: true,
+            }),
+            CustomValidators.patternValidator(/^[^\s]*$/, {
+              noSpaces: true,
+            }),
+          Validators.minLength(8),
+          Validators.maxLength(12),
+        ]),
+      ]
+    }); 
+  }
+  seePassword() {
+    const passLogin = document.querySelector("#passLogin") as HTMLInputElement;
+    const icon = document.querySelector("#icon") as HTMLElement;
+    if (passLogin.type === "password") {
+      passLogin.type = "text";
+      this.renderer.setStyle(icon, 'color', '#068460');
+    } else {
+      passLogin.type = "password";
+      this.renderer.setStyle(icon, 'color', 'black');
+    }
+  }
+  seePassword2() {
+    const passLogin2 = document.querySelector("#passLogin2") as HTMLInputElement;
+    const icon2 = document.querySelector("#icon2") as HTMLElement;
+    if (passLogin2.type === "password") {
+      passLogin2.type = "text";
+      this.renderer.setStyle(icon2, 'color', '#068460');
+    } else {
+      passLogin2.type = "password";
+      this.renderer.setStyle(icon2, 'color', 'black');
+    }
   }
   resetPassword() {
-    const passwordInput = document.querySelector('#password') as HTMLInputElement;
+    const passwordInput = document.querySelector('#passLogin') as HTMLInputElement;
     const password = passwordInput.value;
-    const confirmPasswordInput = document.querySelector('#confirm-password') as HTMLInputElement;
+    const confirmPasswordInput = document.querySelector('#passLogin2') as HTMLInputElement;
     const confirmPassword = confirmPasswordInput.value;
     const code = document.querySelector('#code') as HTMLInputElement;
     const userCode = code.value;

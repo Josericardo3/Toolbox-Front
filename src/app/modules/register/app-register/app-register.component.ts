@@ -169,29 +169,33 @@ avatarSeleccionado: number=-1;
       this.ApiService.getUserRegistro().subscribe((data) => {
         if (data && data.length > 0) {
           const firstUser = data[0]; 
+          console.log(firstUser);
           this.registerForm.setValue({
             registroNacionalDeTurismo: firstUser.RNT,
             numeroDeIdentificacionTributaria: firstUser.NIT,
             categoriaRnt: firstUser.FK_ID_CATEGORIA_RNT,
             subcategoriaRnt: firstUser.FK_ID_SUB_CATEGORIA_RNT,
-            nombreDelPst: firstUser.NOMBRE_PST,
+            //nombreDelPst: firstUser.NOMBRE_PST,
             razonSocialDelPst: firstUser.RAZON_SOCIAL_PST,
             correo: firstUser.CORREO_PST,
             telefono: firstUser.TELEFONO_PST,
-            tipoDeIdentificacionDelRepresentanteLegal : "CEDULA DE CIUDADANIA",
+            //tipoDeIdentificacionDelRepresentanteLegal : "CEDULA DE CIUDADANIA",
             nombreDelRepresenteLegal: firstUser.NOMBRE_REPRESENTANTE_LEGAL,
-            correoRepresentanteLegal: firstUser.CORREO_REPRESENTANTE_LEGAL,
-            telefonoDelRepresentanteLegal: firstUser.TELEFONO_REPRESENTANTE_LEGAL,
-            identificacionDelRepresentanteLegal: firstUser.IDENTIFICACION_REPRESENTANTE_LEGAL,
+            apellidoDelRepresenteLegal:"",
+            //correoRepresentanteLegal: firstUser.CORREO_REPRESENTANTE_LEGAL,
+            //telefonoDelRepresentanteLegal: firstUser.TELEFONO_REPRESENTANTE_LEGAL,
+            //identificacionDelRepresentanteLegal: firstUser.IDENTIFICACION_REPRESENTANTE_LEGAL,
             departamento: firstUser.DEPARTAMENTO,
             municipio: firstUser.MUNICIPIO,
-            nombreDelResponsableDeSostenibilidad: firstUser.NOMBRE_RESPONSABLE_SOSTENIBILIDAD,
-            correoDelResponsableDeSostenibilidad: firstUser.CORREO_RESPONSABLE_SOSTENIBILIDAD,
-            telefonoDelResponsableDeSostenibilidad: firstUser.TELEFONO_RESPONSABLE_SOSTENIBILIDAD,
+            //nombreDelResponsableDeSostenibilidad: firstUser.NOMBRE_RESPONSABLE_SOSTENIBILIDAD,
+            //correoDelResponsableDeSostenibilidad: firstUser.CORREO_RESPONSABLE_SOSTENIBILIDAD,
+            correo2: firstUser.CORREO_RESPONSABLE_SOSTENIBILIDAD,
+            //telefonoDelResponsableDeSostenibilidad: firstUser.TELEFONO_RESPONSABLE_SOSTENIBILIDAD,
             password1 : "",
             confirmPassword : "",
             checkbox: ''
           });
+
           const selectedIndex = this.data.findIndex(element => element.name === firstUser.CATEGORIA_RNT);
           const selectedcategory = this.data.find(element => this.normalizeString(element.name) === this.normalizeString(firstUser.CATEGORIA_RNT));
           const categoryelectedid =selectedcategory.id;

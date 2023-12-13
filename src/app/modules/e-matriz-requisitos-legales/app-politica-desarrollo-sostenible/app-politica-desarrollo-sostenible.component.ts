@@ -219,27 +219,35 @@ export class AppPoliticaDesarrolloSostenibleComponent implements OnInit {
   value2: string;
   value3: string;
   value4: string;
+  temporal1: any={};
+  temporal2: any={};
+  temporal3: any={};
+  temporal4: any={};
 
   printCampos(data: any) {
     let ordenPregunta1 = "¿Cómo se comunica la política?";
     let ordenPregunta2 = "¿Quién comunica?";
     let ordenPregunta3 = "¿Cuándo?";
     let ordenPregunta4 = "¿Dónde estará disponible?";
-    let ind = 1;
     
-    data.forEach(item => {
-      if (item.ORDEN > ind) ind = item.ORDEN;
-    })
+    console.log(data);
 
-    let temporal1 = data.find(item => (item.PREGUNTA === ordenPregunta1 && item.ORDEN == ind));
-    let temporal2 = data.find(item => (item.PREGUNTA === ordenPregunta2 && item.ORDEN == ind));
-    let temporal3 = data.find(item => (item.PREGUNTA === ordenPregunta3 && item.ORDEN == ind));
-    let temporal4 = data.find(item => (item.PREGUNTA === ordenPregunta4 && item.ORDEN == ind));
-    this.value1 = temporal1.RESPUESTA;
-    this.value2 = temporal2.RESPUESTA;
-    this.value3 = temporal3.RESPUESTA;
-    this.value4 = temporal4.RESPUESTA;
+    this.temporal1 = data.find(item => (item.PREGUNTA === ordenPregunta1));
+    this.temporal2 = data.find(item => (item.PREGUNTA === ordenPregunta2));
+    this.temporal3 = data.find(item => (item.PREGUNTA === ordenPregunta3));
+    this.temporal4 = data.find(item => (item.PREGUNTA === ordenPregunta4));
+    this.value1 = this.temporal1.RESPUESTA;
+    this.value2 = this.temporal2.RESPUESTA;
+    this.value3 = this.temporal3.RESPUESTA;
+    this.value4 = this.temporal4.RESPUESTA;
+    
+    if (this.temporal4.PREGUNTA == "¿Dónde estará disponible?") {
+      const separador=this.temporal4.RESPUESTA.split(';');
 
+      this.optSelect=separador[0];
+      this.optValotro=separador[1];
+    }
+    //console.log(this.temporal4);
     //console.log(ind);
     //console.log(this.value3.slice(0,10));
     this.fnReordenarFecha("2023-10-25");
@@ -248,7 +256,7 @@ export class AppPoliticaDesarrolloSostenibleComponent implements OnInit {
     const partesFecha: string[] = fec.split('-');
     const fechaFormateada: string = partesFecha[2] + '-' + partesFecha[1] + '-' + partesFecha[0];
     
-    console.log(fechaFormateada);
+    //console.log(fechaFormateada);
     return fechaFormateada;
   }
   fnListResponsible() {
@@ -273,7 +281,8 @@ export class AppPoliticaDesarrolloSostenibleComponent implements OnInit {
     }
     return 0;
   }
-
+  optSelect: string;
+  optValotro: string;
   saveForm() {
 
     let id = localStorage.getItem('Id');
@@ -291,12 +300,23 @@ export class AppPoliticaDesarrolloSostenibleComponent implements OnInit {
     let indice = 3;
     this.estructura.adicionales.forEach(tab => {
       tab.preguntas.forEach(item => {
-        if (typeof item.RESPUESTA !== "string" && item.pregunta == "¿Cuándo?") {
-          item.RESPUESTA = this.datePipe.transform(item.RESPUESTA, 'dd-MM-yyyy')
+        if (typeof this.temporal3.RESPUESTA !== "string" && item.PREGUNTA == "¿Cuándo?") {
+          item.RESPUESTA = this.datePipe.transform(this.temporal3.RESPUESTA, 'dd-MM-yyyy')
         }
-        if (item.PREGUNTA == "¿Dónde estará disponible?" && item.RESPUESTA == "Otro") {
-          item.RESPUESTA = item.OTRO_VALOR;
+        if (item.PREGUNTA == "¿Cómo se comunica la política?") {
+          item.RESPUESTA = this.temporal1.RESPUESTA;
         }
+        if (item.PREGUNTA == "¿Quién comunica?") {
+          item.RESPUESTA = this.temporal2.RESPUESTA;
+        }
+        if (item.PREGUNTA == "¿Dónde estará disponible?" && this.optSelect=='Otro ¿Cuál?') {
+            item.RESPUESTA = this.optSelect + ';' + this.optValotro;
+        }else{
+          if (item.PREGUNTA == "¿Dónde estará disponible?") {
+            item.RESPUESTA = this.optSelect;
+          }
+        }
+          
         preguntasRequest[indice] = item;
         item.FK_USUARIO = Number(id);
         indice++;
@@ -322,7 +342,7 @@ export class AppPoliticaDesarrolloSostenibleComponent implements OnInit {
             //this.Message.showModal(title2, message2);
             //messageshow = messageshow + ' y Planificacion';
           })
-          console.log('si entraaa');
+          //console.log('si entraaa');
           this.disablePDF = false;
           this.botonCancelar = false;
           this.botonOcultar = true;
@@ -337,7 +357,7 @@ export class AppPoliticaDesarrolloSostenibleComponent implements OnInit {
           const messageshow = "El registro se ha realizado exitosamente";
           this.Message.showModal(title, messageshow);
         }
-        console.log('si entraaa');
+        //console.log('si entraaa');
       });
   }
 
@@ -407,7 +427,7 @@ export class AppPoliticaDesarrolloSostenibleComponent implements OnInit {
       return adicional.orden > max ? adicional.orden : max;
     }, 0);
     let newOrden = maxOrden + 1;
-    console.log(this.accionActivo);
+    //console.log(this.accionActivo);
     //this.accionActivo = "guardar";
     const tab = {
       orden: newOrden,

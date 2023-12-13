@@ -6,30 +6,77 @@
 <div>
   <div class="form-container">
     <h1>Recuperación de contraseña</h1>
-    <form>
+    <form [formGroup]="recoveryForm">
       <div class="form-group">
         <label>Código de Recuperación:</label>
-        <input id="code" name="code" (input)="onPasswordInput()">
+        <input id="code" formControlName="code" name="code" (input)="onPasswordInput()">
       </div>
-      <div class="form-group">
+      <!--<div class="form-group">
         <label for="password">Contraseña:</label>
-        <!--<div class="input-group"> -->
-          <input type="password"  id="password" name="password">
-          <!-- <span class="input-group-addon">
+        <!-<div class="input-group"> ->
+          <input type="password"  formControlName="pass" id="password" name="password">
+          <-- <span class="input-group-addon">
             <i class="glyphicon glyphicon-eye-open" id="show_password" aria-hidden="true"></i>
-          </span> -->
-        <!--</div> -->
+          </span> ->
+        <!-</div> ->
       </div>
 
       <div class="form-group">
         <label for="confirm-password">Confirmar contraseña:</label>
-          <input type="password" id="confirm-password" name="confirm-password">
-          <!-- <span class="input-group-addon">
+          <input type="password" id="confirm-password" formControlName="pass" name="confirm-password">
+          <-- <span class="input-group-addon">
             <i class="glyphicon glyphicon-eye-open" id="show_confirm_password" aria-hidden="true"></i>
-          </span> -->
-        
-      </div>
+          </span> ->
+      </div>-->
 
+      <div class="form-group mb-3">
+        <label for="pass">Contraseña:</label>
+        <div class="input-group mb-3">
+            <input type="password" formControlName="pass" placeholder="Ingrese contraseña"
+                id="passLogin" class="form-control">
+            <span class="input-group-text" id="basic-addon1" style="cursor: pointer;"
+                (click)="seePassword()">
+                <!-- Icono de candado de Bootstrap -->
+                <span class="bi bi-lock"><i id="icon" class="fas fa-eye-slash"
+                        style="color: #068460"></i></span>
+            </span>
+        </div>
+                <small class="text-danger" *ngIf="recoveryForm.controls['pass'].touched  &&( recoveryForm.controls['pass'].hasError('required') || recoveryForm.controls['pass'].hasError('minlength') 
+                || recoveryForm.controls['pass'].hasError('maxlength')
+                || recoveryForm.controls['pass'].hasError('required') || recoveryForm.controls['pass'].hasError('hasNumber')
+                ||showError && recoveryForm.controls['pass'].hasError('required') || recoveryForm.controls['pass'].hasError('hasCapitalCase')
+                ||recoveryForm.controls['pass'].hasError('required') || recoveryForm.controls['pass'].hasError('hasSmallCase')
+                ||recoveryForm.controls['pass'].hasError('required') || recoveryForm.controls['pass'].hasError('hasSpecialCharacters'))
+                ||recoveryForm.controls['pass'].hasError('noSpaces')
+                ">
+                    Las contraseñas deben tener 8 caracteres como mínimo y máximo 12 caracteres. Contener al menos uno de los siguientes elementos: mayúsculas, minúsculas, números y caracter especial
+                </small>      
+         <!--M routerLink="/dashboard" routerLinkActive="activebutton" -->
+      </div>
+      <div class="form-group mb-3">
+        <label for="pass2">Confirmar contraseña:</label>
+        <div class="input-group mb-3">
+            <input type="password" formControlName="pass2" placeholder="Ingrese contraseña"
+                id="passLogin2" class="form-control">
+            <span class="input-group-text" id="basic-addon1" style="cursor: pointer;"
+                (click)="seePassword2()">
+                <!-- Icono de candado de Bootstrap -->
+                <span class="bi bi-lock"><i id="icon2" class="fas fa-eye-slash"
+                        style="color: #068460"></i></span>
+            </span>
+        </div>
+                <small class="text-danger" *ngIf="recoveryForm.controls['pass2'].touched  &&( recoveryForm.controls['pass2'].hasError('required') || recoveryForm.controls['pass2'].hasError('minlength') 
+                || recoveryForm.controls['pass2'].hasError('maxlength')
+                || recoveryForm.controls['pass2'].hasError('required') || recoveryForm.controls['pass2'].hasError('hasNumber')
+                ||showError && recoveryForm.controls['pass2'].hasError('required') || recoveryForm.controls['pass2'].hasError('hasCapitalCase')
+                ||recoveryForm.controls['pass2'].hasError('required') || recoveryForm.controls['pass2'].hasError('hasSmallCase')
+                ||recoveryForm.controls['pass2'].hasError('required') || recoveryForm.controls['pass2'].hasError('hasSpecialCharacters'))
+                ||recoveryForm.controls['pass2'].hasError('noSpaces')
+                ">
+                    Las contraseñas deben tener 8 caracteres como mínimo y máximo 12 caracteres. Contener al menos uno de los siguientes elementos: mayúsculas, minúsculas, números y caracter especial
+                </small>      
+         <!--M routerLink="/dashboard" routerLinkActive="activebutton" -->
+      </div>
 
       <div class="error-message" *ngIf="error">{{ error }}</div>
       <button type="button" (click)="resetPassword()">Actualizar contraseña</button>

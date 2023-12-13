@@ -22,8 +22,8 @@
             <form class="form" [formGroup]="formEncuesta">                                   
                 <p class="p">{{ editandoEncuesta ? 'Ingresa los datos para actualizar la encuesta' : 'Ingresa los datos para crear una encuesta nueva'}}</p>
                 <div class="encabezado">
-                    <input type="text" class="tituloInput" (ngModelChange)="Obtenertitulo($event)" placeholder="Título de la encuesta" formControlName="tituloEncuesta">
-                    <input type="text" class="descripcion"  (ngModelChange)="Obtenertitulo($event)" placeholder="Descripción de la encuesta" formControlName="descripcionEncuesta">
+                    <input type="text" class="tituloInput" (ngModelChange)="Obtenertitulo($event)" placeholder="Título de la encuesta" formControlName="tituloEncuesta" maxlength="100">
+                    <input type="text" class="descripcion"  (ngModelChange)="Obtenertitulo($event)" placeholder="Descripción de la encuesta" formControlName="descripcionEncuesta" maxlength="100">
                 </div>
                 <div class="containerTarjetas">
                     <app-app-tarjetas [tituloEditar]="tituloEditar" [descripcionEditar]="descripcionEditar" [id]="0" 

@@ -105,7 +105,7 @@
       <div class="tarjetas">
         <div class="section">
           <input type="text" class="pregunta" id="{{pregunta.IDUNICO}}" placeholder="Ingrese su pregunta"
-            name="{{pregunta.IDUNICO}}" [(ngModel)]="pregunta.DESCRIPCION" required/>
+            name="{{pregunta.IDUNICO}}" [(ngModel)]="pregunta.DESCRIPCION" maxlength="100" required/>
           <div class="select-wrapper" [id]="i">
             <div class="select-header" (click)="toggleOptionsEditar(i)">
               <span [id]="'selectedOptions[i].id' + i">
@@ -215,7 +215,7 @@
       <div class="tarjetas">
         <div class="section">
           <input type="text" class="pregunta" id="{{pregunta.IDUNICO}}" placeholder="Ingrese su pregunta"
-            name="{{pregunta.IDUNICO}}" [(ngModel)]="pregunta.DESCRIPCION" required/>
+            name="{{pregunta.IDUNICO}}" [(ngModel)]="pregunta.DESCRIPCION" maxlength="100" required/>
           <div class="select-wrapper" [id]="i">
             <div class="select-header" (click)="toggleOptionsEditar(i)">
               <span [id]="'selectedOptions[i].id' + i">

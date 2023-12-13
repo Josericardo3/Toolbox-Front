@@ -247,6 +247,8 @@ textarea {
 
 .x {
     align-self: flex-end;
+    position: fixed;
+    z-index: 999999999999999999;
 }
 
 .form {

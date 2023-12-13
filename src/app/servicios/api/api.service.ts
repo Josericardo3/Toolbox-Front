@@ -168,6 +168,13 @@ export class ApiService {
     return this.http.get<any>(diagnostico)
   }
 
+  getEtapaDiag(){
+    const idNorma = JSON.parse(window.localStorage.getItem('idNormaSelected') || '[]');
+    const idusuario = Number(window.localStorage.getItem('Id'));
+    let diagnostico = `${this.apiURLNuevo}/api/Diagnostico/PorcentajeEtapas?idnorma=${idNorma}&idusuario=${idusuario}`
+    return this.http.get<any>(diagnostico)
+  }
+
   saveDataDiagnostico(request: any): Observable<any[]> {
     const diagnostico = `${this.apiURLNuevo}/api/Diagnostico/Diagnosticorespuesta`;
     const observables = [];
