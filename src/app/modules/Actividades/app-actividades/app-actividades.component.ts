@@ -288,6 +288,12 @@ export class AppActividadesComponent {
     }
   }
 
+  fnValidadorNewRecord(){
+    const title = "Registro no exitoso";
+    const message = "Ingrese todos los campos requeridos";
+    this.Message.showModal(title, message);
+  }
+
   fnPlanificacionEliminar(indice: any) {
     this.showfilter = false
     this.indiceAEliminar = this.rolesArray[indice].ID_ACTIVIDAD;

@@ -52,8 +52,8 @@ export class ApiService {
     // const { registroNacionalDeTurismo, pass, correo } = form
 
 
-    const refresh = localStorage.getItem('refresh');
-    const headers = { 'Content-Type': 'application/json', 'tokenAccess': refresh || 'falta token' };
+    /*const refresh = localStorage.getItem('refresh');
+    const headers = { 'Content-Type': 'application/json', 'tokenAccess': refresh || 'falta token' };*/
     let request = {
       USER: form.registroNacionalDeTurismo,
       CORREO: form.correo,

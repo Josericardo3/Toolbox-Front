@@ -15,7 +15,7 @@
 
     <div class="contenido-settings" [formGroup]="principal">
         <div class="titulo-settings">
-          <img [src]="imagen" alt="Logo" width="50px" >
+          <img [src]="imagen" alt="Logo" width="50px" style="border-radius: 25px;">
           <h3 class="nombre-prestador">{{this.nombre}}</h3>
         </div>
 
@@ -23,21 +23,21 @@
 
         <div class="container-settings">
             <div class="menu-settings">
-                <a (click)="option='general'" class="link-setting">GENERAL</a>
-                <a (click)="option='ingreso'" class="link-setting">INGRESO EMPLEADOS</a>
+                <a (click)="option='general'" class="link-setting" [style]="option==='general' ? estiloEtiqueta : ''">GENERAL</a>
+                <a (click)="option='ingreso'" class="link-setting" [style]="option==='ingreso' ? estiloEtiqueta : ''">INGRESO EMPLEADOS</a>
                 <a (click)="navigateToEdit()" class="link-setting">EDITAR REGISTRO INICIAL</a>
                 <hr>
             </div>
             <div class="form-settings" *ngIf="option=='general'">
                 <div class="btn-img-head">
                     <div class="group-img-logo">
-                      <img [src]="imagen" alt="Logo" width="150px" >
+                      <img [src]="imagen" alt="Logo" width="150px" style="border-radius: 75px; margin-right: 5px;">
                         <div class="btn-group">
                           <label type="button" class="cargar-logo" title="Subir Foto">
                             <span style="padding: 5px;"><i class="fi fi-rr-arrow-circle-right"></i>Cargar nuevo logo</span>
                             <input type="file" accept="image/*" onclick="this.value = null"ngf-max-size="500KB"  (change)="fnSubirFoto($event)" style="display: none;" multiple>
-                          </label>  
-                          <button class="borrar-logo" (click)="elimiarFoto()">Borrar</button>
+                          </label>
+                          <button class="borrar-logo">Borrar</button>
                         </div>
                     </div>
                     <button class="cambiar-contra" (click)="cambiarPassword()">Cambiar contraseña&emsp;<i class="fi fi-rr-arrow-circle-right"></i></button>
@@ -45,35 +45,36 @@
                 <hr>
                 <div class="datos-prestador" >
                     <p class="tit">Nombre del Representante Legal</p>
-                    <input type="text" placeholder="Nombre representante" class="input-general" formControlName="nombre_representante">
+                    <input type="text" placeholder="Nombre representante" class="form-control" formControlName="nombre_representante">
                     <p class="tit">Correo del PST</p>
-                    <input type="email" placeholder="correo@email.com" class="input-general" formControlName="correo_representante">
-                    <p class="tit">Telefono del Reprentante Legal</p>
-                    <input type="text" placeholder="Número de telefono" class="input-general" formControlName="numero_representante">
-                    <p class="tit">Pagina web</p>
-                    <input type="text" placeholder="www.paginaweb.com" class="input-general" formControlName="pagina_web">
+                    <input type="email" placeholder="correo@email.com" class="form-control" formControlName="correo_representante">
+                    <p class="tit">Teléfono del Reprentante Legal</p>
+                    <input type="text" placeholder="Número de telefono" class="form-control" formControlName="numero_representante">
+                    <label for="" class="indicador-max" style="margin-bottom:  10px; color: tomato; font-size: xx-small;" *ngIf="(principal.controls['numero_representante'].hasError('maxlength') || principal.controls['numero_representante'].hasError('pattern'))">Ingrese un número válido</label>
+                    <p class="tit">Página web</p>
+                    <input type="text" placeholder="www.paginaweb.com" class="form-control" formControlName="pagina_web">
                 </div>
                 <hr>
                 <div class="redes-sociales">
                     <p class="tit">Instagram</p>
                     <div class="group-redes">
                         <i class="fi fi-brands-instagram"></i>
-                        <input type="text" placeholder="www.paginaweb.com" class="input-general-1" formControlName="instagram">
+                        <input type="text" placeholder="www.paginaweb.com" class="form-control" formControlName="instagram">
                     </div>
                     <p class="tit">Facebook</p>
                     <div class="group-redes">
                         <i class="fi fi-brands-facebook"></i>
-                        <input type="text" placeholder="www.paginaweb.com" class="input-general-1" formControlName="facebook">
+                        <input type="text" placeholder="www.paginaweb.com" class="form-control" formControlName="facebook">
                     </div>
                     <p class="tit">Youtube</p>
                     <div class="group-redes">
                         <i class="fi fi-brands-twitter"></i>
-                        <input type="text" placeholder="www.paginaweb.com" class="input-general-1" formControlName="twitter">
+                        <input type="text" placeholder="www.paginaweb.com" class="form-control" formControlName="twitter">
                     </div>
                     <p class="tit">Otros</p>
                     <div class="group-redes">
                         <i class="fi fi-brands-twitter"></i>
-                        <input type="text" placeholder="www.paginaweb.com" class="input-general-1" formControlName="otros">
+                        <input type="text" placeholder="www.paginaweb.com" class="form-control" formControlName="otros">
                     </div>
                 </div>
                   <button class="guardar-cambios" (click)="updateGeneral()"> Guardar Cambios </button>                
@@ -81,9 +82,9 @@
             <div class="form-settings" *ngIf="option=='ingreso'" [formGroup]="segundo" >
                 <div class="datos-prestador">
                     <p class="tit">Nombre del Empleado</p>
-                    <input type="text" placeholder="Nombre representante" class="input-general" formControlName="nombre_empleado">
+                    <input type="text" placeholder="Nombre representante" class="form-control" formControlName="nombre_empleado">
                     <p class="tit">Correo del empleado</p>
-                    <input type="email" placeholder="correo@email.com" class="input-general" formControlName="correo_empleado">
+                    <input type="email" placeholder="correo@email.com" class="form-control" formControlName="correo_empleado">
                     <p class="tit">Ocupación</p>
                     <select required id="roles"  class="form-control" formControlName="ocupacion">
                         <option value="" disabled>Selecciona una opción</option>
@@ -91,7 +92,8 @@
                     </select>
                     <p class="tit">Enviar Correo</p>
                     <select required id="roles"  class="form-control" formControlName="enviar_correo">
-                        <option value="true" selected>Sí</option>
+                        <option value="seleccione uno" selected>Seleccione uno</option>
+                        <option value="true">Sí</option>
                         <option value="false">No</option>
                     </select>
                 </div>
@@ -102,7 +104,11 @@
         </div>
     </div>
     <div class="tabla-empleados" *ngIf="option === 'ingreso'">
-        <hr>
+        <hr><br>
+        <div class="group-filter">
+          <input type="text" class="form-control" placeholder="Filtrar..." [(ngModel)]="filter" (input)="filterResult()" style="width: 300px;">
+        </div>
+        <br>
         <table class="table-gestion" style="margin-top: 8px;">
           <thead>
             <tr>
@@ -126,7 +132,29 @@
             </tr>
           </tbody>
         </table>
-      </div>      
+        <br>
+      </div> 
+              <!-- paginacion -->
+    <footer class="page-style"  *ngIf="option === 'ingreso'">
+      <div class="container-label">
+        <label class="paginas">  Página: {{ pages }} / {{ totalPaginas }} Mostrando: {{ totalRegistros }}  Registros: {{ datatotal }} </label>
+        <div class="ls-pagina ">
+          <pagination
+              lastText="&raquo;"
+              nextText="&rsaquo;"
+              firstText="&laquo;"
+              previousText="&lsaquo;"
+              [maxSize]="3"
+              [totalItems]="contentArray.length"
+              [itemsPerPage]="7"
+              [(ngModel)]="currentPage"
+              [boundaryLinks]="true"
+              (pageChanged)="pageChanged($event)"
+              [ngClass]="{'page-item': true}">
+          </pagination>
+        </div>
+      </div>
+    </footer>     
     <!--<div class="barra-final">
         <div class="img-container-final">
             <p class="ejecutado-por">EJECUTADO POR: </p>
@@ -134,10 +162,12 @@
             <img class="img-header" src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/Logo_Ministerio_de_Comercio_Industria_y_Turismo_2022-2026.png/1200px-Logo_Ministerio_de_Comercio_Industria_y_Turismo_2022-2026.png"/>
         </div>
     </div>-->
-    <app-footer2></app-footer2>
+    <div style="width: 100%; margin-bottom: 20px; height: auto; display: flex; align-items: center; justify-content: flex-end;">
+      <app-footer2></app-footer2>
+    </div>
 </div>
 
-<app-app-footer></app-app-footer>
+<!--<app-app-footer></app-app-footer>-->
 <app-modal></app-modal>
 <ngx-spinner
   bdColor="rgba(0, 0, 0, 0.5)"

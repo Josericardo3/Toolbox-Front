@@ -141,7 +141,7 @@ export class AppGestorNoticiaComponent implements OnInit {
       selectMultipleCategoria: [[]],
       selectMultipleSubCategoria: [[]],
       selectMultiplePST: ['', Validators.required],
-      tituloNoticia: ['', Validators.required],
+      tituloNoticia: ['', Validators.maxLength(50)],
       CategoriaNoticia: ['', Validators.required],
       descripcionNoticia: ['', Validators.required],
       imagenNoticia: [null, Validators.nullValidator]

@@ -16,9 +16,9 @@
       <div class="form-group">
        <label for="registro">Registro Nacional de Turismo</label>
        <input size="28" name="registro" type="text" class="form-control" placeholder="Registro Nacional de Turismo" formControlName="registroNacionalDeTurismo" appNumeros  />
-       <small class="textDanger text-danger" *ngIf="!showCheckRnt">
+       <!--<small class="textDanger text-danger" *ngIf="!showCheckRnt">
         {{ msjRnt }}
-       </small>
+       </small>-->
       </div>
      </div>
      <div class="col-md-3 col-sm-3 col-3">
@@ -85,9 +85,7 @@
        <small class=" textDanger text-danger" *ngIf="
                   registerForm.controls['correo2'].hasError(
                     'NoEmailMatch'
-                  ) ||  registerForm.controls['correo'].hasError(
-                    'NoEmailMatch'
-                  )
+                  ) 
                 "> Correos No coinciden </small>
       </div>
      </div>
@@ -240,7 +238,7 @@
      
      </div>
      <div class="col-md-12 mt-3 text-center">
-      <button style="width: 100%;" type="submit" class="btn btn-primary " [disabled]="!registerForm.valid || !isChecked || msjRnt!=''"> GUARDAR <i class="fa-regular fa-circle-right ms-2"></i>
+      <button style="width: 100%;" type="submit" class="btn btn-primary " [disabled]="!registerForm.valid || !isChecked "> GUARDAR <i class="fa-regular fa-circle-right ms-2"></i>
       </button>
      </div>
      <div class="col-md-12 mt-4 mb-5">

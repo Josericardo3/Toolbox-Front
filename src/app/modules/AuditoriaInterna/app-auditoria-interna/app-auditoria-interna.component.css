@@ -49,7 +49,12 @@ h1 {
     align-items: center;
     width: 100%;
 }
-
+.contenido{
+    display: flex;
+}
+.containerForm{
+    margin-left:50px;
+}
 .contenedor-arrow {
     margin-top: 10px;
     margin-left: 31px;
@@ -232,7 +237,7 @@ h1 {
     font-family: 'Work Sans', sans-serif;
     font-size: 14px;
     color: #000000;
-    width: 64.6vw;
+    width: 99%;
     height: 15vh;
     margin-top: 3px;
 }
@@ -480,7 +485,7 @@ select.ng-valid {
 .linea {
     border-top: 2px solid rgb(168, 168, 168);
     ;
-    width: 65vw;
+    width: 99.5%;
     padding: 0;
     margin: 1vh 0;
 }
@@ -637,7 +642,17 @@ select.ng-valid {
     .container {
         padding-right: 0;
     }
-
+    .contenido {
+        display: flex;
+        flex-direction: column;
+    }
+    .planificacion {
+        margin: 10px 0 0 0px !important;
+    }
+    .row {
+    margin: 0;
+    width: 95%;
+}
 
     /* TABLA  */
     .table-container {
@@ -741,7 +756,7 @@ select.ng-valid {
     }
 
     .obs-final {
-        width: 79.2vw;
+        width: 95%;
         margin-left: 15px;
     }
 

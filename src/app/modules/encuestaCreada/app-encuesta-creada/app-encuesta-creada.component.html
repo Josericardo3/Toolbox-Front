@@ -32,7 +32,7 @@
                         (change)="toggleOtroRadio(pregunta, opcion)"> {{opcion}}
                   </label>
                 </div>
-                <input *ngIf="pregunta.mostrarOtroRadio" type="text" placeholder="Otro" maxlength="100" [required]="pregunta.OBLIGATORIO"
+                <input *ngIf="pregunta.mostrarOtroRadio" type="text" placeholder="Otro" maxlength="100" 
                 [formControlName]="'radioButtonOtro_' + pregunta.ID_MAE_ENCUESTA_PREGUNTA" appNoEspacio>
             </div>                                   
             <div *ngIf="pregunta.TIPO === 'checkbox'" class="tipoDiv">
@@ -41,12 +41,16 @@
                 </label>
                 <div *ngFor="let opcion of pregunta.VALOR.split(';'); let j = index">
                     <label>
-                        <input type="checkbox" [required]="pregunta.OBLIGATORIO" [value]="opcion" [formControlName]="'checkbox_' + pregunta.ID_MAE_ENCUESTA_PREGUNTA + '_' + j"
-                        (change)="toggleOtroCheckbox(pregunta, opcion)" [id]="'checkbox_' + pregunta.ID_MAE_ENCUESTA_PREGUNTA + '_' + j">{{opcion}}
+                        <input type="checkbox" [value]="opcion" [formControlName]="'checkbox_' + pregunta.ID_MAE_ENCUESTA_PREGUNTA + '_' + j"
+                        (change)="toggleOtroCheckbox(pregunta, opcion, j, $event)" [id]="'checkbox_' + pregunta.ID_MAE_ENCUESTA_PREGUNTA + '_' + j"
+                        [required]="pregunta.OBLIGATORIO2">{{opcion}}
                     </label>
+                    <div *ngIf="pregunta.mostrarOtroCheckbox && opcion === 'Otro'">
+                        <input type="text" placeholder="Otro" maxlength="100" 
+                        [formControlName]="'checkboxOtro_' + pregunta.ID_MAE_ENCUESTA_PREGUNTA" [id]="'checkboxOtro_' + pregunta.ID_MAE_ENCUESTA_PREGUNTA + '_' + j"
+                        appNoEspacio>
+                    </div>
                 </div>
-                <input *ngIf="pregunta.mostrarOtroCheckbox" type="text" placeholder="Otro" maxlength="100" [required]="pregunta.OBLIGATORIO"
-                [formControlName]="'checkboxOtro_' + pregunta.ID_MAE_ENCUESTA_PREGUNTA" appNoEspacio>
             </div>
             <div *ngIf="pregunta.TIPO === 'desplegable'" class="tipoDiv">
                 <label class="descripcion">{{pregunta.DESCRIPCION}}

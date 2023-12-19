@@ -39,13 +39,18 @@
         <div [ngSwitch]="campo.TIPO_DE_DATO">
           <div *ngIf="campo.MENSAJE != 'dependencia'">
             <input *ngSwitchCase="'int'" type="number" [formControlName]="campo.NOMBRE" class="campo-nombre" [id]="i"
-              (ngModelChange)="capturarValor(i, $event, campo)" appNumeros [required]="campo.REQUERIDO">
+              (ngModelChange)="capturarValor(i, $event, campo)" appNumeros [required]="campo.REQUERIDO" >
 
             <input *ngSwitchCase="'local_reference_id'" type="text" [formControlName]="campo.NOMBRE" [id]="i"
-              (ngModelChange)="capturarValor(i, $event, campo)" [required]="campo.REQUERIDO">
-
-            <input *ngSwitchCase="'string'" type="text" [formControlName]="campo.NOMBRE" [id]="i"
-              (ngModelChange)="capturarValor(i, $event, campo)" [required]="campo.REQUERIDO">
+              (ngModelChange)="capturarValor(i, $event, campo)" [required]="campo.REQUERIDO" >
+            
+            <input *ngSwitchCase="'string'" type="text" [formControlName]="campo.NOMBRE" 
+             [id]="i"
+             [ngClass]="{'input-error': formParent.controls[campo.NOMBRE].value?.length > 100}"
+              (ngModelChange)="capturarValor(i, $event, campo)" [required]="campo.REQUERIDO" >
+              <small style="display: flex" class="text-danger" *ngIf="formParent.controls[campo.NOMBRE].value?.length > 100">
+               La respuesta no puede exceder los 100 caracteres.
+              </small>
           </div>
 
           <div *ngSwitchCase="'option'">
@@ -93,8 +98,12 @@
                 <div>
                   <input type="text" *ngIf="habilitarInputPorCheck(opcion)" class="inputContainer"
                     placeholder="Especifique detalladamente" [id]="i" (input)="opcion.valorUrl = $event.target['value']"
+                    [ngClass]="{'input-error': formParent.controls[campo.NOMBRE].value?.length > 100}"
                     (change)="capturarValor(i, $event, campo)"
                     [ngClass]="{'ng-invalid ng-touched': !validarCampoInput(opcion)}">
+                    <small style="display: flex" class="text-danger" *ngIf="formParent.controls[campo.NOMBRE].value?.length > 100">
+                      El Nombre del Representante Legal no puede tener más de 100 caracteres.
+                    </small>
                 </div>
               </div>
             </div>
@@ -129,7 +138,11 @@
           <div *ngIf="showDependency && campo.MENSAJE === 'dependencia' && hasDepency(campo.DEPENDIENTE)">
             <div *ngFor="let item of campo.DESPLEGABLE">
               <input *ngSwitchCase="'string'" type="text" [formControlName]="campo.NOMBRE" [value]="item.nombre"
+              [ngClass]="{'input-error': formParent.controls[campo.NOMBRE].value?.length > 100}"
                 [id]="i" (ngModelChange)="capturarValor(i, $event, campo)">
+                <small style="display: flex" class="text-danger" *ngIf="formParent.controls[campo.NOMBRE].value?.length > 100">
+                  El Nombre del Representante Legal no puede tener más de 100 caracteres.
+                </small>
             </div>
             <div *ngSwitchCase="'checkbox'" class="containerCheck">
               <label class="labelDependency">{{ campo.NOMBRE }}
@@ -144,7 +157,10 @@
                 <div>
                   <input type="text" *ngIf="habilitarInputPorCheck(opcion)" class="inputContainer"
                     placeholder="Especifica otro" [id]="i" (ngModelChange)="capturarValor(i, $event, campo)"
-                    [ngClass]="{'ng-invalid ng-touched': !validarCampoInput(opcion)}">
+                    [ngClass]="{'ng-invalid ng-touched': !validarCampoInput(opcion), 'input-error': formParent.controls[campo.NOMBRE].value?.length > 100 }">
+                    <small style="display: flex" class="text-danger" *ngIf="formParent.controls[campo.NOMBRE].value?.length > 100">
+                      El Nombre del Representante Legal no puede tener más de 100 caracteres.
+                    </small>
                 </div>
               </div>
             </div>
@@ -153,13 +169,20 @@
           <div *ngIf="showSostenibilidad && campo.MENSAJE === 'dependencia'">
             <label class="labelDependency">{{ campo.NOMBRE }} </label>
             <input *ngSwitchCase="'string'" type="text" [formControlName]="campo.NOMBRE" [id]="i"
+            [ngClass]="{'input-error': formParent.controls[campo.NOMBRE].value?.length > 100}"
               (ngModelChange)="capturarValor(i, $event, campo)" [required]="campo.REQUERIDO">
-
+              <small style="display: flex" class="text-danger" *ngIf="formParent.controls[campo.NOMBRE].value?.length > 100">
+                El Nombre del Representante Legal no puede tener más de 100 caracteres.
+              </small>
             <input *ngSwitchCase="'int'" type="number" [formControlName]="campo.NOMBRE" class="campo-nombre" [id]="i"
               (ngModelChange)="capturarValor(i, $event, campo)" [required]="campo.REQUERIDO">
 
             <input *ngSwitchCase="'local_reference_id'" type="text" [formControlName]="campo.NOMBRE" [id]="i"
+            [ngClass]="{'input-error': formParent.controls[campo.NOMBRE].value?.length > 100}"
               (ngModelChange)="capturarValor(i, $event, campo)" [required]="campo.REQUERIDO">
+              <small style="display: flex" class="text-danger" *ngIf="formParent.controls[campo.NOMBRE].value?.length > 100">
+                El Nombre del Representante Legal no puede tener más de 100 caracteres.
+              </small>
           </div>
 
           <div *ngIf="showPrestaServiciosAventura && campo.MENSAJE === 'dependencia'">
@@ -177,7 +200,10 @@
                   <input type="text" *ngIf="habilitarInputPorCheck(opcion)" class="inputContainer" required
                     placeholder="Especifica otro" [id]="i" (input)="opcion.valorUrl = $event.target['value']"
                     (change)="capturarValor(i, $event, campo)"
-                    [ngClass]="{'ng-invalid ng-touched': !validarCampoInput(opcion)}">
+                    [ngClass]="{'ng-invalid ng-touched': !validarCampoInput(opcion), 'input-error': formParent.controls[campo.NOMBRE].value?.length > 100 }">
+                    <small style="display: flex" class="text-danger" *ngIf="formParent.controls[campo.NOMBRE].value?.length > 100">
+                      El Nombre del Representante Legal no puede tener más de 100 caracteres.
+                    </small>
                 </div>
               </div>
             </div>
@@ -195,8 +221,6 @@
         <!-- <div class="error-message" *ngIf="formParent.get(campo.NOMBRE).hasError('required') && formParent.get(campo.NOMBRE).touched">
           <span style="color: tomato;">*Este campo es obligatorio</span>
         </div> -->
-
-
       </div>
       <div *ngIf="mostrarMensaje && !formParent.valid" class="completarCamposLabel">
         Por favor complete todos los campos obligatorios.
@@ -233,10 +257,17 @@
               (ngModelChange)="capturarValor(i, $event, campo)" appNumeros [required]="campo.REQUERIDO">
 
             <input *ngSwitchCase="'local_reference_id'" type="text" [formControlName]="campo.NOMBRE" [id]="i"
+            [ngClass]="{'input-error': formParent.controls[campo.NOMBRE].value?.length > 100}"
               (ngModelChange)="capturarValor(i, $event, campo)" [required]="campo.REQUERIDO">
-
+              <small style="display: flex" class="text-danger" *ngIf="formParent.controls[campo.NOMBRE].value?.length > 100">
+                La respuesta no puede exceder los 100 caracteres.
+               </small>
             <input *ngSwitchCase="'string'" type="text" [formControlName]="campo.NOMBRE" [id]="i"
+            [ngClass]="{'input-error': formParent.controls[campo.NOMBRE].value?.length > 100}"
               (ngModelChange)="capturarValor(i, $event, campo)" [required]="campo.REQUERIDO">
+              <small  style="display: flex" class="text-danger" *ngIf="formParent.controls[campo.NOMBRE].value?.length > 100">
+                La respuesta no puede exceder los 100 caracteres.
+               </small>
           </div>
 
           <div *ngSwitchCase="'option'">
@@ -285,7 +316,10 @@
                   <input type="text" *ngIf="habilitarInputPorCheck(opcion)" class="inputContainer"
                     placeholder="Especifique detalladamente" [id]="i" (input)="opcion.valorUrl = $event.target['value']"
                     (change)="capturarValor(i, $event, campo)"
-                    [ngClass]="{'ng-invalid ng-touched': !validarCampoInput(opcion)}">
+                    [ngClass]="{'ng-invalid ng-touched': !validarCampoInput(opcion),'input-error': formParent.controls[campo.NOMBRE].value?.length > 100}">
+                    <small style="display: flex" class="text-danger" *ngIf="formParent.controls[campo.NOMBRE].value?.length > 100">
+                      La respuesta no puede exceder los 100 caracteres.
+                     </small>
                 </div>
               </div>
             </div>
@@ -320,7 +354,11 @@
           <div *ngIf="showDependency && campo.MENSAJE === 'dependencia' && hasDepency(campo.DEPENDIENTE)">
             <div *ngFor="let item of campo.DESPLEGABLE">
               <input *ngSwitchCase="'string'" type="text" [formControlName]="campo.NOMBRE" [value]="item.nombre"
+              [ngClass]="{'input-error': formParent.controls[campo.NOMBRE].value?.length > 100}"
                 [id]="i" (ngModelChange)="capturarValor(i, $event, campo)">
+                <small style="display: flex" class="text-danger" *ngIf="formParent.controls[campo.NOMBRE].value?.length > 100">
+                  La respuesta no puede exceder los 100 caracteres.
+                 </small>
             </div>
             <div *ngSwitchCase="'checkbox'" class="containerCheck">
               <label class="labelDependency">{{ campo.NOMBRE }}
@@ -335,7 +373,10 @@
                 <div>
                   <input type="text" *ngIf="habilitarInputPorCheck(opcion)" class="inputContainer"
                     placeholder="Especifica otro" [id]="i" (ngModelChange)="capturarValor(i, $event, campo)"
-                    [ngClass]="{'ng-invalid ng-touched': !validarCampoInput(opcion)}">
+                    [ngClass]="{'ng-invalid ng-touched': !validarCampoInput(opcion),'input-error': formParent.controls[campo.NOMBRE].value?.length > 100}">
+                    <small style="display: flex" class="text-danger" *ngIf="formParent.controls[campo.NOMBRE].value?.length > 100">
+                      La respuesta no puede exceder los 100 caracteres.
+                     </small>
                 </div>
               </div>
             </div>
@@ -344,13 +385,20 @@
           <div *ngIf="showSostenibilidad && campo.MENSAJE === 'dependencia'">
             <label class="labelDependency">{{ campo.NOMBRE }} </label>
             <input *ngSwitchCase="'string'" type="text" [formControlName]="campo.NOMBRE" [id]="i"
+            [ngClass]="{'input-error': formParent.controls[campo.NOMBRE].value?.length > 100}"
               (ngModelChange)="capturarValor(i, $event, campo)" [required]="campo.REQUERIDO">
-
+              <small style="display: flex" class="text-danger" *ngIf="formParent.controls[campo.NOMBRE].value?.length > 100">
+                La respuesta no puede exceder los 100 caracteres.
+               </small>    
             <input *ngSwitchCase="'int'" type="number" [formControlName]="campo.NOMBRE" class="campo-nombre" [id]="i"
               (ngModelChange)="capturarValor(i, $event, campo)" [required]="campo.REQUERIDO">
 
             <input *ngSwitchCase="'local_reference_id'" type="text" [formControlName]="campo.NOMBRE" [id]="i"
+            [ngClass]="{'input-error': formParent.controls[campo.NOMBRE].value?.length > 100}"
               (ngModelChange)="capturarValor(i, $event, campo)" [required]="campo.REQUERIDO">
+              <small style="display: flex" class="text-danger" *ngIf="formParent.controls[campo.NOMBRE].value?.length > 100">
+                La respuesta no puede exceder los 100 caracteres.
+               </small>
           </div>
 
           <div *ngIf="showPrestaServiciosAventura && campo.MENSAJE === 'dependencia'">
@@ -368,7 +416,10 @@
                   <input type="text" *ngIf="habilitarInputPorCheck(opcion)" class="inputContainer" required
                     placeholder="Especifica otro" [id]="i" (input)="opcion.valorUrl = $event.target['value']"
                     (change)="capturarValor(i, $event, campo)"
-                    [ngClass]="{'ng-invalid ng-touched': !validarCampoInput(opcion)}">
+                    [ngClass]="{'ng-invalid ng-touched': !validarCampoInput(opcion),'input-error': formParent.controls[campo.NOMBRE].value?.length > 100}">
+                    <small  style="display: flex" class="text-danger" *ngIf="formParent.controls[campo.NOMBRE].value?.length > 100">
+                      La respuesta no puede exceder los 100 caracteres.
+                     </small>
                 </div>
               </div>
             </div>
@@ -410,12 +461,41 @@
           <div *ngIf="campo.MENSAJE != 'dependencia'">
             <input *ngSwitchCase="'int'" type="number" [formControlName]="campo.NOMBRE" class="campo-nombre" [id]="i"
               (ngModelChange)="capturarValor(i, $event, campo)" appNumeros [required]="campo.REQUERIDO">
-
             <input *ngSwitchCase="'local_reference_id'" type="text" [formControlName]="campo.NOMBRE" [id]="i"
               (ngModelChange)="capturarValor(i, $event, campo)" [required]="campo.REQUERIDO">
-
-            <input *ngSwitchCase="'string'" type="text" [formControlName]="campo.NOMBRE" [id]="i"
-              (ngModelChange)="capturarValor(i, $event, campo)" [required]="campo.REQUERIDO">
+            <div *ngSwitchCase="'string'">
+             <input *ngIf="campo.NOMBRE != '¿Cuáles servicios de presta?' && campo.NOMBRE != 'Página web del PST (Si aplica)'"
+              type="text" [formControlName]="campo.NOMBRE" [id]="i"
+              [ngClass]="{'input-error': formParent.controls[campo.NOMBRE].value?.length > 100}"
+              (ngModelChange)="capturarValor(i, $event, campo)" [required]="campo.REQUERIDO"> 
+              <small style="display: flex" class="text-danger" 
+              *ngIf="campo.NOMBRE != '¿Cuáles servicios de presta?' && campo.NOMBRE != 'Página web del PST (Si aplica)' &&
+              formParent.controls[campo.NOMBRE].value?.length > 100">
+                La respuesta no puede exceder los 100 caracteres.
+               </small>
+             
+              <input *ngIf="campo.NOMBRE != '¿Cuáles servicios de presta?' && campo.NOMBRE === 'Página web del PST (Si aplica)'"
+              type="text" [formControlName]="campo.NOMBRE" [id]="i"
+              [ngClass]="{'input-error': !validarCampoWeb(campo.NOMBRE)}"
+              (ngModelChange)="capturarValor(i, $event, campo)" [required]="campo.REQUERIDO"> 
+             
+            </div>
+          </div>
+          <div *ngIf="campo.TIPO_DE_DATO === 'string' && campo.NOMBRE === '¿Cuáles servicios de presta?'">
+            <input 
+            type="text"
+            [formControlName]="campo.NOMBRE" 
+            [ngClass]="{'input-error': formParent.controls[campo.NOMBRE].value?.length > 100}"
+            [id]="i" 
+            (change)="capturarValor(i, $event, campo)">
+            <small style="display: flex" class="text-danger" *ngIf="formParent.controls[campo.NOMBRE].value?.length > 100">
+              La respuesta no puede exceder los 100 caracteres.
+             </small>
+            <div class="selectedOption">
+              <label *ngFor="let option of selectedOptionServicios; let i = index" class="labelX">{{ option }}
+                <span><button class="x" (click)="selectedOptionServicios.splice(i, 1)">X</button></span>
+              </label>
+            </div>
           </div>
 
           <div *ngSwitchCase="'option'">
@@ -464,7 +544,8 @@
                   <input type="text" *ngIf="habilitarInputPorCheck(opcion)" class="inputContainer"
                     placeholder="Especifique detalladamente" [id]="i" (input)="opcion.valorUrl = $event.target['value']"
                     (change)="capturarValor(i, $event, campo)"
-                    [ngClass]="{'ng-invalid ng-touched': !validarCampoInput(opcion)}">
+                    [ngClass]="{'ng-invalid ng-touched': !validarCampoInput(opcion,campo)}">
+                
                 </div>
               </div>
             </div>
@@ -515,6 +596,7 @@
                   <input type="text" *ngIf="habilitarInputPorCheck(opcion)" class="inputContainer"
                     placeholder="Especifica otro" [id]="i" (ngModelChange)="capturarValor(i, $event, campo)"
                     [ngClass]="{'ng-invalid ng-touched': !validarCampoInput(opcion)}">
+                   
                 </div>
               </div>
             </div>
@@ -523,13 +605,15 @@
           <div *ngIf="showSostenibilidad && campo.MENSAJE === 'dependencia'">
             <label class="labelDependency">{{ campo.NOMBRE }} </label>
             <input *ngSwitchCase="'string'" type="text" [formControlName]="campo.NOMBRE" [id]="i"
+           
               (ngModelChange)="capturarValor(i, $event, campo)" [required]="campo.REQUERIDO">
-
+            
             <input *ngSwitchCase="'int'" type="number" [formControlName]="campo.NOMBRE" class="campo-nombre" [id]="i"
               (ngModelChange)="capturarValor(i, $event, campo)" [required]="campo.REQUERIDO">
 
             <input *ngSwitchCase="'local_reference_id'" type="text" [formControlName]="campo.NOMBRE" [id]="i"
               (ngModelChange)="capturarValor(i, $event, campo)" [required]="campo.REQUERIDO">
+
           </div>
 
           <div *ngIf="showPrestaServiciosAventura && campo.MENSAJE === 'dependencia'">
@@ -548,6 +632,7 @@
                     placeholder="Especifica otro" [id]="i" (input)="opcion.valorUrl = $event.target['value']"
                     (change)="capturarValor(i, $event, campo)"
                     [ngClass]="{'ng-invalid ng-touched': !validarCampoInput(opcion)}">
+                    
                 </div>
               </div>
             </div>
@@ -571,7 +656,7 @@
       <div *ngIf="mostrarMensaje && !formParent.valid" class="completarCamposLabel">
         Por favor complete todos los campos obligatorios.
       </div>
-      <button type="button" class="btn-proceso" [disabled]="!formParent.valid" (click)="saveForm()">
+      <button type="button" class="btn-proceso" [disabled]=" !validarServiciosPresta()" (click)="saveForm()">
         Guardar y Continuar <i class="fa-regular fa-circle-right ms-2"></i>
       </button>
     </div>

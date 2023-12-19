@@ -177,8 +177,8 @@
                     (onDeSelect)="onDeSelect($event, 'pst')" (onDeSelectAll)="onDeSelectAll($event, 'pst')"
                     style="margin-top:2vh;"></ng-multiselect-dropdown>
                 <input type="text" placeholder="Agregar un título" formControlName="tituloNoticia" id="tituloNoticia"
-                    style="margin-top:2vh;" maxlength="50">
-                <label for="" class="indicador-max">El titulo ingresado no debe tener más de 50 caractéres</label>
+                    style="margin-top:2vh;">
+                <label for="" class="indicador-max" *ngIf="saveForm.controls['tituloNoticia'].hasError('maxlength')">El titulo ingresado no debe tener más de 50 caractéres</label>
                 <select id="CategoriaNoticia" name="CategoriaNoticia" formControlName="CategoriaNoticia" class="list-categorias">
                     <option value="">Seleccione una categoría</option>
                     <option *ngFor="let val of arrayCategorias; let i = index" [ngValue]="val.ID_CATEGORIA">{{val.DESCRIPCION}}</option>
@@ -214,7 +214,10 @@
                         toolbar:
                         'undo redo | casechange blocks | bold italic backcolor | \
                         alignleft aligncenter alignright alignjustify | \
-                        bullist numlist checklist outdent indent | removeformat | a11ycheck code table help'
+                        bullist numlist checklist outdent indent | removeformat | a11ycheck code table help',
+                        content_style: 'img { max-width: 100%; height: auto; }',
+                        image_dimensions: true,
+                        image_dimensions_unit: 'px'
                     }"
                 ></editor>
                 <label for="" class="indicador-max">El texto ingresado no debe superar los 500 caractéres</label>

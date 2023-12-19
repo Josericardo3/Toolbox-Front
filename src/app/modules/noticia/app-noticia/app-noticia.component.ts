@@ -36,7 +36,7 @@ export class AppNoticiaComponent implements OnInit {
   ngOnInit() {
     this.editarNoticiaForm = this.formBuilder.group({
       usuario: [{ value: '', disabled: true }],
-      titulo: ['', Validators.required],
+      titulo: ['', Validators.maxLength(50)],
       descripcion: ['', Validators.required]
     });
     this.dato = history.state.dato;
@@ -55,7 +55,7 @@ export class AppNoticiaComponent implements OnInit {
     this.api.getNoticiaCategorias().subscribe(data => {
       this.arrayCategorias=data;
       this.updateContadorCategorias();
-      console.log(this.arrayCategorias);
+      //console.log(this.arrayCategorias);
     });
   }
   updateContadorCategorias(){
@@ -75,27 +75,53 @@ export class AppNoticiaComponent implements OnInit {
           if(val.ID_NOTICIA == this.idNoticia)
           this.noticiaSelected = val;
         })
-        console.log(this.noticiaSelected.DESCRIPCION);
+        //console.log(this.noticiaSelected.DESCRIPCION);
         this.imagen = this.noticiaSelected.COD_IMAGEN ? 'data:image/png;base64,' + this.noticiaSelected.COD_IMAGEN : '';
         
         //
-        //console.log(this.procesarHTML(this.noticiaSelected.DESCRIPCION));
-        this.procesarHTML(this.noticiaSelected.DESCRIPCION);
+        let contenedorM=document.getElementById('descrip-noticia');
+        //console.log(contenedorM.clientWidth);
+        let htmlActualizado = this.ajustarDimensiones(contenedorM, this.noticiaSelected.DESCRIPCION);
+        //console.log(htmlActualizado);
+        if(htmlActualizado!=this.noticiaSelected.DESCRIPCION)
+          this.noticiaSelected.DESCRIPCION=htmlActualizado;
         //
         this.getListCategorias();
-        console.log(this.noticiaSelected);
+        //console.log(this.noticiaSelected);
       })
   }
-  secureUrlYT: string;
+  
+  ajustarDimensiones(contenedor, html) {
+    // Crear un elemento div temporal para contener el HTML
+    let tempDiv = document.createElement('div');
+    tempDiv.innerHTML = html;
 
-  procesarHTML(htmlString: string): string {
-    const safeHtml = htmlString.replace(/<iframe\s[^>]*src="([^"]+)"[^>]*>/gi, (match, src) => {
-      const safeSrc = `this.sanitizer.bypassSecurityTrustResourceUrl('${src}')\" width="560" height="314" allowfullscreen="allowfullscreen`;
-      this.secureUrlYT=src;
-      return `<iframe [src]="${safeSrc}">`;
+    // Obtener todas las imágenes dentro del HTML
+    let imagenes = tempDiv.querySelectorAll('img');
+
+    // Iterar sobre cada imagen y ajustar dimensiones si es necesario
+    imagenes.forEach(imagen => {
+        let contenedorAncho = contenedor.clientWidth;
+        let contenedorAlto = contenedor.clientHeight;
+
+        // Obtener dimensiones actuales de la imagen
+        let anchoImagen = imagen.width;
+        let altoImagen = imagen.height;
+
+        // Verificar si las dimensiones de la imagen son mayores que las del contenedor
+        if (anchoImagen >= contenedorAncho) {
+            // Establecer las nuevas dimensiones
+            let proporcion=anchoImagen/altoImagen;
+
+            imagen.width = contenedorAncho-1;
+            imagen.height = contenedorAncho/proporcion;
+        }
     });
-    return safeHtml;
-  }
+
+    // Devolver el HTML actualizado
+    return tempDiv.innerHTML;
+}
+
   getRolValue(): number {
     const rol = localStorage.getItem('rol');
     if (rol && !isNaN(Number(rol))) {

@@ -6,6 +6,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { forEach } from 'lodash';
 import { elements } from 'chart.js';
 import { ModalService } from 'src/app/messagemodal/messagemodal.component.service';
+import { ComunicacionService } from 'src/app/servicios/comunicacion/comunicacion.service';
+import { Subscription } from 'rxjs';
+
 
 interface Option {
   id: number
@@ -22,6 +25,7 @@ interface Option {
 
 export class AppTarjetasComponent implements OnInit, AfterViewInit {
 
+  //Enviar del hijo al padre
   @Output() eliminarTarjeta = new EventEmitter<number>();
   @Output() tarjetaClicada = new EventEmitter<number>();
   @Output() formularioCompletado = new EventEmitter<FormGroup>();
@@ -29,6 +33,7 @@ export class AppTarjetasComponent implements OnInit, AfterViewInit {
   @Output() ultimoIDChanged: EventEmitter<any> = new EventEmitter<any>();
   @Output() activarCompartirEncuesta: EventEmitter<any> = new EventEmitter<any>();
 
+  //Recibir del padre al hijo
   @Input() index: number | undefined;
   @Input() valoresPreguntas: any = [];
   @Input() editandoEncuesta: boolean = false;
@@ -36,22 +41,23 @@ export class AppTarjetasComponent implements OnInit, AfterViewInit {
   @Input() tituloEditar: any = "";
   @Input() descripcionEditar: any = "";
   @Input() selectCrearTarjeta: boolean = false;
+  @Input() activarTitulos: boolean = true;
 
   public form: FormGroup;
-  hayopcion:any=true;
+  hayopcion: any = true;
   valoresPreguntass: any = [];
   showOtro: boolean = false;
   addInput: boolean = false;
   selectedOption: Option = { id: 0, label: 'Seleccione una opción', value: '', icon: '' };
   selectedOptionEditar: any = [{ id: 0, label: 'Seleccione una opción', value: '', icon: '' }]
   showOptions = false;
-  showOptionEditar = []
+  showOptionEditar:boolean=false;
   selectedOptions: any = [];
   showOptionss: any = [];
   inputs: any[] = [];
   isOn: boolean = false;
   modeloEnvio: any = {};
-  idEncuesta:any=0;
+  idEncuesta: any = 0;
   options: Option[] = [
     { id: 1, label: 'Respuesta corta', value: 'respuestaCorta', icon: 'fa-solid fa-minus' },
     { id: 2, label: 'Respuesta larga', value: 'respuestaLarga', icon: 'fa-solid fa-grip-lines' },
@@ -59,19 +65,25 @@ export class AppTarjetasComponent implements OnInit, AfterViewInit {
     { id: 4, label: 'Casillas', value: 'checkbox', icon: 'fa-regular fa-square-check' },
     { id: 5, label: 'Desplegable', value: 'desplegable', icon: 'fa-solid fa-circle-arrow-down' }
   ];
-  modelPreguntas: any = [{ IDUNICO: 1, opcionesBoton: [], opcionesCheckbox: [], opcionesDesplegableEditar: [] }];
+  modelPreguntas: any = [{ IDUNICO: 1, opcionesBoton: [], opcionesCheckbox: [], opcionesDesplegableEditar: [] , icon:'', label: 'Seleccione una opción'}];
   selectTarjeta: boolean = false;
   selectObligatorio: boolean = true;
   ultimoID: any;
   compartirEncuestaBtn: boolean = false;
   cambiarEstadoSwitch: boolean = false;
-
+  subscription: Subscription;
+ 
   constructor(
     private ApiService: ApiService,
     private formBuilder: FormBuilder,
     private activatedRoute: ActivatedRoute,
-    private modalService: ModalService
-  ) { }
+    private modalService: ModalService,
+    private comunicacionService: ComunicacionService
+  ) { 
+    this.subscription = this.comunicacionService.notifyChild$.subscribe(() => {
+      this.handleNotifyChild();
+    });
+  }
 
   ngOnInit() {
     this.formulario();
@@ -84,18 +96,24 @@ export class AppTarjetasComponent implements OnInit, AfterViewInit {
           this.cambiarEstadoSwitch = true;
           this.selectTarjeta = true;
           this.obtenerDatosEncuesta(params['id']);
-          this.idEncuesta=params['id'];
+          this.idEncuesta = params['id'];
         }
       });
-      this.completarFormularioEdicion();
+      //this.completarFormularioEdicion();
       console.log(this.editandoEncuesta)
     }
     else {
-      this.selectOptionEditar(this.selectedOptionEditar[0], 0) 
-      this.toggleOptionsEditar(0);
+      /*this.selectOptionEditar(this.selectedOptionEditar[0], 0, [])
+      this.toggleOptionsEditar(0);*/
     }
 
     this.onInputChange(this.form);
+  }
+
+  handleNotifyChild() {
+    // Realiza cualquier acción necesaria en el hijo cuando es notificado por el padre
+    console.log('Notificado por el padre en el hijo.');
+    this.selectObligatorio = this.activarTitulos;
   }
 
   obtenerDatosEncuesta(encuestaId: string) {
@@ -107,14 +125,44 @@ export class AppTarjetasComponent implements OnInit, AfterViewInit {
 
         this.valoresPreguntass = respuesta.MAE_ENCUESTA_PREGUNTAS;
         this.modelPreguntas = respuesta.MAE_ENCUESTA_PREGUNTAS;
-        this.modelPreguntas = this.modelPreguntas.map(function (pregunta) {
+
+        const tarjetasOrdenadas = [...this.modelPreguntas]; // Crear una copia del array original
+        tarjetasOrdenadas.sort((a, b) => a.ORDEN - b.ORDEN);
+
+        this.modelPreguntas = tarjetasOrdenadas.map(function (pregunta) {
           return { ...pregunta, IDUNICO: pregunta.ID_MAE_ENCUESTA_PREGUNTA, opcionesBoton: [], opcionesCheckbox: [], opcionesDesplegableEditar: [] };
         });
-        this.completarFormularioEdicion();
+        /*this.completarFormularioEdicion();*/
         this.completarFormularioValores();
+        this.completarOpcionesSellecionada();
+
       });
   }
-
+completarOpcionesSellecionada(){
+  this.modelPreguntas.forEach(elements => {
+    if (elements.TIPO === "radioButton") {
+      elements.icon=this.options.filter(x => x.value == elements.TIPO)[0].icon;
+      elements.label=this.options.filter(x => x.value == elements.TIPO)[0].label;
+    }
+    if (elements.TIPO === "checkbox") {
+      elements.icon=this.options.filter(x => x.value == elements.TIPO)[0].icon;
+      elements.label=this.options.filter(x => x.value == elements.TIPO)[0].label;
+    }
+    if (elements.TIPO === "desplegable") {
+      elements.icon=this.options.filter(x => x.value == elements.TIPO)[0].icon;
+      elements.label=this.options.filter(x => x.value == elements.TIPO)[0].label;
+    }
+    if (elements.TIPO === "respuestaCorta") {
+      elements.icon=this.options.filter(x => x.value == elements.TIPO)[0].icon;
+      elements.label=this.options.filter(x => x.value == elements.TIPO)[0].label;
+    }
+    if (elements.TIPO === "respuestaLarga") {
+      elements.icon=this.options.filter(x => x.value == elements.TIPO)[0].icon;
+      elements.label=this.options.filter(x => x.value == elements.TIPO)[0].label;
+    }
+  });
+  console.log("nuevos elementos", this.modelPreguntas)
+}
   completarFormularioValores() {
     this.modelPreguntas.forEach(elements => {
 
@@ -180,10 +228,10 @@ export class AppTarjetasComponent implements OnInit, AfterViewInit {
       obligatorio: [false],
     });
   }
-  
+
   onInputChange(formulario: any) {
     console.log(formulario)
-    
+
     if (this.form.status === 'VALID') {
       this.tarjetaCompletada.emit(true);
       console.log('aaaaaaaaaaaaaaa', this.selectCrearTarjeta)
@@ -193,7 +241,7 @@ export class AppTarjetasComponent implements OnInit, AfterViewInit {
       this.selectCrearTarjeta = true;
     }
   }
-  
+
   completarFormulario() {
     let valor = '';
     let tipo = '';
@@ -279,33 +327,36 @@ export class AppTarjetasComponent implements OnInit, AfterViewInit {
     this.showOptions = !this.showOptions;
   }
 
-  toggleOptionsEditar(id: any) {   
-    this.showOptionEditar[id] = !this.showOptionEditar[id];
+  toggleOptionsEditar(pregunta: any) {
+    pregunta.showOptionEditar=true;
+    this.showOptionEditar = !this.showOptionEditar;
   }
 
-  selectOptionEditar(option: Option, id: any) {
+  
+  selectOptionEditar(option: Option, id: any, pregunta: any) {
     // this.selectTarjeta = true;
-    this.showOptionss[id] = false;
-    this.selectedOptions[id] = option;
-    this.modelPreguntas[id].TIPO = option.value;
-    if (option.value === 'respuestaCorta' || option.value === 'respuestaLarga' || option.value === 'radioButton' 
-    || option.value === 'checkbox' || option.value === 'desplegable') {
-      
-      // Establecer el campo VALOR a una cadena vacía ('')
-      this.modelPreguntas[id].VALOR = '';
-      this.selectTarjeta = true;
-    } 
-    if (this.modelPreguntas[id].opcionesBoton.length < 1) {
-      this.modelPreguntas[id].opcionesBoton.push({})
-    }
-    if (this.modelPreguntas[id].opcionesCheckbox.length < 1) {
-      this.modelPreguntas[id].opcionesCheckbox.push({})
-    }
-    if (this.modelPreguntas[id].opcionesDesplegableEditar.length < 1) {
-      this.modelPreguntas[id].opcionesDesplegableEditar.push({})
-    }
+    this.showOptionss = false;
+    pregunta.showOptionEditar=false;
+    this.selectedOptions = option;
+    pregunta.TIPO = option.value;
+    if (option.value === 'respuestaCorta' || option.value === 'respuestaLarga' || option.value === 'radioButton'
+      || option.value === 'checkbox' || option.value === 'desplegable') {
 
-    this.showOptionEditar[id] = !this.showOptionEditar[id];
+      // Establecer el campo VALOR a una cadena vacía ('')
+      pregunta.VALOR = '';
+      this.selectTarjeta = true;
+    }
+    if (pregunta.opcionesBoton.length < 1) {
+      pregunta.opcionesBoton.push({})
+    }
+    if (pregunta.opcionesCheckbox.length < 1) {
+      pregunta.opcionesCheckbox.push({})
+    }
+    if (pregunta.opcionesDesplegableEditar.length < 1) {
+      pregunta.opcionesDesplegableEditar.push({})
+    }
+pregunta.icon=option.icon;
+pregunta.label=option.label;
   }
 
   agregarTarjeta() {
@@ -322,14 +373,14 @@ export class AppTarjetasComponent implements OnInit, AfterViewInit {
   selectOption(option: Option) {
     console.log(option)
     if (option.id === 1 || option.id === 2) {
-      this.selectCrearTarjeta = true; 
+      this.selectCrearTarjeta = true;
     }
-    else{
-      this.selectCrearTarjeta = false; 
+    else {
+      this.selectCrearTarjeta = false;
     }
     this.selectedOption = option;
     this.showOptions = false;
-    
+
     this.onInputChange(this.form);
     console.log('fffffffffffffff', this.selectedOption)
   }
@@ -339,47 +390,47 @@ export class AppTarjetasComponent implements OnInit, AfterViewInit {
   // }
 
   agregarOtros(pregunta: any, i: any, opcion) {
-  var existeOtro=false;
+    var existeOtro = false;
     for (let index = 0; index < this.modelPreguntas[i].opcionesBoton.length; index++) {
       if (this.modelPreguntas[i].opcionesBoton[index].esOpcion == true && opcion) {
-        this.removeRadioOptions(i,index);
+        this.removeRadioOptions(i, index);
         return;
       }
     }
-   
+
     for (let index = 0; index < this.modelPreguntas[i].opcionesBoton.length; index++) {
       if (this.modelPreguntas[i].opcionesBoton[index].esOpcion == true) {
-        existeOtro=true;
-        this.removeRadioOptions(i,index);
+        existeOtro = true;
+        this.removeRadioOptions(i, index);
       }
     }
     if (opcion) {
-     
+
       this.showOtro = !this.showOtro;
       this.modelPreguntas[i].opcionesBoton.push({ esOpcion: true });
     } else {
-      
-     
-        this.modelPreguntas[i].opcionesBoton.push({ esOpcion: false, nombre: 'opcion' });
-        if(existeOtro){
-          this.modelPreguntas[i].opcionesBoton.push({ esOpcion: true });
-        }
+
+
+      this.modelPreguntas[i].opcionesBoton.push({ esOpcion: false, nombre: 'opcion' });
+      if (existeOtro) {
+        this.modelPreguntas[i].opcionesBoton.push({ esOpcion: true });
+      }
     }
   }
 
   agregarOtrosCheck(pregunta: any, i: any, opcion) {
-    var existeOtro=false;
+    var existeOtro = false;
     for (let index = 0; index < this.modelPreguntas[i].opcionesCheckbox.length; index++) {
       if (this.modelPreguntas[i].opcionesCheckbox[index].esOpcion == true && opcion) {
-        this.removeCheckOptions(i,index);
+        this.removeCheckOptions(i, index);
         return;
       }
 
     }
     for (let index = 0; index < this.modelPreguntas[i].opcionesCheckbox.length; index++) {
       if (this.modelPreguntas[i].opcionesCheckbox[index].esOpcion == true) {
-        existeOtro=true;
-        this.removeCheckOptions(i,index);
+        existeOtro = true;
+        this.removeCheckOptions(i, index);
       }
     }
     if (opcion) {
@@ -387,7 +438,7 @@ export class AppTarjetasComponent implements OnInit, AfterViewInit {
       this.modelPreguntas[i].opcionesCheckbox.push({ esOpcion: true });
     } else {
       this.modelPreguntas[i].opcionesCheckbox.push({ esOpcion: false, nombre: 'opcion' });
-      if(existeOtro){
+      if (existeOtro) {
         this.modelPreguntas[i].opcionesCheckbox.push({ esOpcion: true });
       }
     }
@@ -472,59 +523,113 @@ export class AppTarjetasComponent implements OnInit, AfterViewInit {
     this.opcionesDesplegable.removeAt(index);
   }
 
-  generarUUID(): string {     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {         
-        const r = Math.random() * 16 | 0;         
-        const v = c === 'x' ? r : (r & 0x3 | 0x8);        
-        return v.toString(16);     
-      }); 
+  generarUUID(): string {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+      const r = Math.random() * 16 | 0;
+      const v = c === 'x' ? r : (r & 0x3 | 0x8);
+      return v.toString(16);
+    });
   }
 
   agregarotro(i) {
     this.selectObligatorio = false;
     this.cambiarEstadoSwitch = false;
     let defaultOption = { id: 0, label: 'Seleccione una opción', value: '', icon: '' };
-  
+    // Obtén el orden actual máximo
+    const maxOrder = Math.max(...this.modelPreguntas.map((pregunta) => pregunta.ORDEN));
+
     if (i != 0 && i != (this.modelPreguntas.length - 1)) {
-      this.modelPreguntas.splice(-1, 0, { IDUNICO: this.generarUUID() ,FK_MAE_ENCUESTA: 0, ID_MAE_ENCUESTA_PREGUNTA: 0, OBLIGATORIO: false, opcionesBoton: [], opcionesCheckbox: [], opcionesDesplegableEditar: [] });
-      console.log("tamañooo", this.modelPreguntas.length);
-  
+      const newOrder = maxOrder + 1;
+      this.modelPreguntas.splice(i+1, 0, { IDUNICO: this.generarUUID(), FK_MAE_ENCUESTA: 0, ID_MAE_ENCUESTA_PREGUNTA: 0, OBLIGATORIO: false, opcionesBoton: [], opcionesCheckbox: [], opcionesDesplegableEditar: [],       
+        icon:this.selectedOptionEditar[0].icon,
+      label:this.selectedOptionEditar[0].label  });
+
       // Establecer todas las opciones en 'Seleccione una opción'
-      this.selectedOptions.splice(-1, 0, { ...defaultOption });
+      this.selectedOptions.splice(i+1, 0, { ...defaultOption });
+
     } else if (i == this.modelPreguntas.length - 1) {
+      const newOrder = maxOrder + 1;
       // Agregar después
-      this.modelPreguntas.push({ IDUNICO: this.generarUUID(), FK_MAE_ENCUESTA: 0, ID_MAE_ENCUESTA_PREGUNTA: 0, OBLIGATORIO: false, opcionesBoton: [], opcionesCheckbox: [], opcionesDesplegableEditar: [] });
-  
+      this.modelPreguntas.push({ IDUNICO: this.generarUUID(), FK_MAE_ENCUESTA: 0, ID_MAE_ENCUESTA_PREGUNTA: 0, OBLIGATORIO: false, opcionesBoton: [], opcionesCheckbox: [], opcionesDesplegableEditar: [],       
+        icon:this.selectedOptionEditar[0].icon,
+      label:this.selectedOptionEditar[0].label  });
+
       // Establecer la nueva opción en 'Seleccione una opción'
       this.selectedOptions.push({ ...defaultOption });
-    } else if (i == 0) {
-      this.modelPreguntas.splice(1, 0, { IDUNICO: this.generarUUID(), FK_MAE_ENCUESTA: 0, ID_MAE_ENCUESTA_PREGUNTA: 0, OBLIGATORIO: false, opcionesBoton: [], opcionesCheckbox: [], opcionesDesplegableEditar: [] });
-      console.log("tamañooo", this.modelPreguntas.length);
   
+
+    } else if (i == 0) {
+      const newOrder = maxOrder + 1;
+      this.modelPreguntas.splice(1, 0, { IDUNICO: this.generarUUID(), FK_MAE_ENCUESTA: 0, ID_MAE_ENCUESTA_PREGUNTA: 0, OBLIGATORIO: false, opcionesBoton: [], opcionesCheckbox: [], opcionesDesplegableEditar: [],       
+        icon:this.selectedOptionEditar[0].icon,
+      label:this.selectedOptionEditar[0].label  });
+      console.log("tamañooo", this.modelPreguntas.length);
+
       // Establecer la nueva opción en 'Seleccione una opción'
       this.selectedOptions.splice(1, 0, { ...defaultOption });
+
+      // Restablecer options con la opción por defecto
+      // this.options = [{ ...defaultOption }];
+      this.options = [
+        { id: 1, label: 'Respuesta corta', value: 'respuestaCorta', icon: 'fa-solid fa-minus' },
+        { id: 2, label: 'Respuesta larga', value: 'respuestaLarga', icon: 'fa-solid fa-grip-lines' },
+        { id: 3, label: 'Varias opciones', value: 'radioButton', icon: 'fa-regular fa-circle-dot' },
+        { id: 4, label: 'Casillas', value: 'checkbox', icon: 'fa-regular fa-square-check' },
+        { id: 5, label: 'Desplegable', value: 'desplegable', icon: 'fa-solid fa-circle-arrow-down' }
+      ]
     }
-  
+
     this.selectTarjeta = false;
-    // this.selectObligatorio = false;
-    console.log(this.selectTarjeta)
   }
-  
-  eliminar(i,pregunta) {
-    console.log("eliminadaaaaa",pregunta)
-    if(pregunta.ID_MAE_ENCUESTA_PREGUNTA!=0){
+
+  actualizarInput(){
+    this.selectObligatorio = false;
+  }
+
+  eliminar(i, pregunta) {
+    if (pregunta.ID_MAE_ENCUESTA_PREGUNTA != 0) {
       this.ApiService.deletePregunta(pregunta.ID_MAE_ENCUESTA_PREGUNTA).subscribe(x => {
-        this.obtenerDatosEncuesta(this.idEncuesta);
+        // this.obtenerDatosEncuesta(this.idEncuesta);
+        this.modelPreguntas = this.modelPreguntas.filter(x => pregunta.ID_MAE_ENCUESTA_PREGUNTA != x.ID_MAE_ENCUESTA_PREGUNTA);
         this.modalService.showModal("Correcto", "Se Eliminó correctamente");
+        // this.selectedOptions[this.modelPreguntas.length - 1] = { id: 0, label: 'Seleccione una opción', value: '', icon: '' };
       })
-    }else{
-      this.modelPreguntas = this.modelPreguntas.filter(function (_, index) {
-        return index !== i;
-      });
+    } else {
+      console.log(this.modelPreguntas)
+      this.modelPreguntas = this.modelPreguntas.filter(x => pregunta.IDUNICO != x.IDUNICO);
+      console.log(this.modelPreguntas)
       this.modalService.showModal("Correcto", "Se Eliminó correctamente");
-      this.selectedOptions[this.modelPreguntas.length - 1] = { id: 0, label: 'Seleccione una opción', value: '', icon: '' };
+      // this.selectedOptions[this.modelPreguntas.length - 1] = { id: 0, label: 'Seleccione una opción', value: '', icon: '' };
     }
   }
 
+  // eliminar(i, pregunta) {
+  //   if (pregunta.ID_MAE_ENCUESTA_PREGUNTA != 0) {
+  //     this.ApiService.deletePregunta(pregunta.ID_MAE_ENCUESTA_PREGUNTA).subscribe(x => {
+  //       this.obtenerDatosEncuesta(this.idEncuesta);
+  //       this.modalService.showModal("Correcto", "Se Eliminó correctamente");
+  //     });
+  //   } else {
+  //     // Almacena la opción seleccionada de la tarjeta que se va a eliminar
+  //     const opcionSeleccionadaAntesDeEliminar = this.selectedOptions[i];
+  
+  //     this.modelPreguntas = this.modelPreguntas.filter(function (_, index) {
+  //       return index !== i;
+  //     });
+  
+  //     // Restaura la opción seleccionada para las tarjetas restantes
+  //     this.selectedOptions.splice(i, 1);
+  
+  //     // Si la tarjeta eliminada no es la última, restablece la opción para la nueva última tarjeta
+  //     if (i < this.modelPreguntas.length) {
+  //       this.selectedOptions[this.modelPreguntas.length - 1] = opcionSeleccionadaAntesDeEliminar;
+  //     }
+  
+  //     this.modalService.showModal("Correcto", "Se Eliminó correctamente");
+  //   }
+  // }
+  
+  
   cambiarEstado(i) {
     if (this.cambiarEstadoSwitch) {
       this.selectObligatorio = false;
@@ -535,7 +640,10 @@ export class AppTarjetasComponent implements OnInit, AfterViewInit {
 
   actualizarrEncuesta() {
     console.log(this.modelPreguntas);
+    var orden = 0;
     this.modelPreguntas.forEach(elements => {
+      orden = orden + 1;
+      elements.ORDEN = orden;
       var arrayTemporal: any = [];
       var arrayTemporal2: any = [];
       var arrayTemporal3: any = [];
@@ -571,16 +679,19 @@ export class AppTarjetasComponent implements OnInit, AfterViewInit {
     this.modeloEnvio.TITULO = this.tituloEditar;
     this.modeloEnvio.DESCRIPCION = this.descripcionEditar;
     this.modeloEnvio.MAE_ENCUESTA_PREGUNTAS = this.modelPreguntas;
-
-   
+    console.log(this.modeloEnvio)
     this.ApiService.saveEncuestaEditar(this.modeloEnvio).subscribe(x => {
       this.obtenerDatosEncuesta(this.idEncuesta);
       this.modalService.showModal("Correcto", "Se Actualizó correctamente");
+      this.selectObligatorio = true;
     })
   }
 
-  guardarEncuesta(){
-    this.modelPreguntas.forEach(elements => {
+  guardarEncuesta() {
+    let ordenCounter = 0;
+    this.modelPreguntas.forEach((elements: any, index: any) => {
+      ordenCounter = ordenCounter + 1;
+      elements.ORDEN = ordenCounter;
       var arrayTemporal: any = [];
       var arrayTemporal2: any = [];
       var arrayTemporal3: any = [];
@@ -616,10 +727,11 @@ export class AppTarjetasComponent implements OnInit, AfterViewInit {
     this.modeloEnvio.TITULO = this.tituloEditar;
     this.modeloEnvio.DESCRIPCION = this.descripcionEditar;
     this.modeloEnvio.MAE_ENCUESTA_PREGUNTAS = this.modelPreguntas;
-    this.modeloEnvio.ID_MAE_ENCUESTA = 0
-    this.modeloEnvio.FK_ID_USUARIO = localStorage.getItem('Id'),
+    this.modeloEnvio.ID_MAE_ENCUESTA = 0;
+    this.modeloEnvio.FK_ID_USUARIO = localStorage.getItem('Id');
 
-    this.ApiService.saveEncuesta(this.modeloEnvio).subscribe( (d) => {
+    console.log(this.modeloEnvio)
+    this.ApiService.saveEncuesta(this.modeloEnvio).subscribe((d) => {
       this.modalService.showModal("ENCUESTA CREADA", "Se creó la encuesta correctamente");
       this.compartirEncuestaBtn = true;
       this.activarCompartirEncuesta.emit(this.compartirEncuestaBtn)

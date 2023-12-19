@@ -175,6 +175,7 @@ onClick(event: Event) {
       if(dataPermiso[0].DIAGNOSTICO === "x"){
         this.AccesoDiagnostico = false;
       }
+      localStorage.setItem("acessos", JSON.stringify(dataPermiso[0]));
       this.AccesoSettings=false;
       
     });

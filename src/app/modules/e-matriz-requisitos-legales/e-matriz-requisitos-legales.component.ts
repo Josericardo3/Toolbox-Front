@@ -1,7 +1,7 @@
 import { Component, OnInit, QueryList, TemplateRef, ViewChild, ViewChildren, ViewContainerRef} from '@angular/core';
 import { ApiService } from 'src/app/servicios/api/api.service';
 import { Router } from '@angular/router';
-import { FormGroup, Validators, FormBuilder,FormControl, NgForm, AbstractControl } from '@angular/forms'
+import { FormGroup, Validators, FormBuilder,FormControl, NgForm, AbstractControl, FormArray } from '@angular/forms'
 import * as pdfMake from 'pdfmake/build/pdfmake';
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';
 import { ModalService } from 'src/app/messagemodal/messagemodal.component.service'
@@ -83,7 +83,7 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
   
   categoria: string;
   descripcion: string;
-  secciones: string;
+  
   numero: string;
   anio: string;
   busqueda: string = '';
@@ -177,6 +177,9 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
   logo: any;
   estadoFormulario: any;
   public idMatriz: number| null = null;
+  showExitoGuardado: boolean;
+
+
 
 
   constructor(
@@ -256,7 +259,9 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
       numero: ['', Validators.required],
       anio: ['', Validators.required],
       descripcion: ['', Validators.required],
-      secciones: ['', Validators.required]
+      secciones: this.formBuilder.array([
+          this.formBuilder.control('' ,[Validators.required])
+      ])
     }, {
       validators: this.customValidation // Agrega la función de validación personalizada
     });
@@ -269,7 +274,9 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
       numero: ['', Validators.required],
       anio: ['', Validators.required],
       descripcion: ['', Validators.required],
-      secciones: ['', Validators.required]
+      secciones2: this.formBuilder.array([
+        this.formBuilder.control('' ,[Validators.required])
+      ])
     }, {
       validators: this.customValidation 
     });
@@ -280,7 +287,9 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
       numero: ['', Validators.required],
       anio: ['', Validators.required],
       descripcion: ['', Validators.required],
-      secciones: ['', Validators.required]
+      secciones3: this.formBuilder.array([
+        this.formBuilder.control('' ,[Validators.required])
+      ])
     }, {
       validators: this.customValidation 
     });
@@ -291,7 +300,9 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
       numero: ['', Validators.required],
       anio: ['', Validators.required],
       descripcion: ['', Validators.required],
-      secciones: ['', Validators.required]
+      secciones4: this.formBuilder.array([
+        this.formBuilder.control('' ,[Validators.required])
+      ])
     }, {
       validators: this.customValidation 
     });
@@ -302,7 +313,9 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
       numero: ['', Validators.required],
       anio: ['', Validators.required],
       descripcion: ['', Validators.required],
-      secciones: ['', Validators.required]
+      secciones5: this.formBuilder.array([
+        this.formBuilder.control('' ,[Validators.required])
+      ])
     }, {
       validators: this.customValidation 
     });
@@ -312,7 +325,9 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
       numero: ['', Validators.required],
       anio: ['', Validators.required],
       descripcion: ['', Validators.required],
-      secciones: ['', Validators.required]
+      secciones6: this.formBuilder.array([
+        this.formBuilder.control('' ,[Validators.required])
+      ])
     }, {
       validators: this.customValidation 
     });
@@ -322,6 +337,7 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
       descripcionNoticia: ['', Validators.required],
       
     });
+    
 
     
   } 
@@ -335,6 +351,85 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
       //console.log(this.userInfor.LOGO);
     })
   }
+  get secciones(){
+    return this.tab1Form.get('secciones') as FormArray;
+  }
+  get secciones2(){
+    return this.tab2Form.get('secciones2') as FormArray;
+  }
+  get secciones3(){
+    return this.tab3Form.get('secciones3') as FormArray;
+  }
+  get secciones4(){
+    return this.tab4Form.get('secciones4') as FormArray;
+  }
+  get secciones5(){
+    return this.tab5Form.get('secciones5') as FormArray;
+  }
+  get secciones6(){
+    return this.tab6Form.get('secciones6') as FormArray;
+  }
+
+  contSecciones: number = 0;
+  deshabilitaRemove: boolean = true
+
+  addSecciones(){
+    if(this.tabActual === 'tab1'){
+      this.secciones.push(this.formBuilder.control('',[Validators.required]))
+    }
+    if(this.tabActual === 'tab2'){
+      this.secciones2.push(this.formBuilder.control('',[Validators.required]))
+    }
+    if(this.tabActual === 'tab3'){
+      this.secciones3.push(this.formBuilder.control('',[Validators.required]))
+    }
+    if(this.tabActual === 'tab4'){
+      this.secciones4.push(this.formBuilder.control('',[Validators.required]))
+    }
+    if(this.tabActual === 'tab5'){
+      this.secciones5.push(this.formBuilder.control('',[Validators.required]))
+    }
+    if(this.tabActual === 'tab6'){
+      this.secciones6.push(this.formBuilder.control('',[Validators.required]))
+    }
+       
+    this.deshabilitaRemove = false;
+    this.contSecciones = this.contSecciones + 1;
+    console.log("hay esta cantidad de secciones:",this.contSecciones)
+  }
+  // addSecciones2(){
+  //   this.secciones2.push(this.formBuilder.control('',[Validators.required]))
+  //   this.deshabilitaRemove = false;
+  //   this.contSecciones = this.contSecciones + 1;
+  //   console.log("hay esta cantidad de secciones:",this.contSecciones)
+  // }
+  
+  removeSeccion(index: number){
+    if(this.tabActual === 'tab1'){
+      this.secciones.removeAt(index);
+      
+    }
+    if(this.tabActual === 'tab2'){
+      this.secciones2.removeAt(index);
+      
+    }
+    if(this.tabActual === 'tab3'){
+      this.secciones3.removeAt(index);
+    }
+    if(this.tabActual === 'tab4'){
+      this.secciones4.removeAt(index);
+    }
+    if(this.tabActual === 'tab5'){
+      this.secciones5.removeAt(index);
+    }
+    if(this.tabActual === 'tab6'){
+      this.secciones6.removeAt(index);
+    }
+    
+  }
+  // removeSeccion2(index: number){
+  //   this.secciones2.removeAt(index);
+  // }
 
   customValidation(control: AbstractControl) {
     if (control.get('tipoNormatividad').value === 'otro') {
@@ -561,7 +656,7 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
       this.dataLeyesEconomico = Object.values(gruposEconomico);
       const gruposParticular = this.datos.filter((ley) => ley.CATEGORIA === 'NTC 6496 General' || ley.CATEGORIA === 'NTC 6487' || 
       ley.CATEGORIA === 'NTC 6503' || ley.CATEGORIA === 'NTC 6503adicionar requisito Economico' || ley.CATEGORIA === 'NTC 6504' || ley.CATEGORIA === 'NTC 6505'
-      || ley.CATEGORIA === 'NTC 6505 Ambiental' || ley.CATEGORIA === 'NTC 6502' || ley.CATEGORIA === 'NTC 6506' || ley.CATEGORIA === 'NTC 6507' || ley.categoria === 'NTC 6523')
+      || ley.CATEGORIA === 'NTC 6505 Ambiental' || ley.CATEGORIA === 'NTC 6502' || ley.CATEGORIA === 'NTC 6506' || ley.CATEGORIA === 'NTC 6507' || ley.CATEGORIA === 'NTC 6523'|| ley.CATEGORIA === 'Particular de Prestador')
       .reduce((acumulador, ley) => {
         const clave = ley.TIPO_NORMATIVIDAD + ley.NUMERO + ley.ANIO;
         if (!acumulador[clave]) {
@@ -610,6 +705,15 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
   cambiarTab(tab: string) {
     this.tabActual = tab;
     this.separarCategoria();
+    this.deshabilitaRemove = false;
+    this.contSecciones = 0
+
+    this.tab1Form.reset();
+    this.tab2Form.reset();
+    this.tab3Form.reset();
+    this.tab4Form.reset();
+    this.tab5Form.reset();
+    this.tab6Form.reset();
     // Actualiza divs para que muestre los divs específicos del tab seleccionado
     if (tab === 'tab1') {
       this.divs = this.divsTab1;
@@ -732,21 +836,49 @@ selectValue: any
     const inputElement = event.target as HTMLInputElement;
     this.otroValor = inputElement.value;
   }
-  
+
+  arrayLeyes: any = [];
 
   agregarDiv() {
-    const tipoNormatividad = this.tab1Form.value.tipoNormatividad;
-    const anio = (document.querySelector('#anioInput') as HTMLInputElement).value;
+    debugger
     var categoria = "";
     if (this.tabActual === 'tab1'||this.tabActual === 'tab2'||this.tabActual === 'tab3'||this.tabActual === 'tab4'||this.tabActual === 'tab5') {
       categoria = (document.querySelector('#categoriaInput') as HTMLInputElement).value;
     } else if (this.tabActual === 'tab6') {
       categoria = (document.querySelector('#categoriaParticularInput') as HTMLInputElement).value;
     } 
+    console.log("ARTICULOS: ", this.tab1Form.value.secciones);
+    console.log("ARTICULOS2: ", this.tab2Form.value.secciones2);
+    let seccionesArray: string[];
+    if(this.tabActual === 'tab1'){
+      seccionesArray = this.tab1Form.value.secciones
+    }
+    if(this.tabActual === 'tab2'){
+      seccionesArray = this.tab2Form.value.secciones2
+    }
+    if(this.tabActual === 'tab3'){
+      seccionesArray = this.tab3Form.value.secciones3
+    }
+    if(this.tabActual === 'tab4'){
+      seccionesArray = this.tab4Form.value.secciones4
+    }
+    if(this.tabActual === 'tab5'){
+      seccionesArray = this.tab5Form.value.secciones5
+    }
+    if(this.tabActual === 'tab6'){
+      seccionesArray = this.tab6Form.value.secciones6
+    }
+
+    console.log("EL ARRAY DEFINITIVO: ", seccionesArray)
+  
+    
+    const tipoNormatividad = this.tab1Form.value.tipoNormatividad;
+    const anio = (document.querySelector('#anioInput') as HTMLInputElement).value;
+    
     const numero = (document.querySelector('#numeroInput') as HTMLInputElement).value;
     const emisor = this.userInfor.NOMBRE;
     const descripcion = (document.querySelector('#descripcionTextAreaAdd') as HTMLTextAreaElement).value;
-    const secciones = (document.querySelector('#seccionesTextAreaAdd') as HTMLTextAreaElement).value;
+    // const secciones = (document.querySelector('#seccionesTextAreaAdd') as HTMLTextAreaElement).value;
     // const tipoNormatividad = this.selectedOption === 'otro' ? (document.querySelector('#otroInput') as HTMLInputElement).value : this.selectedOption;
     // this.tipoNormatividad = this.selectedOption === 'otro' ? this.otroValor : this.selectedOption;
     this.tipoNormatividad = this.selectedOption === 'otro' ? this.otroValor : this.selectedOption;
@@ -755,37 +887,86 @@ selectValue: any
       this.tipoNormatividad = this.otroValor;
     }
     
-    this.nuevoDiv = {
-          ID_DOCUMENTO: 1,
-  				CATEGORIA: categoria,
-  				TIPO_NORMATIVIDAD: this.tipoNormatividad,
-  				NUMERO: numero,
-  				ANIO: anio,
-  				EMISOR: emisor,
-  				DESCRIPCION: descripcion,
-  				DOCS_ESPECIFICOS: secciones,
-          //AGREGAR ES FIJO
-          ES_FIJO: 0,
-          ID_USUARIO_REG: localStorage.getItem('Id')
+    seccionesArray.forEach(async seccion => {
+      this.nuevoDiv = {
+        ID_DOCUMENTO: 1,
+        CATEGORIA: categoria,
+        TIPO_NORMATIVIDAD: this.tipoNormatividad,
+        NUMERO: numero,
+        ANIO: anio,
+        EMISOR: emisor,
+        DESCRIPCION: descripcion,
+        DOCS_ESPECIFICOS: seccion,
+        //AGREGAR ES FIJO
+        ES_FIJO: 0,
+        ID_USUARIO_REG: localStorage.getItem('Id')
 
-    };
-    console.log("YONI TEST: ", this.nuevoDiv);
+  };
+  console.log("YONI TEST: ", this.nuevoDiv);
+  console.log("previa enviar api");
 
+  this.arrayLeyes.push(this.nuevoDiv);
+  console.log("ARRAY LEYES: ", this.arrayLeyes);
+
+   
+
+  
+  
+  
     
-    
-    this.ApiService.insertLey(this.nuevoDiv).subscribe(
+      
+    });
+
+    this.ApiService.insertLey(this.arrayLeyes).subscribe(
       (res:any) => {
-        
         this.separarCategoria();
+        for(var i=1;i<=this.contSecciones;i++){
+          this.removeSeccion(1);
+        }
+        this.contSecciones = 0;
+        if(this.tabActual == 'tab1'){
+          if(this.adicionarVisibleTurismo == true){
+            this.toggleSection('adicionarTurismo');
+          }
+          
+        }
+        if(this.tabActual == 'tab2'){
+          if(this.adicionarVisibleAmbiental == true){
+            this.toggleSection('adicionarAmbiental');
+          }
+        }
+        if(this.tabActual == 'tab3'){
+          if(this.adicionarVisibleLaboral == true){
+            this.toggleSection('adicionarLaboral');
+          }
+        }
+        if(this.tabActual == 'tab4'){
+          if(this.adicionarVisibleSocial == true){
+            this.toggleSection('adicionarSocial');
+          }
+        }
+        if(this.tabActual == 'tab5'){
+          if(this.adicionarVisibleEconomico == true){
+            this.toggleSection('adicionarEconomico');
+          }
+        }
+        if(this.tabActual == 'tab6'){
+          if(this.adicionarVisibleParticular == true){
+            this.toggleSection('adicionarParticular');
+          }
+        }
         this.showModal = true;
         const title = "Requisito Legal";
         const message = "Requisito Legal Agregado";
         this.Message.showModal(title, message);
-        
       },
       (error) => {
         console.error('Error al enviar la solicitud:', error);
       });
+    
+      
+    
+    
 
     this.nuevoDiv = {};
 
@@ -797,6 +978,8 @@ selectValue: any
     this.tab4Form.reset();
     this.tab5Form.reset();
     this.tab6Form.reset();
+
+    
     
   }   
 

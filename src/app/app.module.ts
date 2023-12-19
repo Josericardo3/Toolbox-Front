@@ -1,4 +1,4 @@
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA, isDevMode } from "@angular/core";
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA, isDevMode, OnInit } from "@angular/core";
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; 
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
@@ -111,7 +111,6 @@ import { ObjetivosKpisComponent } from './modules/medicion-kpis/objetivos-kpis/o
 import { IndicadoresKpisComponent } from './modules/medicion-kpis/indicadores-kpis/indicadores-kpis.component';
 import { FormularioObjetivoKpiComponent } from './modules/medicion-kpis/objetivos-kpis/formulario-objetivo-kpi/formulario-objetivo-kpi.component';
 import { GestionObjetivoKpiComponent } from './modules/medicion-kpis/objetivos-kpis/gestion-objetivo-kpi/gestion-objetivo-kpi.component';
-import { ServiceWorkerModule } from '@angular/service-worker';
 import { MaterialModule } from "./material.module";
 //import { AppMejoraContinuaComponent } from "./modules/mejoraContinua/app-mejora-continua/app-mejora-continua.component";
 // import {GoogleMapsModule} from '@angular/google-maps'; 
@@ -151,6 +150,8 @@ import { NoEspacioDirective } from "./directives/no-espacio.directive";
 import { ModalDiagnosticoService } from "./servicios/modalDiagnostico/modal-diagnostico.service";
 import { ModalDiagnosticoComponent } from "./modules/modal-diagnostico/modal-diagnostico.component";
 import { FormulasSemaforizacionComponent } from "./modules/medicion-kpis/indicadores-kpis/formulas-semaforizacion/formulas-semaforizacion.component";
+import { TokenInterceptor } from "./interceptors/token.interceptor";
+import { PageErrorComponent } from "./modules/page-error/page-error.component";
 import { BtnEmpezarContinuarService } from "./servicios/btn-empezar-continuar/btn-empezar-continuar.service";
 
 @NgModule({
@@ -255,7 +256,8 @@ import { BtnEmpezarContinuarService } from "./servicios/btn-empezar-continuar/bt
     DiagnosticoEtapasComponent,
     ModalDiagnosticoComponent,
     NoEspacioDirective,
-    FormulasSemaforizacionComponent
+    FormulasSemaforizacionComponent,
+    PageErrorComponent
   ],
   imports: [
     /*NgxSpinnerModule.forRoot({
@@ -293,14 +295,7 @@ import { BtnEmpezarContinuarService } from "./servicios/btn-empezar-continuar/bt
     TabsModule,
     //NgSelectModule,
     AngularEditorModule,
-    DragDropModule,
-    
-    ServiceWorkerModule.register('ngsw-worker.js', {
-      enabled: !isDevMode(),
-      // Register the ServiceWorker as soon as the application is stable
-      // or after 30 seconds (whichever comes first).
-      registrationStrategy: 'registerWhenStable:30000'
-    }),
+    DragDropModule
     // GoogleMapsModule,
     
   ],
@@ -319,6 +314,9 @@ import { BtnEmpezarContinuarService } from "./servicios/btn-empezar-continuar/bt
     { provide: MatPaginatorIntl, useClass: MatPaginatorIntlEsp },
     { provide: MAT_DATE_LOCALE, useValue: 'es-ES' },
     { provide: TINYMCE_SCRIPT_SRC, useValue: 'tinymce/tinymce.min.js' },
+    {provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+      multi: true},
     BtnEmpezarContinuarService
 
   ],

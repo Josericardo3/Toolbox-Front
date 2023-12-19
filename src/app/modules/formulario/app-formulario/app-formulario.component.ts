@@ -65,6 +65,7 @@ export class AppFormularioComponent implements OnInit{
   disableModificar: boolean = false;
 
   saveForm: FormGroup;
+  showModalEliminar: boolean;
   constructor(
     private ApiService: ApiService,
     private formBuilder: FormBuilder,
@@ -243,6 +244,7 @@ export class AppFormularioComponent implements OnInit{
   }
 
   eliminarLey(idMatriz: number,event:any){
+   
     
     console.log("MATRIZ A BORRAR: ", this.selectedMatrizId);
     console.log("MATRIZ A BORRAR: ", idMatriz);
@@ -268,6 +270,7 @@ export class AppFormularioComponent implements OnInit{
       array.push(idMatriz);
       console.log('arayyy1', array);
     }
+    this.showModalEliminar = true;
     
   }
   
@@ -278,7 +281,7 @@ export class AppFormularioComponent implements OnInit{
     var arrayID = datosLocalStorage.split(',');
     arrayID.forEach(element => {
 
-      this.ApiService.deleteLey(element).subscribe((dataLey)=>{
+      this.ApiService.deleteLey(element).subscribe((res:any)=>{
         console.log("element: ", element);
           const title = "Eliminación exitosa";
           const message = "El registro se ha eliminado exitosamente"
@@ -288,19 +291,24 @@ export class AppFormularioComponent implements OnInit{
       
       console.log("MATRIZ A BORRAR: THIS.SELECTEDMATRIZ ", this.selectedMatrizId);
       
+    },(error)=>{
+      console.error('Error al enviar la solicitud:', error);
     })
-      
+
+    
       
       })
       
     
       localStorage.removeItem('MiArrayTemporalELIMINAR');
+      this.showModalEliminar = false;
 
     
 
   }
   cancelDelete(){
     localStorage.removeItem('MiArrayTemporalELIMINAR');
+    this.showModalEliminar = false;
     
 
   }

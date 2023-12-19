@@ -20,8 +20,7 @@
       <hr>
       <div class="descripcion-noticia">
         <img class="img-noticiaaa" [src]="this.imagen"/>
-        <div class="descrip-noticia" [innerHTML]="this.sanitizer.bypassSecurityTrustHtml(this.noticiaSelected.DESCRIPCION)">{{this.noticiaSelected.DESCRIPCION}}</div>
-        <!--<div><iframe [src]="this.sanitizer.bypassSecurityTrustResourceUrl(this.secureUrlYT)" width="560" height="314" allowfullscreen="allowfullscreen"></iframe></div>-->
+        <div class="descrip-noticia" style="img{width: 100%; height: auto;}" id="descrip-noticia" [innerHTML]="this.sanitizer.bypassSecurityTrustHtml(this.noticiaSelected.DESCRIPCION)">{{this.noticiaSelected.DESCRIPCION}}</div>
       </div>
       <hr>
       <div class="share-noticia">
@@ -85,7 +84,7 @@
                 [disabled]="true"><br>
             <label for="">Título de la noticia</label>
             <input type="text" id="titulo" formControlName="titulo" [(ngModel)]="noticiaSelected.TITULO" ><br>
-            <label for="" class="indicador-max">El titulo ingresado no debe tener más de 50 caractéres</label>
+            <label for="" class="indicador-max" *ngIf="editarNoticiaForm.controls['titulo'].hasError('maxlength')">El titulo ingresado no debe tener más de 50 caractéres</label>
             <label for="">Descripción de la noticia</label>
             <!--<angular-editor placeholder="Agregar una descripción" formControlName="descripcion"
                 style="margin-top:2vh;" id="descripcion"
@@ -104,7 +103,10 @@
                   toolbar:
                   'undo redo | casechange blocks | bold italic backcolor | \
                   alignleft aligncenter alignright alignjustify | \
-                  bullist numlist checklist outdent indent | removeformat | a11ycheck code table help'
+                  bullist numlist checklist outdent indent | removeformat | a11ycheck code table help',
+                  content_style: 'img { max-width: 100%; height: auto; }',
+                  image_dimensions: true, 
+                  image_dimensions_unit: 'px'
                 }"
             ></editor>
             <label for="" class="indicador-max">El texto ingresado no debe superar los 500 caractéres</label>

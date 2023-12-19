@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { RouterModule, Routes, CanLoad } from '@angular/router';
 import { AppDashboardComponent } from './modules/dashboard/app-dashboard/app-dashboard.component';
 // import { AppMyExampleComponent } from './modules/example/example';
 import { AppLoginComponent } from './modules/login/app-login/app-login.component';
@@ -56,61 +56,233 @@ import { VariablesComponent } from './modules/medicion-kpis/variables/variables.
 import { AppDiagnosticoProgressComponent } from './modules/diagnosticoProgress/app-diagnostico-progress/app-diagnostico-progress.component';
 import { AppUserSettingsComponent } from './modules/UserSettings/app-user-settings.component';
 import { DiagnosticoEtapasComponent } from './modules/diagnostico-etapas/diagnostico-etapas.component';
+import { AuthGuard } from './guards/auth.guard';
+import { PageErrorComponent } from './modules/page-error/page-error.component';
 
 const routes: Routes = [
   {path: '', component: AppLoginComponent},
   {path: 'register', component: AppRegisterComponent},
-  {path: 'dashboard', component: AppDashboardComponent},
-  {path: 'caracterizacion', component: AppCaracterizacionComponent},
+  {path: 'dashboard', component: AppDashboardComponent,
+  canActivate:[AuthGuard],
+  data: {
+    propiedad: ['dashboard','TIPO_PERMISO'],
+  },
+  canLoad:[AuthGuard]
+  },
+  
+  {path: 'caracterizacion', component: AppCaracterizacionComponent,
+  
+  canActivate:[AuthGuard],
+  data: {
+    propiedad: 'CARACTERIZACION',
+  },
+  canLoad:[AuthGuard]
+},
   {path: 'diagnostico/:id', component: AppDiagnosticoComponent},
   {path: 'diagnosticoDoc', component: AppDiagnosticoDocComponent},
-  {path: 'documentacion', component: AppDocumentacionComponent},
+  {path: 'documentacion', component: AppDocumentacionComponent,
+  canActivate:[AuthGuard],
+  data: {
+    propiedad: 'DOCUMENTACION',
+  },
+  canLoad:[AuthGuard]},
   {path: 'gestionUsuario', component: AppGestionDeUsuariosComponent},
-  {path: 'evidencia/:section', component: AppEvidenciaComponent},
+  {path: 'evidencia/:section', component: AppEvidenciaComponent,
+  
+  canActivate:[AuthGuard],
+  data: {
+    propiedad: 'EVIDENCIA_IMPLEMENTACION',
+  },
+  canLoad:[AuthGuard]
+},
   {path: 'evidencia/:section/:subSection', component: AppEvidenciaComponent },
   {path: 'recovery', component: RecoveryComponent},
   {path: 'recoveryformulario', component: RecoveryFormularioComponent},
-  {path: 'auditoria', component: AppAuditoriaInternaComponent},
-  {path: 'EMatrizRequisitosLegales', component: EMatrizRequisitosLegalesComponent},
+  {path: 'auditoria', component: AppAuditoriaInternaComponent,
+  canActivate:[AuthGuard],
+  data: {
+    propiedad: 'AUDITORIA_INTERNA',
+  },
+  canLoad:[AuthGuard]},
+  {path: 'EMatrizRequisitosLegales', component: EMatrizRequisitosLegalesComponent,
+  canActivate:[AuthGuard],
+  data: {
+    propiedad: 'EVIDENCIA_IMPLEMENTACION',
+  },
+  canLoad:[AuthGuard]
+},
   {path: 'nuevoPlanDeAuditoria', component: AppNuevoPlanDeAuditoriaComponent},
-  {path: 'listaDeVerificacion', component: AppListaDeVerificacionComponent},
-  {path: 'informeAuditoria', component: AppInformeDeAuditoriaComponent},
+  {path: 'listaDeVerificacion', component: AppListaDeVerificacionComponent,
+  canActivate:[AuthGuard],
+  data: {
+    propiedad: 'AUDITORIA_INTERNA',
+  },
+  canLoad:[AuthGuard]
+},
+  {path: 'informeAuditoria', component: AppInformeDeAuditoriaComponent,
+
+  canActivate:[AuthGuard],
+  data: {
+    propiedad: 'AUDITORIA_INTERNA',
+  },
+  canLoad:[AuthGuard]},
   {path: 'planificacion', component: AppPlanificacionComponent},
   {path: 'noticia', component: AppNoticiaComponent},
-  {path: 'gestorNoticia', component: AppGestorNoticiaComponent},
+  {path: 'gestorNoticia', component: AppGestorNoticiaComponent,
+  canActivate:[AuthGuard],
+  data: {
+    propiedad: 'NOTICIAS',
+  },
+  canLoad:[AuthGuard]
+},
   {path: 'historial', component: AppHistorialNoticiasComponent},
   {path: 'noticiaCompleta', component: AppNoticiasCompletasComponent},
-  {path: 'requisitosLegales', component: AppProcRequisitosLegalesComponent},
-  {path: 'actividades', component: AppActividadesComponent},
+  {path: 'requisitosLegales', component: AppProcRequisitosLegalesComponent,
+  canActivate:[AuthGuard],
+  data: {
+    propiedad: 'EVIDENCIA_IMPLEMENTACION',
+  },
+  canLoad:[AuthGuard]},
+  {path: 'actividades', component: AppActividadesComponent,
+  canActivate:[AuthGuard],
+  data: {
+    propiedad: 'MEJORA_CONTINUA',
+  },
+  canLoad:[AuthGuard]
+
+},
   // {path: 'encuesta/:id', component: AppEncuestaComponent},
   {path: 'encuesta/crear', component: AppEncuestaComponent },
   {path: 'encuesta/editar/:id', component: AppEncuestaComponent },
   {path: 'mapaColombia', component:AppMapaColombiaComponent},
   {path: 'politicaDesarrolloSostenible', component: AppPoliticaDesarrolloSostenibleComponent},
-  {path: 'partesInteresadas', component: AppMatrizPartesInteresadasComponent},
-  {path: 'alcancedelSGS', component:AppAlcanceSGSComponent},
-  {path: 'mejoraContinua', component:MejoraaContinuaComponent},
-  {path: 'resultadosEncuestas', component: AppResultadosEncuestasComponent},
-  {path: 'resultadosAuditoria', component: AppResultadosAuditoriaComponent},
-  {path: 'tablaPartesInteresadas', component: AppTablaPartesInteresadasComponent},
-  {path: 'actividadesPlanificadas', component: AppActividadesPlanificadasComponent},
+  {path: 'partesInteresadas', component: AppMatrizPartesInteresadasComponent,
+  
+  canLoad:[AuthGuard]},
+  {path: 'alcancedelSGS', component:AppAlcanceSGSComponent,
+  canActivate:[AuthGuard],
+  data: {
+    propiedad: 'EVIDENCIA_IMPLEMENTACION',
+  },
+  canLoad:[AuthGuard]
+},
+  {path: 'mejoraContinua', component:MejoraaContinuaComponent,
+  
+  canActivate:[AuthGuard],
+  data: {
+    propiedad: 'MEJORA_CONTINUA',
+  },
+  canLoad:[AuthGuard]
+},
+  {path: 'resultadosEncuestas', component: AppResultadosEncuestasComponent,
+  canActivate:[AuthGuard],
+  data: {
+    propiedad: 'ALTA_GERENCIA',
+  },
+  canLoad:[AuthGuard]
+},
+  {path: 'resultadosAuditoria', component: AppResultadosAuditoriaComponent,
+  canActivate:[AuthGuard],
+  data: {
+    propiedad: 'ALTA_GERENCIA',
+  },
+  canLoad:[AuthGuard]
+},
+  {path: 'tablaPartesInteresadas', component: AppTablaPartesInteresadasComponent,
+  canActivate:[AuthGuard],
+  data: {
+    propiedad: 'ALTA_GERENCIA',
+  },
+  canLoad:[AuthGuard]
+},
+  {path: 'actividadesPlanificadas', component: AppActividadesPlanificadasComponent,
+  canActivate:[AuthGuard],
+  data: {
+    propiedad: 'ALTA_GERENCIA',
+  },
+  canLoad:[AuthGuard]
+},
   {path: 'resultadosEncuestasPreguntas/:id/:numEncuestado', component: AppResultEncuestasPreguntasComponent},
   {path: 'encuestaCreada/:id', component: AppEncuestaCreadaComponent},
-  {path: 'tablaEncuestas', component: AppTablaEncuestasComponent},
-  {path: 'monitorizacion', component:AppMonitorizacionComponent },
-  {path: 'mapaprocesos', component: AppMapaProcesosComponent },
+  {path: 'tablaEncuestas', component: AppTablaEncuestasComponent,
+  canActivate:[AuthGuard],
+  data: {
+    propiedad: 'MEJORA_CONTINUA',
+  },
+  canLoad:[AuthGuard]
+},
+  {path: 'monitorizacion', component:AppMonitorizacionComponent,
+  
+  canActivate:[AuthGuard],
+  data: {
+    propiedad: 'MONITORIZACION',
+  },
+  canLoad:[AuthGuard]
+
+},
+  {path: 'mapaprocesos', component: AppMapaProcesosComponent,
+  canActivate:[AuthGuard],
+  data: {
+    propiedad: 'EVIDENCIA_IMPLEMENTACION',
+  },
+  canLoad:[AuthGuard]
+},
   {path: 'diagrama', component: DiagramaProcesoComponent },
   {path: 'kpis',component:MedicionKpisComponent},
-  {path: 'indicadores',component:IndicadoresKpisComponent},
-  {path: 'objetivos',component:ObjetivosKpisComponent},
-  {path: 'paquetes',component:PaquetesComponent},
-  {path: 'variables',component:VariablesComponent},
-  {path: 'evaluaciones',component:RegistroEvaluacionIndicadorComponent},
-  {path: 'recordatorios',component:RecordatoriosKpisComponent},
-  {path: 'diagnosticoProgress', component:AppDiagnosticoProgressComponent},
+  {path: 'indicadores',component:IndicadoresKpisComponent,
+  
+  canActivate:[AuthGuard],
+  data: {
+    propiedad: 'MEDICION_KPIS',
+  },
+  canLoad:[AuthGuard]
+},
+  {path: 'objetivos',component:ObjetivosKpisComponent,
+  canActivate:[AuthGuard],
+  data: {
+    propiedad: 'MEDICION_KPIS',
+  },
+  canLoad:[AuthGuard]},
+  {path: 'paquetes',component:PaquetesComponent,
+  canActivate:[AuthGuard],
+  data: {
+    propiedad: 'MEDICION_KPIS',
+  },
+  canLoad:[AuthGuard]},
+  {path: 'variables',component:VariablesComponent,
+  canActivate:[AuthGuard],
+  data: {
+    propiedad: 'MEDICION_KPIS',
+  },
+  canLoad:[AuthGuard]},
+  {path: 'evaluaciones',component:RegistroEvaluacionIndicadorComponent,
+  canActivate:[AuthGuard],
+  data: {
+    propiedad: 'MEDICION_KPIS',
+  },
+  canLoad:[AuthGuard]},
+  {path: 'recordatorios',component:RecordatoriosKpisComponent,
+  canActivate:[AuthGuard],
+  data: {
+    propiedad: 'MEDICION_KPIS',
+  },
+  canLoad:[AuthGuard]},
+  {path: 'diagnosticoProgress', component:AppDiagnosticoProgressComponent,
+  canActivate:[AuthGuard],
+  data: {
+    propiedad: 'DIAGNOSTICO',
+  },
+  canLoad:[AuthGuard]
+},
   {path: 'userSettings',component:AppUserSettingsComponent},
-  {path: 'diagnosticoEtapas',component:DiagnosticoEtapasComponent},
-  {path: ':id',component:AppLoginComponent}
+  {path: 'diagnosticoEtapas',component:DiagnosticoEtapasComponent,
+  canActivate:[AuthGuard],
+  data: {
+    propiedad: 'DIAGNOSTICO',
+  },
+  canLoad:[AuthGuard]},
+  {path: ':id',component:AppLoginComponent},
+  {path: 'page/error',component:PageErrorComponent}
 ];
 
 @NgModule({

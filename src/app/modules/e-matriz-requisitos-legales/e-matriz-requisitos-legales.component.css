@@ -110,7 +110,7 @@ i:not(#idBotonResumen){
     padding: 15px;
     margin: 1vh 0;
 }
-.btn,
+
 .btnAdd,
 .btnReporte{
     margin: 10vh 3vw 5vh 3vw;
@@ -275,7 +275,7 @@ input[type=number] {
     flex-direction: column;
   }
 /*CSS PARA EL INPUT CATEGORIA DE ADICIONAR REQUISITO LEGAL*/
-  #categoriaInput{
+  #categoriaParticularInput,#categoriaInput{
         background-color: #f2f2f2; /* Cambia el color de fondo a gris */
         color: #000; /* Cambia el color del texto a negro (opcional) */
   }

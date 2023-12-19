@@ -105,7 +105,7 @@ h2, .fecha, .descripcion{
     justify-content: flex-start;
     margin-bottom: 15px;
     color: rgb(121, 121, 121);
-    font-weight: bold;
+    text-decoration: none;
 }
 /*FORM part GENERAL*/
 .form-settings{
@@ -138,6 +138,10 @@ h2, .fecha, .descripcion{
     height: 35px;
     border-radius: 5px;
     margin-bottom: 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
 }
 .cargar-logo:hover{
     color: #fff;
@@ -254,6 +258,7 @@ i{
     display: block;
     align-items: center;
     justify-content: center;
+    overflow: auto;
 }
 .table-gestion {
     width: 100%;
@@ -313,6 +318,44 @@ i{
     color: #fff;
     background-color: rgb(156, 27, 27);
 }
+.form-control{
+    margin-bottom: 10px;
+}
+.group-filter{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+/* pagination */
+.page-style {
+    display: flex;
+    justify-content: flex-start;
+    padding: 0px 15%;
+  }
+  
+  .paginas {
+    display: inline-block;
+    max-width: 100%;
+    margin: 10px;
+    margin-right: 50px;
+    font-weight: 700;
+    font-size: 14px;
+    font-family: 'Work Sans', sans-serif;
+  }
+  
+  .container-label {
+    display: flex;
+    align-items: center;
+  }
+  .resposi-icon {
+      display: none;
+  }
+
+  input.ng-invalid.ng-touched {
+    border: solid 2px tomato !important;
+    border-radius: 10px;
+  }
 
 @media (max-width: 970px) {
     .contenido-settings{
@@ -341,6 +384,13 @@ i{
     }
     .btn-tabla-editar{
         margin-bottom: 5px;
+    }
+    .tabla-empleados{
+        width: 100%;
+        padding: 0px 1%;
+        display: block;
+        align-items: center;
+        justify-content: center;
     }
 }
 
@@ -409,5 +459,18 @@ i{
     }
     .btn-tabla-editar{
         margin-bottom: 5px;
+    }
+    .group-img-logo img{
+        width: 100px;
+        border-radius: 50px;
+    }
+    .btn-img-head{
+        padding: 0px 10px;
+    }
+    .container-label{
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
     }
 }

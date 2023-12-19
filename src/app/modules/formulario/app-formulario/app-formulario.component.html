@@ -24,7 +24,7 @@
             </div>
             <div class="subContainerformMain">        
                     <div class="subContainerform" *ngIf="form.get('estadoCumplimiento').value === 'Si'">
-                        <label for="evidencia" class="estado">Evidencia del cumplimineto</label>
+                        <label for="evidencia" class="estado">Cumplimiento</label>
                         <input type="text" id="evidencia" formControlName="evidencia" class="estadoForm" 
                         [attr.disabled]="isDisabled ? 'disabled' : null" [ngClass]="{'campo-desactivado': isDisabled}">
                     </div>
@@ -96,13 +96,13 @@
     
         
     
-    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" >
-        <div class="modal-dialog modal-dialog-centered" role="document">
+    <div *ngIf="showModalEliminar" class="modal-container" id="#deleteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" >
+        <div  role="document">
           <div class="modal-contedor" >
             <div >
-              <a title="Cancelar" id="cerrarModal" style="display: flex; justify-content: flex-end; align-items: center;" data-dismiss="modal" aria-label="Close">
+              <!-- <a title="Cancelar" id="cerrarModal" style="display: flex; justify-content: flex-end; align-items: center;" data-dismiss="modal" aria-label="Close">
                 <i class="fa-solid fa-circle-xmark" style="color: #06543c;font-size: 25px;"></i>
-              </a>
+              </a> -->
               <h4  id="myModalLabel">Confirmar Eliminación</h4>
             </div>
             <div class="modal-body">

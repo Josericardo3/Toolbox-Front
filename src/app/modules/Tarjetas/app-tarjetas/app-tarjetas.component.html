@@ -106,20 +106,20 @@
         <div class="section">
           <input type="text" class="pregunta" id="{{pregunta.IDUNICO}}" placeholder="Ingrese su pregunta"
             name="{{pregunta.IDUNICO}}" [(ngModel)]="pregunta.DESCRIPCION" maxlength="100" required/>
-          <div class="select-wrapper" [id]="i">
-            <div class="select-header" (click)="toggleOptionsEditar(i)">
-              <span [id]="'selectedOptions[i].id' + i">
-                <i [ngClass]="selectedOptions[i]?.icon"></i>
-                {{ selectedOptions[i]?.label }}
-              </span>
-              <i class="fa-solid fa-angle-down"></i>
+            <div class="select-wrapper" [id]="pregunta.IDUNICO">
+              <div class="select-header"  [id]="pregunta.IDUNICO" (click)="toggleOptionsEditar(pregunta)">
+                <span id="'selectedOptions.id'- {{pregunta.IDUNICO}}" >
+                  <i [ngClass]="pregunta.icon"></i>
+                  {{ pregunta?.label }}
+                </span>
+                <i class="fa-solid fa-angle-down"></i>
+              </div>
+              <ul class="options-container"  id="{{pregunta.IDUNICO}}-h" [ngStyle]="{ display: pregunta.showOptionEditar ? 'block' : 'none' }">
+                <li *ngFor="let option of options; let j=index" (click)="selectOptionEditar(option, j, pregunta); actualizarInput()">
+                  <i [ngClass]="option.icon"></i> {{ option.label }}
+                </li>
+              </ul>
             </div>
-            <ul class="options-container" [ngStyle]="{ display: showOptionEditar[i] ? 'block' : 'none' }">
-              <li *ngFor="let option of options" (click)="selectOptionEditar(option, i)">
-                <i [ngClass]="option.icon"></i> {{ option.label }}
-              </li>
-            </ul>
-          </div>
           <input *ngIf="pregunta.TIPO === 'respuestaCorta'" type="text" class="respuesta" [(ngModel)]="pregunta.VALOR" [readonly]="true"
             name="respuesta{{i}}-{{pregunta.TIPO}}" id="respuesta{{i}}-{{pregunta.TIPO}}" placeholder="Respuesta corta" appNoPuntoycoma/>
           <textarea *ngIf="pregunta.TIPO === 'respuestaLarga'" style="height: 50px" class="respuestaTextarea" [readonly]="true"
@@ -215,17 +215,18 @@
       <div class="tarjetas">
         <div class="section">
           <input type="text" class="pregunta" id="{{pregunta.IDUNICO}}" placeholder="Ingrese su pregunta"
-            name="{{pregunta.IDUNICO}}" [(ngModel)]="pregunta.DESCRIPCION" maxlength="100" required/>
-          <div class="select-wrapper" [id]="i">
-            <div class="select-header" (click)="toggleOptionsEditar(i)">
-              <span [id]="'selectedOptions[i].id' + i">
-                <i [ngClass]="selectedOptions[i]?.icon"></i>
-                {{ selectedOptions[i]?.label }}
+            name="{{pregunta.IDUNICO}}" [(ngModel)]="pregunta.DESCRIPCION" maxlength="100" (ngModelChange)="actualizarInput()" required/>
+            
+          <div class="select-wrapper" [id]="pregunta.IDUNICO">
+            <div class="select-header"  [id]="pregunta.IDUNICO" (click)="toggleOptionsEditar(pregunta)">
+              <span id="'selectedOptions.id'- {{pregunta.IDUNICO}}" >
+                <i [ngClass]="pregunta.icon"></i>
+                {{ pregunta?.label }}
               </span>
               <i class="fa-solid fa-angle-down"></i>
             </div>
-            <ul class="options-container" [ngStyle]="{ display: showOptionEditar[i] ? 'block' : 'none' }">
-              <li *ngFor="let option of options" (click)="selectOptionEditar(option, i)">
+            <ul class="options-container"  id="{{pregunta.IDUNICO}}-h" [ngStyle]="{ display: pregunta.showOptionEditar ? 'block' : 'none' }">
+              <li *ngFor="let option of options; let j=index" (click)="selectOptionEditar(option, j, pregunta); actualizarInput()">
                 <i [ngClass]="option.icon"></i> {{ option.label }}
               </li>
             </ul>
@@ -235,13 +236,12 @@
           <textarea *ngIf="pregunta.TIPO === 'respuestaLarga'" style="height: 50px" class="respuestaTextarea" [readonly]="true"
             [(ngModel)]="pregunta.VALOR" name="respuesta-TEXTAREA{{i}}" placeholder="Respuesta larga" appNoPuntoycoma></textarea>
           <div *ngIf="pregunta.TIPO === 'radioButton'" class="radioButton">
-            <!-- <div class="respuestaRadio"> -->
               <ng-container *ngFor="let control of pregunta.opcionesBoton; let index=index;">
                 <div class="eliminar">
                   <div>
                       <input type="text" class="respuestaEditar" name="opt-{{i}}-{{index}}" id="'opt-{{i}}-{{index}}"
                       [readOnly]="control.esOpcion" [placeholder]="control.esOpcion?'Otro': 'Opción ' + (index +1)"
-                      [(ngModel)]="control.valorCheck" appNoPuntoycoma [required]="!control.esOpcion"/>
+                      [(ngModel)]="control.valorCheck" appNoPuntoycoma [required]="!control.esOpcion" (ngModelChange)="actualizarInput()"/>
                       <span *ngIf="index==0">
                         <span type="text" class="respuestaSpan" (click)="agregarOtros(pregunta,i,false)">Añadir opción</span> o
                         <span *ngIf="index==0" class="spanOtro" (click)="agregarOtros(pregunta,i,true)"> Añadir respuesta 'Otro'</span>
@@ -252,16 +252,14 @@
                   </span>
                 </div>
               </ng-container>
-            <!-- </div> -->
           </div>
           <div *ngIf="pregunta.TIPO === 'checkbox'" class="radioButton">
-            <!-- <div class="respuestaRadio"> -->
               <ng-container *ngFor="let control of pregunta.opcionesCheckbox; let index = index">
                 <div class="eliminar">
                   <div>
                       <input type="text" class="respuestaEditar" name="pregunta-{{i}}-{{index}}" id="pregunta-{{i}}-{{index}}"
                       [readOnly]="control.esOpcion" [placeholder]="control.esOpcion?'Otro': 'Opción ' + (index + 1)"
-                      [(ngModel)]="control.valorCheck" appNoPuntoycoma [required]="!control.esOpcion"/>
+                      [(ngModel)]="control.valorCheck" appNoPuntoycoma [required]="!control.esOpcion" (ngModelChange)="actualizarInput()"/>
                     <span *ngIf="index==0">
                       <span type="text" class="respuestaSpan" (click)="agregarOtrosCheck(pregunta,i,false)">Añadir opción</span> o
                       <span class="spanOtro" (click)="agregarOtrosCheck(pregunta,i,true)">Añadir respuesta "Otro"</span>
@@ -272,16 +270,14 @@
                   </span>
                 </div>
               </ng-container>
-            <!-- </div> -->
           </div>
           <div *ngIf="pregunta.TIPO === 'desplegable'" class="radioButton">
-            <!-- <div class="respuestaRadio"> -->
               <ng-container *ngFor="let control of pregunta.opcionesDesplegableEditar; let index = index">
                 <div class="eliminar">
                   <div>
                       <input type="text" class="respuestaEditar" name="control-{{i}}-{{index}}" id="control-{{i}}-{{index}}"
                       [placeholder]="index + 1 + '. Opción ' + (index + 1)" [(ngModel)]="control.valorCheck"
-                      appNoPuntoycoma required/>
+                      appNoPuntoycoma required (ngModelChange)="actualizarInput()"/>
                     <span type="text" class="respuestaSpan2" *ngIf="index==0" 
                     (click)="agregarOtrosDesplegable(pregunta,i,false)">Añadir opción</span>
                     <span (click)="removeDeplegableOptions(i, index)" class="x" *ngIf="index!=0">
@@ -290,14 +286,14 @@
                   </div>
                 </div>
               </ng-container>
-            <!-- </div> -->
           </div>
         </div>
         <div class="linea"></div>
         <div class="footer">
           <p class="obligatorio">Obligatorio</p>
           <input type="checkbox" id="toggleButton_{{pregunta.IDUNICO}}" name="toggleButton-{{pregunta.IDUNICO}}" class="toggle-input"
-            [value]="pregunta.OBLIGATORIO" [(ngModel)]="pregunta.OBLIGATORIO" (change)="cambiarEstado(pregunta.OBLIGATORIO)" />
+            [value]="pregunta.OBLIGATORIO" [(ngModel)]="pregunta.OBLIGATORIO" (change)="cambiarEstado(pregunta.OBLIGATORIO)" 
+            (ngModelChange)="actualizarInput()"/>
           <label for="toggleButton_{{pregunta.IDUNICO}}" class="toggle-label"></label>
         </div>
       </div>

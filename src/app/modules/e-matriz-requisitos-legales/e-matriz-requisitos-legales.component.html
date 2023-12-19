@@ -30,7 +30,7 @@
                 [attr.disabled]="disabledTabs5 ? 'disabled' : null">Económico</div>
             <div class="tab" (click)="disabledTabs6 ? null : cambiarTab('tab6')"
                 [ngClass]="{ 'active': tabActual === 'tab6','bloqueado': disabledTabs6 }"
-                [attr.disabled]="disabledTabs6 ? 'disabled' : null">Particular de Norma</div>
+                [attr.disabled]="disabledTabs6 ? 'disabled' : null">Particular de Prestador</div>
         </div>
         <div [ngSwitch]="tabActual" class="contenidoTabs">
             <div *ngSwitchCase="'tab1'">
@@ -133,15 +133,7 @@
                             </div>
                         </div>
                     </div>
-                    <ng-template #inputTemplate>
-                        <div>
-                            <input type="text" [(ngModel)]="nuevoDiv.anio">
-                            <input type="text" [(ngModel)]="nuevoDiv.numero">
-                            <textarea [(ngModel)]="nuevoDiv.descripcion"></textarea>
-                            <textarea [(ngModel)]="nuevoDiv.secciones"></textarea>
-                            <input type="text" [(ngModel)]="nuevoDiv.tipoNormatividad">
-                        </div>
-                    </ng-template>
+                    
 
                     <div id="ContainerdetalleAdicionar">
                         <div class="adicionar" *ngIf="getRolValue() !== 4 && getRolValue()!==5 && getRolValue()!==7">
@@ -149,8 +141,7 @@
                                 id="adicionarRequisitoTurismo" [disabled]="disabledModificar==true"
                                 [disabled]="disabledEliminar == true ">Adicionar requisito legal +</button>
                             <button class="eliminarBtn" (click)="eliminarBloquearCampos()" id="eliminarRequisitoTurismo"
-                                [disabled]="disabledModificar==true" *ngIf="disabledEliminar == false">Eliminar
-                                requisito legal -</button>
+                                [disabled]="disabledModificar==true" *ngIf="disabledEliminar == false">Eliminar requisito legal -</button>
                             <button class="eliminarBtn" (click)="eliminarBloquearCampos()" id="eliminarRequisitoTurismo"
                                 *ngIf="disabledEliminar == true">Salir del modo Eliminar</button>
                         </div>
@@ -159,7 +150,7 @@
 
                                 <label class="adicionarLabel">Categoría</label>
                                 <input type="text" class="adicionarInput" id="categoriaInput"
-                                    formControlName="categoria" value="Turismo" readonly appLetras>
+                                     value="Turismo" readonly appLetras>
 
                                 <label class="adicionarLabel">Tipo de normatividad</label>
                                 <select class="adicionarInput" id="tipoNormatividadSelect" #selectOption
@@ -168,6 +159,9 @@
                                     <option value="" disabled>Seleccione una opción</option>
                                     <option value="Ley">Ley</option>
                                     <option value="Decreto">Decreto</option>
+                                    <option value="Resolución">Resolución</option>
+                                    <option value="Comunicado">Comunicado</option>
+                                    <option value="Notificación">Notificación</option>
                                     <!-- <option value="Decreto Ley">Decreto Ley</option> -->
                                     <option value="otro">Otro</option>
                                 </select>
@@ -190,10 +184,37 @@
                                 <textarea style="height: 100px" class="adicionarInput" id="descripcionTextAreaAdd"
                                     formControlName="descripcion"></textarea>
 
-                                <label class="adicionarLabel">Artículos / Secciones / Requisitos específicos que
+                                <!-- <label class="adicionarLabel">Artículos / Secciones / Requisitos específicos que
                                     aplican</label>
                                 <textarea style="height: 100px" class="adicionarInput" id="seccionesTextAreaAdd"
-                                    formControlName="secciones"></textarea>
+                                    formControlName="secciones"></textarea> -->
+                                    
+                                <!-- SECCIONES -->
+                                <!-- <label class="adicionarLabel">Artículos / Secciones / Requisitos específicos que
+                                    aplican</label>
+                                <textarea style="height: 100px" class="adicionarInput" id="seccionesTextAreaAdd"
+                                    formControlName="primeraSeccion"></textarea> -->
+
+                                <div formArrayName="secciones">
+                                    <!-- <button class="btn btn-primary" (click)="addSecciones()" type="button">Agregar Sección </button> -->
+                                    <div *ngFor="let seccion of secciones.controls; let i = index;" >
+                                        
+                                        <label class="adicionarLabel">Artículos / Secciones / Requisitos específicos que
+                                            aplican</label>
+                                        <textarea style="height: 100px" class="adicionarInput" id="seccionesTextAreaAdd"
+                                            [formControlName]="i"></textarea>
+                                        <button *ngIf="deshabilitaRemove == false && i!=0" class="btn btn-danger"  (click)="removeSeccion(i)">Borrar Artículo</button>
+                                        
+                                        
+                                    </div>
+                                    <a class="btn btn-success" (click)="addSecciones()">+</a>
+
+
+
+
+                                </div>
+
+                            
 
                                 <button type="submit" class="btnAdd"
                                     [disabled]="tab1Form.invalid || tab1Form.hasError('customError') || tab1Form.pristine">Agregar</button>
@@ -202,6 +223,7 @@
                     </div>
                 </div>
             </div>
+            
 
             <div *ngSwitchCase="'tab2'">
                 <div class="containerTabActual">
@@ -272,20 +294,12 @@
                         </div>
                     </div>
 
-                    <ng-template #inputTemplate>
-                        <div>
-                            <input type="text" [(ngModel)]="nuevoDiv.anio">
-                            <input type="text" [(ngModel)]="nuevoDiv.numero">
-                            <textarea [(ngModel)]="nuevoDiv.descripcion"></textarea>
-                            <textarea [(ngModel)]="nuevoDiv.secciones"></textarea>
-                            <input type="text" [(ngModel)]="nuevoDiv.tipoNormatividad">
-                        </div>
-                    </ng-template>
+
 
                     <div id="ContainerdetalleAdicionar">
                         <div class="adicionar" *ngIf="getRolValue() !== 4 && getRolValue()!==5 && getRolValue()!==7">
                             <button class="adicionarBtn" (click)="toggleSection('adicionarAmbiental')"
-                                id="adicionarRequisitoTurismo" [disabled]="disabledModificar==true"
+                                id="adicionarRequisitoAmbiental" [disabled]="disabledModificar==true"
                                 [disabled]="disabledEliminar == true ">Adicionar requisito legal +</button>
                             <button class="eliminarBtn" (click)="eliminarBloquearCampos()" id="eliminarRequisitoTurismo"
                                 [disabled]="disabledModificar==true" *ngIf="disabledEliminar == false">Eliminar
@@ -294,17 +308,22 @@
                                 *ngIf="disabledEliminar == true">Salir del modo Eliminar</button>
                         </div>
                         <div class="detalleAdicionar" id="detalleAdicionarRequisito" *ngIf="adicionarVisibleAmbiental">
-                            <form [formGroup]="tab2Form">
+                            <form [formGroup]="tab2Form" (ngSubmit)="agregarDiv()">
+
                                 <label class="adicionarLabel">Categoría</label>
                                 <input type="text" class="adicionarInput" id="categoriaInput"
-                                    formControlName="categoria" value="Ambiental" readonly appLetras>
+                                     value="Ambiental" readonly appLetras>
 
                                 <label class="adicionarLabel">Tipo de normatividad</label>
                                 <select class="adicionarInput" id="tipoNormatividadSelect" #selectOption
-                                    (change)="onSelect(selectOption.value)" formControlName="tipoNormatividad">
-                                    <option value="" disabled selected hidden>Seleccione una opción</option>
+                                    (change)="onSelect(selectOption.value)" formControlName="tipoNormatividad"
+                                    [(ngModel)]="selectValue">
+                                    <option value="" disabled>Seleccione una opción</option>
                                     <option value="Ley">Ley</option>
                                     <option value="Decreto">Decreto</option>
+                                    <option value="Resolución">Resolución</option>
+                                    <option value="Comunicado">Comunicado</option>
+                                    <option value="Notificación">Notificación</option>
                                     <!-- <option value="Decreto Ley">Decreto Ley</option> -->
                                     <option value="otro">Otro</option>
                                 </select>
@@ -313,6 +332,7 @@
                                     <input type="text" class="adicionarInput" id="otroInput"
                                         (input)="onOtroInputChange($event)" formControlName="otroValor" appLetras>
                                 </div>
+
 
                                 <label class="adicionarLabel">Número</label>
                                 <input type="number" class="adicionarInput" id="numeroInput" formControlName="numero"
@@ -326,13 +346,40 @@
                                 <textarea style="height: 100px" class="adicionarInput" id="descripcionTextAreaAdd"
                                     formControlName="descripcion"></textarea>
 
-                                <label class="adicionarLabel">Artículos / Secciones / Requisitos específicos que
+                                <!-- <label class="adicionarLabel">Artículos / Secciones / Requisitos específicos que
                                     aplican</label>
                                 <textarea style="height: 100px" class="adicionarInput" id="seccionesTextAreaAdd"
-                                    formControlName="secciones"></textarea>
+                                    formControlName="secciones"></textarea> -->
+                                    
+                                <!-- SECCIONES -->
+                                <!-- <label class="adicionarLabel">Artículos / Secciones / Requisitos específicos que
+                                    aplican</label>
+                                <textarea style="height: 100px" class="adicionarInput" id="seccionesTextAreaAdd"
+                                    formControlName="primeraSeccion"></textarea> -->
 
-                                <button type="submit" class="btnAdd" (click)="agregarDiv()"
-                                    [disabled]="tab2Form.invalid || tab2Form.hasError('customError')">Agregar</button>
+                                <div formArrayName="secciones2">
+                                    <!-- <button class="btn btn-primary" (click)="addSecciones()" type="button">Agregar Sección </button> -->
+                                    <div *ngFor="let seccion of secciones2.controls; let i = index;" >
+                                        
+                                        <label class="adicionarLabel">Artículos / Secciones / Requisitos específicos que
+                                            aplican</label>
+                                        <textarea style="height: 100px" class="adicionarInput" id="seccionesTextAreaAdd"
+                                            [formControlName]="i"></textarea>
+                                        <button *ngIf="deshabilitaRemove == false && i!=0" class="btn btn-danger"  (click)="removeSeccion(i)">Borrar Artículo</button>
+                                        
+                                        
+                                    </div>
+                                    <a class="btn btn-success" (click)="addSecciones()">+</a>
+
+
+
+
+                                </div>
+
+                            
+
+                                <button type="submit" class="btnAdd"
+                                    [disabled]="tab2Form.invalid || tab2Form.hasError('customError') || tab2Form.pristine">Agregar</button>
                             </form>
                         </div>
                     </div>
@@ -405,20 +452,12 @@
                         </div>
                     </div>
 
-                    <ng-template #inputTemplate>
-                        <div>
-                            <input type="text" [(ngModel)]="nuevoDiv.anio">
-                            <input type="text" [(ngModel)]="nuevoDiv.numero">
-                            <textarea [(ngModel)]="nuevoDiv.descripcion"></textarea>
-                            <textarea [(ngModel)]="nuevoDiv.secciones"></textarea>
-                            <input type="text" [(ngModel)]="nuevoDiv.tipoNormatividad">
-                        </div>
-                    </ng-template>
+                    
 
                     <div id="ContainerdetalleAdicionar">
                         <div class="adicionar" *ngIf="getRolValue() !== 4 && getRolValue()!==5 && getRolValue()!==7">
-                            <button class="adicionarBtn" id="adicionarRequisitoTurismo"
-                                (click)="toggleSection('adicionarLaboral')" [disabled]="disabledModificar==true"
+                            <button class="adicionarBtn" (click)="toggleSection('adicionarLaboral')"
+                                id="adicionarRequisitoAmbiental" [disabled]="disabledModificar==true"
                                 [disabled]="disabledEliminar == true ">Adicionar requisito legal +</button>
                             <button class="eliminarBtn" (click)="eliminarBloquearCampos()" id="eliminarRequisitoTurismo"
                                 [disabled]="disabledModificar==true" *ngIf="disabledEliminar == false">Eliminar
@@ -427,18 +466,22 @@
                                 *ngIf="disabledEliminar == true">Salir del modo Eliminar</button>
                         </div>
                         <div class="detalleAdicionar" id="detalleAdicionarRequisito" *ngIf="adicionarVisibleLaboral">
-                            <form [formGroup]="tab3Form">
+                            <form [formGroup]="tab3Form" (ngSubmit)="agregarDiv()">
 
                                 <label class="adicionarLabel">Categoría</label>
                                 <input type="text" class="adicionarInput" id="categoriaInput"
-                                    formControlName="categoria" value="Laboral y SGSST" readonly appLetras>
+                                     value="Laboral y SGSST" readonly appLetras>
 
                                 <label class="adicionarLabel">Tipo de normatividad</label>
                                 <select class="adicionarInput" id="tipoNormatividadSelect" #selectOption
-                                    (change)="onSelect(selectOption.value)" formControlName="tipoNormatividad">
-                                    <option value="" disabled selected hidden>Seleccione una opción</option>
+                                    (change)="onSelect(selectOption.value)" formControlName="tipoNormatividad"
+                                    [(ngModel)]="selectValue">
+                                    <option value="" disabled>Seleccione una opción</option>
                                     <option value="Ley">Ley</option>
                                     <option value="Decreto">Decreto</option>
+                                    <option value="Resolución">Resolución</option>
+                                    <option value="Comunicado">Comunicado</option>
+                                    <option value="Notificación">Notificación</option>
                                     <!-- <option value="Decreto Ley">Decreto Ley</option> -->
                                     <option value="otro">Otro</option>
                                 </select>
@@ -447,6 +490,7 @@
                                     <input type="text" class="adicionarInput" id="otroInput"
                                         (input)="onOtroInputChange($event)" formControlName="otroValor" appLetras>
                                 </div>
+
 
                                 <label class="adicionarLabel">Número</label>
                                 <input type="number" class="adicionarInput" id="numeroInput" formControlName="numero"
@@ -460,13 +504,40 @@
                                 <textarea style="height: 100px" class="adicionarInput" id="descripcionTextAreaAdd"
                                     formControlName="descripcion"></textarea>
 
-                                <label class="adicionarLabel">Artículos / Secciones / Requisitos específicos que
+                                <!-- <label class="adicionarLabel">Artículos / Secciones / Requisitos específicos que
                                     aplican</label>
                                 <textarea style="height: 100px" class="adicionarInput" id="seccionesTextAreaAdd"
-                                    formControlName="secciones"></textarea>
+                                    formControlName="secciones"></textarea> -->
+                                    
+                                <!-- SECCIONES -->
+                                <!-- <label class="adicionarLabel">Artículos / Secciones / Requisitos específicos que
+                                    aplican</label>
+                                <textarea style="height: 100px" class="adicionarInput" id="seccionesTextAreaAdd"
+                                    formControlName="primeraSeccion"></textarea> -->
 
-                                <button type="submit" class="btnAdd" (click)="agregarDiv()"
-                                    [disabled]="tab3Form.invalid || tab3Form.hasError('customError')">Agregar</button>
+                                <div formArrayName="secciones3">
+                                    <!-- <button class="btn btn-primary" (click)="addSecciones()" type="button">Agregar Sección </button> -->
+                                    <div *ngFor="let seccion of secciones3.controls; let i = index;" >
+                                        
+                                        <label class="adicionarLabel">Artículos / Secciones / Requisitos específicos que
+                                            aplican</label>
+                                        <textarea style="height: 100px" class="adicionarInput" id="seccionesTextAreaAdd"
+                                            [formControlName]="i"></textarea>
+                                        <button *ngIf="deshabilitaRemove == false && i!=0" class="btn btn-danger"  (click)="removeSeccion(i)">Borrar Artículo</button>
+                                        
+                                        
+                                    </div>
+                                    <a class="btn btn-success" (click)="addSecciones()">+</a>
+
+
+
+
+                                </div>
+
+                            
+
+                                <button type="submit" class="btnAdd"
+                                    [disabled]="tab3Form.invalid || tab3Form.hasError('customError') || tab3Form.pristine">Agregar</button>
                             </form>
                         </div>
                     </div>
@@ -539,16 +610,6 @@
                         </div>
                     </div>
 
-                    <ng-template #inputTemplate>
-                        <div>
-                            <input type="text" [(ngModel)]="nuevoDiv.anio">
-                            <input type="text" [(ngModel)]="nuevoDiv.numero">
-                            <textarea [(ngModel)]="nuevoDiv.descripcion"></textarea>
-                            <textarea [(ngModel)]="nuevoDiv.secciones"></textarea>
-                            <input type="text" [(ngModel)]="nuevoDiv.tipoNormatividad">
-                        </div>
-                    </ng-template>
-
                     <div id="ContainerdetalleAdicionar">
                         <div class="adicionar" *ngIf="getRolValue() !== 4 && getRolValue()!==5 && getRolValue()!==7">
                             <button class="adicionarBtn" id="adicionarRequisitoTurismo"
@@ -561,45 +622,77 @@
                                 *ngIf="disabledEliminar == true">Salir del modo Eliminar</button>
                         </div>
                         <div class="detalleAdicionar" id="detalleAdicionarRequisito" *ngIf="adicionarVisibleSocial">
-                            <form [formGroup]="tab4Form">
+                            <form [formGroup]="tab4Form" (ngSubmit)="agregarDiv()">
                                 <label class="adicionarLabel">Categoría</label>
                                 <input type="text" class="adicionarInput" id="categoriaInput"
-                                    formControlName="categoria" value="Social" readonly appLetras>
+                                    value="Social" readonly appLetras>
 
-                                <label class="adicionarLabel">Tipo de normatividad</label>
-                                <select class="adicionarInput" id="tipoNormatividadSelect" #selectOption
-                                    (change)="onSelect(selectOption.value)" formControlName="tipoNormatividad">
-                                    <option value="" disabled selected hidden>Seleccione una opción</option>
-                                    <option value="Ley">Ley</option>
-                                    <option value="Decreto">Decreto</option>
-                                    <!-- <option value="Decreto Ley">Decreto Ley</option> -->
-                                    <option value="otro">Otro</option>
-                                </select>
-                                <div *ngIf="selectedOption === 'otro'" class="changeOtro">
-                                    <label class="adicionarLabel">Otro ¿Cuál?</label>
-                                    <input type="text" class="adicionarInput" id="otroInput"
-                                        (input)="onOtroInputChange($event)" formControlName="otroValor" appLetras>
-                                </div>
-
-                                <label class="adicionarLabel">Número</label>
-                                <input type="number" class="adicionarInput" id="numeroInput" formControlName="numero"
-                                    appNumeros>
-
-                                <label class="adicionarLabel">Año</label>
-                                <input type="number" class="adicionarInput" id="anioInput" maxlength="4"
-                                    formControlName="anio" appNumeros>
-
-                                <label class="adicionarLabel">Descripción</label>
-                                <textarea style="height: 100px" class="adicionarInput" id="descripcionTextAreaAdd"
-                                    formControlName="descripcion"></textarea>
-
-                                <label class="adicionarLabel">Artículos / Secciones / Requisitos específicos que
-                                    aplican</label>
-                                <textarea style="height: 100px" class="adicionarInput" id="seccionesTextAreaAdd"
-                                    formControlName="secciones"></textarea>
-
-                                <button type="submit" class="btnAdd" (click)="agregarDiv()"
-                                    [disabled]="tab4Form.invalid || tab4Form.hasError('customError')">Agregar</button>
+                                    <label class="adicionarLabel">Tipo de normatividad</label>
+                                    <select class="adicionarInput" id="tipoNormatividadSelect" #selectOption
+                                        (change)="onSelect(selectOption.value)" formControlName="tipoNormatividad"
+                                        [(ngModel)]="selectValue">
+                                        <option value="" disabled>Seleccione una opción</option>
+                                        <option value="Ley">Ley</option>
+                                        <option value="Decreto">Decreto</option>
+                                        <option value="Resolución">Resolución</option>
+                                        <option value="Comunicado">Comunicado</option>
+                                        <option value="Notificación">Notificación</option>
+                                        <!-- <option value="Decreto Ley">Decreto Ley</option> -->
+                                        <option value="otro">Otro</option>
+                                    </select>
+                                    <div *ngIf="selectedOption === 'otro'" class="changeOtro">
+                                        <label class="adicionarLabel">Otro ¿Cuál?</label>
+                                        <input type="text" class="adicionarInput" id="otroInput"
+                                            (input)="onOtroInputChange($event)" formControlName="otroValor" appLetras>
+                                    </div>
+    
+    
+                                    <label class="adicionarLabel">Número</label>
+                                    <input type="number" class="adicionarInput" id="numeroInput" formControlName="numero"
+                                        appNumeros>
+    
+                                    <label class="adicionarLabel">Año</label>
+                                    <input type="number" class="adicionarInput" id="anioInput" maxlength="4"
+                                        formControlName="anio" appNumeros>
+    
+                                    <label class="adicionarLabel">Descripción</label>
+                                    <textarea style="height: 100px" class="adicionarInput" id="descripcionTextAreaAdd"
+                                        formControlName="descripcion"></textarea>
+    
+                                    <!-- <label class="adicionarLabel">Artículos / Secciones / Requisitos específicos que
+                                        aplican</label>
+                                    <textarea style="height: 100px" class="adicionarInput" id="seccionesTextAreaAdd"
+                                        formControlName="secciones"></textarea> -->
+                                        
+                                    <!-- SECCIONES -->
+                                    <!-- <label class="adicionarLabel">Artículos / Secciones / Requisitos específicos que
+                                        aplican</label>
+                                    <textarea style="height: 100px" class="adicionarInput" id="seccionesTextAreaAdd"
+                                        formControlName="primeraSeccion"></textarea> -->
+    
+                                    <div formArrayName="secciones4">
+                                        <!-- <button class="btn btn-primary" (click)="addSecciones()" type="button">Agregar Sección </button> -->
+                                        <div *ngFor="let seccion of secciones4.controls; let i = index;" >
+                                            
+                                            <label class="adicionarLabel">Artículos / Secciones / Requisitos específicos que
+                                                aplican</label>
+                                            <textarea style="height: 100px" class="adicionarInput" id="seccionesTextAreaAdd"
+                                                [formControlName]="i"></textarea>
+                                            <button *ngIf="deshabilitaRemove == false && i!=0" class="btn btn-danger"  (click)="removeSeccion(i)">Borrar Artículo</button>
+                                            
+                                            
+                                        </div>
+                                        <a class="btn btn-success" (click)="addSecciones()">+</a>
+    
+    
+    
+    
+                                    </div>
+    
+                                
+    
+                                    <button type="submit" class="btnAdd"
+                                        [disabled]="tab4Form.invalid || tab4Form.hasError('customError') || tab4Form.pristine">Agregar</button>
                             </form>
                         </div>
                     </div>
@@ -672,15 +765,7 @@
                         </div>
                     </div>
 
-                    <ng-template #inputTemplate>
-                        <div>
-                            <input type="text" [(ngModel)]="nuevoDiv.anio">
-                            <input type="text" [(ngModel)]="nuevoDiv.numero">
-                            <textarea [(ngModel)]="nuevoDiv.descripcion"></textarea>
-                            <textarea [(ngModel)]="nuevoDiv.secciones"></textarea>
-                            <input type="text" [(ngModel)]="nuevoDiv.tipoNormatividad">
-                        </div>
-                    </ng-template>
+                    
 
                     <div id="ContainerdetalleAdicionar">
                         <div class="adicionar" *ngIf="getRolValue() !== 4 && getRolValue()!==5 && getRolValue()!==7">
@@ -694,46 +779,78 @@
                                 *ngIf="disabledEliminar == true">Salir del modo Eliminar</button>
                         </div>
                         <div class="detalleAdicionar" id="detalleAdicionarRequisito" *ngIf="adicionarVisibleEconomico">
-                            <form [formGroup]="tab5Form">
+                            <form [formGroup]="tab5Form" (ngSubmit)="agregarDiv()">
 
                                 <label class="adicionarLabel">Categoría</label>
                                 <input type="text" class="adicionarInput" id="categoriaInput"
-                                    formControlName="categoria" value="Economico" readonly appLetras>
+                                     value="Economico" readonly appLetras>
 
-                                <label class="adicionarLabel">Tipo de normatividad</label>
-                                <select class="adicionarInput" id="tipoNormatividadSelect" #selectOption
-                                    (change)="onSelect(selectOption.value)" formControlName="tipoNormatividad">
-                                    <option value="" disabled selected hidden>Seleccione una opción</option>
-                                    <option value="Ley">Ley</option>
-                                    <option value="Decreto">Decreto</option>
-                                    <!-- <option value="Decreto Ley">Decreto Ley</option> -->
-                                    <option value="otro">Otro</option>
-                                </select>
-                                <div *ngIf="selectedOption === 'otro'" class="changeOtro">
-                                    <label class="adicionarLabel">Otro ¿Cuál?</label>
-                                    <input type="text" class="adicionarInput" id="otroInput"
-                                        (input)="onOtroInputChange($event)" formControlName="otroValor" appLetras>
-                                </div>
-
-                                <label class="adicionarLabel">Número</label>
-                                <input type="number" class="adicionarInput" id="numeroInput" formControlName="numero"
-                                    appNumeros>
-
-                                <label class="adicionarLabel">Año</label>
-                                <input type="number" class="adicionarInput" id="anioInput" maxlength="4"
-                                    formControlName="anio" appNumeros>
-
-                                <label class="adicionarLabel">Descripción</label>
-                                <textarea style="height: 100px" class="adicionarInput" id="descripcionTextAreaAdd"
-                                    formControlName="descripcion"></textarea>
-
-                                <label class="adicionarLabel">Artículos / Secciones / Requisitos específicos que
-                                    aplican</label>
-                                <textarea style="height: 100px" class="adicionarInput" id="seccionesTextAreaAdd"
-                                    formControlName="secciones"></textarea>
-
-                                <button type="submit" class="btnAdd" (click)="agregarDiv()"
-                                    [disabled]="tab5Form.invalid || tab5Form.hasError('customError')">Agregar</button>
+                                    <label class="adicionarLabel">Tipo de normatividad</label>
+                                    <select class="adicionarInput" id="tipoNormatividadSelect" #selectOption
+                                        (change)="onSelect(selectOption.value)" formControlName="tipoNormatividad"
+                                        [(ngModel)]="selectValue">
+                                        <option value="" disabled>Seleccione una opción</option>
+                                        <option value="Ley">Ley</option>
+                                        <option value="Decreto">Decreto</option>
+                                        <option value="Resolución">Resolución</option>
+                                        <option value="Comunicado">Comunicado</option>
+                                        <option value="Notificación">Notificación</option>
+                                        <!-- <option value="Decreto Ley">Decreto Ley</option> -->
+                                        <option value="otro">Otro</option>
+                                    </select>
+                                    <div *ngIf="selectedOption === 'otro'" class="changeOtro">
+                                        <label class="adicionarLabel">Otro ¿Cuál?</label>
+                                        <input type="text" class="adicionarInput" id="otroInput"
+                                            (input)="onOtroInputChange($event)" formControlName="otroValor" appLetras>
+                                    </div>
+    
+    
+                                    <label class="adicionarLabel">Número</label>
+                                    <input type="number" class="adicionarInput" id="numeroInput" formControlName="numero"
+                                        appNumeros>
+    
+                                    <label class="adicionarLabel">Año</label>
+                                    <input type="number" class="adicionarInput" id="anioInput" maxlength="4"
+                                        formControlName="anio" appNumeros>
+    
+                                    <label class="adicionarLabel">Descripción</label>
+                                    <textarea style="height: 100px" class="adicionarInput" id="descripcionTextAreaAdd"
+                                        formControlName="descripcion"></textarea>
+    
+                                    <!-- <label class="adicionarLabel">Artículos / Secciones / Requisitos específicos que
+                                        aplican</label>
+                                    <textarea style="height: 100px" class="adicionarInput" id="seccionesTextAreaAdd"
+                                        formControlName="secciones"></textarea> -->
+                                        
+                                    <!-- SECCIONES -->
+                                    <!-- <label class="adicionarLabel">Artículos / Secciones / Requisitos específicos que
+                                        aplican</label>
+                                    <textarea style="height: 100px" class="adicionarInput" id="seccionesTextAreaAdd"
+                                        formControlName="primeraSeccion"></textarea> -->
+    
+                                    <div formArrayName="secciones5">
+                                        <!-- <button class="btn btn-primary" (click)="addSecciones()" type="button">Agregar Sección </button> -->
+                                        <div *ngFor="let seccion of secciones5.controls; let i = index;" >
+                                            
+                                            <label class="adicionarLabel">Artículos / Secciones / Requisitos específicos que
+                                                aplican</label>
+                                            <textarea style="height: 100px" class="adicionarInput" id="seccionesTextAreaAdd"
+                                                [formControlName]="i"></textarea>
+                                            <button *ngIf="deshabilitaRemove == false && i!=0" class="btn btn-danger"  (click)="removeSeccion(i)">Borrar Artículo</button>
+                                            
+                                            
+                                        </div>
+                                        <a class="btn btn-success" (click)="addSecciones()">+</a>
+    
+    
+    
+    
+                                    </div>
+    
+                                
+    
+                                    <button type="submit" class="btnAdd"
+                                        [disabled]="tab5Form.invalid || tab5Form.hasError('customError') || tab5Form.pristine">Agregar</button>
                             </form>
                         </div>
                     </div>
@@ -828,46 +945,78 @@
                                 *ngIf="disabledEliminar == true">Salir del modo Eliminar</button>
                         </div>
                         <div class="detalleAdicionar" id="detalleAdicionarRequisito" *ngIf="adicionarVisibleParticular">
-                            <form [formGroup]="tab6Form">
+                            <form [formGroup]="tab6Form" (ngSubmit)="agregarDiv()">
 
                                 <label class="adicionarLabel">Categoría</label>
                                 <input type="text" class="adicionarInput" id="categoriaParticularInput"
-                                    formControlName="categoria">
+                                     value="Particular de Prestador" readonly appLetras>
 
-                                <label class="adicionarLabel">Tipo de normatividad</label>
-                                <select class="adicionarInput" id="tipoNormatividadSelect" #selectOption
-                                    (change)="onSelect(selectOption.value)" formControlName="tipoNormatividad">
-                                    <option value="" disabled selected hidden>Seleccione una opción</option>
-                                    <option value="Ley">Ley</option>
-                                    <option value="Decreto">Decreto</option>
-                                    <!-- <option value="Decreto Ley">Decreto Ley</option> -->
-                                    <option value="otro">Otro</option>
-                                </select>
-                                <div *ngIf="selectedOption === 'otro'" class="changeOtro">
-                                    <label class="adicionarLabel">Otro ¿Cuál?</label>
-                                    <input type="text" class="adicionarInput" id="otroInput"
-                                        (input)="onOtroInputChange($event)" formControlName="otroValor" appLetras>
-                                </div>
-
-                                <label class="adicionarLabel">Número</label>
-                                <input type="number" class="adicionarInput" id="numeroInput" formControlName="numero"
-                                    appNumeros>
-
-                                <label class="adicionarLabel">Año</label>
-                                <input type="number" class="adicionarInput" id="anioInput" maxlength="4"
-                                    formControlName="anio" appNumeros>
-
-                                <label class="adicionarLabel">Descripción</label>
-                                <textarea style="height: 100px" class="adicionarInput" id="descripcionTextAreaAdd"
-                                    formControlName="descripcion"></textarea>
-
-                                <label class="adicionarLabel">Artículos / Secciones / Requisitos específicos que
-                                    aplican</label>
-                                <textarea style="height: 100px" class="adicionarInput" id="seccionesTextAreaAdd"
-                                    formControlName="secciones"></textarea>
-
-                                <button type="submit" class="btnAdd" (click)="agregarDiv()"
-                                    [disabled]="tab6Form.invalid || tab6Form.hasError('customError')">Agregar</button>
+                                     <label class="adicionarLabel">Tipo de normatividad</label>
+                                     <select class="adicionarInput" id="tipoNormatividadSelect" #selectOption
+                                         (change)="onSelect(selectOption.value)" formControlName="tipoNormatividad"
+                                         [(ngModel)]="selectValue">
+                                         <option value="" disabled>Seleccione una opción</option>
+                                         <option value="Ley">Ley</option>
+                                         <option value="Decreto">Decreto</option>
+                                         <option value="Resolución">Resolución</option>
+                                         <option value="Comunicado">Comunicado</option>
+                                         <option value="Notificación">Notificación</option>
+                                         <!-- <option value="Decreto Ley">Decreto Ley</option> -->
+                                         <option value="otro">Otro</option>
+                                     </select>
+                                     <div *ngIf="selectedOption === 'otro'" class="changeOtro">
+                                         <label class="adicionarLabel">Otro ¿Cuál?</label>
+                                         <input type="text" class="adicionarInput" id="otroInput"
+                                             (input)="onOtroInputChange($event)" formControlName="otroValor" appLetras>
+                                     </div>
+     
+     
+                                     <label class="adicionarLabel">Número</label>
+                                     <input type="number" class="adicionarInput" id="numeroInput" formControlName="numero"
+                                         appNumeros>
+     
+                                     <label class="adicionarLabel">Año</label>
+                                     <input type="number" class="adicionarInput" id="anioInput" maxlength="4"
+                                         formControlName="anio" appNumeros>
+     
+                                     <label class="adicionarLabel">Descripción</label>
+                                     <textarea style="height: 100px" class="adicionarInput" id="descripcionTextAreaAdd"
+                                         formControlName="descripcion"></textarea>
+     
+                                     <!-- <label class="adicionarLabel">Artículos / Secciones / Requisitos específicos que
+                                         aplican</label>
+                                     <textarea style="height: 100px" class="adicionarInput" id="seccionesTextAreaAdd"
+                                         formControlName="secciones"></textarea> -->
+                                         
+                                     <!-- SECCIONES -->
+                                     <!-- <label class="adicionarLabel">Artículos / Secciones / Requisitos específicos que
+                                         aplican</label>
+                                     <textarea style="height: 100px" class="adicionarInput" id="seccionesTextAreaAdd"
+                                         formControlName="primeraSeccion"></textarea> -->
+     
+                                     <div formArrayName="secciones6">
+                                         <!-- <button class="btn btn-primary" (click)="addSecciones()" type="button">Agregar Sección </button> -->
+                                         <div *ngFor="let seccion of secciones6.controls; let i = index;" >
+                                             
+                                             <label class="adicionarLabel">Artículos / Secciones / Requisitos específicos que
+                                                 aplican</label>
+                                             <textarea style="height: 100px" class="adicionarInput" id="seccionesTextAreaAdd"
+                                                 [formControlName]="i"></textarea>
+                                             <button *ngIf="deshabilitaRemove == false && i!=0" class="btn btn-danger"  (click)="removeSeccion(i)">Borrar Artículo</button>
+                                             
+                                             
+                                         </div>
+                                         <a class="btn btn-success" (click)="addSecciones()">+</a>
+     
+     
+     
+     
+                                     </div>
+     
+                                 
+     
+                                     <button type="submit" class="btnAdd"
+                                         [disabled]="tab6Form.invalid || tab6Form.hasError('customError') || tab6Form.pristine">Agregar</button>
                             </form>
                         </div>
                     </div>

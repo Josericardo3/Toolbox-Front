@@ -21,6 +21,7 @@ export class AppAuditoriaPlanificacionComponent {
   dropdownList = [];
   selectedItems = [];
   minDate: string;
+  isDateValid: boolean;
 
   @Output() valorEnviadoModal = new EventEmitter<object>();
 
@@ -30,12 +31,29 @@ export class AppAuditoriaPlanificacionComponent {
     private formBuilder: FormBuilder,
     public ApiService: ApiService,
     private Message: ModalService,
+    
   ) { }
 
   openModal(template: TemplateRef<any>) {
-    this.modalRef = this.modalService.show(template);
+    this.modalRef = this.modalService.show(template); 
   }
 
+  onDateChange(event: Date) {
+    const fechaModal = new Date(event);
+    const fechaInicio = new Date(localStorage.getItem("fechaInicio"));
+    const fechaFin = new Date(localStorage.getItem("fechaFin"));
+  
+    if (fechaModal >= fechaInicio && fechaModal <= fechaFin) {
+      
+    } else {
+      const title = "Registro no exitoso";
+      const message = "La fecha no es correcta";
+      this.Message.showModal(title, message);
+      this.formParent.get('fecha').setValue('');
+    }
+    
+  }
+  
    cancelEvent(event:any){
     event.preventDefault();
   }
@@ -101,16 +119,6 @@ export class AppAuditoriaPlanificacionComponent {
       this.formParent.get('proceso').disable();
       this.tipoProceso = 'Actividad';
     }
-     //else if (value === 'norma') {
-    //   this.formParent.get('norma').enable();
-    //   this.formParent.get('requisito').disable();
-    //   this.tipoNorma='Norma';
-    // } else if (value === 'requisito') {
-    //   this.formParent.get('requisito').enable();
-    //   this.formParent.get('norma').disable();
-    //   this.onNormaSelect();
-    //   this.tipoNorma='requisito';
-    // }
   }
   auditeeCharge:any = ''; 
  
@@ -153,8 +161,9 @@ export class AppAuditoriaPlanificacionComponent {
     //para cerrar el modal 
     const openModalButton = document.getElementById("closeModal");
     openModalButton.click();
-    this.formParent.reset();
-  }
+    const fechaValue = this.formParent.get('fecha').value;
+    this.formParent.reset({ fecha: fechaValue });
+    }
 
   getRolValue(): number {
     const rol = localStorage.getItem('rol');

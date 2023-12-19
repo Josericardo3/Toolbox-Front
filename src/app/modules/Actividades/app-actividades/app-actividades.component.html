@@ -45,9 +45,9 @@
                     </div>
                     <div class="section">            
                       <label>Tipo de actividad</label>
-                      <select class="inputSection" [(ngModel)]="activityType" [(ngModel)]='ngSelectActividad' disabled>
-                      <option value="1">Mejora continúa</option>
-                      <option *ngFor="let activity of arrayActivity" [ngValue]="activity.VALOR">{{ activity.DESCRIPCION | titlecase }}</option> 
+                      <select class="inputSection" [(ngModel)]="activityType" [(ngModel)]='ngSelectActividad'>
+                      <option value="1">Mejora continua</option>
+                      <option *ngFor="let activity of arrayActivity" [ngValue]="activity.VALOR" disabled>{{ activity.DESCRIPCION | titlecase }}</option> 
                     </select>
                     </div>
                     <div class="section">            
@@ -72,7 +72,7 @@
                         </select>
                     </div>
                     <div class="sectionIcon">
-                        <a title="Guardar" (click)="fnNewRecord()"><i class="fa-regular fa-floppy-disk"
+                        <a title="Guardar" (click)="(activityType!='' && ngSelectActividad!=null) ? fnNewRecord() : fnValidadorNewRecord()"><i class="fa-regular fa-floppy-disk"
                                 style="color: #06543c;font-size: 25px; margin: 0 0.9vw;"></i></a>
                         <a title="Cancelar" (click)="fnCancelarNuevoRegistro()"><i class="fa-solid fa-circle-xmark"
                                 style="color: #06543c;font-size: 25px;"></i></a>

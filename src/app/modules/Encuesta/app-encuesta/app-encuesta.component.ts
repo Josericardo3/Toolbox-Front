@@ -5,6 +5,8 @@ import { ColorLista } from 'src/app/servicios/api/models/color';
 import { AppTarjetasComponent } from '../../Tarjetas/app-tarjetas/app-tarjetas.component';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ComunicacionService } from 'src/app/servicios/comunicacion/comunicacion.service';
+import { Subscription } from 'rxjs';
 
 interface Option {
   label: string;
@@ -26,6 +28,7 @@ export class AppEncuestaComponent implements OnInit{
 
   tituloEditar:any = "";
   descripcionEditar:any = "";
+  activarTitulos: boolean = true;
   tarjetas: any[] = [];
   tarjetaActivaIndex: number | null = null;
   encuestaId: string;
@@ -56,7 +59,8 @@ export class AppEncuestaComponent implements OnInit{
     private ApiService: ApiService,
     private formBuilder: FormBuilder,
     private activatedRoute: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private comunicacionService: ComunicacionService
     ) { }
 
   ngOnInit() {
@@ -208,5 +212,9 @@ export class AppEncuestaComponent implements OnInit{
     this.tituloEditar = titulo;
     const descripcion = this.formEncuesta.get('descripcionEncuesta')?.value.toString();
     this.descripcionEditar = descripcion;
+
+    this.activarTitulos = false;
+
+    this.comunicacionService.notifyChild();
   }
 }

@@ -479,7 +479,15 @@ hr{
     margin-top: -3rem;
   
   }
-  
+input.ng-invalid.ng-touched {
+    border: solid 2px tomato !important;
+    border-radius: 10px;
+  }
+input.ng-valid{
+    border: solid 2px #068460 !important;
+    border-radius: 10px;
+  }
+
   #collapseContent{
     z-index: 99999;
   }

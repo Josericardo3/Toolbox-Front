@@ -26,7 +26,7 @@
                     <input type="text" class="descripcion"  (ngModelChange)="Obtenertitulo($event)" placeholder="Descripción de la encuesta" formControlName="descripcionEncuesta" maxlength="100">
                 </div>
                 <div class="containerTarjetas">
-                    <app-app-tarjetas [tituloEditar]="tituloEditar" [descripcionEditar]="descripcionEditar" [id]="0" 
+                    <app-app-tarjetas [tituloEditar]="tituloEditar" [descripcionEditar]="descripcionEditar" [activarTitulos]="activarTitulos" [id]="0" 
                     (tarjetaCompletada)="guardarRespuesta($event, 0)" [selectCrearTarjeta]="selectCrearTarjeta"
                     [editandoEncuesta]="editandoEncuesta" [valoresPreguntas]="valoresPreguntas" [datosPreguntaEncuesta]="datosPreguntaEncuesta" 
                     (ultimoIDChanged)="onUltimoIDChanged($event)" (activarCompartirEncuesta)="onActivarCompartir($event)"></app-app-tarjetas>

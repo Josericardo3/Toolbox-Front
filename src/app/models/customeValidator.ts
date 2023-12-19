@@ -33,6 +33,11 @@ import {
         // if they don't match, set an error in our confirmPassword form control
        control.get('confirmPassword')?.setErrors({ NoPassswordMatch: true });
       }
+      if (confirmPassword != '' && password === confirmPassword) {
+        // if they don't match, set an error in our confirmPassword form control
+       control.get('confirmPassword')?.setErrors(null);
+      }
+     console.log("confirmar contraseña",password,"confirm",confirmPassword )
     return confirmPassword != '' && password !== confirmPassword? null: error as any;
     }
     static validarIgualdadInputs(control:AbstractControl,error: ValidationErrors):ValidatorFn {
@@ -43,6 +48,10 @@ import {
       if (confirmPassword != '' && password !== confirmPassword) {
         // if they don't match, set an error in our confirmPassword form control
        control.get('correo2')?.setErrors({ NoEmailMatch: true });
+      }
+      if (confirmPassword != '' && password === confirmPassword) {
+        // if they don't match, set an error in our confirmPassword form control
+       control.get('correo2')?.setErrors(null);
       }
     return confirmPassword != '' && password !== confirmPassword? null: error as any;
     }

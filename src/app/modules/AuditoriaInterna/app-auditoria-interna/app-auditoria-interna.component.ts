@@ -135,6 +135,11 @@ export class AppAuditoriaInternaComponent {
         this.formParent.get('dateEnd').setValue('');
         return;
       }
+
+      localStorage.setItem('fechaInicio', String(inicioValue) );
+      localStorage.setItem('fechaFin', String(finValue) );
+
+
     }
   }
   

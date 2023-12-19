@@ -63,6 +63,9 @@ export class AppCaracterizacionComponent implements OnInit {
   numOfFields!: number;
   selectedOption: string;
   selectedOptions: string[] = [];
+  selectedServicio: string;
+  selectedOptionServicios: string[] = [];
+
   seleccione: string = 'Seleccione una opción';
 
   aventuraSeleccionada: boolean = false;
@@ -107,7 +110,7 @@ ngOnInit(): void {
   this.colorTitle = JSON.parse(localStorage.getItem("color")).title;
   this.colorWallpaper = JSON.parse(localStorage.getItem("color")).wallpaper;
   var opcion = localStorage.getItem("opcionEditar");
-  debugger;
+
   if(opcion != "1"){
     this.ApiService.validateCaracterizacion(id).subscribe((data: any)=>{
       if(data === true){
@@ -155,13 +158,44 @@ validarCampoOtroC() {
 validarCampoOtroRed() {
   return  this.otroControlRed.touched;
 }
-validarCampoInput(opcion: any){
+validarCampoInput(opcion: any, campo: any=null){
   let ver=false;
+  const regexRedesSociales = /^(https?:\/\/)?(www\.)?(facebook\.com|twitter\.com|instagram\.com|linkedin\.com)\/([\w-]+\/?)*$/;
   if(opcion.valorUrl!==undefined){
     if(opcion.valorUrl.trim()!=""){
       ver=true;
     }
+    else {
+      ver=false;
+    }
+   if(campo!=null){
+    if(campo.TIPO_DE_DATO === 'checkbox' && campo.NOMBRE === '¿Cuáles redes sociales tiene?'){
+      if(regexRedesSociales.test(opcion.valorUrl.trim())){
+        ver=true;
+      }
+      else{
+        ver=false;
+      }
+    }
+   }
+
   }
+  return ver;
+}
+validarCampoWeb(controlName: any){
+  let ver=false;
+  let valor= this.formParent.get(controlName).value;
+  if(typeof valor =="object"){ return true;}
+  else if(typeof valor =="string"){
+    const regexRedesSociales = /^(https?:\/\/)?(www\.)?(facebook\.com|twitter\.com|instagram\.com|linkedin\.com)\/([\w-]+\/?)*$/;
+    if(regexRedesSociales.test(valor.trim())){
+      ver=true;
+    }
+    else{
+      ver=false;
+    }
+  }
+  
   return ver;
 }
 
@@ -268,7 +302,7 @@ ordenarPreguntas() {
   this.proceso1 = this.preguntasOrdenadas.slice(0, preguntasPorProceso).map((elemento:any)=>{ elemento.numeroPaso=1 ; return elemento;});
   this.proceso2 = this.preguntasOrdenadas.slice(preguntasPorProceso, preguntasPorProceso * 2).map((elemento:any)=>{ elemento.numeroPaso=2 ; return elemento;});
   this.proceso3 = this.preguntasOrdenadas.slice(preguntasPorProceso * 2).map((elemento:any)=>{ elemento.numeroPaso=3 ; return elemento;});
-  
+
   let arrayTemporal =this.proceso1.concat(this.proceso2).concat(this.proceso3);
   //inicializar el saveForm
   this.valoresForm=[];
@@ -291,13 +325,11 @@ ordenarPreguntas() {
   });
 }
 
-
 onChangeAventuraSeleccionada(value: boolean) {
     this.aventuraSeleccionada = value;
   
     if (this.aventuraSeleccionada) {
       // Si se seleccionó "SI", se muestra solo la norma que comienza con "NTC 6502"
-     
       this.opcionesNorma = this.dataNorma.filter(
         opcion => opcion.NORMA && opcion.NORMA.startsWith('NTC 6502') ||
         opcion.NORMA.startsWith('NTC ISO 21101') ||
@@ -313,7 +345,6 @@ onChangeAventuraSeleccionada(value: boolean) {
 }
 
 printSelectedOption() {
-
  // this.selectedOptions.push(this.selectedOption);
  if (!this.selectedOptions.includes(this.selectedOption)) {
   // Si no está presente, agrégala
@@ -440,9 +471,10 @@ existeUnoSeleccionado(grupoPregunta: any): boolean{
   return alMenosUnCheck;
 }
 
-
+prueba: any 
 
   capturarValor(id: string | number, valor: any, campo: any,opcionNombre?: string, nombreCampo?: string) {
+  if(typeof valor =="object") valor= valor.target.value;
 
     const result = this.valoresForm.find((o: any) => o.idCaracterizacion === campo.ID_CARACTERIZACION_DINAMICA);
     //cambios 30.10.2023 
@@ -468,6 +500,21 @@ existeUnoSeleccionado(grupoPregunta: any): boolean{
     }
     else if(campo.TIPO_DE_DATO == "radio") {
       valorTemp =campo.valorSeleccionadoRadio;
+    }
+    else  if(campo.TIPO_DE_DATO === 'string' && campo.NOMBRE === '¿Cuáles servicios de presta?' && valor !==undefined ){
+      if(valor.trim()=="") return;
+      if(valor.length > 100) return;
+      if (!this.selectedOptionServicios.includes(valor)) {
+        // Si no está presente, agrégala
+        this.selectedOptionServicios.push(valor);
+        //limpiarlo 
+        this.formParent.patchValue({
+          "¿Cuáles servicios de presta?": ""
+        });
+
+      }
+      valorTemp= this.selectedOptionServicios.join('|||')
+
     }
     else{
       valorTemp=valor;
@@ -495,6 +542,9 @@ existeUnoSeleccionado(grupoPregunta: any): boolean{
       }
       this.cdref.detectChanges();
       this.cargaInicial=false;
+  }
+  validarServiciosPresta(): boolean {
+    return this.selectedOptionServicios.length> 0 && this.formParent.valid? true: false;
   }
 
   
@@ -534,10 +584,14 @@ validateCampo(valoresForm: any){
    if(temporal.length>0){
     ver = false;
    }
-   if(preguntasRequeridas.filter((e:any)=>e.tipoDato != "radio" && e.tipoDato != "checkbox" && String(e.valor).trim()=="" ).length>0)
+   if(preguntasRequeridas.filter(
+    (e:any)=>e.tipoDato != "radio" && e.tipoDato != "checkbox" && (String(e.valor).trim()=="" || String(e.valor).length>100 )).length>0 )
    {
       ver = false;
    }
+
+
+
 
    return ver;
 
@@ -563,47 +617,47 @@ public saveForm(){
     this.mostrarMensaje = true;
  
     if (this.formParent.valid) {
-      this.ApiService.saveData(caracterizacionRespuesta).subscribe((data: any) => {
+      // this.ApiService.saveData(caracterizacionRespuesta).subscribe((data: any) => {
     
-        this.ApiService.getNorma(this.idUser).subscribe(
-          (categ: any) => {
-            this.arrNormas = categ;
-            localStorage.setItem("idCategoria", JSON.stringify(this.arrNormas[0].FK_ID_CATEGORIA_RNT));
-        });
-          this.ApiService.validateCaracterizacion(this.idUser).subscribe(
-            (response) => {
-              if (response) {
-                this.ApiService.getNorma(this.idUser).subscribe(
-                  (data: any) => {
-                    if (
-                      data[0].FK_ID_CATEGORIA_RNT === 5 ||
-                      data[0].FK_ID_CATEGORIA_RNT === 2
-                    ) {
-                      this.arrResult = data;
-                      localStorage.setItem("norma", JSON.stringify(this.arrResult));
-                    } else {
-                      this.arrResult = data;
-                      localStorage.setItem("norma", JSON.stringify(this.arrResult));
-                      localStorage.setItem("normaSelected", data[0].NORMA);
-                      localStorage.setItem("idNormaSelected", data[0].ID_NORMA);
-                      if( data[0].ID_NORMA === 1){
-                      this.router.navigate(["/dashboard"]);
-                      }else{
-                        this.router.navigate(["/dashboard"]);
-                      }      
-                    }
-                  }
-                );
-              } else {
-                this.router.navigate(["/dashboard"]);
-              }
-            }
-          );       
-        const title = "Se guardó correctamente";
-        const message = "El formulario se ha guardado exitosamente"
-        this.Message.showModal(title,message);
-        this.router.navigate(['/dashboard']);
-      });
+      //   this.ApiService.getNorma(this.idUser).subscribe(
+      //     (categ: any) => {
+      //       this.arrNormas = categ;
+      //       localStorage.setItem("idCategoria", JSON.stringify(this.arrNormas[0].FK_ID_CATEGORIA_RNT));
+      //   });
+      //     this.ApiService.validateCaracterizacion(this.idUser).subscribe(
+      //       (response) => {
+      //         if (response) {
+      //           this.ApiService.getNorma(this.idUser).subscribe(
+      //             (data: any) => {
+      //               if (
+      //                 data[0].FK_ID_CATEGORIA_RNT === 5 ||
+      //                 data[0].FK_ID_CATEGORIA_RNT === 2
+      //               ) {
+      //                 this.arrResult = data;
+      //                 localStorage.setItem("norma", JSON.stringify(this.arrResult));
+      //               } else {
+      //                 this.arrResult = data;
+      //                 localStorage.setItem("norma", JSON.stringify(this.arrResult));
+      //                 localStorage.setItem("normaSelected", data[0].NORMA);
+      //                 localStorage.setItem("idNormaSelected", data[0].ID_NORMA);
+      //                 if( data[0].ID_NORMA === 1){
+      //                 this.router.navigate(["/dashboard"]);
+      //                 }else{
+      //                   this.router.navigate(["/dashboard"]);
+      //                 }      
+      //               }
+      //             }
+      //           );
+      //         } else {
+      //           this.router.navigate(["/dashboard"]);
+      //         }
+      //       }
+      //     );       
+      //   const title = "Se guardó correctamente";
+      //   const message = "El formulario se ha guardado exitosamente"
+      //   this.Message.showModal(title,message);
+      //   this.router.navigate(['/dashboard']);
+      // });
     }
   }
   else{

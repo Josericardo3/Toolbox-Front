@@ -113,6 +113,17 @@ img{
     margin: 0px 10%;    
     display: flex;
 }
+.titulo-not{
+    width: 100%;
+}
+.descripcion-noticia{
+    width: 100%;
+    overflow: auto;
+    position: relative;
+}
+img{
+    max-width: 100%;
+}
 .img-noticiaaa{
     width: 100%;
     height: auto;
@@ -125,6 +136,8 @@ img{
 }
 p{
     text-align: justify;
+    max-width: 100%;
+    height: auto;
 }
 .categorias{
     border-top: 1px solid #068460;
@@ -295,6 +308,14 @@ textarea {
     text-decoration: none;
     color: #000000;
 }
+input.ng-invalid.ng-touched {
+    border: solid 2px tomato !important;
+    border-radius: 10px;
+  }
+input.ng-valid{
+    border: solid 2px #068460 !important;
+    border-radius: 10px;
+  }
 @media (max-width: 970px) {
     .noticia-content{
         width: 100%;

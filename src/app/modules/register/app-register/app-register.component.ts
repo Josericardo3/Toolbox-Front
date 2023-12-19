@@ -547,7 +547,12 @@ avatarSeleccionado: number=-1;
 
 
   saveUser() {
-    
+    if(this.msjRnt!=''){
+      const title = "Error de Validación";
+            const message = `Aún no ah validado correctamente el Registro Nacional de Turismo .`;
+            this.Message.showModal(title, message);
+            return;
+    }
     if( this.imagenLogo.logo==""){
       const title = "Error de carga";
             const message = `Ingrese un logo.`;
@@ -649,7 +654,7 @@ avatarSeleccionado: number=-1;
 
   //Obj 
 
-  msjRnt: string = '';
+  msjRnt: string = 'Validacion';
   showCheckRnt: boolean = false;
   showFaXmarkRnt: boolean = false;
 
@@ -657,7 +662,7 @@ avatarSeleccionado: number=-1;
 
     this.showFaXmarkRnt = false;
     this.showCheckRnt = false;
-    this.msjRnt = '';
+    //this.msjRnt = '';
     if (rnt?.target != null){
       rnt = rnt.target.value
     }
@@ -668,7 +673,7 @@ avatarSeleccionado: number=-1;
         
         this.showCheckRnt = true;
         this.showFaXmarkRnt = false;
-        //this.msjRnt = 'Valide Nuevamente';
+        this.msjRnt = 'Valide Nuevamente';
 
         this.registerForm.get('correo').setValue('');
         //  this.registerForm.get('numeroDeIdentificacionTributaria').setValue('');
