@@ -71,11 +71,5 @@ export class AppDeleteActivitiesComponent {
   cancelDelete(): void {
     
   }
-  this.ApiService.deleteActivities( this.indiceAEliminar).subscribe((data) => {
-    const title = "Eliminación exitosa";
-    const message = "El registro se ha eliminado exitosamente"
-    this.Message.showModal(title, message);
-    this.fnConsultActivities();
- 
-})
+  
 }
