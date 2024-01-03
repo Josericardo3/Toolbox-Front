@@ -30,12 +30,17 @@
           <div class="form-group">
             <label for="norma">Norma</label>
             <mat-select
+              #matSelect
               [(ngModel)]="dataEnvio.ID_NORMA"
               name="norma"
+              multiple
               class="form-control"
               required
               (selectionChange)="cambiarNorma($event)"
             >
+            <mat-option *ngIf=" this.normas?.length>1 " (onSelectionChange)="seleccionarTodos($event)" [value]="0">
+              Todos
+          </mat-option>
               <mat-option
                 *ngFor="let item of normas; let index = index"
                 id="ID_NORMA-{{ index }}"

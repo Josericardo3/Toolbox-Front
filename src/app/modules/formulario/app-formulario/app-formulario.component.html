@@ -43,13 +43,13 @@
                     <textarea name="acciones" id="acciones" formControlName="acciones" placeholder="Acciones" class="estadoFormB" 
                     [attr.disabled]="isDisabled ? 'disabled' : null" [ngClass]="{'campo-desactivado': isDisabled}"></textarea>
                     <div class="containerMejoraContinua" [attr.disabled]="isDisabled ? 'disabled' : null"
-                    [ngClass]="{'checkbox-desactivado': isDisabled}" *ngIf ="showCheckbox">
+                    [ngClass]="{'checkbox-desactivado': isDisabled}" >
                         <label class="checkbox-container" >
                             <input type="checkbox" id="myCheckbox" [attr.disabled]="isDisabled ? 'disabled' : null"
-                            [ngClass]="{'checkbox-desactivado': isDisabled}" (change)="toggleCheckbox()" />
+                            [ngClass]="{'checkbox-desactivado': isDisabled}" (change)="toggleCheckbox()" name="checkbox" formControlName="checkbox"  />
                             <span class="checkmark"></span>
                           </label>
-                          <p>MEJORA CONTINUA</p>
+                          <p class="mt-2">MEJORA CONTINUA</p>
                     </div>
                     
                 </div>

@@ -99,7 +99,7 @@ export class FormularioIndicadorKpiComponent {
 
     newElement.contentEditable = 'false';
     newElement.style.marginRight = '1rem';
-    newElement.classList.add('btn', 'btn-primary', 'btn-sm', 'mr-1', 'ml-1');
+    newElement.classList.add('btn', 'btn-primary', 'btn-sm', 'mr-1', 'ml-1','mb-2');
     if (
       sele == '(' ||
       sele == ')' ||

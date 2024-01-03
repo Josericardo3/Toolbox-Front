@@ -41,9 +41,11 @@
     "bootstrap": "^5.3.2",
     "canvas": "^2.11.2",
     "canvas-to-buffer": "^3.0.1",
-    "chart.js": "^4.4.0",
+    "chart.js": "^4.3.2",
     "chartjs-adapter-date-fns": "^3.0.0",
     "chartjs-node-canvas": "^4.1.6",
+    "chartjs-plugin-annotation": "^3.0.1",
+    "chartjs-plugin-datalabels": "^2.2.0",
     "d3": "^7.8.5",
     "d3-geo": "^3.1.0",
     "d3-tip": "^0.9.1",
@@ -66,6 +68,7 @@
     "moment-timezone": "^0.5.43",
     "ng-multiselect-dropdown": "^0.3.9",
     "ng-select": "^1.0.2",
+    "ng2-charts": "^3.1.2",
     "ngx-bootstrap": "^8.0.0",
     "ngx-dynamic-host": "^1.1.2",
     "ngx-leaflet": "^0.0.16",
@@ -105,6 +108,6 @@
     "karma-jasmine-html-reporter": "~2.0.0",
     "raw-loader": "^4.0.2",
     "style-loader": "^3.3.3",
-    "typescript": "~4.9.5"
+    "typescript": "^4.8.2"
   }
 }

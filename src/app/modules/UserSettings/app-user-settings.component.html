@@ -15,7 +15,7 @@
 
     <div class="contenido-settings" [formGroup]="principal">
         <div class="titulo-settings">
-          <img [src]="imagen" alt="Logo" width="50px" style="border-radius: 25px;">
+          <img [src]="imagen" alt="Logo" style="border-radius: 25px;">
           <h3 class="nombre-prestador">{{this.nombre}}</h3>
         </div>
 
@@ -25,13 +25,14 @@
             <div class="menu-settings">
                 <a (click)="option='general'" class="link-setting" [style]="option==='general' ? estiloEtiqueta : ''">GENERAL</a>
                 <a (click)="option='ingreso'" class="link-setting" [style]="option==='ingreso' ? estiloEtiqueta : ''">INGRESO EMPLEADOS</a>
-                <!--<a (click)="navigateToEdit()" class="link-setting">EDITAR REGISTRO INICIAL</a>-->
+                <a (click)="navigateToEdit()" class="link-setting">EDITAR REGISTRO INICIAL</a>
+                <a (click)="navigateCaracterizacion()" class="link-setting">EDITAR CARACTERIZACION INICIAL</a>
                 <hr>
             </div>
             <div class="form-settings" *ngIf="option=='general'">
                 <div class="btn-img-head">
                     <div class="group-img-logo">
-                      <img [src]="imagen" alt="Logo" width="150px" style="border-radius: 75px; margin-right: 5px;">
+                      <img [src]="imagen" alt="Logo" style="border-radius: 75px; margin-right: 5px;">
                         <div class="btn-group">
                           <label type="button" class="cargar-logo" title="Subir Foto">
                             <span style="padding: 5px;"><i class="fi fi-rr-arrow-circle-right"></i>Cargar nuevo logo</span>
@@ -48,9 +49,10 @@
                     <input type="text" placeholder="Nombre representante" class="form-control" formControlName="nombre_representante">
                     <p class="tit">Correo del PST</p>
                     <input type="email" placeholder="correo@email.com" class="form-control" formControlName="correo_representante">
+                    <small *ngIf="principal.controls['correo_representante'].hasError('email')" style="margin-bottom:  10px; color: tomato; font-size: xx-small; font-weight: bold;">/ Debe contener un correo válido</small>
                     <p class="tit">Teléfono del Reprentante Legal</p>
                     <input type="text" placeholder="Número de telefono" class="form-control" formControlName="numero_representante">
-                    <label for="" class="indicador-max" style="margin-bottom:  10px; color: tomato; font-size: xx-small;" *ngIf="(principal.controls['numero_representante'].hasError('maxlength') || principal.controls['numero_representante'].hasError('pattern'))">Ingrese un número válido</label>
+                    <small for="" class="indicador-max" style="margin-bottom:  10px; color: tomato; font-size: xx-small; font-weight: bold;" *ngIf="(principal.controls['numero_representante'].hasError('maxlength') || principal.controls['numero_representante'].hasError('pattern'))">Ingrese un número válido</small>
                     <p class="tit">Página web</p>
                     <input type="text" placeholder="www.paginaweb.com" class="form-control" formControlName="pagina_web">
                 </div>
@@ -68,8 +70,8 @@
                     </div>
                     <p class="tit">Youtube</p>
                     <div class="group-redes">
-                        <i class="fi fi-brands-twitter"></i>
-                        <input type="text" placeholder="www.paginaweb.com" class="form-control" formControlName="twitter">
+                        <i class="fi fi-brands-youtube"></i>
+                        <input type="text" placeholder="www.paginaweb.com" class="form-control" formControlName="youtube">
                     </div>
                     <p class="tit">Otros</p>
                     <div class="group-redes">
@@ -77,7 +79,13 @@
                         <input type="text" placeholder="www.paginaweb.com" class="form-control" formControlName="otros">
                     </div>
                 </div>
-                  <button class="guardar-cambios" (click)="updateGeneral()"> Guardar Cambios </button>                
+                  <button class="guardar-cambios" [disabled]="(principal.controls['correo_representante'].hasError('required')
+                  ||principal.controls['numero_representante'].hasError('pattern')||principal.controls['numero_representante'].hasError('required')
+                  ||principal.controls['pagina_web'].hasError('required')||principal.controls['instagram'].hasError('required')
+                  ||principal.controls['facebook'].hasError('required')||principal.controls['youtube'].hasError('required')
+                  || principal.controls['pagina_web'].hasError('pattern')||principal.controls['instagram'].hasError('pattern')
+                  || principal.controls['facebook'].hasError('pattern')||principal.controls['youtube'].hasError('pattern')
+                  || principal.controls['numero_representante'].hasError('maxlength') || principal.controls['correo_representante'].hasError('email'))" (click)="updateGeneral()"> Guardar Cambios </button>                
                 </div>
             <div class="form-settings" *ngIf="option=='ingreso'" [formGroup]="segundo" >
                 <div class="datos-prestador">
@@ -91,14 +99,16 @@
                         <option *ngFor="let status of arrayStatus" [ngValue]="status.ITEM">{{status.VALOR}}</option>
                     </select>
                     <p class="tit">Enviar Correo</p>
-                    <select required id="roles"  class="form-control" formControlName="enviar_correo">
+                    <select required id="roles" class="form-control" formControlName="enviar_correo">
                         <option value="seleccione uno" selected>Seleccione uno</option>
                         <option value="true">Sí</option>
                         <option value="false">No</option>
-                    </select>
+                    </select> 
                 </div>
                 <div class="btn-guardar">
-                    <button class="guardar-empleado"  (click)="registrarEmpleado()" >Guardar cambios</button>
+                    <button class="guardar-empleado" (click)="registrarEmpleado()">
+                      Guardar cambios
+                    </button>
                 </div>
             </div>
         </div>

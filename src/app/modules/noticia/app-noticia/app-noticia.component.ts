@@ -5,6 +5,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ElementRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { ModalService } from 'src/app/messagemodal/messagemodal.component.service'
 import { Router } from '@angular/router';
+import tinymce from 'tinymce';
 
 @Component({
   selector: 'app-app-noticia',
@@ -24,6 +25,7 @@ export class AppNoticiaComponent implements OnInit {
   datos: any=[];
   noticiaSelected: any={};
   arrayCategorias: any = [];
+  limitWordsDescripcion: boolean = false;
 
   constructor(
     private api: ApiService,
@@ -37,7 +39,7 @@ export class AppNoticiaComponent implements OnInit {
     this.editarNoticiaForm = this.formBuilder.group({
       usuario: [{ value: '', disabled: true }],
       titulo: ['', Validators.maxLength(50)],
-      descripcion: ['', Validators.required]
+      descripcion: ['', Validators.maxLength(4000)]
     });
     this.dato = history.state.dato;
     this.idNoticia = history.state.idNoticiaa;
@@ -66,6 +68,16 @@ export class AppNoticiaComponent implements OnInit {
       }
       val.N_REGISTROS=i;
     })
+  }
+  
+  limitWords():boolean{
+    var numChars = tinymce.activeEditor.plugins.wordcount.body.getCharacterCount();
+    let respuesta;
+    if(numChars>500) respuesta=true;
+    else respuesta=false;
+    console.log(numChars)
+    console.log(respuesta)
+    return respuesta;
   }
   getTableData() {
     this.api.getTablaNoticias()
@@ -211,6 +223,13 @@ export class AppNoticiaComponent implements OnInit {
             return;
           }
 
+          // Verificar si el largo excede al ancho
+          if (height > width) {
+            const title = "Error de carga";
+            const message = `El largo de la imagen no debe ser mayor al ancho`;
+            this.Message.showModal(title, message);
+            return;
+          }
           // Crear un lienzo para dibujar la imagen con las dimensiones ajustadas
           const canvas = document.createElement('canvas');
           canvas.width = width;

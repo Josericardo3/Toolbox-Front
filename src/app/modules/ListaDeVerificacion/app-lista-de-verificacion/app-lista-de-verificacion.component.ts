@@ -333,7 +333,6 @@ export class AppListaDeVerificacionComponent {
 
   //funcion para guardar el cargo y el nombre del lider
   selectLeader(leader: any) {
-    // //valor del cargo
     this.selectedLeader = leader.target.value;
     const filterLider = this.leaders.filter(e => e?.NOMBRE === leader.target.value);
     this.selectedLeaderCargo = filterLider[0]?.CARGO;

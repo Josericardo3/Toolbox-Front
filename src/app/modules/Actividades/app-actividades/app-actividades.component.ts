@@ -70,7 +70,7 @@ export class AppActividadesComponent {
     this.fnListResponsible();
     this.fnStatusList();
     this.fnTypeOfActivity();
-    
+
   }
 
   fnConsultActivities() {
@@ -109,7 +109,10 @@ export class AppActividadesComponent {
       }
     })
   }
-
+  longActivity: number;
+  fnGetLength(){
+    this.longActivity=this.activity.length;
+  }
   fnNuevoRegistro() {
     this.crearNuevoRegistro = true;
     this.showfilter = false;
@@ -218,6 +221,7 @@ export class AppActividadesComponent {
   fnListResponsible() {
     this.ApiService.getListResponsible().subscribe((data) => {
       this.arrayListResponsible = data;
+      console.log(this.arrayListResponsible);
     })
   }
 
@@ -273,7 +277,6 @@ export class AppActividadesComponent {
         this.finActivity = '';
         this.finActivity = '';
         this.selectedState = '';
-        this.activityType = '';
         const title = "Registro exitoso";
         const message = "El registro se ha realizado exitosamente";
         this.Message.showModal(title, message);

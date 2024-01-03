@@ -2,8 +2,9 @@
 <app-app-header2></app-app-header2>
 
 <h1>FORMULARIOS DE DIAGNÓSTICO</h1>
-<div class="arrow">
+<div class="container d-flex">
   <app-app-header-arrow-left [redirectToDashboard]="true"></app-app-header-arrow-left>
+  <app-home></app-home>
 </div>
 
 <div class="container-fluid bg-transparent col-12 d-flex flex-column justify-content-center align-items-center">
@@ -27,7 +28,7 @@
         </div>
       </div>
       <div class="container col-md-3 col-sm-12 ancho">
-        <button type="submit" (click)="fnEtapa('inicial')" class="btn btn-primary w-100 text-center">
+        <button type="submit" (click)="fnEtapa('inicial')" class="btn btn-primary w-100 text-center mt-3">
           <span class="d-flex align-items-center justify-content-center">
             {{ etapaShowInicio ? 'VER RESULTADOS' : 'EMPEZAR'}}
             <i class="far fa-arrow-alt-circle-right ms-1"></i>
@@ -57,7 +58,7 @@
         </div>
       </div>
       <div class="container col-md-3 col-sm-12 ancho">
-        <button class="btn btn-primary w-100 text-center" (click)="fnEtapa('intermedia')" [ngClass]="{'disabled': bloquearIntermedio}">
+        <button class="btn btn-primary w-100 text-center mt-3" (click)="fnEtapa('intermedia')" [ngClass]="{'disabled': bloquearIntermedio}">
           <span *ngIf="etapaShowIntermedio; else diagnosticoIntermedio">
             VER RESULTADOS <i class="far fa-arrow-alt-circle-right ms-1"></i>
           </span>
@@ -91,7 +92,7 @@
         </div>
       </div>
       <div class="container col-md-3 col-sm-12 ancho">
-        <button class="btn btn-primary w-100 text-center" (click)="fnEtapa('final')" [ngClass]="{'disabled': bloquearFinal}">
+        <button class="btn btn-primary w-100 text-center mt-3" (click)="fnEtapa('final')" [ngClass]="{'disabled': bloquearFinal}">
           <span *ngIf="etapaShowFinal; else diagnosticoFinal">
             VER RESULTADOS <i class="far fa-arrow-alt-circle-right ms-1"></i>
           </span>

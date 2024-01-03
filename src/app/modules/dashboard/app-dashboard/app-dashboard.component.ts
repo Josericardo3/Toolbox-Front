@@ -213,11 +213,12 @@ onClick(event: Event) {
     
   }
   ngAfterViewInit(){
-    this.carousel = false;
-    this.datosTarjetaNoticia = [];
-    this.getContenidoTarjeta();
+    
 
     setTimeout(() => {
+      this.carousel = false;
+    this.datosTarjetaNoticia = [];
+    this.getContenidoTarjeta();
       this.contenidoCargado = true;
     }, 1000);
 

@@ -1,6 +1,7 @@
 import { AfterContentChecked, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { Observable } from 'rxjs';
 import { NoEspacioDirective } from 'src/app/directives/no-espacio.directive';
 import { ModalService } from 'src/app/messagemodal/messagemodal.component.service'
 import { ApiService } from 'src/app/servicios/api/api.service';
@@ -19,13 +20,16 @@ export class AppEncuestaCreadaComponent implements OnInit, AfterContentChecked {
   mostrarFormulario = true;
   public form: FormGroup;
   checkObligatorio = false;
+  mostrarOtroCheckbox: boolean = false;
+  estadoSwitch: boolean = false;
+  encuestaActiva: boolean;
 
   constructor(
     private route: ActivatedRoute,
     private ApiService: ApiService,
     private formBuilder: FormBuilder,
     private cd: ChangeDetectorRef,
-    private Message: ModalService,
+    private Message: ModalService
   ) { }
 
   ngAfterContentChecked(): void {
@@ -38,7 +42,6 @@ export class AppEncuestaCreadaComponent implements OnInit, AfterContentChecked {
       this.getDataEncuesta(this.encuestaId);
     });
     this.form = this.formBuilder.group({})
-
   }
 
   formulario() {
@@ -65,28 +68,16 @@ export class AppEncuestaCreadaComponent implements OnInit, AfterContentChecked {
   }
 
   getDataEncuesta(id: number) {
-    console.log('ID_MAE_ENCUESTA:', id);
     this.ApiService.getEncuestasRespuesta(id)
       .subscribe(respuesta => {
+        this.encuestaActiva = respuesta.ESTADO_HABILITADO == 1? true : false;
         const tarjetasOrdenadas = [...respuesta.MAE_ENCUESTA_PREGUNTAS];
         tarjetasOrdenadas.sort((a, b) => a.ORDEN - b.ORDEN);
         this.datosPreguntaEncuesta = respuesta;
-        // const tarjetasOrdenadas = [...this.datosPreguntaEncuesta];
-        // tarjetasOrdenadas.sort((a, b) => a.ORDEN - b.ORDEN);
-        // this.datosPreguntaEncuesta = tarjetasOrdenadas
-        // this.formulario();
         tarjetasOrdenadas.forEach(pregunta => {
-          // Agregar lógica para crear controles en el formulario
-          // Por ejemplo, para un campo de respuesta corta:
-          // this.form.addControl(
-          //   `respuestaCorta_${pregunta.ID_MAE_ENCUESTA_PREGUNTA}`,
-          //   this.formBuilder.control('', [Validators.required])
-          // );
-        
-
-        this.datosPreguntaEncuesta = { ...respuesta, MAE_ENCUESTA_PREGUNTAS: tarjetasOrdenadas };
-        this.formulario();
-      });
+          this.datosPreguntaEncuesta = { ...respuesta, MAE_ENCUESTA_PREGUNTAS: tarjetasOrdenadas };
+          this.formulario();
+        });
       })
   }
 
@@ -95,7 +86,7 @@ export class AppEncuestaCreadaComponent implements OnInit, AfterContentChecked {
       pregunta.mostrarOtroRadio = true;
       this.form.get(`radioButtonOtro_${pregunta.ID_MAE_ENCUESTA_PREGUNTA}`).setValue('');
       this.form.get(`radioButtonOtro_${pregunta.ID_MAE_ENCUESTA_PREGUNTA}`).setValidators([Validators.required]);
-    this.form.get(`radioButtonOtro_${pregunta.ID_MAE_ENCUESTA_PREGUNTA}`).updateValueAndValidity();
+      this.form.get(`radioButtonOtro_${pregunta.ID_MAE_ENCUESTA_PREGUNTA}`).updateValueAndValidity();
     } else {
       pregunta.mostrarOtroRadio = false;
       this.form.get(`radioButtonOtro_${pregunta.ID_MAE_ENCUESTA_PREGUNTA}`).setValue('');
@@ -104,63 +95,62 @@ export class AppEncuestaCreadaComponent implements OnInit, AfterContentChecked {
     }
   }
 
-  mostrarOtroCheckbox: boolean = false;
-  toggleOtroCheckbox(pregunta: any, opcionSeleccionada, j, evento: any) {   
+  toggleOtroCheckbox(pregunta: any, opcionSeleccionada, j, evento: any) {
     if (opcionSeleccionada === 'Otro') {
-        console.log(opcionSeleccionada)
+      console.log(opcionSeleccionada)
       pregunta.mostrarOtroCheckbox = !pregunta.mostrarOtroCheckbox;
-      
+
       if (!pregunta.OBLIGATORIO) {
         console.log(pregunta.ID_MAE_ENCUESTA_PREGUNTA)
         pregunta.OBLIGATORIO2 = false;
-        
+
         // pregunta.OBLIGATORIO = false;
         // if (this.mostrarOtroCheckbox) {
-          this.form.get(`checkboxOtro_${pregunta.ID_MAE_ENCUESTA_PREGUNTA}`).setValue('');
-          this.form.get(`checkboxOtro_${pregunta.ID_MAE_ENCUESTA_PREGUNTA}`).clearValidators();
+        this.form.get(`checkboxOtro_${pregunta.ID_MAE_ENCUESTA_PREGUNTA}`).setValue('');
+        this.form.get(`checkboxOtro_${pregunta.ID_MAE_ENCUESTA_PREGUNTA}`).clearValidators();
         this.form.get(`checkboxOtro_${pregunta.ID_MAE_ENCUESTA_PREGUNTA}`).updateValueAndValidity();
         // }
         if (pregunta.mostrarOtroCheckbox) {
           //pregunta.OBLIGATORIO2 = false;
           this.form.get(`checkboxOtro_${pregunta.ID_MAE_ENCUESTA_PREGUNTA}`).setValue('');
           this.form.get(`checkboxOtro_${pregunta.ID_MAE_ENCUESTA_PREGUNTA}`).setValidators([Validators.required]);
-        this.form.get(`checkboxOtro_${pregunta.ID_MAE_ENCUESTA_PREGUNTA}`).updateValueAndValidity();
+          this.form.get(`checkboxOtro_${pregunta.ID_MAE_ENCUESTA_PREGUNTA}`).updateValueAndValidity();
           // this.form.get(`checkboxOtro_${pregunta.ID_MAE_ENCUESTA_PREGUNTA}`).clearValidators();
-           //this.form.get(`checkboxOtro_${pregunta.ID_MAE_ENCUESTA_PREGUNTA}`).updateValueAndValidity();
+          //this.form.get(`checkboxOtro_${pregunta.ID_MAE_ENCUESTA_PREGUNTA}`).updateValueAndValidity();
         }
         return
       }
-      
+
       //pregunta.OBLIGATORIO2 = false;
 
       if (pregunta.mostrarOtroCheckbox) {
         //pregunta.OBLIGATORIO2 = false;
         this.form.get(`checkboxOtro_${pregunta.ID_MAE_ENCUESTA_PREGUNTA}`).setValue('');
         this.form.get(`checkboxOtro_${pregunta.ID_MAE_ENCUESTA_PREGUNTA}`).setValidators([Validators.required]);
-      this.form.get(`checkboxOtro_${pregunta.ID_MAE_ENCUESTA_PREGUNTA}`).updateValueAndValidity();
+        this.form.get(`checkboxOtro_${pregunta.ID_MAE_ENCUESTA_PREGUNTA}`).updateValueAndValidity();
         // this.form.get(`checkboxOtro_${pregunta.ID_MAE_ENCUESTA_PREGUNTA}`).clearValidators();
-         //this.form.get(`checkboxOtro_${pregunta.ID_MAE_ENCUESTA_PREGUNTA}`).updateValueAndValidity();
+        //this.form.get(`checkboxOtro_${pregunta.ID_MAE_ENCUESTA_PREGUNTA}`).updateValueAndValidity();
       }
-      
+
       if (!pregunta.mostrarOtroCheckbox) {
         //pregunta.OBLIGATORIO2 = true;
         this.form.get(`checkboxOtro_${pregunta.ID_MAE_ENCUESTA_PREGUNTA}`).setValue('');
         this.form.get(`checkboxOtro_${pregunta.ID_MAE_ENCUESTA_PREGUNTA}`).clearValidators();
-      this.form.get(`checkboxOtro_${pregunta.ID_MAE_ENCUESTA_PREGUNTA}`).updateValueAndValidity();
+        this.form.get(`checkboxOtro_${pregunta.ID_MAE_ENCUESTA_PREGUNTA}`).updateValueAndValidity();
         console.log('obligatorio')
         // this.form.get(`checkboxOtro_${pregunta.ID_MAE_ENCUESTA_PREGUNTA}`).setValue('');
         // this.form.get(`checkboxOtro_${pregunta.ID_MAE_ENCUESTA_PREGUNTA}`).updateValueAndValidity();
-      
+
         // const checkboxOtroElement = document.getElementById(`checkboxOtro_${pregunta.ID_MAE_ENCUESTA_PREGUNTA}_${j}`) as HTMLInputElement;     
         // checkboxOtroElement.innerText = '';
         // console.log(checkboxOtroElement)
-      // }
-     
-      // } else {
-      //   this.form.get(`checkboxOtro_${pregunta.ID_MAE_ENCUESTA_PREGUNTA}`).clearValidators();
-      //   this.form.get(`checkboxOtro_${pregunta.ID_MAE_ENCUESTA_PREGUNTA}`).updateValueAndValidity();
+        // }
+
+        // } else {
+        //   this.form.get(`checkboxOtro_${pregunta.ID_MAE_ENCUESTA_PREGUNTA}`).clearValidators();
+        //   this.form.get(`checkboxOtro_${pregunta.ID_MAE_ENCUESTA_PREGUNTA}`).updateValueAndValidity();
       }
-    
+
     }
     if (!pregunta.OBLIGATORIO) {
       pregunta.OBLIGATORIO2 = false;
@@ -179,7 +169,7 @@ export class AppEncuestaCreadaComponent implements OnInit, AfterContentChecked {
     if (pregunta.VALORES.length > 0) {
       pregunta.VALOR.split(';').forEach((opcion, index) => {
         // pregunta.OBLIGATORIO2 = false;
-        
+
         // this.form.get(`checkbox_${pregunta.ID_MAE_ENCUESTA_PREGUNTA}_${index}`).clearValidators();
         // this.form.get(`checkbox_${pregunta.ID_MAE_ENCUESTA_PREGUNTA}_${index}`).updateValueAndValidity();
       });
@@ -202,6 +192,10 @@ export class AppEncuestaCreadaComponent implements OnInit, AfterContentChecked {
   }
 
   enviarFormulario() {
+    if (!this.encuestaActiva) {
+      console.log('No se aceptan respuestas')
+      return;
+    }
     const respuestas = [];
 
     this.datosPreguntaEncuesta.MAE_ENCUESTA_PREGUNTAS.forEach((pregunta, index) => {
@@ -258,6 +252,7 @@ export class AppEncuestaCreadaComponent implements OnInit, AfterContentChecked {
     console.log(respuestas);
     this.ApiService.saveEncuestaRespuesta(respuestas).subscribe((data) => {
       this.mostrarFormulario = false;
+      console.log('Se acaeptan mas respuestas')
       const title = "ENCUESTA COMPLETADA";
       const message = "Se completó la encuesta correctamente"
       this.Message.showModal(title, message);

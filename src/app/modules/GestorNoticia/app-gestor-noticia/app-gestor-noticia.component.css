@@ -10,9 +10,9 @@
 .titulo {
     display: flex;
     flex-direction: row-reverse;
-    margin: 3vh 0 2vh 0;
+    
+    margin: 0px 10%;
 }
-
 h1,
 h2 {
     width: 100%;
@@ -21,7 +21,6 @@ h2 {
     text-align: center;
     font-weight: bold;
 }
-
 .btn {
     background: #068460;
     color: white;
@@ -360,6 +359,16 @@ span{
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+.filter-view {
+    display: block;
+    width: 100%;
+    height: auto;
+    padding: 20px 0px;
+}
+
+.filter-view label {
+    margin-bottom: 10px;
 }
 /*CARD NOTICIA*/
 .card-noticia{

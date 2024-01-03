@@ -51,7 +51,7 @@
         </div>
       </div>
     </mat-list-item>
-    <mat-list-item routerLink="/evaluaciones" routerLinkActive="active">
+    <mat-list-item *ngIf="tipoAdmin!=3 && tipoAdmin!=4" routerLink="/evaluaciones" routerLinkActive="active">
      
       
         
@@ -64,10 +64,10 @@
         </div>
       </div>
     </mat-list-item>
-    <mat-list-item routerLink="/recordatorios" routerLinkActive="active">
+    <mat-list-item *ngIf="tipoAdmin!=3 && tipoAdmin!=4" routerLink="/recordatorios" routerLinkActive="active">
       
     
-      <div class="row">
+      <div class="row" >
         <div class="col-md-2 col-sm-2 col-xs-2 ">
           <mat-icon>calendar_today</mat-icon>
         </div>

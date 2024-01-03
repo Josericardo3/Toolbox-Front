@@ -696,6 +696,14 @@ export class ApiService {
     let lista = `${this.apiURLNuevo}/api/Encuesta/Respuestas?idEncuesta=${id}`
     return this.http.get<any>(lista)
   }
+  updateEstado(idEncuesta: number, estado: number){
+    const url = `${this.apiURLNuevo}/api/Encuesta/UpdateEstadoEncuesta?id_encuesta=${idEncuesta}&estado=${estado}`;
+    return this.http.put<any>(url, {});
+  }
+  diagramasEncuesta(id: any){
+    let lista = `${this.apiURLNuevo}/api/Encuesta/Respuestas/porcentaje?idEncuesta=${id}`
+    return this.http.get<any>(lista)
+  }
 
   //REQUISITOS NORMAS
   getRequerimientosNormas(id: any){
@@ -734,4 +742,23 @@ export class ApiService {
       let direccion = `${this.apiURLNuevo}/api/Usuario/activar?codigo=${codigo}`
     return this.http.post<any>(direccion,{})
     }
+    // MAPA DE PROCESOS
+  postDiagramaMapaProceso(request: any) {
+    request.ID_USUARIO_CREA=localStorage.getItem("Id");
+    request.RNT=localStorage.getItem("rnt");
+    const direccion = `${this.apiURLNuevo}/api/MapaProceso/Diagramar`;
+    return this.http.post<any>(direccion, request)
+  }
+  obtenerDiagramaMapaProceso(request: any) {
+    request.Search=localStorage.getItem("rnt");
+    
+    const direccion = `${this.apiURLNuevo}/api/MapaProceso/ObtenerDiagrama`;
+    return this.http.post<any>(direccion, request)
+  }
+  deletetDiagramaMapaProceso(request: any) {
+    request.ID_USUARIO=localStorage.getItem("Id");
+    request.RNT=localStorage.getItem("rnt");
+    const direccion = `${this.apiURLNuevo}/api/MapaProceso/DeleteItemDiagrama`;
+    return this.http.post<any>(direccion, request)
+  }
 }

@@ -1,12 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat&family=Work+Sans&display=swap');
 
-/* p{
-    margin: 10px 0;
-    font-family: 'Work Sans', sans-serif;
-    font-size: 22px;
-    color: #474749;
-    margin: 3vw;
-} */
 a{
     color: #005eff !important;
     font-weight: normal;
@@ -22,4 +15,9 @@ a{
 }
 p{
   font-size: 1.1rem;
+}
+/* Agregar estilos en tu hoja de estilos global o local */
+.disabled {
+  pointer-events: none;
+  opacity: 0.5;
 }

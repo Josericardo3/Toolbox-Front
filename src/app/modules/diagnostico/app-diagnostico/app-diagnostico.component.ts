@@ -33,8 +33,8 @@ export class AppDiagnosticoComponent implements OnInit {
   valorObs: any;
   public isDataLoaded: boolean = false;
   numeralPrincipal: any;
-  bloquearGuardar:boolean = false;
-  bloquearRadio:boolean = false;
+  bloquearGuardar: boolean = false;
+  bloquearRadio: boolean = false;
   bloquearTextarea: boolean = false;
   mostrarModal: boolean = false;
   avatares: any = []
@@ -83,7 +83,7 @@ export class AppDiagnosticoComponent implements OnInit {
           campo.listacampos.forEach((subcampo, i) => {
             formControls[`radio${j}-${i}`] = new FormControl(null);
           });
-          
+
         });
         this.formParent = new FormGroup(formControls);
 
@@ -101,12 +101,12 @@ export class AppDiagnosticoComponent implements OnInit {
               console.log(radioValue)
               this.formParent.get(`radio${j}-${i}`).setValue(radioValue);
 
-                      // Deshabilitar el control después de cargar la información
-        this.formParent.get(`radio${j}-${i}`).disable();
-                          // Deshabilitar el control de observación después de cargar la información
-      // this.formParent.get(`observacion-${listacampo.NUMERAL_ESPECIFICO}`).disable();
+              // Deshabilitar el control después de cargar la información
+              this.formParent.get(`radio${j}-${i}`).disable();
+              // Deshabilitar el control de observación después de cargar la información
+              // this.formParent.get(`observacion-${listacampo.NUMERAL_ESPECIFICO}`).disable();
             }
-          });          
+          });
         });
 
         // Agregar propiedad bloquearGuardar a cada objeto en datos.campos
@@ -120,8 +120,8 @@ export class AppDiagnosticoComponent implements OnInit {
     this.getUsuario();
   }
 
-  getUsuario(){
-    this.ApiService.getUsuario().subscribe((data:any) => {
+  getUsuario() {
+    this.ApiService.getUsuario().subscribe((data: any) => {
       this.avatares = data
       this.idAvatar = this.avatares.FK_ID_TIPO_AVATAR;
       this.rutaAvatar = `../../../../assets/avatares/avatar${this.idAvatar}.svg`
@@ -134,11 +134,11 @@ export class AppDiagnosticoComponent implements OnInit {
     console.log('no se guardaron cambios')
   }
 
-  cancelar(){
+  cancelar() {
     this.mostrarModal = false;
   }
 
-  regresarAlCuestionario(){
+  regresarAlCuestionario() {
     this.router.navigate(["/diagnosticoProgress"]);
   }
 
@@ -162,6 +162,7 @@ export class AppDiagnosticoComponent implements OnInit {
       return true;
     }
     const listacampo = this.datos.campos[j].listacampos[i];
+    console.log(listacampo)
     return listacampo.VALOR_RESPUESTA !== null || listacampo.OBSERVACION_RESPUESTA !== null;
   }
 
@@ -208,19 +209,24 @@ export class AppDiagnosticoComponent implements OnInit {
       });
     }
   }
+
+  // Agrega esta propiedad a tu componente
+  textareaErrorStates: { [key: string]: boolean } = {};
   showObservationLengthError: boolean = false;
   capturarValorObs(event: Event, numeralprincipal: any, numeralEspecifico: any) {
     this.valorObs = (event.target as HTMLInputElement).value;
     const normaValue = localStorage.getItem('idNormaSelected');
-  
+
     // Verificar la longitud de la observación
     if (this.valorObs.length > 200) {
       // Mostrar el mensaje de error
       this.showObservationLengthError = true;
+      this.textareaErrorStates[numeralEspecifico] = true;
     } else {
       // Ocultar el mensaje de error si la longitud es válida
       this.showObservationLengthError = false;
-  
+      this.textareaErrorStates[numeralEspecifico] = false;
+
       // Resto de tu lógica para capturar la observación
       const result = this.valoresForm.find((o: any) => o.numeralespecifico === numeralEspecifico);
       if (result) {
@@ -238,28 +244,8 @@ export class AppDiagnosticoComponent implements OnInit {
     }
   }
 
-
-  // capturarValorObs(event: Event, numeralprincipal: any, numeralEspecifico: any) {
-  //   this.valorObs = (event.target as HTMLInputElement).value;
-  //   const normaValue = localStorage.getItem('idNormaSelected');
-  //   const result = this.valoresForm.find((o: any) => o.numeralespecifico === numeralEspecifico);
-  //   if (result) {
-  //     result.observacion = this.valorObs;
-  //   } else {
-  //     this.valoresForm.push({
-  //       "valor": "",
-  //       "idnormatecnica": normaValue,
-  //       "idusuario": localStorage.getItem('Id'),
-  //       "numeralprincipal": numeralprincipal,
-  //       "numeralespecifico": numeralEspecifico,
-  //       "observacion": this.valorObs,
-  //     });
-  //   }
-  // }
-
   saveForm(j: number, i: number) {
     if (this.isFormValid(j, i)) {
-
       const formularioActual = this.datos.campos[j].listacampos[i];
       const valoresFormulario = this.valoresForm.filter(item =>
         item.numeralprincipal === formularioActual.NUMERAL_PRINCIPAL &&
@@ -280,15 +266,15 @@ export class AppDiagnosticoComponent implements OnInit {
           const message = "Se guardaron los campos correctamente";
           this.Message.showModal(title, message);
 
-        // Deshabilitar los controles relevantes después de guardar
-        this.formParent.get(`radio${j}-${i}`).disable();
-        // this.formParent.get(`observacion-${formularioActual.NUMERAL_ESPECIFICO}`).disable();
+          // Deshabilitar los controles relevantes después de guardar
+          this.formParent.get(`radio${j}-${i}`).disable();
+          // this.formParent.get(`observacion-${formularioActual.NUMERAL_ESPECIFICO}`).disable();
 
           formularioActual.bloquearGuardar = true;
         });
     }
   }
-  
+
   isLetra(numeral: string): boolean {
     return /^[A-Za-z]$/.test(numeral);
   }

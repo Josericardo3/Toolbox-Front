@@ -9,6 +9,7 @@ import { DateInputMaskDirective } from './date-input-mask.directive';
 import { MayusculasDirective } from './mayusculas.directive';
 import { PuntoycomaRestringidoDirective } from './puntoycoma-restringido.directive';
 import { NoPuntoycomaDirective } from './no-puntoycoma.directive';
+import { NoCaracterOperador } from './noCaracterOperador.directive';
 
 @NgModule({
     declarations:[
@@ -20,6 +21,7 @@ import { NoPuntoycomaDirective } from './no-puntoycoma.directive';
        MayusculasDirective,
        PuntoycomaRestringidoDirective,
        NoPuntoycomaDirective,
+       NoCaracterOperador
     ],
     imports:[
         CommonModule
@@ -30,7 +32,8 @@ import { NoPuntoycomaDirective } from './no-puntoycoma.directive';
         TrueFalseValueDirective,
         LetrasDirective,
         NumerosDirective,
-        DateInputMaskDirective
+        DateInputMaskDirective,
+        NoCaracterOperador
     ]
 })
 

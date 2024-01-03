@@ -12,12 +12,14 @@ import { catchError, throwError } from 'rxjs';
 export class TokenInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<any>, next: HttpHandler) {
     // Get the access token from your authentication service
-
+    console.log("requessss",request)
     const value = localStorage.getItem('access');
 
     var dataToken: any = {};
     var authReq = request;
-    
+    if(authReq.url=="https://www.datos.gov.co/resource/gdxc-w37w.json"){
+      return next.handle(authReq);
+    }
     if (value) {
       
    
@@ -41,13 +43,9 @@ export class TokenInterceptor implements HttpInterceptor {
   }
 
   manejarErrores(error: HttpErrorResponse) {
- 
-    
-    if (error.status == 401 || error.status == 0 ) {
+    if ((error.status == 401 || error.status == 0) && error.url!="https://www.datos.gov.co/resource/gdxc-w37w.json" ) {
       // Redirigir al usuario a la página de inicio de sesión
       window.location.href = '/';
-    
-      //alert(error.status)
     }
     return throwError(error);
   }

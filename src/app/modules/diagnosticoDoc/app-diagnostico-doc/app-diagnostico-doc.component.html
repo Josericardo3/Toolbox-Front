@@ -17,7 +17,7 @@
       </div>
       <div class="container d-flex align-items-center justify-content-end p-0 col-8">
         <p class="mb-0">DIAGNÓSTICO |
-          <a (click)="generateDiagnostico()">VISUALIZAR DOCUMENTO PDF <i class="fa-regular fa-file-lines"></i></a>
+          <a (click)="generateDiagnostico()" [class.disabled]="spinnerService.loading$ | async">VISUALIZAR DOCUMENTO PDF <i class="fa-regular fa-file-lines"></i></a>
         </p> 
       </div>
     </div>
@@ -27,4 +27,8 @@
     <i class="far fa-arrow-alt-circle-right ms-1"></i>
   </button>
 </div>
+
 <app-modal></app-modal>
+<ngx-spinner bdColor="rgba(0, 0, 0, 0.5)" size="small"
+    template="<img src='https://www.superiorlawncareusa.com/wp-content/uploads/2020/05/loading-gif-png-5.gif' width='50' height='50'/>">
+</ngx-spinner>

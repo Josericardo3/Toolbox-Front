@@ -83,7 +83,6 @@ import { AppPoliticaDesarrolloSostenibleComponent } from './modules/e-matriz-req
 import { AppMatrizPartesInteresadasComponent } from './modules/matrizPartesInteresadas/app-matriz-partes-interesadas/app-matriz-partes-interesadas.component';
 import { AppAlcanceSGSComponent } from './modules/AlcanceSistemaGestiónSostenibilidad/app-alcance-sgs/app-alcance-sgs.component';
 
-
 import { MenuCortoComponent } from './modules/menuCorto/menu-corto/menu-corto.component';
 // import { AppMejoraContinuaComponent } from './modules/mejoraContinua/app-mejora-continua/app-mejora-continua.component';
 import { AppActividadesComponent } from './modules/Actividades/app-actividades/app-actividades.component';
@@ -153,6 +152,10 @@ import { FormulasSemaforizacionComponent } from "./modules/medicion-kpis/indicad
 import { TokenInterceptor } from "./interceptors/token.interceptor";
 import { PageErrorComponent } from "./modules/page-error/page-error.component";
 import { BtnEmpezarContinuarService } from "./servicios/btn-empezar-continuar/btn-empezar-continuar.service";
+// import { DiagramaCircularComponent } from "./common/diagrama-circular/diagrama-circular.component";
+import { NgChartsModule } from 'ng2-charts';
+import { DiagramasComponent } from "./common/diagramas/diagramas/diagramas.component";
+import { HomeComponent } from "./modules/header/home/home.component";
 
 @NgModule({
   declarations: [
@@ -257,7 +260,10 @@ import { BtnEmpezarContinuarService } from "./servicios/btn-empezar-continuar/bt
     ModalDiagnosticoComponent,
     NoEspacioDirective,
     FormulasSemaforizacionComponent,
-    PageErrorComponent
+    PageErrorComponent,
+    // DiagramaCircularComponent,
+    DiagramasComponent,
+    HomeComponent
   ],
   imports: [
     /*NgxSpinnerModule.forRoot({
@@ -295,14 +301,16 @@ import { BtnEmpezarContinuarService } from "./servicios/btn-empezar-continuar/bt
     TabsModule,
     //NgSelectModule,
     AngularEditorModule,
-    DragDropModule
+    DragDropModule,
     // GoogleMapsModule,
-    
+    // NgChartsModule.forRoot(),
+    NgChartsModule
   ],
 
   providers: 
     [
     { provide: HTTP_INTERCEPTORS,  useClass: InterceptorService, multi: true  },
+    // { provide: ChartsConfiguration, useValue: { generateColors: false }},
     BsDatepickerInlineConfig,
     BrowserAnimationsModule,
     BsDatepickerConfig, 
@@ -317,8 +325,7 @@ import { BtnEmpezarContinuarService } from "./servicios/btn-empezar-continuar/bt
     {provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,
       multi: true},
-    BtnEmpezarContinuarService
-
+    BtnEmpezarContinuarService,
   ],
   entryComponents: [
     AppDeleteActivitiesComponent,

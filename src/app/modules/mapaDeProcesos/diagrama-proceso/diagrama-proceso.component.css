@@ -58,7 +58,7 @@
 }
 .btnReporte {
   margin: 4vh 0 2vh 2vw;
-  height: 40px;
+ 
   width: 200px;
   padding: 5px;
   background-color: #068460;
@@ -89,7 +89,7 @@
     border-radius: 50%;
     height: 4rem;
     width: 4rem;
-    font-size: 0.7rem;
+    font-size: 0.5rem;
   }
 
   .ellipse {
@@ -98,7 +98,7 @@
     border-radius: 50%;
     height: 2rem;
     width: 6rem;
-    font-size: 0.7rem;
+    font-size: 0.5rem;
   }
   .cuadrado {
     border-style: solid;
@@ -106,7 +106,7 @@
     border-radius: 10%;
     height: 4rem;
     width: 4rem;
-    font-size: 0.7rem;
+    font-size: 0.5rem;
   }
 }
 @media (max-width: 400px) {
@@ -128,8 +128,11 @@
  
   background-color: #068460;
   color: #ffffff;
+  font-weight: bold;
 }
 ::ng-deep .mat-mdc-optgroup-label .mdc-list-item__primary-text {
   
   color: white;
 }
+
+/* Estilo para el ícono */

@@ -33,7 +33,7 @@ mat-label{
   width: 100%; /* Ajusta el ancho al 100% del contenedor */
 }
 .contedit {
-  height: 5rem;
+  height: 8rem;
 }
 .matForm mat-select:disabled,
 .mat-select-value,

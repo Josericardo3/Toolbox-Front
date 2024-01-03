@@ -10,8 +10,9 @@ import { ModalService } from 'src/app/messagemodal/messagemodal.component.servic
 import { DomSanitizer } from '@angular/platform-browser';
 import { ColorLista } from 'src/app/servicios/api/models/color';
 import { Router } from '@angular/router';
-import { forEach } from 'lodash';
+import { flatMap, forEach } from 'lodash';
 import { IndicadorService } from '../../../servicios/kpis/indicador.service';
+import tinymce from 'tinymce';
 
 @Component({
   selector: 'app-app-gestor-noticia',
@@ -102,7 +103,10 @@ export class AppGestorNoticiaComponent implements OnInit {
   resultInicadores: boolean = false;
   listaIndicadores:any=[];
   datosTarjetaActividad: any[] = [];
+  limitWordsDescripcion: boolean = false;
 
+  filterNoticia: string = '';
+  resultNoticia: boolean = false;
   constructor(
     private http: HttpClient,
     private router: Router,
@@ -143,7 +147,7 @@ export class AppGestorNoticiaComponent implements OnInit {
       selectMultiplePST: ['', Validators.required],
       tituloNoticia: ['', Validators.maxLength(50)],
       CategoriaNoticia: ['', Validators.required],
-      descripcionNoticia: ['', Validators.required],
+      descripcionNoticia: ['', Validators.maxLength(4000)],
       imagenNoticia: [null, Validators.nullValidator]
     });
 
@@ -155,6 +159,16 @@ export class AppGestorNoticiaComponent implements OnInit {
       this.arrayCategorias=data;
       this.updateContadorCategorias();
     });
+  }
+  
+  limitWords():boolean{
+    var numChars = tinymce.activeEditor.plugins.wordcount.body.getCharacterCount();
+    let respuesta;
+    if(numChars>500) respuesta=true;
+    else respuesta=false;
+    console.log(numChars)
+    console.log(respuesta)
+    return respuesta;
   }
   formatFechaText(fecha: string): string {
     const meses = [
@@ -245,9 +259,10 @@ export class AppGestorNoticiaComponent implements OnInit {
     this.api.getTablaNoticias()
       .subscribe(data => {
         this.datos = data;
+        console.log(this.datos);
         this.dataContador = data;
         this.filterArray = this.datos;
-        console.log(this.filterArray);
+        //console.log(this.filterArray);
         this.dataInitial = data;
         this.getListCategorias();
         this.updateContadorCategorias();
@@ -264,7 +279,7 @@ export class AppGestorNoticiaComponent implements OnInit {
         this.filterArray.forEach(val=>{
           val.DESC_CORTA=this.truncarTexto(val.DESCRIPCION,600);
         })
-        console.log(this.filterArray);
+        //console.log(this.filterArray);
         //paginado
         const totalPag = data.length;
         this.totalPaginas = Math.ceil(totalPag / 6);
@@ -280,6 +295,49 @@ export class AppGestorNoticiaComponent implements OnInit {
           this.totalRegistros = this.dataInitial.length;
         }
       })
+  }
+
+  filterResult() {
+    this.resultNoticia = false;
+    if (!this.filterNoticia) {
+      this.filterArray = this.dataInitial;
+      //para el paginado
+      this.pages = 1;
+      const totalPag = this.filterArray.length;
+      this.totalPaginas = Math.ceil(totalPag / 6);
+      if (this.totalPaginas == 0) this.totalPaginas = 1;
+      this.contentArray = this.filterArray;
+      this.totalRegistros = this.filterArray.length;
+      this.datatotal = this.filterArray.length;
+      if (this.totalRegistros == this.datatotal && this.totalRegistros >= 6) this.totalRegistros = 6;
+      this.filterArray = this.filterArray.slice(0, 6);
+      return this.filterArray.length > 0 ? this.filterArray : this.resultNoticia = true;
+    }
+    else {
+      let arrayTemp = this.dataInitial.filter((item) =>
+        (item.TITULO.toUpperCase().includes(this.filterNoticia.trim().toUpperCase()) || this.filterNoticia.trim().toUpperCase() == '')
+      )
+      //this.fecfin = this.form.get('fechafin').value;
+      //this.fecini = this.form.get('fechainicio').value;
+
+      //let arrayTemp = this.dataInitial.filter((item) =>
+      //  (item.FECHA_INICIO >= this.fecini && item.FECHA_FIN <= this.fecfin)
+      //)
+      //console.log(arrayTemp);
+      this.contentArray = [];
+      this.filterArray = arrayTemp;
+      //para el paginado
+      this.pages = 1;
+      const totalPag = this.filterArray.length;
+      this.totalPaginas = Math.ceil(totalPag / 6);
+      if (this.totalPaginas == 0) this.totalPaginas = 1;
+      this.contentArray = this.filterArray;
+      this.totalRegistros = this.filterArray.length;
+      this.datatotal = this.filterArray.length;
+      if (this.totalRegistros == this.datatotal && this.totalRegistros >= 6) this.totalRegistros = 6;
+      this.filterArray = this.filterArray.slice(0, 6);
+      return this.filterArray.length > 0 ? this.filterArray : this.resultNoticia = true;
+    }
   }
   descNoticia: any;
   truncarTexto(texto: string, limite: number): string {
@@ -346,6 +404,7 @@ export class AppGestorNoticiaComponent implements OnInit {
 
     if (IdTipoUsuario == 4 || 3) {
       this.datosIndexListaDestinatario.push(this.datos[index]);
+      console.log(this.datosIndexListaDestinatario);
       const listaTempo = this.datosIndexListaDestinatario.map((elemento) => {
         return {
           NOMBRE_DESTINATARIO: elemento.NOMBRE_DESTINATARIO,
@@ -503,6 +562,7 @@ export class AppGestorNoticiaComponent implements OnInit {
   listarPst() {
     this.api.getListarPst().subscribe((data: any) => {
       this.arrayListaPst = data;
+      console.log(this.arrayListaPst);
     })
   }
 
@@ -545,7 +605,7 @@ export class AppGestorNoticiaComponent implements OnInit {
 
    
       /// PST
-
+      //console.log(this.arrayListaPst);
       const arrayFilterPst = this.arrayListaPst.filter((element: any) => {
         return element.ID_NORMAS.some((pst: any) => this.selectedNormas.includes(pst));
       });
@@ -607,19 +667,17 @@ export class AppGestorNoticiaComponent implements OnInit {
         };
       });
 
-   /// PST
+      /// PST
+      const arrayFilterPst = this.arrayListaPst.filter((element: any) => {
+        return element.ID_NORMAS.some((pst: any) => this.selectedNormas.includes(pst));
+      });
 
-   const arrayFilterPst = this.arrayListaPst.filter((element: any) => {
-    return element.ID_NORMAS.some((pst: any) => this.selectedNormas.includes(pst));
-  });
-
-  
-  this.dropdownListPst = arrayFilterPst.map(item => {
-    return {
-      id: item.ID_PST,
-      nombre: item.NOMBRE_PST
-    };
-  });  
+      this.dropdownListPst = arrayFilterPst.map(item => {
+        return {
+          id: item.ID_PST,
+          nombre: item.NOMBRE_PST
+        };
+      });
     
     } else if (dropdownId === 'categoria') {
       this.selectedCategorias = items.map((item: any) => item.id);
@@ -738,11 +796,11 @@ export class AppGestorNoticiaComponent implements OnInit {
   captureImage(event: any) {
     const archivoSeleccionado = this.archivo.nativeElement.files[0];
     const nombreArchivo = document.querySelector('#nombre') as HTMLElement;
-
+    this.imagen="";
     if (archivoSeleccionado) {
       const nombreArchivo = document.querySelector('#nombre') as HTMLElement;
       nombreArchivo.innerText = archivoSeleccionado.name;
-
+      this.imagen="";
       const reader = new FileReader();
       reader.onload = (e: any) => {
         const image = new Image();
@@ -760,8 +818,8 @@ export class AppGestorNoticiaComponent implements OnInit {
             const title = "Error de carga";
             const message = `Las dimensiones de la imagen no deben exceder el ancho máximo ${maxWidth} píxeles.`;
             this.Message.showModal(title, message);
+            this.imagen=null;
             return;
-
           }
 
           // Verificar si se excede el alto máximo
@@ -772,9 +830,17 @@ export class AppGestorNoticiaComponent implements OnInit {
             const title = "Error de carga";
             const message = `Las dimensiones de la imagen no deben exceder el alto máximo ${maxHeight} píxeles.`;
             this.Message.showModal(title, message);
+            this.imagen=null;
             return;
           }
-
+          // Verificar si el largo excede al ancho
+          if (height > width) {
+            const title = "Error de carga";
+            const message = `El largo de la imagen no debe ser mayor al ancho`;
+            this.Message.showModal(title, message);
+            this.imagen=null;
+            return;
+          }
           // Crear un lienzo para dibujar la imagen con las dimensiones ajustadas
           const canvas = document.createElement('canvas');
           canvas.width = width;
@@ -801,6 +867,7 @@ export class AppGestorNoticiaComponent implements OnInit {
     } else {
       const nombreArchivo = document.querySelector('#nombre') as HTMLElement;
       nombreArchivo.innerText = '';
+      this.imagen=null;
     }
   }
 

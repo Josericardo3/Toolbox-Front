@@ -180,6 +180,7 @@ h3, h2, .parrafo, .estado{
 
   /*SWITCH MEJORA CONTINUA*/
   .checkbox-label {
+    
     display: flex;
     align-items: center;
     cursor: pointer;
@@ -232,9 +233,10 @@ h3, h2, .parrafo, .estado{
     color: white;
   }
   
-  .containerMejoraContinua{
-    font-family: Arial, sans-serif;
+.containerMejoraContinua{
+  font-family: Arial, sans-serif;
   display: flex;
+  justify-content: center;
   align-items: center;
   
   height: 2vh;

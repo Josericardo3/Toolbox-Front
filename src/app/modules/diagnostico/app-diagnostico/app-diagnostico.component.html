@@ -48,14 +48,14 @@
             (input)="capturarValorObs($event, subcampo.NUMERAL_PRINCIPAL ,subcampo.NUMERAL_ESPECIFICO)"
             [value]="subcampo.OBSERVACION_RESPUESTA" class="obs"
             [readonly]="!isFormValid(j, i) || isButtonDisabled(j, i) || subcampo.bloquearGuardar"
-            [ngClass]="{'error-border': showObservationLengthError}">
+            [ngClass]="{'error-border': textareaErrorStates[subcampo.NUMERAL_ESPECIFICO]}">
           </textarea>
-          <div *ngIf="showObservationLengthError" class="text-danger">
+          <div *ngIf="showObservationLengthError && textareaErrorStates[subcampo.NUMERAL_ESPECIFICO]" class="text-danger">
             La observación ingresada no debe tener más de 200 caracteres
           </div>
           <div class="container d-flex align-items-center flex-column">
             <button type="submit" class="btn btn-primary w-100 m-3" [id]="j + '-' + i" [name]="j + '-' + i"
-              [disabled]="!isFormValid(j, i) || isButtonDisabled(j, i) || subcampo.bloquearGuardar" (click)="saveForm(j, i)"
+              [disabled]="!isFormValid(j, i) || isButtonDisabled(j, i) || subcampo.bloquearGuardar || (showObservationLengthError && textareaErrorStates[subcampo.NUMERAL_ESPECIFICO])" (click)="saveForm(j, i)"
               [ngClass]="{'disabled-button': !isFormValid(j, i) || isButtonDisabled(j, i) || subcampo.bloquearGuardar}">
               GUARDAR RESPUESTA
             </button>
@@ -96,3 +96,4 @@
     </div>
   </div>
 </div>
+<!-- Este es una prueba con la rama de prueba 2 -->

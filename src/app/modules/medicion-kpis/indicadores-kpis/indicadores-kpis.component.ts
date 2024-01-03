@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { GestionIndicadorKpiComponent } from './gestion-indicador-kpi/gestion-indicador-kpi.component';
 import { ObjetivoService } from 'src/app/servicios/kpis/objetivo.service';
 import { MatDialog } from '@angular/material/dialog';
@@ -15,6 +15,7 @@ import { ProcesoService } from '../../../servicios/kpis/proceso.service';
 import { ApiService } from 'src/app/servicios/api/api.service';
 import { FuenteDatoService } from 'src/app/servicios/kpis/fuente-dato.service';
 import { GraficoIndicadoresEvaluacionComponent } from './grafico-indicadores-evaluacion/grafico-indicadores-evaluacion.component';
+import { MatSelect } from '@angular/material/select';
 
 @Component({
   selector: 'app-indicadores-kpis',
@@ -75,6 +76,8 @@ export class IndicadoresKpisComponent {
   dataFuenteDatos: any = [];
   dataAnios: any = [];
   userInfor:any;
+  tipoUsuario:any=0;
+  @ViewChild(MatSelect) matSelect: MatSelect;
   constructor(
     private objetivoService: ObjetivoService,
     private procesoService: ProcesoService,
@@ -102,13 +105,37 @@ export class IndicadoresKpisComponent {
     this.ID_USUARIO = localStorage.getItem('Id');
     this.normas = JSON.parse(localStorage.getItem('norma'));
     this.normaSelected = localStorage.getItem('normaSelected');
+    this.tipoUsuario = localStorage.getItem('TIPO_USUARIO');
     this.dataEnvio.ID_PAQUETE=0;
+  
     if (this.normaSelected != null || this.normaSelected != undefined) {
-      var filtro = this.normas.filter((x) => x.NORMA == this.normaSelected)[0];
-      this.dataEnvio.ID_NORMA = filtro.ID_NORMA;
-      this.dataEnvioAsignar.ID_NORMA = filtro.ID_NORMA;
-      this.buscar();
+   
+     var lista:any=[];
+     this.normas.forEach(element => {
+      if(element.NORMA == this.normaSelected){
+        this.dataEnvio.NORMA=element.NORMA;
+        lista.push(element.ID_NORMA)
+      }
+     });
+   
+   this.dataEnvio.ID_NORMA=lista;
+   this.buscar();
     }
+    if(this.tipoUsuario==3 || this.tipoUsuario==4){
+      this.apiService.getNormaSelect().subscribe((data) => {
+        
+        this.normas=data;
+        var lista:any=[];
+        
+        this.normas.forEach(element => {
+          lista.push(element.ID_NORMA)
+        });
+        this.dataEnvio.ID_NORMA=lista;
+        this.buscar();
+      });
+     
+    }
+    
   }
   buscar() {
     this.obtenerTabla();
@@ -225,6 +252,7 @@ export class IndicadoresKpisComponent {
           this.totalPaginas = Math.ceil(this.totalItems / this.pageSize);
           if (this.totalPaginas == 0) this.totalPaginas = 1;
         } else {
+          this.modalService.showModal('Alerta', x.Mensaje);
         }
       },
       error: (e) => {},
@@ -258,6 +286,7 @@ export class IndicadoresKpisComponent {
   }
 
   abrirDialog() {
+
     if (this.dataEnvio.ID_PAQUETE == undefined) {
       this.modalService.showModal('Alerta', 'Seleccione un paquete');
       return;
@@ -266,7 +295,7 @@ export class IndicadoresKpisComponent {
       this.modalService.showModal('Alerta', 'Seleccione un paquete');
       return;
     }
-    if (this.dataEnvio.ID_NORMA == undefined) {
+    if (this.dataEnvio.ID_NORMA.length < 1) {
       this.modalService.showModal('Alerta', 'Seleccione una norma');
       return;
     }
@@ -384,5 +413,21 @@ export class IndicadoresKpisComponent {
       ],
       disableClose: true,
     });
+  }
+  seleccionarTodos(event:any){
+
+    //const seleccionarTodos = this.dataEnvio.ID_NORMA.length === this.normas.length;
+
+    if (!event.source._selected) {
+      // Si "Todos" está seleccionado, deselecciona todas las normas
+      this.dataEnvio.ID_NORMA = [];
+    } else {
+      // Si "Todos" no está seleccionado, selecciona todas las normas
+      this.dataEnvio.ID_NORMA = this.normas.map(item => item.ID_NORMA);
+    }
+
+    // Actualiza el valor del MatSelect
+    this.matSelect.writeValue(this.dataEnvio.ID_NORMA);
+    
   }
 }

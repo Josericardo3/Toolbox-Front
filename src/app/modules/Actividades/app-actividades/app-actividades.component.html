@@ -45,14 +45,15 @@
                     </div>
                     <div class="section">            
                       <label>Tipo de actividad</label>
-                      <select class="inputSection" [(ngModel)]="activityType" [(ngModel)]='ngSelectActividad'>
+                      <select class="inputSection" [(ngModel)]="activityType" [(ngModel)]='ngSelectActividad' disabled>
                       <option value="1">Mejora continua</option>
-                      <option *ngFor="let activity of arrayActivity" [ngValue]="activity.VALOR" disabled>{{ activity.DESCRIPCION | titlecase }}</option> 
+                      <option *ngFor="let activity of arrayActivity" [ngValue]="activity.VALOR">{{ activity.DESCRIPCION | titlecase }}</option> 
                     </select>
                     </div>
-                    <div class="section">            
+                    <div class="section">
                         <label>Descripción de actividad</label>
-                        <textarea class="inputSection" style="height: 70px;" placeholder="Descripción de actividad" [(ngModel)]="activity"></textarea>
+                        <textarea class="inputSection" maxlength="320" (input)="fnGetLength()" style="height: 70px;" placeholder="Descripción de actividad" [(ngModel)]="activity"></textarea>
+                        <small *ngIf="longActivity>300" style="margin-bottom:  10px; color: tomato; font-size: xx-small; font-weight: bold;">La descripción noo debe superar los 300 caracteres</small>
                     </div>
                   </div>
                   <div class="containerSection">
@@ -72,7 +73,7 @@
                         </select>
                     </div>
                     <div class="sectionIcon">
-                        <a title="Guardar" (click)="(activityType!='' && ngSelectActividad!=null) ? fnNewRecord() : fnValidadorNewRecord()"><i class="fa-regular fa-floppy-disk"
+                        <a title="Guardar" (click)="(activityType!='' && ngSelectActividad!=null && longActivity<=300) ? fnNewRecord() : fnValidadorNewRecord()"><i class="fa-regular fa-floppy-disk"
                                 style="color: #06543c;font-size: 25px; margin: 0 0.9vw;"></i></a>
                         <a title="Cancelar" (click)="fnCancelarNuevoRegistro()"><i class="fa-solid fa-circle-xmark"
                                 style="color: #06543c;font-size: 25px;"></i></a>

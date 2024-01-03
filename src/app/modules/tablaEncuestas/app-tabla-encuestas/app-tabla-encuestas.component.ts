@@ -2,13 +2,14 @@ import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../servicios/api/api.service';
 import { Router } from '@angular/router';
 import { ColorLista } from 'src/app/servicios/api/models/color';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 @Component({
   selector: 'app-app-tabla-encuestas',
   templateUrl: './app-tabla-encuestas.component.html',
   styleUrls: ['./app-tabla-encuestas.component.css']
 })
-export class AppTablaEncuestasComponent implements OnInit, AfterViewInit{
+export class AppTablaEncuestasComponent implements OnInit, AfterViewInit {
   showModal: boolean = false;
   mostrarBuscador: boolean = false;
   busqueda: string = '';
@@ -23,24 +24,25 @@ export class AppTablaEncuestasComponent implements OnInit, AfterViewInit{
   caracteristicaIndiceEliminar: number = -1;
 
   result: boolean = false;
+  encuestaActiva: boolean;
 
-    //paginación
-    pages = 1;
-    totalPaginas: number = 0;
-    totalRegistros: number = 0;
-    datatotal: number = 0;
-    contentArray: any = [];
-    currentPage: number = 1
-    filterArray: any = [];
-    datos: any = [];
-    dataInitial: any = [];
+  //paginación
+  pages = 1;
+  totalPaginas: number = 0;
+  totalRegistros: number = 0;
+  datatotal: number = 0;
+  contentArray: any = [];
+  currentPage: number = 1
+  filterArray: any = [];
+  datos: any = [];
+  dataInitial: any = [];
 
   constructor(
     public api: ApiService,
     private router: Router
-  ) {}
+  ) { }
 
-  ngOnInit(){
+  ngOnInit() {
     this.api.colorTempo();
     this.colorWallpaper = JSON.parse(localStorage.getItem("color")).wallpaper;
     this.colorTitle = JSON.parse(localStorage.getItem("color")).title;
@@ -50,6 +52,13 @@ export class AppTablaEncuestasComponent implements OnInit, AfterViewInit{
     this.fnListEncuestas();
   }
 
+  cambiarEstadoEncuesta(encuesta: any) {
+    const idEncuesta = encuesta.ID_MAE_ENCUESTA;
+    this.api.updateEstado(idEncuesta, encuesta.ESTADO_HABILITADO ? 1 : 0).subscribe(response => {
+      console.log('Estado de la encuesta actualizado en el servidor:', response);
+    });
+  }
+
   filtrarDatos() {
     this.result = false;
     if (!this.busqueda) {
@@ -57,7 +66,7 @@ export class AppTablaEncuestasComponent implements OnInit, AfterViewInit{
       this.updatePaginado(this.dataInitial);
       this.result = false;
     }
-    else {      
+    else {
       const terminoBusqueda = this.busqueda.toLowerCase();
       const filter = this.arrayEncuestas.filter((campo: any) =>
         (campo.TITULO && campo.TITULO.toLowerCase().includes(terminoBusqueda)) ||
@@ -78,23 +87,33 @@ export class AppTablaEncuestasComponent implements OnInit, AfterViewInit{
       this.datos = data;
       this.filterArray = this.datos;
       this.arrayEncuestas = data;
-      this.dataInitial= data;
-      this.datos.sort((a, b) => { a.FECHA_ACT > b.FECHA_ACT ? 1 : -1})
-    // Paginado inicial
-    const totalPag = data.length;
-    this.totalPaginas = Math.ceil(totalPag / 7);
-    if (isNaN(this.totalPaginas) || this.totalPaginas === 0) {
-      this.totalPaginas = 1;
-    }
-    this.datatotal = this.dataInitial.length;
-    this.datos = this.dataInitial.slice(0, 7);
-    this.contentArray = data;
-    this.currentPage = 1;
-    if (this.datatotal >= 7) {
-      this.totalRegistros = 7;
-    } else {
-      this.totalRegistros = this.dataInitial.length;
-    }
+      this.dataInitial = data;
+      this.datos.sort((a, b) => { a.FECHA_ACT > b.FECHA_ACT ? 1 : -1 })
+      // Obtener el estado de la encuesta activa
+      const encuestaActiva = this.datos.find(campo => campo.ESTADO_HABILITADO === 1);
+
+      // Establecer el estado inicial del mat-slide-toggle
+      if (encuestaActiva) {
+        this.encuestaActiva = encuestaActiva.ESTADO_HABILITADO === 1;
+      } else {
+        this.encuestaActiva = false;
+      }
+
+      // Paginado inicial
+      const totalPag = data.length;
+      this.totalPaginas = Math.ceil(totalPag / 7);
+      if (isNaN(this.totalPaginas) || this.totalPaginas === 0) {
+        this.totalPaginas = 1;
+      }
+      this.datatotal = this.dataInitial.length;
+      this.datos = this.dataInitial.slice(0, 7);
+      this.contentArray = data;
+      this.currentPage = 1;
+      if (this.datatotal >= 7) {
+        this.totalRegistros = 7;
+      } else {
+        this.totalRegistros = this.dataInitial.length;
+      }
     })
   }
 
@@ -134,7 +153,7 @@ export class AppTablaEncuestasComponent implements OnInit, AfterViewInit{
     filter = filter.slice(0, 7);
     this.datos = filter;
   }
-  
+
   pageChanged(event: any): void {
     this.pages = event.page;
     const startItem = (event.page - 1) * 7;

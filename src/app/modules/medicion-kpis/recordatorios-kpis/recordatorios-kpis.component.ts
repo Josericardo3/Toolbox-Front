@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { PageEvent } from '@angular/material/paginator';
 import { ModalService } from 'src/app/messagemodal/messagemodal.component.service';
@@ -7,6 +7,8 @@ import { PaqueteService } from 'src/app/servicios/kpis/paquete.service';
 
 import { environment } from 'src/environments/environment.prod';
 import { FormularioRecordatorioKpisComponent } from './formulario-recordatorio-kpis/formulario-recordatorio-kpis.component';
+import { ApiService } from 'src/app/servicios/api/api.service';
+import { MatSelect } from '@angular/material/select';
 
 @Component({
   selector: 'app-recordatorios-kpis',
@@ -54,11 +56,15 @@ export class RecordatoriosKpisComponent {
   normaSelected: any = [];
 
   listaEvaluacionIndicadores: any = [];
+  tipoUsuario:any=0;
+  norma:any="";
+  @ViewChild(MatSelect) matSelect: MatSelect;
   constructor(
     private paqueteService: PaqueteService,
     private indicadorService: IndicadorService,
     private _dialog: MatDialog,
-    private modalService: ModalService
+    private modalService: ModalService,
+    private apiService:ApiService
   ) {}
   ngOnInit(): void {
     this.obtenerComboPaquetes();
@@ -67,10 +73,34 @@ export class RecordatoriosKpisComponent {
     this.normas = JSON.parse(localStorage.getItem('norma'));
     this.normaSelected = localStorage.getItem('normaSelected');
     this.dataEnvio.ID_PAQUETE = 0;
+    this.tipoUsuario = localStorage.getItem('TIPO_USUARIO');
     if (this.normaSelected != null || this.normaSelected != undefined) {
-      var filtro = this.normas.filter((x) => x.NORMA == this.normaSelected)[0];
-      this.dataEnvio.ID_NORMA = filtro.ID_NORMA;
+      //var filtro = this.normas.filter((x) => x.NORMA == this.normaSelected)[0];
+      var lista:any=[];
+        this.normas.forEach(element => {
+          if(element.NORMA == this.normaSelected){
+            lista.push(element.ID_NORMA)
+            this.norma=element.NORMA;
+            return
+          }
+        });
+      //this.dataEnvio.ID_NORMA = filtro.ID_NORMA;
+      this.dataEnvio.ID_NORMA=lista;
       this.buscar();
+    }
+    if(this.tipoUsuario==3 || this.tipoUsuario==4){
+      this.apiService.getNormaSelect().subscribe((data) => {
+        
+        this.normas=data;
+        var lista:any=[];
+        this.normas.forEach(element => {
+          lista.push(element.ID_NORMA)
+        });
+       
+        
+        this.dataEnvio.ID_NORMA=lista;
+        this.buscar();
+      });
     }
   }
   buscar() {
@@ -135,9 +165,11 @@ export class RecordatoriosKpisComponent {
         ID_NORMA: this.dataEnvio.ID_NORMA,
         ID_PAQUETE: this.dataEnvio.ID_PAQUETE,
         VAL_CUMPLIMIENTO: 0,
+        NORMA: this.norma
       };
     } else {
       info.numero = numero;
+      info.NORMA=this.norma;
       this.dataEnvio.ID_USUARIO_CREA = this.ID_USUARIO;
       this.dataEnvio = info;
     }
@@ -174,5 +206,20 @@ export class RecordatoriosKpisComponent {
     if (this.totalPaginas == 0) this.totalPaginas = 1;
     this.obtenerTabla();
     this.pages = event.page;
+  }
+  seleccionarTodos(event:any){
+    //const seleccionarTodos = this.dataEnvio.ID_NORMA.length === this.normas.length;
+
+    if (!event.source._selected) {
+      // Si "Todos" está seleccionado, deselecciona todas las normas
+      this.dataEnvio.ID_NORMA = [];
+    } else {
+      // Si "Todos" no está seleccionado, selecciona todas las normas
+      this.dataEnvio.ID_NORMA = this.normas.map(item => item.ID_NORMA);
+    }
+
+    // Actualiza el valor del MatSelect
+    this.matSelect.writeValue(this.dataEnvio.ID_NORMA);
+   
   }
 }

@@ -4,7 +4,7 @@ import { FormArray, FormBuilder, FormGroup, FormControl, Validators } from '@ang
 import { FormService } from 'src/app/servicios/form/form.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { forEach } from 'lodash';
-import { elements } from 'chart.js';
+// import { elements } from 'chart.js';
 import { ModalService } from 'src/app/messagemodal/messagemodal.component.service';
 import { ComunicacionService } from 'src/app/servicios/comunicacion/comunicacion.service';
 import { Subscription } from 'rxjs';

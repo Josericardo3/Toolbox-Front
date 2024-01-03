@@ -247,11 +247,18 @@ export class AppLoginComponent implements OnInit {
                   
                   } 
                   else {
+                    
                     if(this.idnorma>1){
                       this.router.navigate(["/dashboard"]);
                     }
                     else if(data.body.Grupo[0].TIPO_USUARIO === 1){
+                     var userRol = localStorage.getItem('rol');
+                     this.ApiService.getUsuarioPermisoPerfil(userRol).subscribe(dataPermiso => {
+                      localStorage.setItem("acessos", JSON.stringify(dataPermiso[0]));
                       this.router.navigate(["/caracterizacion"]);
+                    });
+
+                      
                     } else{
                       this.router.navigate(["/dashboard"]);
                     }

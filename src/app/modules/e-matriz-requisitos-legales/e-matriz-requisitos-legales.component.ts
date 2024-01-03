@@ -164,6 +164,7 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
   headerLaboral: any;
   headerSocial: any;
   headerEconomico: any;
+  
 
 
   saveForm : FormGroup;
@@ -252,6 +253,12 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
       this.headerSocial = data.find(p => p.CATEGORIA === "Social");
      
     })
+    
+
+
+    // this.gruposParticularReporte = this.datosReporte.filter((ley) => ley.CATEGORIA === 'NTC 6496 General' || ley.CATEGORIA === 'NTC 6487' || 
+    //   ley.CATEGORIA === 'NTC 6503' || ley.CATEGORIA === 'NTC 6503 Economico' || ley.CATEGORIA === 'NTC 6504' || ley.CATEGORIA === 'NTC 6505'
+    //   || ley.CATEGORIA === 'NTC 6505 Ambiental' || ley.CATEGORIA === 'NTC 6502' || ley.CATEGORIA === 'NTC 6506' || ley.CATEGORIA === 'NTC 6507' || ley.CATEGORIA === 'NTC 6523'||ley.CATEGORIA === 'Particular de Prestador')
 
     this.tab1Form = this.formBuilder.group({
       tipoNormatividad: ['', Validators.required],
@@ -466,6 +473,7 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
               DESCRIPCION: ley.DESCRIPCION,
               DOCS_ESPECIFICOS: ley.DOCS_ESPECIFICOS,
               ES_FIJO: ley.ES_FIJO,
+              FLAG_MEJORA_CONTINUA: ley.FLAG_MEJORA_CONTINUA
             }],
           };
         } else {
@@ -483,6 +491,7 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
             DESCRIPCION: ley.DESCRIPCION,
             DOCS_ESPECIFICOS: ley.DOCS_ESPECIFICOS,
             ES_FIJO: ley.ES_FIJO,
+            FLAG_MEJORA_CONTINUA: ley.FLAG_MEJORA_CONTINUA
           });
         }
         return acumulador;
@@ -509,6 +518,7 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
               ID_MATRIZ: ley.ID_MATRIZ,
               DOCS_ESPECIFICOS: ley.DOCS_ESPECIFICOS,
               ES_FIJO: ley.ES_FIJO,
+              FLAG_MEJORA_CONTINUA: ley.FLAG_MEJORA_CONTINUA
             }],
           };
         } else {
@@ -525,6 +535,7 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
             ID_MATRIZ: ley.ID_MATRIZ,
             DOCS_ESPECIFICOS: ley.DOCS_ESPECIFICOS,
             ES_FIJO: ley.ES_FIJO,
+            FLAG_MEJORA_CONTINUA: ley.FLAG_MEJORA_CONTINUA
           });
         }
         return acumulador;
@@ -550,6 +561,7 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
               ID_MATRIZ: ley.ID_MATRIZ,
               DOCS_ESPECIFICOS: ley.DOCS_ESPECIFICOS,
               ES_FIJO: ley.ES_FIJO,
+              FLAG_MEJORA_CONTINUA: ley.FLAG_MEJORA_CONTINUA
             }],
           };
         } else {
@@ -566,6 +578,7 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
             ID_MATRIZ: ley.ID_MATRIZ,
             DOCS_ESPECIFICOS: ley.DOCS_ESPECIFICOS,
             ES_FIJO: ley.ES_FIJO,
+            FLAG_MEJORA_CONTINUA: ley.FLAG_MEJORA_CONTINUA
           });
         }
         return acumulador;
@@ -591,6 +604,7 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
               ID_MATRIZ: ley.ID_MATRIZ,
               DOCS_ESPECIFICOS: ley.DOCS_ESPECIFICOS,
               ES_FIJO: ley.ES_FIJO,
+              FLAG_MEJORA_CONTINUA: ley.FLAG_MEJORA_CONTINUA
             }],
           };
         } else {
@@ -607,6 +621,7 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
             ID_MATRIZ: ley.ID_MATRIZ,
             DOCS_ESPECIFICOS: ley.DOCS_ESPECIFICOS,
             ES_FIJO: ley.ES_FIJO,
+            FLAG_MEJORA_CONTINUA: ley.FLAG_MEJORA_CONTINUA
           });
         }
         return acumulador;
@@ -632,6 +647,7 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
               ID_MATRIZ: ley.ID_MATRIZ,
               DOCS_ESPECIFICOS: ley.DOCS_ESPECIFICOS,
               ES_FIJO: ley.ES_FIJO,
+              FLAG_MEJORA_CONTINUA: ley.FLAG_MEJORA_CONTINUA
             }],
           };
         } else {
@@ -648,6 +664,7 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
             ID_MATRIZ: ley.ID_MATRIZ,
             DOCS_ESPECIFICOS: ley.DOCS_ESPECIFICOS,
             ES_FIJO: ley.ES_FIJO,
+            FLAG_MEJORA_CONTINUA: ley.FLAG_MEJORA_CONTINUA
           });
         }
         return acumulador;
@@ -675,6 +692,7 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
               ID_MATRIZ: ley.ID_MATRIZ,
               DOCS_ESPECIFICOS: ley.DOCS_ESPECIFICOS,
               ES_FIJO: ley.ES_FIJO,
+              FLAG_MEJORA_CONTINUA: ley.FLAG_MEJORA_CONTINUA
             }],
           };
         } else {
@@ -691,6 +709,7 @@ export class EMatrizRequisitosLegalesComponent implements OnInit{
             ID_MATRIZ: ley.ID_MATRIZ,
             DOCS_ESPECIFICOS: ley.DOCS_ESPECIFICOS,
             ES_FIJO: ley.ES_FIJO,
+            FLAG_MEJORA_CONTINUA: ley.FLAG_MEJORA_CONTINUA
           });
         }
         return acumulador;
@@ -2460,9 +2479,11 @@ selectValue: any
       this.datosReporte = data;
       this.gruposParticularReporte = this.datosReporte.filter((ley) => ley.CATEGORIA === 'NTC 6496 General' || ley.CATEGORIA === 'NTC 6487' || 
       ley.CATEGORIA === 'NTC 6503' || ley.CATEGORIA === 'NTC 6503 Economico' || ley.CATEGORIA === 'NTC 6504' || ley.CATEGORIA === 'NTC 6505'
-      || ley.CATEGORIA === 'NTC 6505 Ambiental' || ley.CATEGORIA === 'NTC 6502' || ley.CATEGORIA === 'NTC 6506' || ley.CATEGORIA === 'NTC 6507' || ley.categoria === 'NTC 6523')
+      || ley.CATEGORIA === 'NTC 6505 Ambiental' || ley.CATEGORIA === 'NTC 6502' || ley.CATEGORIA === 'NTC 6506' || ley.CATEGORIA === 'NTC 6507' || ley.CATEGORIA === 'NTC 6523'||ley.CATEGORIA === 'Particular de Prestador')
       let bodyContent;
       //SI USERINFOR.LOGO ES NULO CAMBIA EL FORMATO DEL PDF A TIPO TEXT
+      /* ESTE SE SUBIO EN EL LAPSO
+      */
       if(this.userInfor.LOGO == null){
         bodyContent = {
           width: 'auto',

@@ -65,6 +65,7 @@ export class GestionIndicadorKpiComponent {
      return;
   }
     this.model.ID_PAQUETE = this.paqueteId;
+
     /*var lista = ['*', '+', '-', '(', '-', ')', '/'];
     this.model.VARIABLES = this.model.variablesR.filter(
       (element) => !lista.includes(element)

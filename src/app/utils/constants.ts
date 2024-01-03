@@ -9,7 +9,7 @@ export class Categoria {
     tipo:[
       {
         id:1 ,
-        name:'GUIAS DE TURISMO'
+        name:'GUÍA DE TURISMO'
       },
       {
         id:2 ,

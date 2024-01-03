@@ -28,6 +28,7 @@
                     <tr>
                         <th scope="col">Título de la encuesta</th>
                         <th scope="col">Personas encuestadas</th>
+                        <th scope="col">Aceptar respuestas</th>
                         <th scope="col" style="text-align: center;" (click)="mostrarBuscador = !mostrarBuscador">
                             <i class="fa-solid fa-magnifying-glass" title="Buscar" style="cursor: pointer;"></i>
                         </th>
@@ -37,6 +38,11 @@
                     <tr *ngFor="let campo of datos; let i = index">
                         <td>{{campo.TITULO}}</td>
                         <td>{{campo.NUM_ENCUESTADOS}}</td>
+                        <td>
+                            OFF
+                            <mat-slide-toggle [(ngModel)]="campo.ESTADO_HABILITADO" (change)="cambiarEstadoEncuesta(campo)"></mat-slide-toggle> 
+                            ON
+                        </td>
                         <td *ngIf="getRolValue() !== 4 && getRolValue() !== 5 &&  getRolValue() !== 7">
                             <a title="Editar" (click)="editarEncuesta(campo.ID_MAE_ENCUESTA)">
                                 <i class="fa-solid fa-pen" style="color: #06543c;"></i>

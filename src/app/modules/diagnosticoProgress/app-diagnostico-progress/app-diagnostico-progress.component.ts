@@ -2,6 +2,7 @@ import { AfterContentChecked, ChangeDetectorRef, Component, OnInit } from '@angu
 import { Router } from '@angular/router';
 import { ApiService } from 'src/app/servicios/api/api.service';
 import { BtnEmpezarContinuarService } from 'src/app/servicios/btn-empezar-continuar/btn-empezar-continuar.service';
+import { SpinnerService } from 'src/app/servicios/spinnerService/spinner.service';
 
 @Component({
   selector: 'app-app-diagnostico-progress',

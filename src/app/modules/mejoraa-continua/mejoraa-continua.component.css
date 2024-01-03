@@ -71,7 +71,7 @@ tr th {
 }
 
 .table-gestion {
-    width: 100%;
+    width: 95%;
     font-size: 14px;
     font-family: 'Work Sans', sans-serif;
     min-width: 450px;
@@ -82,6 +82,7 @@ tr th {
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
     text-align: center;
     margin: 2vh 4vw 4vh 2vw;
+    overflow: auto;
 }
 
 .table-gestion thead tr {
@@ -192,7 +193,10 @@ tr th {
     .form {
         width: 100% !important;
     }
-
+    .table-mejora{
+        width: 98%;
+        overflow: auto;
+    }
     .table-gestion {
         width: auto;
         margin-top: 4px;
@@ -222,5 +226,9 @@ tr th {
         
         font-size: 13px;
          min-width: 0;
+    }
+    .table-mejora{
+        width: 95%;
+        overflow: auto;
     }
 }

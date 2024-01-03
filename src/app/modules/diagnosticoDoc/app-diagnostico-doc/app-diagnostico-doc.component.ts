@@ -1,5 +1,5 @@
 import { compileDeclareInjectorFromMetadata } from '@angular/compiler';
-import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { head } from 'lodash';
 import { ApiService } from 'src/app/servicios/api/api.service';
@@ -25,6 +25,7 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { SpinnerService } from 'src/app/servicios/spinnerService/spinner.service';
 import { ColorLista } from 'src/app/servicios/api/models/color';
 import { emptyObjectsAreNotAllowedMsg } from '@ngrx/store/src/models';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-app-diagnostico-doc',
@@ -33,6 +34,7 @@ import { emptyObjectsAreNotAllowedMsg } from '@ngrx/store/src/models';
 })
 export class AppDiagnosticoDocComponent implements OnInit {
   @ViewChild('chartContainer') chartContainer: ElementRef;
+  
   //Lista diagnóstico
   datosD: any = [];
   NTC: string;
@@ -55,7 +57,6 @@ export class AppDiagnosticoDocComponent implements OnInit {
   nombreAsesor: any;
   fechaInforme: any
   graficoimg: any;
-
   //Lista Pla de Mejora
   datosP: any = [];
   NTCP: string;
@@ -72,7 +73,6 @@ export class AppDiagnosticoDocComponent implements OnInit {
   // etapaP: any;
   nombreAsesorP: any;
   fechaInformeP: any;
-
   //Lista de chequeo
   NTCL: string;
   datosL: any = [];
@@ -113,17 +113,13 @@ export class AppDiagnosticoDocComponent implements OnInit {
   colorTitle:ColorLista;
   colorWallpaper:ColorLista;
 
-  etapaIni: any;
-  etapaInt: any;
-  etapaFin: any;
-
   constructor(
     private router: Router,
     private ApiService: ApiService,
-    private http: HttpClient,
     private Message: ModalService,
     private sanitizer: DomSanitizer,
-    private spinnerService: SpinnerService,
+    public spinnerService: SpinnerService,
+    private cd: ChangeDetectorRef
   ) { }
   
   ngOnInit(): void {
@@ -131,28 +127,19 @@ export class AppDiagnosticoDocComponent implements OnInit {
     this.ApiService.colorTempo(); 
     this.colorTitle = JSON.parse(localStorage.getItem("color")).title;
     this.colorWallpaper = JSON.parse(localStorage.getItem("color")).wallpaper;
-
+    
     this.ApiService.validateCaracterizacion(id).subscribe((data: any) => {
       if (data === true) {
         this.spinnerService.llamarSpinner();
         this.getListaChequeo();
         this.getListaDiagnostico();
         this.getListaPlanMejora();
+        this.cd.detectChanges();
       }
       else {
         this.router.navigate(['/dashboard']);     
       }
     })
-
-    // const etapas = Number(window.localStorage.getItem('etapa'));
-    // console.log(etapas)
-    // if (etapas === 1) {
-    //   this.etapaIni = 'Inicial'
-    // } else if (etapas === 2) {
-    //   this.etapaInt = 'Intermedia'
-    // } else if (etapas === 3) {
-    //   this.etapaFin = 'Final'
-    // }
   }
 
   getEtapaDiagnostico(): string {
@@ -574,116 +561,228 @@ export class AppDiagnosticoDocComponent implements OnInit {
   }
 
   generateDiagnostico() {
-    if (!!!this.datosD) {
-      const title = "Error";
-      const message = "No se encontró información para generar el informe de diagnóstico"
-      this.Message.showModal(title, message);
-    } else {
-      const etapaDiagnostico = this.getEtapaDiagnostico();
-      const pdfDefinition: any = {
-        header: {
-          columns: [
-            { image: headerLogo, fit: [150, 150], style: ['headerLogo'] }
-          ]
-        },
-        footer: function (currentPage: number, pageCount: number) {
-          return {
+      if (!!!this.datosD) {
+        const title = "Error";
+        const message = "No se encontró información para generar el informe de diagnóstico"
+        this.Message.showModal(title, message);
+      } else {
+        const etapaDiagnostico = this.getEtapaDiagnostico();
+        const pdfDefinition: any = {
+          header: {
             columns: [
-              {
-                text: [
-                  { text: 'Página ', style: ['footer'], alignment: 'left' },
-                  { text: currentPage.toString(), style: ['footerPage'], alignment: 'left' },
-                  { text: ' de ', style: ['footer'], alignment: 'left' },
-                  { text: pageCount.toString(), style: ['footerPage'], alignment: 'left' }
-                ],
-                alignment: 'left',
-                margin: [30, 20, 20, 20]
-              },
-              { image: footerLogo, fit: [200, 200], style: ['footerLogo'], alignment: 'right' }
+              { image: headerLogo, fit: [150, 150], style: ['headerLogo'] }
             ]
-          }
-        },
-        pageSize: {
-          width: 794,
-          height: 1123
-        },
-        pageMargins: [40, 60, 40, 60],
-        content: [
-          {
-            toc: {
-              title: { text: 'INFORME DE DIAGNÓSTICO', style: ['header'] }
+          },
+          footer: function (currentPage: number, pageCount: number) {
+            return {
+              columns: [
+                {
+                  text: [
+                    { text: 'Página ', style: ['footer'], alignment: 'left' },
+                    { text: currentPage.toString(), style: ['footerPage'], alignment: 'left' },
+                    { text: ' de ', style: ['footer'], alignment: 'left' },
+                    { text: pageCount.toString(), style: ['footerPage'], alignment: 'left' }
+                  ],
+                  alignment: 'left',
+                  margin: [30, 20, 20, 20]
+                },
+                { image: footerLogo, fit: [200, 200], style: ['footerLogo'], alignment: 'right' }
+              ]
             }
           },
+          pageSize: {
+            width: 794,
+            height: 1123
+          },
+          pageMargins: [40, 60, 40, 60],
+          content: [
+            {
+              toc: {
+                title: { text: 'INFORME DE DIAGNÓSTICO', style: ['header'] }
+              }
+            },
+            {
+              table: {
+                widths: ['*', '*', '*', '*'],
+                body: [
+                  [
+                    { text: '1. Información general del Prestador de Servicios Turísticos - PST', colSpan: 4, alignment: 'center', bold: true },
+                    {},
+                    {},
+                    {}
+                  ],
+                  [
+                    'Nombre del prestador de servicios turísticos PST',
+                    { text: this.nombrePstD, colSpan: 3, alignment: 'center' },
+                    {},
+                    {}
+                  ],
+                  [
+                    'Número de identificación tributaria NIT',
+                    this.nitD,
+                    'Registro Nacional de Turismo RNT',
+                    this.rntD
+                  ],
+                  [
+                    'Categoría del RNT',
+                    this.categoriarntD,
+                    'Subcategoría del RNT	',
+                    this.subcategoriarntD
+                  ],
+                  [
+                    'Municipio',
+                    this.municipioD,
+                    'Departamento',
+                    this.departamentoD
+                  ],
+                  [
+                    'NTC de Turismo',
+                    this.NTC,
+                    'Etapa del diagnóstico',
+                    etapaDiagnostico
+                  ],
+                  [
+                    'Nombre del responsable de sostenibilidad',
+                    this.nombreResponsableSostenibilidadD,
+                    'Teléfono de contacto del responsable de sostenibilidad',
+                    this.telefonoResponsableSostenibilidadD
+                  ],
+                  [
+                    'Correo del responsable de sostenibilidad',
+                    { text: this.correoResponsableSostenibilidadD, colSpan: 2, alignment: 'center' },
+                    {},
+                    ''
+                  ]
+                ]
+              },
+              fontSize: 10,
+            },
+            '\n',
+            {
+              table: {
+                widths: ['*', '*'],
+                body: [
+                  [
+                    { text: '2. Metodología de calificación diagnóstico', alignment: 'center', bold: true, colSpan: 2 },
+                    {}
+                  ],
+                  [
+                    {
+                      text: 'Califique, acorde con la siguiente escala:\n\nC = Cumple: Se encuentra documentado, implementado, socializado y es adecuado para la organización.\nCP = Cumple parcialmente: Se encuentra parcialmente documentado o en su totalidad, pero no está implementado o está en proceso de implementación o se ejecutan actividades pero no están documentadas.\nNC = No cumple: No se ha realizado ninguna acción respecto al requisito.\nNA = No aplica: No es aplicable el requisito a la organización.',
+                      colSpan: 2
+                    },
+                    {}
+                  ]
+                ]
+              },
+              fontSize: 10,
+            },
+            '\n',
+            {
+              table: {
+                widths: ['*', '*', '*', '*', '*'],
+                body: [
+                  [
+                    { text: '3. Resultados del diagnóstico', colSpan: 5, style: ['tituloDinamico'] },
+                    {},
+                    {},
+                    {},
+                    {}
+                  ],
+                ],
+              },
+              fontSize: 10,
+            },
+            '\n'
+          ],
+          styles: {
+            header: {
+              fontSize: 16,
+              bold: true,
+              margin: [0, 10],
+              alignment: 'center',
+            },
+            tituloDinamico: {
+              alignment: 'center',
+              bold: true,
+              fontSize: 10,
+            },
+            headerLogo: {
+              margin: [30, 30, 30, 30],
+              alignment: 'left'
+            },
+            footerLogo: {
+              margin: [0, 10, 10, 0],
+              alignment: 'right'
+            },
+            footer: {
+              fontSize: 10,
+              margin: [0, 0, 0, 10],
+            },
+            footerPage: {
+              fontSize: 10,
+              bold: true
+            }
+          }
+        }
+        pdfDefinition.content.push(
           {
             table: {
-              widths: ['*', '*', '*', '*'],
+              widths: ['auto', '*', '*', '*', '*', '*'],
               body: [
                 [
-                  { text: '1. Información general del Prestador de Servicios Turísticos - PST', colSpan: 4, alignment: 'center', bold: true },
+                  { text: '3. Resultados consolidado diagnóstico', colSpan: 6, style: ['tituloDinamico'] },
+                  {},
+                  {},
                   {},
                   {},
                   {}
                 ],
                 [
-                  'Nombre del prestador de servicios turísticos PST',
-                  { text: this.nombrePstD, colSpan: 3, alignment: 'center' },
-                  {},
-                  {}
+                  { text: 'Requisito', alignment: 'center' },
+                  { text: 'No Aplica', alignment: 'center' },
+                  { text: 'No Cumple', alignment: 'center' },
+                  { text: 'Cumple Parcialmente', alignment: 'center' },
+                  { text: 'Cumple', alignment: 'center' },
+                  { text: '% Cumplimiento', alignment: 'center' },
                 ],
+                ...this.datosD.DATA_CONSOLIDADO.map((item: any) => [
+                  { text: item.REQUSITO },
+                  { text: item.NO_APLICA, alignment: 'center' },
+                  { text: item.NO_CUMPLE, alignment: 'center' },
+                  { text: item.CUMPLE_PARCIAL, alignment: 'center' },
+                  { text: item.CUMPLE, alignment: 'center' },
+                  { text: item.PORC_CUMPLE+"%", alignment: 'center' }
+                ]),
                 [
-                  'Número de identificación tributaria NIT',
-                  this.nitD,
-                  'Registro Nacional de Turismo RNT',
-                  this.rntD
-                ],
-                [
-                  'Categoría del RNT',
-                  this.categoriarntD,
-                  'Subcategoría del RNT	',
-                  this.subcategoriarntD
-                ],
-                [
-                  'Municipio',
-                  this.municipioD,
-                  'Departamento',
-                  this.departamentoD
-                ],
-                [
-                  'NTC de Turismo',
-                  this.NTC,
-                  'Etapa del diagnóstico',
-                  etapaDiagnostico
-                ],
-                [
-                  'Nombre del responsable de sostenibilidad',
-                  this.nombreResponsableSostenibilidadD,
-                  'Teléfono de contacto del responsable de sostenibilidad',
-                  this.telefonoResponsableSostenibilidadD
-                ],
-                [
-                  'Correo del responsable de sostenibilidad',
-                  { text: this.correoResponsableSostenibilidadD, colSpan: 2, alignment: 'center' },
-                  {},
-                  ''
+                  { text: 'TOTAL', style: ['tituloDinamico'] },
+                  { text: this.totales.NO_APLICA.toFixed(0), alignment: 'center' },
+                  { text: this.totales.NO_CUMPLE.toFixed(0), alignment: 'center' },
+                  { text: this.totales.CUMPLE_PARCIAL.toFixed(0), alignment: 'center' },
+                  { text: this.totales.CUMPLE.toFixed(0), alignment: 'center' },
+                  { text: ((this.totales.CUMPLE)*100 / (this.totales.NO_APLICA + this.totales.NO_CUMPLE + this.totales.CUMPLE + this.totales.CUMPLE_PARCIAL)).toFixed(0) + '%', alignment: 'center' }
                 ]
-              ]
+              ],
             },
             fontSize: 10,
           },
           '\n',
           {
             table: {
-              widths: ['*', '*'],
+              widths: ['*', '*', '*', '*', '*'],
               body: [
                 [
-                  { text: '2. Metodología de calificación diagnóstico', alignment: 'center', bold: true, colSpan: 2 },
+                  { text: 'Gráfico por calificación de cumplimiento', alignment: 'center', bold: true, colSpan: 5 },
+                  {},
+                  {},
+                  {},
                   {}
                 ],
                 [
-                  {
-                    text: 'Califique, acorde con la siguiente escala:\n\nC = Cumple: Se encuentra documentado, implementado, socializado y es adecuado para la organización.\nCP = Cumple parcialmente: Se encuentra parcialmente documentado o en su totalidad, pero no está implementado o está en proceso de implementación o se ejecutan actividades pero no están documentadas.\nNC = No cumple: No se ha realizado ninguna acción respecto al requisito.\nNA = No aplica: No es aplicable el requisito a la organización.',
-                    colSpan: 2
-                  },
+                  {image: this.chartImage ? this.chartImage.changingThisBreaksApplicationSecurity : '',width: 500, alignment: 'center', colSpan: 5 },
+                  {},
+                  {},
+                  {},
                   {}
                 ]
               ]
@@ -696,258 +795,148 @@ export class AppDiagnosticoDocComponent implements OnInit {
               widths: ['*', '*', '*', '*', '*'],
               body: [
                 [
-                  { text: '3. Resultados del diagnóstico', colSpan: 5, style: ['tituloDinamico'] },
+                  { text: 'Gráfico por requisitos de norma', alignment: 'center', bold: true, colSpan: 5 },
                   {},
                   {},
                   {},
                   {}
                 ],
-              ],
+                [
+                  { image: this.imgTotalBar? this.imgTotalBar.changingThisBreaksApplicationSecurity: '', alignment: 'center', colSpan: 5 },
+                  {},
+                  {},
+                  {},
+                  {}
+                ]
+              ]
             },
             fontSize: 10,
           },
-          '\n'
-        ],
-        styles: {
-          header: {
-            fontSize: 16,
-            bold: true,
-            margin: [0, 10],
-            alignment: 'center',
-          },
-          tituloDinamico: {
-            alignment: 'center',
-            bold: true,
+          '\n',
+          {
+            table: {
+              widths: ['*', '*', '*', '*', '*', '*'],
+              body: [
+                [
+                  { text: '4. Interpretación de resultados diagnóstico', alignment: 'center', bold: true, colSpan: 6 },
+                  {},
+                  {},
+                  {},
+                  {},
+                  {}
+                ],
+                [
+                  { text: '', colSpan: 6 },
+                  {},
+                  {},
+                  {},
+                  {},
+                  {}
+                ],
+                [
+                  { text: 'Análisis', alignment: 'center', bold: true },
+                  { text: this.analisis, colSpan: 5 },
+                  {},
+                  {},
+                  {},
+                  {}
+                ],
+                [
+                  { text: 'Etapa Inicial', alignment: 'center', bold: true, rowSpan: 2 },
+                  { text: 'Cumplimiento', alignment: 'center' },
+                  { text: 'Etapa Intermedia', alignment: 'center', bold: true, rowSpan: 2 },
+                  { text: 'Cumplimiento', alignment: 'center' },
+                  { text: 'Etapa Final', alignment: 'center', bold: true, rowSpan: 2 },
+                  { text: 'Cumplimiento', alignment: 'center' }
+                ],
+                [
+                  '',
+                  { text: this.etapaInicial, alignment: 'center' },
+                  '',
+                  { text: this.etapaIntermedia, alignment: 'center' },
+                  '',
+                  { text: this.etapaFinal, alignment: 'center' },
+                ]
+              ]
+            },
             fontSize: 10,
           },
-          headerLogo: {
-            margin: [30, 30, 30, 30],
-            alignment: 'left'
-          },
-          footerLogo: {
-            margin: [0, 10, 10, 0],
-            alignment: 'right'
-          },
-          footer: {
+          '\n',
+          {
+            table: {
+              widths: ['*', '*', '*', '*', '*', '*'],
+              body: [
+                [
+                  { text: 'Nombre del Asesor', alignment: 'center', bold: true },
+                  { text: this.nombreAsesor, colSpan: 2 },
+                  {},
+                  { text: 'Fecha del informe', alignment: 'center', bold: true },
+                  { text: this.fechaInforme, colSpan: 2 },
+                  {}
+                ]
+              ]
+            },
             fontSize: 10,
-            margin: [0, 0, 0, 10],
-          },
-          footerPage: {
-            fontSize: 10,
-            bold: true
           }
-        }
-      }
-      pdfDefinition.content.push(
-        {
-          table: {
-            widths: ['auto', '*', '*', '*', '*', '*'],
-            body: [
-              [
-                { text: '3. Resultados consolidado diagnóstico', colSpan: 6, style: ['tituloDinamico'] },
-                {},
-                {},
-                {},
-                {},
-                {}
-              ],
-              [
-                { text: 'Requisito', alignment: 'center' },
-                { text: 'No Aplica', alignment: 'center' },
-                { text: 'No Cumple', alignment: 'center' },
-                { text: 'Cumple Parcialmente', alignment: 'center' },
-                { text: 'Cumple', alignment: 'center' },
-                { text: '% Cumplimiento', alignment: 'center' },
-              ],
-              ...this.datosD.DATA_CONSOLIDADO.map((item: any) => [
-                { text: item.REQUSITO },
-                { text: item.NO_APLICA, alignment: 'center' },
-                { text: item.NO_CUMPLE, alignment: 'center' },
-                { text: item.CUMPLE_PARCIAL, alignment: 'center' },
-                { text: item.CUMPLE, alignment: 'center' },
-                { text: item.PORC_CUMPLE+"%", alignment: 'center' }
-              ]),
-              [
-                { text: 'TOTAL', style: ['tituloDinamico'] },
-                { text: this.totales.NO_APLICA.toFixed(0), alignment: 'center' },
-                { text: this.totales.NO_CUMPLE.toFixed(0), alignment: 'center' },
-                { text: this.totales.CUMPLE_PARCIAL.toFixed(0), alignment: 'center' },
-                { text: this.totales.CUMPLE.toFixed(0), alignment: 'center' },
-                { text: ((this.totales.CUMPLE)*100 / (this.totales.NO_APLICA + this.totales.NO_CUMPLE + this.totales.CUMPLE + this.totales.CUMPLE_PARCIAL)).toFixed(0) + '%', alignment: 'center' }
-              ]
-            ],
-          },
-          fontSize: 10,
-        },
-        '\n',
-        {
-          table: {
-            widths: ['*', '*', '*', '*', '*'],
-            body: [
-              [
-                { text: 'Gráfico por calificación de cumplimiento', alignment: 'center', bold: true, colSpan: 5 },
-                {},
-                {},
-                {},
-                {}
-              ],
-              [
-                {image: this.chartImage ? this.chartImage.changingThisBreaksApplicationSecurity : '',width: 500, alignment: 'center', colSpan: 5 },
-                {},
-                {},
-                {},
-                {}
-              ]
-            ]
-          },
-          fontSize: 10,
-        },
-        '\n',
-        {
-          table: {
-            widths: ['*', '*', '*', '*', '*'],
-            body: [
-              [
-                { text: 'Gráfico por requisitos de norma', alignment: 'center', bold: true, colSpan: 5 },
-                {},
-                {},
-                {},
-                {}
-              ],
-              [
-                { image: this.imgTotalBar? this.imgTotalBar.changingThisBreaksApplicationSecurity: '', alignment: 'center', colSpan: 5 },
-                {},
-                {},
-                {},
-                {}
-              ]
-            ]
-          },
-          fontSize: 10,
-        },
-        '\n',
-        {
-          table: {
-            widths: ['*', '*', '*', '*', '*', '*'],
-            body: [
-              [
-                { text: '4. Interpretación de resultados diagnóstico', alignment: 'center', bold: true, colSpan: 6 },
-                {},
-                {},
-                {},
-                {},
-                {}
-              ],
-              [
-                { text: '', colSpan: 6 },
-                {},
-                {},
-                {},
-                {},
-                {}
-              ],
-              [
-                { text: 'Análisis', alignment: 'center', bold: true },
-                { text: this.analisis, colSpan: 5 },
-                {},
-                {},
-                {},
-                {}
-              ],
-              [
-                { text: 'Etapa Inicial', alignment: 'center', bold: true, rowSpan: 2 },
-                { text: 'Cumplimiento', alignment: 'center' },
-                { text: 'Etapa Intermedia', alignment: 'center', bold: true, rowSpan: 2 },
-                { text: 'Cumplimiento', alignment: 'center' },
-                { text: 'Etapa Final', alignment: 'center', bold: true, rowSpan: 2 },
-                { text: 'Cumplimiento', alignment: 'center' }
-              ],
-              [
-                '',
-                { text: this.etapaInicial, alignment: 'center' },
-                '',
-                { text: this.etapaIntermedia, alignment: 'center' },
-                '',
-                { text: this.etapaFinal, alignment: 'center' },
-              ]
-            ]
-          },
-          fontSize: 10,
-        },
-        '\n',
-        {
-          table: {
-            widths: ['*', '*', '*', '*', '*', '*'],
-            body: [
-              [
-                { text: 'Nombre del Asesor', alignment: 'center', bold: true },
-                { text: this.nombreAsesor, colSpan: 2 },
-                {},
-                { text: 'Fecha del informe', alignment: 'center', bold: true },
-                { text: this.fechaInforme, colSpan: 2 },
-                {}
-              ]
-            ]
-          },
-          fontSize: 10,
-        }
-      );
-      this.datosD.DATA_AGRUPACION.forEach((obj: any) => {
-        pdfDefinition.content[5].table.body.push([
-          { text: obj.TITULO_PRINCIPAL, colSpan: 5, style: ['tituloDinamico'] },
-          {},
-          {},
-          {},
-          {}
-        ]);
-        pdfDefinition.content[5].table.body.push([
-          { text: 'Cumplimiento', style: ['tituloDinamico'] },
-          { text: 'No Aplica', style: ['tituloDinamico'] },
-          { text: 'No Cumple', style: ['tituloDinamico'] },
-          { text: 'Cumple Parcialmente', style: ['tituloDinamico'] },
-          { text: 'Cumple', style: ['tituloDinamico'] }
-        ]);
-        pdfDefinition.content[5].table.body.push([
-          { text: obj.PORCENTAJE_C, style: ['tituloDinamico'] },
-          { text: obj.N_REQUISITO_NA, style: ['tituloDinamico'] },
-          { text: obj.N_REQUISITO_NC, style: ['tituloDinamico'] },
-          { text: obj.N_REQUISITO_CP, style: ['tituloDinamico'] },
-          { text: obj.N_REQUISITO_C, style: ['tituloDinamico'] }
-        ]);
-        pdfDefinition.content[5].table.body.push([
-          { text: 'Requisito', style: ['tituloDinamico'] },
-          { text: 'Calificación', style: ['tituloDinamico'] },
-          { text: 'Observaciones', colSpan: 3, style: ['tituloDinamico'] },
-          {},
-          {}
-        ]);
-        obj.LISTA_CAMPOS.forEach((i: any) => {
+        );
+        this.datosD.DATA_AGRUPACION.forEach((obj: any) => {
           pdfDefinition.content[5].table.body.push([
-            { text: i.TITULO_REQUISITO, alignment: 'center' },
-            { text: i.CALIFICADO, alignment: 'center' },
-            { text: i.OBSERVACION, colSpan: 3, alignment: 'justify' },
+            { text: obj.TITULO_PRINCIPAL, colSpan: 5, style: ['tituloDinamico'] },
+            {},
+            {},
+            {},
+            {}
+          ]);
+          pdfDefinition.content[5].table.body.push([
+            { text: 'Cumplimiento', style: ['tituloDinamico'] },
+            { text: 'No Aplica', style: ['tituloDinamico'] },
+            { text: 'No Cumple', style: ['tituloDinamico'] },
+            { text: 'Cumple Parcialmente', style: ['tituloDinamico'] },
+            { text: 'Cumple', style: ['tituloDinamico'] }
+          ]);
+          pdfDefinition.content[5].table.body.push([
+            { text: obj.PORCENTAJE_C, style: ['tituloDinamico'] },
+            { text: obj.N_REQUISITO_NA, style: ['tituloDinamico'] },
+            { text: obj.N_REQUISITO_NC, style: ['tituloDinamico'] },
+            { text: obj.N_REQUISITO_CP, style: ['tituloDinamico'] },
+            { text: obj.N_REQUISITO_C, style: ['tituloDinamico'] }
+          ]);
+          pdfDefinition.content[5].table.body.push([
+            { text: 'Requisito', style: ['tituloDinamico'] },
+            { text: 'Calificación', style: ['tituloDinamico'] },
+            { text: 'Observaciones', colSpan: 3, style: ['tituloDinamico'] },
+            {},
+            {}
+          ]);
+          obj.LISTA_CAMPOS.forEach((i: any) => {
+            pdfDefinition.content[5].table.body.push([
+              { text: i.TITULO_REQUISITO, alignment: 'center' },
+              { text: i.CALIFICADO, alignment: 'center' },
+              { text: i.OBSERVACION, colSpan: 3, alignment: 'justify' },
+              {},
+              {}
+            ]);
+          });
+          pdfDefinition.content[5].table.body.push([
+            {
+              image: this.graficosimg[obj.NUMERAL_PRINCIPAL]? this.graficosimg[obj.NUMERAL_PRINCIPAL].changingThisBreaksApplicationSecurity : '',
+              alignment: 'center',
+              colSpan: 5,
+              fit: [300, 180] // Especifica las dimensiones deseadas [ancho, alto]
+            },
+            {},
+            {},
             {},
             {}
           ]);
         });
-        pdfDefinition.content[5].table.body.push([
-          {
-            image: this.graficosimg[obj.NUMERAL_PRINCIPAL]? this.graficosimg[obj.NUMERAL_PRINCIPAL].changingThisBreaksApplicationSecurity : '',
-            alignment: 'center',
-            colSpan: 5,
-            fit: [300, 180] // Especifica las dimensiones deseadas [ancho, alto]
-          },
-          {},
-          {},
-          {},
-          {}
-        ]);
-      });
-      const title = "Se descargó correctamente";
-      const message = "La descarga se ha realizado exitosamente"
-      this.Message.showModal(title, message);
-      pdfMake.createPdf(pdfDefinition).open();
-    }
+        const title = "Se descargó correctamente";
+        const message = "La descarga se ha realizado exitosamente"
+        this.Message.showModal(title, message);
+        pdfMake.createPdf(pdfDefinition).open();
+            // Ocultar el spinner cuando la tarea haya finalizado
+    this.spinnerService.detenerSpinner();
+      }
   }
 
   generateListaChequeo() {
@@ -1070,7 +1059,7 @@ export class AppDiagnosticoDocComponent implements OnInit {
           '\n',
           {
             table: {
-              widths: [80, 85, 'auto', 'auto', 'auto', 'auto'],
+              widths: [80, 85, 'auto', 'auto', 'auto', 85],
               body: [
                 [
                   { text: 'Numeral', style: ['tituloDinamico'] },

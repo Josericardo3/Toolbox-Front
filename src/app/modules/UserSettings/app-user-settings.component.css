@@ -76,8 +76,8 @@ h2, .fecha, .descripcion{
     margin-bottom: 30px;
 }
 .titulo-settings img{
-    width: 35px;
-    height: auto;
+    width: 50px;
+    height: 50px;
     margin-right: 20px;
 }
 .nombre-prestador{
@@ -125,6 +125,10 @@ h2, .fecha, .descripcion{
     display: flex;
     align-items: center;
     justify-content: space-between;
+}
+.group-img-logo img{
+    width: 150px;
+    height: 150px;
 }
 .logo-peq{
     width: 60px;
@@ -310,6 +314,13 @@ i{
     height: 35px;
     border-radius: 5px;
 }
+.btn-tabla{
+    display: flex;
+    flex-wrap: wrap;
+}
+.btn-tabla-editar{
+    margin-bottom: 5px;
+}
 .btn-tabla-editar:hover{
     color: #fff;
     background-color: #259DFF;
@@ -326,6 +337,10 @@ i{
     display: flex;
     align-items: center;
     justify-content: space-evenly;
+}
+button:disabled {
+    background-color: transparent;
+    color: #259DFF;
 }
 /* pagination */
 .page-style {

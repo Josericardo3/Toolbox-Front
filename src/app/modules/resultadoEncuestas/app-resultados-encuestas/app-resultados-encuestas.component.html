@@ -1,10 +1,11 @@
 <app-app-header class="resultados-app-header"></app-app-header>
 <div class="containerResultadosEncuestas">
-    <div class="titulo">
-        <h1>Resultados de encuestas</h1>
-        <app-app-header-arrow-left [redirectToDashboard]="true"></app-app-header-arrow-left>
-    </div>
-    <div class="resultados">
+    <h1>Resultados de encuestas</h1>
+<div class="container d-flex">
+    <app-app-header-arrow-left [redirectToDashboard]="true"></app-app-header-arrow-left>
+    <app-home></app-home>
+</div> 
+    <div class="resultados mt-3">
         <app-app-menu-alta-gerencia class="menu-alta-gerencia"></app-app-menu-alta-gerencia>
         <mat-menu #menu="matMenu">
             <app-app-menu-alta-gerencia class="responsi-gerencia-menu"></app-app-menu-alta-gerencia>
@@ -17,11 +18,15 @@
         <div class="form">
             <div>
                 <button style="background-color: #068460; color: #ffffff; font-weight: 400;" class="float-end m-2"
-                mat-raised-button (click)="fnConsultActivities()">
+                    mat-raised-button (click)="fnConsultActivities()">
                     <i class="fa-solid fa-arrows-rotate" style="color: #fff;"></i>
                     Consultar tabla
                 </button>
             </div>
+
+            <!-- app-home.component.html -->
+            <app-tabla [datosTabla]="datosTabla" [columnas]="columnas"></app-tabla>
+
             <table class="table-gestion" style="margin-top: 8px;">
                 <thead>
                     <tr>
@@ -69,38 +74,104 @@
                     <i class="fa-solid fa-circle-xmark" style="color: #06543c;font-size: 25px;"
                         (click)="showModal = false;"></i>
                 </a>
-                <h2 style="margin-top: 1vh;">Lista de destinatarios</h2>
-                <div class="linea"></div>
             </div>
-            <div class="formModal">
-                <table class="table-gestion-modal" style="margin-top: 8px;">
-                    <thead>
-                        <tr>
-                            <th scope="col">Encuestados</th>
-                            <th scope="col">Fecha</th>
-                            <th scope="col">Ver resultados</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <ng-container *ngIf="selectedEncuesta?.NUM_ENCUESTADOS === 0">
-                            <tr>
-                                <td [attr.colspan]="3">No hay personas encuestadas</td>
-                            </tr>
-                        </ng-container>
-                        <ng-container *ngIf="selectedEncuesta?.NUM_ENCUESTADOS > 0">
-                            <tr *ngFor="let i of personasArray(selectedEncuesta.NUM_ENCUESTADOS); let j = index">
-                                <td>Persona {{i}}</td>
-                                <td>{{ getFechaRespuesta(i) }}</td>
+            <div class="container d-flex flex-column justify-content-center align-items-center">
+                <mat-tab-group animationDuration="0ms">
+                    <mat-tab label="Lista de destinatarios">
+                        <div class="formModal">
+                            <table class="table-gestion-modal" style="margin-top: 8px;">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Encuestados</th>
+                                        <th scope="col">Fecha</th>
+                                        <th scope="col">Ver resultados</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <ng-container *ngIf="selectedEncuesta?.NUM_ENCUESTADOS === 0">
+                                        <tr>
+                                            <td [attr.colspan]="3">No hay personas encuestadas</td>
+                                        </tr>
+                                    </ng-container>
+                                    <ng-container *ngIf="selectedEncuesta?.NUM_ENCUESTADOS > 0">
+                                        <tr
+                                            *ngFor="let i of personasArray(selectedEncuesta.NUM_ENCUESTADOS); let j = index">
+                                            <td>Persona {{i}}</td>
+                                            <td>{{ getFechaRespuesta(i) }}</td>
 
-                                <td>
-                                    <a title="Ver resultados" (click)="fnShowResultados(selectedEncuesta?.ID_MAE_ENCUESTA, j+1)">
-                                        <i class="fa-solid fa-eye" style="color: #06543c; cursor: pointer;"></i>
-                                    </a>
-                                </td>
-                            </tr>
-                        </ng-container>
-                    </tbody>
-                </table>
+                                            <td>
+                                                <a title="Ver resultados"
+                                                    (click)="fnShowResultados(selectedEncuesta?.ID_MAE_ENCUESTA, j+1)">
+                                                    <i class="fa-solid fa-eye"
+                                                        style="color: #06543c; cursor: pointer;"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    </ng-container>
+                                </tbody>
+                            </table>
+                        </div>
+                    </mat-tab>
+                    <mat-tab label="Resumen">
+                        <div class="form" *ngFor="let grupo of datosResultados">
+                            <div class="encabezado">
+                                <h3 style="font-size: medium;">{{grupo.TITULO}}</h3>
+                            </div>
+                            <!-- <div class="ContainerRespuesta" *ngFor="let respuesta of grupo.RESPUESTAS">
+                                <p style="font-size: medium;">{{respuesta.DESCRIPCION_PREGUNTA}}</p>
+                                <p style="font-size: small;">{{contarRespuestasNoVacias(respuesta.RESPUESTAS)}}
+                                    respuestas</p>
+                                <div class="respuestas">
+                                    <p *ngFor="let r of respuesta.RESPUESTAS">{{r !== '' ? r : 'Respuesta vacía'}}</p>
+                                </div>
+                            </div> -->
+                            <div *ngFor="let pregunta of datosChart; let i = index">
+                                <div class="ContainerRespuesta" *ngIf="pregunta.TIPO === 'respuestaCorta'">
+                                    <p style="font-size: medium;">{{ pregunta.DESCRIPCION }}</p>
+                                    <p style="font-size: small;">{{ getSumOfNonEmptyResponses(pregunta.RESUMEN) }}
+                                        respuestas</p>
+                                    <div class="respuestas" *ngFor="let respuesta of pregunta.RESUMEN">
+                                        <p style="font-size: small;">{{ respuesta.RESPUESTA ? respuesta.RESPUESTA : 'Respuesta vacía' }}</p>
+                                    </div>
+                                </div>
+
+                                <div class="ContainerRespuesta" *ngIf="pregunta.TIPO === 'respuestaLarga'">
+                                    <p style="font-size: medium;">{{ pregunta.DESCRIPCION }}</p>
+                                    <p style="font-size: small;">{{ getSumOfNonEmptyResponses(pregunta.RESUMEN) }}
+                                        respuestas</p>
+                                    <div class="respuestas" *ngFor="let respuesta of pregunta.RESUMEN">
+                                        <p style="font-size: small;">{{ respuesta.RESPUESTA ? respuesta.RESPUESTA : 'Respuesta vacía' }}</p>
+                                    </div>
+                                </div>
+
+                                <div class="ContainerRespuesta" *ngIf="pregunta.TIPO === 'radioButton'">
+                                    <p style="font-size: medium;">{{ pregunta.DESCRIPCION }}</p>
+                                    <p style="font-size: small;">{{ getTotalRadioResponses(pregunta.RESUMEN) }}
+                                        respuestas</p>
+                                    <app-diagramas [labels]="labelsRadio[i]" [porcentajes]="porcentajesRadio[i]"
+                                        [id]="i" [tipo]="'pie'"></app-diagramas>
+                                </div>
+
+                                <div class="ContainerRespuesta" *ngIf="pregunta.TIPO === 'checkbox'">
+                                    <p style="font-size: medium;">{{ pregunta.DESCRIPCION }}</p>
+                                    <p style="font-size: small;">{{ getTotalRadioResponses(pregunta.RESUMEN) }}
+                                        respuestas</p>
+                                    <app-diagramas [labels]="labelsCheck[i]" [porcentajes]="porcentajesCheck[i]"
+                                        [id]="i" [tipo]="'bar'" [orientacion]="'y'"></app-diagramas>
+                                </div>
+
+                                <div class="ContainerRespuesta" *ngIf="pregunta.TIPO === 'desplegable'">
+                                    <p style="font-size: medium;">{{ pregunta.DESCRIPCION }}</p>
+                                    <p style="font-size: small;">{{ getTotalRadioResponses(pregunta.RESUMEN) }}
+                                        respuestas</p>
+                                    <app-diagramas [labels]="labelsDesplegable[i]"
+                                        [porcentajes]="porcentajesDesplegable[i]" [id]="i"
+                                        [tipo]="'pie'"></app-diagramas>
+                                </div>
+                            </div>
+                        </div>
+                    </mat-tab>
+                </mat-tab-group>
             </div>
         </div>
     </div>

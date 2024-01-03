@@ -5,4 +5,6 @@ import { Component } from '@angular/core';
   templateUrl: './menu-medicion-kpis.component.html',
   styleUrls: ['./menu-medicion-kpis.component.css'],
 })
-export class MenuMedicionKpisComponent {}
+export class MenuMedicionKpisComponent {
+  tipoAdmin:any=localStorage.getItem("TIPO_USUARIO");
+}

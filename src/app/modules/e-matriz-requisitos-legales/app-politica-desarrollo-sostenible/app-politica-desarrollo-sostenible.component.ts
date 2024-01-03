@@ -125,7 +125,11 @@ export class AppPoliticaDesarrolloSostenibleComponent implements OnInit {
           this.estructura.compromisoEmpresa = data.find(item => item.PREGUNTA === preguntaCompromiso);
 
           let datosAgrupados = this.groupBy(response.RESPUESTA_GRILLA, 'ORDEN');
-
+          //console.log(datosAgrupados);
+          //if (response.RESPUESTA_GRILLA.length==0){
+          //  this.agregarAdicional()
+          //  console.log("vacio");
+          //}else{
           Object.keys(datosAgrupados).forEach((orden) => {
             const tab = {
               orden: Number(orden),
@@ -140,6 +144,7 @@ export class AppPoliticaDesarrolloSostenibleComponent implements OnInit {
             };
             this.estructura.adicionales.push(tab);
           });
+          //}
           //ordenamiento
 
           let ordenPregunta1 = "¿Cómo se comunica la política?";
@@ -210,7 +215,7 @@ export class AppPoliticaDesarrolloSostenibleComponent implements OnInit {
             "OTRO_VALOR": "",
             "FK_USUARIO": Number(id)
           }
-
+          this.agregarAdicional();
         }
       })
   }
@@ -230,35 +235,43 @@ export class AppPoliticaDesarrolloSostenibleComponent implements OnInit {
     let ordenPregunta3 = "¿Cuándo?";
     let ordenPregunta4 = "¿Dónde estará disponible?";
     
-    console.log(data);
+    //console.log(data);
 
-    this.temporal1 = data.find(item => (item.PREGUNTA === ordenPregunta1));
-    this.temporal2 = data.find(item => (item.PREGUNTA === ordenPregunta2));
-    this.temporal3 = data.find(item => (item.PREGUNTA === ordenPregunta3));
-    this.temporal4 = data.find(item => (item.PREGUNTA === ordenPregunta4));
-    this.value1 = this.temporal1.RESPUESTA;
-    this.value2 = this.temporal2.RESPUESTA;
-    this.value3 = this.temporal3.RESPUESTA;
-    this.value4 = this.temporal4.RESPUESTA;
-    
-    if (this.temporal4.PREGUNTA == "¿Dónde estará disponible?") {
-      const separador=this.temporal4.RESPUESTA.split(';');
+    try{
+      this.temporal1 = data.find(item => (item.PREGUNTA === ordenPregunta1));
+      this.temporal2 = data.find(item => (item.PREGUNTA === ordenPregunta2));
+      this.temporal3 = data.find(item => (item.PREGUNTA === ordenPregunta3));
+      this.temporal4 = data.find(item => (item.PREGUNTA === ordenPregunta4));
 
-      this.optSelect=separador[0];
-      this.optValotro=separador[1];
+      if (this.temporal4.PREGUNTA == "¿Dónde estará disponible?") {
+        const separador=this.temporal4.RESPUESTA.split(';');
+
+        this.optSelect=separador[0];
+        this.optValotro=separador[1];
+      }
+    }catch(error){
+      this.temporal1={
+        PREGUNTA: '¿Cómo se comunica la política?',
+        RESPUESTA: ''
+      }
+      this.temporal2={
+        PREGUNTA: '¿Quién comunica?',
+        RESPUESTA: ''
+      }
+      this.temporal3={
+        PREGUNTA: '¿Cuándo?',
+        RESPUESTA: ''
+      }
+      this.temporal4={
+        PREGUNTA: '¿Dónde estará disponible?',
+        RESPUESTA: ''
+      }
     }
     //console.log(this.temporal4);
     //console.log(ind);
     //console.log(this.value3.slice(0,10));
-    this.fnReordenarFecha("2023-10-25");
   }
-  fnReordenarFecha (fec: string):string {
-    const partesFecha: string[] = fec.split('-');
-    const fechaFormateada: string = partesFecha[2] + '-' + partesFecha[1] + '-' + partesFecha[0];
-    
-    //console.log(fechaFormateada);
-    return fechaFormateada;
-  }
+
   fnListResponsible() {
     const idPerfil = this.getRolValue();
     if (idPerfil == 3) {
@@ -300,7 +313,7 @@ export class AppPoliticaDesarrolloSostenibleComponent implements OnInit {
     let indice = 3;
     this.estructura.adicionales.forEach(tab => {
       tab.preguntas.forEach(item => {
-        if (typeof this.temporal3.RESPUESTA !== "string" && item.PREGUNTA == "¿Cuándo?") {
+        if (typeof item.RESPUESTA=="string" && item.PREGUNTA == "¿Cuándo?") {
           item.RESPUESTA = this.datePipe.transform(this.temporal3.RESPUESTA, 'dd-MM-yyyy')
         }
         if (item.PREGUNTA == "¿Cómo se comunica la política?") {
@@ -326,14 +339,19 @@ export class AppPoliticaDesarrolloSostenibleComponent implements OnInit {
       .subscribe((data) => {
         if (data.StatusCode === 200) {
           //console.log(preguntasRequest);
-          this.printCampos(this.dataGrilla);
+          this.value1 = this.temporal1.RESPUESTA;
+          this.value2 = this.temporal2.RESPUESTA;
+          this.value3 = this.temporal3.RESPUESTA;
+          console.log(this.value3);
+          this.value4 = this.temporal4.RESPUESTA;
+          //this.printCampos(this.dataGrilla);
           const request1 = {
             FK_ID_USUARIO_PST: parseInt(localStorage.getItem("Id")),
             FK_ID_RESPONSABLE: parseInt(localStorage.getItem("Id")),
             TIPO_ACTIVIDAD: "Taller de Política de Desarrollo Sostenibles",
             DESCRIPCION: this.value1 + ' : ' + this.value4,
-            FECHA_INICIO: this.fnReordenarFecha(this.value3.slice(0, 10)),
-            FECHA_FIN: this.fnReordenarFecha(this.value3.slice(0, 10)),
+            FECHA_INICIO: this.datePipe.transform(this.value3, 'dd-MM-yyyy'),
+            FECHA_FIN: this.datePipe.transform(this.value3, 'dd-MM-yyyy'),
             ESTADO_PLANIFICACION: "Programado"
           }
           this.ApiService.postNewRecord(request1).subscribe((data) => {

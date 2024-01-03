@@ -38,12 +38,17 @@
           <div class="form-group">
             <label for="norma">Norma</label>
             <mat-select
+              #matSelect
               [(ngModel)]="dataEnvio.ID_NORMA"
               name="norma"
               class="form-control"
+              multiple
               required
               (selectionChange)="cambiarNorma($event)"
             >
+            <mat-option *ngIf=" this.normas?.length>1 " (onSelectionChange)="seleccionarTodos($event)" [value]="0">
+                Todos
+            </mat-option>
               <mat-option
                 *ngFor="let item of normas; let index = index"
                 id="ID_NORMA-{{ index }}"
@@ -229,6 +234,7 @@
                 ></mat-icon>
                --> 
                 <mat-icon
+                  *ngIf="element.ID_USUARIO_CREA==ID_USUARIO "
                   matTooltip="Borrar"
                   style="color: #068460"
                   class=" margen iconos hand-pointer"

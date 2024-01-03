@@ -1,0 +1,12 @@
+<table>
+    <thead>
+      <tr>
+        <th *ngFor="let columna of columnas">{{ columna }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let fila of datosTabla">
+        <td *ngFor="let columna of columnas">{{ fila[columna] }}</td>
+      </tr>
+    </tbody>
+  </table>

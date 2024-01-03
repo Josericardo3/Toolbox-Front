@@ -92,6 +92,7 @@ export class AppFormularioComponent implements OnInit{
       responsableCumplimiento:[this.estadoFormulario?.ID_RESPONSABLE_CUMPLIMIENTO || ''],
       fecha:[this.estadoFormulario?.FECHA || ''],
       estado:[this.estadoFormulario?.ESTADO || ''],
+      checkbox: [this.estadoFormulario?.FLAG_MEJORA_CONTINUA|| ''],
     });  
     
     this.setSelectedValues();
@@ -121,6 +122,7 @@ export class AppFormularioComponent implements OnInit{
       responsableCumplimiento: [{ value: this.data?.ID_PLAN_RESPONSABLE_CUMPLIMIENTO || this.estadoFormulario?.ID_RESPONSABLE_CUMPLIMIENTO || '', disabled: true }],
       fecha: [{ value: this.data?.PLAN_FECHA_EJECUCION || this.estadoFormulario?.FECHA || '', disabled: true }],
       estado: [{ value: this.data?.PLAN_ESTADO || this.estadoFormulario?.ESTADO || '', disabled: true }],
+      checkbox: [{ value: this.data?.FLAG_MEJORA_CONTINUA || this.estadoFormulario?.FLAG_MEJORA_CONTINUA || '', disabled: true }],
     });
     
   }
@@ -129,6 +131,8 @@ export class AppFormularioComponent implements OnInit{
 
 
   onSubmit(idMatriz: number,event:any) {  
+    debugger
+
     console.log("yaaaa", idMatriz)
     console.log("felix", this.selectedMatrizId);
     var array:any=[];
@@ -173,7 +177,7 @@ export class AppFormularioComponent implements OnInit{
     const IDresponsablePlanCumplimiento = this.form.get('responsableCumplimiento')?.value.toString();
     const fechaEjecucion = this.form.get('fecha')?.value.toString();
     const estado = this.form.get('estado')?.value.toString();
-    const checkbox = this.isCheckboxOn;
+    const checkbox= this.form.get('checkbox')?.value || false;
 
     const cont = this.arrayListResponsible.length
     let nombreCumplimiento = '';
@@ -244,8 +248,6 @@ export class AppFormularioComponent implements OnInit{
   }
 
   eliminarLey(idMatriz: number,event:any){
-   
-    
     console.log("MATRIZ A BORRAR: ", this.selectedMatrizId);
     console.log("MATRIZ A BORRAR: ", idMatriz);
     this.matrizAEliminar = this.selectedMatrizId;
@@ -256,10 +258,7 @@ export class AppFormularioComponent implements OnInit{
     var datosLocalStorage=localStorage.getItem('MiArrayTemporalELIMINAR');
     if(datosLocalStorage){
         this.arrayIdMatriz.push(idMatriz);
-  
         array=datosLocalStorage.split(',');
-  
-  
         array.push(idMatriz);
         localStorage.setItem('MiArrayTemporalELIMINAR', array);
         console.log('arayyy2', array);

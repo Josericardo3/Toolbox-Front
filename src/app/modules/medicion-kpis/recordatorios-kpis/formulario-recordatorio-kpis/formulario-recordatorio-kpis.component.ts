@@ -10,7 +10,7 @@ import { IndicadorService } from 'src/app/servicios/kpis/indicador.service';
   styleUrls: ['./formulario-recordatorio-kpis.component.css']
 })
 export class FormularioRecordatorioKpisComponent {
-  model:any={};
+  model:any={ENVIO_CORREO:false};
   respuesta:any={};
   modelInfo:any={};
   constructor(

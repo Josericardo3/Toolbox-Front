@@ -23,6 +23,9 @@ export class AppRegisterComponent implements OnInit {
   password: string = '';
   opcionEditar: string = '';
   repeatPassword: string = '';
+  mostrarBoton: boolean = true;
+  mostrarIcono: boolean = true;
+  opcion: any;
   showPassword: boolean = false;
   showRepeatPassword: boolean = false;
   showModalSuccess: any;
@@ -35,7 +38,7 @@ export class AppRegisterComponent implements OnInit {
   public registerForm!: FormGroup;
   isChecked: boolean = false;
   private emailPattern: any = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-
+  avatar : any;
   imagenPrevisualizada: string | ArrayBuffer = '';
 imagenLogo:any={
   esAvatar:false,
@@ -67,7 +70,7 @@ avatarSeleccionado: number=-1;
   ngOnInit(): void {
 
     localStorage.removeItem("newUser")
-    var opcion = localStorage.getItem("opcionEditar");
+    this.opcion = localStorage.getItem("opcionEditar");
 
     this.data = this.categoria.name.tipo
     this.setDepartments('')
@@ -79,21 +82,10 @@ avatarSeleccionado: number=-1;
             Validators.required,
             Validators.pattern(/^\d{10}$/)]),
         ],
-        /*telefonoDelRepresentanteLegal: ['',
-          Validators.compose([
-            Validators.required,
-            Validators.pattern(/^\d{10}$/)]),
-        ],*/
-        /*telefonoDelResponsableDeSostenibilidad: ['',
-          Validators.compose([
-            Validators.required,
-            Validators.pattern(/^\d{10}$/)]),
-        ],*/
         numeroDeIdentificacionTributaria: ['', Validators.required],
         registroNacionalDeTurismo: ['', Validators.required],
         categoriaRnt: ['', Validators.required],
         subcategoriaRnt: ['', Validators.required],
-       // nombreDelPst: ['', Validators.required],
         razonSocialDelPst: ['',Validators.compose([Validators.required,Validators.pattern(/^\S.*\S$/)]) ],
         correo: [
           '',
@@ -105,14 +97,7 @@ avatarSeleccionado: number=-1;
 
         nombreDelRepresenteLegal: ['',Validators.compose([Validators.required,Validators.maxLength(45),Validators.pattern(/^\S.*\S$/)])] ,
         apellidoDelRepresenteLegal:  ['',Validators.compose([Validators.required,Validators.maxLength(50),Validators.pattern(/^\S.*\S$/)])],
-        
-        /*correoRepresentanteLegal: [
-          '',
-          Validators.compose([
-            Validators.pattern(this.emailPattern),
-            Validators.required,
-          ]),
-        ],*/
+       
         correo2: [
           '',
           Validators.compose([
@@ -121,19 +106,12 @@ avatarSeleccionado: number=-1;
           ]),
         ],
 
-        //tipoDeIdentificacionDelRepresentanteLegal: ['', Validators.required],
-        //identificacionDelRepresentanteLegal: ['', Validators.required],
+        
         departamento: ['', Validators.required],
         municipio: ['', Validators.required],
-        /*correoDelResponsableDeSostenibilidad: [
-          '',
-          Validators.compose([
-            Validators.pattern(this.emailPattern),
-            Validators.required,
-          ]),
-        ],*/
+       
 
-       // nombreDelResponsableDeSostenibilidad: ['', Validators.required],
+      
         password1: [
           '',
           Validators.compose([
@@ -164,46 +142,41 @@ avatarSeleccionado: number=-1;
     )
 
     
-    if(opcion == "1"){
+    if(this.opcion == "1"){
+
+      this.mostrarBoton = false;
+      this.mostrarIcono = false;
+      this.registerForm.get('numeroDeIdentificacionTributaria').disable();
+      this.registerForm.get('registroNacionalDeTurismo').disable();
 
       this.ApiService.getUserRegistro().subscribe((data) => {
         if (data && data.length > 0) {
           const firstUser = data[0]; 
-          console.log(firstUser);
           this.registerForm.setValue({
             registroNacionalDeTurismo: firstUser.RNT,
             numeroDeIdentificacionTributaria: firstUser.NIT,
             categoriaRnt: firstUser.FK_ID_CATEGORIA_RNT,
             subcategoriaRnt: firstUser.FK_ID_SUB_CATEGORIA_RNT,
-            //nombreDelPst: firstUser.NOMBRE_PST,
             razonSocialDelPst: firstUser.RAZON_SOCIAL_PST,
             correo: firstUser.CORREO_PST,
             telefono: firstUser.TELEFONO_PST,
-            //tipoDeIdentificacionDelRepresentanteLegal : "CEDULA DE CIUDADANIA",
             nombreDelRepresenteLegal: firstUser.NOMBRE_REPRESENTANTE_LEGAL,
-            apellidoDelRepresenteLegal:"",
-            //correoRepresentanteLegal: firstUser.CORREO_REPRESENTANTE_LEGAL,
-            //telefonoDelRepresentanteLegal: firstUser.TELEFONO_REPRESENTANTE_LEGAL,
-            //identificacionDelRepresentanteLegal: firstUser.IDENTIFICACION_REPRESENTANTE_LEGAL,
+            apellidoDelRepresenteLegal:firstUser.NOMBRE_REPRESENTANTE_LEGAL,
             departamento: firstUser.DEPARTAMENTO,
             municipio: firstUser.MUNICIPIO,
-            //nombreDelResponsableDeSostenibilidad: firstUser.NOMBRE_RESPONSABLE_SOSTENIBILIDAD,
-            //correoDelResponsableDeSostenibilidad: firstUser.CORREO_RESPONSABLE_SOSTENIBILIDAD,
             correo2: firstUser.CORREO_RESPONSABLE_SOSTENIBILIDAD,
-            //telefonoDelResponsableDeSostenibilidad: firstUser.TELEFONO_RESPONSABLE_SOSTENIBILIDAD,
-            password1 : "",
-            confirmPassword : "",
+            password1 : "Prueba1@",
+            confirmPassword : "Prueba1@",
             checkbox: ''
           });
-
           const selectedIndex = this.data.findIndex(element => element.name === firstUser.CATEGORIA_RNT);
           const selectedcategory = this.data.find(element => this.normalizeString(element.name) === this.normalizeString(firstUser.CATEGORIA_RNT));
           const categoryelectedid =selectedcategory.id;
 
-        // Si se encontró el índice, establece el valor seleccionado en el campo de selección
           if (selectedIndex !== -1) {
             this.registerForm.get('categoriaRnt').setValue(this.data[selectedIndex]);
           }
+
           const filterCategory = this.categoria.name.agencias.filter(
             (agency: { id_categoria: number; name: string }) =>
               agency.id_categoria === categoryelectedid
@@ -213,8 +186,8 @@ avatarSeleccionado: number=-1;
           this.registerForm.get('subcategoriaRnt').setValue(this.arrAgency[selectedIndexSub]);
           this.setDepartments(firstUser.DEPARTAMENTO);
           this.setMunicipalities(firstUser.MUNICIPIO);
-
           }
+
 
       });
 
@@ -235,16 +208,7 @@ avatarSeleccionado: number=-1;
 
   }
   deshabilitarCampos(deshabilitar: boolean) {
-    /*if (deshabilitar) {
-      // Deshabilita todos los controles del formulario
-      this.registerForm.disable();
-      this.registerForm.get('registroNacionalDeTurismo').enable();
-      this.accionDisabled = true;
-    } else {
-      // Habilita todos los controles del formulario
-      this.registerForm.enable();
-      this.accionDisabled = false;
-    }*/
+    
   }
   normalizeString(str: string): string {
     return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
@@ -329,27 +293,13 @@ avatarSeleccionado: number=-1;
           const selectedOption = arrFilterMpio.find(
             (item) => item.cod_mpio === this.datosRnt?.codigo_municipio
           );
-          if (selectedOption) {
-            this.registerForm.get('municipio').setValue(selectedOption.nom_mpio);
-          }
+          this.registerForm.get('municipio').setValue(selectedDepartament);
         }
       })
   }
 
   seePasswordRegister() {
-   /* const passRegister = document.querySelector(
-      '#passRegister',
-    ) as HTMLInputElement
-    const icon = document.querySelector('i') as HTMLElement
-    if (passRegister.type === 'password') {
-      passRegister.type = 'text'
-      icon.classList.remove('fa-eye-slash')
-      icon.classList.add('fa-eye')
-    } else {
-      passRegister.type = 'password'
-      icon.classList.add('fa-eye-slash')
-      icon.classList.remove('fa-eye')
-    }*/
+   
     const passLogin = document.querySelector("#passRegister") as HTMLInputElement;
     const icon = document.querySelector("#icon") as HTMLElement;
     if (passLogin.type === "password") {
@@ -362,19 +312,7 @@ avatarSeleccionado: number=-1;
   }
 
   seePasswordRegister2() {
-    /*const passRegister2 = document.querySelector(
-      '#passRegister2',
-    ) as HTMLInputElement
-    const icon = document.querySelector('#i') as HTMLElement
-    if (passRegister2.type === 'password') {
-      passRegister2.type = 'text'
-      icon.classList.remove('fa-eye-slash')
-      icon.classList.add('fa-eye')
-    } else {
-      passRegister2.type = 'password'
-      icon.classList.add('fa-eye-slash')
-      icon.classList.remove('fa-eye')
-    }*/
+   
     const passLogin = document.querySelector("#passRegister2") as HTMLInputElement;
     const icon = document.querySelector("#icon2") as HTMLElement;
     if (passLogin.type === "password") {
@@ -392,18 +330,15 @@ avatarSeleccionado: number=-1;
     modal.classList.add('active')
     if( this.checkboxSave === false ) {
       this.registerForm.controls['checkbox'].setValue(false);
+      }
     }
-  }
-  checkboxSave: boolean = false; 
-  closeModal(evt: any) {
+    checkboxSave: boolean = false; 
+    closeModal(evt: any) {
     evt.defaultPrevented
     const modal = document.querySelector('#modalTerminos') as HTMLInputElement
     modal.classList.remove('active');
     this.registerForm.controls['checkbox'].setValue(true);
     this.checkboxSave= true; 
-
-    //this.VendedorForm.controls['identidad'].setValue(response.body.data.identidad);
-
   }
 
   close() {
@@ -411,7 +346,7 @@ avatarSeleccionado: number=-1;
     const modal = document.querySelector('#modalTerminos') as HTMLInputElement
     modal.classList.remove('active');
     this.registerForm.get('checkbox').setErrors({ valido: true });
-    //this.VendedorForm.controls['identidad'].setValue(response.body.data.identidad);
+   
 
   }
   async validarRnt(): Promise<any> {
@@ -451,7 +386,6 @@ avatarSeleccionado: number=-1;
           this.Message.showModal(title, message);
 
           this.registerForm.get('correo').setValue('');//no
-          //this.registerForm.get('numeroDeIdentificacionTributaria').setValue('');
           this.registerForm.get('razonSocialDelPst').setValue('');//nombre de la empresa
           this.registerForm.get('telefono').setValue('');//no
           this.registerForm.get('nombreDelRepresenteLegal').setValue('');
@@ -477,12 +411,8 @@ avatarSeleccionado: number=-1;
           }
 
           //aqui debo mandar el subcategoria filtrado
-          //this.registerForm.get('correo').setValue(this.datosRnt?.correo_electronico_prestador);
-          //this.registerForm.get('numeroDeIdentificacionTributaria').setValue(this.datosRnt?.numero_identificacion);
-
-
-         // this.registerForm.get('telefono').setValue(this.datosRnt?.numero_telefonico);
-          this.registerForm.get('razonSocialDelPst').setValue(this.datosRnt?.razon_social);
+         
+          this.registerForm.get('razonSocialDelPst').setValue(this.datosRnt?.nombre_establecimiento);
           const selectedIndex = this.data.findIndex(element => element.name === this.datosRnt.categoria);
 
           const selectedcategory = this.data.find(element => this.normalizeString(element.name) === this.normalizeString(this.datosRnt?.categoria));
@@ -515,8 +445,7 @@ avatarSeleccionado: number=-1;
        this.registerForm.get('departamento').setValue(nameDepartment);
       this.setDepartments(nameDepartment);
 
-      //this.verificarCorreo(this.datosRnt?.correo_electronico_prestador);
-      /*this.verificarPhone(this.datosRnt?.numero_telefonico);*/
+      
           return this.arrAgency;
         }
         
@@ -527,7 +456,7 @@ avatarSeleccionado: number=-1;
           this.Message.showModal(title, message);
           this.msjRnt="Validación icorrecta"
           this.registerForm.get('correo').setValue('');
-          //this.registerForm.get('numeroDeIdentificacionTributaria').setValue('');
+          
           this.registerForm.get('razonSocialDelPst').setValue('');
           this.registerForm.get('telefono').setValue('');
           this.registerForm.get('nombreDelRepresenteLegal').setValue('');
@@ -547,18 +476,44 @@ avatarSeleccionado: number=-1;
 
 
   saveUser() {
+
+    if(this.opcion == '1'){
+
+      const request = {        
+        FK_ID_USUARIO: Number(localStorage.getItem("Id")),
+        NIT: this.registerForm.get("numeroDeIdentificacionTributaria")?.value.toString(),
+        RNT: this.registerForm.get("registroNacionalDeTurismo")?.value,
+        FK_ID_CATEGORIA_RNT: this.registerForm.get("categoriaRnt")?.value.id,
+        FK_ID_SUB_CATEGORIA_RNT: this.registerForm.get("subcategoriaRnt")?.value.id,
+        RAZON_SOCIAL_PST: this.registerForm.get("razonSocialDelPst")?.value,
+        CORREO_PST: this.registerForm.get("correo")?.value,
+        TELEFONO_PST: this.registerForm.get("telefono")?.value,
+        NOMBRE_REPRESENTANTE_LEGAL: this.registerForm.get("nombreDelRepresenteLegal")?.value,
+        APELLIDO_REPRESENTANTE_LEGAL: this.registerForm.get("apellidoDelRepresenteLegal")?.value,
+        DEPARTAMENTO:this.registerForm.get("departamento")?.value,
+        MUNICIPIO:this.registerForm.get("municipio")?.value,
+        FK_ID_TIPO_AVATAR: this.imagenLogo ? this.imagenLogo.idAvatar || 0 : 0      
+      }
+
+      this.ApiService.updateUser(request).subscribe((data : any ) => {
+        if(data.StatusCode == 200){
+          this.Message.showModal("Actualización Exitosa", "");
+          return;
+        }else{
+          this.Message.showModal("No se logró realizar la actualización", "");
+        }
+      });
+
+    }
+
+
     if(this.msjRnt!=''){
       const title = "Error de Validación";
             const message = `Aún no ah validado correctamente el Registro Nacional de Turismo .`;
             this.Message.showModal(title, message);
             return;
     }
-    if( this.imagenLogo.logo==""){
-      const title = "Error de carga";
-            const message = `Ingrese un logo.`;
-            this.Message.showModal(title, message);
-            return;
-    }
+    
     if(this.imagenLogo.idAvatar==0 || this.imagenLogo.idAvatar==-1){
       const title = "Error de carga";
             const message = `Seleccione un Avatar.`;
@@ -570,13 +525,9 @@ avatarSeleccionado: number=-1;
       RNT: this.registerForm.get("registroNacionalDeTurismo")?.value,
       FK_ID_CATEGORIA_RNT: this.registerForm.get("categoriaRnt")?.value.id,
       FK_ID_SUB_CATEGORIA_RNT: this.registerForm.get("subcategoriaRnt")?.value.id,
-      //NOMBRE_PST: this.registerForm.get("nombreDelPst")?.value,
       NOMBRE_PST: this.registerForm.get("razonSocialDelPst")?.value,
       RAZON_SOCIAL_PST: this.registerForm.get("razonSocialDelPst")?.value,
-      //RAZON_SOCIAL_PST: this.registerForm.get("razonSocialDelPst")?.value,
-      CORREO_PST: this.registerForm.get("correo")?.value,
-      //CORREO_PST: this.registerForm.get("correo")?.value,
-      
+      CORREO_PST: this.registerForm.get("correo")?.value,    
       TELEFONO_PST: this.registerForm.get("telefono")?.value,
       NOMBRE_REPRESENTANTE_LEGAL: this.registerForm.get(
         "nombreDelRepresenteLegal",
@@ -587,27 +538,18 @@ avatarSeleccionado: number=-1;
       CORREO_REPRESENTANTE_LEGAL: this.registerForm.get(
         "correo",
       )?.value,
-      /*CORREO_REPRESENTANTE_LEGAL: this.registerForm.get(
-        "correoRepresentanteLegal",
-      )?.value,*/
       TELEFONO_REPRESENTANTE_LEGAL: "-",
       //TELEFONO_REPRESENTANTE_LEGAL: this.registerForm.get("telefonoDelRepresentanteLegal")?.value,
       FK_ID_TIPO_IDENTIFICACION: 1,//modificado
-      /*IDENTIFICACION_REPRESENTANTE_LEGAL: this.registerForm.get(
-        "identificacionDelRepresentanteLegal",
-      )?.value,*/
+      
       IDENTIFICACION_REPRESENTANTE_LEGAL: "-",
       DEPARTAMENTO:this.registerForm.get("departamento")?.value,
       MUNICIPIO:this.registerForm.get("municipio")?.value,
-      /*NOMBRE_RESPONSABLE_SOSTENIBILIDAD: this.registerForm.get(
-        "nombreDelResponsableDeSostenibilidad",
-      )?.value,*/
+      
       NOMBRE_RESPONSABLE_SOSTENIBILIDAD: "-",
-     /* CORREO_RESPONSABLE_SOSTENIBILIDAD: this.registerForm.get(
-        "correoDelResponsableDeSostenibilidad",
-      )?.value,*/
+     
       CORREO_RESPONSABLE_SOSTENIBILIDAD: "-",
-      //TELEFONO_RESPONSABLE_SOSTENIBILIDAD: this.registerForm.get("telefonoDelResponsableDeSostenibilidad")?.value,
+     
       TELEFONO_RESPONSABLE_SOSTENIBILIDAD: "-",
       PASSWORD: this.registerForm.get("password1")?.value,
       //AVATAR
@@ -630,7 +572,7 @@ avatarSeleccionado: number=-1;
         const title = "Alerta";
         const message = data.Valor+": "+data.Mensaje
         this.Message.showModal(title, message);
-        //this.router.navigate(['/']);      
+             
       }
       
     })
@@ -640,19 +582,10 @@ avatarSeleccionado: number=-1;
     const checkbox = event.target as HTMLInputElement;
     this.isChecked = checkbox.checked;
     this.registerForm.controls['checkbox'].setValue(this.isChecked);
-    // const btnAceptar = document.querySelector('#btnAceptar') as HTMLInputElement
-    // if(btnAceptar.getAttribute('disabled')===null){
-    //   return btnAceptar.setAttribute("disabled",'');
-    // }else{
-    //   return btnAceptar.removeAttribute("disabled");
-    // }
+    
   }
 
-  //prueba limpiar(){
-  // this.registerForm.reset();
-  // }
-
-  //Obj 
+ 
 
   msjRnt: string = 'Validacion';
   showCheckRnt: boolean = false;
@@ -676,7 +609,7 @@ avatarSeleccionado: number=-1;
         this.msjRnt = 'Valide Nuevamente';
 
         this.registerForm.get('correo').setValue('');
-        //  this.registerForm.get('numeroDeIdentificacionTributaria').setValue('');
+       
           this.registerForm.get('razonSocialDelPst').setValue('');
           this.registerForm.get('telefono').setValue('');
           this.registerForm.get('nombreDelRepresenteLegal').setValue('');
@@ -694,15 +627,10 @@ avatarSeleccionado: number=-1;
         this.showFaXmarkRnt = true;
         this.showCheckRnt = false;
         this.registerForm.get('correo').setValue('');
-        //  this.registerForm.get('numeroDeIdentificacionTributaria').setValue('');
+        
           this.registerForm.get('razonSocialDelPst').setValue('');
           this.registerForm.get('telefono').setValue('');
-        //  this.registerForm.get('nombreDelRepresenteLegal').setValue('');
-        /*  this.registerForm.get('categoriaRnt').setValue('');
-          this.registerForm.get('subcategoriaRnt').setValue('');
-
-          this.registerForm.get('departamento').setValue('');
-          this.registerForm.get('municipio').setValue('');*/
+        
           this.deshabilitarCampos(true);
       }
     } catch (error) {
@@ -799,8 +727,8 @@ avatarSeleccionado: number=-1;
           const width = image.width;
           const height = image.height;
 
-          const MAX_WIDTH = 600;
-          const MAX_HEIGHT = 600;
+          const MAX_WIDTH = 250;
+          const MAX_HEIGHT = 250;
 
           if (width > MAX_WIDTH || height > MAX_HEIGHT) {
             const title = "Error de carga";

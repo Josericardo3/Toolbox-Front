@@ -63,10 +63,10 @@ export class AppUserSettingsComponent implements OnInit {
       nombre_representante: ['',Validators.required],
       correo_representante: ['', [Validators.required, Validators.email]],
       numero_representante: ['', [Validators.required, Validators.pattern('^[0-9]*$'), Validators.maxLength(9)]],
-      pagina_web: [''],
-      instagram: [null],
-      facebook: [null],
-      twitter: [null],
+      pagina_web: ['', [Validators.required,Validators.pattern('^(https?:\\/\\/)?([\\w.-]+)\\.([a-z]{2,})(\\/\\S*)?$')]],
+      instagram: ['', [Validators.required,Validators.pattern('^(https?:\\/\\/)?(www\\.)?instagram\\.com\\/([\\w\\d._]+)\\/?$')]],
+      facebook: ['', [Validators.required,Validators.pattern('^(https?:\\/\\/)?(www\\.)?facebook\\.com\\/([\\w\\d._-]+)\\/?$')]],
+      youtube: ['', [Validators.required,Validators.pattern('^(https?:\\/\\/)?(www\\.)?(youtube\\.com\\/|youtu\\.be\\/).*$')]],
       otros: [null]
     });
 
@@ -344,6 +344,10 @@ export class AppUserSettingsComponent implements OnInit {
     this.router.navigate(['/register']);
   }
 
+  navigateCaracterizacion() {
+    localStorage.setItem('opcionCaracterizacion', '1');
+    this.router.navigate(['/caracterizacion']);
+  }
 
 
 }

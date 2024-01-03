@@ -255,19 +255,22 @@
           <div *ngIf="campo.MENSAJE != 'dependencia'">
             <input *ngSwitchCase="'int'" type="number" [formControlName]="campo.NOMBRE" class="campo-nombre" [id]="i"
               (ngModelChange)="capturarValor(i, $event, campo)" appNumeros [required]="campo.REQUERIDO">
-
-            <input *ngSwitchCase="'local_reference_id'" type="text" [formControlName]="campo.NOMBRE" [id]="i"
-            [ngClass]="{'input-error': formParent.controls[campo.NOMBRE].value?.length > 100}"
-              (ngModelChange)="capturarValor(i, $event, campo)" [required]="campo.REQUERIDO">
-              <small style="display: flex" class="text-danger" *ngIf="formParent.controls[campo.NOMBRE].value?.length > 100">
-                La respuesta no puede exceder los 100 caracteres.
-               </small>
-            <input *ngSwitchCase="'string'" type="text" [formControlName]="campo.NOMBRE" [id]="i"
-            [ngClass]="{'input-error': formParent.controls[campo.NOMBRE].value?.length > 100}"
-              (ngModelChange)="capturarValor(i, $event, campo)" [required]="campo.REQUERIDO">
-              <small  style="display: flex" class="text-danger" *ngIf="formParent.controls[campo.NOMBRE].value?.length > 100">
-                La respuesta no puede exceder los 100 caracteres.
-               </small>
+               <div *ngSwitchCase="'local_reference_id'">
+                <input type="text" [formControlName]="campo.NOMBRE" [id]="i"
+                  [ngClass]="{'input-error': formParent.controls[campo.NOMBRE].value?.length > 100}"
+                  (ngModelChange)="capturarValor(i, $event, campo)" [required]="campo.REQUERIDO">
+                  <small style="display: flex" class="text-danger" *ngIf="formParent.controls[campo.NOMBRE].value?.length > 100">
+                  La respuesta no puede exceder los 100 caracteres.
+                  </small>
+               </div>
+              <div *ngSwitchCase="'string'">
+                <input type="text" [formControlName]="campo.NOMBRE" [id]="i"
+                  [ngClass]="{'input-error': formParent.controls[campo.NOMBRE].value?.length > 100}"
+                  (ngModelChange)="capturarValor(i, $event, campo)" [required]="campo.REQUERIDO">
+                  <small style="display: flex" class="text-danger" *ngIf="formParent.controls[campo.NOMBRE].value?.length > 100">
+                  La respuesta no puede exceder los 100 caracteres.
+                </small>
+              </div>
           </div>
 
           <div *ngSwitchCase="'option'">
@@ -384,21 +387,22 @@
 
           <div *ngIf="showSostenibilidad && campo.MENSAJE === 'dependencia'">
             <label class="labelDependency">{{ campo.NOMBRE }} </label>
-            <input *ngSwitchCase="'string'" type="text" [formControlName]="campo.NOMBRE" [id]="i"
-            [ngClass]="{'input-error': formParent.controls[campo.NOMBRE].value?.length > 100}"
-              (ngModelChange)="capturarValor(i, $event, campo)" [required]="campo.REQUERIDO">
-              <small style="display: flex" class="text-danger" *ngIf="formParent.controls[campo.NOMBRE].value?.length > 100">
-                La respuesta no puede exceder los 100 caracteres.
-               </small>    
-            <input *ngSwitchCase="'int'" type="number" [formControlName]="campo.NOMBRE" class="campo-nombre" [id]="i"
-              (ngModelChange)="capturarValor(i, $event, campo)" [required]="campo.REQUERIDO">
-
-            <input *ngSwitchCase="'local_reference_id'" type="text" [formControlName]="campo.NOMBRE" [id]="i"
-            [ngClass]="{'input-error': formParent.controls[campo.NOMBRE].value?.length > 100}"
-              (ngModelChange)="capturarValor(i, $event, campo)" [required]="campo.REQUERIDO">
-              <small style="display: flex" class="text-danger" *ngIf="formParent.controls[campo.NOMBRE].value?.length > 100">
-                La respuesta no puede exceder los 100 caracteres.
-               </small>
+            <div *ngSwitchCase="'string'" >
+              <input type="text" [formControlName]="campo.NOMBRE" [id]="i"
+              [ngClass]="{'input-error': formParent.controls[campo.NOMBRE].value?.length > 100}"
+                (ngModelChange)="capturarValor(i, $event, campo)" [required]="campo.REQUERIDO">
+                <small style="display: flex" class="text-danger" *ngIf="formParent.controls[campo.NOMBRE].value?.length > 100">
+                  La respuesta no puede exceder los 100 caracteres.
+                </small>    
+              </div>
+              <input *ngSwitchCase="'int'" type="number" [formControlName]="campo.NOMBRE" class="campo-nombre" [id]="i"
+                (ngModelChange)="capturarValor(i, $event, campo)" [required]="campo.REQUERIDO">
+              <input *ngSwitchCase="'local_reference_id'" type="text" [formControlName]="campo.NOMBRE" [id]="i"
+              [ngClass]="{'input-error': formParent.controls[campo.NOMBRE].value?.length > 100}"
+                (ngModelChange)="capturarValor(i, $event, campo)" [required]="campo.REQUERIDO">
+                <small style="display: flex" class="text-danger" *ngIf="formParent.controls[campo.NOMBRE].value?.length > 100">
+                  La respuesta no puede exceder los 100 caracteres.
+                </small>
           </div>
 
           <div *ngIf="showPrestaServiciosAventura && campo.MENSAJE === 'dependencia'">

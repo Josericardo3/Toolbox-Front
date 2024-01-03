@@ -52,6 +52,8 @@ export class GestionEvaluacionIndicadorComponent {
     }
     if(this.model.esDisminuir){
       this.model.ES_INCREMENTO=false;
+    }else{
+      this.model.ES_INCREMENTO=true;
     }
     this.model.ID_USUARIO_CREA = localStorage.getItem('Id');
 

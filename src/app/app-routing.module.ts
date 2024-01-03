@@ -58,6 +58,7 @@ import { AppUserSettingsComponent } from './modules/UserSettings/app-user-settin
 import { DiagnosticoEtapasComponent } from './modules/diagnostico-etapas/diagnostico-etapas.component';
 import { AuthGuard } from './guards/auth.guard';
 import { PageErrorComponent } from './modules/page-error/page-error.component';
+import { DiagramaCircularComponent } from './common/diagrama-circular/diagrama-circular.component';
 
 const routes: Routes = [
   {path: '', component: AppLoginComponent},
@@ -282,7 +283,8 @@ const routes: Routes = [
   },
   canLoad:[AuthGuard]},
   {path: ':id',component:AppLoginComponent},
-  {path: 'page/error',component:PageErrorComponent}
+  {path: 'page/error',component:PageErrorComponent},
+  {path: 'circular', component:DiagramaCircularComponent}
 ];
 
 @NgModule({

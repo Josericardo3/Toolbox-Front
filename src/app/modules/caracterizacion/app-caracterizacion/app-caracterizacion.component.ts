@@ -99,8 +99,8 @@ export class AppCaracterizacionComponent implements OnInit {
   ) {
     this.cargaInicial=true;
     this.setState(this.valid1,true)
-  this.setState(this.valid2,true)
-  this.setState(this.valid3,true)
+    this.setState(this.valid2,true)
+    this.setState(this.valid3,true)
   }
 
 cargaInicial: boolean;
@@ -109,10 +109,9 @@ ngOnInit(): void {
   const id = Number(window.localStorage.getItem('Id'));
   this.colorTitle = JSON.parse(localStorage.getItem("color")).title;
   this.colorWallpaper = JSON.parse(localStorage.getItem("color")).wallpaper;
-  var opcion = localStorage.getItem("opcionEditar");
 
-  if(opcion != "1"){
     this.ApiService.validateCaracterizacion(id).subscribe((data: any)=>{
+  
       if(data === true){
         this.router.navigate(['/dashboard']);
       }
@@ -126,7 +125,7 @@ ngOnInit(): void {
           });  
       }
     })
-  }
+ 
  
 
   //validar input-otro
@@ -160,7 +159,9 @@ validarCampoOtroRed() {
 }
 validarCampoInput(opcion: any, campo: any=null){
   let ver=false;
-  const regexRedesSociales = /^(https?:\/\/)?(www\.)?(facebook\.com|twitter\.com|instagram\.com|linkedin\.com)\/([\w-]+\/?)*$/;
+ // const regexRedesSociales = /^(https?:\/\/)?(www\.)?(facebook\.com|twitter\.com|instagram\.com|linkedin\.com)\/([\w-]+\/?)*$/;
+ const regexRedesSociales = /^(?:(?:(?:https?:)?\/\/)?(?:www\.)?)?([a-zA-Z0-9-]+\.){1,}([a-zA-Z]{2,})(\/[a-zA-Z0-9-._]+)*(\/?|\?[^\s]*)$/;
+  
   if(opcion.valorUrl!==undefined){
     if(opcion.valorUrl.trim()!=""){
       ver=true;
@@ -187,7 +188,8 @@ validarCampoWeb(controlName: any){
   let valor= this.formParent.get(controlName).value;
   if(typeof valor =="object"){ return true;}
   else if(typeof valor =="string"){
-    const regexRedesSociales = /^(https?:\/\/)?(www\.)?(facebook\.com|twitter\.com|instagram\.com|linkedin\.com)\/([\w-]+\/?)*$/;
+    
+    const regexRedesSociales = /^(?:(?:(?:https?:)?\/\/)?(?:www\.)?)?([a-zA-Z0-9-]+\.){1,}([a-zA-Z]{2,})(\/[a-zA-Z0-9-._]+)*(\/?|\?[^\s]*)$/;
     if(regexRedesSociales.test(valor.trim())){
       ver=true;
     }

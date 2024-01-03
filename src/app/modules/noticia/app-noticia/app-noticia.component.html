@@ -9,7 +9,7 @@
   <app-app-header2></app-app-header2>
   <div class="titulo">
     <h1>Noticia</h1>
-    <app-app-header-arrow-left></app-app-header-arrow-left>
+    <app-app-header-arrow-left [redirectToGestorNoticias]="true"></app-app-header-arrow-left>
   </div>
 
   <div class="noticia-content">
@@ -90,7 +90,7 @@
                 style="margin-top:2vh;" id="descripcion"
                 [(ngModel)]="noticiaSelected.DESCRIPCION"></angular-editor>-->
             <br>
-            <editor [(ngModel)]="noticiaSelected.DESCRIPCION" formControlName="descripcion" name="descripcion"
+            <editor [(ngModel)]="noticiaSelected.DESCRIPCION" formControlName="descripcion" name="descripcion" (onChange)="limitWordsDescripcion=limitWords()"
                 [init]="{
                   base_url: '/tinymce',
                   suffix: '.min',
@@ -109,14 +109,14 @@
                   image_dimensions_unit: 'px'
                 }"
             ></editor>
-            <label for="" class="indicador-max">El texto ingresado no debe superar los 500 caractéres</label>
+            <label for="" class="indicador-max" *ngIf="limitWordsDescripcion==true || editarNoticiaForm.controls['descripcion'].hasError('maxlength')">El texto ingresado no debe superar los 500 caractéres</label>
             <div class="containerFile" style="margin-top:2vh;">
                 <input type="file" (change)="captureImage($event)" class="file" id="archivo" #archivo>
                 <label for="archivo" class="fileBtn">Seleccionar imagen</label>
                 <label id="nombre" class="fileName" *ngIf="this.noticiaSelected.IMAGEN==''">Ningún archivo seleccionado</label>
                 <label id="nombre" class="fileName" *ngIf="this.noticiaSelected.IMAGEN!=''">{{ this.noticiaSelected.IMAGEN }}</label>
             </div><br>
-            <button class="botonG" type="submit" [disabled]="noticiaSelected.invalid">
+            <button class="botonG" type="submit" [disabled]="limitWordsDescripcion==true || editarNoticiaForm.controls['descripcion'].hasError('maxlength') || editarNoticiaForm.controls['titulo'].hasError('maxlength') || noticiaSelected.invalid">
                 <i class="fa-regular fa-floppy-disk" style="color: #fff;"></i>
                 Editar noticia
             </button>

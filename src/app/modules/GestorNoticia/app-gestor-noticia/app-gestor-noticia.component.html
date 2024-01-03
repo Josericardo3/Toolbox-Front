@@ -80,7 +80,7 @@
     <app-app-header2></app-app-header2>
     <div class="titulo">
         <h1> NOTICIAS </h1>
-        <app-app-header-arrow-left></app-app-header-arrow-left>
+        <app-app-header-arrow-left [redirectToDashboard]="true"></app-app-header-arrow-left>
     </div>
     
     <div class="noticia-content">
@@ -116,6 +116,10 @@
     </footer>
         </div>
         <div class="categorizacion-view">
+            <div class="filter-view">
+                <label>Filtrar:</label>
+                <input type="text" class="form-control" style="width: 100%;" placeholder="Buscar..." [(ngModel)]="filterNoticia" (input)="filterResult()">
+            </div>
             <div class="categorias">
                 <div class="val-cat" *ngFor="let val of arrayCategorias; let i = index">
                     <div class="cat-n">
@@ -183,25 +187,9 @@
                     <option value="">Seleccione una categoría</option>
                     <option *ngFor="let val of arrayCategorias; let i = index" [ngValue]="val.ID_CATEGORIA">{{val.DESCRIPCION}}</option>
                 </select>
-                <!--<angular-editor placeholder="Agregar una descripción" formControlName="descripcionNoticia"
-                    id="descripcionNoticia" style="margin-top:2vh;"></angular-editor>-->
                 <br>
-                <!--<editor formControlName="descripcionNoticia" name="descripcionNoticia"
-                    [init]="{
-                      height: 500,
-                      plugins: [
-                         'a11ychecker','advlist','advcode','advtable','autolink','checklist','export',
-                        'lists','link','image','charmap','preview','anchor','searchreplace','visualblocks',
-                        'powerpaste','fullscreen','formatpainter','insertdatetime','media','table','help','wordcount'
-                      ],
-                      toolbar:
-                       'undo redo | casechange blocks | bold italic backcolor | \
-                       alignleft aligncenter alignright alignjustify | \
-                       bullist numlist checklist outdent indent | removeformat | a11ycheck code table help'
-                    }"
-                ></editor>-->
 
-                <editor formControlName="descripcionNoticia" name="descripcionNoticia"
+                <editor formControlName="descripcionNoticia" name="descripcionNoticia" (onChange)="limitWordsDescripcion=limitWords()"
                     [init]="{
                         base_url: '/tinymce',
                         suffix: '.min',
@@ -220,7 +208,7 @@
                         image_dimensions_unit: 'px'
                     }"
                 ></editor>
-                <label for="" class="indicador-max">El texto ingresado no debe superar los 500 caractéres</label>
+                <label for="" class="indicador-max" *ngIf="limitWordsDescripcion==true || saveForm.controls['descripcionNoticia'].hasError('maxlength')">El texto ingresado no debe superar los 500 caractéres</label>
                 <div class="containerFile" style="margin-top:2vh;">
                     <input type="file" accept="image/*" (change)="captureImage($event)" class="file" id="archivo"
                         formControlName="imagenNoticia" #archivo>
@@ -234,7 +222,7 @@
                     </label>
                 </div>
                 <button type="submit" class="botonG"
-                    [disabled]=" ( (saveForm.controls.selectMultipleAdmin?.value?.length||0) === 0 && (saveForm.controls.selectMultipleNorma?.value?.length||0) === 0  && (saveForm.controls.selectMultipleCategoria.value?.length||0) === 0 && (saveForm.controls.selectMultipleSubCategoria.value?.length||0) === 0 && (saveForm.controls.selectMultiplePST.value?.length||0) === 0) || !saveForm.controls.CategoriaNoticia.value || !saveForm.controls.tituloNoticia.value || !saveForm.controls.descripcionNoticia.value || this.imagen==null ">
+                    [disabled]="limitWordsDescripcion==true || saveForm.controls['descripcionNoticia'].hasError('maxlength') || saveForm.controls['tituloNoticia'].hasError('maxlength') || ( (saveForm.controls.selectMultipleAdmin?.value?.length||0) === 0 && (saveForm.controls.selectMultipleNorma?.value?.length||0) === 0  && (saveForm.controls.selectMultipleCategoria.value?.length||0) === 0 && (saveForm.controls.selectMultipleSubCategoria.value?.length||0) === 0 && (saveForm.controls.selectMultiplePST.value?.length||0) === 0) || !saveForm.controls.CategoriaNoticia.value || !saveForm.controls.tituloNoticia.value || !saveForm.controls.descripcionNoticia.value || this.imagen==null ">
                     <i class="fa-regular fa-floppy-disk" style="color: #fff;"></i>
                     Guardar noticia</button>
             </form>

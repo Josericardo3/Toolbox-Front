@@ -28,32 +28,20 @@
         <div class="col-md-6" >
           <div class="form-group">
             <label for="norma">Norma</label>
-            <select
-            matNativeControl 
-              [(ngModel)]="dataEnvio.ID_NORMA"
-              name="norma"
-              class="form-control custom-select"
-              required
-              (selectionChange)="cambiarNorma($event)"
-            >
-              <option
-                *ngFor="let item of normas; let index = index"
-                id="ID_NORMA-{{ index }}"
-                [value]="item.ID_NORMA"
-              >
-                {{ item.NORMA }}
-              </option>
-            </select>
-          </div>
-          <!--<mat-form-field appearance="outline" class="matForm">
-            <mat-label>Norma</mat-label>
             <mat-select
+              #matSelect
               [(ngModel)]="dataEnvio.ID_NORMA"
               name="norma"
+              class="form-control"
+              multiple
               required
               (selectionChange)="cambiarNorma($event)"
             >
+            <mat-option  *ngIf=" this.normas?.length>1 " (onSelectionChange)="seleccionarTodos($event)" [value]="0">
+              Todos
+          </mat-option>
               <mat-option
+              
                 *ngFor="let item of normas; let index = index"
                 id="ID_NORMA-{{ index }}"
                 [value]="item.ID_NORMA"
@@ -61,7 +49,8 @@
                 {{ item.NORMA }}
               </mat-option>
             </mat-select>
-          </mat-form-field>-->
+          </div>
+          
         </div>
         <div class="col-md-4">
           <div class="form-group">
@@ -91,41 +80,11 @@
               </option>
             </select>
           </div>
-         <!--
-<mat-form-field appearance="outline" class="matForm">
-            <mat-label>Paquete</mat-label>
-            <mat-select
-              [(ngModel)]="dataEnvio.ID_PAQUETE"
-              name="paquete"
-              required
-              (selectionChange)="cambiarPaquete($event)"
-            >
-            <mat-option
-               
-                id="todos"
-                [value]="0"
-              >
-                TODOS LOS PAQUETES
-              </mat-option>
-              <mat-option
-                *ngFor="let item of dataPaquete; let index = index"
-                id="ID_PAQUETE-{{ index }}"
-                [value]="item.Id"
-               
-              >
-                {{ item.Nombre }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-         --> 
+
         </div>
         <div class="col-md-2">
           <div style="text-align: right" class="mb-4">
-            <!--
- <button class="btn-nuevo  " style="margin-bottom: 2rem;" (click)="aniadirIndicador(1, undefined)" data-toggle="modal" data-target="#exampleModal">Nuevo Indicador
-                    <i class="fa-solid fa-plus" style="color: #fff;"></i>
-                </button>
-                -->
+          
           </div>
         </div>
         <div class="col-md-12 col-sm-12  text-center mt-2">
@@ -153,29 +112,12 @@
           </div>
           
           
-          <!--<mat-form-field appearance="outline" style="width: 50%">
-            <mat-label>Buscar</mat-label>
-            <input
-              matInput
-              [(ngModel)]="filter.search"
-              placeholder="Ingresar título del KPI"
-            />
-            <mat-icon
-              class="search-icon hand-pointer"
-              style="color: #068460"
-              matPrefix
-              (click)="buscar()"
-              >search</mat-icon
-            >
-          </mat-form-field>-->
+          
         </div>
       </div>
 
  
-      <!--   <mat-tab-group
-            
-          >
-          <mat-tab label="Lista de Indicadores">-->
+      
       <div class="mat-elevation-z8 table-responsive text-center mt-1">
         <table mat-table [dataSource]="dataSource">
           <ng-container matColumnDef="paquete">
@@ -202,12 +144,7 @@
             </td>
           </ng-container>
 
-          <!--<ng-container matColumnDef="descripcion">
-            <th mat-header-cell *matHeaderCellDef>Descripción</th>
-            <td mat-cell *matCellDef="let element">
-              {{ element.DESCRIPCION }}
-            </td>
-          </ng-container>-->
+          
           <ng-container matColumnDef="calculo">
             <th mat-header-cell *matHeaderCellDef>Cálculo</th>
             <td mat-cell *matCellDef="let element">
@@ -296,12 +233,7 @@
           </div>
         </div>
       </footer>
-      <!--</mat-tab>
-<mat-tab label="Indicadores Asignados">
-
-          </mat-tab>
-        </mat-tab-group>
-         -->
+    
     </div>
   </div>
 </div>

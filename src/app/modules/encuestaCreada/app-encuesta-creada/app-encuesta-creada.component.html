@@ -1,4 +1,4 @@
-<div class="containerEncuesta" *ngIf="mostrarFormulario">
+<div class="containerEncuesta" *ngIf="mostrarFormulario && encuestaActiva">
     <form [formGroup]="form" class="form" (ngSubmit)="enviarFormulario()">
         <div class="encabezado">
             <h1>{{datosPreguntaEncuesta.TITULO}}</h1>
@@ -62,7 +62,7 @@
                 </select>
             </div>          
         </div>
-        <button class="btn" type="submit" [disabled]="form.invalid || !alMenosUnaPreguntaRespondida()">
+        <button class="btn" type="submit" [disabled]="form.invalid || !alMenosUnaPreguntaRespondida() || !encuestaActiva">
             <i class="fa-solid fa-floppy-disk" style="color: #ffffff;"></i> Enviar
         </button> 
     </form>
@@ -73,6 +73,14 @@
         <p class="descripcion mt-1">Gracias por tomarse el tiempo para completar la encuesta. Se han registrado sus respuestas.</p>
     </div>
 </div>
+<!--No mas respuestas-->
+<div class="containerEncuesta" *ngIf="!encuestaActiva">
+    <div class="agradecimiento">
+        <h1>ENCUESTA APAGADA</h1>
+        <p class="descripcion mt-1">Gracias por tomarse el tiempo de entrar a la encuesta pero por el momento ya no se reciben más respuestas.</p>
+    </div>
+</div>
+
 <ngx-spinner
   bdColor="rgba(0, 0, 0, 0.5)"
   size="small"
